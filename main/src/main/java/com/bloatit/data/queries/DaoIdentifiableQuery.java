@@ -24,10 +24,9 @@ import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.SessionManager;
 
 /**
- * A factory for creating DaoIdentifiable Lists objects (PageIterable) using
- * hibernate Criteria query.
+ * A query on DaoIdentifiable using hibernate Criteria query.
  * 
- * @param <T> the generic type
+ * @param <T> the generic type representing a concrete Dao class.
  */
 public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstractQuery<T> {
 
@@ -57,6 +56,15 @@ public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstract
         add(Restrictions.eq("id", id));
     }
 
+    /**
+     * Add an Order by close to this query. Use this with caution, if the column
+     * parameter does not represent a valid <code>column</code> on this
+     * criteria, the method will throw a HibernateException.
+     * 
+     * @param column the column name. Think about possible aliases (see
+     *            {@link Criteria#createAlias(String, String)}).
+     * @param order the order ...
+     */
     public void orderBy(final String column, final OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(column));
