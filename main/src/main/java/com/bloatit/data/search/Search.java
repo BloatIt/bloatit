@@ -13,7 +13,7 @@ import org.hibernate.search.FullTextFilter;
 import org.hibernate.search.FullTextQuery;
 
 import com.bloatit.data.SessionManager;
-import com.bloatit.data.queries.NullCollection;
+import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.framework.utils.PageIterable;
 
 public abstract class Search<T> {
@@ -57,7 +57,7 @@ public abstract class Search<T> {
             try {
                 query = parser.parse(searchStr);
             } catch ( ParseException e) {
-                return new NullCollection<T>();
+                return new EmptyPageIterable<T>();
             }
         }
 

@@ -15,7 +15,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBatch.BatchState;
-import com.bloatit.data.queries.NullCollection;
+import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
@@ -55,7 +55,7 @@ public class DemandOfferListComponent extends HtmlDiv {
         this.demand = demand;
         try {
 
-            PageIterable<Offer> offers = new NullCollection<Offer>();
+            PageIterable<Offer> offers = new EmptyPageIterable<Offer>();
             offers = demand.getOffers();
             int nbUnselected = offers.size();
 
