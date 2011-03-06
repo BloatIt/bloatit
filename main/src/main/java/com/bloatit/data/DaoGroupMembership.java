@@ -47,8 +47,8 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                            name = "groupMembership.byGroupMember",
-                           query = "FROM DaoGroupMembership WHERE bloatitGroup = :bloatitGroup AND member = :member")
-                       }
+                           query = "FROM DaoGroupMembership gm WHERE gm.bloatitGroup = :bloatitGroup AND gm.member = :member")
+                      }
              )
 // @formatter:on
 class DaoGroupMembership extends DaoIdentifiable {
