@@ -86,7 +86,7 @@ import com.bloatit.data.SessionManager;
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public  class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
+public class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
 
     /**
      * Instantiates a new dao demand list factory.
@@ -109,11 +109,11 @@ public  class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
      * @param cmp the cmp.
      * @param value the value
      */
-    public void amount( Comparator cmp,  BigDecimal value) {
+    public void amount(final Comparator cmp, final BigDecimal value) {
         add(createNbCriterion(cmp, "amount", value));
     }
 
-    public void stateEquals( DaoBatch.BatchState state) {
+    public void stateEquals(final DaoBatch.BatchState state) {
         add(Restrictions.eq("batchState", state));
     }
 

@@ -47,7 +47,7 @@ public class EmptyPageIterable<T> implements PageIterable<T> {
      * @see com.bloatit.framework.utils.PageIterable#setPageSize(int)
      */
     @Override
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         this.pageSize = pageSize;
     }
 
@@ -83,7 +83,7 @@ public class EmptyPageIterable<T> implements PageIterable<T> {
      * @see com.bloatit.framework.utils.PageIterable#setPage(int)
      */
     @Override
-    public void setPage(int page) {
+    public void setPage(final int page) {
         // nothing to do it is empty.
     }
 

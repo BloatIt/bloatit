@@ -35,7 +35,7 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
     private static String IS_DELETED = "isDeleted";
     private static String AS_GROUP = "asGroup";
 
-    protected DaoUserContentQuery(Criteria criteria) {
+    protected DaoUserContentQuery(final Criteria criteria) {
         super(criteria);
         criteria.createAlias("member", "m");
         criteria.setReadOnly(true);
@@ -53,7 +53,7 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         add(Projections.groupProperty(AS_GROUP));
     }
 
-    public void orderByMember(DaoAbstractQuery.OrderType order) {
+    public void orderByMember(final DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(MEMBER_LOGIN));
         } else {
@@ -61,7 +61,7 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         }
     }
 
-    public void orderByAsGroup(DaoAbstractQuery.OrderType order) {
+    public void orderByAsGroup(final DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(AS_GROUP));
         } else {
@@ -69,7 +69,7 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         }
     }
 
-    public void orderByCreationDate(OrderType order) {
+    public void orderByCreationDate(final OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(CREATION_DATE));
         } else {
@@ -101,11 +101,11 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         add(Restrictions.isNull(AS_GROUP));
     }
 
-    public void fromMember(DaoMember member) {
+    public void fromMember(final DaoMember member) {
         add(Restrictions.eq(MEMBER, member));
     }
 
-    public void fromGroup(DaoGroup group) {
+    public void fromGroup(final DaoGroup group) {
         add(Restrictions.eq(AS_GROUP, group));
     }
 

@@ -36,7 +36,7 @@ public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstract
      * 
      * @param criteria the criteria
      */
-    protected DaoIdentifiableQuery( Criteria criteria) {
+    protected DaoIdentifiableQuery(final Criteria criteria) {
         super(criteria);
     }
 
@@ -53,11 +53,11 @@ public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstract
      * 
      * @param id the id
      */
-    public void idEquals( Integer id) {
+    public void idEquals(final Integer id) {
         add(Restrictions.eq("id", id));
     }
 
-    public void orderBy( String column,  OrderType order) {
+    public void orderBy(final String column, final OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(column));
         } else {

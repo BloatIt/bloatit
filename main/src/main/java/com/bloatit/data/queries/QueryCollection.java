@@ -33,7 +33,8 @@ import com.bloatit.framework.utils.PageIterable;
  * This is the implementation of the {@link PageIterable} interface using a
  * Hibernate HQL query.
  * 
- * @param <T> The type stored in this collection. T must implements a Dao object.
+ * @param <T> The type stored in this collection. T must implements a Dao
+ *            object.
  */
 public class QueryCollection<T> implements PageIterable<T> {
 
@@ -70,7 +71,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      *            {@link HibernateException}.
      *            </p>
      */
-    public QueryCollection(String nameQuery) {
+    public QueryCollection(final String nameQuery) {
         this(SessionManager.getNamedQuery(nameQuery), SessionManager.getNamedQuery(nameQuery + ".size"));
     }
 
@@ -80,7 +81,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param query the query
      * @param sizeQuery the size query
      */
-    public QueryCollection(Query query, Query sizeQuery) {
+    public QueryCollection(final Query query, final Query sizeQuery) {
         this.pageSize = 0;
         this.size = -1;
         this.query = query;
@@ -94,7 +95,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param entity the entity
      * @return this query collection
      */
-    public QueryCollection<T> setEntity(String name, Object entity) {
+    public QueryCollection<T> setEntity(final String name, final Object entity) {
         query.setEntity(name, entity);
         sizeQuery.setEntity(name, entity);
         return this;
@@ -107,7 +108,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param entity the entity
      * @return this query collection
      */
-    public QueryCollection<T> setParameter(String name, Object entity) {
+    public QueryCollection<T> setParameter(final String name, final Object entity) {
         query.setParameter(name, entity);
         sizeQuery.setParameter(name, entity);
         return this;
@@ -120,7 +121,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setString(String name, String val) {
+    public QueryCollection<T> setString(final String name, final String val) {
         sizeQuery.setString(name, val);
         query.setString(name, val);
         return this;
@@ -133,7 +134,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setCharacter(String name, char val) {
+    public QueryCollection<T> setCharacter(final String name, final char val) {
         sizeQuery.setCharacter(name, val);
         query.setCharacter(name, val);
         return this;
@@ -146,7 +147,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setBoolean(String name, boolean val) {
+    public QueryCollection<T> setBoolean(final String name, final boolean val) {
         sizeQuery.setBoolean(name, val);
         query.setBoolean(name, val);
         return this;
@@ -159,7 +160,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setByte(String name, byte val) {
+    public QueryCollection<T> setByte(final String name, final byte val) {
         sizeQuery.setByte(name, val);
         query.setByte(name, val);
         return this;
@@ -172,7 +173,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setShort(String name, short val) {
+    public QueryCollection<T> setShort(final String name, final short val) {
         sizeQuery.setShort(name, val);
         query.setShort(name, val);
         return this;
@@ -185,7 +186,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setInteger(String name, int val) {
+    public QueryCollection<T> setInteger(final String name, final int val) {
         sizeQuery.setInteger(name, val);
         query.setInteger(name, val);
         return this;
@@ -198,7 +199,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setLong(String name, long val) {
+    public QueryCollection<T> setLong(final String name, final long val) {
         sizeQuery.setLong(name, val);
         query.setLong(name, val);
         return this;
@@ -211,7 +212,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setFloat(String name, float val) {
+    public QueryCollection<T> setFloat(final String name, final float val) {
         sizeQuery.setFloat(name, val);
         query.setFloat(name, val);
         return this;
@@ -224,7 +225,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setDouble(String name, double val) {
+    public QueryCollection<T> setDouble(final String name, final double val) {
         sizeQuery.setDouble(name, val);
         query.setDouble(name, val);
         return this;
@@ -237,7 +238,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setBinary(String name, byte[] val) {
+    public QueryCollection<T> setBinary(final String name, final byte[] val) {
         sizeQuery.setBinary(name, val);
         query.setBinary(name, val);
         return this;
@@ -250,7 +251,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param val the val
      * @return this query collection
      */
-    public QueryCollection<T> setText(String name, String val) {
+    public QueryCollection<T> setText(final String name, final String val) {
         sizeQuery.setText(name, val);
         query.setText(name, val);
         return this;
@@ -263,7 +264,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param locale the locale
      * @return this query collection
      */
-    public QueryCollection<T> setLocale(String name, Locale locale) {
+    public QueryCollection<T> setLocale(final String name, final Locale locale) {
         sizeQuery.setLocale(name, locale);
         query.setLocale(name, locale);
         return this;
@@ -276,7 +277,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param number the number
      * @return this query collection
      */
-    public QueryCollection<T> setBigDecimal(String name, BigDecimal number) {
+    public QueryCollection<T> setBigDecimal(final String name, final BigDecimal number) {
         sizeQuery.setBigDecimal(name, number);
         query.setBigDecimal(name, number);
         return this;
@@ -289,7 +290,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param number the number
      * @return this query collection
      */
-    public QueryCollection<T> setBigInteger(String name, BigInteger number) {
+    public QueryCollection<T> setBigInteger(final String name, final BigInteger number) {
         sizeQuery.setBigInteger(name, number);
         query.setBigInteger(name, number);
         return this;
@@ -302,7 +303,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param date the date
      * @return this query collection
      */
-    public QueryCollection<T> setDate(String name, Date date) {
+    public QueryCollection<T> setDate(final String name, final Date date) {
         sizeQuery.setDate(name, date);
         query.setDate(name, date);
         return this;
@@ -315,7 +316,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param date the date
      * @return this query collection
      */
-    public QueryCollection<T> setTime(String name, Date date) {
+    public QueryCollection<T> setTime(final String name, final Date date) {
         sizeQuery.setTime(name, date);
         query.setTime(name, date);
         return this;
@@ -328,7 +329,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param date the date
      * @return this query collection
      */
-    public QueryCollection<T> setTimestamp(String name, Date date) {
+    public QueryCollection<T> setTimestamp(final String name, final Date date) {
         sizeQuery.setTimestamp(name, date);
         query.setTimestamp(name, date);
         return this;
@@ -341,7 +342,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param calendar the calendar
      * @return this query collection
      */
-    public QueryCollection<T> setCalendar(String name, Calendar calendar) {
+    public QueryCollection<T> setCalendar(final String name, final Calendar calendar) {
         sizeQuery.setCalendar(name, calendar);
         query.setCalendar(name, calendar);
         return this;
@@ -354,7 +355,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @param calendar the calendar
      * @return this query collection
      */
-    public QueryCollection<T> setCalendarDate(String name, Calendar calendar) {
+    public QueryCollection<T> setCalendarDate(final String name, final Calendar calendar) {
         sizeQuery.setCalendarDate(name, calendar);
         query.setCalendarDate(name, calendar);
         return this;
@@ -375,7 +376,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @see com.bloatit.framework.utils.PageIterable#setPage(int)
      */
     @Override
-    public void setPage(int page) {
+    public void setPage(final int page) {
         currentPage = page;
         query.setFirstResult(page * pageSize);
     }
@@ -385,7 +386,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @see com.bloatit.framework.utils.PageIterable#setPageSize(int)
      */
     @Override
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         query.setMaxResults(pageSize);
         query.setFetchSize(pageSize);
         this.pageSize = pageSize;

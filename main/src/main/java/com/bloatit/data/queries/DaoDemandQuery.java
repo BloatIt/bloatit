@@ -88,22 +88,22 @@ import com.bloatit.data.SessionManager;
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public  class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
+public class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
 
     /** The Constant CONTRIBUTION. */
-    private static  String CONTRIBUTION = "contribution";
+    private static String CONTRIBUTION = "contribution";
 
     /** The Constant OFFERS. */
-    private static  String OFFERS = "offers";
+    private static String OFFERS = "offers";
 
     /** The Constant SELECTED_OFFER. */
-    private static  String SELECTED_OFFER = "selectedOffer";
+    private static String SELECTED_OFFER = "selectedOffer";
 
     /** The Constant PROJECT. */
-    private static  String PROJECT = "project";
+    private static String PROJECT = "project";
 
     /** The Constant DEMAND_STATE. */
-    private static  String DEMAND_STATE = "demandState";
+    private static String DEMAND_STATE = "demandState";
 
     /**
      * Instantiates a new dao demand list factory.
@@ -117,7 +117,7 @@ public  class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
      * 
      * @param state the state
      */
-    public void stateEquals( DemandState state) {
+    public void stateEquals(final DemandState state) {
         add(Restrictions.eq(DEMAND_STATE, state));
     }
 
@@ -126,7 +126,7 @@ public  class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
      * 
      * @param project the project
      */
-    public void projectEquals( DaoProject project) {
+    public void projectEquals(final DaoProject project) {
         add(Restrictions.eq(PROJECT, project));
     }
 
@@ -189,7 +189,7 @@ public  class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
      * @param cmp the cmp.
      * @param value the value
      */
-    public void contribution( Comparator cmp,  BigDecimal value) {
+    public void contribution(final Comparator cmp, final BigDecimal value) {
         add(createNbCriterion(cmp, CONTRIBUTION, value));
     }
 

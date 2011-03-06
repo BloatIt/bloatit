@@ -28,12 +28,12 @@ import com.bloatit.framework.utils.PageIterable;
  */
 public class CriteriaCollection<T> implements PageIterable<T> {
 
-    private  Criteria criteria;
+    private final Criteria criteria;
     private int pageSize;
     private int size;
     private int currentPage;
 
-    protected CriteriaCollection( Criteria criteria) {
+    protected CriteriaCollection(final Criteria criteria) {
         pageSize = 0;
         size = -1;
         this.criteria = criteria;
@@ -45,30 +45,30 @@ public class CriteriaCollection<T> implements PageIterable<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public  Iterator<T> iterator() {
+    public Iterator<T> iterator() {
         return criteria.list().iterator();
     }
 
     @Override
-    public  void setPage( int page) {
+    public void setPage(final int page) {
         currentPage = page;
         criteria.setFirstResult(page * pageSize);
     }
 
     @Override
-    public  void setPageSize( int pageSize) {
+    public void setPageSize(final int pageSize) {
         criteria.setMaxResults(pageSize);
         criteria.setFetchSize(pageSize);
         this.pageSize = pageSize;
     }
 
     @Override
-    public  int getPageSize() {
+    public int getPageSize() {
         return pageSize;
     }
 
     @Override
-    public  int size() {
+    public int size() {
         if (size == -1) {
             size = criteria.list().size();
             return size;
@@ -77,7 +77,7 @@ public class CriteriaCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public  int pageNumber() {
+    public int pageNumber() {
         if (pageSize != 0) {
             return (int) Math.ceil((double) size() / (double) pageSize);
         }
@@ -85,7 +85,7 @@ public class CriteriaCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public  int getCurrentPage() {
+    public int getCurrentPage() {
         return currentPage;
     }
 }

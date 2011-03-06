@@ -48,8 +48,8 @@ public class DBRequests {
     }
 
     public static PageIterable<DaoUserContent> getUserContents() {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(DaoUserContent.class);
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Criteria criteria = session.createCriteria(DaoUserContent.class);
         return new CriteriaCollection<DaoUserContent>(criteria);
     }
 
@@ -73,25 +73,25 @@ public class DBRequests {
      *         null if non existing.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getById(Class<T> persistant, Integer id) {
+    public static <T> T getById(final Class<T> persistant, final Integer id) {
         return (T) SessionManager.getSessionFactory().getCurrentSession().get(persistant, id);
     }
 
-    public static <T extends DaoIdentifiable> PageIterable<T> getAll(Class<T> persistent) {
-        ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        Query query = SessionManager.createQuery("FROM " + meta.getEntityName());
-        Query size = SessionManager.createQuery("SELECT count(*) FROM " + meta.getEntityName());
+    public static <T extends DaoIdentifiable> PageIterable<T> getAll(final Class<T> persistent) {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+        final Query query = SessionManager.createQuery("FROM " + meta.getEntityName());
+        final Query size = SessionManager.createQuery("SELECT count(*) FROM " + meta.getEntityName());
         return new QueryCollection<T>(query, size);
     }
 
-    public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate(Class<T> persistent) {
-        ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+    public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate(final Class<T> persistent) {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return new QueryCollection<T>(SessionManager.createQuery("from " + meta.getEntityName() + " order by creationDate DESC"),
                                       SessionManager.createQuery("select count(*) from " + meta.getEntityName()));
     }
 
-    public static <T> int count(Class<T> persistent) {
-        ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+    public static <T> int count(final Class<T> persistent) {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return ((Long) SessionManager.getSessionFactory()
                                      .getCurrentSession()
                                      .createQuery("select count(*) from " + meta.getEntityName())
@@ -110,19 +110,19 @@ public class DBRequests {
         return demandsOrderBy("creationDate");
     }
 
-    private static PageIterable<DaoDemand> demandsOrderBy(String field) {
-        Query query = SessionManager.createQuery("from DaoDemand where state == PENDING order by " + field);
-        Query size = SessionManager.createQuery("SELECT count(*) from DaoDemand where state == PENDING order by " + field);
+    private static PageIterable<DaoDemand> demandsOrderBy(final String field) {
+        final Query query = SessionManager.createQuery("from DaoDemand where state == PENDING order by " + field);
+        final Query size = SessionManager.createQuery("SELECT count(*) from DaoDemand where state == PENDING order by " + field);
         return new QueryCollection<DaoDemand>(query, size);
     }
 
     public static PageIterable<DaoDemand> demandsThatShouldBeValidated() {
-        Query query = SessionManager.createQuery("FROM DaoDemand " + //
+        final Query query = SessionManager.createQuery("FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate < now() " + //
                 "AND demandState = :state");
-        Query size = SessionManager.createQuery("SELECT count(*) " + //
+        final Query size = SessionManager.createQuery("SELECT count(*) " + //
                 "FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
@@ -132,12 +132,12 @@ public class DBRequests {
     }
 
     public static PageIterable<DaoDemand> demandsThatShouldBeValidatedInTheFuture() {
-        Query query = SessionManager.createQuery("FROM DaoDemand " + //
+        final Query query = SessionManager.createQuery("FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate > now() " + //
                 "AND demandState = :state");
-        Query size = SessionManager.createQuery("SELECT count(*) " + //
+        final Query size = SessionManager.createQuery("SELECT count(*) " + //
                 "FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
