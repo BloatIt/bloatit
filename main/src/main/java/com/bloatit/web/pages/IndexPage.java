@@ -12,18 +12,21 @@
 
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.utils.Image;
+import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
+import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.managers.HighlightDemandManager;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("index")
@@ -38,22 +41,31 @@ public final class IndexPage extends MasterPage {
 
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-            final HtmlParagraph globalConcept = new HtmlParagraph(Context.tr("Linkeos is a platform for free software funding."));
-            globalDescription.add(globalConcept);
+//            final HtmlParagraph globalConcept = new HtmlParagraph(Context.tr("Linkeos is a platform for free software funding."));
+//            globalDescription.add(globalConcept);
+//
+//            final HtmlParagraph needText = new HtmlParagraph();
+//            needText.addText(Context.tr("If you have a need about a free software, you can "));
+//            needText.add(new CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demand")));
+//            needText.addText(Context.tr(" and contribute to it."));
+//            globalDescription.add(needText);
+//
+//            final HtmlParagraph devText = new HtmlParagraph();
+//            devText.addText(Context.tr("If you are a developer, you can make an offer on existing demands to develop it again money."));
+//            globalDescription.add(devText);
+//
+//            final HtmlParagraph moreText = new HtmlParagraph();
+//            moreText.addText(Context.tr("You can find more informations about Linkeos's in the documentation."));
+//            globalDescription.add(moreText);
 
-            final HtmlParagraph needText = new HtmlParagraph();
-            needText.addText(Context.tr("If you have a need about a free software, you can "));
-            needText.add(new CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demand")));
-            needText.addText(Context.tr(" and contribute to it."));
-            globalDescription.add(needText);
+            HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
 
-            final HtmlParagraph devText = new HtmlParagraph();
-            devText.addText(Context.tr("If you are a developer, you can make an offer on existing demands to develop it again money."));
-            globalDescription.add(devText);
+            globalDescription.add(title);
 
-            final HtmlParagraph moreText = new HtmlParagraph();
-            moreText.addText(Context.tr("You can find more informations about Linkeos's in the documentation."));
-            globalDescription.add(moreText);
+            HtmlImage image = new HtmlImage(new Image("presentation.png", ImageType.LOCAL), tr("Elveos's presentation"));
+            globalDescription.add(image);
+
+
 
         }
         add(globalDescription);
