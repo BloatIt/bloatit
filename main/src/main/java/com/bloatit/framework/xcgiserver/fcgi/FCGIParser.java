@@ -18,7 +18,6 @@
  */
 package com.bloatit.framework.xcgiserver.fcgi;
 
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -150,7 +149,7 @@ public class FCGIParser implements XcgiParser {
         // The first avoid to give too small or too big packet to put in on
         // record and the
         // second avoid to
-        responseStream = new BufferedOutputStream(new FCGIOutputStream(this, new BufferedOutputStream(output, 8192)), DEFAULT_OUTPUT_RECORD_SIZE);
+        responseStream = new FCGIOutputStream(this, output);
 
         postStream = new FCGIPostStream(this);
 
