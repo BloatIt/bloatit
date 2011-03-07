@@ -56,11 +56,20 @@ public final class Localizator {
     private final String urlLang;
     private final List<String> browserLangs;
 
+    // translations cache
+    private static final Map<Locale, I18n> localesCache = Collections.synchronizedMap(new HashMap<Locale, I18n>());
+
     public Localizator(final String urlLang, final List<String> browserLangs) {
         this.urlLang = urlLang;
         this.browserLangs = browserLangs;
         this.locale = inferLocale();
-        this.i18n = I18nFactory.getI18n(Localizator.class, "i18n.Messages", locale);
+
+        if (localesCache.containsKey(locale)) {
+            this.i18n = localesCache.get(locale);
+        } else {
+            this.i18n = I18nFactory.getI18n(Localizator.class, "i18n.Messages", locale);
+            localesCache.put(locale, i18n);
+        }
     }
 
     /**
