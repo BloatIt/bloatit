@@ -39,10 +39,10 @@ public class CreateTeamPage extends MasterPage {
 
         final CreateTeamActionUrl target = new CreateTeamActionUrl();
 
-        final FieldData nameData = target.getLoginParameter().fieldData();
-        final FieldData contactData = target.getContactParameter().fieldData();
-        final FieldData rightData = target.getRightParameter().fieldData();
-        final FieldData descriptionData = target.getDescriptionParameter().fieldData();
+        final FieldData nameData = target.getLoginParameter().pickFieldData();
+        final FieldData contactData = target.getContactParameter().pickFieldData();
+        final FieldData rightData = target.getRightParameter().pickFieldData();
+        final FieldData descriptionData = target.getDescriptionParameter().pickFieldData();
 
         final HtmlForm form = new HtmlForm(target.urlString());
         master.add(form);

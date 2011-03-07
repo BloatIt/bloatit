@@ -72,14 +72,14 @@ public final class ContributePage extends LoggedPage {
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : choose amount
-        final FieldData amountData = formActionUrl.getAmountParameter().fieldData();
+        final FieldData amountData = formActionUrl.getAmountParameter().pickFieldData();
         final HtmlMoneyField contribInput = new HtmlMoneyField(amountData.getName(), tr("Choose amount: "));
         contribInput.setDefaultValue(amountData.getSuggestedValue());
         contribInput.addErrorMessages(amountData.getErrorMessages());
         contribInput.setComment(Context.tr("The minimun is 1€. Don't use cents."));
 
         // Input field : comment
-        final FieldData commentData = formActionUrl.getCommentParameter().fieldData();
+        final FieldData commentData = formActionUrl.getCommentParameter().pickFieldData();
         final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), tr("Comment: "), 3, 60);
         commentInput.setDefaultValue(commentData.getSuggestedValue());
         commentInput.addErrorMessages(commentData.getErrorMessages());

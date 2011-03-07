@@ -57,7 +57,7 @@ public final class CommentReplyPage extends LoggedPage {
         final CommentCommentActionUrl commentCommentActionUrl = new CommentCommentActionUrl(targetComment);
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
-        final FieldData commentData = commentCommentActionUrl.getCommentParameter().fieldData();
+        final FieldData commentData = commentCommentActionUrl.getCommentParameter().pickFieldData();
         final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), Context.tr("Content"), NB_LINES, NB_COLUMNS);
         commentInput.setDefaultValue(commentData.getSuggestedValue());
         commentInput.addErrorMessages(commentData.getErrorMessages());

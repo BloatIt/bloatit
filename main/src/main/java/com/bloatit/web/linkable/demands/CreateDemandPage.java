@@ -85,7 +85,7 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaTitle.add(createIdeaForm);
 
         // Create the fields that will describe the description of the idea
-        final FieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().fieldData();
+        final FieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
         descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
@@ -109,7 +109,7 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaForm.add(projectInput);
 
         // Description of the feature
-        final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().fieldData();
+        final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
         final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData.getName(),
                                                                  tr("Describe the idea"),
                                                                  SPECIF_INPUT_NB_LINES,

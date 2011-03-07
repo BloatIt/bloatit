@@ -85,7 +85,7 @@ public final class ReportBugPage extends LoggedPage {
         formTitle.add(reportBugForm);
 
         // Create the field for the title of the bug
-        final FieldData bugTitleFieldData = doReportUrl.getTitleParameter().fieldData();
+        final FieldData bugTitleFieldData = doReportUrl.getTitleParameter().pickFieldData();
         final HtmlTextField bugTitleInput = new HtmlTextField(bugTitleFieldData.getName(), Context.tr("Bug title"));
         bugTitleInput.setDefaultValue(bugTitleFieldData.getSuggestedValue());
         bugTitleInput.setComment(Context.tr("A short title of the bug."));
@@ -94,7 +94,7 @@ public final class ReportBugPage extends LoggedPage {
 
         // Create the fields that will describe the descriptions of the project
 
-        final FieldData descriptionFieldData = doReportUrl.getDescriptionParameter().fieldData();
+        final FieldData descriptionFieldData = doReportUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFieldData.getName(),
                                                                Context.tr("Describe the bug"),
                                                                BUG_DESCRIPTION_INPUT_NB_LINES,
@@ -105,7 +105,7 @@ public final class ReportBugPage extends LoggedPage {
         reportBugForm.add(descriptionInput);
 
         // Language
-        final FieldData languageFieldData = doReportUrl.getLangParameter().fieldData();
+        final FieldData languageFieldData = doReportUrl.getLangParameter().pickFieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageFieldData.getName(), Context.tr("Language"));
         languageInput.setDefaultValue(languageFieldData.getSuggestedValue());
         languageInput.addErrorMessages(languageFieldData.getErrorMessages());
@@ -113,7 +113,7 @@ public final class ReportBugPage extends LoggedPage {
         reportBugForm.add(languageInput);
 
         // Level
-        final FieldData levelFieldData = doReportUrl.getLevelParameter().fieldData();
+        final FieldData levelFieldData = doReportUrl.getLevelParameter().pickFieldData();
         final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("Level"));
         levelInput.setDefaultValue(levelFieldData.getSuggestedValue());
         levelInput.addErrorMessages(levelFieldData.getErrorMessages());
@@ -129,7 +129,7 @@ public final class ReportBugPage extends LoggedPage {
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         attachementBlock.add(attachementInput);
 
-        final FieldData attachementDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().fieldData();
+        final FieldData attachementDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().pickFieldData();
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(), Context.tr("Attachment description"));
         attachementDescriptionInput.setDefaultValue(attachementDescriptionFieldData.getSuggestedValue());
         attachementDescriptionInput.addErrorMessages(attachementDescriptionFieldData.getErrorMessages());

@@ -119,7 +119,7 @@ public final class BugPage extends MasterPage {
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         addAttachementForm.add(attachementInput);
 
-        final FieldData attachementDescriptionFieldData = addAttachementActionUrl.getAttachementDescriptionParameter().fieldData();
+        final FieldData attachementDescriptionFieldData = addAttachementActionUrl.getAttachementDescriptionParameter().pickFieldData();
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(),
                                                                             Context.tr("Attachment description"));
         attachementDescriptionInput.setDefaultValue(attachementDescriptionFieldData.getSuggestedValue());

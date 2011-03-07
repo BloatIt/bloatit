@@ -80,7 +80,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         // order by
         final HtmlFormBlock blockOrder = new HtmlFormBlock("Order by");
         filterForm.add(blockOrder);
-        blockOrder.add(new HtmlCheckbox(url.getAscParameter().fieldData().getName(), tr("Asc"), LabelPosition.BEFORE));
+        blockOrder.add(new HtmlCheckbox(url.getAscParameter().pickFieldData().getName(), tr("Asc"), LabelPosition.BEFORE));
 
         // extends
         addFormFilters(filterForm);

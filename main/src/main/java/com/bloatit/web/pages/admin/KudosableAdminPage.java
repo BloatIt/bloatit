@@ -125,7 +125,7 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     }
 
     protected void addPopularityStateFilter(final HtmlForm form) {
-        final FieldData stateData = url.getPopularityStateParameter().fieldData();
+        final FieldData stateData = url.getPopularityStateParameter().pickFieldData();
         final HtmlDropDown state = new HtmlDropDown(stateData.getName());
         state.setDefaultValue(stateData.getSuggestedValue());
         state.addErrorMessages(stateData.getErrorMessages());
@@ -139,7 +139,7 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
         final HtmlTextField popularity = new HtmlTextField(url.getPopularityParameter().getName(), tr("popularity"));
         popularity.setDefaultValue(url.getPopularityParameter().getStringValue());
 
-        final FieldData comparatorData = url.getPopularityComparatorParameter().fieldData();
+        final FieldData comparatorData = url.getPopularityComparatorParameter().pickFieldData();
         final HtmlDropDown comparator = new HtmlDropDown(comparatorData.getName());
         comparator.setDefaultValue(comparatorData.getSuggestedValue());
         comparator.addErrorMessages(comparatorData.getErrorMessages());

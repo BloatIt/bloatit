@@ -110,7 +110,7 @@ public final class OfferPage extends LoggedPage {
         if (me.canAccessGroups(Action.READ)) {
             try {
                 final PageIterable<Group> groups = me.getGroups();
-                final FieldData groupData = offerActionUrl.getGroupParameter().fieldData();
+                final FieldData groupData = offerActionUrl.getGroupParameter().pickFieldData();
                 final HtmlDropDown groupInput = new HtmlDropDown(groupData.getName(), Context.tr("On the behalf of"));
                 groupInput.setDefaultValue(groupData.getSuggestedValue());
                 groupInput.addErrorMessages(groupData.getErrorMessages());
@@ -133,7 +133,7 @@ public final class OfferPage extends LoggedPage {
         }
 
         // Price field
-        final FieldData priceData = offerActionUrl.getPriceParameter().fieldData();
+        final FieldData priceData = offerActionUrl.getPriceParameter().pickFieldData();
         final HtmlMoneyField priceInput = new HtmlMoneyField(priceData.getName(), Context.tr("Offer price"));
         priceInput.setDefaultValue(priceData.getSuggestedValue());
         priceInput.addErrorMessages(priceData.getErrorMessages());
@@ -141,7 +141,7 @@ public final class OfferPage extends LoggedPage {
         offerForm.add(priceInput);
 
         // Date field
-        final FieldData dateData = offerActionUrl.getExpiryDateParameter().fieldData();
+        final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
         final HtmlDateField dateInput = new HtmlDateField(dateData.getName(), Context.tr("Release date"));
         dateInput.setDefaultValue(dateData.getSuggestedValue());
         dateInput.addErrorMessages(dateData.getErrorMessages());
@@ -149,14 +149,14 @@ public final class OfferPage extends LoggedPage {
         offerForm.add(dateInput);
 
         // Description
-        final FieldData descriptionData = offerActionUrl.getDescriptionParameter().fieldData();
+        final FieldData descriptionData = offerActionUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(), Context.tr("Description"), 10, 80);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         offerForm.add(descriptionInput);
 
         // locale
-        final FieldData localeData = offerActionUrl.getLocaleParameter().fieldData();
+        final FieldData localeData = offerActionUrl.getLocaleParameter().pickFieldData();
         final LanguageSelector localeInput = new LanguageSelector(localeData.getName(), Context.tr("description langue"));
         localeInput.setDefaultValue(localeData.getSuggestedValue());
         localeInput.addErrorMessages(localeData.getErrorMessages());
@@ -164,7 +164,7 @@ public final class OfferPage extends LoggedPage {
         offerForm.add(localeInput);
 
         // days before validation
-        final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().fieldData();
+        final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();
         final HtmlTextField nbDaysInput = new HtmlTextField(nbDaysData.getName(), Context.tr("Days before validation"));
         nbDaysInput.setDefaultValue(nbDaysData.getSuggestedValue());
         nbDaysInput.addErrorMessages(nbDaysData.getErrorMessages());
@@ -173,7 +173,7 @@ public final class OfferPage extends LoggedPage {
         offerForm.add(nbDaysInput);
 
         // percent Fatal
-        final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().fieldData();
+        final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().pickFieldData();
         final HtmlTextField percentFatalInput = new HtmlTextField(percentFatalData.getName(), Context.tr("Percent gained when no FATAL bugs"));
         percentFatalInput.setDefaultValue(percentFatalData.getSuggestedValue());
         percentFatalInput.addErrorMessages(percentFatalData.getErrorMessages());
@@ -184,7 +184,7 @@ public final class OfferPage extends LoggedPage {
         offerForm.add(percentFatalInput);
 
         // percent Major
-        final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().fieldData();
+        final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().pickFieldData();
         final HtmlTextField percentMajorInput = new HtmlTextField(percentMajorData.getName(), Context.tr("Percent gained when no MAJOR bugs"));
         percentMajorInput.setDefaultValue(percentMajorData.getSuggestedValue());
         percentMajorInput.addErrorMessages(percentMajorData.getErrorMessages());
@@ -194,7 +194,7 @@ public final class OfferPage extends LoggedPage {
         offerForm.add(percentMajorInput);
 
         // Is finished
-        final FieldData isFinishedData = offerActionUrl.getIsFinishedParameter().fieldData();
+        final FieldData isFinishedData = offerActionUrl.getIsFinishedParameter().pickFieldData();
         final HtmlRadioButtonGroup isFinishedInput = new HtmlRadioButtonGroup(isFinishedData.getName());
         isFinishedInput.setDefaultValue(isFinishedData.getSuggestedValue());
         // isFinishedInput.addErrorMessages(isFinishedData.getErrorMessages());

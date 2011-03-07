@@ -73,7 +73,7 @@ public final class AddReleasePage extends LoggedPage {
         createReleaseTitle.add(form);
 
         // version
-        final FieldData versionData = doCreateUrl.getVersionParameter().fieldData();
+        final FieldData versionData = doCreateUrl.getVersionParameter().pickFieldData();
         final HtmlTextField versionInput = new HtmlTextField(versionData.getName(), tr("Version"));
         versionInput.setDefaultValue(versionData.getSuggestedValue());
         versionInput.addErrorMessages(versionData.getErrorMessages());
@@ -81,7 +81,7 @@ public final class AddReleasePage extends LoggedPage {
         form.add(versionInput);
 
         // description
-        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().fieldData();
+        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(),
                                                                tr("Comment your release"),
                                                                DESCRIPTION_INPUT_NB_LINES,
@@ -92,7 +92,7 @@ public final class AddReleasePage extends LoggedPage {
         form.add(descriptionInput);
 
         // Language
-        final FieldData languageData = doCreateUrl.getLangParameter().fieldData();
+        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), tr("Language"));
         languageInput.setDefaultValue(languageData.getSuggestedValue());
         languageInput.addErrorMessages(languageData.getErrorMessages());
@@ -100,7 +100,7 @@ public final class AddReleasePage extends LoggedPage {
         form.add(languageInput);
 
         // attachement
-        final FieldData attachedFileData = doCreateUrl.getAttachedfileParameter().fieldData();
+        final FieldData attachedFileData = doCreateUrl.getAttachedfileParameter().pickFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
         attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
         attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());

@@ -78,7 +78,7 @@ public final class ModifyBugPage extends LoggedPage {
         formTitle.add(modifyBugForm);
 
         // Level
-        final FieldData levelFieldData = doModifyUrl.getLevelParameter().fieldData();
+        final FieldData levelFieldData = doModifyUrl.getLevelParameter().pickFieldData();
         final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("New Level"));
         levelInput.addErrorMessages(levelFieldData.getErrorMessages());
         // TODO: IMPORTANT set the current value as default value
@@ -88,7 +88,7 @@ public final class ModifyBugPage extends LoggedPage {
         modifyBugForm.add(levelInput);
 
         // State
-        final FieldData stateFieldData = doModifyUrl.getStateParameter().fieldData();
+        final FieldData stateFieldData = doModifyUrl.getStateParameter().pickFieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateFieldData.getName(), Context.tr("New state"));
         stateInput.addErrorMessages(stateFieldData.getErrorMessages());
         // TODO: IMPORTANT set the current value as default value
@@ -98,7 +98,7 @@ public final class ModifyBugPage extends LoggedPage {
         modifyBugForm.add(stateInput);
 
         // Create the fields that will describe the reason of bug change
-        final FieldData descriptionFieldData = doModifyUrl.getReasonParameter().fieldData();
+        final FieldData descriptionFieldData = doModifyUrl.getReasonParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFieldData.getName(),
                                                                Context.tr("Reason"),
                                                                BUG_CHANGE_COMMENT_INPUT_NB_LINES,

@@ -69,7 +69,7 @@ public final class AddProjectPage extends LoggedPage {
         createIdeaTitle.add(addProjectForm);
 
         // Create the field for the name of the project
-        final FieldData projectNameData = doCreateUrl.getProjectNameParameter().fieldData();
+        final FieldData projectNameData = doCreateUrl.getProjectNameParameter().pickFieldData();
         final HtmlTextField projectNameInput = new HtmlTextField(projectNameData.getName(), Context.tr("Project name"));
         projectNameInput.setDefaultValue(projectNameData.getSuggestedValue());
         projectNameInput.addErrorMessages(projectNameData.getErrorMessages());
@@ -77,7 +77,7 @@ public final class AddProjectPage extends LoggedPage {
         addProjectForm.add(projectNameInput);
 
         // Create the fields that will describe the descriptions of the project
-        final FieldData shortDescriptionData = doCreateUrl.getShortDescriptionParameter().fieldData();
+        final FieldData shortDescriptionData = doCreateUrl.getShortDescriptionParameter().pickFieldData();
         final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionData.getName(),
                                                                     Context.tr("Describe briefly the project"),
                                                                     SHORT_DESCRIPTION_INPUT_NB_LINES,
@@ -87,7 +87,7 @@ public final class AddProjectPage extends LoggedPage {
         shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
         addProjectForm.add(shortDescriptionInput);
 
-        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().fieldData();
+        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(),
                                                                Context.tr("Describe the project"),
                                                                DESCRIPTION_INPUT_NB_LINES,
@@ -98,7 +98,7 @@ public final class AddProjectPage extends LoggedPage {
         addProjectForm.add(descriptionInput);
 
         // Language
-        final FieldData languageData = doCreateUrl.getLangParameter().fieldData();
+        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
         languageInput.setDefaultValue(languageData.getSuggestedValue());
         languageInput.addErrorMessages(languageData.getErrorMessages());
