@@ -24,6 +24,7 @@ import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -83,9 +84,9 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     //@OrderBy("id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoComment> comments = new ArrayList<DaoComment>();
+    private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     private DaoBatch batch;
 
     @Basic(optional = false)

@@ -21,6 +21,7 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -55,7 +56,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
     /**
      * The DaoActor is the person that own this account.
      */
-    @OneToOne
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private DaoActor actor;
 
     @Basic(optional = false)

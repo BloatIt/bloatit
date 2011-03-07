@@ -22,11 +22,10 @@ import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -55,9 +54,9 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     //@OrderBy("id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoComment> comments = new ArrayList<DaoComment>();
+    private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoBatch batch;
 

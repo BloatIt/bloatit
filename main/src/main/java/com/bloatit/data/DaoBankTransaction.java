@@ -23,6 +23,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
@@ -106,7 +107,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
     @Column(updatable = true, length = DEFAULT_STRING_LENGTH)
     private String processInformations;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     private DaoActor author;
     @Basic(optional = false)
     @Column(updatable = false)

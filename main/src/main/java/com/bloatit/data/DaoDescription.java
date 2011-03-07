@@ -48,6 +48,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
+                           cacheable=true,
                            name = "description.getTranslations.byLocale",
                            query = "FROM DaoTranslation WHERE locale = :locale AND description = :this")
                        }
@@ -64,7 +65,8 @@ public class DaoDescription extends DaoIdentifiable {
     @OneToMany(mappedBy = "description")
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private List<DaoTranslation> translations = new ArrayList<DaoTranslation>(0);
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private final List<DaoTranslation> translations = new ArrayList<DaoTranslation>(0);
 
     public static DaoDescription createAndPersist(final DaoMember member, final Locale locale, final String title, final String description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
