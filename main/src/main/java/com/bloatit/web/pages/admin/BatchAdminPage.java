@@ -15,6 +15,7 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.ColumnGenerator;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
@@ -22,7 +23,6 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Release;
 import com.bloatit.model.admin.BatchAdminListFactory;
-import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.url.BatchAdminPageUrl;
 
 @ParamContainer("admin/batches")
@@ -63,15 +63,18 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
     @Override
     protected void addFormFilters(final HtmlForm form) {
 
-        final HtmlDropDown state = new HtmlDropDown(url.getBatchStateParameter().fieldData());
-        state.addDropDownElements(EnumSet.allOf(DisplayableBatchState.class));
-        state.setLabel(tr("Filter by batch state"));
-        form.add(state);
+        final FieldData stateData = url.getBatchStateParameter().fieldData();
+        final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());
+        stateInput.setDefaultValue(stateData.getSuggestedValue());
+        stateInput.addErrorMessages(stateData.getErrorMessages());
+        stateInput.addDropDownElements(EnumSet.allOf(DisplayableBatchState.class));
+        stateInput.setLabel(tr("Filter by batch state"));
+        form.add(stateInput);
     }
 
     @Override
     protected void addColumns(final HtmlGenericTableModel<Batch> tableModel) {
-        BatchAdminPageUrl clonedUrl = url.clone();
+        final BatchAdminPageUrl clonedUrl = url.clone();
         clonedUrl.setOrderByStr("batchState");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("batchState")), new StringColumnGenerator<Batch>() {
             @Override
@@ -89,8 +92,8 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
             @Override
             public XmlNode getBody(final Batch element) {
 
-                PlaceHolderElement place = new PlaceHolderElement();
-                for (Release release : element.getReleases()) {
+                final PlaceHolderElement place = new PlaceHolderElement();
+                for (final Release release : element.getReleases()) {
                     place.add(new HtmlParagraph(release.getVersion() + " "
                             + Context.getLocalizator().getDate(release.getCreationDate()).toString(FormatStyle.MEDIUM)));
                 }
@@ -100,8 +103,8 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
         tableModel.addColumn(tr("Should validated"), new ColumnGenerator<Batch>() {
             @Override
             public XmlNode getBody(final Batch element) {
-                PlaceHolderElement place = new PlaceHolderElement();
-                for (Level level : EnumSet.allOf(Level.class)) {
+                final PlaceHolderElement place = new PlaceHolderElement();
+                for (final Level level : EnumSet.allOf(Level.class)) {
                     if (element.partIsValidated(level)) {
                         place.add(new HtmlParagraph(level.toString() + " -> VALIDATED"));
                     } else {

@@ -73,29 +73,37 @@ public final class AddReleasePage extends LoggedPage {
         createReleaseTitle.add(form);
 
         // version
-        final FieldData versionFormFieldData = doCreateUrl.getVersionParameter().fieldData();
-        final HtmlTextField version = new HtmlTextField(versionFormFieldData, tr("Version"));
-        version.setComment(tr("Enter your release version. For example ''1.2.3''."));
-        form.add(version);
+        final FieldData versionData = doCreateUrl.getVersionParameter().fieldData();
+        final HtmlTextField versionInput = new HtmlTextField(versionData.getName(), tr("Version"));
+        versionInput.setDefaultValue(versionData.getSuggestedValue());
+        versionInput.addErrorMessages(versionData.getErrorMessages());
+        versionInput.setComment(tr("Enter your release version. For example ''1.2.3''."));
+        form.add(versionInput);
 
         // description
-        final FieldData descriptionFormFieldData = doCreateUrl.getDescriptionParameter().fieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
+        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().fieldData();
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(),
                                                                tr("Comment your release"),
                                                                DESCRIPTION_INPUT_NB_LINES,
                                                                DESCRIPTION_INPUT_NB_COLUMNS);
+        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
+        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(tr("Enter a short comment on your release."));
         form.add(descriptionInput);
 
         // Language
-        final FieldData languageFormFieldData = doCreateUrl.getLangParameter().fieldData();
-        final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, tr("Language"));
+        final FieldData languageData = doCreateUrl.getLangParameter().fieldData();
+        final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), tr("Language"));
+        languageInput.setDefaultValue(languageData.getSuggestedValue());
+        languageInput.addErrorMessages(languageData.getErrorMessages());
         languageInput.setComment(tr("Language of the descriptions."));
         form.add(languageInput);
 
         // attachement
-        final FieldData attachedFileParameter = doCreateUrl.getAttachedfileParameter().fieldData();
-        final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileParameter, tr("Attached file"));
+        final FieldData attachedFileData = doCreateUrl.getAttachedfileParameter().fieldData();
+        final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
+        attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
+        attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
         attachedFileInput.setComment("You must attache a file. This is your release, it can take be a patch, a tar.gz etc.");
         form.add(attachedFileInput);
 

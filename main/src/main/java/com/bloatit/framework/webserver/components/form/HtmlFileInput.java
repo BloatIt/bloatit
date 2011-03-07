@@ -11,7 +11,6 @@
  */
 package com.bloatit.framework.webserver.components.form;
 
-import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 
 /**
  * <p>
@@ -25,7 +24,7 @@ import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
  *
  * @see HtmlForm#enableFileUpload()
  */
-public final class HtmlFileInput extends HtmlFormField<String> {
+public final class HtmlFileInput extends HtmlStringFormField {
 
     /**
      * Creates a file input with a given name
@@ -44,19 +43,6 @@ public final class HtmlFileInput extends HtmlFormField<String> {
      */
     public HtmlFileInput(final String name, final String label) {
         super(InputBlock.create(new HtmlSimpleInput("file")), name, label);
-    }
-
-    /**
-     * Creates a file input based on some form field data
-     *
-     * @param data the data used to generate the field
-     * @param label the text displayed inside the {@code <label>} markup
-     */
-    public HtmlFileInput(final FieldData data, final String label) {
-        super(InputBlock.create(new HtmlSimpleInput("file")), data.getFieldName(), label);
-        setDefaultValue(data);
-
-        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

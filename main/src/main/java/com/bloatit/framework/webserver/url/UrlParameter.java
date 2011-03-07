@@ -250,7 +250,7 @@ public class UrlParameter<T, U> extends UrlNode {
         }
 
         @Override
-        public String getFieldName() {
+        public String getName() {
             return name;
         }
 

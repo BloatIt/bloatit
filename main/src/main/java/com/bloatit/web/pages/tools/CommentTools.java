@@ -40,8 +40,8 @@ public class CommentTools {
     private static final int NB_COLUMNS = 80;
     private static final int NB_ROWS = 10;
 
-    public static XmlNode generateCommentList(PageIterable<Comment> comments) {
-        PlaceHolderElement ph = new PlaceHolderElement();
+    public static XmlNode generateCommentList(final PageIterable<Comment> comments) {
+        final PlaceHolderElement ph = new PlaceHolderElement();
         for (final Comment comment : comments) {
             ph.add(generateComment(comment, false));
         }
@@ -59,7 +59,7 @@ public class CommentTools {
             commentBlock.add(commentText);
 
             // Attachements
-            for (FileMetadata attachement : comment.getFiles()) {
+            for (final FileMetadata attachement : comment.getFiles()) {
                 final HtmlParagraph attachementPara = new HtmlParagraph();
                 attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
                 attachementPara.addText(tr(": ") + attachement.getShortDescription());
@@ -172,7 +172,7 @@ public class CommentTools {
         return commentBlock;
     }
 
-    private static XmlNode generateAttachementBlock(CreateCommentActionUrl url, UserContentInterface userContent) {
+    private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url, final UserContentInterface userContent) {
 
         final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
 
@@ -180,8 +180,10 @@ public class CommentTools {
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         attachementBlock.add(attachementInput);
 
-        final FieldData attachementDescriptionFormFieldData = url.getAttachementDescriptionParameter().fieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
+        final FieldData attachementDescriptiondData = url.getAttachementDescriptionParameter().fieldData();
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(), Context.tr("Attachment description"));
+        attachementDescriptionInput.setDefaultValue(attachementDescriptiondData.getSuggestedValue());
+        attachementDescriptionInput.addErrorMessages(attachementDescriptiondData.getErrorMessages());
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
         attachementBlock.add(attachementDescriptionInput);
 

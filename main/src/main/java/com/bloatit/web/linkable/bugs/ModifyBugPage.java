@@ -78,27 +78,33 @@ public final class ModifyBugPage extends LoggedPage {
         formTitle.add(modifyBugForm);
 
         // Level
-        final FieldData levelFormFieldData = doModifyUrl.getLevelParameter().fieldData();
-        final HtmlDropDown levelInput = new HtmlDropDown(levelFormFieldData, Context.tr("New Level"));
+        final FieldData levelFieldData = doModifyUrl.getLevelParameter().fieldData();
+        final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("New Level"));
+        levelInput.addErrorMessages(levelFieldData.getErrorMessages());
         // TODO: IMPORTANT set the current value as default value
+        levelInput.setDefaultValue(levelFieldData.getSuggestedValue());
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
         levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel())));
         modifyBugForm.add(levelInput);
 
         // State
-        final FieldData stateFormFieldData = doModifyUrl.getStateParameter().fieldData();
-        final HtmlDropDown stateInput = new HtmlDropDown(stateFormFieldData, Context.tr("New state"));
+        final FieldData stateFieldData = doModifyUrl.getStateParameter().fieldData();
+        final HtmlDropDown stateInput = new HtmlDropDown(stateFieldData.getName(), Context.tr("New state"));
+        stateInput.addErrorMessages(stateFieldData.getErrorMessages());
         // TODO: IMPORTANT set the current value as default value
+        stateInput.setDefaultValue(stateFieldData.getSuggestedValue());
         stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
         stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState())));
         modifyBugForm.add(stateInput);
 
         // Create the fields that will describe the reason of bug change
-        final FieldData descriptionFormFieldData = doModifyUrl.getReasonParameter().fieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
+        final FieldData descriptionFieldData = doModifyUrl.getReasonParameter().fieldData();
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFieldData.getName(),
                                                                Context.tr("Reason"),
                                                                BUG_CHANGE_COMMENT_INPUT_NB_LINES,
                                                                BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS);
+        descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
+        descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
         descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug."));
         modifyBugForm.add(descriptionInput);
 

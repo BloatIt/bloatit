@@ -16,23 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
-import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 
-public class HtmlDropDown extends HtmlFormField<String> {
+public class HtmlDropDown extends HtmlStringFormField {
 
-    private String checked = null;
     private final Map<String, HtmlGenericElement> elements = new HashMap<String, HtmlGenericElement>();
-
-    public HtmlDropDown(final FieldData data) {
-        this(data.getFieldName());
-        setDefaultOnConstruction(data);
-    }
-
-    public HtmlDropDown(final FieldData data, final String label) {
-        this(data.getFieldName(), label);
-        setDefaultOnConstruction(data);
-    }
 
     public HtmlDropDown(final String name) {
         super(InputBlock.create(new HtmlGenericElement("select")), name);
@@ -42,18 +30,11 @@ public class HtmlDropDown extends HtmlFormField<String> {
         super(InputBlock.create(new HtmlGenericElement("select")), name, label);
     }
 
-    private void setDefaultOnConstruction(final FieldData data) {
-        checked = data.getSuggestedValue();
-    }
 
     public void addDropDownElement(final String value, final String displayName) {
         final HtmlGenericElement opt = new HtmlGenericElement("option");
         opt.addText(displayName);
         opt.addAttribute("value", value);
-
-        if (value.equals(checked)) {
-            opt.addAttribute("selected", "selected");
-        }
         ((HtmlBranch) inputBlock.getInputElement()).add(opt);
         elements.put(value, opt);
     }

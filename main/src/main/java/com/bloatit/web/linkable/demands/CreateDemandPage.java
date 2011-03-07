@@ -72,9 +72,9 @@ public final class CreateDemandPage extends LoggedPage {
 
     private HtmlElement generateIdeaCreationForm() {
 
-        TwoColumnLayout layout = new TwoColumnLayout();
+        final TwoColumnLayout layout = new TwoColumnLayout();
 
-        BoxLayout box = new BoxLayout();
+        final BoxLayout box = new BoxLayout();
 
         final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new demand"), 1);
         final CreateDemandActionUrl doCreateUrl = new CreateDemandActionUrl();
@@ -86,7 +86,9 @@ public final class CreateDemandPage extends LoggedPage {
 
         // Create the fields that will describe the description of the idea
         final FieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().fieldData();
-        final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData, tr("Title"));
+        final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
+        descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
+        descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
         descriptionInput.setCssClass("input_long_400px");
         descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
         createIdeaForm.add(descriptionInput);
@@ -108,10 +110,12 @@ public final class CreateDemandPage extends LoggedPage {
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().fieldData();
-        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData,
+        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData.getName(),
                                                                  tr("Describe the idea"),
                                                                  SPECIF_INPUT_NB_LINES,
                                                                  SPECIF_INPUT_NB_COLUMNS);
+        specificationInput.setDefaultValue(specificationFieldData.getSuggestedValue());
+        specificationInput.addErrorMessages(specificationFieldData.getErrorMessages());
         specificationInput.setComment(tr("Enter a long description of the idea : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
         createIdeaForm.add(specificationInput);

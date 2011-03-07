@@ -12,7 +12,6 @@
 package com.bloatit.framework.webserver.components.form;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 
 /**
  * <p>
@@ -29,7 +28,7 @@ import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
  * <div> <textarea name="..." class="cssClass" ...>defaultValue</textarea>
  * </div> </div> </pre> </p>
  */
-public final class HtmlTextArea extends HtmlFormField<String> {
+public final class HtmlTextArea extends HtmlStringFormField {
 
     public HtmlTextArea(final String name, final int rows, final int cols) {
         super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), name);
@@ -37,12 +36,6 @@ public final class HtmlTextArea extends HtmlFormField<String> {
 
     public HtmlTextArea(final String name, final String label, final int rows, final int cols) {
         super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), name, label);
-    }
-
-    public HtmlTextArea(final FieldData data, final String label, final int rows, final int cols) {
-        super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), data.getFieldName(), label);
-        setDefaultValue(data);
-        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

@@ -14,6 +14,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
@@ -85,7 +86,7 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
             public String getStringBody(final U element) {
                 try {
                     return String.valueOf(element.isPopularityLocked());
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     Log.web().fatal("", e);
                     return "";
                 }
@@ -124,7 +125,10 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     }
 
     protected void addPopularityStateFilter(final HtmlForm form) {
-        final HtmlDropDown state = new HtmlDropDown(url.getPopularityStateParameter().fieldData());
+        final FieldData stateData = url.getPopularityStateParameter().fieldData();
+        final HtmlDropDown state = new HtmlDropDown(stateData.getName());
+        state.setDefaultValue(stateData.getSuggestedValue());
+        state.addErrorMessages(stateData.getErrorMessages());
         state.addDropDownElements(EnumSet.allOf(DisplayableState.class));
         state.setLabel(tr("Filter by Popularity State"));
 
@@ -135,7 +139,10 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
         final HtmlTextField popularity = new HtmlTextField(url.getPopularityParameter().getName(), tr("popularity"));
         popularity.setDefaultValue(url.getPopularityParameter().getStringValue());
 
-        final HtmlDropDown comparator = new HtmlDropDown(url.getPopularityComparatorParameter().fieldData());
+        final FieldData comparatorData = url.getPopularityComparatorParameter().fieldData();
+        final HtmlDropDown comparator = new HtmlDropDown(comparatorData.getName());
+        comparator.setDefaultValue(comparatorData.getSuggestedValue());
+        comparator.addErrorMessages(comparatorData.getErrorMessages());
         comparator.addDropDownElements(EnumSet.allOf(DisplayableComparator.class));
         form.add(popularity);
         form.add(comparator);

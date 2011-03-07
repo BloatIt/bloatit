@@ -16,7 +16,7 @@ public interface FieldData {
     /**
      * @return the name of the field.
      */
-    String getFieldName();
+    String getName();
 
     /**
      * When a user input wrong value, you have to regenerated the form with

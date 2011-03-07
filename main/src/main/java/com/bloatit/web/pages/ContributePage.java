@@ -57,7 +57,7 @@ public final class ContributePage extends LoggedPage {
             throw new RedirectException(Context.getSession().getLastStablePage());
         }
 
-        TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateContributeForm());
 
         layout.addRight(new SideBarDemandBlock(targetIdea));
@@ -72,20 +72,24 @@ public final class ContributePage extends LoggedPage {
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : choose amount
-        final FieldData amountFieldData = formActionUrl.getAmountParameter().fieldData();
-        final HtmlMoneyField contribField = new HtmlMoneyField(amountFieldData, tr("Choose amount: "));
-        contribField.setComment(Context.tr("The minimun is 1€. Don't use cents."));
+        final FieldData amountData = formActionUrl.getAmountParameter().fieldData();
+        final HtmlMoneyField contribInput = new HtmlMoneyField(amountData.getName(), tr("Choose amount: "));
+        contribInput.setDefaultValue(amountData.getSuggestedValue());
+        contribInput.addErrorMessages(amountData.getErrorMessages());
+        contribInput.setComment(Context.tr("The minimun is 1€. Don't use cents."));
 
         // Input field : comment
-        final FieldData commentFieldData = formActionUrl.getCommentParameter().fieldData();
-        final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment: "), 3, 60);
-        commentField.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list. Max 140 characters."));
+        final FieldData commentData = formActionUrl.getCommentParameter().fieldData();
+        final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), tr("Comment: "), 3, 60);
+        commentInput.setDefaultValue(commentData.getSuggestedValue());
+        commentInput.addErrorMessages(commentData.getErrorMessages());
+        commentInput.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list. Max 140 characters."));
 
         final HtmlSubmit submitButton = new HtmlSubmit(tr("Contribute"));
 
         // Create the form
-        contribForm.add(contribField);
-        contribForm.add(commentField);
+        contribForm.add(contribInput);
+        contribForm.add(commentInput);
         contribForm.add(submitButton);
 
         final HtmlTitleBlock contribTitle = new HtmlTitleBlock(tr("Contribute"), 1);

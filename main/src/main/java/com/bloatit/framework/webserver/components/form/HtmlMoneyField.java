@@ -35,7 +35,6 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
             input = new HtmlSimpleInput("text");
             content.add(input);
             content.add(new HtmlText("€"));
-    
         }
         
         @Override
@@ -63,29 +62,13 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
         super(new InputField(), name, label);
     }
 
-
-    /**
-     * <p>
-     * Creates a money field based on some form data along some text used to
-     * explain the usage of the field
-     * </p>
-     *
-     * @param data the form data to base the field on
-     * @param label some text displayed to explain how to use the field
-     */
-    public HtmlMoneyField(final FieldData data, final String label) {
-        super(new InputField(), data.getFieldName(), label);
-        setDefaultValue(data);
-        addErrorMessages(data.getErrorMessages());
-    }
-
     @Override
     protected void doSetDefaultValue(final BigDecimal value) {
         addAttribute("value", value.toPlainString());
     }
 
     @Override
-    protected void doSetDefaultValue(final String defaultValueAsString) {
+    protected void doSetDefaultStringValue(final String defaultValueAsString) {
         addAttribute("value", defaultValueAsString);
     }
 }

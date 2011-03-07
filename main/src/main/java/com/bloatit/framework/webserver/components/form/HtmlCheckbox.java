@@ -78,29 +78,6 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
         super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), name, label, position);
     }
 
-    /**
-     * <p>
-     * Creates a new checkbox from a <code>FormFieldData
-     * </p>
-     * <p>
-     * Example of <code>LabelPosition.BEFORE</code> :<br />
-     * {@code <label form="anId3">I like nothing</label><input type="checkbox" name="nothin" id="anId3" />}
-     * </p>
-     * <p>
-     * Example of <code>LabelPosition.AFTER</code> :<br />
-     * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
-     * </p>
-     *
-     * @param data
-     * @param label the text displayed to explain the use of this checkbox
-     * @param labelPosition the relative position of the label compared to the
-     *            checkbox
-     */
-    public HtmlCheckbox(final FieldData data, final String label, final LabelPosition position) {
-        super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), data.getFieldName(), label, position);
-        addErrorMessages(data.getErrorMessages());
-    }
-
     @Override
     protected void doSetDefaultValue(final Boolean value) {
         if (value.booleanValue()) {
@@ -109,7 +86,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
     }
 
     @Override
-    protected void doSetDefaultValue(final String defaultValueAsString) {
+    protected void doSetDefaultStringValue(final String defaultValueAsString) {
         if (Boolean.parseBoolean(defaultValueAsString) || defaultValueAsString.equals("on")) {
             addAttribute("checked", "checked");
         }
