@@ -48,6 +48,10 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
         return DemandImplementation.create(getDao().getDemand());
     }
 
+    public String getReason() {
+        return getDao().getReason();
+    }
+
     @Override
     protected boolean isMine(final Member member) {
         // TODO Auto-generated method stub

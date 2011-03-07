@@ -225,13 +225,12 @@ public class BloatitExampleDB {
         addPerroquetInMageiaDemand.addContribution(new BigDecimal("230"), "");
 
         // Highlight demands
-        new HighlightDemand(twoSubtitlesInVlcDemand, 1, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(colorPickerDemand, 2, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(addPerroquetInMageiaDemand, 3, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(twoSubtitlesInVlcDemand, 4, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(twoSubtitlesInVlcDemand, 5, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        // new HighlightDemand(twoSubtitlesInVlcDemand, 6,
-        // "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(colorPickerDemand, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(addPerroquetInMageiaDemand, 3, "In developement", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 4, "Success", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(colorPickerDemand, 5, "Random", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(addPerroquetInMageiaDemand, 6, "Need your help quicly", DateUtils.now(), DateUtils.flyingPigDate());
 
         // Add bugs
         setDemandInDevelopmentState(addPerroquetInMageiaDemand);

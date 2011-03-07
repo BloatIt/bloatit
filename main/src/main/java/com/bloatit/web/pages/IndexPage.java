@@ -21,12 +21,14 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.managers.HighlightDemandManager;
-import com.bloatit.web.components.HtmlDemandSumary;
-import com.bloatit.web.components.HtmlDemandSumary.Compacity;
+import com.bloatit.web.components.IndexDemandBlock;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.SideBarElementLayout;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("index")
@@ -70,6 +72,10 @@ public final class IndexPage extends MasterPage {
         }
         add(globalDescription);
 
+
+        TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true);
+        twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted feature"),1));
+
         final HtmlDiv demandList = new HtmlDiv("demand_list");
         {
 
@@ -99,7 +105,7 @@ public final class IndexPage extends MasterPage {
                     final HtmlDiv demandListLeftCase = new HtmlDiv("demand_list_left_case");
                     {
                         if (hightlightDemandArray[i * 2] != null) {
-                            demandListLeftCase.add(new HtmlDemandSumary(hightlightDemandArray[i * 2].getDemand(), Compacity.COMPACT));
+                            demandListLeftCase.add(new IndexDemandBlock(hightlightDemandArray[i * 2].getDemand(),hightlightDemandArray[i * 2].getReason() ));
                         }
                     }
                     demandListRow.add(demandListLeftCase);
@@ -107,7 +113,7 @@ public final class IndexPage extends MasterPage {
                     final HtmlDiv demandListRightCase = new HtmlDiv("demand_list_right_case");
                     {
                         if (hightlightDemandArray[i * 2 + 1] != null) {
-                            demandListRightCase.add(new HtmlDemandSumary(hightlightDemandArray[i * 2 + 1].getDemand(), Compacity.COMPACT));
+                            demandListRightCase.add(new IndexDemandBlock(hightlightDemandArray[i * 2 + 1].getDemand(), hightlightDemandArray[i * 2 + 1].getReason()));
                         }
                     }
                     demandListRow.add(demandListRightCase);
@@ -116,7 +122,17 @@ public final class IndexPage extends MasterPage {
                 demandList.add(demandListRow);
             }
         }
-        add(demandList);
+        twoColumnLayout.addLeft(demandList);
+
+        twoColumnLayout.addRight(new SideBarElementLayout() {
+            {
+                add(new HtmlParagraph("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec scelerisque, neque pellentesque sollicitudin ullamcorper, lorem nibh turpis duis."));
+                add(new HtmlParagraph("Nullam non quam dui, non ullamcorper libero. Duis justo nibh, tristique at turpis duis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer libero elit, facilisis in vehicula eu, porta quis quam. Aliquam cursus posuere."));
+                add(new HtmlParagraph("Fusce adipiscing nunc nisi. Nulla justo nibh, laoreet at adipiscing vel, lobortis ut ligula. In a purus nec elit ornare gravida. Fusce varius metus eu libero posuere pretium. Nam et feugiat tortor. Curabitur adipiscing tincidunt nibh ac lobortis. Aenean sed nulla ut lacus fringilla semper non ac nunc. Etiam iaculis vestibulum quam. Pellentesque id ipsum ac tortor porttitor cursus ac a lorem. Pellentesque imperdiet rutrum nibh, vel posuere."));
+            }
+        });
+
+        add(twoColumnLayout);
 
     }
 

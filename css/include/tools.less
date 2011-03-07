@@ -98,4 +98,29 @@
     -webkit-column-gap: 1em;
     -webkit-column-rule: 1px solid @border_color;
 }
+
+.display-box {
+    display : -moz-box;
+	display : -webkit-box;
+	display : box;
+}
+
+.box-orient(@orient:horizontal) {
+    -moz-box-orient : @orient;
+	-webkit-box-orient : @orient;
+	box-orient : @orient;
+}
+
+.box-pack(@pack:center) {
+	-moz-box-pack : @pack;
+	-webkit-box-pack : @pack;
+	box-pack : @pack;
+}
+
+.box-flex(@flex:1) {
+	-moz-box-flex : @flex;
+	-webkit-box-flex : @flex;
+	box-flex : @flex;
+}
+
     
