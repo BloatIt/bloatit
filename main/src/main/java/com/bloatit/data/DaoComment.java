@@ -22,6 +22,7 @@ import java.util.List;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -31,6 +32,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -55,11 +57,11 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
 
     @ManyToOne
     private DaoComment father;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private DaoBug bug;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private DaoDemand demand;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private DaoRelease release;
 
     /**
@@ -67,8 +69,9 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      */
     @OneToMany(mappedBy = "father")
     @Cascade(value = { CascadeType.ALL })
-    //@OrderBy("id")
+    @OrderBy(clause = "id")
     @IndexedEmbedded(depth = 1)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoComment> children = new ArrayList<DaoComment>(0);
 
     public static DaoComment createAndPersist(final DaoBug father, final DaoMember member, final String text) {

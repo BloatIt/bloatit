@@ -12,7 +12,6 @@
 
 package com.bloatit.framework.webserver.components.form;
 
-import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 
 /**
  * <p>
@@ -29,7 +28,7 @@ import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
  *
  * </p>
  */
-public final class HtmlPasswordField extends HtmlFormField<String> {
+public final class HtmlPasswordField extends HtmlStringFormField {
 
     /**
      * <p>
@@ -59,12 +58,6 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
      */
     public HtmlPasswordField(final String name, final String label) {
         super(InputBlock.create(new HtmlSimpleInput("password")), name, label);
-    }
-
-    public HtmlPasswordField(final FieldData data, final String label) {
-        super(InputBlock.create(new HtmlSimpleInput("password")), data.getFieldName(), label);
-        setDefaultValue(data);
-        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

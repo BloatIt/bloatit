@@ -79,7 +79,7 @@ public final class BugPage extends MasterPage {
 
         // Attachements
 
-        for (FileMetadata attachement : bug.getFiles()) {
+        for (final FileMetadata attachement : bug.getFiles()) {
             final HtmlParagraph attachementPara = new HtmlParagraph();
             attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
             attachementPara.addText(tr(": ") + attachement.getShortDescription());
@@ -119,9 +119,11 @@ public final class BugPage extends MasterPage {
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         addAttachementForm.add(attachementInput);
 
-        final FieldData attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter()
-                                                                                                 .fieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
+        final FieldData attachementDescriptionFieldData = addAttachementActionUrl.getAttachementDescriptionParameter().pickFieldData();
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(),
+                                                                            Context.tr("Attachment description"));
+        attachementDescriptionInput.setDefaultValue(attachementDescriptionFieldData.getSuggestedValue());
+        attachementDescriptionInput.addErrorMessages(attachementDescriptionFieldData.getErrorMessages());
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
         addAttachementForm.add(attachementDescriptionInput);
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachement")));

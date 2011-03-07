@@ -219,7 +219,7 @@ public class UrlParameter<T, U> extends UrlNode {
         return description.getRole();
     }
 
-    public FieldData fieldData() {
+    public FieldData pickFieldData() {
         return new FieldDataFromUrl<T, U>(this);
     }
 
@@ -250,7 +250,7 @@ public class UrlParameter<T, U> extends UrlNode {
         }
 
         @Override
-        public String getFieldName() {
+        public String getName() {
             return name;
         }
 

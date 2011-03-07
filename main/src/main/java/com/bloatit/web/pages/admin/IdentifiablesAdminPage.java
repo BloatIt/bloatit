@@ -2,8 +2,6 @@ package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.EnumSet;
-
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
@@ -82,7 +80,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         // order by
         final HtmlFormBlock blockOrder = new HtmlFormBlock("Order by");
         filterForm.add(blockOrder);
-        blockOrder.add(new HtmlCheckbox(url.getAscParameter().fieldData(), tr("Asc"), LabelPosition.BEFORE));
+        blockOrder.add(new HtmlCheckbox(url.getAscParameter().pickFieldData().getName(), tr("Asc"), LabelPosition.BEFORE));
 
         // extends
         addFormFilters(filterForm);

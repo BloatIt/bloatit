@@ -69,31 +69,39 @@ public final class AddProjectPage extends LoggedPage {
         createIdeaTitle.add(addProjectForm);
 
         // Create the field for the name of the project
-        final FieldData createFormFieldData = doCreateUrl.getProjectNameParameter().fieldData();
-        final HtmlTextField projectNameInput = new HtmlTextField(createFormFieldData, Context.tr("Project name"));
+        final FieldData projectNameData = doCreateUrl.getProjectNameParameter().pickFieldData();
+        final HtmlTextField projectNameInput = new HtmlTextField(projectNameData.getName(), Context.tr("Project name"));
+        projectNameInput.setDefaultValue(projectNameData.getSuggestedValue());
+        projectNameInput.addErrorMessages(projectNameData.getErrorMessages());
         projectNameInput.setComment(Context.tr("The name of the existing project."));
         addProjectForm.add(projectNameInput);
 
         // Create the fields that will describe the descriptions of the project
-        final FieldData shortDescriptionFormFieldData = doCreateUrl.getShortDescriptionParameter().fieldData();
-        final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionFormFieldData,
+        final FieldData shortDescriptionData = doCreateUrl.getShortDescriptionParameter().pickFieldData();
+        final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionData.getName(),
                                                                     Context.tr("Describe briefly the project"),
                                                                     SHORT_DESCRIPTION_INPUT_NB_LINES,
                                                                     SHORT_DESCRIPTION_INPUT_NB_COLUMNS);
+        shortDescriptionInput.setDefaultValue(shortDescriptionData.getSuggestedValue());
+        shortDescriptionInput.addErrorMessages(shortDescriptionData.getErrorMessages());
         shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
         addProjectForm.add(shortDescriptionInput);
 
-        final FieldData descriptionFormFieldData = doCreateUrl.getDescriptionParameter().fieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
+        final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(),
                                                                Context.tr("Describe the project"),
                                                                DESCRIPTION_INPUT_NB_LINES,
                                                                DESCRIPTION_INPUT_NB_COLUMNS);
+        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
+        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the projet : list all features, add siteweb links, etc."));
         addProjectForm.add(descriptionInput);
 
         // Language
-        final FieldData languageFormFieldData = doCreateUrl.getLangParameter().fieldData();
-        final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
+        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
+        final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
+        languageInput.setDefaultValue(languageData.getSuggestedValue());
+        languageInput.addErrorMessages(languageData.getErrorMessages());
 
         languageInput.setComment(Context.tr("Language of the descriptions."));
         addProjectForm.add(languageInput);

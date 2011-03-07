@@ -73,7 +73,7 @@ public class DaoOffer extends DaoKudosable {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoBatch> batches = new ArrayList<DaoBatch>();
+    private final List<DaoBatch> batches = new ArrayList<DaoBatch>();
 
     /**
      * The expirationDate is calculated from the batches variables.

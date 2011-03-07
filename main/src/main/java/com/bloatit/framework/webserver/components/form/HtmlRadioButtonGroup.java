@@ -12,6 +12,8 @@
 package com.bloatit.framework.webserver.components.form;
 
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.bloatit.framework.webserver.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webserver.components.meta.HtmlLeaf;
@@ -20,20 +22,12 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
 
     private final LabelPosition position;
     private final String name;
-    private String checked = null;
+    private final Map<String, HtmlRadioButton> buttons = new HashMap<String, HtmlRadioButton>();
 
     public HtmlRadioButtonGroup(final String name) {
         super();
         this.name = name;
         this.position = LabelPosition.AFTER;
-    }
-
-    public <T extends Enum<T> & Displayable> HtmlRadioButtonGroup(final FieldData data) {
-        this(data.getFieldName());
-        final String fieldDefaultValue = data.getSuggestedValue();
-        if (fieldDefaultValue != null) {
-            checked = fieldDefaultValue;
-        }
     }
 
     public HtmlRadioButtonGroup(final String name, final LabelPosition position) {
@@ -44,10 +38,8 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
 
     public HtmlRadioButton addRadioButton(final String value, final String label) {
         final HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
-        if (value.equals(checked)) {
-            button.addAttribute("checked", "checked");
-        }
         add(button);
+        buttons.put(value, button);
         return button;
     }
 
@@ -56,4 +48,12 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
             addRadioButton(enumValue.name(), enumValue.getDisplayName());
         }
     }
+    
+    public void setDefaultValue(final String value) {
+        final HtmlRadioButton checkedElement = buttons.get(value);
+        if (checkedElement != null) {
+            checkedElement.addAttribute("selected", "selected");
+        }
+    }
+
 }

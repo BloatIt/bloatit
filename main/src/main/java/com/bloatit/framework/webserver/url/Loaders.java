@@ -9,18 +9,15 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.IdentifiableInterface;
-import com.bloatit.data.queries.DBRequests;
 import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
-import com.bloatit.model.Commentable;
 import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
-import com.bloatit.model.managers.GenericManager;
 
 public final class Loaders {
 
@@ -95,9 +92,9 @@ public final class Loaders {
         if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
         }
-        if (Commentable.class.equals(theClass)) {
-            return (Loader<T>) new LowToIdentifiable();
-        }
+//        if (Commentable.class.equals(theClass)) {
+//            return (Loader<T>) new LowToIdentifiable();
+//        }
         if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
         }

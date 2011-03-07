@@ -3,6 +3,7 @@ package com.bloatit.data;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 /**
@@ -18,7 +19,7 @@ public class DaoGroupRight extends DaoIdentifiable {
         CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK,
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     private DaoGroupMembership membership;
 
     @Basic(optional = false)

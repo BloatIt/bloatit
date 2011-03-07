@@ -12,7 +12,6 @@
 package com.bloatit.framework.webserver.components.form;
 
 import com.bloatit.framework.utils.i18n.DateLocale;
-import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 
 /**
  * <p>
@@ -29,19 +28,13 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
         super(InputBlock.create(new HtmlSimpleInput("text")), name, label);
     }
 
-    public HtmlDateField(final FieldData data, final String label) {
-        super(InputBlock.create(new HtmlSimpleInput("text")), data.getFieldName(), label);
-        setDefaultValue(data);
-        addErrorMessages(data.getErrorMessages());
-    }
-
     @Override
     protected void doSetDefaultValue(final DateLocale value) {
         addAttribute("value", value.toString(DateLocale.FormatStyle.SHORT));
     }
 
     @Override
-    protected void doSetDefaultValue(final String defaultValueAsString) {
+    protected void doSetDefaultStringValue(final String defaultValueAsString) {
         addAttribute("value", defaultValueAsString);
     }
 }

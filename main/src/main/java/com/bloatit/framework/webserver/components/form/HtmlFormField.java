@@ -242,23 +242,15 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * 
      * @param value the Object representing the default value
      */
-    public final void setDefaultValue(final T value) {
+    public final void setDefaultValue(final String value) {
         if (value != null) {
-            this.doSetDefaultValue(value);
+            this.doSetDefaultStringValue(value);
         }
     }
-
-    /**
-     * <p>
-     * Sets the value displayed on page load, before the user even inputed data
-     * </p>
-     * 
-     * @param data the default value
-     */
-    protected final void setDefaultValue(final FieldData data) {
-        final String suggestedValue = data.getSuggestedValue();
-        if (suggestedValue != null) {
-            this.doSetDefaultValue(suggestedValue);
+    
+    public final void setDefaultStringValue(final T value) {
+        if (value != null) {
+            this.doSetDefaultValue(value);
         }
     }
 
@@ -284,20 +276,9 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * 
      * @param value the default value
      */
+    protected abstract void doSetDefaultStringValue(String value);
+    
     protected abstract void doSetDefaultValue(T value);
-
-    /**
-     * <p>
-     * Method to implement to add a default value to the elements of the class
-     * </p>
-     * <p>
-     * Default value of an element is the value displayed to the user when the
-     * page loads, before he even started adding data.
-     * 
-     * @param defaultValueAsString the default value
-     * @see #doSetDefaultValue(Object)
-     */
-    protected abstract void doSetDefaultValue(String defaultValueAsString);
 
     /**
      * Initializes the placeholder for the label
@@ -317,7 +298,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         }
         this.input.setCssClass("input");
 
-        HtmlDiv inputDiv = new HtmlDiv("input_field");
+        final HtmlDiv inputDiv = new HtmlDiv("input_field");
         inputDiv.add(inputBlock.getContentElement());
         this.input.add(inputDiv);
 

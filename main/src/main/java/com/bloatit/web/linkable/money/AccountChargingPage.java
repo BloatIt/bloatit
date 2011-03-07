@@ -55,11 +55,13 @@ public final class AccountChargingPage extends LoggedPage {
         final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
-            final FieldData loginData = chargeActionUrl.getAmountParameter().fieldData();
-            final HtmlMoneyField amount = new HtmlMoneyField(loginData, "Amount");
+            final FieldData amountData = chargeActionUrl.getAmountParameter().pickFieldData();
+            final HtmlMoneyField amountInput = new HtmlMoneyField(amountData.getName(), "Amount");
+            amountInput.setDefaultValue(amountData.getSuggestedValue());
+            amountInput.addErrorMessages(amountData.getErrorMessages());
             final HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
 
-            form.add(amount);
+            form.add(amountInput);
             form.add(submit);
         }
         title.add(form);

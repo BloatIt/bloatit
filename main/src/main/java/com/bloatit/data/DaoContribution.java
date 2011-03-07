@@ -26,6 +26,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -62,7 +63,7 @@ public class DaoContribution extends DaoUserContent {
     @Column(updatable = false)
     private BigDecimal amount;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoDemand demand;
 
     @Basic(optional = false)

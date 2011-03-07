@@ -19,15 +19,14 @@ package com.bloatit.data;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -41,6 +40,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
@@ -67,7 +67,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Indexed
 @FullTextFilterDef(name = "searchFilter", impl = DaoDemandSearchFilterFactory.class)
 //@formatter:off
-@NamedQueries(value = { @NamedQuery(
+@NamedQueries(value = {@NamedQuery(
                            name = "demand.getOffers.bySelected",
                            query = "FROM DaoOffer " + 
                                    "WHERE demand = :this " + 
@@ -183,6 +183,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     private List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
 
     @OneToMany(mappedBy = "demand")
+    @OrderBy(clause = "id")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @IndexedEmbedded
@@ -199,7 +200,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded
     private DaoOffer selectedOffer;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @IndexedEmbedded
@@ -445,7 +446,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     }
 
     public int countOpenBugs() {
-        Query query = SessionManager.getNamedQuery("demand.getBugs.byNonState.size");
+        final Query query = SessionManager.getNamedQuery("demand.getBugs.byNonState.size");
         query.setEntity("offer", this.selectedOffer);
         query.setParameter("state", DaoBug.BugState.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();

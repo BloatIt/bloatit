@@ -11,6 +11,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
@@ -99,23 +100,35 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
         addIsDeletedFilter(form, url);
         addPopularityStateFilter(form);
         
-        final HtmlDropDown state = new HtmlDropDown(url.getFilterByStateParameter().fieldData());
-        state.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
-        state.setLabel(tr("Filter by demand state"));
+        final FieldData stateData = url.getFilterByStateParameter().pickFieldData();
+        final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());
+        stateInput.setDefaultValue(stateData.getSuggestedValue());
+        stateInput.addErrorMessages(stateData.getErrorMessages());
+        stateInput.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
+        stateInput.setLabel(tr("Filter by demand state"));
 
-        final HtmlDropDown hasSelectedOffer = new HtmlDropDown(url.getFilterSelectedOfferParameter().fieldData());
+        final FieldData hasSelectedOfferData = url.getFilterSelectedOfferParameter().pickFieldData();
+        final HtmlDropDown hasSelectedOffer = new HtmlDropDown(hasSelectedOfferData.getName());
+        hasSelectedOffer.setDefaultValue(hasSelectedOfferData.getSuggestedValue());
+        hasSelectedOffer.addErrorMessages(hasSelectedOfferData.getErrorMessages());
         hasSelectedOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasSelectedOffer.setLabel(tr("Filter by selected offer"));
 
-        final HtmlDropDown hasOffer = new HtmlDropDown(url.getFilterHasOfferParameter().fieldData());
+        final FieldData hasOfferData = url.getFilterHasOfferParameter().pickFieldData();
+        final HtmlDropDown hasOffer = new HtmlDropDown(hasOfferData.getName());
+        hasOffer.setDefaultValue(hasOfferData.getSuggestedValue());
+        hasOffer.addErrorMessages(hasOfferData.getErrorMessages());
         hasOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasOffer.setLabel(tr("Filter by offer"));
 
-        final HtmlDropDown hasContribution = new HtmlDropDown(url.getFilterHasContributionParameter().fieldData());
+        final FieldData hasContributionData = url.getFilterHasContributionParameter().pickFieldData();
+        final HtmlDropDown hasContribution = new HtmlDropDown(hasContributionData.getName());
+        hasContribution.setDefaultValue(hasContributionData.getSuggestedValue());
+        hasContribution.addErrorMessages(hasContributionData.getErrorMessages());
         hasContribution.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasContribution.setLabel(tr("Filter by contribution"));
 
-        form.add(state);
+        form.add(stateInput);
         form.add(hasSelectedOffer);
         form.add(hasOffer);
         form.add(hasContribution);
@@ -144,7 +157,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
             public String getStringBody(final Demand element) {
                 try {
                     return String.valueOf(element.getContribution());
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     Log.web().fatal("", e);
                     return "";
                 }
@@ -156,7 +169,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
             public String getStringBody(final Demand element) {
                 try {
                     return element.getProject().getName();
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     Log.web().fatal("", e);
                     return "";
                 }

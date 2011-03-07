@@ -22,6 +22,7 @@ import java.util.List;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -53,15 +54,15 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 // @formatter:on
 class DaoGroupMembership extends DaoIdentifiable {
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     private DaoMember member;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     private DaoGroup bloatitGroup;
 
     @OneToMany(mappedBy = "membership", orphanRemoval = true, cascade = { CascadeType.ALL })
     @Cascade(value = {})
-    private List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
+    private final List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
 
     /**
      * Get a GroupMembership line using its composite key. (HQL request)

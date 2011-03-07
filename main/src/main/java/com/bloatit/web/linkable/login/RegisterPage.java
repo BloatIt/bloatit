@@ -68,16 +68,21 @@ public final class RegisterPage extends MasterPage {
         final HtmlForm form = new HtmlForm(registerActionUrl.urlString());
         container.add(form);
 
-        final FieldData loginFieldData = registerActionUrl.getLoginParameter().fieldData();
-        final HtmlTextField loginInput = new HtmlTextField(loginFieldData, Context.trc("Login (noun)", "Login"));
+        final FieldData loginFieldData = registerActionUrl.getLoginParameter().pickFieldData();
+        final HtmlTextField loginInput = new HtmlTextField(loginFieldData.getName(), Context.trc("Login (noun)", "Login"));
+        loginInput.setDefaultValue(loginFieldData.getSuggestedValue());
+        loginInput.addErrorMessages(loginFieldData.getErrorMessages());
         form.add(loginInput);
 
-        final FieldData passwordFieldData = registerActionUrl.getPasswordParameter().fieldData();
-        final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
+        final FieldData passwordFieldData = registerActionUrl.getPasswordParameter().pickFieldData();
+        final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), Context.tr("Password"));
+        passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
         form.add(passwordInput);
 
-        final FieldData emailFieldData = registerActionUrl.getEmailParameter().fieldData();
-        final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
+        final FieldData emailFieldData = registerActionUrl.getEmailParameter().pickFieldData();
+        final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Email"));
+        emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
+        emailInput.addErrorMessages(emailFieldData.getErrorMessages());
         form.add(emailInput);
 
         final HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, Context.tr("Country"));

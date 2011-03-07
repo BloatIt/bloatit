@@ -26,7 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -35,6 +34,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.annotations.OrderBy;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -59,7 +59,7 @@ public class DaoProject extends DaoIdentifiable {
     private DaoDescription description;
 
     @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OrderBy("id")
+    @OrderBy(clause = "id")
     private DaoFileMetadata image;
 
     @OneToMany(mappedBy = "project")

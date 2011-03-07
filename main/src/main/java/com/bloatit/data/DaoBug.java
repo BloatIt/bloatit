@@ -24,6 +24,7 @@ import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -33,6 +34,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OrderBy;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -81,11 +83,11 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     // TODO make the comments mapped by DaoUserContent ?
     @OneToMany(mappedBy = "bug")
     @Cascade(value = { CascadeType.ALL })
-    //@OrderBy("id")
+    @OrderBy(clause = "id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoComment> comments = new ArrayList<DaoComment>();
+    private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     private DaoBatch batch;
 
     @Basic(optional = false)

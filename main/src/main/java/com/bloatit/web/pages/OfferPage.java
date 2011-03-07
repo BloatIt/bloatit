@@ -80,7 +80,7 @@ public final class OfferPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
 
-        TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateOfferForm());
 
         layout.addRight(new SideBarDemandBlock(demand));
@@ -96,7 +96,7 @@ public final class OfferPage extends LoggedPage {
             if (offer != null) {
                 offerPageContainer.add(new DemandOfferListComponent.OfferBlock(offer, true));
             }
-        } catch (UnauthorizedOperationException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             offerPageContainer.addText(Context.tr("For an unknown raison you have not the right to see the Offer you are constructing..."));
         }
 
@@ -110,19 +110,21 @@ public final class OfferPage extends LoggedPage {
         if (me.canAccessGroups(Action.READ)) {
             try {
                 final PageIterable<Group> groups = me.getGroups();
-                final FieldData groupField = offerActionUrl.getGroupParameter().fieldData();
-                final HtmlDropDown groupDropDown = new HtmlDropDown(groupField, Context.tr("On the behalf of"));
-                groupDropDown.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
-                groupDropDown.addDropDownElement("", Context.tr("Myself"));
+                final FieldData groupData = offerActionUrl.getGroupParameter().pickFieldData();
+                final HtmlDropDown groupInput = new HtmlDropDown(groupData.getName(), Context.tr("On the behalf of"));
+                groupInput.setDefaultValue(groupData.getSuggestedValue());
+                groupInput.addErrorMessages(groupData.getErrorMessages());
+                groupInput.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
+                groupInput.addDropDownElement("", Context.tr("Myself"));
                 int nbGroup = 0;
                 for (final Group group : groups) {
                     if (group.getUserGroupRight(me).contains(UserGroupRight.TALK)) {
-                        groupDropDown.addDropDownElement(group.getId().toString(), group.getLogin());
+                        groupInput.addDropDownElement(group.getId().toString(), group.getLogin());
                         nbGroup++;
                     }
                 }
                 if (nbGroup > 0) {
-                    offerForm.add(groupDropDown);
+                    offerForm.add(groupInput);
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Shouldn't happen
@@ -131,60 +133,76 @@ public final class OfferPage extends LoggedPage {
         }
 
         // Price field
-        final FieldData priceFieldData = offerActionUrl.getPriceParameter().fieldData();
-        final HtmlMoneyField priceField = new HtmlMoneyField(priceFieldData, Context.tr("Offer price"));
-        priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
-        offerForm.add(priceField);
+        final FieldData priceData = offerActionUrl.getPriceParameter().pickFieldData();
+        final HtmlMoneyField priceInput = new HtmlMoneyField(priceData.getName(), Context.tr("Offer price"));
+        priceInput.setDefaultValue(priceData.getSuggestedValue());
+        priceInput.addErrorMessages(priceData.getErrorMessages());
+        priceInput.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
+        offerForm.add(priceInput);
 
         // Date field
-        final FieldData dateFieldData = offerActionUrl.getExpiryDateParameter().fieldData();
-        final HtmlDateField dateField = new HtmlDateField(dateFieldData, Context.tr("Release date"));
-        dateField.setComment(Context.tr("You will have to release this feature before the release date."));
-        offerForm.add(dateField);
+        final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
+        final HtmlDateField dateInput = new HtmlDateField(dateData.getName(), Context.tr("Release date"));
+        dateInput.setDefaultValue(dateData.getSuggestedValue());
+        dateInput.addErrorMessages(dateData.getErrorMessages());
+        dateInput.setComment(Context.tr("You will have to release this feature before the release date."));
+        offerForm.add(dateInput);
 
         // Description
-        final FieldData descriptionFieldData = offerActionUrl.getDescriptionParameter().fieldData();
-        final HtmlTextArea descriptionField = new HtmlTextArea(descriptionFieldData, Context.tr("Description"), 10, 80);
-        offerForm.add(descriptionField);
+        final FieldData descriptionData = offerActionUrl.getDescriptionParameter().pickFieldData();
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(), Context.tr("Description"), 10, 80);
+        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
+        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
+        offerForm.add(descriptionInput);
 
         // locale
-        final FieldData localeFieldData = offerActionUrl.getLocaleParameter().fieldData();
-        final LanguageSelector localeField = new LanguageSelector(localeFieldData, Context.tr("description langue"));
-        localeField.setComment(Context.tr("The language in which you have maid the description."));
-        offerForm.add(localeField);
+        final FieldData localeData = offerActionUrl.getLocaleParameter().pickFieldData();
+        final LanguageSelector localeInput = new LanguageSelector(localeData.getName(), Context.tr("description langue"));
+        localeInput.setDefaultValue(localeData.getSuggestedValue());
+        localeInput.addErrorMessages(localeData.getErrorMessages());
+        localeInput.setComment(Context.tr("The language in which you have maid the description."));
+        offerForm.add(localeInput);
 
         // days before validation
-        final FieldData nbDaysFiledData = offerActionUrl.getDaysBeforeValidationParameter().fieldData();
-        final HtmlTextField nbDaysField = new HtmlTextField(nbDaysFiledData, Context.tr("Days before validation"));
-        nbDaysField.setComment(Context.tr("The number of days to wait before this offer is can be validated. "
+        final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();
+        final HtmlTextField nbDaysInput = new HtmlTextField(nbDaysData.getName(), Context.tr("Days before validation"));
+        nbDaysInput.setDefaultValue(nbDaysData.getSuggestedValue());
+        nbDaysInput.addErrorMessages(nbDaysData.getErrorMessages());
+        nbDaysInput.setComment(Context.tr("The number of days to wait before this offer is can be validated. "
                 + "During this time users can add bugs un the bug tracker. Fatal bugs have to be colsed before the validation."));
-        offerForm.add(nbDaysField);
+        offerForm.add(nbDaysInput);
 
         // percent Fatal
-        final FieldData percentFatalFiledData = offerActionUrl.getPercentFatalParameter().fieldData();
-        final HtmlTextField percentFatalField = new HtmlTextField(percentFatalFiledData, Context.tr("Percent gained when no FATAL bugs"));
-        percentFatalField.setComment(Context.tr("If you want to add some warenty to the contributor you can say that you want to gain less than 100% "
+        final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().pickFieldData();
+        final HtmlTextField percentFatalInput = new HtmlTextField(percentFatalData.getName(), Context.tr("Percent gained when no FATAL bugs"));
+        percentFatalInput.setDefaultValue(percentFatalData.getSuggestedValue());
+        percentFatalInput.addErrorMessages(percentFatalData.getErrorMessages());
+        percentFatalInput.setComment(Context.tr("If you want to add some warenty to the contributor you can say that you want to gain less than 100% "
                 + "of the amount on this feature request when all the FATAL bugs are closed. "
                 + "The money left will be transfered when all the MAJOR bugs are closed. If you specify this field, you have to specify the next one on MAJOR bug percent. "
                 + "By default, all the money on this feature request is transfered when all the FATAL bugs are closed."));
-        offerForm.add(percentFatalField);
+        offerForm.add(percentFatalInput);
 
         // percent Major
-        final FieldData percentMajorFiledData = offerActionUrl.getPercentMajorParameter().fieldData();
-        final HtmlTextField percentMajorField = new HtmlTextField(percentMajorFiledData, Context.tr("Percent gained when no MAJOR bugs"));
-        percentMajorField.setComment(Context.tr("If you specified a value for the 'FATAL bugs percent', you have to also specify one for the MAJOR bugs. "
+        final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().pickFieldData();
+        final HtmlTextField percentMajorInput = new HtmlTextField(percentMajorData.getName(), Context.tr("Percent gained when no MAJOR bugs"));
+        percentMajorInput.setDefaultValue(percentMajorData.getSuggestedValue());
+        percentMajorInput.addErrorMessages(percentMajorData.getErrorMessages());
+        percentMajorInput.setComment(Context.tr("If you specified a value for the 'FATAL bugs percent', you have to also specify one for the MAJOR bugs. "
                 + "You can say that you want to gain less than 100% of the amount on this offer when all the MAJOR bugs are closed. "
                 + "The money left will be transfered when all the MINOR bugs are closed. Make sure that (FATAL percent + MAJOR percent) <= 100."));
-        offerForm.add(percentMajorField);
+        offerForm.add(percentMajorInput);
 
         // Is finished
-        final FieldData isFinishedFiledData = offerActionUrl.getIsFinishedParameter().fieldData();
-        final HtmlRadioButtonGroup isFinishedField = new HtmlRadioButtonGroup(isFinishedFiledData);
-        isFinishedField.addRadioButton("true", Context.tr("Finish your Offer"));
-        isFinishedField.addRadioButton("false", Context.tr("Add an other lot"));
-        offerForm.add(isFinishedField);
+        final FieldData isFinishedData = offerActionUrl.getIsFinishedParameter().pickFieldData();
+        final HtmlRadioButtonGroup isFinishedInput = new HtmlRadioButtonGroup(isFinishedData.getName());
+        isFinishedInput.setDefaultValue(isFinishedData.getSuggestedValue());
+        // isFinishedInput.addErrorMessages(isFinishedData.getErrorMessages());
+        isFinishedInput.addRadioButton("true", Context.tr("Finish your Offer"));
+        isFinishedInput.addRadioButton("false", Context.tr("Add an other lot"));
+        offerForm.add(isFinishedInput);
 
-        final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Make an offer"));
+        final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Validate !"));
         offerForm.add(offerButton);
 
         offerPageContainer.add(offerForm);

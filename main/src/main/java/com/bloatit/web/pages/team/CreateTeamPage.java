@@ -39,27 +39,35 @@ public class CreateTeamPage extends MasterPage {
 
         final CreateTeamActionUrl target = new CreateTeamActionUrl();
 
-        final FieldData name = target.getLoginParameter().fieldData();
-        final FieldData contact = target.getContactParameter().fieldData();
-        final FieldData right = target.getRightParameter().fieldData();
-        final FieldData description = target.getDescriptionParameter().fieldData();
+        final FieldData nameData = target.getLoginParameter().pickFieldData();
+        final FieldData contactData = target.getContactParameter().pickFieldData();
+        final FieldData rightData = target.getRightParameter().pickFieldData();
+        final FieldData descriptionData = target.getDescriptionParameter().pickFieldData();
 
         final HtmlForm form = new HtmlForm(target.urlString());
         master.add(form);
 
-        final HtmlTextField nameInput = new HtmlTextField(name, Context.tr("Name of the group: "));
+        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Name of the group: "));
+        nameInput.setDefaultValue(nameData.getSuggestedValue());
+        nameInput.addErrorMessages(nameData.getErrorMessages());
         nameInput.setComment(Context.tr("The public name of the group. Between 5 and 50 characters."));
         form.add(nameInput);
 
-        final HtmlTextArea contactInput = new HtmlTextArea(contact, Context.tr("Contact of the group: "), 10, 80);
+        final HtmlTextArea contactInput = new HtmlTextArea(contactData.getName(), Context.tr("Contact of the group: "), 10, 80);
+        contactInput.setDefaultValue(contactData.getSuggestedValue());
+        contactInput.addErrorMessages(contactData.getErrorMessages());
         contactInput.setComment(Context.tr("The ways to contact the group. Email, IRC channel, mailing list ... Maximum 300 characters"));
         form.add(contactInput);
 
-        final HtmlTextArea descriptionInput = new HtmlTextArea(description, Context.tr("Description of the group"), 10, 80);
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(), Context.tr("Description of the group"), 10, 80);
+        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
+        descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Doesn't work yet. Between 5 and 5000 characters."));
         form.add(descriptionInput);
 
-        final HtmlDropDown rightInput = new HtmlDropDown(right, Context.tr("Type of the group : "));
+        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Type of the group : "));
+        rightInput.setDefaultValue(rightData.getSuggestedValue());
+        rightInput.addErrorMessages(rightData.getErrorMessages());
         rightInput.addDropDownElement(CreateTeamAction.PUBLIC, Context.tr("Public"));
         rightInput.addDropDownElement(CreateTeamAction.PROTECTED, Context.tr("Protected"));
         rightInput.setComment(Context.tr("Public groups can be joined by anybody without an invitation."));
