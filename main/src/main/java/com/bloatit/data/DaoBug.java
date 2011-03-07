@@ -34,6 +34,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OrderBy;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -82,7 +83,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     // TODO make the comments mapped by DaoUserContent ?
     @OneToMany(mappedBy = "bug")
     @Cascade(value = { CascadeType.ALL })
-    //@OrderBy("id")
+    @OrderBy(clause = "id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> comments = new ArrayList<DaoComment>();
 

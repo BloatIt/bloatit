@@ -40,6 +40,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
@@ -182,6 +183,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     private List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
 
     @OneToMany(mappedBy = "demand")
+    @OrderBy(clause = "id")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @IndexedEmbedded

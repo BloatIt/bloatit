@@ -29,16 +29,15 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 import org.hibernate.Query;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.CacheModeType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -148,7 +147,7 @@ public class DaoBatch extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "batch")
     @Cascade(value = { CascadeType.ALL })
-    // @OrderBy("id DESC")
+    @OrderBy(clause = "id DESC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoRelease> releases = new ArrayList<DaoRelease>();
 
@@ -163,7 +162,6 @@ public class DaoBatch extends DaoIdentifiable {
      * Create a DaoBatch.
      * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
-     * @param text is the description of the demand. Must be non null.
      * @param dateExpire is the date when this offer should be finish. Must be
      *            non null, and in the future.
      * @param secondBeforeValidation TODO
