@@ -18,14 +18,14 @@
         <property name="current_session_context_class">thread</property>
 
         <!-- Echo all executed SQL to stdout -->
-        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.show_sql">true</property>
         <property name="hibernate.jdbc.batch_size">25</property>
 
         <!-- second level cache -->
         <property name="hibernate.cache.use_second_level_cache">true</property>
-        <property name="hibernate.cache.use_query_cache">true</property>
-        <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
-        <!-- <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property> -->
+        <property name="hibernate.cache.use_query_cache">false</property>
+        <!-- <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property> -->
+         <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
 
 
 

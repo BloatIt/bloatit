@@ -138,7 +138,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.5.4-Final</version>
+            <version>3.6.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -153,19 +153,17 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search</artifactId>
-            <version>3.2.1.Final</version>
+            <version>3.3.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.5.0-Final</version>
+            <version>3.6.1.Final</version>
         </dependency>
-
-        <!-- For hibernate Cacheing -->
         <dependency>
-            <groupId>ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>1.2.3</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>3.6.1.Final</version>
         </dependency>
 
         <dependency>
@@ -181,8 +179,6 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.5.8</version>
         </dependency>
-
-        <!-- sl4j uses log4j -->
 
         <!-- We need postgresql -->
         <dependency>
