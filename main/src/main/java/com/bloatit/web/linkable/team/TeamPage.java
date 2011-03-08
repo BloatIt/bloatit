@@ -2,17 +2,21 @@ package com.bloatit.web.linkable.team;
 
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
@@ -28,8 +32,11 @@ import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Group;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
+import com.bloatit.model.TeamRole;
 import com.bloatit.model.right.Action;
+import com.bloatit.web.pages.documentation.HtmlDocumentationRenderer;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.SendGroupInvitationPageUrl;
@@ -178,7 +185,6 @@ public class TeamPage extends MasterPage {
         final PageIterable<Member> members = targetTeam.getMembers();
         final HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
         memberTitle.add(membersTable);
-
     }
 
     @Override
@@ -195,9 +201,20 @@ public class TeamPage extends MasterPage {
         private final PageIterable<Member> members;
         private Member member;
         private Iterator<Member> iterator;
+        private Member connectedMember;
+
+        private static final int CONSULT = 1;
+        private static final int TALK = 2;
+        private static final int MODIFY = 3;
+        private static final int INVITE = 4;
+        private static final int PROMOTE = 5;
+        private static final int BANK = 6;
 
         public MyTableModel(final PageIterable<Member> members) {
             this.members = members;
+            if (session.getAuthToken() != null) {
+                this.connectedMember = session.getAuthToken().getMember();
+            }
             iterator = members.iterator();
         }
 
@@ -207,7 +224,7 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public XmlNode getHeader(final int column) {
+        public XmlNode getHeader(int column) {
             if (column == 0) {
                 return new HtmlText(Context.tr("Member name"));
             }
@@ -232,14 +249,43 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public XmlNode getBody(final int column) {
-            if (column == 0) {
-                try {
-                    return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
-                } catch (final UnauthorizedOperationException e) {
-                    Log.web().warn("Not allowed to see a display name", e);
+        public XmlNode getBody(int column) {
+            switch (column) {
+                case 0: // Name
+                    try {
+                        return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
+                    } catch (final UnauthorizedOperationException e) {
+                        Log.web().warn("Not allowed to see a display name", e);
+                        return new HtmlText("");
+                    }
+                case CONSULT:
+                    return getUserRightStatus(UserGroupRight.CONSULT);
+                case TALK:
+                    return getUserRightStatus(UserGroupRight.TALK);
+                case MODIFY:
+                    return getUserRightStatus(UserGroupRight.MODIFY);
+                case INVITE:
+                    return getUserRightStatus(UserGroupRight.INVITE);
+                case PROMOTE:
+                    return getUserRightStatus(UserGroupRight.PROMOTE);
+                case BANK:
+                    return getUserRightStatus(UserGroupRight.BANK);
+                default:
                     return new HtmlText("");
+            }
+        }
+
+        private XmlNode getUserRightStatus(UserGroupRight right) {
+            if (member.canInGroup(targetTeam, right)) {
+                if (connectedMember.canPromote(targetTeam) ) {
+                    PlaceHolderElement ph = new PlaceHolderElement();
+                    ph.add(new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "group_can"));
+                    ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
+                    return ph;
                 }
+                return new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "group_can");
+            } else if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
+                return new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Promote"));
             }
             return new HtmlText("");
         }

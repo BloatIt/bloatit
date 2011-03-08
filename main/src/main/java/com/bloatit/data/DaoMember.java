@@ -276,6 +276,7 @@ public class DaoMember extends DaoActor {
             throw new FatalErrorException("This member is already in the group: " + aGroup.getId());
         }
         this.groupMembership.add(daoGroupMembership);
+        addGroupRight(aGroup, UserGroupRight.CONSULT);
     }
 
     /**
