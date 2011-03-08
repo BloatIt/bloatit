@@ -29,11 +29,18 @@ public class DemandsTools {
         return translatedDescription.getTitle();
     }
 
+
+
+    public static HtmlDiv generateProgress(Demand demand) throws UnauthorizedOperationException {
+        return generateProgress(demand, false);
+    }
+
+
     /**
      * @return
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(Demand demand) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(Demand demand, boolean slim) throws UnauthorizedOperationException {
         final HtmlDiv demandSummaryProgress = new HtmlDiv("summary_progress");
         {
             float progressValue = 0;
@@ -45,7 +52,7 @@ public class DemandsTools {
                 cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
             }
 
-            final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+            final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue, slim);
             demandSummaryProgress.add(progressBar);
 
             // Progress text

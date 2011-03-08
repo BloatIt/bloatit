@@ -60,7 +60,7 @@ public final class Member extends Actor<DaoMember> {
 
     /**
      * Create a new member using its Dao version.
-     *
+     * 
      * @param dao a DaoMember
      * @return the new member or null if dao is null.
      */
@@ -83,7 +83,7 @@ public final class Member extends Actor<DaoMember> {
     /**
      * Tells if a user can access the group property. You have to unlock this
      * Member using the {@link Member#authenticate(AuthToken)} method.
-     *
+     * 
      * @param action can be read/write/delete. for example use READ to know if
      *            you can use {@link Member#getGroups()}.
      * @return true if you can use the method.
@@ -94,7 +94,7 @@ public final class Member extends Actor<DaoMember> {
 
     /**
      * Tells if a user can access the property "invite".
-     *
+     * 
      * @param group the group in which you want to invite somebody
      * @param action WRITE for create a new invitation, DELETED to accept/refuse
      *            it, READ to list the invitations you have recieved.
@@ -124,11 +124,14 @@ public final class Member extends Actor<DaoMember> {
     // Setter / modification
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    
+    // / GROUP RIGHTS
+    
     /**
      * <p>
      * Gives some new rights to a user in a groups
      * </p>
-     *
+     * 
      * @param newRole the new role of the user
      * @throws MemberNotInGroupException when <code>this</code> is not part of
      *             <code>group</code>
@@ -144,10 +147,59 @@ public final class Member extends Actor<DaoMember> {
         setGroupRoleUnprotected(group, newRole);
     }
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Accessors
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    public Set<UserGroupRight> getGroupRights(Group g) {
+        return getDao().getGroupRights(g.getDao());
+    }
+
+    public void addGroupRight(Group aGroup, UserGroupRight aRight) {
+        getDao().addGroupRight(aGroup.getDao(), aRight);
+    }
+    
+    public void removeGroupRight(Group aGroup, UserGroupRight removeRight) {
+        getDao().removeGroupRight(aGroup.getDao(), removeRight);
+    }
+
+    public boolean canInGroup(Group aGroup, UserGroupRight aRight) {
+        if(getGroupRights(aGroup) == null){
+            return false;
+        }
+        return getGroupRights(aGroup).contains(aRight);
+    }
+
+    public boolean canConsult(Group aGroup) {
+        return canInGroup(aGroup, UserGroupRight.CONSULT);
+    }
+
+    public boolean canTalk(Group aGroup) {
+        return canInGroup(aGroup, UserGroupRight.TALK);
+    }
+
+    public boolean canInvite(Group aGroup) {
+        return canInGroup(aGroup, UserGroupRight.INVITE);
+    }
+    
+    public boolean canModify(Group aGroup) {
+        return canInGroup(aGroup, UserGroupRight.MODIFY);
+    }
+
+    public boolean canPromote(Group aGroup) {
+        return canInGroup(aGroup, UserGroupRight.PROMOTE);
+    }
+    
+    public boolean canBank(Group aGroup) {
+        return canInGroup(aGroup, UserGroupRight.BANK);
+    }
+
+    // / END GROUP RIGHTS
+
     /**
      * Give some right to the user to a group without checking if the user can
      * get these rights
-     *
+     * 
      * @param group the group to add rights to the user
      * @param newRight the new new role of the user
      */
@@ -159,7 +211,7 @@ public final class Member extends Actor<DaoMember> {
 
     /**
      * Adds a user to a group without checking if the group is Public or not
-     *
+     * 
      * @param group the group to which the user will be added
      */
     protected void addToGroupUnprotected(final Group group) {
@@ -169,7 +221,7 @@ public final class Member extends Actor<DaoMember> {
     /**
      * To invite a member into a group you have to have the WRITE right on the
      * "invite" property.
-     *
+     * 
      * @param member The member you want to invite
      * @param group The group in which you invite a member.
      * @throws UnauthorizedOperationException
@@ -182,7 +234,7 @@ public final class Member extends Actor<DaoMember> {
     /**
      * To accept an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done.
-     *
+     * 
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
      * @throws UnauthorizedOperationException
@@ -207,7 +259,7 @@ public final class Member extends Actor<DaoMember> {
     /**
      * To refuse an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done.
-     *
+     * 
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
      * @throws UnauthorizedOperationException
@@ -224,7 +276,7 @@ public final class Member extends Actor<DaoMember> {
      * To remove this member from a group you have to have the DELETED right on
      * the "group" property. If the member is not in the "group", nothing is
      * done. (Although it should be considered as an error and will be logged)
-     *
+     * 
      * @param group is the group from which the user will be removed.
      * @throws UnauthorizedOperationException
      */
@@ -272,7 +324,7 @@ public final class Member extends Actor<DaoMember> {
     /**
      * To add a user into a public group, you have to make sure you can access
      * the groups with the {@link Action#WRITE} action.
-     *
+     * 
      * @param group must be a public group.
      * @throws UnauthorizedOperationException if the authenticated member do not
      *             have the right to use this methods.
@@ -282,7 +334,6 @@ public final class Member extends Actor<DaoMember> {
         if (group.getRight() != Right.PUBLIC) {
             throw new UnauthorizedOperationException(SpecialCode.GROUP_NOT_PUBLIC);
         }
-        tryAccess(new MemberRight.GroupList(), Action.WRITE);
         getDao().addToGroup(group.getDao());
     }
 
@@ -318,7 +369,7 @@ public final class Member extends Actor<DaoMember> {
     /**
      * To get the groups you have the have the READ right on the "group"
      * property.
-     *
+     * 
      * @return all the group in which this member is.
      * @throws UnauthorizedOperationException
      */
@@ -404,7 +455,7 @@ public final class Member extends Actor<DaoMember> {
     /**
      * Returns the status of the member in a given <code>group</code> <<<<<<<
      * Updated upstream
-     *
+     * 
      * @param group the group in which we want to know member status =======
      * @param group the group in which we want to know member status >>>>>>>
      *            Stashed changes

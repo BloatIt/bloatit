@@ -56,7 +56,7 @@ public final class HttpResponse {
      * this method when everything is OK. When an error occurs, call this method
      * to set the error status to its new value.
      * </p>
-     *
+     * 
      * @param status the new status
      */
     public void setStatus(final StatusCode status) {
@@ -136,7 +136,7 @@ public final class HttpResponse {
      * goes haywire, think to set a correct status using the method
      * {@link #setStatus(StatusCode)}
      * </p>
-     *
+     * 
      * @param resource the resource to write
      * @throws IOException whenever an IO error occurs on the underlying stream
      * @see #setStatus(StatusCode)
@@ -147,7 +147,7 @@ public final class HttpResponse {
             output.write("Content-Type: text/xml\r\n".getBytes());
             closeHeaders();
             htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
-            htmlText.writeLine("<rest result=\"ok\" request=\"" + resource.getRequest() + "\" >");
+            htmlText.writeLine("<rest result=\"ok\" request=\"" + HtmlTools.escape(resource.getRequest()) + "\" >");
             htmlText.indent();
             htmlText.writeLine(resourceXml);
             htmlText.unindent();
@@ -160,7 +160,7 @@ public final class HttpResponse {
 
     /**
      * Writes a rest error based on the <code>exception</code>
-     *
+     * 
      * @param exception the exception describing the error
      * @throws IOException when an IO error occurs
      */
@@ -177,7 +177,7 @@ public final class HttpResponse {
      * <p>
      * Writes a rest error
      * </p>
-     *
+     * 
      * @see {@link #writeRestError(RestException)}
      */
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {
@@ -196,7 +196,7 @@ public final class HttpResponse {
             htmlText.writeLine(HtmlTools.escape(stackTrace));
             htmlText.writeLine("</error>");
         } else {
-            htmlText.writeLine("<error reason=\"" + status.toString() + "\" />");
+            htmlText.writeLine("<error reason=\"" + HtmlTools.escape(status.toString()) + "\" />");
         }
 
         htmlText.unindent();

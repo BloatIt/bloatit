@@ -32,6 +32,7 @@ import com.bloatit.web.linkable.login.RegisterPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
+import com.bloatit.web.linkable.messages.MessageListPage;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
@@ -41,6 +42,16 @@ import com.bloatit.web.linkable.projects.AddProjectAction;
 import com.bloatit.web.linkable.projects.AddProjectPage;
 import com.bloatit.web.linkable.projects.ProjectListPage;
 import com.bloatit.web.linkable.projects.ProjectPage;
+import com.bloatit.web.linkable.team.CreateTeamAction;
+import com.bloatit.web.linkable.team.CreateTeamPage;
+import com.bloatit.web.linkable.team.GiveRightAction;
+import com.bloatit.web.linkable.team.HandleJoinGroupInvitationAction;
+import com.bloatit.web.linkable.team.JoinTeamAction;
+import com.bloatit.web.linkable.team.JoinTeamPage;
+import com.bloatit.web.linkable.team.SendGroupInvitationAction;
+import com.bloatit.web.linkable.team.SendGroupInvitationPage;
+import com.bloatit.web.linkable.team.TeamPage;
+import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.pages.AddReleasePage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
@@ -56,16 +67,6 @@ import com.bloatit.web.pages.admin.BatchAdminPage;
 import com.bloatit.web.pages.admin.DemandAdminPage;
 import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
-import com.bloatit.web.pages.messages.MessageListPage;
-import com.bloatit.web.pages.team.CreateTeamAction;
-import com.bloatit.web.pages.team.CreateTeamPage;
-import com.bloatit.web.pages.team.HandleJoinGroupInvitationAction;
-import com.bloatit.web.pages.team.JoinTeamAction;
-import com.bloatit.web.pages.team.JoinTeamPage;
-import com.bloatit.web.pages.team.SendGroupInvitationAction;
-import com.bloatit.web.pages.team.SendGroupInvitationPage;
-import com.bloatit.web.pages.team.TeamPage;
-import com.bloatit.web.pages.team.TeamsPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
@@ -91,6 +92,7 @@ import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.DocumentationUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
+import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
@@ -320,6 +322,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ChangeAvatarActionUrl.getName())) {
             return new ChangeAvatarAction(new ChangeAvatarActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(GiveRightActionUrl.getName())) {
+            return new GiveRightAction(new GiveRightActionUrl(params, session.getParameters()));
         }
 
         // Resource page
