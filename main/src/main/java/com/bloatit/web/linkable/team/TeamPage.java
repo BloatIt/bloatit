@@ -84,7 +84,12 @@ public class TeamPage extends MasterPage {
 
     private SideBarElementLayout generateContactBox() {
         SideBarElementLayout contacts = new SideBarElementLayout();
-        contacts.setTitle(Context.tr("How to contact us"));
+        try {
+            contacts.setTitle(Context.tr("How to contact {0}", targetTeam.getLogin()));
+        } catch (UnauthorizedOperationException e) {
+            Log.web().warn("Can't access a team display name", e);
+            contacts.setTitle(Context.tr("How to contact us"));
+        }
 
         if (targetTeam.canAccessEmail(Action.READ)) {
             try {
@@ -97,7 +102,7 @@ public class TeamPage extends MasterPage {
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
         }
-        
+
         return contacts;
     }
 
@@ -290,7 +295,7 @@ public class TeamPage extends MasterPage {
 
         private XmlNode getUserRightStatus(UserGroupRight right) {
             if (member.canInGroup(targetTeam, right)) {
-                if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
+                if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
                     PlaceHolderElement ph = new PlaceHolderElement();
                     ph.add(new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "group_can"));
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));

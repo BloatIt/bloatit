@@ -12,6 +12,11 @@
 package com.bloatit.framework.webserver.components.form;
 
 import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.webserver.components.HtmlGenericElement;
+import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 
 /**
  * <p>
@@ -25,7 +30,7 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
     }
 
     public HtmlDateField(final String name, final String label) {
-        super(InputBlock.create(new HtmlSimpleInput("text")), name, label);
+        super(new DateInputBlock(), name, label);
     }
 
     @Override
@@ -36,5 +41,31 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
     @Override
     protected void doSetDefaultStringValue(final String defaultValueAsString) {
         addAttribute("value", defaultValueAsString);
+    }
+}
+
+class DateInputBlock extends InputBlock {
+    PlaceHolderElement container;
+    HtmlSimpleInput input;
+    HtmlGenericElement script;
+
+    public DateInputBlock() {
+        container = new PlaceHolderElement();
+        input = new HtmlSimpleInput("text");
+        input.setId("datepicker");
+        script = new HtmlGenericElement("script");
+        script.add(new HtmlTagText("$(function() {\n" + "$( \"#datepicker\" ).datepicker(); \n" + "});"));
+        container.add(script);
+        container.add(input);
+    }
+
+    @Override
+    public HtmlElement getInputElement() {
+        return input;
+    }
+
+    @Override
+    public HtmlElement getContentElement() {
+        return container;
     }
 }
