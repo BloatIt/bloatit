@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.Context;
@@ -35,7 +36,7 @@ import com.bloatit.framework.webserver.Context;
  */
 public final class CurrencyLocale {
     private static final String DEFAULT_CURRENCY_SYMBOL = "€";
-    private static final String RATES_PATH = "../locales/rates";
+    private static final String RATES_PATH = ConfigurationManager.SHARE_DIR + "locales/rates";
     private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
     private static final int DISPLAY_PRECISION = 0;
 
@@ -199,10 +200,8 @@ public final class CurrencyLocale {
                     final String line = br.readLine();
                     if (line.charAt(0) != '#') {
                         final String data = line.split("#", 1)[0];
-                        final String code = data.split("\t")[0];
-                        final BigDecimal value = new BigDecimal(data.split("\t")[1]);
-
-                        currencies.put(Currency.getInstance(code), value);
+                        final String[] pair = data.split("\t");
+                        currencies.put(Currency.getInstance(pair[0]), new BigDecimal(pair[1]));
                     }
                 }
             }

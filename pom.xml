@@ -1,6 +1,4 @@
-<project 
-	xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0          
 	http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -9,14 +7,21 @@
 	<version>2.0</version>
 	<packaging>pom</packaging>
 
+	<scm>
+		<url>https://github.com/BloatIt/bloatit</url>
+		<connection>scm:git:ssh://github.com/BloatIt/bloatit.git</connection>
+	</scm>
 
-    <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.1</version>
-            <executions>
+	<build>
+		<plugins>
+
+			
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
 					<execution>
 						<goals>
 							<goal>exec</goal>
@@ -24,17 +29,17 @@
 						<phase>generate-sources</phase>
 					</execution>
 				</executions>
-            <configuration>
-              <executable>./generatecss</executable>
-            </configuration>
-          </plugin>
-        </plugins>
-    </build>
+				<configuration>
+					<executable>./generatecss</executable>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<modules>
 		<module>apt</module>
 		<module>paylineWebservice</module>
 		<module>main</module>
 	</modules>
-	
+
 </project>

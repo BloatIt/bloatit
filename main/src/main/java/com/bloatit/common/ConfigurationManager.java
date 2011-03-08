@@ -86,7 +86,7 @@ public class ConfigurationManager {
         private <T> T getSome(final String key, final T defaultValue, final Class<T> clazz) {
             try {
                 return getSome(key, clazz);
-            } catch (NoSuchElementException e) {
+            } catch (final NoSuchElementException e) {
                 return defaultValue;
             }
         }
@@ -195,7 +195,6 @@ public class ConfigurationManager {
         /**
          * @param key
          * @param defaultValue
-         * @return
          * @see java.util.Properties#getProperty(java.lang.String,
          *      java.lang.String)
          */
@@ -205,7 +204,6 @@ public class ConfigurationManager {
 
         /**
          * @param key
-         * @return
          * @see java.util.Properties#getProperty(java.lang.String)
          */
         public String getProperty(final String key) {

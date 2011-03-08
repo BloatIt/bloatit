@@ -39,17 +39,10 @@ sudo apt-get install gettext
 ************************************
 *  Configure the java server       *
 ************************************
-copy the file from etc/ to ~/.config/bloatit
-There are value to configure, see the comments in the files.
+-> copy the files/folders from etc/ to ~/.config/bloatit/
+   There are value to configure, see the comments in the files.
 
-*****************************************************
-*  Configure link to website documentation content  *
-*****************************************************
-Create file ~/.config/bloatit/web.properties
-Add inside the following content : 
-
-bloatit.documentation.dir=<PATH_TO_ELVEOS>/doc/websitedoc/
-bloatit.www.dir=<PATH_TO_ELVEOS>/www/
+-> copy the files/folders from share/ to ~/.local/share/bloatit/
 
 ************************************
 *  Configure access right          *
