@@ -38,7 +38,7 @@ public class JoinTeamAction extends LoggedAction {
             try {
                 me.addToPublicGroup(targetTeam);
             } catch (final UnauthorizedOperationException e) {
-                Log.web().fatal("User trie to join public group, but is not allowed to", e);
+                Log.web().fatal("User tries to join public group, but is not allowed to", e);
                 session.notifyBad("Oops we had an internal issue preventing you to join group, please try again later.");
                 return session.getLastVisitedPage();
             }
