@@ -247,7 +247,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
             this.doSetDefaultStringValue(value);
         }
     }
-    
+
     public final void setDefaultStringValue(final T value) {
         if (value != null) {
             this.doSetDefaultValue(value);
@@ -277,7 +277,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * @param value the default value
      */
     protected abstract void doSetDefaultStringValue(String value);
-    
+
     protected abstract void doSetDefaultValue(T value);
 
     /**
@@ -310,24 +310,30 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     /**
+     * <p>
      * The inputBlock interface permit to create complex form structure with a
-     * tre of html element and not only a input tag. Many methods of
-     * HtmlFormFiel are overriding the HtmlElement ones to apply the changes to
-     * the input field and not to the root element. If the input element is a
-     * tree, the form field don't know where to add the attribute. This class
-     * permit to give two reference, one to the input element and one on the
-     * root subelement.
+     * tree of html element and not only a input tag.
+     * </p>
+     * <p>
+     * Many methods of HtmlFormField are overriding the HtmlElement ones to apply
+     * the changes to the input field and not to the root element. If the input
+     * element is a tree, the form field doesn't know where to add the attribute.
+     * This class permit to give two reference, one to the input element and one
+     * on the root sub-element.
+     * </p>
      */
     public abstract static class InputBlock {
 
         /**
          * Return the input tag element
+         * 
          * @return
          */
         public abstract HtmlElement getInputElement();
 
         /**
          * return the element to add in the tree
+         * 
          * @return
          */
         public abstract HtmlElement getContentElement();
@@ -343,7 +349,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
                 @Override
                 public HtmlElement getContentElement() {
                     return element;
-                }};
+                }
+            };
         }
 
     }
