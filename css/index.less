@@ -69,12 +69,11 @@
 
 .index_element {
 
-    .box;
-    background-color: @light_green;
+    
     
     width: 400px;
     
-    padding: 10px;
+    
     font-size: 0.8em;
     margin-bottom: 20px;
     margin-left: 10px;
@@ -83,14 +82,31 @@
     .float_right {
         margin-bottom:5px;
     }
-    
+
     h2 {
-        margin-bottom: 5px;
+        margin-left: 10px;
         font-size: 1.3em;
+        font-family: @title_fonts;
     }
+
+    .index_body_element {
+        .box;
+        padding: 10px;
+        background-color: @hightlight_background_color;
     
-    .index_height_p {
-        height: 3.5em;
+        h3 {
+            margin-top: 0px;
+            margin-bottom: 5px;
+            font-size: 1.3em;
+            font-weight: normal;
+            //font-style: italic;
+            height: 3.5em;
+            color: @light_title_color;
+        }
+        
+        .define_p {
+            margin-bottom: 15px;
+        }
+    
     }
-    
 }

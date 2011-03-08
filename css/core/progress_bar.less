@@ -1,13 +1,13 @@
 @import "../include/tools";
 
-.progress_bar_block{
+.progress_bar_block, .progress_bar_block_slim {
     display:inline-block;
     margin-left:10%;
     margin-right:10%;
     width:80%;
 }
 
-.progress_bar_background{
+.progress_bar_background, .progress_bar_background_slim {
     display:block;
     .rounded_corners(7px);
     padding:0;
@@ -22,7 +22,7 @@
 
 }
 
-.progress_bar_border{
+.progress_bar_border, .progress_bar_border_slim {
     //margin-left: 50px;
     //margin-right: 50px;
     display:block;
@@ -40,7 +40,7 @@
 }
 
 
-.progress_bar_state{
+.progress_bar_state,  .progress_bar_state_slim {
     display:block;
     
     background: @progress_color;
@@ -56,6 +56,24 @@
     
 }
 
+
+.progress_bar_background_slim {
+    height:8px;
+    .rounded_corners(4px);
+}
+
+.progress_bar_border_slim {
+    height:8px;
+    margin-top: -10px;
+    .rounded_corners(4px);
+}
+
+
+.progress_bar_state_slim {
+    height:10px;
+    margin-top: -10px;
+    .rounded_corners(4px);
+}
 
 
 .progress_text {

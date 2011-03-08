@@ -74,7 +74,7 @@ public final class IndexPage extends MasterPage {
 
 
         TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true);
-        twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted feature"),1));
+        twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"),1));
 
         final HtmlDiv demandList = new HtmlDiv("demand_list");
         {
@@ -104,16 +104,19 @@ public final class IndexPage extends MasterPage {
                 {
                     final HtmlDiv demandListLeftCase = new HtmlDiv("demand_list_left_case");
                     {
-                        if (hightlightDemandArray[i * 2] != null) {
-                            demandListLeftCase.add(new IndexDemandBlock(hightlightDemandArray[i * 2].getDemand(),hightlightDemandArray[i * 2].getReason() ));
+
+                        HighlightDemand highlightDemand = hightlightDemandArray[i * 2];
+                        if (highlightDemand != null) {
+                            demandListLeftCase.add(new IndexDemandBlock(highlightDemand));
                         }
                     }
                     demandListRow.add(demandListLeftCase);
 
                     final HtmlDiv demandListRightCase = new HtmlDiv("demand_list_right_case");
                     {
-                        if (hightlightDemandArray[i * 2 + 1] != null) {
-                            demandListRightCase.add(new IndexDemandBlock(hightlightDemandArray[i * 2 + 1].getDemand(), hightlightDemandArray[i * 2 + 1].getReason()));
+                        HighlightDemand highlightDemand = hightlightDemandArray[i * 2 + 1];
+                        if (highlightDemand != null) {
+                            demandListRightCase.add(new IndexDemandBlock(highlightDemand));
                         }
                     }
                     demandListRow.add(demandListRightCase);
