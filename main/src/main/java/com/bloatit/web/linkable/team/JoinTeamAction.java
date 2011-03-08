@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.team;
+package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -38,7 +38,7 @@ public class JoinTeamAction extends LoggedAction {
             try {
                 me.addToPublicGroup(targetTeam);
             } catch (final UnauthorizedOperationException e) {
-                Log.web().fatal("User trie to join public group, but is not allowed to", e);
+                Log.web().fatal("User tries to join public group, but is not allowed to", e);
                 session.notifyBad("Oops we had an internal issue preventing you to join group, please try again later.");
                 return session.getLastVisitedPage();
             }

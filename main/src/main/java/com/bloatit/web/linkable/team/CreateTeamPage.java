@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.team;
+package com.bloatit.web.linkable.team;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
@@ -11,7 +11,10 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 
@@ -32,8 +35,19 @@ public class CreateTeamPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final HtmlDiv box = new HtmlDiv("padding_box");
-        add(box);
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addLeft(generateMain());
+        layout.addRight(new SideBarDocumentationBlock("create_team"));
+        layout.addRight(new SideBarDocumentationBlock("describe_team"));
+        layout.addRight(new SideBarDocumentationBlock("markdown"));
+        
+        add(layout);
+    }
+    
+    
+    private HtmlElement generateMain(){
+        final HtmlDiv box = new HtmlDiv();
+        
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Create a new team"), 1);
         box.add(master);
 
@@ -74,6 +88,8 @@ public class CreateTeamPage extends MasterPage {
         form.add(rightInput);
 
         form.add(new HtmlSubmit(Context.tr("Submit")));
+        
+        return box;
     }
 
     @Override

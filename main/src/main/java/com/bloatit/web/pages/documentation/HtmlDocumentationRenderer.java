@@ -41,8 +41,6 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
      */
     private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections.synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
 
-
-
     private final boolean exist;
 
     public HtmlDocumentationRenderer(DocumentationType type, String key) {
@@ -72,18 +70,14 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         } else {
             exist = true;
         }
-
     }
 
     public boolean isExists() {
         return exist;
     }
 
-
     private boolean load(String path) {
-
         FileInputStream fis;
-
         try {
             File targetFile = new File(path);
 
@@ -122,8 +116,6 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         }
 
     }
-
-
 
     /**
      * Nested class used as a key to cache parsed content

@@ -94,7 +94,7 @@ public class Context {
         return Context.requestTime.get();
     }
 
-    static void reInitializeContext(final WebHeader header, final Session session) {
+    public static void reInitializeContext(final WebHeader header, final Session session) {
         updateTime();
         setHeader(header);
         setSession(session);

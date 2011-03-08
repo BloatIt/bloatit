@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.messages;
+package com.bloatit.web.linkable.messages;
 
 import com.bloatit.data.DaoJoinGroupInvitation.State;
 import com.bloatit.framework.exceptions.RedirectException;
