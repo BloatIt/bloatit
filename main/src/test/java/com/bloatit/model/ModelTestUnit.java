@@ -15,8 +15,8 @@ public class ModelTestUnit extends TestCase {
     public static int init = init();
 
     private static int init() {
-        ModelAccessor.initialize(new Model());
         SessionManager.generateTestSessionFactory();
+        ModelAccessor.initialize(new Model());
         return 0;
     }
 
