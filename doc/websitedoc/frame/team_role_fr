@@ -1,0 +1,12 @@
+Droits au sein d'une équipe
+==========================
+
+Chaque utilisateurs appartenant à une équipe Elveos à un ensemble de droit dans cette équipe :
+
+ * Consulter : droit de voir les informations relatives à cette équipe
+ * Parler : droit de s'exprimer au nom de cette équipe
+ * Inviter : droit d'inviter de nouveaux membres dans l'équipe
+ * Modifier : droit de modifier les informations de l'équipe
+ * Promouvoir : droit de donner (ou retirer) des droits aux autres membres de l'équipe
+ * Banque : droit d'accéder, de modifier les informations bancaires de l'équipe (y compris retirer
+ l'argent)
