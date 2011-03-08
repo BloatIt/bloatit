@@ -92,7 +92,6 @@ public final class HttpResponse {
     }
 
     public void writePage(final Page page) throws IOException {
-        output.write(("Status: " + status.getCode() + " Not Found\r\n").getBytes());
         writeCookies();
         output.write("Content-Type: text/html\r\n".getBytes());
 

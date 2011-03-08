@@ -1,5 +1,6 @@
 package com.bloatit.framework.webserver.masters;
 
+import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
@@ -39,7 +40,7 @@ public abstract class GenericPage extends Page {
 
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
-        html.add(new Header(getTitle(), getCustomCss()));
+        html.add(new Header(getTitle(), getCustomCss(), getCustomJs()));
 
         final HtmlGenericElement body = new HtmlGenericElement("body");
         html.add(body);
@@ -73,6 +74,10 @@ public abstract class GenericPage extends Page {
     }
 
     protected String getCustomCss() {
+        return null;
+    }
+    
+    protected List<String> getCustomJs(){
         return null;
     }
 

@@ -11,6 +11,9 @@
  */
 package com.bloatit.web.pages;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -207,5 +210,17 @@ public final class OfferPage extends LoggedPage {
 
         offerPageContainer.add(offerForm);
         return offerPageContainer;
+    }
+    
+    protected String getCustomCss(){
+        return "bloatit/jquery-ui-1.8.10.custom.css";
+    }
+
+    protected List<String> getCustomJs() {
+        ArrayList<String> customJsList = new ArrayList<String>();
+        customJsList.add("jquery-1.4.4.min.js");
+        customJsList.add("jquery-ui-1.8.10.custom.min.js");
+        
+        return customJsList;
     }
 }

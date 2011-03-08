@@ -84,7 +84,12 @@ public class TeamPage extends MasterPage {
 
     private SideBarElementLayout generateContactBox() {
         SideBarElementLayout contacts = new SideBarElementLayout();
-        contacts.setTitle(Context.tr("How to contact us"));
+        try {
+            contacts.setTitle(Context.tr("How to contact {0}", targetTeam.getLogin()));
+        } catch (UnauthorizedOperationException e) {
+            Log.web().warn("Can't access a team display name", e);
+            contacts.setTitle(Context.tr("How to contact us"));
+        }
 
         if (targetTeam.canAccessEmail(Action.READ)) {
             try {
