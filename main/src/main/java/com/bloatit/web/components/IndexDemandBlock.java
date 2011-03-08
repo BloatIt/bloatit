@@ -8,7 +8,7 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Demand;
+import com.bloatit.model.HighlightDemand;
 import com.bloatit.web.linkable.demands.DemandsTools;
 import com.bloatit.web.linkable.projects.ProjectsTools;
 import com.bloatit.web.pages.master.DefineParagraph;
@@ -17,42 +17,36 @@ import com.bloatit.web.url.DemandPageUrl;
 public class IndexDemandBlock extends HtmlDiv {
 
 
-    private final HtmlTitle title;
     private final PlaceHolderElement floatRight;
 
-    public IndexDemandBlock(Demand demand, String titleString) {
+    public IndexDemandBlock(HighlightDemand highlightDemand) {
         super("index_element");
 
-        title = new HtmlTitle(2);
-        title.setCssClass("index_element_title");
+        add(new HtmlTitle(highlightDemand.getReason(), 2));
+        HtmlDiv indexBodyElement = new HtmlDiv("index_body_element");
+        add(indexBodyElement);
         floatRight = new PlaceHolderElement();
-        super.add(floatRight);
-        super.add(title);
-
-        setTitle(titleString);
+        indexBodyElement.add(floatRight);
 
         try {
 
-            setFloatRight(ProjectsTools.getProjectLogo(demand.getProject()));
+            setFloatRight(ProjectsTools.getProjectLogo(highlightDemand.getDemand().getProject()));
 
-            add(new DefineParagraph(tr("Title: "), DemandsTools.getTitle(demand)).addCssClass("index_height_p"));
+            indexBodyElement.add(new HtmlTitle(DemandsTools.getTitle(highlightDemand.getDemand()), 3));
 
-            add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(demand.getProject())));
+            indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightDemand.getDemand().getProject())));
 
 
-            add(DemandsTools.generateProgress(demand));
+            indexBodyElement.add(DemandsTools.generateProgress(highlightDemand.getDemand(), true));
 
-            add(new DemandPageUrl(demand).getHtmlLink(tr("more details...")));
+            indexBodyElement.add(new DemandPageUrl(highlightDemand.getDemand()).getHtmlLink(tr("more details...")));
 
-            add(DemandsTools.generateDetails(demand));
+            indexBodyElement.add(DemandsTools.generateDetails(highlightDemand.getDemand()));
 
         } catch (UnauthorizedOperationException e) {
         }
     }
 
-    public void setTitle(String title) {
-        this.title.addText(title);
-    }
 
     public HtmlBranch setFloatRight(HtmlElement element) {
         floatRight.add(new HtmlDiv("float_right").add(element));
