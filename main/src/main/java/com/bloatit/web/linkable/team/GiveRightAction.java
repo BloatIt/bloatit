@@ -24,6 +24,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
@@ -31,8 +32,13 @@ import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
+/**
+ * Action used to give a user a new right in a group
+ */
 @ParamContainer("team/dogiveright")
 public class GiveRightAction extends LoggedAction {
+    @SuppressWarnings("unused")
+    // Kept for consistency
     private final GiveRightActionUrl url;
 
     @RequestParam()
@@ -61,7 +67,7 @@ public class GiveRightAction extends LoggedAction {
         Member connected = session.getAuthToken().getMember();
         connected.authenticate(session.getAuthToken());
 
-        if (!connected.canPromote(targetTeam)) {
+        if (!connected.equals(targetMember) && !connected.canPromote(targetTeam)) {
             try {
                 session.notifyBad(Context.tr("You are not allowed to promote people in the group: " + targetTeam.getLogin()));
             } catch (UnauthorizedOperationException e) {
@@ -76,13 +82,12 @@ public class GiveRightAction extends LoggedAction {
         } else {
             targetMember.removeGroupRight(targetTeam, right);
         }
-
         return new TeamPageUrl(targetTeam);
     }
 
     @Override
     protected Url doProcessErrors() {
-        return null;
+        return new PageNotFoundUrl();
     }
 
     @Override
@@ -92,7 +97,7 @@ public class GiveRightAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-
+        // Nothing
     }
 
 }

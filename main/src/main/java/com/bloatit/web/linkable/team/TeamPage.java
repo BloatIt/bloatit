@@ -97,7 +97,7 @@ public class TeamPage extends MasterPage {
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
         }
-        
+
         return contacts;
     }
 
@@ -290,7 +290,7 @@ public class TeamPage extends MasterPage {
 
         private XmlNode getUserRightStatus(UserGroupRight right) {
             if (member.canInGroup(targetTeam, right)) {
-                if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
+                if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
                     PlaceHolderElement ph = new PlaceHolderElement();
                     ph.add(new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "group_can"));
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
