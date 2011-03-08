@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.team;
+package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
