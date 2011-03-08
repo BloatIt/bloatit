@@ -2,7 +2,7 @@ package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 
 public class TwoColumnLayout extends HtmlDiv {
 
@@ -26,11 +26,11 @@ public class TwoColumnLayout extends HtmlDiv {
         add(new HtmlClearer());
     }
 
-    public void addLeft(XmlNode element) {
+    public void addLeft(HtmlElement element) {
         leftColumn.add(element);
     }
 
-    public void addRight(XmlNode element) {
+    public void addRight(SideBarElementLayout element) {
         rightColumn.add(element);
     }
 

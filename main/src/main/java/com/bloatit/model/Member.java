@@ -164,6 +164,9 @@ public final class Member extends Actor<DaoMember> {
     }
 
     public boolean canInGroup(Group aGroup, UserGroupRight aRight) {
+        if(getGroupRights(aGroup) == null){
+            return false;
+        }
         return getGroupRights(aGroup).contains(aRight);
     }
 

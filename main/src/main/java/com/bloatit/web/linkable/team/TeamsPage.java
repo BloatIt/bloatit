@@ -7,11 +7,14 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Group;
 import com.bloatit.model.managers.GroupManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 
@@ -33,8 +36,15 @@ public class TeamsPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final HtmlDiv master = new HtmlDiv("padding_box");
-        add(master);
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addLeft(generateMain());
+        layout.addRight(new SideBarDocumentationBlock("describe_team"));
+        
+        add(layout);
+    }
+    
+    private HtmlElement generateMain(){
+        final HtmlDiv master = new HtmlDiv();
         master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 
         final PageIterable<Group> teamList = GroupManager.getAll();
@@ -44,6 +54,8 @@ public class TeamsPage extends MasterPage {
         pagedTeamList = new HtmlPagedList<Group>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
 
         master.add(pagedTeamList);
+        
+        return master;
     }
 
     @Override
