@@ -19,7 +19,7 @@ package com.bloatit.data;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
@@ -42,9 +42,9 @@ public class SessionManager {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            final SessionFactory buildSessionFactory = new AnnotationConfiguration().configure()
-                                                                                    .setProperty("hibernate.hbm2ddl.auto", "update")
-                                                                                    .buildSessionFactory();
+            final SessionFactory buildSessionFactory = new Configuration().configure()
+                                                                          .setProperty("hibernate.hbm2ddl.auto", "update")
+                                                                          .buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
                 Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoDemand.class).startAndWait();
@@ -65,7 +65,7 @@ public class SessionManager {
     public static Query createFilter(final Object collection, final String str) {
         return getSessionFactory().getCurrentSession().createFilter(collection, str);
     }
-    
+
     public static Query getNamedQuery(final String name) {
         return getSessionFactory().getCurrentSession().getNamedQuery(name);
     }
@@ -78,7 +78,7 @@ public class SessionManager {
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-    
+
     public static FullTextSession getCurrentFullTextSession() {
         return Search.getFullTextSession(sessionFactory.getCurrentSession());
     }
@@ -114,12 +114,12 @@ public class SessionManager {
     public static void generateTestSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            sessionFactory = new AnnotationConfiguration().configure()
-                                                          .setProperty("hibernate.hbm2ddl.auto", "create-drop")
-                                                          .setProperty("hibernate.cache.use_second_level_cache", "false")
-                                                          .setProperty("hibernate.cache.use_query_cache", "false")
-                                                          .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test")
-                                                          .buildSessionFactory();
+            sessionFactory = new Configuration().configure()
+                                                .setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                                                .setProperty("hibernate.cache.use_second_level_cache", "false")
+                                                .setProperty("hibernate.cache.use_query_cache", "false")
+                                                .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test")
+                                                .buildSessionFactory();
         } catch (final Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             Log.data().fatal("Initial SessionFactory creation failed.", ex);
