@@ -40,7 +40,7 @@ public class MemberRight extends RightManager {
             boolean can = false;
             can = can || canRead(action);
             can = can || role.hasGroupPrivilege(UserGroupRight.PROMOTE) && ownerCanWrite(role, action);
-            can = can || role.hasGroupPrivilege(UserGroupRight.PROMOTE) && ownerCanDelete(role, action);
+            can = can || ownerCanDelete(role, action);
             return can;
         }
     }

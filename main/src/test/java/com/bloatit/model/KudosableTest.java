@@ -13,9 +13,8 @@ public class KudosableTest extends ModelTestUnit {
         demand.voteUp();
         assertFalse(demand.canVoteUp().isEmpty());
 
+        // Yo is the author of the demand
         demand.authenticate(yoAuthToken);
-        assertTrue(demand.canVoteUp().isEmpty());
-        demand.voteUp();
         assertFalse(demand.canVoteUp().isEmpty());
 
         demand.authenticate(tomAuthToken);
@@ -36,7 +35,7 @@ public class KudosableTest extends ModelTestUnit {
     public void testKudos() throws UnauthorizedOperationException {
         final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
-        demand.authenticate(yoAuthToken);
+        demand.authenticate(fredAuthToken);
         demand.voteUp();
         assertEquals(1, demand.getPopularity());
     }

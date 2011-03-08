@@ -39,7 +39,7 @@ public final class GroupManager {
     }
 
     /**
-     * Gets the a group using its (unique) name.
+     * Gets a group using its (unique) name.
      *
      * @param name the name of the group we are looking for.
      * @return the group found or null if not found.

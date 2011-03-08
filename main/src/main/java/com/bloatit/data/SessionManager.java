@@ -20,7 +20,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.classic.Session;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
@@ -117,6 +116,8 @@ public class SessionManager {
             // Create the SessionFactory from hibernate.cfg.xml
             sessionFactory = new AnnotationConfiguration().configure()
                                                           .setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                                                          .setProperty("hibernate.cache.use_second_level_cache", "false")
+                                                          .setProperty("hibernate.cache.use_query_cache", "false")
                                                           .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test")
                                                           .buildSessionFactory();
         } catch (final Exception ex) {

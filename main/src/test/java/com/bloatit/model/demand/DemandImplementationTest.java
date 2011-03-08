@@ -31,19 +31,32 @@ import com.bloatit.model.right.AuthToken;
 public class DemandImplementationTest extends ModelTestUnit {
 
     public void testCreate() {
-        final Demand demand = DemandImplementation.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription
-                .createAndPersist(tomAuthToken.getMember().getDao(), Locale.FRANCE, "title", "description"), DaoProject.getByName("VLC")));
+        final Demand demand = DemandImplementation.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                                     DaoDescription.createAndPersist(tomAuthToken.getMember()
+                                                                                                                                 .getDao(),
+                                                                                                                     Locale.FRANCE,
+                                                                                                                     "title",
+                                                                                                                     "description"),
+                                                                                     DaoProject.getByName("VLC")));
         assertNotNull(demand);
         assertNull(DemandImplementation.create(null));
     }
 
     private Demand createDemandByThomas() {
-        return DemandImplementation.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription.createAndPersist(tomAuthToken.getMember()
-                .getDao(), Locale.FRANCE, "title", "description"), DaoProject.getByName("VLC")));
+        return DemandImplementation.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                      DaoDescription.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                                                      Locale.FRANCE,
+                                                                                                      "title",
+                                                                                                      "description"),
+                                                                      DaoProject.getByName("VLC")));
     }
 
     public void testDemand() {
-        final Demand demand = new DemandImplementation(tomAuthToken.getMember(), Locale.FRANCE, "title", "Description", Project.create(DaoProject.getByName("VLC")));
+        final Demand demand = new DemandImplementation(tomAuthToken.getMember(),
+                                                       Locale.FRANCE,
+                                                       "title",
+                                                       "Description",
+                                                       Project.create(DaoProject.getByName("VLC")));
         assertEquals(demand.getAuthor(), tomAuthToken.getMember());
         try {
             assertEquals(demand.getDescription().getDefaultLocale(), Locale.FRANCE);
@@ -239,8 +252,7 @@ public class DemandImplementationTest extends ModelTestUnit {
 
         try {
             demand.authenticate(fredAuthToken);
-            demand.addOffer(fredAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH,
-                    DateUtils.tomorrow(), 0);
+            demand.addOffer(fredAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
@@ -271,8 +283,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(tomAuthToken);
-        demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH,
-                DateUtils.tomorrow(), 0);
+        demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         demand.authenticate(yoAuthToken);
@@ -286,7 +297,7 @@ public class DemandImplementationTest extends ModelTestUnit {
 
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
         final Demand demand = createDemandByThomas();
-        final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin", Locale.FRANCE);
+        final DaoMember admin = DaoMember.createAndPersist("admin1", "admin1", "admin1", Locale.FRANCE);
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
         assertEquals(DemandState.PENDING, demand.getDemandState());
@@ -297,8 +308,7 @@ public class DemandImplementationTest extends ModelTestUnit {
 
         demand.authenticate(tomAuthToken);
 
-        System.out.println(demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH,
-                DateUtils.tomorrow(), 0));
+        demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         assertNotNull(demand.getSelectedOffer());
@@ -362,8 +372,7 @@ public class DemandImplementationTest extends ModelTestUnit {
 
         demand.authenticate(tomAuthToken);
 
-        demand.addOffer(tomAuthToken.getMember(),  new BigDecimal("120"), "description",  Locale.FRENCH,
-                DateUtils.tomorrow(), 0);
+        demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
 
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
@@ -378,43 +387,49 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testFinishedDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-//        final Demand demand = createDemandAddOffer120AddContribution120BeginDev();
-//
-//        try {
-//            demand.getSelectedOffer().;
-//            fail();
-//        } catch (final UnauthorizedOperationException e) {
-//            assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED, e.getCode());
-//        }
-//
-//        try {
-//            demand.authenticate(yoAuthToken);
-//            demand.releaseCurrentBatch();
-//            fail();
-//        } catch (final UnauthorizedOperationException e) {
-//            assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_DEMAND, e.getCode());
-//        }
-//
-//        demand.authenticate(tomAuthToken);
-//        demand.releaseCurrentBatch();
-//
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//        assertEquals(120, demand.getContribution().intValue());
+        // final Demand demand =
+        // createDemandAddOffer120AddContribution120BeginDev();
+        //
+        // try {
+        // demand.getSelectedOffer().;
+        // fail();
+        // } catch (final UnauthorizedOperationException e) {
+        // assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED,
+        // e.getCode());
+        // }
+        //
+        // try {
+        // demand.authenticate(yoAuthToken);
+        // demand.releaseCurrentBatch();
+        // fail();
+        // } catch (final UnauthorizedOperationException e) {
+        // assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_DEMAND,
+        // e.getCode());
+        // }
+        //
+        // demand.authenticate(tomAuthToken);
+        // demand.releaseCurrentBatch();
+        //
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        // assertEquals(120, demand.getContribution().intValue());
         // TODO
     }
 
     public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Demand demand = createDemandByThomas();
 
-
         demand.authenticate(tomAuthToken);
-        final Offer offer = demand.addOffer(tomAuthToken.getMember(), BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        final Offer offer = demand.addOffer(tomAuthToken.getMember(),
+                                            BigDecimal.TEN,
+                                            "description",
+                                            Locale.FRENCH,
+                                            DateUtils.tomorrow(),
+                                            DateUtils.SECOND_PER_WEEK);
 
-        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
-
+        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
 
         demand.authenticate(yoAuthToken);
         demand.addContribution(new BigDecimal("12"), null);
@@ -429,32 +444,32 @@ public class DemandImplementationTest extends ModelTestUnit {
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
-//        demand.authenticate(tomAuthToken);
-//        demand.releaseCurrentBatch();
-//
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//        assertTrue(demand.validateCurrentBatch(true));
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//
-//        demand.releaseCurrentBatch();
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//        assertTrue(demand.validateCurrentBatch(true));
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//
-//        demand.releaseCurrentBatch();
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//        assertTrue(demand.validateCurrentBatch(true));
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//
-//        demand.releaseCurrentBatch();
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//        assertTrue(demand.validateCurrentBatch(true));
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//
-//        demand.releaseCurrentBatch();
-//        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
-//        assertTrue(demand.validateCurrentBatch(true));
-//        assertEquals(DemandState.FINISHED, demand.getDemandState());
+        // demand.authenticate(tomAuthToken);
+        // demand.releaseCurrentBatch();
+        //
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        // assertTrue(demand.validateCurrentBatch(true));
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        //
+        // demand.releaseCurrentBatch();
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        // assertTrue(demand.validateCurrentBatch(true));
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        //
+        // demand.releaseCurrentBatch();
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        // assertTrue(demand.validateCurrentBatch(true));
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        //
+        // demand.releaseCurrentBatch();
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        // assertTrue(demand.validateCurrentBatch(true));
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        //
+        // demand.releaseCurrentBatch();
+        // assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        // assertTrue(demand.validateCurrentBatch(true));
+        // assertEquals(DemandState.FINISHED, demand.getDemandState());
         // TODO
 
     }
@@ -476,7 +491,8 @@ public class DemandImplementationTest extends ModelTestUnit {
     // }
 
     // Passe into dev simulate the 1 day time to wait.
-    // We assume that all the model has been closed, then the time out append, and then
+    // We assume that all the model has been closed, then the time out append,
+    // and then
     // the model is re-closed
     // So you have to reload from the db the demand. (So it return it ...)
     private Demand passeIntoDev(final Demand demand) {

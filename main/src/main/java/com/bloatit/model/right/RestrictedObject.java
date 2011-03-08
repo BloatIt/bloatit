@@ -84,7 +84,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
     }
 
     private void automaticAuthentication() {
-        Session session = Context.getSession();
+        final Session session = Context.getSession();
         if (token == null && session != null && session.getAuthToken() != null) {
             authenticate(session.getAuthToken());
         }
@@ -93,6 +93,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
     private void updateRights() {
         if (token == null) {
             Log.model().debug("Try to authanticate with a null token.");
+            owningState = OwningState.NOBODY;
             return;
         }
         if (token.getNonPersistantMember() == null) {
