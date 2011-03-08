@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.beans.FatalBeanException;
-
+import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 
 public abstract class XmlElement extends XmlNode {
@@ -48,7 +47,7 @@ public abstract class XmlElement extends XmlNode {
      */
     public XmlElement addAttribute(final String name, final String value) {
         if (tag == null) {
-            throw new FatalBeanException("Are you trying to add an attribute to a PlaceHolderElement ?");
+            throw new FatalErrorException("Are you trying to add an attribute to a PlaceHolderElement ?");
         }
         tag.addAttribute(name, value);
         return this;

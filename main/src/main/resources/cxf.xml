@@ -15,7 +15,7 @@
             <sec:Authorization>NTQ2NTIzOTE3NDI1OTE6YXI2TnNIOGdPRmRBeEZYbm01Njg=</sec:Authorization>
             <!-- Si votre identifiant de compte commerçant est 1234567890 et votre 
                 clé d’accès est DJMESHXYou6LmjQFdH, vous devez encoder en base64 la valeur 
-                de 123456 7890:DJMESHXYou6LmjQFdH. La chaîne obtenue est à ajouter à l’entête 
+                de 1234567890:DJMESHXYou6LmjQFdH. La chaîne obtenue est à ajouter à l’entête 
                 HTTP  -->
         </http:authorization>
         <http:tlsClientParameters

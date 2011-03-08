@@ -5,13 +5,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.springframework.web.util.HtmlUtils;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.rest.RestResource;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
+import com.bloatit.web.HtmlTools;
 
 public final class HttpResponse {
     /**
@@ -31,7 +30,7 @@ public final class HttpResponse {
 
         private String code;
 
-        StatusCode(String code) {
+        StatusCode(final String code) {
             this.code = code;
         }
 
@@ -60,7 +59,7 @@ public final class HttpResponse {
      *
      * @param status the new status
      */
-    public void setStatus(StatusCode status) {
+    public void setStatus(final StatusCode status) {
         this.status = status;
     }
 
@@ -140,12 +139,11 @@ public final class HttpResponse {
      *
      * @param resource the resource to write
      * @throws IOException whenever an IO error occurs on the underlying stream
-     * @throws
      * @see #setStatus(StatusCode)
      */
     public void writeRestResource(final RestResource resource) throws IOException {
         try {
-            String resourceXml = resource.getXmlString();
+            final String resourceXml = resource.getXmlString();
             output.write("Content-Type: text/xml\r\n".getBytes());
             closeHeaders();
             htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
@@ -154,7 +152,7 @@ public final class HttpResponse {
             htmlText.writeLine(resourceXml);
             htmlText.unindent();
             htmlText.writeLine("</rest>");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.rest().fatal("Exception while marshalling RestResource " + resource.getUnderlying(), e);
             writeRestError(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error while marhsalling the Object", e);
         }
@@ -166,12 +164,12 @@ public final class HttpResponse {
      * @param exception the exception describing the error
      * @throws IOException when an IO error occurs
      */
-    public void writeRestError(RestException exception) throws IOException {
+    public void writeRestError(final RestException exception) throws IOException {
         writeRestError(exception.getStatus(), exception.getMessage(), exception);
     }
 
-    private void writeLine(String string) throws IOException {
-        String line = string + "\r\n";
+    private void writeLine(final String string) throws IOException {
+        final String line = string + "\r\n";
         output.write(line.getBytes());
     }
 
@@ -182,20 +180,20 @@ public final class HttpResponse {
      *
      * @see {@link #writeRestError(RestException)}
      */
-    private void writeRestError(StatusCode status, String message, Exception e) throws IOException {
+    private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {
         output.write("Content-Type: text/xml\r\n".getBytes());
         closeHeaders();
         htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
         htmlText.indent();
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        String stackTrace = sw.toString();
+        final String stackTrace = sw.toString();
 
         if (stackTrace != null && !stackTrace.isEmpty()) {
             htmlText.writeLine("<error code=\"" + status.toString() + "\" reason=\"" + message + "\" >");
-            htmlText.writeLine(HtmlUtils.htmlEscape(stackTrace));
+            htmlText.writeLine(HtmlTools.escape(stackTrace));
             htmlText.writeLine("</error>");
         } else {
             htmlText.writeLine("<error reason=\"" + status.toString() + "\" />");

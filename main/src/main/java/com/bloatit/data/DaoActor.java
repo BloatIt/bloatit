@@ -57,11 +57,11 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "actor.byEmail.size",
                            query = "select count(*) from DaoActor where email = :email"),
                        @NamedQuery(
-                           name = "actor.getBankTransaction",
-                           query = "from DaoBankTransaction where author = :author order by creationDate DESC"),
+                           name = "actor.getBankTransactions",
+                           query = "from DaoBankTransaction as t where t.author = :author order by t.creationDate DESC"),
                        @NamedQuery(
-                           name = "actor.getBankTransaction.size",
-                           query = "select count(*) from DaoBankTransaction where author = :author order by creationDate DESC") 
+                           name = "actor.getBankTransactions.size",
+                           query = "select count(*) from DaoBankTransaction where author = :author") 
                      }
              )
 // @formatter:on
