@@ -37,6 +37,7 @@ import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 
@@ -82,6 +83,9 @@ public final class DemandListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         // Search block
+
+        TwoColumnLayout layout = new TwoColumnLayout(true);
+        add(layout);
 
         // ////////////////////
         // Div demand_search_block
@@ -225,7 +229,7 @@ public final class DemandListPage extends MasterPage {
             }
             demandSearchBlock.add(createDemandBlock);
         }
-        add(demandSearchBlock);
+        layout.addLeft(demandSearchBlock);
 
         // Demand list
         final DemandList results = searchResult();
@@ -233,14 +237,15 @@ public final class DemandListPage extends MasterPage {
             final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
             final DemandListPageUrl clonedUrl = url.clone();
             pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
-            add(pagedDemandList);
+            layout.addLeft(pagedDemandList);
         } else {
             final HtmlDiv noResultBlock = new HtmlDiv("no_result_block");
             {
                 noResultBlock.addText(Context.tr("No result"));
             }
-            add(noResultBlock);
+            layout.addLeft(noResultBlock);
         }
+
     }
 
     @Override

@@ -8,6 +8,10 @@ public class HtmlSpan extends HtmlBranch {
         super("span");
     }
 
+    public HtmlSpan(HtmlSpan span) {
+        super(span);
+    }
+
     public HtmlSpan(final String cssClass) {
         super("span");
         addAttribute("class", cssClass);
@@ -17,5 +21,10 @@ public class HtmlSpan extends HtmlBranch {
         super("span");
         addAttribute("class", cssClass);
         addAttribute("id", id);
+    }
+
+    @Override
+    public HtmlSpan clone() {
+        return new HtmlSpan(this);
     }
 }

@@ -27,11 +27,14 @@ import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
+import com.bloatit.framework.webserver.components.HtmlList;
+import com.bloatit.framework.webserver.components.HtmlListItem;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.model.Batch;
@@ -132,12 +135,18 @@ public class DemandOfferListComponent extends HtmlDiv {
                         block.addInLeftColumn(new HtmlParagraph(tr("Test the last release and report bugs.")));
                     }
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
+
+
+                    generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
+
                     break;
                 case FINISHED:
                     offersBlock.add(new HtmlTitle(Context.tr("Finished offer"), 1));
                     offersBlock.add(block = new BicolumnOfferBlock(true));
                     block.addInLeftColumn(new HtmlParagraph(tr("This offer is finished.")));
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
+
+                    generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
                     break;
                 case DISCARDED:
                     offersBlock.add(new HtmlTitle(Context.tr("Demand discared ..."), 1));
@@ -149,6 +158,22 @@ public class DemandOfferListComponent extends HtmlDiv {
 
         } catch (final UnauthorizedOperationException e) {
             // No right no current offer.
+        }
+    }
+
+    public void generateOldOffersList(PageIterable<Offer> offers, int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
+            throws UnauthorizedOperationException {
+        //
+        // UnSelected
+        offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
+        BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
+        offersBlock.add(unselectedBlock);
+        unselectedBlock.addInLeftColumn(new HtmlParagraph("This offers have not been selected and will never be developed."));
+
+        for (final Offer offer : offers) {
+            if (offer != selectedOffer) {
+                unselectedBlock.addInRightColumn(new OfferBlock(offer, false));
+            }
         }
     }
 
@@ -271,6 +296,8 @@ public class DemandOfferListComponent extends HtmlDiv {
                     if (lots.size() == 1) {
                         final Batch lot = lots.iterator().next();
 
+                        generateAddReleaseLink(lot, offerRightBottomColumn);
+
                         final HtmlParagraph datePara = new HtmlParagraph();
                         datePara.setCssClass("offer_block_para");
                         {
@@ -294,6 +321,8 @@ public class DemandOfferListComponent extends HtmlDiv {
                             description.addText(lot.getDescription());
                         }
                         offerRightBottomColumn.add(description);
+
+                        generateReleaseList(lot, offerRightBottomColumn);
                     } else {
                         int i = 0;
                         for (final Batch lot : lots) {
@@ -315,9 +344,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                                 final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0} - ", i) + getLotState(lot), 2);
                                 lotBlock.add(lotTitle);
 
-                                if (isDeveloper() && (lot.getBatchState() == BatchState.DEVELOPING || lot.getBatchState() == BatchState.UAT)) {
-                                    lotBlock.add(new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("add a release")));
-                                }
+                                generateAddReleaseLink(lot, lotBlock);
 
                                 final HtmlParagraph datePara = new HtmlParagraph();
                                 datePara.setCssClass("offer_block_para");
@@ -337,12 +364,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                                 description.addText(lot.getDescription());
                                 lotBlock.add(description);
 
-                                for (Release release : lot.getReleases()) {
-                                    String releaseLinkContent = tr("Release: " + release.getVersion() + tr(" the ")
-                                            + Context.getLocalizator().getDate(release.getCreationDate()).toString(FormatStyle.MEDIUM));
-                                    HtmlLink releaseLink = new ReleasePageUrl(release).getHtmlLink(releaseLinkContent);
-                                    lotBlock.add(new HtmlParagraph().add(releaseLink));
-                                }
+                                generateReleaseList(lot, lotBlock);
 
                             }
                             offerRightBottomColumn.add(lotBlock);
@@ -353,6 +375,34 @@ public class DemandOfferListComponent extends HtmlDiv {
             }
             add(offerBottomBlock);
 
+        }
+
+        public void generateReleaseList(final Batch lot, final HtmlDiv lotBlock) {
+
+            PageIterable<Release> releases = lot.getReleases();
+
+            if (releases.size() > 0) {
+
+                lotBlock.add(new HtmlParagraph(tr("Releases:")));
+
+                HtmlList list = new HtmlList();
+
+                for (Release release : releases) {
+
+                    String date = Context.getLocalizator().getDate(release.getCreationDate()).toString(FormatStyle.MEDIUM);
+
+                    HtmlLink releaseLink = new ReleasePageUrl(release).getHtmlLink(release.getVersion());
+
+                    list.add(new HtmlListItem(new HtmlMixedText("<0::> (<1::>)", releaseLink, new HtmlSpan().addText(date))));
+                }
+                lotBlock.add(list);
+            }
+        }
+
+        public void generateAddReleaseLink(final Batch lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
+            if (isDeveloper() && (lot.getBatchState() == BatchState.DEVELOPING || lot.getBatchState() == BatchState.UAT)) {
+                lotBlock.add(new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("add a release")));
+            }
         }
 
         private boolean isDeveloper() throws UnauthorizedOperationException {

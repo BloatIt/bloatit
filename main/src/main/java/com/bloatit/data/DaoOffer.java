@@ -231,6 +231,19 @@ public class DaoOffer extends DaoKudosable {
         return !((Long) query.uniqueResult()).equals(0L);
     }
 
+    public DaoRelease getLastRelease() {
+        String q = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
+                "FROM DaoOffer as o " + //
+                "INNER JOIN o.batches as b " + //
+                "INNER JOIN b.releases as r " + //
+                "WHERE o=:this)";
+
+
+        final Query query = SessionManager.createQuery(q).setEntity("this", this);
+
+        return (DaoRelease) query.uniqueResult();
+    }
+
     // ======================================================================
     // Visitor.
     // ======================================================================

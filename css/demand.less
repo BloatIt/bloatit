@@ -38,19 +38,23 @@
 
 }
 
-
+.demand_sumary_bottom {
+    .display-box;
+    .box-align(end);
+    width: 100%;
+    
+}
 
 
 .demand_summary_popularity {
-    display:table-cell;
     vertical-align : bottom;
-    width:50px;
+    width:80px;
 }
 
 
 .demand_summary_progress {
-    display:table-cell;
-    width:100%;
+    .box-flex;
+    
     padding-bottom: 10px;
     
     .progress_text {
@@ -59,7 +63,7 @@
 }
 
 .demand_summary_share_button {
-    display:table-cell;
+    
     vertical-align : bottom;
     width:50px;
 }
@@ -79,7 +83,7 @@
 
 }
 
-.contribute_block {
+.contribute_block, .report_bug_block {
     display:table-cell;
     width:50%;
     text-align: center;
@@ -90,15 +94,7 @@
     
 }
 
-.make_offer_block {
-    display:table-cell;
-    width:50%;
-    text-align: center;
-    
-
-}
-
-.report_bug_block {
+.make_offer_block, .alternative_offer_block,  .developer_description_block {
     display:table-cell;
     width:50%;
     text-align: center;
@@ -107,7 +103,7 @@
 }
 
 
-.make_offer_block a, .contribute_block a, .report_bug_block a {
+.make_offer_block button, .contribute_block button, .report_bug_block button {
         display:inline-block;
         margin-left: auto;
         margin-right: auto;
@@ -121,13 +117,21 @@
 
 
 .contribute_block p,
- .make_offer_block p, .report_bug_block p {
+ .make_offer_block p  {
     font-size: 0.9em;
     margin-left: 50px;
     margin-right: 50px;
     
     height: 60px;
     
+}
+
+.alternative_offer_block p, .report_bug_block p, .developer_description_block {
+    font-size: 0.9em;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+
 }
 
 

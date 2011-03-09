@@ -225,6 +225,10 @@ public final class Offer extends Kudosable<DaoOffer> {
         return getDao().hasRelease();
     }
 
+    public Release getLastRelease() {
+        return Release.create(getDao().getLastRelease());
+    }
+
     // ////////////////////////////////////////////////////////////////////////
     // Kudosable configuration
     // ////////////////////////////////////////////////////////////////////////

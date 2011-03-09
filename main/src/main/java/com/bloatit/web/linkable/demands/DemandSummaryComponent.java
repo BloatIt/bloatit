@@ -12,8 +12,17 @@
 package com.bloatit.web.linkable.demands;
 
 import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webserver.Context.trn;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.DateUtils;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.TimeRenderer;
+import com.bloatit.framework.utils.i18n.CurrencyLocale;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
@@ -21,8 +30,10 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
+import com.bloatit.model.Bug;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Member;
+import com.bloatit.model.Release;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.projects.ProjectsTools;
@@ -31,6 +42,7 @@ import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
+import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
 public final class DemandSummaryComponent extends HtmlPageComponent {
@@ -188,19 +200,18 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         break;
                     case PREPARING:
                         actionsButtons.add(new HtmlDiv("contribute_block").add(generateContributeAction()));
-                        actionsButtons.add(new HtmlDiv("make_offer_block").add(generateAlternativeOfferAction()));
+                        actionsButtons.add(new HtmlDiv("alternative_offer_block").add(generateAlternativeOfferAction()));
                         break;
                     case DEVELOPPING:
-                        actionsButtons.add(new HtmlDiv("developer_description_block").add(generateDevelopingRightActions()));
                         actionsButtons.add(new HtmlDiv("report_bug_block").add(generateDevelopingLeftActions()));
+                        actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
+
                         break;
                     case FINISHED:
-                        // actionsButtons.add(new
-                        // HtmlDiv("contribute_block").add(generatePendingRightActions()));
-                        // actionsButtons.add(new
-                        // HtmlDiv("make_offer_block").add(generatePendingLeftActions()));
-                        break;
+                        actionsButtons.add(new HtmlDiv("report_bug_block").add(generateFinishedAction()));
+                        actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
                     case DISCARDED:
+                        //TODO
                         // actionsButtons.add(new
                         // HtmlDiv("contribute_block").add(generatePendingRightActions()));
                         // actionsButtons.add(new
@@ -238,38 +249,100 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    private PlaceHolderElement generateAlternativeOfferAction() {
+    private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
-        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
+        BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
 
-        final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already <0:coucou:plop> been made on this feature. However, you can <0::make an alternative offer>."),
+        if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
+
+            CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+
+            element.add(new HtmlParagraph(tr(" {0} are missing before the developement start.", currency.toString())));
+        } else {
+            TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), demand.getValidationDate()));
+
+            element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
+        }
+
+        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
+        final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
                                                                                 link));
         element.add(makeOfferText);
 
         return element;
     }
 
-    public PlaceHolderElement generateDevelopingRightActions() throws UnauthorizedOperationException {
+    public PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
-        Member author = demand.getSelectedOffer().getAuthor();
-        element.add(MembersTools.getMemberAvatar(author));
-        element.add(new HtmlParagraph(tr("The developer of this feature is:")));
-        element.add(new MemberPageUrl(author).getHtmlLink(author.getDisplayName()));
-        return element;
-    }
 
-    public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
-        PlaceHolderElement element = new PlaceHolderElement();
         if (!demand.getSelectedOffer().hasRelease()) {
-            element.add(new HtmlParagraph(tr("This is feature currently in development. Read the comments to have an overview of the progress.")));
+            Date releaseDate = demand.getSelectedOffer().getCurrentBatch().getExpirationDate();
+
+            String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.SHORT);
+
+            element.add(new HtmlParagraph(tr("There is no release yet.")));
+            element.add(new HtmlParagraph(tr("Next release is scheduled for {0}.", date)));
+
         } else {
-            element.add(new HtmlParagraph(tr("This is feature has at least one release. Test it and report bugs.")));
+            int releaseCount = demand.getSelectedOffer().getCurrentBatch().getReleases().size();
+
+            Release lastRelease = demand.getSelectedOffer().getLastRelease();
+
+            HtmlLink lastReleaseLink = new ReleasePageUrl(lastRelease).getHtmlLink();
+            String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.SHORT);
+
+            element.add(new HtmlParagraph(trn("There is {0} release.", "There is {0} releases.", releaseCount, releaseCount)));
+
+            element.add(new HtmlParagraph(new HtmlMixedText(tr("The <0::last version> was released the {0}.", releaseDate), lastReleaseLink)));
+
+            element.add(new HtmlParagraph(tr(" Test it and report bugs.")));
             final HtmlLink link = new ReportBugPageUrl(demand.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
             link.setCssClass("button");
             element.add(link);
         }
+
+        return element;
+
+    }
+
+    public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
+        PlaceHolderElement element = new PlaceHolderElement();
+
+        Member author = demand.getSelectedOffer().getAuthor();
+        HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
+        element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
+
+        element.add(new HtmlParagraph(tr("This feature is currently in development.")));
+
+        element.add(new HtmlParagraph(new HtmlMixedText(tr("This feature is developed by <0>."), authorLink)));
+
+        element.add(new HtmlParagraph(tr("Read the comments to have an more recents informations.")));
+
         return element;
     }
 
+
+    public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
+        PlaceHolderElement element = new PlaceHolderElement();
+
+        Member author = demand.getSelectedOffer().getAuthor();
+        HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
+        element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
+
+        element.add(new HtmlParagraph(tr("This feature is finished.")));
+
+        element.add(new HtmlParagraph(new HtmlMixedText(tr("The developement was done by <0>."), authorLink)));
+
+
+        PageIterable<Bug> openBugs = demand.getOpenBugs();
+
+        if(openBugs.size() > 0) {
+            element.add(new HtmlParagraph(trn("There is {0} open bug.", "There is {0} open bug.", openBugs.size(), openBugs.size())));
+        } else {
+            element.add(new HtmlParagraph(tr("There is no open bug.")));
+        }
+
+        return element;
+    }
 }
