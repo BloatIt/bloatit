@@ -33,7 +33,6 @@ import com.bloatit.model.Group;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.Action;
-import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
@@ -219,6 +218,9 @@ public class TeamPage extends MasterPage {
         return master;
     }
 
+    /**
+     * Model used to display information about each team members.
+     */
     private class MyTableModel extends HtmlTableModel {
         private final PageIterable<Member> members;
         private Member member;

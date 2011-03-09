@@ -2,12 +2,14 @@ package com.bloatit.web.components;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlListItem;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Group;
+import com.bloatit.web.linkable.team.GroupTools;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -19,10 +21,19 @@ public class TeamListRenderer implements HtmlRenderer<Group> {
     public XmlNode generate(final Group team) {
         final TeamPageUrl teamUrl = new TeamPageUrl(team);
         try {
+            HtmlDiv box = new HtmlDiv("team_box");
+
+            box.add(new HtmlDiv("float_right").add(GroupTools.getGroupAvatar(team)));
+
+            HtmlDiv textBox = new HtmlDiv("team_text");
             HtmlLink htmlLink;
             htmlLink = teamUrl.getHtmlLink(team.getLogin());
 
-            return new HtmlListItem(htmlLink);
+            textBox.add(htmlLink);
+            box.add(textBox);
+            box.add(new HtmlClearer());
+
+            return box;
         } catch (final UnauthorizedOperationException e) {
             Log.web().warn("Right error on Team list renderer", e);
         }
