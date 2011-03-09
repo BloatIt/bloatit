@@ -115,6 +115,15 @@ public final class Group extends Actor<DaoGroup> {
     public EnumSet<UserGroupRight> getUserGroupRight(final Member member) {
         return getDao().getUserGroupRight(member.getDao());
     }
+    
+    public FileMetadata getAvatar() {
+        return FileMetadata.create(getDao().getAvatar());
+    }
+
+    public void setAvatar(FileMetadata fileImage) {
+        // TODO: right management
+        getDao().setAvatar(fileImage.getDao());
+    }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor

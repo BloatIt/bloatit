@@ -24,6 +24,8 @@ import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
@@ -79,6 +81,10 @@ public class DaoGroup extends DaoActor {
     @Basic(optional = false)
     @Column(columnDefinition = "TEXT")
     private String description;
+    
+    @ManyToOne(optional = true, cascade = { javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REFRESH }, fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private DaoFileMetadata avatar;
 
     @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
@@ -165,6 +171,20 @@ public class DaoGroup extends DaoActor {
         this.groupMembership.remove(link);
         member.getGroupMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
+    }
+    
+    /**
+     * @return the avatar
+     */
+    public DaoFileMetadata getAvatar() {
+        return this.avatar;
+    }
+
+    /**
+     * @param avatar
+     */
+    public void setAvatar(final DaoFileMetadata avatar) {
+        this.avatar = avatar;
     }
 
     // ======================================================================

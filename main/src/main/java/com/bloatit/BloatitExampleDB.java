@@ -81,8 +81,13 @@ public class BloatitExampleDB {
 
         // Add groups
         final Group other = new Group("other", "plop@elveos.org", "An other group", Right.PROTECTED, yoann);
+        other.setAvatar(getImage(yoann, "teams/other.png"));
+        
         final Group b219 = new Group("b219", "b219@elveos.org", "The group for b219", Right.PROTECTED, fred);
+        b219.setAvatar(getImage(fred, "teams/b219.png"));
+        
         final Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", "The group for ubuntu users", Right.PUBLIC, thomas);
+        ubuntuUsers.setAvatar(getImage(thomas, "teams/ubuntuUsers.png"));
 
         // Generate projects
         generateVlcProject();
