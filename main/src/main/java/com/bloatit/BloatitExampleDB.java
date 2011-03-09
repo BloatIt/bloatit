@@ -377,9 +377,13 @@ public class BloatitExampleDB {
         return demand;
     }
 
+    /**
+     * Work only if the money is available
+     * @param demand
+     */
     private void setDemandInDevelopmentState(final Demand demand) {
         final DemandImplementation demandImpl = (DemandImplementation) demand;
-        demandImpl.getDao().setDemandState(DemandState.DEVELOPPING);
+        demandImpl.getDao().setValidationDate(DateUtils.now());
     }
 
     private void setDemandInFinishedState(final Demand demand) {
