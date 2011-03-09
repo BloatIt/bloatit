@@ -13,7 +13,12 @@ package com.bloatit.web.linkable.demands;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.math.BigDecimal;
+
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.DateUtils;
+import com.bloatit.framework.utils.TimeRenderer;
+import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
@@ -238,11 +243,23 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    private PlaceHolderElement generateAlternativeOfferAction() {
+    private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
-        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
+        BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
 
+        if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
+
+            CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+
+            element.add(new HtmlParagraph(tr(" {0} are missing before the developement start.", currency.toString())));
+        } else {
+            TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), demand.getValidationDate()));
+
+            element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
+        }
+
+        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
         final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
                                                                                 link));
         element.add(makeOfferText);
