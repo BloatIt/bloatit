@@ -188,7 +188,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         break;
                     case PREPARING:
                         actionsButtons.add(new HtmlDiv("contribute_block").add(generateContributeAction()));
-                        actionsButtons.add(new HtmlDiv("make_offer_block").add(generateAlternativeOfferAction()));
+                        actionsButtons.add(new HtmlDiv("alternative_offer_block").add(generateAlternativeOfferAction()));
                         break;
                     case DEVELOPPING:
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateDevelopingRightActions()));
@@ -243,7 +243,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
         final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
 
-        final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already <0:coucou:plop> been made on this feature. However, you can <0::make an alternative offer>."),
+        final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
                                                                                 link));
         element.add(makeOfferText);
 
