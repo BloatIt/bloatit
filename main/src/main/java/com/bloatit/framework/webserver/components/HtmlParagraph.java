@@ -2,8 +2,8 @@ package com.bloatit.framework.webserver.components;
 
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 
 public class HtmlParagraph extends HtmlBranch {
 
@@ -32,7 +32,7 @@ public class HtmlParagraph extends HtmlBranch {
         add(new com.bloatit.framework.webserver.components.meta.HtmlText(text));
     }
 
-    public HtmlParagraph(final HtmlTagText htmlText) {
+    public HtmlParagraph(final XmlText htmlText) {
         super("p");
         add(htmlText);
     }

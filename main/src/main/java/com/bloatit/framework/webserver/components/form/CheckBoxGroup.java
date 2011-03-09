@@ -103,4 +103,5 @@ public final class CheckBoxGroup extends HtmlLeaf {
         add(box);
         return box;
     }
+
 }

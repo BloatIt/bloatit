@@ -12,6 +12,7 @@
 
 package com.bloatit.framework.webserver.components.meta;
 
+
 /**
  * <p>
  * An HtmlBranch is a DOM Component that can get children
@@ -25,6 +26,11 @@ public abstract class HtmlBranch extends HtmlElement {
 
     public HtmlBranch(final String tag) {
         super(tag);
+    }
+
+
+    public HtmlBranch(HtmlBranch branch) {
+        super(branch);
     }
 
     @Override
@@ -61,4 +67,6 @@ public abstract class HtmlBranch extends HtmlElement {
     public boolean selfClosable() {
         return false;
     }
+
+
 }

@@ -32,8 +32,8 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
@@ -286,7 +286,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                             final HtmlSpan descriptionLabel = new HtmlSpan("offer_block_label");
                             descriptionLabel.addText(Context.tr("Offer's description: "));
                             description.add(descriptionLabel);
-                            description.add(new HtmlTagText("<br />"));
+                            description.add(new XmlText("<br />"));
                             description.addText(lot.getDescription());
                         }
                         offerRightBottomColumn.add(description);

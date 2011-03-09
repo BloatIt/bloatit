@@ -80,7 +80,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * If a label is added, it will will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      */
@@ -96,7 +96,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * The Label will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -114,7 +114,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * If a label is added later, it will be added before or after the element,
      * depending on the value of the parameter <code>position</code>
      * <p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param position the position of the future label
@@ -136,7 +136,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * The label position depends on the value of the parameter
      * <code>position</code>
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -160,7 +160,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     * 
+     *
      * @param messages The list of messages to display
      */
     public void addErrorMessages(final Messages messages) {
@@ -170,8 +170,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         }
         this.notificationPh.add(notifyBlock);
     }
-    
-    
+
+
 
     /**
      * @return the inputBlock
@@ -188,13 +188,13 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
      * not modify any other parameters than redefining the placeholder
      * </p>
-     * 
+     *
      * @param label the label for the element
      */
     public final void setLabel(final String label) {
         final HtmlDiv labelBlock = new HtmlDiv("label");
         this.label = new HtmlLabel(label);
-    
+
         labelBlock.add(this.label);
         this.ph.add(labelBlock);
         checkIdLabel();
@@ -210,7 +210,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     * 
+     *
      * @param comment The text describing the goal of the form field
      */
     public void setComment(final String comment) {
@@ -248,7 +248,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * Adds a default value to the object object.
      * </p>
-     * 
+     *
      * @param value the Object representing the default value
      */
     public final void setDefaultValue(final String value) {
@@ -282,7 +282,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Default value of an element is the value displayed to the user when the
      * page loads, before he even started adding data.
      * </p>
-     * 
+     *
      * @param value the default value
      */
     protected abstract void doSetDefaultStringValue(String value);
@@ -335,14 +335,14 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
         /**
          * Return the input tag element
-         * 
+         *
          * @return
          */
         public abstract HtmlElement getInputElement();
 
         /**
          * return the element to add in the tree
-         * 
+         *
          * @return
          */
         public abstract HtmlElement getContentElement();
@@ -363,5 +363,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         }
 
     }
+
+
 
 }

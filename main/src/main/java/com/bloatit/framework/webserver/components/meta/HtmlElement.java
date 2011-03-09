@@ -20,19 +20,23 @@ public abstract class HtmlElement extends XmlElement {
         super();
     }
 
+    public HtmlElement(HtmlElement element) {
+        super(element);
+    }
+
     /**
      * <p>
      * Sets the id of the html element :
-     * 
+     *
      * <pre>
      * <element id="..." />
      * </pre>
-     * 
+     *
      * </p>
      * <p>
      * Shortcut to element.addAttribute("id",value)
      * </p>
-     * 
+     *
      * @param id the value of the id
      * @return the element
      */
@@ -43,11 +47,11 @@ public abstract class HtmlElement extends XmlElement {
 
     /**
      * Finds the id of the element
-     * 
+     *
      * <pre>
      * <element id="value" />
      * </pre>
-     * 
+     *
      * @return The value contained in the attribute id of the element
      */
     public String getId() {
@@ -62,7 +66,7 @@ public abstract class HtmlElement extends XmlElement {
      * <p>
      * Shortcut for element.addattribute("class",cssClass)
      * </p>
-     * 
+     *
      * @param cssClass
      * @return
      */
@@ -83,10 +87,11 @@ public abstract class HtmlElement extends XmlElement {
     /**
      * This method should be overriden by any components needing some special
      * css files.
-     * 
+     *
      * @return the list of custom Css files needed by this component or null if
      *         no special js is needed
      */
+    @Override
     protected List<String> getCustomCss() {
         return new ArrayList<String>();
     }
@@ -94,14 +99,15 @@ public abstract class HtmlElement extends XmlElement {
     /**
      * This method should be overriden by any components needing some special
      * javascript files.
-     * 
+     *
      * @return the list of custom js file needed by this component or null if no
      *         special js is needed
      */
+    @Override
     protected List<String> getCustomJs() {
         return null;
     }
-    
+
 
     @Override
     protected final void writeTagAndOffspring(final QueryResponseStream txt) {

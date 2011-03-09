@@ -21,8 +21,8 @@ import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.HtmlPagedListUrl;
 
@@ -123,6 +123,6 @@ public class HtmlPagedList<T> extends HtmlList {
 
             return currentUrl.getHtmlLink(text);
         }
-        return new HtmlTagText(iString);
+        return new XmlText(iString);
     }
 }

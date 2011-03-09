@@ -49,4 +49,6 @@ public class HtmlImage extends HtmlLeaf {
         this(imageUrl, alt);
         addAttribute("class", cssClass);
     }
+
+
 }

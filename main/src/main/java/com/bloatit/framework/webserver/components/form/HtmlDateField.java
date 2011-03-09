@@ -20,7 +20,7 @@ import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 
 /**
  * <p>
@@ -57,7 +57,7 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
      * </p>
      * <p>
      * Example of options :
-     * 
+     *
      * <pre>
      * myDateField.addDatePickerOption(&quot;minDate&quot;, &quot;0&quot;); // Sets the minimum date to
      * // today
@@ -65,9 +65,9 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
      * // format to
      * // 2011-03-09
      * </pre>
-     * 
+     *
      * </p>
-     * 
+     *
      * @param name the name of the option
      * @param value the value of the option
      */
@@ -95,9 +95,9 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
 }
 
 class DateInputBlock extends InputBlock {
-    private PlaceHolderElement container;
-    private HtmlSimpleInput input;
-    private HtmlGenericElement script;
+    private final PlaceHolderElement container;
+    private final HtmlSimpleInput input;
+    private final HtmlGenericElement script;
     private PlaceHolderElement options;
     private boolean firstOption = true;
 
@@ -106,13 +106,13 @@ class DateInputBlock extends InputBlock {
         input = new HtmlSimpleInput("text");
         input.setId("datepicker");
         script = new HtmlGenericElement("script");
-        script.add(new HtmlTagText("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n"));
-        script.add(new HtmlTagText("$(function() {\n" + //
+        script.add(new XmlText("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n"));
+        script.add(new XmlText("$(function() {\n" + //
                 "    $( \"#datepicker\" ).datepicker({ "));
 
         script.add(options = new PlaceHolderElement());
 
-        script.add(new HtmlTagText(" }); \n " + //
+        script.add(new XmlText(" }); \n " + //
                 "});"));
         container.add(script);
         container.add(input);
@@ -140,6 +140,6 @@ class DateInputBlock extends InputBlock {
         }
 
         option += "\"" + optionName + "\" : \"" + optionValue + "\"";
-        options.add(new HtmlTagText(option));
+        options.add(new XmlText(option));
     }
 }

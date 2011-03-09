@@ -1,6 +1,6 @@
 package com.bloatit.framework.webserver.components.renderer;
 
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 
 /**
  * <p>
@@ -8,7 +8,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlTagText;
  * rendering
  * </p>
  */
-public abstract class HtmlTextRenderer extends HtmlTagText {
+public abstract class HtmlTextRenderer extends XmlText {
 
     /**
      * Creates an htmlRenderer

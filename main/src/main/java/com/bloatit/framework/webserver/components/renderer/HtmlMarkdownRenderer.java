@@ -4,7 +4,7 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 
 /**
  * <p>
@@ -27,7 +27,7 @@ public class HtmlMarkdownRenderer extends PlaceHolderElement {
         parser = new MarkdownParser();
         try {
             renderered = parser.parse(text);
-            add(new HtmlTagText(renderered));
+            add(new XmlText(renderered));
         } catch (final ParsingException e) {
             throw new FatalErrorException("An error occured during markdown parsing", e);
         }
@@ -39,5 +39,6 @@ public class HtmlMarkdownRenderer extends PlaceHolderElement {
     public String getRendereredContent() {
         return renderered;
     }
+
 
 }

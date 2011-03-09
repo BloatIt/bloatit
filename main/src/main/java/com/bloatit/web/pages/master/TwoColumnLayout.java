@@ -34,4 +34,5 @@ public class TwoColumnLayout extends HtmlDiv {
         rightColumn.add(element);
     }
 
+
 }

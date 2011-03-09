@@ -20,6 +20,7 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Member;
 import com.bloatit.web.HtmlTools;
@@ -182,12 +183,12 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 actions.add(actionsButtons);
                 switch (demand.getDemandState()) {
                     case PENDING:
-                        actionsButtons.add(new HtmlDiv("contribute_block").add(generatePendingRightActions()));
-                        actionsButtons.add(new HtmlDiv("make_offer_block").add(generatePendingLeftActions()));
+                        actionsButtons.add(new HtmlDiv("contribute_block").add(generateContributeAction()));
+                        actionsButtons.add(new HtmlDiv("make_offer_block").add(generateMakeAnOfferAction()));
                         break;
                     case PREPARING:
-                        actionsButtons.add(new HtmlDiv("contribute_block").add(generatePendingRightActions()));
-                        actionsButtons.add(new HtmlDiv("make_offer_block").add(generatePendingLeftActions()));
+                        actionsButtons.add(new HtmlDiv("contribute_block").add(generateContributeAction()));
+                        actionsButtons.add(new HtmlDiv("make_offer_block").add(generateAlternativeOfferAction()));
                         break;
                     case DEVELOPPING:
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateDevelopingRightActions()));
@@ -215,7 +216,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         return demandSummaryProgress;
     }
 
-    public PlaceHolderElement generatePendingRightActions() {
+    public PlaceHolderElement generateContributeAction() {
         PlaceHolderElement element = new PlaceHolderElement();
         final HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
         element.add(contributeText);
@@ -226,7 +227,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    public PlaceHolderElement generatePendingLeftActions() {
+    private PlaceHolderElement generateMakeAnOfferAction() {
         PlaceHolderElement element = new PlaceHolderElement();
         final HtmlParagraph makeOfferText = new HtmlParagraph(Context.tr("You are a developer and want to be paid to achieve this request?"));
         element.add(makeOfferText);
@@ -234,6 +235,17 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
         link.setCssClass("button");
         element.add(link);
+        return element;
+    }
+
+    private PlaceHolderElement generateAlternativeOfferAction() {
+        PlaceHolderElement element = new PlaceHolderElement();
+
+        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
+
+        final HtmlParagraph makeOfferText = new HtmlParagraph(new  HtmlMixedText(Context.tr("An offer has already <0:coucou:plop> been made on this feature. However, you can <0::make an alternative offer>."), link));
+        element.add(makeOfferText);
+
         return element;
     }
 

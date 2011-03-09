@@ -59,7 +59,16 @@ public final class HtmlLink extends HtmlBranch {
         addAttribute("href", url);
     }
 
+    public HtmlLink(HtmlLink htmlLink) {
+        super(htmlLink);
+    }
+
     public void setTitle(final String string) {
         addAttribute("title", string);
+    }
+
+    @Override
+    public HtmlLink clone() {
+        return new HtmlLink(this);
     }
 }

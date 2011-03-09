@@ -68,4 +68,5 @@ public class HtmlSimpleInput extends HtmlLeaf {
                 return TEXT;
         }
     }
+
 }

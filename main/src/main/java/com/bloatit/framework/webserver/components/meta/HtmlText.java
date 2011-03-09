@@ -18,10 +18,10 @@ import com.bloatit.web.HtmlTools;
  * All the text inputed into an HtmlText will be escaped using the
  * <code>HtmlTools.escape(text)</code> method. It is therefore safe to display
  * using this method, but cannot be used to display an html tag.<br />
- * Html Tags should be displayed using {@link HtmlTagText}
+ * Html Tags should be displayed using {@link XmlText}
  * </p>
  */
-public class HtmlText extends HtmlTagText {
+public class HtmlText extends XmlText {
 
     /**
      * Creates a component to add text to a page

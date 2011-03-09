@@ -74,6 +74,11 @@ public abstract class Url implements Cloneable {
         return new HtmlLink(urlString(), data);
     }
 
+    public final HtmlLink getHtmlLink() {
+        return new HtmlLink(urlString());
+    }
+
+
     public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }

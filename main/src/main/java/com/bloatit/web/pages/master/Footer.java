@@ -13,9 +13,14 @@ import com.bloatit.web.url.SpecialsPageUrl;
 
 public class Footer extends HtmlDiv {
 
+
+
+
     protected Footer() {
         super();
         setId("footer");
+
+
 
         final HtmlDiv linkBlock = new HtmlDiv("link_block", "link_block");
         {
@@ -40,5 +45,7 @@ public class Footer extends HtmlDiv {
         }
         add(licenceBlock);
     }
+
+
 
 }

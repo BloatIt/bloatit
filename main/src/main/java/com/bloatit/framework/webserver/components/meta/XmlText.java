@@ -14,6 +14,16 @@ public class XmlText extends XmlNode {
         super();
     }
 
+    protected XmlText(XmlText text) {
+        super();
+        this.content = text.content;
+    }
+
+    @Override
+    public XmlText clone() {
+        return new XmlText(this);
+    }
+
     /**
      * Creates a component to add raw Html to a page
      *

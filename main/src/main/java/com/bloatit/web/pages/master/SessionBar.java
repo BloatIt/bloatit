@@ -91,4 +91,6 @@ public class SessionBar extends HtmlDiv {
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(signupLink));
         }
     }
+
+
 }

@@ -13,7 +13,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.WebConfiguration;
 
@@ -102,7 +102,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 add(content);
             } else {
                 Log.framework().trace("Using cache for documentation file " + path);
-                add(new HtmlTagText(mdc.htmlString));
+                add(new XmlText(mdc.htmlString));
             }
 
             return true;
@@ -173,5 +173,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
             this.htmlString = htmlString;
         }
     }
+
+
 
 }

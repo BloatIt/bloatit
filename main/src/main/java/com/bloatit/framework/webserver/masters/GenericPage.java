@@ -1,6 +1,5 @@
 package com.bloatit.framework.webserver.masters;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
@@ -13,7 +12,7 @@ import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
+import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.framework.webserver.url.Messages;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.pages.master.HtmlNotification;
@@ -34,7 +33,7 @@ public abstract class GenericPage extends Page {
     @Override
     public final void create() throws RedirectException {
         Log.framework().trace("Writing page: " + thisUrl.urlString());
-        super.add(new HtmlTagText("<!DOCTYPE html>"));
+        super.add(new XmlText("<!DOCTYPE html>"));
         final HtmlBranch html = new HtmlGenericElement("html");
 
         super.add(html);
@@ -115,4 +114,6 @@ public abstract class GenericPage extends Page {
 
         session.flushNotifications();
     }
+
+
 }
