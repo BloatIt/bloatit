@@ -222,7 +222,7 @@ public final class CurrencyLocale {
         boolean returnValue = false;
         try {
             dateMutex.acquire();
-            if (lastParse == null || lastParse.before(new Date(file.lastModified()))) {
+            if (lastParse == null || !file.exists() || lastParse.before(new Date(file.lastModified()))) {
                 returnValue = true;
                 lastParse = new Date();
             }
