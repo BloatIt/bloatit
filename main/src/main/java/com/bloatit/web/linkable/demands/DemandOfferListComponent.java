@@ -135,12 +135,18 @@ public class DemandOfferListComponent extends HtmlDiv {
                         block.addInLeftColumn(new HtmlParagraph(tr("Test the last release and report bugs.")));
                     }
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
+
+
+                    generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
+
                     break;
                 case FINISHED:
                     offersBlock.add(new HtmlTitle(Context.tr("Finished offer"), 1));
                     offersBlock.add(block = new BicolumnOfferBlock(true));
                     block.addInLeftColumn(new HtmlParagraph(tr("This offer is finished.")));
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
+
+                    generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
                     break;
                 case DISCARDED:
                     offersBlock.add(new HtmlTitle(Context.tr("Demand discared ..."), 1));
@@ -152,6 +158,22 @@ public class DemandOfferListComponent extends HtmlDiv {
 
         } catch (final UnauthorizedOperationException e) {
             // No right no current offer.
+        }
+    }
+
+    public void generateOldOffersList(PageIterable<Offer> offers, int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
+            throws UnauthorizedOperationException {
+        //
+        // UnSelected
+        offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
+        BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
+        offersBlock.add(unselectedBlock);
+        unselectedBlock.addInLeftColumn(new HtmlParagraph("This offers have not been selected and will never be developed."));
+
+        for (final Offer offer : offers) {
+            if (offer != selectedOffer) {
+                unselectedBlock.addInRightColumn(new OfferBlock(offer, false));
+            }
         }
     }
 
