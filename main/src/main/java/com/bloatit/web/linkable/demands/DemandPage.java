@@ -25,6 +25,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.model.Demand;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.DemandPageUrl;
 
 @ParamContainer("demand")
@@ -92,9 +93,14 @@ public final class DemandPage extends MasterPage {
         // - The tab panel
         // - The comments
 
-        add(new DemandSummaryComponent(demand));
-        add(new DemandTabPane(url.getDemandTabPaneUrl(), demand));
-        add(new DemandCommentListComponent(demand));
+        TwoColumnLayout layout = new TwoColumnLayout(false);
+
+
+        layout.addLeft(new DemandSummaryComponent(demand));
+        layout.addLeft(new DemandTabPane(url.getDemandTabPaneUrl(), demand));
+        layout.addLeft(new DemandCommentListComponent(demand));
+
+        add(layout);
 
     }
 
