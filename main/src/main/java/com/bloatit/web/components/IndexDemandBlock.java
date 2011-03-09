@@ -32,7 +32,7 @@ public class IndexDemandBlock extends HtmlDiv {
 
             setFloatRight(ProjectsTools.getProjectLogo(highlightDemand.getDemand().getProject()));
 
-            indexBodyElement.add(new HtmlTitle(DemandsTools.getTitle(highlightDemand.getDemand()), 3));
+            indexBodyElement.add(new HtmlTitle(new DemandPageUrl(highlightDemand.getDemand()).getHtmlLink(DemandsTools.getTitle(highlightDemand.getDemand())), 3));
 
             indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightDemand.getDemand().getProject())));
 

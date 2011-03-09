@@ -368,7 +368,7 @@ public final class Localizator {
                 final Locale l = new Locale("en", "US");
                 return new CurrencyLocale(euroAmount, l);
             } catch (final CurrencyNotAvailableException e1) {
-                throw new FatalErrorException("Locale US not available on current system ...", e);
+                throw new FatalErrorException("The currency for the locale US not available ...", e);
             }
         }
     }

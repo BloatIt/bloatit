@@ -30,24 +30,37 @@ import com.bloatit.web.WebConfiguration;
 
 public class BloatitExampleDB {
 
+    private Project libreOffice;
+    private final Member yoann;
+    private final Member fred;
+    private final Member thomas;
+    private final Member admin;
+    private final Member chogall;
+    private final Member cerbere;
+    private final Member hydre;
+    private final Member celeste;
+    private final Member elephantman;
+    private final Member rataxes;
+    private Project vlc;
+    private Project perroquet;
+    private Project mageia;
+
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException {
 
         SessionManager.beginWorkUnit();
 
-        // Serious accounts
-        final Member fred = createMember("fred", "Frédéric Bertolus");
-        final Member thomas = createMember("thomas", "Thomas Guyard");
-        final Member yoann = createMember("yoann", "Yoann Plénet");
-        final Member admin = createMember("admin", "Administrator");
+        fred = createMember("fred", "Frédéric Bertolus");
+        thomas = createMember("thomas", "Thomas Guyard");
+        yoann = createMember("yoann", "Yoann Plénet");
+        admin = createMember("admin", "Administrator");
         admin.setRole(Role.ADMIN);
 
-        // Very not serious accounts
-        final Member chogall = createMember("chogall", "Cho'gall");
-        final Member cerbere = createMember("cerbere", "Cerbère");
-        final Member hydre = createMember("hydre", "Hydre");
-        final Member elephantman = createMember("elephantman", "ElephantMan");
-        final Member celeste = createMember("celeste", "Céleste");
-        final Member rataxes = createMember("rataxes", "Rataxès");
+        chogall = createMember("chogall", "Cho'gall");
+        cerbere = createMember("cerbere", "Cerbère");
+        hydre = createMember("hydre", "Hydre");
+        elephantman = createMember("elephantman", "ElephantMan");
+        celeste = createMember("celeste", "Céleste");
+        rataxes = createMember("rataxes", "Rataxès");
 
         // Add avatar
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
@@ -71,35 +84,75 @@ public class BloatitExampleDB {
         final Group b219 = new Group("b219", "b219@elveos.org", "The group for b219", Right.PROTECTED, fred);
         final Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", "The group for ubuntu users", Right.PUBLIC, thomas);
 
-        // VLC project
+        // Generate projects
+        generateVlcProject();
+        generatePerroquetProject();
+        generateLibreOfficeProject();
+        generateMageiaProject();
 
-        final String vlcTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
-        final String vlcDescription = "http://www.videolan.org/vlc/";
-        final Project vlc = new Project("VLC", thomas, Locale.FRANCE, vlcTitle, vlcDescription);
-        vlc.setImage(getImage(thomas, "vlc.png"));
+        // Generate demands
 
-        // Perroquet project
+        final Demand twoSubtitlesInVlcDemand = generateVlcDemandTwoSubtitles();
+        final Demand addPerroquetInMageiaDemand = generateMageiaDemandPerroquetPackage();
+        final Demand colorPickerDemand = generateLibreOfficeDemandColorPicker();
+        Demand libreOfficeDemandDefaultTemplate = generateLibreOfficeDemandDefaultTemplate();
+        Demand perroquetDemandArabicSupport = generatePerroquetDemandArabicSupport();
+        Demand mageiaDemandRemoveEmacs = generateMageiaDemandRemoveEmacs();
 
-        final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères";
-        final String perroquetDescription = "Le principe de Perroquet est d'utiliser une vidéo ou un fichier audio et les sous-titres associés pour vous faire écouter et comprendre les dialogues ou paroles. Après lui avoir indiqué les fichiers à utiliser, Perroquet va lire un morceau de la vidéo et puis la mettre en pause. Il vous indiquera alors le nombre de mot à trouver et vous devrez les taper pour pouvoir continuer la lecture. Il est possible de réécouter une séquence autant de fois que nécessaire. Si vous ne comprenez pas tout, Perroquet présente plusieurs moyen de vous aider. \n"
-                + "http://perroquet.b219.org/";
-        final Project perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription);
-        perroquet.setImage(getImage(fred, "perroquet.png"));
 
+        // Highlight demands
+        new HighlightDemand(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(colorPickerDemand, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(addPerroquetInMageiaDemand, 3, "In developement", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(libreOfficeDemandDefaultTemplate, 4, "Need your help quicky", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(perroquetDemandArabicSupport, 5, "Random", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(mageiaDemandRemoveEmacs, 6, "Success", DateUtils.now(), DateUtils.flyingPigDate());
+
+        SessionManager.endWorkUnitAndFlush();
+
+    }
+
+    public void generateMageiaProject() {
+        // Mageia project
+
+        final String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail.";
+        final String mageiaDescription = "http://mageia.org/fr/";
+        mageia = new Project("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription);
+        mageia.setImage(getImage(yoann, "mageia.png"));
+    }
+
+    public void generateLibreOfficeProject() {
         // LibreOffice project
 
         final String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle.";
         final String libreOfficeDescription = "LibreOffice is the free power-packed Open Source personal productivity suite for Windows, Macintosh and Linux, that gives you six feature-rich applications for all your document production and data processing needs: Writer, Calc, Impress, Draw, Math and Base. Support and documentation is free from our large, dedicated community of users, contributors and developers. You, too, can also get involved!"
                 + "\n" + "http://www.libreoffice.org/";
-        final Project libreOffice = new Project("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription);
+        libreOffice = new Project("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription);
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
+    }
 
-        // Mageia project
+    public void generatePerroquetProject() {
+        // Perroquet project
 
-        final String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail.";
-        final String mageiaDescription = "http://mageia.org/fr/";
-        final Project mageia = new Project("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription);
-        mageia.setImage(getImage(yoann, "mageia.png"));
+        final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères";
+        final String perroquetDescription = "Le principe de Perroquet est d'utiliser une vidéo ou un fichier audio et les sous-titres associés pour vous faire écouter et comprendre les dialogues ou paroles. Après lui avoir indiqué les fichiers à utiliser, Perroquet va lire un morceau de la vidéo et puis la mettre en pause. Il vous indiquera alors le nombre de mot à trouver et vous devrez les taper pour pouvoir continuer la lecture. Il est possible de réécouter une séquence autant de fois que nécessaire. Si vous ne comprenez pas tout, Perroquet présente plusieurs moyen de vous aider. \n"
+                + "http://perroquet.b219.org/";
+        perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription);
+        perroquet.setImage(getImage(fred, "perroquet.png"));
+    }
+
+    public void generateVlcProject() {
+        // VLC project
+
+        final String vlcTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
+        final String vlcDescription = "http://www.videolan.org/vlc/";
+        vlc = new Project("VLC", thomas, Locale.FRANCE, vlcTitle, vlcDescription);
+        vlc.setImage(getImage(thomas, "vlc.png"));
+    }
+
+    public Demand generateVlcDemandTwoSubtitles() throws UnauthorizedOperationException, NotEnoughMoneyException {
+
+        // Demand with offers selected, not validated and not founded
 
         final String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n"
                 + "\n"
@@ -172,7 +225,24 @@ public class BloatitExampleDB {
         celesteOffer.authenticate(new AuthToken(cerbere));
         celesteOffer.voteUp();
 
+        // Contributions
+        twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
+        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("800"), "On est prêts, non moi j'suis pas prêt !");
+
+        twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
+        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
+
+        twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
+        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("300"), "");
+
+        return twoSubtitlesInVlcDemand;
+    }
+
+    public Demand generateMageiaDemandPerroquetPackage() throws UnauthorizedOperationException, NotEnoughMoneyException {
         // Mageia demand
+
+        // Demand in development
+
         final String addPerroquetInMageiaDemandDescription = "Le logiciel perroquet (http://perroquet.b219.org) a des paquets pour Ubuntu et ArchLinux mais pas pour Mageia.\n"
                 + "\n"
                 + "Le but de cette demande est de créer un paquet pour perroquet et si possible l'intégrer dans les paquets officiels de Mageia.\n"
@@ -194,43 +264,12 @@ public class BloatitExampleDB {
                                                                               hydre.getLocale(),
                                                                               DateUtils.tomorrow(),
                                                                               0);
-
-        // LibreOffice demand
-        final String colorPickerDemandDescription = "Actuellement dans LibreOffice, il y a un lot de couleur pré-tiré moche. Si l'on veut une jolie couleur, il faut passer dans tous les menus et on arrive enfin sur un outils anti-ergonomique.\n"
-                + "Il faudrait donc ajouter un color picker à un endroit accessible, par exemple dans le selecteur de couleur des styles.";
-
-        final String colorPickerDemandTitle = "Permettre de choisir facilement n'importe quelle couleur";
-
-        final Demand colorPickerDemand = DemandFactory.createDemand(yoann,
-                                                                    yoann.getLocale(),
-                                                                    colorPickerDemandTitle,
-                                                                    colorPickerDemandDescription,
-                                                                    libreOffice);
-
         // Contributions
-
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
-        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("800"), "On est prêts, non moi j'suis pas prêt !");
-
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
-        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
-
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
-        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("300"), "");
-
         addPerroquetInMageiaDemand.authenticate(new AuthToken(hydre));
         addPerroquetInMageiaDemand.addContribution(new BigDecimal("10"), "");
 
         addPerroquetInMageiaDemand.authenticate(new AuthToken(fred));
         addPerroquetInMageiaDemand.addContribution(new BigDecimal("230"), "");
-
-        // Highlight demands
-        new HighlightDemand(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(colorPickerDemand, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(addPerroquetInMageiaDemand, 3, "In developement", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(twoSubtitlesInVlcDemand, 4, "Success", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(colorPickerDemand, 5, "Random", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(addPerroquetInMageiaDemand, 6, "Need your help quicly", DateUtils.now(), DateUtils.flyingPigDate());
 
         // Add bugs
         setDemandInDevelopmentState(addPerroquetInMageiaDemand);
@@ -248,13 +287,142 @@ public class BloatitExampleDB {
                           yoann.getLocale(),
                           Level.MAJOR);
 
-        SessionManager.endWorkUnitAndFlush();
+        return addPerroquetInMageiaDemand;
+    }
 
+    public Demand generateLibreOfficeDemandColorPicker() throws UnauthorizedOperationException {
+        // LibreOffice demand
+
+        // Demand without offer
+        final String colorPickerDemandDescription = "Actuellement dans LibreOffice, il y a un lot de couleur pré-tiré moche. Si l'on veut une jolie couleur, il faut passer dans tous les menus et on arrive enfin sur un outils anti-ergonomique.\n"
+                + "Il faudrait donc ajouter un color picker à un endroit accessible, par exemple dans le selecteur de couleur des styles.";
+
+        final String colorPickerDemandTitle = "Permettre de choisir facilement n'importe quelle couleur";
+
+        final Demand colorPickerDemand = DemandFactory.createDemand(yoann,
+                                                                    yoann.getLocale(),
+                                                                    colorPickerDemandTitle,
+                                                                    colorPickerDemandDescription,
+                                                                    libreOffice);
+        return colorPickerDemand;
+    }
+
+    public Demand generateLibreOfficeDemandDefaultTemplate() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice demand
+
+        // Demand with offer validated but not funded
+        final String demandDescription = "Actuellement dans LibreOffice, le template par défaut n'est pas très beau. Un jeu de template élégant inclus par défaut serait vraiment utile.";
+
+        final String demandTitle = "Jolie template par défaut dans Libre Office ";
+
+        final Demand demand = DemandFactory.createDemand(yoann,
+                                                                    yoann.getLocale(),
+                                                                    demandTitle,
+                                                                    demandDescription,
+                                                                    libreOffice);
+
+        final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
+        demand.authenticate(new AuthToken(celeste));
+        final Offer offer = demand.addOffer( celeste ,
+                                                                              new BigDecimal(1000),
+                                                                              offerDescription,
+                                                                              celeste.getLocale(),
+                                                                              DateUtils.tomorrow(),
+                                                                              0);
+
+        DemandImplementation  demandImpl = (DemandImplementation) demand;
+        demandImpl.getDao().setValidationDate(DateUtils.now());
+
+        // Contributions
+        demand.authenticate(new AuthToken(chogall));
+        demand.addContribution(new BigDecimal("10"), "");
+
+
+        return demand;
+    }
+
+
+    public Demand generatePerroquetDemandArabicSupport() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice demand
+
+        // Demand with offer not validated and funded
+        final String demandDescription = "Il faut que perroquet soit capable de gérer les langue qui vont de droite à gauche (en particulier les langues arabes) et vérifier que toutes les caractères sont bien supportés.";
+
+        final String demandTitle = "Support des langues arabe";
+
+        final Demand demand = DemandFactory.createDemand(yoann,
+                                                                    yoann.getLocale(),
+                                                                    demandTitle,
+                                                                    demandDescription,
+                                                                    perroquet);
+
+        final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
+        demand.authenticate(new AuthToken(fred));
+        final Offer offer = demand.addOffer( fred ,
+                                                                              new BigDecimal(750),
+                                                                              offerDescription,
+                                                                              fred.getLocale(),
+                                                                              DateUtils.tomorrow(),
+                                                                              0);
+
+        // Contributions
+        demand.authenticate(new AuthToken(yoann));
+        demand.addContribution(new BigDecimal("760"), "");
+
+
+        return demand;
+    }
+
+    public Demand generateMageiaDemandRemoveEmacs() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice demand
+
+        // Demand with offer not validated and not funded
+        final String demandDescription = "Il faut absolument supprimer emacs des paquets disponible dans Mageia. En effet, le successeur d'emacs vim est maintenant mature et le logiciel emacs qui a bien servi est maintenant dépassé et encombre les paquets. Des sources indiquent aussi qu'emacs est dangereux pour la santé et qu'il peut engendrer un Syndrome du Canal Carpien. D'autre part emacs est peu accessible car il est difficilement utilisable par les personnes ne disposant que d'un seul doigt. ";
+
+        final String demandTitle = "Suppression du paquet emacs déprécié";
+
+        final Demand demand = DemandFactory.createDemand(thomas,
+                                                         thomas.getLocale(),
+                                                                    demandTitle,
+                                                                    demandDescription,
+                                                                    mageia);
+
+        final String offerDescription = "Oui, vive vim !";
+        demand.authenticate(new AuthToken(cerbere));
+        final Offer offer = demand.addOffer( cerbere ,
+                                                                              new BigDecimal(300),
+                                                                              offerDescription,
+                                                                              cerbere.getLocale(),
+                                                                              DateUtils.tomorrow(),
+                                                                              0);
+
+        DemandImplementation  demandImpl = (DemandImplementation) demand;
+        demandImpl.getDao().setValidationDate(DateUtils.now());
+
+        // Contributions
+        demand.authenticate(new AuthToken(thomas));
+        demand.addContribution(new BigDecimal("400"), "");
+
+
+        setDemandInFinishedState(demand);
+
+
+        return demand;
     }
 
     private void setDemandInDevelopmentState(final Demand demand) {
         final DemandImplementation demandImpl = (DemandImplementation) demand;
         demandImpl.getDao().setDemandState(DemandState.DEVELOPPING);
+    }
+
+    private void setDemandInFinishedState(final Demand demand) {
+        final DemandImplementation demandImpl = (DemandImplementation) demand;
+        demandImpl.getDao().setDemandState(DemandState.FINISHED);
+    }
+
+    private void setDemandInDiscardedState(final Demand demand) {
+        final DemandImplementation demandImpl = (DemandImplementation) demand;
+        demandImpl.getDao().setDemandState(DemandState.DISCARDED);
     }
 
     public void giveMoney(final Member member, final int amount) {
