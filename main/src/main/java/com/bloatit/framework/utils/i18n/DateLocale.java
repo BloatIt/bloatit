@@ -67,6 +67,7 @@ public final class DateLocale {
     private final String dateString;
     private final Locale locale;
     private final DateFormat formatter;
+    private DateFormat parser;
 
     /**
      * <p>
@@ -105,6 +106,7 @@ public final class DateLocale {
         this.dateString = dateString;
         this.locale = locale;
         this.formatter = DateFormat.getDateInstance(getJavaStyle(FormatStyle.SHORT), locale);
+        this.parser = new SimpleDateFormat("yyyy-MM-dd");
         parseDate();
     }
 
@@ -120,6 +122,7 @@ public final class DateLocale {
         this.locale = locale;
         this.javaDate = (Date) javaDate.clone();
         this.formatter = DateFormat.getTimeInstance(getJavaStyle(FormatStyle.SHORT), locale);
+//        this.formatter = new SimpleDateFormat("yyyy-mm-dd");
         this.dateString = formatter.format(javaDate);
     }
 
@@ -184,9 +187,10 @@ public final class DateLocale {
      *             String that matches the current user locale
      */
     private void parseDate() throws DateParsingException {
-        this.formatter.setLenient(false);
+        this.parser.setLenient(false);
         try {
-            this.javaDate = formatter.parse(this.dateString);
+            this.javaDate = parser.parse(this.dateString);
+            System.err.println(javaDate);
         } catch (final ParseException e) {
             throw new DateParsingException(e);
         }

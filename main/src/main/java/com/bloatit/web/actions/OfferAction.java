@@ -124,6 +124,7 @@ public final class OfferAction extends LoggedAction {
         try {
             Batch constructingBatch;
             if (draftOffer == null) {
+                System.err.println(expiryDate);
                 constructingOffer = demand.addOffer(session.getAuthToken().getMember(),
                                                     price,
                                                     description,
