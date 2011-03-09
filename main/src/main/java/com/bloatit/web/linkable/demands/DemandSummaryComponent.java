@@ -19,6 +19,7 @@ import java.util.Date;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.TimeRenderer;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
@@ -29,6 +30,7 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
+import com.bloatit.model.Bug;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Member;
 import com.bloatit.model.Release;
@@ -202,15 +204,12 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         break;
                     case DEVELOPPING:
                         actionsButtons.add(new HtmlDiv("report_bug_block").add(generateDevelopingLeftActions()));
-                        actionsButtons.add(new HtmlDiv("developer_description_block").add(generateDevelopingRightActions()));
+                        actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
 
                         break;
                     case FINISHED:
-                        // actionsButtons.add(new
-                        // HtmlDiv("contribute_block").add(generatePendingRightActions()));
-                        // actionsButtons.add(new
-                        // HtmlDiv("make_offer_block").add(generatePendingLeftActions()));
-                        break;
+                        actionsButtons.add(new HtmlDiv("report_bug_block").add(generateFinishedAction()));
+                        actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
                     case DISCARDED:
                         // actionsButtons.add(new
                         // HtmlDiv("contribute_block").add(generatePendingRightActions()));
@@ -273,7 +272,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    public PlaceHolderElement generateDevelopingRightActions() throws UnauthorizedOperationException {
+    public PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
         if (!demand.getSelectedOffer().hasRelease()) {
@@ -313,11 +312,35 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 
-        element.add(new HtmlParagraph(tr("This is feature currently in development.")));
+        element.add(new HtmlParagraph(tr("This feature is currently in development.")));
 
         element.add(new HtmlParagraph(new HtmlMixedText(tr("This feature is developed by <0>."), authorLink)));
 
         element.add(new HtmlParagraph(tr("Read the comments to have an more recents informations.")));
+
+        return element;
+    }
+
+
+    public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
+        PlaceHolderElement element = new PlaceHolderElement();
+
+        Member author = demand.getSelectedOffer().getAuthor();
+        HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
+        element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
+
+        element.add(new HtmlParagraph(tr("This feature is finished.")));
+
+        element.add(new HtmlParagraph(new HtmlMixedText(tr("The developement was done by <0>."), authorLink)));
+
+
+        PageIterable<Bug> openBugs = demand.getOpenBugs();
+
+        if(openBugs.size() > 0) {
+            element.add(new HtmlParagraph(trn("There is {0} open bug.", "There is {0} open bug.", openBugs.size(), openBugs.size())));
+        } else {
+            element.add(new HtmlParagraph(tr("There is no open bug.")));
+        }
 
         return element;
     }
