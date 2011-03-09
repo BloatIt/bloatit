@@ -63,14 +63,15 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "member.byLoginPassword",
                            query = "FROM DaoMember WHERE login = :login AND password = :password"),
 
+                           
                        @NamedQuery(
-                           name = "member.getRecievedInvitations.byStateGroup",
+                           name = "member.getReceivedInvitations.byStateGroup",
                            query = "FROM DaoJoinGroupInvitation " +
                                       "WHERE receiver = :receiver " +
                                       "AND state = :state  " +
                                       "AND group = :group"),
                           @NamedQuery(
-                              name = "member.getRecievedInvitations.byStateGroup.size",
+                              name = "member.getReceivedInvitations.byStateGroup.size",
                               query =  "SELECT count(*)" +
                                           "FROM DaoJoinGroupInvitation " +
                                        "WHERE receiver = :receiver " +
@@ -78,12 +79,12 @@ import com.bloatit.framework.utils.PageIterable;
                                        "AND group = :group"),
 
                        @NamedQuery(
-                           name = "member.getRecievedInvitations.byState",
+                           name = "member.getReceivedInvitations.byState",
                            query = "FROM DaoJoinGroupInvitation " +
                                    "WHERE receiver = :receiver " +
                                    "AND state = :state "),
                        @NamedQuery(
-                           name = "member.getRecievedInvitations.byState.size",
+                           name = "member.getReceivedInvitations.byState.size",
                            query = "SELECT count(*)" +
                                       "FROM DaoJoinGroupInvitation " +
                                    "WHERE receiver = :receiver " +
