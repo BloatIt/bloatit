@@ -211,6 +211,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         actionsButtons.add(new HtmlDiv("report_bug_block").add(generateFinishedAction()));
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
                     case DISCARDED:
+                        //TODO
                         // actionsButtons.add(new
                         // HtmlDiv("contribute_block").add(generatePendingRightActions()));
                         // actionsButtons.add(new
