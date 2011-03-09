@@ -33,6 +33,7 @@ import com.bloatit.model.Group;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.Action;
+import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
@@ -137,6 +138,9 @@ public class TeamPage extends MasterPage {
                 title.add(new HtmlParagraph().addText("Send a request to join group"));
             }
         }
+        
+        // Avatar
+        title.add(new HtmlDiv("float_right").add(GroupTools.getGroupAvatar(targetTeam)));
 
         // Description
         // TODO add cache
