@@ -13,6 +13,9 @@ package com.bloatit.web.linkable.demands;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.PageNotFoundException;
@@ -67,8 +70,10 @@ public final class DemandPage extends MasterPage {
     }
 
     @Override
-    protected String getCustomCss() {
-        return "demand.css";
+    protected List<String> getCustomCss() {
+        ArrayList<String> custom = new ArrayList<String>();
+        custom.add("demand.css");
+        return custom;
     }
 
     public Demand getDemand() {

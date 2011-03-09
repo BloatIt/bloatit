@@ -153,6 +153,35 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * <p>
+     * Add a message indicating to the user that his input is not correct
+     * </p>
+     * <p>
+     * Error message will be added close to the form field, with a position
+     * depending on the kind of field. CSS can then be used to render it
+     * properly.
+     * </p>
+     * 
+     * @param messages The list of messages to display
+     */
+    public void addErrorMessages(final Messages messages) {
+        final HtmlDiv notifyBlock = new HtmlDiv("notification_error");
+        for (final Message message : messages) {
+            notifyBlock.add(new HtmlParagraph(message.getMessage()));
+        }
+        this.notificationPh.add(notifyBlock);
+    }
+    
+    
+
+    /**
+     * @return the inputBlock
+     */
+    protected InputBlock getInputBlock() {
+        return inputBlock;
+    }
+
+    /**
+     * <p>
      * Sets the label for the object
      * </p>
      * <p>
@@ -165,7 +194,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     public final void setLabel(final String label) {
         final HtmlDiv labelBlock = new HtmlDiv("label");
         this.label = new HtmlLabel(label);
-
+    
         labelBlock.add(this.label);
         this.ph.add(labelBlock);
         checkIdLabel();
@@ -188,26 +217,6 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         final HtmlDiv commentBlock = new HtmlDiv("comment");
         commentBlock.addText(comment);
         this.commentPh.add(commentBlock);
-    }
-
-    /**
-     * <p>
-     * Add a message indicating to the user that his input is not correct
-     * </p>
-     * <p>
-     * Error message will be added close to the form field, with a position
-     * depending on the kind of field. CSS can then be used to render it
-     * properly.
-     * </p>
-     * 
-     * @param messages The list of messages to display
-     */
-    public void addErrorMessages(final Messages messages) {
-        final HtmlDiv notifyBlock = new HtmlDiv("notification_error");
-        for (final Message message : messages) {
-            notifyBlock.add(new HtmlParagraph(message.getMessage()));
-        }
-        this.notificationPh.add(notifyBlock);
     }
 
     @Override

@@ -145,7 +145,7 @@ public final class OfferPage extends LoggedPage {
 
         // Date field
         final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
-        final HtmlDateField dateInput = new HtmlDateField(dateData.getName(), Context.tr("Release date"));
+        final HtmlDateField dateInput = new HtmlDateField(dateData.getName(), Context.tr("Release date"), Context.getLocalizator().getLocale());
         dateInput.setDefaultValue(dateData.getSuggestedValue());
         dateInput.addErrorMessages(dateData.getErrorMessages());
         dateInput.setComment(Context.tr("You will have to release this feature before the release date."));
@@ -212,15 +212,5 @@ public final class OfferPage extends LoggedPage {
         return offerPageContainer;
     }
     
-    protected String getCustomCss(){
-        return "bloatit/jquery-ui-1.8.10.custom.css";
-    }
 
-    protected List<String> getCustomJs() {
-        ArrayList<String> customJsList = new ArrayList<String>();
-        customJsList.add("jquery-1.4.4.min.js");
-        customJsList.add("jquery-ui-1.8.10.custom.min.js");
-        
-        return customJsList;
-    }
 }

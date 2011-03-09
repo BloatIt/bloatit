@@ -15,6 +15,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.RandomString;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
@@ -87,7 +88,7 @@ public final class TestPage extends MasterPage {
         block1.add(new HtmlButton(tr("Useless button")));
 
         final HtmlFormBlock block2 = new HtmlFormBlock("second form block");
-        block2.add(new HtmlDateField("date", "Field 1"));
+        block2.add(new HtmlDateField("date", "Field 1", Context.getLocalizator().getLocale()));
         block2.add(new HtmlPasswordField("password", "Field 2").setId("Thomas"));
 
         final HtmlFormBlock block3 = new HtmlFormBlock(tr("Quand êtes vous disponibles ?"));

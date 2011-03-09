@@ -14,6 +14,9 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.Image.ImageType;
@@ -145,8 +148,11 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected String getCustomCss() {
-        return "index.css";
+    protected List<String> getCustomCss() {
+        ArrayList<String> custom = new ArrayList<String>();
+        
+        custom.add("index.css");
+        return custom;
     }
 
     @Override

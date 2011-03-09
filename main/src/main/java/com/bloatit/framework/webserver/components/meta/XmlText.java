@@ -2,6 +2,7 @@ package com.bloatit.framework.webserver.components.meta;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
@@ -44,4 +45,15 @@ public class XmlText extends XmlNode {
     public final void write(final QueryResponseStream txt) {
         txt.writeRawText(content);
     }
+
+    @Override
+    protected final List<String> getCustomCss() {
+        return null;
+    }
+
+    @Override
+    protected final List<String> getCustomJs() {
+        return null;
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.bloatit.framework.webserver.masters;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
@@ -22,6 +22,7 @@ public abstract class GenericPage extends Page {
 
     protected final Url thisUrl;
     protected final Session session;
+    protected Header pageHeader;
 
     public GenericPage(final Url url) {
         super();
@@ -40,7 +41,8 @@ public abstract class GenericPage extends Page {
 
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
-        html.add(new Header(getTitle(), getCustomCss(), getCustomJs()));
+        pageHeader = new Header(getTitle());
+        html.add(pageHeader);
 
         final HtmlGenericElement body = new HtmlGenericElement("body");
         html.add(body);
@@ -58,10 +60,20 @@ public abstract class GenericPage extends Page {
         addWaitingNotifications();
     }
 
-    protected abstract void generateBody(HtmlGenericElement body) throws RedirectException;
-
     @Override
-    protected abstract String getTitle();
+    protected void generateDependencies() {
+        ArrayList<String> allCss = new ArrayList<String>();
+        getAllCustomCss(allCss);
+        for (String css : allCss) {
+            pageHeader.addCss(css);
+        }
+
+        ArrayList<String> allJs = new ArrayList<String>();
+        getAllCustomJs(allJs);
+        for (String js : allJs) {
+            pageHeader.addJs(js);
+        }
+    }
 
     @Override
     public abstract boolean isStable();
@@ -73,13 +85,10 @@ public abstract class GenericPage extends Page {
         return getClass().getName().toLowerCase(Locale.ENGLISH);
     }
 
-    protected String getCustomCss() {
-        return null;
-    }
-    
-    protected List<String> getCustomJs(){
-        return null;
-    }
+    protected abstract void generateBody(HtmlGenericElement body) throws RedirectException;
+
+    @Override
+    protected abstract String getTitle();
 
     protected abstract void addNotification(final HtmlNotification note);
 

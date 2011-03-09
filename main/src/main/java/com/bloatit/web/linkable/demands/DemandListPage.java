@@ -12,6 +12,9 @@
 package com.bloatit.web.linkable.demands;
 
 // import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.search.DemandSearch;
 import com.bloatit.data.search.DemandSearch.SortMethod;
@@ -251,8 +254,10 @@ public final class DemandListPage extends MasterPage {
     }
 
     @Override
-    protected String getCustomCss() {
-        return "demands-list.css";
+    protected List<String> getCustomCss() {
+        ArrayList<String> custom = new ArrayList<String>();
+        custom.add("demands-list.css");
+        return custom;
     }
 
     static class IdeasListItem implements HtmlRenderer<Demand> {

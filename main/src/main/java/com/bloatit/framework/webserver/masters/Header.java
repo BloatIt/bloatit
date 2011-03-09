@@ -1,50 +1,74 @@
 package com.bloatit.framework.webserver.masters;
 
-import java.util.List;
-
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
+import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 
 public final class Header extends HtmlElement {
     private static final String DESIGN = "/resources/css/core.css";
+    private final PlaceHolderElement cssPh;
+    private final PlaceHolderElement jsPh;
 
-    public Header(final String title, final String customCss, final List<String> customJs) {
+    public Header(final String title) {
         super("head");
 
-        final HtmlBranch meta = new HtmlGenericElement("meta").addAttribute("charset", "UTF-8");
+        final HtmlBranch meta = new HtmlGenericElement("meta");
+        meta.addAttribute("charset", "UTF-8");
 
-        final HtmlBranch link = new HtmlGenericElement("link").addAttribute("rel", "stylesheet")
-                                                              .addAttribute("href", DESIGN)
-                                                              .addAttribute("type", "text/css")
-                                                              .addAttribute("media", "handheld, all");
+        final HtmlBranch link = new HtmlGenericElement("link");
+        link.addAttribute("rel", "stylesheet");
+        link.addAttribute("href", DESIGN);
+        link.addAttribute("type", "text/css");
+        link.addAttribute("media", "handheld, all");
 
         add(meta);
         add(link);
 
-        if (customCss != null && !customCss.equals("")) {
-            final HtmlElement customCssLink = new HtmlGenericElement("link").addAttribute("rel", "stylesheet");
-            customCssLink.addAttribute("href", "/resources/css/" + customCss);
-            customCssLink.addAttribute("type", "text/css");
-            customCssLink.addAttribute("media", "handheld, all");
-            add(customCssLink);
-        }
+        cssPh = new PlaceHolderElement();
+        add(cssPh);
 
-        if (customJs != null) {
-            for (String js : customJs) {
-                final HtmlElement customJsLink = new HtmlGenericElement("script");
-                customJsLink.addAttribute("type", "text/javascript");
-                if (js.startsWith("http://") || js.startsWith("https://")) {
-                    customJsLink.addAttribute("src", js);
-                } else {
-                    customJsLink.addAttribute("src", "/resources/js/" + js);
-                }
-
-                add(customJsLink);
-            }
-        }
+        jsPh = new PlaceHolderElement();
+        add(jsPh);
 
         add(new HtmlGenericElement("title").addText(title));
+    }
+
+    /**
+     * Adds a new css link to the page
+     * @param css the string describing the name of the css
+     */
+    public void addCss(String css) {
+        final HtmlElement cssLink = new HtmlGenericElement("link").addAttribute("rel", "stylesheet");
+        cssLink.addAttribute("href", "/resources/css/" + css);
+        cssLink.addAttribute("type", "text/css");
+        cssLink.addAttribute("media", "handheld, all");
+        cssPh.add(cssLink);
+    }
+
+    /**
+     * Adds a new javascript link to the page
+     * <p>
+     * The string describing the javascript link can be any following format :
+     * <li>Relative URI to the application (myScript.js), it will be formatted
+     * with a valid relative path to the web server</li>
+     * <li>Absolute URI (http://host.com/script.js), and will be left as is.
+     * Absolute URI MUST start with http:// or https://</li>
+     * </p>
+     * 
+     * @param js a string describing the URI of the js link, either relative to
+     *            the application or absolute (and starting with http://)
+     */
+    public void addJs(String js) {
+        final HtmlElement jsLink = new HtmlGenericElement("script");
+        jsLink.addAttribute("type", "text/javascript");
+        if (js.startsWith("http://") || js.startsWith("https://")) {
+            jsLink.addAttribute("src", js);
+        } else {
+            jsLink.addAttribute("src", "/resources/js/" + js);
+        }
+
+        jsPh.add(jsLink);
     }
 
     @Override

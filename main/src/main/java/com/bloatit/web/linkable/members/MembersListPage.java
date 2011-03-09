@@ -11,6 +11,9 @@
  */
 package com.bloatit.web.linkable.members;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -105,7 +108,9 @@ public final class MembersListPage extends MasterPage {
     }
 
     @Override
-    protected String getCustomCss() {
-        return "members-list.css";
+    protected List<String> getCustomCss() {
+        ArrayList<String> custom = new ArrayList<String>();
+        custom.add("members-list.css");
+        return custom;
     }
 }
