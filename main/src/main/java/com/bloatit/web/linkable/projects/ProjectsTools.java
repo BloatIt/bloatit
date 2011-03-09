@@ -13,9 +13,8 @@ import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 
 public class ProjectsTools {
-
+    
     public static HtmlElement getProjectLogo(Project project) throws UnauthorizedOperationException {
-
         HtmlDiv logoDiv = new HtmlDiv("project_logo_block");
         if (project.getImage() == null) {
             logoDiv.add(new HtmlImage(new Image("idea.png", Image.ImageType.LOCAL), tr("Project logo"), "project_logo"));
@@ -28,7 +27,6 @@ public class ProjectsTools {
     }
 
     public static HtmlElement getProjectLink(Project project) throws UnauthorizedOperationException {
-
         final HtmlSpan projectSpan = new HtmlSpan("project_link");
         projectSpan.add(new ProjectPageUrl(project).getHtmlLink(project.getName()));
 
