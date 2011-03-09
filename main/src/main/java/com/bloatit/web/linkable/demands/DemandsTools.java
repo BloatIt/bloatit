@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.demands;
 
+import static com.bloatit.framework.webserver.Context.trn;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -11,6 +13,7 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
@@ -113,12 +116,9 @@ public class DemandsTools {
             final HtmlParagraph progressText = new HtmlParagraph();
             progressText.setCssClass("progress_text");
 
-            progressText.add(amount);
-            progressText.addText(Context.tr(" i.e. "));
-            progressText.add(progress);
-            progressText.addText(Context.tr(" of "));
-            progressText.add(target);
-            progressText.addText(Context.tr(" requested "));
+            progressText.add(new HtmlMixedText(trn("<0:1600€:> i.e <1:69%:> of <2:2300€:> requested",
+                                                   "<0:1600€:> i.e <1:69%:> of <2:2300€:> requested",
+                                                   currentOffer.getAmount().intValue()), amount, progress, target));
 
             return progressText;
         } catch (final UnauthorizedOperationException e) {
