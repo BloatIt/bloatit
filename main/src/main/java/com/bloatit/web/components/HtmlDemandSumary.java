@@ -153,7 +153,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
         add(demandSummaryBottom);
     }
 
-
     /**
      * @return
      */
@@ -203,6 +202,5 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
         return title;
     }
-
 
 }

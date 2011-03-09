@@ -7,14 +7,15 @@ import com.bloatit.framework.webserver.mime.MultipartMimeParserTest;
 import com.bloatit.framework.webserver.mime.decoders.MimeBase64DecoderTest;
 
 /**
- * The class <code>TestAll</code> builds a suite that can be used to run all of the tests
- * within its package as well as within any subpackages of its package.
+ * The class <code>TestAll</code> builds a suite that can be used to run all of
+ * the tests within its package as well as within any subpackages of its
+ * package.
  */
 public class TestAll {
 
     /**
-     * Create a test suite that can run all of the test cases in this package and all
-     * subpackages.
+     * Create a test suite that can run all of the test cases in this package
+     * and all subpackages.
      */
     public static Test suite() {
         TestSuite suite;
@@ -24,5 +25,5 @@ public class TestAll {
         suite.addTestSuite(MultipartMimeParserTest.class);
         return suite;
     }
-    
+
 }

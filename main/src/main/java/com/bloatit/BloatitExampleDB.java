@@ -99,7 +99,6 @@ public class BloatitExampleDB {
         Demand perroquetDemandArabicSupport = generatePerroquetDemandArabicSupport();
         Demand mageiaDemandRemoveEmacs = generateMageiaDemandRemoveEmacs();
 
-
         // Highlight demands
         new HighlightDemand(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
         new HighlightDemand(colorPickerDemand, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
@@ -315,32 +314,21 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Jolie template par défaut dans Libre Office ";
 
-        final Demand demand = DemandFactory.createDemand(yoann,
-                                                                    yoann.getLocale(),
-                                                                    demandTitle,
-                                                                    demandDescription,
-                                                                    libreOffice);
+        final Demand demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, libreOffice);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         demand.authenticate(new AuthToken(celeste));
-        final Offer offer = demand.addOffer( celeste ,
-                                                                              new BigDecimal(1000),
-                                                                              offerDescription,
-                                                                              celeste.getLocale(),
-                                                                              DateUtils.tomorrow(),
-                                                                              0);
+        final Offer offer = demand.addOffer(celeste, new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
 
-        DemandImplementation  demandImpl = (DemandImplementation) demand;
+        DemandImplementation demandImpl = (DemandImplementation) demand;
         demandImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
         demand.authenticate(new AuthToken(chogall));
         demand.addContribution(new BigDecimal("10"), "");
 
-
         return demand;
     }
-
 
     public Demand generatePerroquetDemandArabicSupport() throws UnauthorizedOperationException, NotEnoughMoneyException {
         // LibreOffice demand
@@ -350,25 +338,15 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Support des langues arabe";
 
-        final Demand demand = DemandFactory.createDemand(yoann,
-                                                                    yoann.getLocale(),
-                                                                    demandTitle,
-                                                                    demandDescription,
-                                                                    perroquet);
+        final Demand demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         demand.authenticate(new AuthToken(fred));
-        final Offer offer = demand.addOffer( fred ,
-                                                                              new BigDecimal(750),
-                                                                              offerDescription,
-                                                                              fred.getLocale(),
-                                                                              DateUtils.tomorrow(),
-                                                                              0);
+        final Offer offer = demand.addOffer(fred, new BigDecimal(750), offerDescription, fred.getLocale(), DateUtils.tomorrow(), 0);
 
         // Contributions
         demand.authenticate(new AuthToken(yoann));
         demand.addContribution(new BigDecimal("760"), "");
-
 
         return demand;
     }
@@ -381,31 +359,20 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Suppression du paquet emacs déprécié";
 
-        final Demand demand = DemandFactory.createDemand(thomas,
-                                                         thomas.getLocale(),
-                                                                    demandTitle,
-                                                                    demandDescription,
-                                                                    mageia);
+        final Demand demand = DemandFactory.createDemand(thomas, thomas.getLocale(), demandTitle, demandDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
         demand.authenticate(new AuthToken(cerbere));
-        final Offer offer = demand.addOffer( cerbere ,
-                                                                              new BigDecimal(300),
-                                                                              offerDescription,
-                                                                              cerbere.getLocale(),
-                                                                              DateUtils.tomorrow(),
-                                                                              0);
+        final Offer offer = demand.addOffer(cerbere, new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
-        DemandImplementation  demandImpl = (DemandImplementation) demand;
+        DemandImplementation demandImpl = (DemandImplementation) demand;
         demandImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
         demand.authenticate(new AuthToken(thomas));
         demand.addContribution(new BigDecimal("400"), "");
 
-
         setDemandInFinishedState(demand);
-
 
         return demand;
     }

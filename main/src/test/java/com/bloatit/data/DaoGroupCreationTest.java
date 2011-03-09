@@ -72,7 +72,7 @@ public class DaoGroupCreationTest extends TestCase {
         testCreateGroup();
         try {
             SessionManager.beginWorkUnit();
-            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
+            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description", DaoGroup.Right.PUBLIC);
             assertTrue(true);
             SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
@@ -83,7 +83,7 @@ public class DaoGroupCreationTest extends TestCase {
 
     public void testGetGroupByName() {
         SessionManager.beginWorkUnit();
-        final DaoGroup b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
+        final DaoGroup b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PUBLIC);
 
         assertEquals(b219.getId(), DaoGroup.getByName("b219").getId());
         assertNull(DaoGroup.getByName("Inexistant"));

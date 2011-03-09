@@ -115,5 +115,4 @@ public abstract class GenericPage extends Page {
         session.flushNotifications();
     }
 
-
 }

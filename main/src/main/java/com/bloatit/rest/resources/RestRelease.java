@@ -107,7 +107,7 @@ public class RestRelease extends RestElement<Release> {
      * <p>
      * Finds the RestRelease matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestRelease
      */
     @REST(name = "releases", method = RequestMethod.GET)
@@ -175,7 +175,7 @@ public class RestRelease extends RestElement<Release> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlElement
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }

@@ -40,9 +40,9 @@ public class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoInternalAccount from;
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoAccount to;
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
@@ -63,7 +63,7 @@ public class DaoTransaction extends DaoIdentifiable {
 
     /**
      * Create a new transaction and update the two accounts.
-     * 
+     *
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.

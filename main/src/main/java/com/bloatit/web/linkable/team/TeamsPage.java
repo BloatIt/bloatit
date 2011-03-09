@@ -39,11 +39,11 @@ public class TeamsPage extends MasterPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
-        
+
         add(layout);
     }
-    
-    private HtmlElement generateMain(){
+
+    private HtmlElement generateMain() {
         final HtmlDiv master = new HtmlDiv();
         master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 
@@ -54,7 +54,7 @@ public class TeamsPage extends MasterPage {
         pagedTeamList = new HtmlPagedList<Group>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
 
         master.add(pagedTeamList);
-        
+
         return master;
     }
 

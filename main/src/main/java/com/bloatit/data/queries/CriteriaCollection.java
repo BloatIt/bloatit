@@ -25,7 +25,7 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * This is the implementation of the {@link PageIterable} interface using a
  * Hibernate criteria.
- * 
+ *
  * @param <T> the generic type
  */
 public class CriteriaCollection<T> implements PageIterable<T> {
@@ -44,7 +44,7 @@ public class CriteriaCollection<T> implements PageIterable<T> {
 
     /**
      * Instantiates a new criteria collection.
-     * 
+     *
      * @param criteria the criteria used to fetch the data into the DB.
      */
     protected CriteriaCollection(final Criteria criteria) {
@@ -55,7 +55,7 @@ public class CriteriaCollection<T> implements PageIterable<T> {
 
     /**
      * Gets the criteria used to build this collection.
-     * 
+     *
      * @return the criteria
      */
     protected Criteria getCriteria() {

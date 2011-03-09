@@ -24,7 +24,7 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.lists.KudosList;
 
 /**
- * 
+ *
  */
 public class KudosManager {
     public static Kudos getById(final Integer id) {

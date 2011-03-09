@@ -108,7 +108,7 @@ public class RestBatch extends RestElement<Batch> {
      * <p>
      * Finds the RestBatch matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestBatch
      */
     @REST(name = "batchs", method = RequestMethod.GET)
@@ -190,7 +190,7 @@ public class RestBatch extends RestElement<Batch> {
      * @see com.bloatit.model.Batch#getExpirationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getExpirationDate() {
         return model.getExpirationDate();
     }

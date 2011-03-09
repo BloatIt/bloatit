@@ -9,7 +9,7 @@ import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
 
 public class UserContentAdminListFactory<T extends DaoUserContent, U extends UserContentInterface<T>> extends IdentifiableAdminListFactory<T, U> {
-    
+
     public static class DefaultFactory extends UserContentAdminListFactory<DaoUserContent, UserContent<DaoUserContent>> {
         // Just a rename
     }
@@ -21,7 +21,7 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
     public UserContentAdminListFactory(final DaoUserContentQuery<T> factory) {
         super(factory);
     }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     protected DaoUserContentQuery<T> getfactory() {

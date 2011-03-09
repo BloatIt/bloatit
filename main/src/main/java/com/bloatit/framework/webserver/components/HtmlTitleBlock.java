@@ -41,6 +41,4 @@ public final class HtmlTitleBlock extends HtmlBranch {
         return this;
     }
 
-
-
 }

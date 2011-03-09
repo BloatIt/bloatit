@@ -24,7 +24,7 @@ import com.bloatit.model.InternalAccount;
 import com.bloatit.model.lists.InternalAccountList;
 
 /**
- * 
+ *
  */
 public class InternalAccountManager {
     public static InternalAccount getById(final Integer id) {

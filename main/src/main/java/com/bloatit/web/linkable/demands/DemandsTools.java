@@ -22,19 +22,15 @@ public class DemandsTools {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-
     public static String getTitle(Demand demand) throws UnauthorizedOperationException {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         return translatedDescription.getTitle();
     }
 
-
-
     public static HtmlDiv generateProgress(Demand demand) throws UnauthorizedOperationException {
         return generateProgress(demand, false);
     }
-
 
     /**
      * @return

@@ -92,9 +92,9 @@ public final class Loaders {
         if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
         }
-//        if (Commentable.class.equals(theClass)) {
-//            return (Loader<T>) new LowToIdentifiable();
-//        }
+        // if (Commentable.class.equals(theClass)) {
+        // return (Loader<T>) new LowToIdentifiable();
+        // }
         if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
         }

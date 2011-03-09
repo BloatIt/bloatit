@@ -108,7 +108,6 @@ public abstract class HtmlElement extends XmlElement {
         return null;
     }
 
-
     @Override
     protected final void writeTagAndOffspring(final QueryResponseStream txt) {
         if (selfClosable() && !hasChild()) {

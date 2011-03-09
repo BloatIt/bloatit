@@ -40,5 +40,4 @@ public class HtmlMarkdownRenderer extends PlaceHolderElement {
         return renderered;
     }
 
-
 }

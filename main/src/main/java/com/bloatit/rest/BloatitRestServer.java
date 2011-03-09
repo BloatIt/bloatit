@@ -94,8 +94,7 @@ public class BloatitRestServer extends RestServer {
         }
     };
 
-    private final Class<?>[] classes = new Class<?>[] {
-                                                       RestAuthenticate.class,
+    private final Class<?>[] classes = new Class<?>[] { RestAuthenticate.class,
                                                        RestMember.class,
                                                        RestBankTransaction.class,
                                                        RestBatch.class,
@@ -138,7 +137,7 @@ public class BloatitRestServer extends RestServer {
                                                        RestReleaseList.class,
                                                        RestTransactionList.class,
                                                        RestTranslationList.class,
-    
+
     };
 
     @Override

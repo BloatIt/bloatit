@@ -50,6 +50,5 @@ public class MimeBase64DecoderTest extends FrameworkTestUnit {
             fail();
         }
     }
-    
-    
+
 }

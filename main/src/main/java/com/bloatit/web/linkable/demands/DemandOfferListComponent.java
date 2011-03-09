@@ -89,11 +89,14 @@ public class DemandOfferListComponent extends HtmlDiv {
 
                         BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
 
-                        if(amountLeft.compareTo(BigDecimal.ZERO) > 0) {
+                        if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
                             CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
-                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will be validated in about {0}. After this time, the offer will go into development as soon as the requestied amount is available ({1} left).", renderer.getTimeString(), currency.toString())));
+                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will be validated in about {0}. After this time, the offer will go into development as soon as the requestied amount is available ({1} left).",
+                                                                       renderer.getTimeString(),
+                                                                       currency.toString())));
                         } else {
-                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString() + "."));
+                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString()
+                                    + "."));
                         }
                     } else {
 
@@ -101,7 +104,8 @@ public class DemandOfferListComponent extends HtmlDiv {
 
                         CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
 
-                        block.addInLeftColumn(new HtmlParagraph(tr("This offer is validated and will go into development as soon as the resquested amount is available ({0} left).", currency.toString())));
+                        block.addInLeftColumn(new HtmlParagraph(tr("This offer is validated and will go into development as soon as the resquested amount is available ({0} left).",
+                                                                   currency.toString())));
                     }
                     // Generating the right column
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
@@ -352,7 +356,8 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
 
         private boolean isDeveloper() throws UnauthorizedOperationException {
-            return Context.getSession().isLogged() && Context.getSession().getAuthToken().getMember().equals(offer.getDemand().getSelectedOffer().getAuthor());
+            return Context.getSession().isLogged()
+                    && Context.getSession().getAuthToken().getMember().equals(offer.getDemand().getSelectedOffer().getAuthor());
         }
 
         private String getLotState(Batch lot) {

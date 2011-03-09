@@ -34,26 +34,26 @@ public class LocaleAdapter extends XmlAdapter<String, Locale> {
      */
     @Override
     public Locale unmarshal(String localeString) throws Exception {
-        if(localeString.isEmpty()){
+        if (localeString.isEmpty()) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Locale mustn't be empty !");
         }
-        
+
         String sep = " ";
         if (localeString.contains("_")) {
             sep = "_";
-        } else if( localeString.contains("-") ){
+        } else if (localeString.contains("-")) {
             sep = "-";
-        } 
+        }
 
-        if ( sep.equals(" ")) {
+        if (sep.equals(" ")) {
             return new Locale(localeString);
         }
-        
+
         String[] parts = localeString.split(sep);
-        if(parts.length > 1){
+        if (parts.length > 1) {
             return new Locale(parts[0], parts[1]);
         }
-        
+
         return new Locale(parts[0]);
     }
 

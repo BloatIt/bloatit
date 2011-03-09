@@ -18,7 +18,6 @@
  */
 package com.bloatit.model;
 
-
 public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(ExternalAccount model);

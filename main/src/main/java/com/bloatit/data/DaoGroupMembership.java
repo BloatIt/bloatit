@@ -54,10 +54,10 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 // @formatter:on
 class DaoGroupMembership extends DaoIdentifiable {
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoMember member;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoGroup bloatitGroup;
 
     @OneToMany(mappedBy = "membership", orphanRemoval = true, cascade = { CascadeType.ALL })

@@ -20,7 +20,7 @@ public class DefineParagraph extends HtmlParagraph {
     }
 
     public XmlNode addCssClass(String css) {
-        setCssClass("define_p "+css);
+        setCssClass("define_p " + css);
         return this;
     }
 }

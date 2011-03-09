@@ -36,7 +36,7 @@ public final class OfferManager {
 
     /**
      * Gets the offer by id.
-     * 
+     *
      * @param id the id
      * @return the offer or <code>null</code> if not found.
      */

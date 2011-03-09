@@ -31,7 +31,7 @@ import com.bloatit.model.right.UserContentRight;
 
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
- * 
+ *
  * @param <T> the generic type. Must be the concrete Dao version of the concrete
  *            subClass. For example: Demand extends UserContent<DaoDemand>
  */
@@ -39,7 +39,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /**
      * Instantiates a new user content.
-     * 
+     *
      * @param dao the dao
      */
     protected UserContent(final T dao) {

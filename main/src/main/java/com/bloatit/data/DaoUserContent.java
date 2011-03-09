@@ -40,9 +40,8 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A user content is a content created by a user. A user content
- * as an Author, and can be posted in the name of a group. It also has a
- * creation date.
+ * A user content is a content created by a user. A user content as an Author,
+ * and can be posted in the name of a group. It also has a creation date.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -53,7 +52,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     /**
      * This is the author of the user content.
      */
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember member;
 
@@ -61,7 +60,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * Most of the time this is null. But when a user create a content in the
      * name of a group, asGroup point on it.
      */
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoGroup asGroup;
 
@@ -72,7 +71,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     @Basic(optional = false)
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
 

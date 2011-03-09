@@ -106,7 +106,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      * <p>
      * Finds the RestFileMetadata matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestFileMetadata
      */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
@@ -165,7 +165,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
     /**
      * @see com.bloatit.model.FileMetadata#getShortDescription()
      */
-     @XmlElement
+    @XmlElement
     public String getShortDescription() {
         return model.getShortDescription();
     }
@@ -182,7 +182,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }

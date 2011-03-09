@@ -45,5 +45,4 @@ public final class HtmlButton extends HtmlLeaf {
         this.button.addAttribute("value", value);
     }
 
-
 }

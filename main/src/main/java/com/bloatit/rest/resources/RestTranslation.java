@@ -109,7 +109,7 @@ public class RestTranslation extends RestElement<Translation> {
      * <p>
      * Finds the RestTranslation matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestTranslation
      */
     @REST(name = "translations", method = RequestMethod.GET)
@@ -186,7 +186,7 @@ public class RestTranslation extends RestElement<Translation> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }
@@ -206,7 +206,7 @@ public class RestTranslation extends RestElement<Translation> {
     @XmlElement
     public RestGroup getAsGroup() {
         RestGroup restGroup = new RestGroup(model.getAsGroup());
-        if(restGroup.isNull()){
+        if (restGroup.isNull()) {
             return null;
         }
         return restGroup;

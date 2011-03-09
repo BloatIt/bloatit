@@ -23,7 +23,7 @@ public abstract class IdentifiableAdminListFactory<T extends DaoIdentifiable, U 
     protected DaoIdentifiableQuery<T> getfactory() {
         return factory;
     }
-    
+
     public void orderBy(final String column, final OrderType orderType) {
         getfactory().orderBy(column, orderType);
     }

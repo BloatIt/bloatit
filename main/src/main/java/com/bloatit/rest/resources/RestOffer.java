@@ -112,7 +112,7 @@ public class RestOffer extends RestElement<Offer> {
      * <p>
      * Finds the RestOffer matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestOffer
      */
     @REST(name = "offers", method = RequestMethod.GET)
@@ -148,7 +148,7 @@ public class RestOffer extends RestElement<Offer> {
      * @see com.bloatit.model.Offer#getExpirationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getExpirationDate() {
         return model.getExpirationDate();
     }
@@ -217,7 +217,7 @@ public class RestOffer extends RestElement<Offer> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }

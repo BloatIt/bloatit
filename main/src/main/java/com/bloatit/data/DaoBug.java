@@ -87,7 +87,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoBatch batch;
 
     @Basic(optional = false)
@@ -138,7 +138,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * The person assigned to a bug is the developer (the member that has
      * created the offer). The person assigned to a bug is the developer (the
      * member that has created the offer).
-     * 
+     *
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {

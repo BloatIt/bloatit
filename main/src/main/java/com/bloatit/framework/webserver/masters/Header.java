@@ -34,10 +34,9 @@ public final class Header extends HtmlElement {
         add(new HtmlGenericElement("title").addText(title));
     }
 
-
-
     /**
      * Adds a new css link to the page
+     *
      * @param css the string describing the name of the css
      */
     public void addCss(String css) {

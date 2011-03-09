@@ -56,5 +56,4 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
         }
     }
 
-
 }

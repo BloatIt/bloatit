@@ -56,7 +56,7 @@ public final class HttpResponse {
      * this method when everything is OK. When an error occurs, call this method
      * to set the error status to its new value.
      * </p>
-     * 
+     *
      * @param status the new status
      */
     public void setStatus(final StatusCode status) {
@@ -135,7 +135,7 @@ public final class HttpResponse {
      * goes haywire, think to set a correct status using the method
      * {@link #setStatus(StatusCode)}
      * </p>
-     * 
+     *
      * @param resource the resource to write
      * @throws IOException whenever an IO error occurs on the underlying stream
      * @see #setStatus(StatusCode)
@@ -159,7 +159,7 @@ public final class HttpResponse {
 
     /**
      * Writes a rest error based on the <code>exception</code>
-     * 
+     *
      * @param exception the exception describing the error
      * @throws IOException when an IO error occurs
      */
@@ -176,7 +176,7 @@ public final class HttpResponse {
      * <p>
      * Writes a rest error
      * </p>
-     * 
+     *
      * @see {@link #writeRestError(RestException)}
      */
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {

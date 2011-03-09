@@ -12,7 +12,6 @@
 
 package com.bloatit.framework.webserver.components.form;
 
-
 /**
  * <p>
  * A class used to create input fields of password type

@@ -95,11 +95,11 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
 
     @Override
     protected void addFormFilters(final HtmlForm form) {
-        
+
         addAsGroupFilter(form, url);
         addIsDeletedFilter(form, url);
         addPopularityStateFilter(form);
-        
+
         final FieldData stateData = url.getFilterByStateParameter().pickFieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());
         stateInput.setDefaultValue(stateData.getSuggestedValue());
@@ -142,7 +142,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
         addCreationDateColumn(tableModel, clonedUrl);
         addPopularityColumn(tableModel, clonedUrl);
         addPopularityStateColumn(tableModel, clonedUrl);
-        
+
         clonedUrl.setOrderByStr("demandState");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Demand state")), new StringColumnGenerator<Demand>() {
             @Override

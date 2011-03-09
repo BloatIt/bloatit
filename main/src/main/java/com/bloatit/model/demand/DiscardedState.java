@@ -51,7 +51,7 @@ public class DiscardedState extends AbstractDemandState {
     public AbstractDemandState popularityValidated() {
         return new PendingState(demand);
     }
-    
+
     @Override
     public final DemandState getState() {
         return DemandState.DISCARDED;

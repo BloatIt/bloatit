@@ -24,7 +24,7 @@ import com.bloatit.model.Transaction;
 import com.bloatit.model.lists.TransactionList;
 
 /**
- * 
+ *
  */
 public class TransactionManager {
     public static Transaction getById(final Integer id) {

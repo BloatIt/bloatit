@@ -243,7 +243,8 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
         final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
 
-        final HtmlParagraph makeOfferText = new HtmlParagraph(new  HtmlMixedText(Context.tr("An offer has already <0:coucou:plop> been made on this feature. However, you can <0::make an alternative offer>."), link));
+        final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already <0:coucou:plop> been made on this feature. However, you can <0::make an alternative offer>."),
+                                                                                link));
         element.add(makeOfferText);
 
         return element;
@@ -270,6 +271,5 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         }
         return element;
     }
-
 
 }

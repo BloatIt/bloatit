@@ -72,7 +72,7 @@ public class SessionManager {
 
     /**
      * singleton pattern implementation.
-     * 
+     *
      * @return the current session.
      */
     public static SessionFactory getSessionFactory() {

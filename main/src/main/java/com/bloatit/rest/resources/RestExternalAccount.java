@@ -109,7 +109,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * <p>
      * Finds the RestExternalAccount matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestExternalAccount
      */
     @REST(name = "externalaccounts", method = RequestMethod.GET)

@@ -60,9 +60,9 @@ public class DaoTransactionTest extends TestCase {
             yo.setFullname("Yoann Plénet");
             SessionManager.flush();
 
-            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description" ,DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", "A group description" ,DaoGroup.Right.PUBLIC).addMember(yo, false);
-            (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description" ,DaoGroup.Right.PROTECTED)).addMember(yo, true);
+            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
+            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
+            (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PROTECTED)).addMember(yo, true);
         }
 
         SessionManager.endWorkUnitAndFlush();

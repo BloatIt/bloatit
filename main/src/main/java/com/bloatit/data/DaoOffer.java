@@ -103,7 +103,7 @@ public class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     * 
+     *
      * @param member is the author of the offer. Must be non null.
      * @param demand is the demand on which this offer is made. Must be non
      *            null.

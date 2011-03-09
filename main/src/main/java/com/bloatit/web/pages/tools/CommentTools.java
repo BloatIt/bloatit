@@ -181,7 +181,8 @@ public class CommentTools {
         attachementBlock.add(attachementInput);
 
         final FieldData attachementDescriptiondData = url.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(), Context.tr("Attachment description"));
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(),
+                                                                            Context.tr("Attachment description"));
         attachementDescriptionInput.setDefaultValue(attachementDescriptiondData.getSuggestedValue());
         attachementDescriptionInput.addErrorMessages(attachementDescriptiondData.getErrorMessages());
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));

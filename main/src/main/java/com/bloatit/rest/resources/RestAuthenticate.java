@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.SessionManager;
 
 @XmlRootElement
 public class RestAuthenticate {
-    
+
     // ---------------------------------------------------------------------------------------
     // -- Constructors
     // ---------------------------------------------------------------------------------------
@@ -43,18 +43,18 @@ public class RestAuthenticate {
     // -- Static methods
     // ---------------------------------------------------------------------------------------
 
-    @REST(name = "authenticate", method = RequestMethod.GET, params = {"login" , "password" })
+    @REST(name = "authenticate", method = RequestMethod.GET, params = { "login", "password" })
     public static RestAuthenticate authenticate(String login, String password) {
         return new RestAuthenticate();
     }
-    
+
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-    
+
     @XmlElement
-    public String getAuthentication(){
+    public String getAuthentication() {
         return SessionManager.createSession().getKey().toString();
     }
-    
+
 }

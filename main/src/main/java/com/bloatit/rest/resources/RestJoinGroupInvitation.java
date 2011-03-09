@@ -100,7 +100,7 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
      * <p>
      * Finds the RestJoinGroupInvitation matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestJoinGroupInvitation
      */
     @REST(name = "joingroupinvitations", method = RequestMethod.GET)

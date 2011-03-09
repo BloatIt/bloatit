@@ -49,7 +49,7 @@ public class DaoImage extends DaoIdentifiable {
     @Column(length = 64)
     private String compression;
 
-    @OneToOne(optional = false, fetch=FetchType.LAZY,  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoFileMetadata file;
 

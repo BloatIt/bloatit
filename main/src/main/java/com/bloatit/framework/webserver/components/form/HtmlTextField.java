@@ -11,7 +11,6 @@
  */
 package com.bloatit.framework.webserver.components.form;
 
-
 /**
  * Class used to create a 1 line text input field
  */

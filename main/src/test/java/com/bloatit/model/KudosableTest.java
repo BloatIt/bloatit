@@ -28,8 +28,8 @@ public class KudosableTest extends ModelTestUnit {
 
         assertEquals(0, demand.getPopularity());
         demand.authenticate(yoAuthToken);
-//        demand.unkudos();
-//        assertEquals(-1, demand.getPopularity());
+        // demand.unkudos();
+        // assertEquals(-1, demand.getPopularity());
     }
 
     public void testKudos() throws UnauthorizedOperationException {

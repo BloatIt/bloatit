@@ -23,11 +23,11 @@ public class SideBarDemandBlock extends SideBarElementLayout {
             add(new DefineParagraph(tr("Title: "), DemandsTools.getTitle(demand)));
 
             add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(demand.getProject())));
-            add(new DefineParagraph(tr("Popularity: "),String.valueOf(demand.getPopularity())));
+            add(new DefineParagraph(tr("Popularity: "), String.valueOf(demand.getPopularity())));
 
             add(new HtmlParagraph(DemandsTools.generateProgress(demand)));
 
-            //add(new HtmlParagraph(DemandsTools.generateDetails(demand)));
+            // add(new HtmlParagraph(DemandsTools.generateDetails(demand)));
 
             add(new HtmlParagraph(new DemandPageUrl(demand).getHtmlLink(tr("more details..."))));
 

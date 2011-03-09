@@ -203,7 +203,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * Return the progression of the funding of this offer with the amount
      * available on the demand
-     * 
+     *
      * @return
      * @throws UnauthorizedOperationException
      */

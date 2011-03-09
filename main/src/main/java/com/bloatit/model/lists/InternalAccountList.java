@@ -21,7 +21,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.InternalAccount;
 
 /**
- * The Class InternalAccountList transforms PageIterable<DaoInternalAccount> to PageIterable<InternalAccount>.
+ * The Class InternalAccountList transforms PageIterable<DaoInternalAccount> to
+ * PageIterable<InternalAccount>.
  */
 public final class InternalAccountList extends ListBinder<InternalAccount, DaoInternalAccount> {
     public InternalAccountList(PageIterable<DaoInternalAccount> daoCollection) {

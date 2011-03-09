@@ -33,7 +33,7 @@ public class FinishedState extends AbstractDemandState {
         super(demand);
         demand.setDemandStateUnprotected(getState());
     }
-    
+
     @Override
     public final DemandState getState() {
         return DemandState.FINISHED;

@@ -107,7 +107,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
     @Column(updatable = true, length = DEFAULT_STRING_LENGTH)
     private String processInformations;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoActor author;
     @Basic(optional = false)
     @Column(updatable = false)
@@ -195,7 +195,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the
      * external to the internal account.
-     * 
+     *
      * @return true if performed, false otherwise.
      */
     public boolean setValidated() {

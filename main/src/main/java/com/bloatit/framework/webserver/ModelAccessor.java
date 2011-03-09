@@ -104,7 +104,7 @@ public class ModelAccessor {
             mutex.release();
         }
     }
-    
+
     /**
      * @see com.bloatit.model.AbstractModel#close()
      */

@@ -130,7 +130,8 @@ public final class ReportBugPage extends LoggedPage {
         attachementBlock.add(attachementInput);
 
         final FieldData attachementDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(), Context.tr("Attachment description"));
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(),
+                                                                            Context.tr("Attachment description"));
         attachementDescriptionInput.setDefaultValue(attachementDescriptionFieldData.getSuggestedValue());
         attachementDescriptionInput.addErrorMessages(attachementDescriptionFieldData.getErrorMessages());
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));

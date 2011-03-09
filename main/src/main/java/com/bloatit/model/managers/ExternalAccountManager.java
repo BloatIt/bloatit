@@ -24,7 +24,7 @@ import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.lists.ExternalAccountList;
 
 /**
- * 
+ *
  */
 public class ExternalAccountManager {
     public static ExternalAccount getById(final Integer id) {

@@ -92,5 +92,4 @@ public class SessionBar extends HtmlDiv {
         }
     }
 
-
 }

@@ -50,13 +50,12 @@ public class DaoUserContentTest extends TestCase {
             yo.setFullname("Yoann Plénet");
             SessionManager.flush();
 
-            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description" ,DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", "A group description" ,DaoGroup.Right.PUBLIC).addMember(yo, false);
-            (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description" ,DaoGroup.Right.PROTECTED)).addMember(yo, true);
+            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
+            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
+            (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PROTECTED)).addMember(yo, true);
         }
 
-        DaoProject project = DaoProject.createAndPersist("VLC",
-                                                         DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
+        DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
 
         demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,

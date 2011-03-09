@@ -45,12 +45,12 @@ public class DaoTranslation extends DaoKudosable {
 
     @Basic(optional = false)
     private Locale locale;
-    
+
     @Basic(optional = false)
     @Column(columnDefinition = "TEXT")
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String title;
-    
+
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
@@ -62,7 +62,7 @@ public class DaoTranslation extends DaoKudosable {
 
     /**
      * Create a new translation.
-     * 
+     *
      * @param member
      * @param description
      * @param locale

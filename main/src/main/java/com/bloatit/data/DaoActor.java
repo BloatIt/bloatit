@@ -61,7 +61,7 @@ import com.bloatit.framework.utils.PageIterable;
                            query = "from DaoBankTransaction as t where t.author = :author order by t.creationDate DESC"),
                        @NamedQuery(
                            name = "actor.getBankTransactions.size",
-                           query = "select count(*) from DaoBankTransaction where author = :author") 
+                           query = "select count(*) from DaoBankTransaction where author = :author")
                      }
              )
 // @formatter:on
@@ -116,7 +116,7 @@ public abstract class DaoActor extends DaoIdentifiable {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     * 
+     *
      * @param login is the login or name of this actor. It must be non null, and
      *            unique.
      * @throws NonOptionalParameterException if login or mail is null.
@@ -144,7 +144,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * No check is performed on the correctness of the new email.
-     * 
+     *
      * @param email the new email.
      */
     public abstract void setContact(String email);
@@ -155,7 +155,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * Set the external account for this actor.
-     * 
+     *
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */

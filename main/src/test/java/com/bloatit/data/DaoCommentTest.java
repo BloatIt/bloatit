@@ -8,22 +8,22 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 public class DaoCommentTest extends DataTestUnit {
 
     public void testCreateAndPersist() {
-        final DaoComment comment = DaoComment.createAndPersist((DaoComment)null, DaoMember.getByLogin(yo.getLogin()), "A text");
+        final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), "A text");
         assertEquals("A text", comment.getText());
         try {
-            DaoComment.createAndPersist((DaoComment)null, null, "A text");
+            DaoComment.createAndPersist((DaoComment) null, null, "A text");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoComment.createAndPersist((DaoComment)null, DaoMember.getByLogin(yo.getLogin()), "");
+            DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), "");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoComment.createAndPersist((DaoComment)null, DaoMember.getByLogin(yo.getLogin()), null);
+            DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), null);
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
@@ -66,7 +66,6 @@ public class DaoCommentTest extends DataTestUnit {
         comment.addChildComment(commentChild2);
         final DaoComment commentChildChild = DaoComment.createAndPersist(commentChild1, DaoMember.getByLogin(tom.getLogin()), "An other text");
         commentChild1.addChildComment(commentChildChild);
-
 
         final Iterator<DaoComment> it = comment.getChildren().iterator();
         assertEquals(it.next().getId(), commentChild.getId());

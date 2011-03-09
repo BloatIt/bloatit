@@ -24,7 +24,7 @@ import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.lists.JoinGroupInvitationList;
 
 /**
- * 
+ *
  */
 public class JoinGroupInvitationManager {
     public static JoinGroupInvitation getById(final Integer id) {

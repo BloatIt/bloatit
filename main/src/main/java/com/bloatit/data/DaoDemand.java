@@ -69,59 +69,59 @@ import com.bloatit.framework.utils.PageIterable;
 //@formatter:off
 @NamedQueries(value = {@NamedQuery(
                            name = "demand.getOffers.bySelected",
-                           query = "FROM DaoOffer " + 
-                                   "WHERE demand = :this " + 
+                           query = "FROM DaoOffer " +
+                                   "WHERE demand = :this " +
                                    "AND state <= :state " + // <= PENDING and VALIDATED.
                                    "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
-                                   "AND popularity >= 0 " + 
+                                   "AND popularity >= 0 " +
                                    "ORDER BY amount ASC, creationDate DESC"),
-                                   
+
                         @NamedQuery(
                            name = "demand.getAmounts.min",
                            query = "SELECT min(amount) FROM DaoContribution WHERE demand = :this"),
-                           
+
                         @NamedQuery(
                            name = "demand.getAmounts.max",
                            query = "SELECT max(amount) FROM DaoContribution WHERE demand = :this"),
-                           
+
                        @NamedQuery(
                            name = "demand.getAmounts.avg",
                            query = "SELECT avg(amount) FROM DaoContribution WHERE demand = :this"),
-                           
+
                         @NamedQuery(
                             name = "demand.getBugs.byNonState",
-                            query = "SELECT bugs_ " + 
-                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
-                                    "JOIN offer_.batches as bs " + 
-                                    "JOIN bs.bugs as bugs_ " + 
-                                    "WHERE offer_ = :offer " + 
+                            query = "SELECT bugs_ " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.batches as bs " +
+                                    "JOIN bs.bugs as bugs_ " +
+                                    "WHERE offer_ = :offer " +
                                     "AND bugs_.state != :state "),
-                                    
+
                         @NamedQuery(
                             name = "demand.getBugs.byNonState.size",
-                            query = "SELECT count(bugs_) " + 
-                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
-                                    "JOIN offer_.batches as bs " + 
-                                    "JOIN bs.bugs as bugs_ " + 
-                                    "WHERE offer_ = :offer " + 
+                            query = "SELECT count(bugs_) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.batches as bs " +
+                                    "JOIN bs.bugs as bugs_ " +
+                                    "WHERE offer_ = :offer " +
                                     "AND bugs_.state != :state "),
-                                    
+
                         @NamedQuery(
                             name = "demand.getBugs.byState",
-                            query = "SELECT bugs_ " + 
-                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
-                                    "JOIN offer_.batches as bs " + 
-                                    "JOIN bs.bugs as bugs_ " + 
-                                    "WHERE offer_ = :offer " + 
+                            query = "SELECT bugs_ " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.batches as bs " +
+                                    "JOIN bs.bugs as bugs_ " +
+                                    "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
-                                    
+
                         @NamedQuery(
                             name = "demand.getBugs.byState.size",
-                            query = "SELECT count(bugs_) " + 
-                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
-                                    "JOIN offer_.batches as bs " + 
-                                    "JOIN bs.bugs as bugs_ " + 
-                                    "WHERE offer_ = :offer " + 
+                            query = "SELECT count(bugs_) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.batches as bs " +
+                                    "JOIN bs.bugs as bugs_ " +
+                                    "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
                      }
              )
@@ -200,7 +200,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded
     private DaoOffer selectedOffer;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @IndexedEmbedded
@@ -231,7 +231,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     * 
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -266,7 +266,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * Add a contribution to a demand.
-     * 
+     *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -299,7 +299,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     * 
+     *
      * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -342,7 +342,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * Called by contribution when canceled.
-     * 
+     *
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -364,7 +364,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {

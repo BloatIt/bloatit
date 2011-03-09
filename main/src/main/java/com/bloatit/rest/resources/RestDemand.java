@@ -115,7 +115,7 @@ public class RestDemand extends RestElement<Demand> {
      * <p>
      * Finds the RestDemand matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestDemand
      */
     @REST(name = "demands", method = RequestMethod.GET)

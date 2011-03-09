@@ -104,7 +104,7 @@ public class RestKudos extends RestElement<Kudos> {
      * <p>
      * Finds the RestKudos matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestKudos
      */
     @REST(name = "kudos", method = RequestMethod.GET)
@@ -148,7 +148,7 @@ public class RestKudos extends RestElement<Kudos> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }

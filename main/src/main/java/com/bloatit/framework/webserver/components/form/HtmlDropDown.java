@@ -30,7 +30,6 @@ public class HtmlDropDown extends HtmlStringFormField {
         super(InputBlock.create(new HtmlGenericElement("select")), name, label);
     }
 
-
     public void addDropDownElement(final String value, final String displayName) {
         final HtmlGenericElement opt = new HtmlGenericElement("option");
         opt.addText(displayName);

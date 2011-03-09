@@ -25,14 +25,14 @@ import com.bloatit.data.SessionManager;
 
 /**
  * A query on DaoIdentifiable using hibernate Criteria query.
- * 
+ *
  * @param <T> the generic type representing a concrete Dao class.
  */
 public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstractQuery<T> {
 
     /**
      * Instantiates a new dao identifiable list factory.
-     * 
+     *
      * @param criteria the criteria
      */
     protected DaoIdentifiableQuery(final Criteria criteria) {
@@ -49,7 +49,7 @@ public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstract
     /**
      * Add a WHERE close to have only the identifiable with the id
      * <code>id</code>
-     * 
+     *
      * @param id the id
      */
     public void idEquals(final Integer id) {
@@ -60,7 +60,7 @@ public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstract
      * Add an Order by close to this query. Use this with caution, if the column
      * parameter does not represent a valid <code>column</code> on this
      * criteria, the method will throw a HibernateException.
-     * 
+     *
      * @param column the column name. Think about possible aliases (see
      *            {@link Criteria#createAlias(String, String)}).
      * @param order the order ...

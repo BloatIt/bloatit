@@ -124,11 +124,11 @@ public final class Group extends Actor<DaoGroup> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Rights
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
         if (member.isInGroup(this)) {

@@ -176,7 +176,7 @@ public class Batch extends Identifiable<DaoBatch> {
     public boolean shouldValidatePart(final Level level) {
         return getDao().shouldValidatePart(level);
     }
-    
+
     // TODO doc
     public boolean partIsValidated(final Level level) {
         return getDao().partIsValidated(level);

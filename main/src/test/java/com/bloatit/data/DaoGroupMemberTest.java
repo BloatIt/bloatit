@@ -37,9 +37,9 @@ public class DaoGroupMemberTest extends TestCase {
         yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
 
-        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
-        b216 = DaoGroup.createAndPersiste("b216", "plop3@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
-        b217 = DaoGroup.createAndPersiste("b217", "plop4@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
+        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PUBLIC);
+        b216 = DaoGroup.createAndPersiste("b216", "plop3@plop.com", "A group description", DaoGroup.Right.PUBLIC);
+        b217 = DaoGroup.createAndPersiste("b217", "plop4@plop.com", "A group description", DaoGroup.Right.PUBLIC);
 
         SessionManager.endWorkUnitAndFlush();
 
@@ -141,37 +141,37 @@ public class DaoGroupMemberTest extends TestCase {
 
         SessionManager.endWorkUnitAndFlush();
     }
-    
-    public void testAddRight(){
+
+    public void testAddRight() {
         SessionManager.beginWorkUnit();
-        
+
         DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
         DaoGroup b219 = DaoGroup.getByName(this.b219.getLogin());
         fred.addToGroup(b219);
         fred.addGroupRight(b219, UserGroupRight.CONSULT);
         fred.addGroupRight(b219, UserGroupRight.TALK);
-        if(!(fred.getGroupRights(b219).contains(UserGroupRight.CONSULT) &&  fred.getGroupRights(b219).contains(UserGroupRight.TALK)) ){
+        if (!(fred.getGroupRights(b219).contains(UserGroupRight.CONSULT) && fred.getGroupRights(b219).contains(UserGroupRight.TALK))) {
             fail();
         }
-        
+
         SessionManager.endWorkUnitAndFlush();
     }
-    
-    public void testRemoveRight(){
+
+    public void testRemoveRight() {
         SessionManager.beginWorkUnit();
-        
+
         DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
         DaoGroup b219 = DaoGroup.getByName(this.b219.getLogin());
-        
+
         fred.addToGroup(b219);
         fred.addGroupRight(b219, UserGroupRight.CONSULT);
         fred.addGroupRight(b219, UserGroupRight.TALK);
-        
+
         fred.removeGroupRight(b219, UserGroupRight.TALK);
-        if(fred.getGroupRights(b219).contains(UserGroupRight.TALK) || !fred.getGroupRights(b219).contains(UserGroupRight.CONSULT)){
+        if (fred.getGroupRights(b219).contains(UserGroupRight.TALK) || !fred.getGroupRights(b219).contains(UserGroupRight.CONSULT)) {
             fail();
         }
-        
+
         SessionManager.endWorkUnitAndFlush();
     }
 

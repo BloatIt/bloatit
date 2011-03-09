@@ -110,7 +110,7 @@ public class RestContribution extends RestElement<Contribution> {
      * <p>
      * Finds the RestContribution matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestContribution
      */
     @REST(name = "contributions", method = RequestMethod.GET)
@@ -170,7 +170,7 @@ public class RestContribution extends RestElement<Contribution> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }

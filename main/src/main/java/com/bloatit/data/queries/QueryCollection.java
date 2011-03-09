@@ -32,7 +32,7 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * This is the implementation of the {@link PageIterable} interface using a
  * Hibernate HQL query.
- * 
+ *
  * @param <T> The type stored in this collection. T must implements a Dao
  *            object.
  */
@@ -65,7 +65,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * queries.
      * <p>
      * If One of the two queries is missing this will throws an
-     * 
+     *
      * @param nameQuery the name of the query to find the collection. The query
      *            named <code>nameQuery + ".size"</code> <b>must</b> exists.
      *            {@link HibernateException}.
@@ -77,7 +77,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Instantiates a new query collection.
-     * 
+     *
      * @param query the query
      * @param sizeQuery the size query
      */
@@ -90,7 +90,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets an entity.
-     * 
+     *
      * @param name the parameter name
      * @param entity the entity
      * @return this query collection
@@ -103,7 +103,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param entity the entity
      * @return this query collection
@@ -116,7 +116,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>string</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -129,7 +129,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>character</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -142,7 +142,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>boolean</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -155,7 +155,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>byte</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -168,7 +168,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>short</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -181,7 +181,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>integer</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -194,7 +194,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>long</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -207,7 +207,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>float</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -220,7 +220,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>double</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -233,7 +233,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a binary named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -246,7 +246,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a text named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param val the val
      * @return this query collection
@@ -259,7 +259,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>locale</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param locale the locale
      * @return this query collection
@@ -272,7 +272,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>BigDecimal</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param number the number
      * @return this query collection
@@ -285,7 +285,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>BigInteger</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param number the number
      * @return this query collection
@@ -298,7 +298,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>date</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param date the date
      * @return this query collection
@@ -311,7 +311,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a time named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param date the date
      * @return this query collection
@@ -324,7 +324,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a <code>timestamp</code> named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param date the date
      * @return this query collection
@@ -337,7 +337,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a calendar named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param calendar the calendar
      * @return this query collection
@@ -350,7 +350,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * Sets a calendar date named parameter.
-     * 
+     *
      * @param name the parameter name
      * @param calendar the calendar
      * @return this query collection

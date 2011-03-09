@@ -16,7 +16,6 @@ import com.bloatit.web.url.DemandPageUrl;
 
 public class IndexDemandBlock extends HtmlDiv {
 
-
     private final PlaceHolderElement floatRight;
 
     public IndexDemandBlock(HighlightDemand highlightDemand) {
@@ -32,10 +31,10 @@ public class IndexDemandBlock extends HtmlDiv {
 
             setFloatRight(ProjectsTools.getProjectLogo(highlightDemand.getDemand().getProject()));
 
-            indexBodyElement.add(new HtmlTitle(new DemandPageUrl(highlightDemand.getDemand()).getHtmlLink(DemandsTools.getTitle(highlightDemand.getDemand())), 3));
+            indexBodyElement.add(new HtmlTitle(new DemandPageUrl(highlightDemand.getDemand()).getHtmlLink(DemandsTools.getTitle(highlightDemand.getDemand())),
+                                               3));
 
             indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightDemand.getDemand().getProject())));
-
 
             indexBodyElement.add(DemandsTools.generateProgress(highlightDemand.getDemand(), true));
 
@@ -46,7 +45,6 @@ public class IndexDemandBlock extends HtmlDiv {
         } catch (UnauthorizedOperationException e) {
         }
     }
-
 
     public HtmlBranch setFloatRight(HtmlElement element) {
         floatRight.add(new HtmlDiv("float_right").add(element));

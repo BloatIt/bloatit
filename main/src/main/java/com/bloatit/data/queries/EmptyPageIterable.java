@@ -24,7 +24,7 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * The Class EmptyPageIterable is a generic and always empty
  * {@link PageIterable}.
- * 
+ *
  * @param <T> the generic type.
  */
 public class EmptyPageIterable<T> implements PageIterable<T> {

@@ -24,7 +24,7 @@ import com.bloatit.model.Release;
 import com.bloatit.model.lists.ReleaseList;
 
 /**
- * 
+ *
  */
 public class ReleaseManager {
     public static Release getById(final Integer id) {

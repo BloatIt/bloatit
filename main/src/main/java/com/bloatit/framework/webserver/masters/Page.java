@@ -13,8 +13,6 @@ public abstract class Page extends HtmlElement implements Linkable {
         ModelAccessor.setReadOnly();
     }
 
-
-
     @Override
     public final void writeToHttp(final HttpResponse response) throws RedirectException, IOException {
         create();

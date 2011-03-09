@@ -31,7 +31,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * there is a 's' at the end of kudos even when there is only one. ] The kudos
  * is an internal storing class. You should never have to use it in other
  * package.
- * 
+ *
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
 @Entity
@@ -47,13 +47,13 @@ public class DaoKudos extends DaoUserContent {
     @Column(updatable = false)
     private int value;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoKudosable kudosable;
 
     /**
      * Create a new kudos.
-     * 
+     *
      * @param member is the person creating the kudos.
      * @param value is value of the kudos.
      */

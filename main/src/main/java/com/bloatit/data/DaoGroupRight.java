@@ -19,7 +19,7 @@ public class DaoGroupRight extends DaoIdentifiable {
         CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK,
     }
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoGroupMembership membership;
 
     @Basic(optional = false)

@@ -21,7 +21,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.ExternalAccount;
 
 /**
- * The Class ExternalAccountList transforms PageIterable<DaoExternalAccount> to PageIterable<ExternalAccount>.
+ * The Class ExternalAccountList transforms PageIterable<DaoExternalAccount> to
+ * PageIterable<ExternalAccount>.
  */
 public final class ExternalAccountList extends ListBinder<ExternalAccount, DaoExternalAccount> {
     public ExternalAccountList(PageIterable<DaoExternalAccount> daoCollection) {

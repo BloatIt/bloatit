@@ -11,7 +11,6 @@
  */
 package com.bloatit.framework.webserver.components.form;
 
-
 /**
  * <p>
  * Class used to create a file uploading box

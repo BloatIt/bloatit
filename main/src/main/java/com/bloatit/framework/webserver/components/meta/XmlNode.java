@@ -12,12 +12,10 @@ import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
  * An HtmlNode represents <b>any</b> item in a DOM
  * </p>
  */
-public abstract class XmlNode implements Iterable<XmlNode> , Cloneable {
-
-
+public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
 
     @Override
-    public XmlNode clone()  {
+    public XmlNode clone() {
         throw new NotImplementedException();
     }
 

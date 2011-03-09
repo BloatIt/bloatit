@@ -49,7 +49,7 @@ public class DaoInternalAccount extends DaoAccount {
 
     /**
      * bloc an amount of money, and reset the modification date.
-     * 
+     *
      * @param blocked the amount we want to block
      * @throws NotEnoughMoneyException if there is not enough money to block.
      *             (nothing is done, modification date is unchanged)
@@ -66,7 +66,7 @@ public class DaoInternalAccount extends DaoAccount {
 
     /**
      * unbloc an amount of money, and reset the modification date.
-     * 
+     *
      * @param blocked the amount of money we want to unblock.
      * @throws NotEnoughMoneyException if there is not enough money already
      *             bloken. (nothing is done, modification date is unchanged)

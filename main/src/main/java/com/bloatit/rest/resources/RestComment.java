@@ -108,7 +108,7 @@ public class RestComment extends RestElement<Comment> {
      * <p>
      * Finds the RestComment matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestComment
      */
     @REST(name = "comments", method = RequestMethod.GET)
@@ -176,7 +176,7 @@ public class RestComment extends RestElement<Comment> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }

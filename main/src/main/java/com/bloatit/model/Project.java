@@ -102,7 +102,7 @@ public class Project extends Identifiable<DaoProject> {
     public final DemandList getDemands() throws UnauthorizedOperationException {
         tryAccess(new ProjectRight.Name(), Action.READ);
         return new DemandList(getDao().getDemands());
-        
+
     }
 
     public void setImage(FileMetadata fileImage) {

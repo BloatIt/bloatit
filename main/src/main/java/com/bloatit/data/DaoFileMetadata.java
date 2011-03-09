@@ -56,7 +56,7 @@ public class DaoFileMetadata extends DaoUserContent {
     @Enumerated
     private FileType type;
 
-   @ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoUserContent relatedContent;
 

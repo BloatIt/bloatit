@@ -46,22 +46,24 @@ public final class IndexPage extends MasterPage {
 
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-//            final HtmlParagraph globalConcept = new HtmlParagraph(Context.tr("Linkeos is a platform for free software funding."));
-//            globalDescription.add(globalConcept);
-//
-//            final HtmlParagraph needText = new HtmlParagraph();
-//            needText.addText(Context.tr("If you have a need about a free software, you can "));
-//            needText.add(new CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demand")));
-//            needText.addText(Context.tr(" and contribute to it."));
-//            globalDescription.add(needText);
-//
-//            final HtmlParagraph devText = new HtmlParagraph();
-//            devText.addText(Context.tr("If you are a developer, you can make an offer on existing demands to develop it again money."));
-//            globalDescription.add(devText);
-//
-//            final HtmlParagraph moreText = new HtmlParagraph();
-//            moreText.addText(Context.tr("You can find more informations about Linkeos's in the documentation."));
-//            globalDescription.add(moreText);
+            // final HtmlParagraph globalConcept = new
+            // HtmlParagraph(Context.tr("Linkeos is a platform for free software funding."));
+            // globalDescription.add(globalConcept);
+            //
+            // final HtmlParagraph needText = new HtmlParagraph();
+            // needText.addText(Context.tr("If you have a need about a free software, you can "));
+            // needText.add(new
+            // CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demand")));
+            // needText.addText(Context.tr(" and contribute to it."));
+            // globalDescription.add(needText);
+            //
+            // final HtmlParagraph devText = new HtmlParagraph();
+            // devText.addText(Context.tr("If you are a developer, you can make an offer on existing demands to develop it again money."));
+            // globalDescription.add(devText);
+            //
+            // final HtmlParagraph moreText = new HtmlParagraph();
+            // moreText.addText(Context.tr("You can find more informations about Linkeos's in the documentation."));
+            // globalDescription.add(moreText);
 
             HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
 
@@ -70,14 +72,11 @@ public final class IndexPage extends MasterPage {
             HtmlImage image = new HtmlImage(new Image("presentation.png", ImageType.LOCAL), tr("Elveos's presentation"));
             globalDescription.add(image);
 
-
-
         }
         add(globalDescription);
 
-
         TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true);
-        twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"),1));
+        twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"), 1));
 
         final HtmlDiv demandList = new HtmlDiv("demand_list");
         {
@@ -150,7 +149,7 @@ public final class IndexPage extends MasterPage {
     @Override
     protected List<String> getCustomCss() {
         ArrayList<String> custom = new ArrayList<String>();
-        
+
         custom.add("index.css");
         return custom;
     }

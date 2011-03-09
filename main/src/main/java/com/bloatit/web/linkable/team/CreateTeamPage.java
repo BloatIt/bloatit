@@ -40,14 +40,13 @@ public class CreateTeamPage extends MasterPage {
         layout.addRight(new SideBarDocumentationBlock("create_team"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        
+
         add(layout);
     }
-    
-    
-    private HtmlElement generateMain(){
+
+    private HtmlElement generateMain() {
         final HtmlDiv box = new HtmlDiv();
-        
+
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Create a new team"), 1);
         box.add(master);
 
@@ -88,7 +87,7 @@ public class CreateTeamPage extends MasterPage {
         form.add(rightInput);
 
         form.add(new HtmlSubmit(Context.tr("Submit")));
-        
+
         return box;
     }
 

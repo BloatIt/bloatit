@@ -174,6 +174,4 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         }
     }
 
-
-
 }

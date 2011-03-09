@@ -171,8 +171,6 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         this.notificationPh.add(notifyBlock);
     }
 
-
-
     /**
      * @return the inputBlock
      */
@@ -324,11 +322,11 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * tree of html element and not only a input tag.
      * </p>
      * <p>
-     * Many methods of HtmlFormField are overriding the HtmlElement ones to apply
-     * the changes to the input field and not to the root element. If the input
-     * element is a tree, the form field doesn't know where to add the attribute.
-     * This class permit to give two reference, one to the input element and one
-     * on the root sub-element.
+     * Many methods of HtmlFormField are overriding the HtmlElement ones to
+     * apply the changes to the input field and not to the root element. If the
+     * input element is a tree, the form field doesn't know where to add the
+     * attribute. This class permit to give two reference, one to the input
+     * element and one on the root sub-element.
      * </p>
      */
     public abstract static class InputBlock {
@@ -363,7 +361,5 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         }
 
     }
-
-
 
 }

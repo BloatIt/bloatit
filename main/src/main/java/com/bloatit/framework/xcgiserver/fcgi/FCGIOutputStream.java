@@ -32,7 +32,7 @@ public class FCGIOutputStream extends OutputStream {
     final static byte FCGI_OVERLOADED = 2;
     final static byte FCGI_UNKNOWN_ROLE = 3;
 
-    //private final DataOutputStream outputStream;
+    // private final DataOutputStream outputStream;
     private final FCGIParser fcgiParser;
     private final DataOutputStream prepareStream;
     private final ByteArrayOutputStream prepareBuffer;
@@ -45,8 +45,7 @@ public class FCGIOutputStream extends OutputStream {
         prepareBuffer = new ByteArrayOutputStream(PREPARE_BUFFER_SIZE);
         waitBuffer = new ByteArrayOutputStream(WAIT_BUFFER_SIZE);
 
-
-        this.prepareStream = new DataOutputStream( prepareBuffer);
+        this.prepareStream = new DataOutputStream(prepareBuffer);
 
     }
 
@@ -76,27 +75,25 @@ public class FCGIOutputStream extends OutputStream {
         outputStream.close();
     }
 
-
-
     private void writeBytes(final byte[] b, final int off, final int len) throws IOException {
 
         int wroteLen = 0;
 
-        while(wroteLen < len) {
+        while (wroteLen < len) {
 
-            int currentOffset = off+wroteLen;
-            int lenToWrite = len-wroteLen;
+            int currentOffset = off + wroteLen;
+            int lenToWrite = len - wroteLen;
 
-            //Check if left size in next record
+            // Check if left size in next record
             int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
-            if(leftSize > 0) {
-                //Check if there too bytes for the current record
-                if(lenToWrite <= leftSize) {
+            if (leftSize > 0) {
+                // Check if there too bytes for the current record
+                if (lenToWrite <= leftSize) {
                     waitBuffer.write(b, currentOffset, lenToWrite);
-                    wroteLen+= len;
+                    wroteLen += len;
                 } else {
                     waitBuffer.write(b, currentOffset, leftSize);
-                    wroteLen+= leftSize;
+                    wroteLen += leftSize;
                 }
             }
 
@@ -107,13 +104,13 @@ public class FCGIOutputStream extends OutputStream {
 
     private void sendStdoutRecordIfNeeded() throws IOException {
         int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
-        if(leftSize <= 0) {
+        if (leftSize <= 0) {
             sendStdoutRecord();
         }
     }
 
     private void sendStdoutRecord() throws IOException {
-        if(waitBuffer.size() > 0) {
+        if (waitBuffer.size() > 0) {
             sendRecordHeader(FCGIParser.FCGI_STDOUT, waitBuffer.size());
             prepareStream.write(waitBuffer.toByteArray(), 0, waitBuffer.size());
 
@@ -122,13 +119,12 @@ public class FCGIOutputStream extends OutputStream {
     }
 
     private void flushRecord() throws IOException {
-        //Write record in the socket
+        // Write record in the socket
         outputStream.write(prepareBuffer.toByteArray());
 
         prepareBuffer.reset();
         waitBuffer.reset();
     }
-
 
     private void sendRecordHeader(final byte fcgiType, final int length) throws IOException {
         // FCGI version

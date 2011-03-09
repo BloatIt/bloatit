@@ -46,26 +46,24 @@ public class Documentation extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-         TwoColumnLayout layout = new TwoColumnLayout();
+        TwoColumnLayout layout = new TwoColumnLayout();
 
+        BoxLayout box = new BoxLayout();
 
-         BoxLayout box = new BoxLayout();
+        HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
+        if (!docRenderer.isExists()) {
+            throw new PageNotFoundException();
+        }
 
-         HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
-         if(! docRenderer.isExists()) {
-             throw new PageNotFoundException();
-         }
+        box.add(docRenderer);
+        layout.addLeft(box);
 
-         box.add(docRenderer);
-         layout.addLeft(box);
-
-         add(layout);
+        add(layout);
     }
 
     @Override
     protected String getPageTitle() {
         return Context.tr("Elveos documentation: {0}", docTarget);
     }
-
 
 }

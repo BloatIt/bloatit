@@ -106,7 +106,7 @@ public class RestDescription extends RestElement<Description> {
      * <p>
      * Finds the RestDescription matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestDescription
      */
     @REST(name = "descriptions", method = RequestMethod.GET)
@@ -144,7 +144,7 @@ public class RestDescription extends RestElement<Description> {
     @XmlElement
     public RestTranslation getDefaultTranslation() {
         RestTranslation restTranslation = new RestTranslation(model.getDefaultTranslation());
-        if(restTranslation.isNull()){
+        if (restTranslation.isNull()) {
             return null;
         }
         return restTranslation;

@@ -26,7 +26,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
     }
 
     public static class InputField extends InputBlock {
-        
+
         private HtmlSimpleInput input;
         private HtmlDiv content;
 
@@ -36,7 +36,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
             content.add(input);
             content.add(new HtmlText("€"));
         }
-        
+
         @Override
         public HtmlElement getInputElement() {
             return input;

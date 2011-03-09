@@ -60,7 +60,7 @@ public abstract class WebServer implements XcgiProcessor {
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
-            } 
+            }
             ModelAccessor.close();
 
         } catch (final RuntimeException e) {

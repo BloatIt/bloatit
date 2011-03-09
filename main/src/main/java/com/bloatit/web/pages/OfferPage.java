@@ -211,6 +211,5 @@ public final class OfferPage extends LoggedPage {
         offerPageContainer.add(offerForm);
         return offerPageContainer;
     }
-    
 
 }

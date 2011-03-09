@@ -15,9 +15,9 @@ public class TwoColumnLayout extends HtmlDiv {
 
     public TwoColumnLayout(boolean box) {
         super("two_column");
-        HtmlDiv leftColumnBlock = new HtmlDiv((box ?"left_column_block":"left_column_block_without_box"));
+        HtmlDiv leftColumnBlock = new HtmlDiv((box ? "left_column_block" : "left_column_block_without_box"));
         HtmlDiv rightColumnBlock = new HtmlDiv("right_column_block");
-        leftColumn = new HtmlDiv((box ?"left_column":"left_column_without_box"));
+        leftColumn = new HtmlDiv((box ? "left_column" : "left_column_without_box"));
         rightColumn = new HtmlDiv("right_column");
         leftColumnBlock.add(leftColumn);
         rightColumnBlock.add(rightColumn);
@@ -33,6 +33,5 @@ public class TwoColumnLayout extends HtmlDiv {
     public void addRight(SideBarElementLayout element) {
         rightColumn.add(element);
     }
-
 
 }

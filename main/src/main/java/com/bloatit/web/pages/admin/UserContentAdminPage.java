@@ -26,7 +26,7 @@ import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/usercontent")
 public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentInterface<U>, T extends UserContentAdminListFactory<U, V>>
-        extends IdentifiablesAdminPage<U, V, UserContentAdminListFactory<U,V>> {
+        extends IdentifiablesAdminPage<U, V, UserContentAdminListFactory<U, V>> {
 
     public enum OrderByUserContent implements Displayable {
         NOTHING(tr("No order")), //
@@ -63,7 +63,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     private final UserContentAdminPageUrl url;
 
     protected UserContentAdminPage(final UserContentAdminPageUrl url, final T factory) {
-        super(url, factory); 
+        super(url, factory);
         this.url = url;
         this.factory = factory;
         filterDeleted = url.getFilterDeleted();
@@ -76,7 +76,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         Context.getSession().addParameter(url.getFilterDeletedParameter());
         Context.getSession().addParameter(url.getFilterFileParameter());
         Context.getSession().addParameter(url.getFilterGroupParameter());
-        
+
         if (filterDeleted == DisplayableFilterType.WITH) {
             factory.deletedOnly();
         } else if (filterDeleted == DisplayableFilterType.WITHOUT) {

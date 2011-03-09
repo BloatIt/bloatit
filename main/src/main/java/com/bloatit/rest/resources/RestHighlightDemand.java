@@ -104,7 +104,7 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      * <p>
      * Finds the RestHighlightDemand matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestHighlightDemand
      */
     @REST(name = "highlightdemands", method = RequestMethod.GET)
@@ -156,7 +156,7 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      * @see com.bloatit.model.HighlightDemand#getActivationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getActivationDate() {
         return model.getActivationDate();
     }

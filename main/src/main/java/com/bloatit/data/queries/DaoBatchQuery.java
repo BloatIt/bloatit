@@ -41,13 +41,13 @@ public class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
      * Add a WHERE close restricting the <code>amount</code> value of the
      * returning batches. For example if you want your query to return only the
      * batches that have less than 42 €, you can call:
-     * 
+     *
      * <pre>
      * DaoOfferListFactory factory = new DaoBatchesListFactory();
      * factory.amount(Comparator.LESS, 42);
      * PageIterable&lt;DaoBatches&gt; batches = factory.createCollection();
      * </pre>
-     * 
+     *
      * @param cmp the cmp.
      * @param value the value
      */
@@ -57,7 +57,7 @@ public class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
 
     /**
      * Add a close on the state of this batch.
-     * 
+     *
      * @param state the state of the resulting batches.
      */
     public void stateEquals(final BatchState state) {

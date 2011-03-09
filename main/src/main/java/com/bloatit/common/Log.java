@@ -51,7 +51,7 @@ public final class Log {
     public static Logger resources() {
         return RESOURCE;
     }
-    
+
     public static Logger cache() {
         return CACHE;
     }

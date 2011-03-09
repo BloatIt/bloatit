@@ -23,13 +23,11 @@ public abstract class XmlElement extends XmlNode {
 
     public XmlElement(XmlElement element) {
         super();
-        for(XmlNode child: element.children) {
+        for (XmlNode child : element.children) {
             this.children.add(child);
         }
         this.tag = element.tag;
     }
-
-
 
     /**
      * <p>

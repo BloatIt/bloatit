@@ -11,8 +11,8 @@ package com.bloatit.framework.webserver.components.meta;
  * <code>Hello, you can <0:follow this link:comment>.</code>
  * <p>
  * In this exemple <0:follow this link> will be replaced by the parameters at
- * the index 0. The second field is is a comment, the text . If a
- * third text will be add to the node.
+ * the index 0. The second field is is a comment, the text . If a third text
+ * will be add to the node.
  * </p>
  */
 public class HtmlMixedText extends HtmlBranch {
@@ -60,7 +60,6 @@ public class HtmlMixedText extends HtmlBranch {
         if (split.length >= 3) {
             node.addText(split[2]);
         }
-
 
         add(node);
 

@@ -112,7 +112,7 @@ public class RestBug extends RestElement<Bug> {
      * <p>
      * Finds the RestBug matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestBug
      */
     @REST(name = "bugs", method = RequestMethod.GET)
@@ -222,7 +222,7 @@ public class RestBug extends RestElement<Bug> {
      * @see com.bloatit.model.Bug#getLastUpdateDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getLastUpdateDate() {
         return model.getLastUpdateDate();
     }
@@ -231,7 +231,7 @@ public class RestBug extends RestElement<Bug> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
-    @XmlJavaTypeAdapter( DateAdapter.class )
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }

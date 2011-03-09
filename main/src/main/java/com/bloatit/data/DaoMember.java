@@ -62,7 +62,7 @@ import com.bloatit.framework.utils.PageIterable;
                        @NamedQuery(
                            name = "member.byLoginPassword",
                            query = "FROM DaoMember WHERE login = :login AND password = :password"),
-                           
+
                        @NamedQuery(
                            name = "member.getRecievedInvitations.byStateGroup",
                            query = "FROM DaoJoinGroupInvitation " +
@@ -76,7 +76,7 @@ import com.bloatit.framework.utils.PageIterable;
                                        "WHERE receiver = :receiver " +
                                        "AND state = :state  " +
                                        "AND group = :group"),
-                                       
+
                        @NamedQuery(
                            name = "member.getRecievedInvitations.byState",
                            query = "FROM DaoJoinGroupInvitation " +
@@ -87,8 +87,8 @@ import com.bloatit.framework.utils.PageIterable;
                            query = "SELECT count(*)" +
                                       "FROM DaoJoinGroupInvitation " +
                                    "WHERE receiver = :receiver " +
-                                   "AND state = :state "),            
-                                   
+                                   "AND state = :state "),
+
                        @NamedQuery(
                            name = "member.getSentInvitations.byState",
                            query = "FROM DaoJoinGroupInvitation " +
@@ -100,7 +100,7 @@ import com.bloatit.framework.utils.PageIterable;
                                    "FROM DaoJoinGroupInvitation " +
                                    "WHERE sender = :sender " +
                                    "AND state = :state "),
-                                   
+
                        @NamedQuery(
                            name = "member.getSentInvitations.byStateGroup",
                            query = "SELECT count(*)" +
@@ -115,16 +115,16 @@ import com.bloatit.framework.utils.PageIterable;
                                    "WHERE sender = :sender " +
                                    "AND state = :state " +
                                    "AND group = :group"),
-                                   
+
                        @NamedQuery(
                            name = "member.isInGroup",
                            query = "SELECT count(*) " +
-                                   "FROM DaoMember m " + 
+                                   "FROM DaoMember m " +
                                    "JOIN m.groupMembership AS gm " +
-                                   "JOIN gm.bloatitGroup AS g " + 
+                                   "JOIN gm.bloatitGroup AS g " +
                                    "WHERE m = :member AND g = :group"),
-                       
-                                   
+
+
                       }
              )
 // @formatter:on
@@ -176,7 +176,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     * 
+     *
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
@@ -190,7 +190,7 @@ public class DaoMember extends DaoActor {
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     * 
+     *
      * @param login the member login.
      * @param password the password of the member "login". It is a string
      *            corresponding to the string in the database. This method does
@@ -212,7 +212,7 @@ public class DaoMember extends DaoActor {
     /**
      * Create a member. The member login must be unique, and you cannot change
      * it.
-     * 
+     *
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param locale the locale of the user.
@@ -236,7 +236,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     * 
+     *
      * @param locale is the locale in which this user is. (The country and
      *            language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
@@ -355,7 +355,7 @@ public class DaoMember extends DaoActor {
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
      * PROTECTED groups. ]
-     * 
+     *
      * @return All the groups this member is in. (Use a HQL query)
      */
     public PageIterable<DaoGroup> getGroups() {

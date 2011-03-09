@@ -166,7 +166,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
         automaticAuthentication();
         return owningState == OwningState.NOBODY;
     }
-    
+
     /**
      * Return true if this content is mine (I am the author).
      *

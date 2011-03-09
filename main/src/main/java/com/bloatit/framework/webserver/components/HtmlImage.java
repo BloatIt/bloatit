@@ -50,5 +50,4 @@ public class HtmlImage extends HtmlLeaf {
         addAttribute("class", cssClass);
     }
 
-
 }

@@ -82,7 +82,7 @@ public class PreparingState extends CanContributeMetaState {
     public AbstractDemandState notifyAddContribution() {
         return handleEvent();
     }
-    
+
     @Override
     public final DemandState getState() {
         return DemandState.PREPARING;

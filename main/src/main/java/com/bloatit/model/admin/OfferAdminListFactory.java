@@ -11,7 +11,6 @@ import com.bloatit.model.lists.OfferList;
 
 public class OfferAdminListFactory extends KudosableAdminListFactory<DaoOffer, Offer> {
 
-
     public OfferAdminListFactory() {
         super(new DaoOfferQuery());
     }

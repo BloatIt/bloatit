@@ -108,7 +108,7 @@ public class RestTransaction extends RestElement<Transaction> {
      * <p>
      * Finds the RestTransaction matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestTransaction
      */
     @REST(name = "transactions", method = RequestMethod.GET)
