@@ -1,6 +1,5 @@
 package com.bloatit.framework.webserver.masters;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
