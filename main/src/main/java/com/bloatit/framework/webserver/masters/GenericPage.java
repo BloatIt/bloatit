@@ -62,15 +62,11 @@ public abstract class GenericPage extends Page {
 
     @Override
     protected void generateDependencies() {
-        ArrayList<String> allCss = new ArrayList<String>();
-        getAllCustomCss(allCss);
-        for (String css : allCss) {
+        for (String css : getAllCss()) {
             pageHeader.addCss(css);
         }
 
-        ArrayList<String> allJs = new ArrayList<String>();
-        getAllCustomJs(allJs);
-        for (String js : allJs) {
+        for (String js : getAllJs()) {
             pageHeader.addJs(js);
         }
     }

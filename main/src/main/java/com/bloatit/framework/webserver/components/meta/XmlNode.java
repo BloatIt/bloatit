@@ -1,5 +1,6 @@
 package com.bloatit.framework.webserver.components.meta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
@@ -38,18 +39,30 @@ public abstract class XmlNode implements Iterable<XmlNode> {
      */
     protected abstract List<String> getCustomJs();
 
-    public final void getAllCustomCss(List<String> css) {
+    public final List<String> getAllCss() {
+        ArrayList<String> css = new ArrayList<String>();
+        doGetAllCustomCss(css);
+        return css;
+    }
+
+    public final List<String> getAllJs() {
+        ArrayList<String> js = new ArrayList<String>();
+        doGetAllCustomJs(js);
+        return js;
+    }
+
+    private final void doGetAllCustomCss(List<String> css) {
         for (XmlNode node : this) {
-            node.getAllCustomCss(css);
+            node.doGetAllCustomCss(css);
         }
         if (getCustomCss() != null) {
             css.addAll(getCustomCss());
         }
     }
 
-    public final void getAllCustomJs(List<String> js) {
+    private final void doGetAllCustomJs(List<String> js) {
         for (XmlNode node : this) {
-            node.getAllCustomJs(js);
+            node.doGetAllCustomJs(js);
         }
         if (getCustomJs() != null) {
             js.addAll(getCustomJs());
