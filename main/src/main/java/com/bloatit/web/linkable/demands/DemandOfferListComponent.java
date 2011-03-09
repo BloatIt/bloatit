@@ -13,6 +13,8 @@ package com.bloatit.web.linkable.demands;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.math.BigDecimal;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBatch.BatchState;
 import com.bloatit.data.queries.EmptyPageIterable;
@@ -20,6 +22,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.TimeRenderer;
+import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -79,12 +82,26 @@ public class DemandOfferListComponent extends HtmlDiv {
                     BicolumnOfferBlock block = new BicolumnOfferBlock(true);
                     offersBlock.add(block);
                     // Generating the left column
+
                     block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
                     if (demand.getValidationDate() != null && DateUtils.isInTheFuture(demand.getValidationDate())) {
                         TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), demand.getValidationDate()));
-                        block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString() + "."));
+
+                        BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
+
+                        if(amountLeft.compareTo(BigDecimal.ZERO) > 0) {
+                            CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will be validated in about {0}. After this time, the offer will go into development as soon as the requestied amount is available ({1} left).", renderer.getTimeString(), currency.toString())));
+                        } else {
+                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString() + "."));
+                        }
                     } else {
-                        block.addInLeftColumn(new HtmlParagraph(tr("Coucou !! ")));
+
+                        BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
+
+                        CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+
+                        block.addInLeftColumn(new HtmlParagraph(tr("This offer is validated and will go into development as soon as the resquested amount is available ({0} left).", currency.toString())));
                     }
                     // Generating the right column
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
