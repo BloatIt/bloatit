@@ -25,14 +25,14 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
-import com.bloatit.web.linkable.demands.DemandTabPane;
+import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.FeaturePageUrl;
 
 /**
- * A response to a form used to create a contribution to a demand
+ * A response to a form used to create a contribution to a feature
  */
 @ParamContainer("action/contribute")
 public final class ContributionAction extends LoggedAction {
@@ -70,9 +70,9 @@ public final class ContributionAction extends LoggedAction {
         try {
             targetIdea.addContribution(amount, comment);
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
-            final DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
-            demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
-            return demandPageUrl;
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(targetIdea);
+            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.PARTICIPATIONS_TAB);
+            return featurePageUrl;
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
             session.addParameter(url.getAmountParameter());

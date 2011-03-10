@@ -20,7 +20,6 @@ import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContent;
 import com.bloatit.web.pages.admin.AdminActionManager;
-import com.bloatit.web.pages.admin.DisplayableDemandState;
 import com.bloatit.web.pages.admin.DisplayableState;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -29,7 +28,7 @@ import com.bloatit.web.url.LoginPageUrl;
 public class AdministrationAction extends LoggedAction {
 
     public static final String POPULARITY_STATE_CODE = "popularitystate";
-    public static final String DEMAND_STATE_CODE = "demandstate";
+    public static final String FEATURE_STATE_CODE = "featurestate";
 
     @RequestParam(name = "id", role = Role.POST)
     private final List<Identifiable> contents;
@@ -88,12 +87,12 @@ public class AdministrationAction extends LoggedAction {
                     case COMPUTE_SELECTED_OFFER:
                         ((Feature) content).computeSelectedOffer();
                         break;
-                    case SET_DEMAND_IN_DEVELOPMENT:
-                        Feature demand = (Feature) content;
-                        if (demand.getSelectedOffer() == null || demand.getSelectedOffer().getAmount().compareTo(demand.getContribution()) > 0) {
-                            session.notifyBad("There is no offer or not enough money. So no developement state for id: " + demand.getId());
+                    case SET_FEATURE_IN_DEVELOPMENT:
+                        Feature feature = (Feature) content;
+                        if (feature.getSelectedOffer() == null || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
+                            session.notifyBad("There is no offer or not enough money. So no developement state for id: " + feature.getId());
                         } else {
-                            demand.setFeatureState(FeatureState.DEVELOPPING);
+                            feature.setFeatureState(FeatureState.DEVELOPPING);
                         }
                         break;
                     case VALIDATE_BATCH:

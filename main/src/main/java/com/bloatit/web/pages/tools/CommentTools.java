@@ -162,7 +162,7 @@ public class CommentTools {
                                                            NB_ROWS,
                                                            NB_COLUMNS);
         form.add(commentInput);
-        commentInput.setComment(Context.tr("Use this field to comment the demand. If you want to reply to a previous comment, use the reply link."));
+        commentInput.setComment(Context.tr("Use this field to comment the feature. If you want to reply to a previous comment, use the reply link."));
 
         // Attachement
         form.add(generateAttachementBlock(url, commentable));

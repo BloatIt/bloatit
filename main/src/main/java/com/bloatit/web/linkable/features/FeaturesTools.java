@@ -1,4 +1,4 @@
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.trn;
 
@@ -19,53 +19,53 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.components.HtmlProgressBar;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.FeaturePageUrl;
 
-public class DemandsTools {
+public class FeaturesTools {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public static String getTitle(Feature demand) throws UnauthorizedOperationException {
+    public static String getTitle(Feature feature) throws UnauthorizedOperationException {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
-        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
         return translatedDescription.getTitle();
     }
 
-    public static HtmlDiv generateProgress(Feature demand) throws UnauthorizedOperationException {
-        return generateProgress(demand, false);
+    public static HtmlDiv generateProgress(Feature feature) throws UnauthorizedOperationException {
+        return generateProgress(feature, false);
     }
 
     /**
      * @return
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(Feature demand, boolean slim) throws UnauthorizedOperationException {
-        final HtmlDiv demandSummaryProgress = new HtmlDiv("summary_progress");
+    public static HtmlDiv generateProgress(Feature feature, boolean slim) throws UnauthorizedOperationException {
+        final HtmlDiv featureSummaryProgress = new HtmlDiv("summary_progress");
         {
             float progressValue = 0;
             // Progress bar
 
-            progressValue = (float) Math.floor(demand.getProgression());
+            progressValue = (float) Math.floor(feature.getProgression());
             float cappedProgressValue = progressValue;
             if (cappedProgressValue > FeatureImplementation.PROGRESSION_PERCENT) {
                 cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT;
             }
 
             final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue, slim);
-            demandSummaryProgress.add(progressBar);
+            featureSummaryProgress.add(progressBar);
 
             // Progress text
-            demandSummaryProgress.add(generateProgressText(demand, progressValue));
+            featureSummaryProgress.add(generateProgressText(feature, progressValue));
 
         }
-        return demandSummaryProgress;
+        return featureSummaryProgress;
     }
 
-    private static HtmlElement generateProgressText(final Feature demand, final float progressValue) {
+    private static HtmlElement generateProgressText(final Feature feature, final float progressValue) {
 
         Offer currentOffer = null;
         try {
-            currentOffer = demand.getSelectedOffer();
+            currentOffer = feature.getSelectedOffer();
         } catch (final UnauthorizedOperationException e1) {
             // Nothing.
         }
@@ -76,7 +76,7 @@ public class DemandsTools {
 
             CurrencyLocale currency;
             try {
-                currency = Context.getLocalizator().getCurrency(demand.getContribution());
+                currency = Context.getLocalizator().getCurrency(feature.getContribution());
 
                 amount.addText(currency.getDefaultString());
 
@@ -95,7 +95,7 @@ public class DemandsTools {
         // Amount
         CurrencyLocale amountCurrency;
         try {
-            amountCurrency = Context.getLocalizator().getCurrency(demand.getContribution());
+            amountCurrency = Context.getLocalizator().getCurrency(feature.getContribution());
             final HtmlSpan amount = new HtmlSpan();
             amount.setCssClass(IMPORTANT_CSS_CLASS);
             amount.addText(amountCurrency.getDefaultString());
@@ -127,40 +127,40 @@ public class DemandsTools {
         }
     }
 
-    public static HtmlDiv generateDetails(Feature demand) throws UnauthorizedOperationException {
-        final HtmlDiv demandSummaryDetails = new HtmlDiv("demand_sumary_details");
+    public static HtmlDiv generateDetails(Feature feature) throws UnauthorizedOperationException {
+        final HtmlDiv featureSummaryDetails = new HtmlDiv("feature_sumary_details");
         {
 
-            final int commentsCount = demand.getComments().size();
-            final int offersCount = demand.getOffers().size();
+            final int commentsCount = feature.getComments().size();
+            final int offersCount = feature.getOffers().size();
 
-            final int contributionsCount = demand.getContributions().size();
+            final int contributionsCount = feature.getContributions().size();
 
-            final DemandPageUrl commentsDemandUrl = new DemandPageUrl(demand);
-            commentsDemandUrl.setAnchor("comments_block");
+            final FeaturePageUrl commentsFeatureUrl = new FeaturePageUrl(feature);
+            commentsFeatureUrl.setAnchor("comments_block");
 
-            final DemandPageUrl offersDemandUrl = new DemandPageUrl(demand);
-            offersDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
-            offersDemandUrl.setAnchor("demand_tab_pane");
+            final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature);
+            offersFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+            offersFeatureUrl.setAnchor("feature_tab_pane");
 
-            final DemandPageUrl contributionsDemandUrl = new DemandPageUrl(demand);
-            contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
-            contributionsDemandUrl.setAnchor("demand_tab_pane");
+            final FeaturePageUrl contributionsFeatureUrl = new FeaturePageUrl(feature);
+            contributionsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.PARTICIPATIONS_TAB);
+            contributionsFeatureUrl.setAnchor("feature_tab_pane");
 
-            demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment",
+            featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(Context.trn("{0} comment",
                                                                                "{0} comments",
                                                                                commentsCount,
                                                                                new Integer(commentsCount))));
-            demandSummaryDetails.addText(" – ");
-            demandSummaryDetails.add(offersDemandUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
-            demandSummaryDetails.addText(" – ");
-            demandSummaryDetails.add(contributionsDemandUrl.getHtmlLink(Context.trn("{0} contribution",
+            featureSummaryDetails.addText(" – ");
+            featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
+            featureSummaryDetails.addText(" – ");
+            featureSummaryDetails.add(contributionsFeatureUrl.getHtmlLink(Context.trn("{0} contribution",
                                                                                     "{0} contributions",
                                                                                     contributionsCount,
                                                                                     new Integer(contributionsCount))));
 
         }
-        return demandSummaryDetails;
+        return featureSummaryDetails;
     }
 
 }

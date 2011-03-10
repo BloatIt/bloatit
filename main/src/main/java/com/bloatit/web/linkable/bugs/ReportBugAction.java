@@ -36,7 +36,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
 /**
  * A response to a form used to create a new idea
  */
-@ParamContainer("demand/bug/doreport")
+@ParamContainer("feature/bug/doreport")
 public final class ReportBugAction extends Action {
 
     public static final String BUG_TITLE = "bug_title";
@@ -107,7 +107,7 @@ public final class ReportBugAction extends Action {
     protected Url doProcess() {
         session.notifyList(url.getMessages());
         if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use BugManager and not DemandManager here
+            // TODO: use BugManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to report a bug."));
             return new LoginPageUrl();
         }

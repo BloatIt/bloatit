@@ -9,19 +9,19 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.HighlightFeature;
-import com.bloatit.web.linkable.demands.DemandsTools;
+import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.projects.ProjectsTools;
 import com.bloatit.web.pages.master.DefineParagraph;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.FeaturePageUrl;
 
-public class IndexDemandBlock extends HtmlDiv {
+public class IndexFeatureBlock extends HtmlDiv {
 
     private final PlaceHolderElement floatRight;
 
-    public IndexDemandBlock(HighlightFeature highlightDemand) {
+    public IndexFeatureBlock(HighlightFeature highlightFeature) {
         super("index_element");
 
-        add(new HtmlTitle(highlightDemand.getReason(), 2));
+        add(new HtmlTitle(highlightFeature.getReason(), 2));
         HtmlDiv indexBodyElement = new HtmlDiv("index_body_element");
         add(indexBodyElement);
         floatRight = new PlaceHolderElement();
@@ -29,18 +29,18 @@ public class IndexDemandBlock extends HtmlDiv {
 
         try {
 
-            setFloatRight(ProjectsTools.getProjectLogo(highlightDemand.getFeature().getProject()));
+            setFloatRight(ProjectsTools.getProjectLogo(highlightFeature.getFeature().getProject()));
 
-            indexBodyElement.add(new HtmlTitle(new DemandPageUrl(highlightDemand.getFeature()).getHtmlLink(DemandsTools.getTitle(highlightDemand.getFeature())),
+            indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature()).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
                                                3));
 
-            indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightDemand.getFeature().getProject())));
+            indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightFeature.getFeature().getProject())));
 
-            indexBodyElement.add(DemandsTools.generateProgress(highlightDemand.getFeature(), true));
+            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), true));
 
-            indexBodyElement.add(new DemandPageUrl(highlightDemand.getFeature()).getHtmlLink(tr("more details...")));
+            indexBodyElement.add(new FeaturePageUrl(highlightFeature.getFeature()).getHtmlLink(tr("more details...")));
 
-            indexBodyElement.add(DemandsTools.generateDetails(highlightDemand.getFeature()));
+            indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature()));
 
         } catch (UnauthorizedOperationException e) {
         }

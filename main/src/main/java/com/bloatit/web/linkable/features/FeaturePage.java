@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -26,30 +26,30 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.model.Feature;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.FeaturePageUrl;
 
-@ParamContainer("demand")
-public final class DemandPage extends MasterPage {
+@ParamContainer("feature")
+public final class FeaturePage extends MasterPage {
 
     public static final String IDEA_FIELD_NAME = "id";
 
     @RequestParam(name = IDEA_FIELD_NAME)
-    private final Feature demand;
+    private final Feature feature;
 
     @SuppressWarnings("unused")
-    @RequestParam(role = Role.PRETTY, generatedFrom = "demand")
+    @RequestParam(role = Role.PRETTY, generatedFrom = "feature")
     @Optional("Title")
     private final String title;
 
-    private final DemandPageUrl url;
+    private final FeaturePageUrl url;
 
     @SuppressWarnings("unused")
-    private DemandTabPane demandTabPane;
+    private FeatureTabPane featureTabPane;
 
-    public DemandPage(final DemandPageUrl url) {
+    public FeaturePage(final FeaturePageUrl url) {
         super(url);
         this.url = url;
-        demand = url.getDemand();
+        feature = url.getFeature();
         title = url.getTitle();
     }
 
@@ -60,9 +60,9 @@ public final class DemandPage extends MasterPage {
 
     @Override
     protected String getPageTitle() {
-        if (demand != null) {
+        if (feature != null) {
             try {
-                return demand.getTitle();
+                return feature.getTitle();
             } catch (final UnauthorizedOperationException e) {
                 // Return the default one.
             }
@@ -73,12 +73,12 @@ public final class DemandPage extends MasterPage {
     @Override
     protected List<String> getCustomCss() {
         ArrayList<String> custom = new ArrayList<String>();
-        custom.add("demand.css");
+        custom.add("feature.css");
         return custom;
     }
 
-    public Feature getDemand() {
-        return demand;
+    public Feature getFeature() {
+        return feature;
     }
 
     @Override
@@ -88,7 +88,7 @@ public final class DemandPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        // The demand page is composed by 3 parts:
+        // The feature page is composed by 3 parts:
         // - The sumary
         // - The tab panel
         // - The comments
@@ -96,9 +96,9 @@ public final class DemandPage extends MasterPage {
         TwoColumnLayout layout = new TwoColumnLayout(false);
 
 
-        layout.addLeft(new DemandSummaryComponent(demand));
-        layout.addLeft(new DemandTabPane(url.getDemandTabPaneUrl(), demand));
-        layout.addLeft(new DemandCommentListComponent(demand));
+        layout.addLeft(new FeatureSummaryComponent(feature));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
+        layout.addLeft(new FeatureCommentListComponent(feature));
 
         add(layout);
 

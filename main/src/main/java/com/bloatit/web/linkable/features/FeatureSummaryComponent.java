@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.tr;
 import static com.bloatit.framework.webserver.Context.trn;
@@ -45,134 +45,134 @@ import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
-public final class DemandSummaryComponent extends HtmlPageComponent {
+public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
-    private final Feature demand;
+    private final Feature feature;
 
-    public DemandSummaryComponent(final Feature demand) {
+    public FeatureSummaryComponent(final Feature feature) {
         super();
-        this.demand = demand;
+        this.feature = feature;
 
         try {
 
             // ////////////////////
-            // Div demand_summary
-            final HtmlDiv demandSummary = new HtmlDiv("demand_summary");
+            // Div feature_summary
+            final HtmlDiv featureSummary = new HtmlDiv("feature_summary");
             {
                 // ////////////////////
-                // Div demand_summary_top
-                final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
+                // Div feature_summary_top
+                final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
                 {
                     // ////////////////////
-                    // Div demand_summary_left
-                    final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
+                    // Div feature_summary_left
+                    final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
                     {
-                        demandSummaryLeft.add(ProjectsTools.getProjectLogo(demand.getProject()));
+                        featureSummaryLeft.add(ProjectsTools.getProjectLogo(feature.getProject()));
                     }
-                    demandSummaryTop.add(demandSummaryLeft);
+                    featureSummaryTop.add(featureSummaryLeft);
 
                     // ////////////////////
-                    // Div demand_summary_center
-                    final HtmlDiv demandSummaryCenter = new HtmlDiv("demand_summary_center");
+                    // Div feature_summary_center
+                    final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
                     {
                         // Try to display the title
 
                         final HtmlTitle title = new HtmlTitle(1);
-                        title.setCssClass("demand_title");
-                        title.add(ProjectsTools.getProjectLink(demand.getProject()));
+                        title.setCssClass("feature_title");
+                        title.add(ProjectsTools.getProjectLink(feature.getProject()));
                         title.addText(" – ");
-                        title.addText(DemandsTools.getTitle(demand));
+                        title.addText(FeaturesTools.getTitle(feature));
 
-                        demandSummaryCenter.add(title);
+                        featureSummaryCenter.add(title);
                     }
-                    demandSummaryTop.add(demandSummaryCenter);
+                    featureSummaryTop.add(featureSummaryCenter);
                 }
-                demandSummary.add(demandSummaryTop);
+                featureSummary.add(featureSummaryTop);
 
                 // ////////////////////
-                // Div demand_summary_bottom
-                final HtmlDiv demandSummaryBottom = new HtmlDiv("demand_sumary_bottom");
+                // Div feature_summary_bottom
+                final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_sumary_bottom");
                 {
 
                     // ////////////////////
-                    // Div demand_summary_popularity
-                    final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
+                    // Div feature_summary_popularity
+                    final HtmlDiv featureSummaryPopularity = new HtmlDiv("feature_summary_popularity");
                     {
-                        final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
-                        final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()),
-                                                                                "demand_popularity_score");
+                        final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "feature_popularity_text");
+                        final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(feature.getPopularity()),
+                                                                                "feature_popularity_score");
 
-                        demandSummaryPopularity.add(popularityText);
-                        demandSummaryPopularity.add(popularityScore);
+                        featureSummaryPopularity.add(popularityText);
+                        featureSummaryPopularity.add(popularityScore);
 
-                        if (!demand.isOwner()) {
-                            final int vote = demand.getUserVoteValue();
+                        if (!feature.isOwner()) {
+                            final int vote = feature.getUserVoteValue();
                             if (vote == 0) {
-                                final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
+                                final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");
                                 {
 
                                     // Usefull
-                                    final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(demand, true);
+                                    final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(feature, true);
                                     final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
                                     usefulLink.setCssClass("useful");
 
                                     // Useless
-                                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(demand, false);
+                                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(feature, false);
                                     final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
                                     uselessLink.setCssClass("useless");
 
-                                    demandPopularityJudge.add(usefulLink);
-                                    demandPopularityJudge.add(uselessLink);
+                                    featurePopularityJudge.add(usefulLink);
+                                    featurePopularityJudge.add(uselessLink);
                                 }
-                                demandSummaryPopularity.add(demandPopularityJudge);
+                                featureSummaryPopularity.add(featurePopularityJudge);
                             } else {
                                 // Already voted
-                                final HtmlDiv demandPopularityJudged = new HtmlDiv("demand_popularity_judged");
+                                final HtmlDiv featurePopularityJudged = new HtmlDiv("feature_popularity_judged");
                                 {
                                     if (vote > 0) {
-                                        demandPopularityJudged.add(new HtmlParagraph("+" + vote, "useful"));
+                                        featurePopularityJudged.add(new HtmlParagraph("+" + vote, "useful"));
                                     } else {
-                                        demandPopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
+                                        featurePopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
                                     }
                                 }
-                                demandSummaryPopularity.add(demandPopularityJudged);
+                                featureSummaryPopularity.add(featurePopularityJudged);
                             }
                         } else {
-                            final HtmlDiv demandPopularityNone = new HtmlDiv("demand_popularity_none");
+                            final HtmlDiv featurePopularityNone = new HtmlDiv("feature_popularity_none");
 
-                            demandSummaryPopularity.add(demandPopularityNone);
+                            featureSummaryPopularity.add(featurePopularityNone);
                         }
 
                     }
-                    demandSummaryBottom.add(demandSummaryPopularity);
+                    featureSummaryBottom.add(featureSummaryPopularity);
 
-                    HtmlDiv demandSummaryProgress;
-                    demandSummaryProgress = generateProgressBlock(demand);
-                    demandSummaryBottom.add(demandSummaryProgress);
+                    HtmlDiv featureSummaryProgress;
+                    featureSummaryProgress = generateProgressBlock(feature);
+                    featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////
-                    // Div demand_summary_share
-                    final HtmlDiv demandSummaryShare = new HtmlDiv("demand_summary_share_button");
+                    // Div feature_summary_share
+                    final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
-                        final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('demand_summary_share')", Context.tr("+ Share"));
-                        demandSummaryShare.add(showHideShareBlock);
+                        final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')", Context.tr("+ Share"));
+                        featureSummaryShare.add(showHideShareBlock);
                     }
-                    demandSummaryBottom.add(demandSummaryShare);
+                    featureSummaryBottom.add(featureSummaryShare);
 
                 }
-                demandSummary.add(demandSummaryBottom);
+                featureSummary.add(featureSummaryBottom);
 
                 // ////////////////////
-                // Div demand_summary_share
-                final HtmlDiv demand_sumary_share = new HtmlDiv("demand_sumary_share", "demand_sumary_share");
+                // Div feature_summary_share
+                final HtmlDiv feature_sumary_share = new HtmlDiv("feature_sumary_share", "feature_sumary_share");
                 {
 
                 }
-                demandSummary.add(demand_sumary_share);
+                featureSummary.add(feature_sumary_share);
 
             }
-            add(demandSummary);
+            add(featureSummary);
 
         } catch (final UnauthorizedOperationException e) {
             // no right no description and no title
@@ -180,20 +180,20 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
     }
 
-    public HtmlDiv generateProgressBlock(final Feature demand) throws UnauthorizedOperationException {
+    public HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
         // ////////////////////
-        // Div demand_summary_progress
-        final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");
+        // Div feature_summary_progress
+        final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
-            demandSummaryProgress.add(DemandsTools.generateProgress(demand));
+            featureSummaryProgress.add(FeaturesTools.generateProgress(feature));
 
             // ////////////////////
-            // Div demand_summary_actions
-            final HtmlDiv actions = new HtmlDiv("demand_summary_actions");
+            // Div feature_summary_actions
+            final HtmlDiv actions = new HtmlDiv("feature_summary_actions");
             {
-                final HtmlDiv actionsButtons = new HtmlDiv("demand_summary_actions_buttons");
+                final HtmlDiv actionsButtons = new HtmlDiv("feature_summary_actions_buttons");
                 actions.add(actionsButtons);
-                switch (demand.getFeatureState()) {
+                switch (feature.getFeatureState()) {
                     case PENDING:
                         actionsButtons.add(new HtmlDiv("contribute_block").add(generateContributeAction()));
                         actionsButtons.add(new HtmlDiv("make_offer_block").add(generateMakeAnOfferAction()));
@@ -221,10 +221,10 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         break;
                 }
             }
-            demandSummaryProgress.add(actions);
+            featureSummaryProgress.add(actions);
 
         }
-        return demandSummaryProgress;
+        return featureSummaryProgress;
     }
 
     public PlaceHolderElement generateContributeAction() {
@@ -232,7 +232,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         final HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
         element.add(contributeText);
 
-        final HtmlLink link = new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute"));
+        final HtmlLink link = new ContributePageUrl(feature).getHtmlLink(Context.tr("Contribute"));
         link.setCssClass("button");
         element.add(link);
         return element;
@@ -243,7 +243,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         final HtmlParagraph makeOfferText = new HtmlParagraph(Context.tr("You are a developer and want to be paid to achieve this request?"));
         element.add(makeOfferText);
 
-        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
+        final HtmlLink link = new OfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
         link.setCssClass("button");
         element.add(link);
         return element;
@@ -252,7 +252,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
     private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
-        BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
+        BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
 
         if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
 
@@ -260,12 +260,12 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
             element.add(new HtmlParagraph(tr(" {0} are missing before the developement start.", currency.toString())));
         } else {
-            TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), demand.getValidationDate()));
+            TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
             element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
         }
 
-        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink();
+        final HtmlLink link = new OfferPageUrl(feature).getHtmlLink();
         final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
                                                                                 link));
         element.add(makeOfferText);
@@ -276,8 +276,8 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
     public PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
-        if (!demand.getSelectedOffer().hasRelease()) {
-            Date releaseDate = demand.getSelectedOffer().getCurrentBatch().getExpirationDate();
+        if (!feature.getSelectedOffer().hasRelease()) {
+            Date releaseDate = feature.getSelectedOffer().getCurrentBatch().getExpirationDate();
 
             String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.SHORT);
 
@@ -285,9 +285,9 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
             element.add(new HtmlParagraph(tr("Next release is scheduled for {0}.", date)));
 
         } else {
-            int releaseCount = demand.getSelectedOffer().getCurrentBatch().getReleases().size();
+            int releaseCount = feature.getSelectedOffer().getCurrentBatch().getReleases().size();
 
-            Release lastRelease = demand.getSelectedOffer().getLastRelease();
+            Release lastRelease = feature.getSelectedOffer().getLastRelease();
 
             HtmlLink lastReleaseLink = new ReleasePageUrl(lastRelease).getHtmlLink();
             String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.SHORT);
@@ -297,7 +297,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
             element.add(new HtmlParagraph(new HtmlMixedText(tr("The <0::last version> was released the {0}.", releaseDate), lastReleaseLink)));
 
             element.add(new HtmlParagraph(tr(" Test it and report bugs.")));
-            final HtmlLink link = new ReportBugPageUrl(demand.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
+            final HtmlLink link = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
             link.setCssClass("button");
             element.add(link);
         }
@@ -309,7 +309,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
     public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
-        Member author = demand.getSelectedOffer().getAuthor();
+        Member author = feature.getSelectedOffer().getAuthor();
         HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 
@@ -326,7 +326,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
     public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
-        Member author = demand.getSelectedOffer().getAuthor();
+        Member author = feature.getSelectedOffer().getAuthor();
         HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 
@@ -335,7 +335,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         element.add(new HtmlParagraph(new HtmlMixedText(tr("The developement was done by <0>."), authorLink)));
 
 
-        PageIterable<Bug> openBugs = demand.getOpenBugs();
+        PageIterable<Bug> openBugs = feature.getOpenBugs();
 
         if(openBugs.size() > 0) {
             element.add(new HtmlParagraph(trn("There is {0} open bug.", "There is {0} open bug.", openBugs.size(), openBugs.size())));

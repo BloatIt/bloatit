@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,16 +33,16 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
 import com.bloatit.web.url.ContributePageUrl;
-import com.bloatit.web.url.DemandContributorsComponentUrl;
+import com.bloatit.web.url.FeatureContributorsComponentUrl;
 
-@ParamContainer(value = "DemandContributorsComponent", isComponent = true)
-public final class DemandContributorsComponent extends HtmlDiv {
+@ParamContainer(value = "FeatureContributorsComponent", isComponent = true)
+public final class FeatureContributorsComponent extends HtmlDiv {
 
-    private final Feature demand;
+    private final Feature feature;
 
-    public DemandContributorsComponent(final DemandContributorsComponentUrl url, final Feature demand) {
+    public FeatureContributorsComponent(final FeatureContributorsComponentUrl url, final Feature feature) {
         super();
-        this.demand = demand;
+        this.feature = feature;
         try {
             extractData();
             add(produce(url));
@@ -52,14 +52,14 @@ public final class DemandContributorsComponent extends HtmlDiv {
 
     }
 
-    protected HtmlElement produce(final DemandContributorsComponentUrl url) {
+    protected HtmlElement produce(final FeatureContributorsComponentUrl url) {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
 
             try {
                 int contributionCount;
 
-                contributionCount = demand.getContributions().size();
+                contributionCount = feature.getContributions().size();
 
                 // Display contribution count
                 contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
@@ -69,13 +69,13 @@ public final class DemandContributorsComponent extends HtmlDiv {
                 // Display contribution stats
                 if (contributionCount > 0) {
                     final String contributionMeanValue = Context.getLocalizator()
-                                                                .getCurrency(demand.getContribution().divide(new BigDecimal(contributionCount),
+                                                                .getCurrency(feature.getContribution().divide(new BigDecimal(contributionCount),
                                                                                                              RoundingMode.HALF_EVEN))
                                                                 .getDefaultString();
-                    final String contributionMinValue = Context.getLocalizator().getCurrency(demand.getContributionMin()).getDefaultString();
-                    final String contributionMaxValue = Context.getLocalizator().getCurrency(demand.getContributionMax()).getDefaultString();
+                    final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getDefaultString();
+                    final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getDefaultString();
                     final String contributionMedianValue = Context.getLocalizator()
-                                                                  .getCurrency(computeMedian(demand.getContributions()))
+                                                                  .getCurrency(computeMedian(feature.getContributions()))
                                                                   .getDefaultString();
 
                     final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
@@ -85,10 +85,10 @@ public final class DemandContributorsComponent extends HtmlDiv {
                     contributorsBlock.add(statTable);
                 }
 
-                final HtmlTable table = new HtmlTable(new ContributionTableModel(demand.getContributions()));
+                final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
                 contributorsBlock.add(table);
 
-                contributorsBlock.add(new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute")));
+                contributorsBlock.add(new ContributePageUrl(feature).getHtmlLink(Context.tr("Contribute")));
 
             } catch (final UnauthorizedOperationException e) {
             }

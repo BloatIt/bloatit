@@ -26,14 +26,14 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Feature;
-import com.bloatit.web.components.SideBarDemandBlock;
+import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 
 /**
- * A page that hosts the form used to contribute on a Demand
+ * A page that hosts the form used to contribute on a Feature
  */
 @ParamContainer("contribute")
 public final class ContributePage extends LoggedPage {
@@ -60,7 +60,7 @@ public final class ContributePage extends LoggedPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateContributeForm());
 
-        layout.addRight(new SideBarDemandBlock(targetIdea));
+        layout.addRight(new SideBarFeatureBlock(targetIdea));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;

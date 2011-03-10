@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import java.util.Locale;
 
@@ -31,12 +31,12 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Translation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
-import com.bloatit.web.url.DemandPageUrl;
-import com.bloatit.web.url.DemandTabPaneUrl;
+import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.FeatureTabPaneUrl;
 import com.bloatit.web.url.MemberPageUrl;
 
-@ParamContainer(value = "demandTabPane", isComponent = true)
-public final class DemandTabPane extends HtmlPageComponent {
+@ParamContainer(value = "featureTabPane", isComponent = true)
+public final class FeatureTabPane extends HtmlPageComponent {
 
     public static final String BUGS_TAB = "bugs_tab";
 
@@ -48,7 +48,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
     public static final String DESCRIPTION_TAB = "description_tab";
 
-    @RequestParam(name = "demand_tab_pane")
+    @RequestParam(name = "feature_tab_pane")
     @Optional(DESCRIPTION_TAB)
     private String activeTabKey;
 
@@ -56,32 +56,32 @@ public final class DemandTabPane extends HtmlPageComponent {
      * Useful for Url generation Do not delete
      */
     @SuppressWarnings("unused")
-    private DemandContributorsComponent contribution;
+    private FeatureContributorsComponent contribution;
 
-    public DemandTabPane(final DemandTabPaneUrl url, final Feature demand) {
+    public FeatureTabPane(final FeatureTabPaneUrl url, final Feature feature) {
         super();
         activeTabKey = url.getActiveTabKey();
 
-        final DemandPageUrl demandUrl = new DemandPageUrl(demand);
-        demandUrl.setDemandTabPaneUrl(url);
+        final FeaturePageUrl featureUrl = new FeaturePageUrl(feature);
+        featureUrl.setFeatureTabPaneUrl(url);
 
         // Create tab pane
-        final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_pane", activeTabKey, demandUrl);
+        final HtmlTabBlock tabPane = new HtmlTabBlock("feature_tab_pane", activeTabKey, featureUrl);
 
         // Create description tab
         tabPane.addTab(new HtmlTab(Context.tr("Description"), DESCRIPTION_TAB) {
             @Override
             public XmlNode generateBody() {
-                return generateDescriptionTabContent(demand);
+                return generateDescriptionTabContent(feature);
             }
         });
 
         // Create participations tab
         try {
-            tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", demand.getContributions().size()), PARTICIPATIONS_TAB) {
+            tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", feature.getContributions().size()), PARTICIPATIONS_TAB) {
                 @Override
                 public XmlNode generateBody() {
-                    return new DemandContributorsComponent(url.getContributionUrl(), demand);
+                    return new FeatureContributorsComponent(url.getContributionUrl(), feature);
                 }
             });
         } catch (final UnauthorizedOperationException e1) {
@@ -90,10 +90,10 @@ public final class DemandTabPane extends HtmlPageComponent {
 
         // Create Comments tab
         try {
-            tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", demand.getOffers().size()), OFFERS_TAB) {
+            tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), OFFERS_TAB) {
                 @Override
                 public XmlNode generateBody() {
-                    return new DemandOfferListComponent(demand);
+                    return new FeatureOfferListComponent(feature);
                 }
             });
         } catch (final UnauthorizedOperationException e) {
@@ -104,17 +104,17 @@ public final class DemandTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(Context.tr("Details"), DETAILS_TAB) {
             @Override
             public XmlNode generateBody() {
-                return new DemandOfferListComponent(demand);
+                return new FeatureOfferListComponent(feature);
             }
         });
 
         // Create Bugtracker tab only after preparation
-        if (demand.getFeatureState() != FeatureState.PENDING && demand.getFeatureState() != FeatureState.PREPARING) {
+        if (feature.getFeatureState() != FeatureState.PENDING && feature.getFeatureState() != FeatureState.PREPARING) {
 
-            tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", demand.countOpenBugs()), BUGS_TAB) {
+            tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", feature.countOpenBugs()), BUGS_TAB) {
                 @Override
                 public XmlNode generateBody() {
-                    return new DemandBugListComponent(demand);
+                    return new FeatureBugListComponent(feature);
                 }
             });
         }
@@ -123,7 +123,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
     }
 
-    private XmlNode generateDescriptionTabContent(final Feature demand) {
+    private XmlNode generateDescriptionTabContent(final Feature feature) {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
@@ -132,7 +132,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
                 try {
-                    final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+                    final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
                     final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
                     descriptionText.add(description);
                 } catch (final UnauthorizedOperationException e1) {
@@ -152,8 +152,8 @@ public final class DemandTabPane extends HtmlPageComponent {
                     descriptionDetails.addText(Context.tr("Created by "));
 
                     try {
-                        final MemberPageUrl memberUrl = new MemberPageUrl(demand.getAuthor());
-                        descriptionDetails.add(memberUrl.getHtmlLink(demand.getAuthor().getDisplayName()));
+                        final MemberPageUrl memberUrl = new MemberPageUrl(feature.getAuthor());
+                        descriptionDetails.add(memberUrl.getHtmlLink(feature.getAuthor().getDisplayName()));
                     } catch (final UnauthorizedOperationException e1) {
                         // Nothing.
                     }
@@ -161,7 +161,7 @@ public final class DemandTabPane extends HtmlPageComponent {
                     descriptionDetails.addText(Context.tr(" – "));
 
                     final HtmlSpan dateSpan = new HtmlSpan("description_date");
-                    dateSpan.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(demand.getCreationDate())));
+                    dateSpan.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(feature.getCreationDate())));
                     descriptionDetails.add(dateSpan);
                 }
                 descriptionFooter.add(descriptionDetails);

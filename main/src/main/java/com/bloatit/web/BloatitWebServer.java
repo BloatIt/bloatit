@@ -20,10 +20,10 @@ import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
 import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
-import com.bloatit.web.linkable.demands.CreateDemandAction;
-import com.bloatit.web.linkable.demands.CreateDemandPage;
-import com.bloatit.web.linkable.demands.DemandListPage;
-import com.bloatit.web.linkable.demands.DemandPage;
+import com.bloatit.web.linkable.features.CreateFeatureAction;
+import com.bloatit.web.linkable.features.CreateFeaturePage;
+import com.bloatit.web.linkable.features.FeatureListPage;
+import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
@@ -64,7 +64,7 @@ import com.bloatit.web.pages.ReleasePage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.admin.BatchAdminPage;
-import com.bloatit.web.pages.admin.DemandAdminPage;
+import com.bloatit.web.pages.admin.FeatureAdminPage;
 import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -82,13 +82,13 @@ import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
-import com.bloatit.web.url.CreateDemandActionUrl;
-import com.bloatit.web.url.CreateDemandPageUrl;
+import com.bloatit.web.url.CreateFeatureActionUrl;
+import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
-import com.bloatit.web.url.DemandAdminPageUrl;
-import com.bloatit.web.url.DemandListPageUrl;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.FeatureAdminPageUrl;
+import com.bloatit.web.url.FeatureListPageUrl;
+import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.DocumentationUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
@@ -147,14 +147,14 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(LoginPageUrl.getName())) {
             return new LoginPage(new LoginPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(DemandListPageUrl.getName())) {
-            return new DemandListPage(new DemandListPageUrl(params, session.getParameters()));
+        if (pageCode.equals(FeatureListPageUrl.getName())) {
+            return new FeatureListPage(new FeatureListPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(CreateDemandPageUrl.getName())) {
-            return new CreateDemandPage(new CreateDemandPageUrl(params, session.getParameters()));
+        if (pageCode.equals(CreateFeaturePageUrl.getName())) {
+            return new CreateFeaturePage(new CreateFeaturePageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(DemandPageUrl.getName())) {
-            return new DemandPage(new DemandPageUrl(params, session.getParameters()));
+        if (pageCode.equals(FeaturePageUrl.getName())) {
+            return new FeaturePage(new FeaturePageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(SpecialsPageUrl.getName())) {
             return new SpecialsPage(new SpecialsPageUrl(params, session.getParameters()));
@@ -225,8 +225,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(KudosableAdminPageUrl.getName())) {
             return new KudosableAdminPageImplementation(new KudosableAdminPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(DemandAdminPageUrl.getName())) {
-            return new DemandAdminPage(new DemandAdminPageUrl(params, session.getParameters()));
+        if (pageCode.equals(FeatureAdminPageUrl.getName())) {
+            return new FeatureAdminPage(new FeatureAdminPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(BugPageUrl.getName())) {
             return new BugPage(new BugPageUrl(params, session.getParameters()));
@@ -260,8 +260,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(OfferActionUrl.getName())) {
             return new OfferAction(new OfferActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(CreateDemandActionUrl.getName())) {
-            return new CreateDemandAction(new CreateDemandActionUrl(params, session.getParameters()));
+        if (pageCode.equals(CreateFeatureActionUrl.getName())) {
+            return new CreateFeatureAction(new CreateFeatureActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(RegisterActionUrl.getName())) {
             return new RegisterAction(new RegisterActionUrl(params, session.getParameters()));

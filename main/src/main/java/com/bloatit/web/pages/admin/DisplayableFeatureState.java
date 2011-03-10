@@ -5,7 +5,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.webserver.components.form.Displayable;
 
-public enum DisplayableDemandState implements Displayable {
+public enum DisplayableFeatureState implements Displayable {
     NO_FILTER(tr("No filter")), //
     PENDING(tr("Validate")), //
     PREPARING(tr("Pending")), //
@@ -22,15 +22,15 @@ public enum DisplayableDemandState implements Displayable {
         return displayName;
     }
 
-    private DisplayableDemandState(final String displayName) {
+    private DisplayableFeatureState(final String displayName) {
         this.displayName = displayName;
     }
 
-    public static FeatureState getDemandState(final DisplayableDemandState cmp) {
+    public static FeatureState getFeatureState(final DisplayableFeatureState cmp) {
         return Enum.valueOf(FeatureState.class, cmp.name());
     }
 
-    public static DisplayableDemandState getDemandState(final FeatureState cmp) {
-        return Enum.valueOf(DisplayableDemandState.class, cmp.name());
+    public static DisplayableFeatureState getFeatureState(final FeatureState cmp) {
+        return Enum.valueOf(DisplayableFeatureState.class, cmp.name());
     }
 }

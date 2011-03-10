@@ -94,7 +94,7 @@ public final class AddProjectAction extends Action {
     protected Url doProcess() {
         session.notifyList(url.getMessages());
         if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use ProjectManager and not DemandManager here
+            // TODO: use ProjectManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to add a project."));
             return new LoginPageUrl();
         }

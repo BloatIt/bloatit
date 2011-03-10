@@ -21,9 +21,9 @@ import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoHighlightFeature;
@@ -119,7 +119,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoHighlightDemand
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoHighlightFeature
      * )
      */
     @Override
@@ -214,7 +214,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoDemand)
+     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoFeature)
      */
     @Override
     public Identifiable<?> visit(final DaoFeature dao) {

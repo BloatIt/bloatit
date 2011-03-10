@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import java.util.Locale;
 
@@ -25,16 +25,16 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Project;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.web.url.CreateDemandActionUrl;
-import com.bloatit.web.url.CreateDemandPageUrl;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.CreateFeatureActionUrl;
+import com.bloatit.web.url.CreateFeaturePageUrl;
+import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * A response to a form used to create a new idea
  */
 @ParamContainer("idea/docreate")
-public final class CreateDemandAction extends Action {
+public final class CreateFeatureAction extends Action {
 
     public static final String DESCRIPTION_CODE = "description";
     public static final String SPECIFICATION_CODE = "specification";
@@ -54,9 +54,9 @@ public final class CreateDemandAction extends Action {
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
-    private final CreateDemandActionUrl url;
+    private final CreateFeatureActionUrl url;
 
-    public CreateDemandAction(final CreateDemandActionUrl url) {
+    public CreateFeatureAction(final CreateFeatureActionUrl url) {
         super(url);
         this.url = url;
 
@@ -77,7 +77,7 @@ public final class CreateDemandAction extends Action {
         final Locale langLocale = new Locale(lang);
         final Feature d = FeatureFactory.createFeature(session.getAuthToken().getMember(), langLocale, description, specification, project);
 
-        final DemandPageUrl to = new DemandPageUrl(d);
+        final FeaturePageUrl to = new FeaturePageUrl(d);
 
         return to;
     }
@@ -91,6 +91,6 @@ public final class CreateDemandAction extends Action {
         session.addParameter(url.getProjectParameter());
         session.addParameter(url.getLangParameter());
 
-        return new CreateDemandPageUrl();
+        return new CreateFeaturePageUrl();
     }
 }

@@ -43,7 +43,7 @@
 		<mapping class="com.bloatit.data.DaoComment" />
 		<mapping class="com.bloatit.data.DaoGroupMembership" />
 		<mapping class="com.bloatit.data.DaoGroup" />
-		<mapping class="com.bloatit.data.DaoDemand" />
+		<mapping class="com.bloatit.data.DaoFeature" />
 		<mapping class="com.bloatit.data.DaoMember" />
 		<mapping class="com.bloatit.data.DaoOffer" />
 		<mapping class="com.bloatit.data.DaoJoinGroupInvitation" />
@@ -54,7 +54,7 @@
 		<mapping class="com.bloatit.data.DaoImage" />
 		<mapping class="com.bloatit.data.DaoProject" />
 		<mapping class="com.bloatit.data.DaoGroupRight" />
-		<mapping class="com.bloatit.data.DaoHighlightDemand" />
+		<mapping class="com.bloatit.data.DaoHighlightFeature" />
 		<mapping class="com.bloatit.data.DaoUserContent" />
 		<mapping class="com.bloatit.data.DaoKudosable" />
 		<mapping class="com.bloatit.data.DaoRelease" />

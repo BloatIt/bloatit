@@ -13,8 +13,8 @@ package com.bloatit.web.linkable.bugs;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.BugState;
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
@@ -35,7 +35,7 @@ import com.bloatit.web.url.ModifyBugActionUrl;
 /**
  * A response to a form used to create a new idea
  */
-@ParamContainer("demand/bug/domodify")
+@ParamContainer("feature/bug/domodify")
 public final class ModifyBugAction extends Action {
 
     public static final String BUG_STATE = "bug_state";
@@ -78,7 +78,7 @@ public final class ModifyBugAction extends Action {
     protected Url doProcess() {
         session.notifyList(url.getMessages());
         if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use BugManager and not DemandManager here
+            // TODO: use BugManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to report a bug."));
             return new LoginPageUrl();
         }

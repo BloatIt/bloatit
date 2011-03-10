@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -35,25 +35,25 @@ import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.BoxLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.CreateDemandActionUrl;
-import com.bloatit.web.url.CreateDemandPageUrl;
+import com.bloatit.web.url.CreateFeatureActionUrl;
+import com.bloatit.web.url.CreateFeaturePageUrl;
 
 /**
  * Page that hosts the form to create a new Idea
  */
-@ParamContainer("demand/create")
-public final class CreateDemandPage extends LoggedPage {
+@ParamContainer("feature/create")
+public final class CreateFeaturePage extends LoggedPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 20;
     private static final int SPECIF_INPUT_NB_COLUMNS = 100;
 
-    public CreateDemandPage(final CreateDemandPageUrl createIdeaPageUrl) {
+    public CreateFeaturePage(final CreateFeaturePageUrl createIdeaPageUrl) {
         super(createIdeaPageUrl);
     }
 
     @Override
     protected String getPageTitle() {
-        return "Create new demand";
+        return "Create new feature";
     }
 
     @Override
@@ -76,8 +76,8 @@ public final class CreateDemandPage extends LoggedPage {
 
         final BoxLayout box = new BoxLayout();
 
-        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new demand"), 1);
-        final CreateDemandActionUrl doCreateUrl = new CreateDemandActionUrl();
+        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
+        final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl();
 
         // Create the form stub
         final HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
@@ -94,7 +94,7 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaForm.add(descriptionInput);
 
         // Linked project
-        final HtmlDropDown projectInput = new HtmlDropDown(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
+        final HtmlDropDown projectInput = new HtmlDropDown(CreateFeatureAction.PROJECT_CODE, Context.tr("Project"));
         for (final Project project : ProjectManager.getAll()) {
             try {
                 projectInput.addDropDownElement(String.valueOf(project.getId()), project.getName());
@@ -120,7 +120,7 @@ public final class CreateDemandPage extends LoggedPage {
                 + "... Try to leave as little room for ambiguity as possible."));
         createIdeaForm.add(specificationInput);
 
-        final LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
+        final LanguageSelector languageInput = new LanguageSelector(CreateFeatureAction.LANGUAGE_CODE, tr("Language"));
         createIdeaForm.add(languageInput);
 
         // Submit button
@@ -131,7 +131,7 @@ public final class CreateDemandPage extends LoggedPage {
         layout.addLeft(box);
 
         // RightColunm
-        layout.addRight(new SideBarDocumentationBlock("create_demand"));
+        layout.addRight(new SideBarDocumentationBlock("create_feature"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;

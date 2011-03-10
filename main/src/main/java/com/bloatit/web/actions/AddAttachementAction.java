@@ -78,7 +78,7 @@ public final class AddAttachementAction extends Action {
     protected Url doProcess() {
         session.notifyList(url.getMessages());
         if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use UserContentManager and not DemandManager here
+            // TODO: use UserContentManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to report a bug."));
             return new LoginPageUrl();
         }

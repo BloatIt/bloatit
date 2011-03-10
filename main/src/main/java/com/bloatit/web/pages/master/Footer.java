@@ -4,7 +4,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
-import com.bloatit.web.url.CreateDemandPageUrl;
+import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
@@ -22,7 +22,7 @@ public class Footer extends HtmlDiv {
             linkBlock.add(new HtmlDiv("footer_link").add(new IndexPageUrl().getHtmlLink(Context.tr("Home page"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new SpecialsPageUrl().getHtmlLink(Context.tr("All pages"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new FileUploadPageUrl().getHtmlLink(Context.tr("Upload file"))));
-            linkBlock.add(new HtmlDiv("footer_link").add(new CreateDemandPageUrl().getHtmlLink(Context.tr("Create a demand"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new CreateFeaturePageUrl().getHtmlLink(Context.tr("Create a feature"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new AddProjectPageUrl().getHtmlLink(Context.tr("Add a project"))));
             // linkBlock.add(new HtmlDiv("footer_link").add(new
             // TeamsPageUrl().getHtmlLink(Context.tr("Teams"))));

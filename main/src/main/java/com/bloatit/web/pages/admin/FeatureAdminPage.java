@@ -18,13 +18,13 @@ import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.Feature;
 import com.bloatit.model.admin.FeatureAdminListFactory;
 import com.bloatit.web.actions.AdministrationAction;
-import com.bloatit.web.url.DemandAdminPageUrl;
+import com.bloatit.web.url.FeatureAdminPageUrl;
 
-@ParamContainer("admin/demands")
-public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Feature, FeatureAdminListFactory> {
+@ParamContainer("admin/features")
+public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Feature, FeatureAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableDemandState filterByState;
+    protected DisplayableFeatureState filterByState;
 
     @RequestParam(role = RequestParam.Role.POST)
     protected DisplayableFilterType filterSelectedOffer;
@@ -35,9 +35,9 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Featur
     @RequestParam(role = RequestParam.Role.POST)
     protected DisplayableFilterType filterHasContribution;
 
-    private final DemandAdminPageUrl url;
+    private final FeatureAdminPageUrl url;
 
-    public DemandAdminPage(final DemandAdminPageUrl url) {
+    public FeatureAdminPage(final FeatureAdminPageUrl url) {
         super(url, new FeatureAdminListFactory());
         this.url = url;
         filterByState = url.getFilterByState();
@@ -51,8 +51,8 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Featur
         session.addParameter(url.getFilterHasContributionParameter());
 
         // Add some filters
-        if (filterByState != null && filterByState != DisplayableDemandState.NO_FILTER) {
-            getFactory().stateEquals(DisplayableDemandState.getDemandState(filterByState));
+        if (filterByState != null && filterByState != DisplayableFeatureState.NO_FILTER) {
+            getFactory().stateEquals(DisplayableFeatureState.getFeatureState(filterByState));
         }
         if (filterSelectedOffer == DisplayableFilterType.WITH) {
             getFactory().withSelectedOffer();
@@ -84,13 +84,13 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Featur
     @Override
     protected void doAddActions(final HtmlDropDown dropDown, final HtmlBranch block) {
         // Add actions into the drop down
-        dropDown.addDropDownElements(new AdminActionManager().demandActions());
+        dropDown.addDropDownElements(new AdminActionManager().featureActions());
 
-        // add a demand state selector
-        final HtmlDropDown demandState = new HtmlDropDown(AdministrationAction.DEMAND_STATE_CODE);
-        demandState.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
-        demandState.setLabel(tr("Change the demand state"));
-        block.add(demandState);
+        // add a feature state selector
+        final HtmlDropDown featureState = new HtmlDropDown(AdministrationAction.FEATURE_STATE_CODE);
+        featureState.addDropDownElements(EnumSet.allOf(DisplayableFeatureState.class));
+        featureState.setLabel(tr("Change the feature state"));
+        block.add(featureState);
     }
 
     @Override
@@ -104,8 +104,8 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Featur
         final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());
         stateInput.setDefaultValue(stateData.getSuggestedValue());
         stateInput.addErrorMessages(stateData.getErrorMessages());
-        stateInput.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
-        stateInput.setLabel(tr("Filter by demand state"));
+        stateInput.addDropDownElements(EnumSet.allOf(DisplayableFeatureState.class));
+        stateInput.setLabel(tr("Filter by feature state"));
 
         final FieldData hasSelectedOfferData = url.getFilterSelectedOfferParameter().pickFieldData();
         final HtmlDropDown hasSelectedOffer = new HtmlDropDown(hasSelectedOfferData.getName());
@@ -136,15 +136,15 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Featur
 
     @Override
     protected void addColumns(final HtmlGenericTableModel<Feature> tableModel) {
-        final DemandAdminPageUrl clonedUrl = url.clone();
+        final FeatureAdminPageUrl clonedUrl = url.clone();
 
         addAuthorColumn(tableModel);
         addCreationDateColumn(tableModel, clonedUrl);
         addPopularityColumn(tableModel, clonedUrl);
         addPopularityStateColumn(tableModel, clonedUrl);
 
-        clonedUrl.setOrderByStr("demandState");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Demand state")), new StringColumnGenerator<Feature>() {
+        clonedUrl.setOrderByStr("featureState");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Feature state")), new StringColumnGenerator<Feature>() {
             @Override
             public String getStringBody(final Feature element) {
                 return String.valueOf(element.getFeatureState());

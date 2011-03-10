@@ -16,10 +16,10 @@ public class AdminActionManager {
         UNLOCK(tr("unlock votes")), //
         SETSTATE(tr("Change the state")), //
 
-        UPDATE_DEVELOPMENT_STATE(tr("Re calculate if this demand should passe into development.")), //
+        UPDATE_DEVELOPMENT_STATE(tr("Re calculate if this feature should passe into development.")), //
         COMPUTE_SELECTED_OFFER(tr("Re calculate the selected offer")), //
         SET_VALIDATION_DATE(tr("Update the validation Date")), //
-        SET_DEMAND_IN_DEVELOPMENT(tr("Change the demand state")), //
+        SET_FEATURE_IN_DEVELOPMENT(tr("Change the feature state")), //
 
         VALIDATE_BATCH(tr("Validate batch if possible")), //
         FORCE_VALIDATE_BATCH(tr("Validate batch --force !")), //
@@ -45,8 +45,8 @@ public class AdminActionManager {
         return EnumSet.range(Action.LOCK, Action.SETSTATE);
     }
 
-    public EnumSet<Action> demandActions() {
-        return EnumSet.range(Action.UPDATE_DEVELOPMENT_STATE, Action.SET_DEMAND_IN_DEVELOPMENT);
+    public EnumSet<Action> featureActions() {
+        return EnumSet.range(Action.UPDATE_DEVELOPMENT_STATE, Action.SET_FEATURE_IN_DEVELOPMENT);
     }
 
     public EnumSet<Action> batchActions() {

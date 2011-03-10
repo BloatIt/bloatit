@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 // import java.util.Random;
 import java.util.ArrayList;
@@ -33,16 +33,16 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureList;
-import com.bloatit.web.components.HtmlDemandSumary;
-import com.bloatit.web.components.HtmlDemandSumary.Compacity;
+import com.bloatit.web.components.HtmlFeatureSumary;
+import com.bloatit.web.components.HtmlFeatureSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.CreateDemandPageUrl;
-import com.bloatit.web.url.DemandListPageUrl;
+import com.bloatit.web.url.CreateFeaturePageUrl;
+import com.bloatit.web.url.FeatureListPageUrl;
 
-@ParamContainer("demand/list")
-public final class DemandListPage extends MasterPage {
+@ParamContainer("feature/list")
+public final class FeatureListPage extends MasterPage {
 
     public static final String FILTER_ALL = "all";
     public static final String FILTER_IN_PROGRESS = "in progress";
@@ -69,10 +69,10 @@ public final class DemandListPage extends MasterPage {
     @Optional("")
     private final String searchString;
 
-    private HtmlPagedList<Feature> pagedDemandList;
-    private final DemandListPageUrl url;
+    private HtmlPagedList<Feature> pagedFeatureList;
+    private final FeatureListPageUrl url;
 
-    public DemandListPage(final DemandListPageUrl url) {
+    public FeatureListPage(final FeatureListPageUrl url) {
         super(url);
         this.url = url;
         this.searchString = url.getSearchString();
@@ -88,156 +88,155 @@ public final class DemandListPage extends MasterPage {
         add(layout);
 
         // ////////////////////
-        // Div demand_search_block
-        final HtmlDiv demandSearchBlock = new HtmlDiv("demand_search_block");
+        // Div feature_search_block
+        final HtmlDiv featureSearchBlock = new HtmlDiv("feature_search_block");
         {
 
-            final DemandListPageUrl formUrl = url.clone();
+            final FeatureListPageUrl formUrl = url.clone();
             formUrl.setSearchString("");
             final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
             {
                 final HtmlTextField searchField = new HtmlTextField(SEARCH_STRING_CODE);
                 searchField.setDefaultValue(searchString);
 
-                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search a demand"));
+                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search a feature"));
 
                 searchForm.add(searchField);
                 searchForm.add(searchButton);
             }
-            demandSearchBlock.add(searchForm);
+            featureSearchBlock.add(searchForm);
 
-            final HtmlDiv demandFilter = new HtmlDiv("demand_filter");
+            final HtmlDiv featureFilter = new HtmlDiv("feature_filter");
             {
-                final DemandListPageUrl allFilterUrl = url.clone();
+                final FeatureListPageUrl allFilterUrl = url.clone();
                 allFilterUrl.setFilter(FILTER_ALL);
                 final HtmlLink allFilter = allFilterUrl.getHtmlLink(Context.tr("all"));
                 if (filter.equals(FILTER_ALL)) {
                     allFilter.setCssClass("selected");
                 }
 
-                final DemandListPageUrl preparingFilterUrl = url.clone();
+                final FeatureListPageUrl preparingFilterUrl = url.clone();
                 preparingFilterUrl.setFilter(FILTER_IN_PROGRESS);
                 final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("in progress"));
                 if (filter.equals(FILTER_IN_PROGRESS)) {
                     preparingFilter.setCssClass("selected");
                 }
 
-                final DemandListPageUrl finishedFilterUrl = url.clone();
+                final FeatureListPageUrl finishedFilterUrl = url.clone();
                 finishedFilterUrl.setFilter(FILTER_FINISHED);
                 final HtmlLink finishedFilter = finishedFilterUrl.getHtmlLink(Context.tr("finished"));
                 if (filter.equals(FILTER_FINISHED)) {
                     finishedFilter.setCssClass("selected");
                 }
 
-                demandFilter.addText(Context.tr("Filter: "));
-                demandFilter.add(allFilter);
-                demandFilter.addText(" – ");
-                demandFilter.add(preparingFilter);
-                demandFilter.addText(" – ");
-                demandFilter.add(finishedFilter);
+                featureFilter.addText(Context.tr("Filter: "));
+                featureFilter.add(allFilter);
+                featureFilter.addText(" – ");
+                featureFilter.add(preparingFilter);
+                featureFilter.addText(" – ");
+                featureFilter.add(finishedFilter);
             }
-            demandSearchBlock.add(demandFilter);
+            featureSearchBlock.add(featureFilter);
 
-            final HtmlDiv demandSort = new HtmlDiv("demand_sort");
+            final HtmlDiv featureSort = new HtmlDiv("feature_sort");
             {
-                final DemandListPageUrl relevanceSortUrl = url.clone();
+                final FeatureListPageUrl relevanceSortUrl = url.clone();
                 relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
                 final HtmlLink relevanceSort = relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
                 if (sort.equals(SORT_BY_RELEVANCE)) {
                     relevanceSort.setCssClass("selected");
                 }
 
-                final DemandListPageUrl popularitySortUrl = url.clone();
+                final FeatureListPageUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
                 final HtmlLink popularitySort = popularitySortUrl.getHtmlLink(Context.tr("popularity"));
                 if (sort.equals(SORT_BY_POPULARITY)) {
                     popularitySort.setCssClass("selected");
                 }
 
-                final DemandListPageUrl contributionSortUrl = url.clone();
+                final FeatureListPageUrl contributionSortUrl = url.clone();
                 contributionSortUrl.setSort(SORT_BY_CONTRIBUTION);
                 final HtmlLink contributionSort = contributionSortUrl.getHtmlLink(Context.tr("contribution"));
                 if (sort.equals(SORT_BY_CONTRIBUTION)) {
                     contributionSort.setCssClass("selected");
                 }
 
-                final DemandListPageUrl progressSortUrl = url.clone();
+                final FeatureListPageUrl progressSortUrl = url.clone();
                 progressSortUrl.setSort(SORT_BY_PROGRESS);
                 final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
                 if (sort.equals(SORT_BY_PROGRESS)) {
                     progressSort.setCssClass("selected");
                 }
 
-                final DemandListPageUrl creationDateSortUrl = url.clone();
+                final FeatureListPageUrl creationDateSortUrl = url.clone();
                 creationDateSortUrl.setSort(SORT_BY_CREATION_DATE);
                 final HtmlLink creationDateSort = creationDateSortUrl.getHtmlLink(Context.tr("creation date"));
                 if (sort.equals(SORT_BY_CREATION_DATE)) {
                     creationDateSort.setCssClass("selected");
                 }
 
-                final DemandListPageUrl expirationDateSortUrl = url.clone();
+                final FeatureListPageUrl expirationDateSortUrl = url.clone();
                 expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
                 final HtmlLink expirationDateSort = expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
                 if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
                     expirationDateSort.setCssClass("selected");
                 }
 
-                demandSort.addText(Context.tr("Sort by: "));
-                demandSort.add(popularitySort);
-                demandSort.addText(" – ");
-                demandSort.add(relevanceSort);
-                demandSort.addText(" – ");
-                demandSort.add(contributionSort);
-                demandSort.addText(" – ");
-                demandSort.add(progressSort);
-                demandSort.addText(" – ");
-                demandSort.add(creationDateSort);
-                demandSort.addText(" – ");
-                demandSort.add(expirationDateSort);
+                featureSort.addText(Context.tr("Sort by: "));
+                featureSort.add(popularitySort);
+                featureSort.addText(" – ");
+                featureSort.add(relevanceSort);
+                featureSort.addText(" – ");
+                featureSort.add(contributionSort);
+                featureSort.addText(" – ");
+                featureSort.add(progressSort);
+                featureSort.addText(" – ");
+                featureSort.add(creationDateSort);
+                featureSort.addText(" – ");
+                featureSort.add(expirationDateSort);
 
             }
-            demandSearchBlock.add(demandSort);
+            featureSearchBlock.add(featureSort);
 
             // /////////////////////
-            // // Div demand_advanced_search_button
-            // final HtmlDiv demandAdvancedSearchButton = new
-            // HtmlDiv("demand_advanced_search_button");
+            // // Div feature_advanced_search_button
+            // final HtmlDiv featureAdvancedSearchButton = new
+            // HtmlDiv("feature_advanced_search_button");
             // {
             // final HtmlLink showHideShareBlock = new
-            // HtmlLink("javascript:showHide('demand_advanced_search')",
+            // HtmlLink("javascript:showHide('feature_advanced_search')",
             // Context.tr("+ Advanced search"));
-            // demandAdvancedSearchButton.add(showHideShareBlock);
+            // featureAdvancedSearchButton.add(showHideShareBlock);
             // }
-            // demandSearchBlock.add(demandAdvancedSearchButton);
+            // featureSearchBlock.add(featureAdvancedSearchButton);
             //
             // // ////////////////////
-            // // Div demand_advanced_search
-            // final HtmlDiv demandAdvancedSearch = new
-            // HtmlDiv("demand_advanced_search", "demand_advanced_search");
+            // // Div feature_advanced_search
+            // final HtmlDiv featureAdvancedSearch = new
+            // HtmlDiv("feature_advanced_search", "feature_advanced_search");
             // {
             //
             // }
-            // demandSearchBlock.add(demandAdvancedSearch);
+            // featureSearchBlock.add(featureAdvancedSearch);
 
-            // Create a demand
-            final HtmlDiv createDemandBlock = new HtmlDiv("demand_create_block");
+            // Create a feature
+            final HtmlDiv createFeatureBlock = new HtmlDiv("feature_create_block");
             {
-                createDemandBlock.addText(Context.tr("If you have an idea or a need about a free software, you can "));
-                final HtmlLink creatDemandLink = new CreateDemandPageUrl().getHtmlLink(Context.tr("submit a new feature"));
-                // creatDemandLink.setCssClass("button");
-                createDemandBlock.add(creatDemandLink);
+                createFeatureBlock.addText(Context.tr("If you have an idea or a need about a free software, you can "));
+                final HtmlLink creatFeatureLink = new CreateFeaturePageUrl().getHtmlLink(Context.tr("submit a new feature"));
+                createFeatureBlock.add(creatFeatureLink);
             }
-            demandSearchBlock.add(createDemandBlock);
+            featureSearchBlock.add(createFeatureBlock);
         }
-        layout.addLeft(demandSearchBlock);
+        layout.addLeft(featureSearchBlock);
 
-        // Demand list
+        // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Feature> demandItemRenderer = new IdeasListItem();
-            final DemandListPageUrl clonedUrl = url.clone();
-            pagedDemandList = new HtmlPagedList<Feature>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
-            layout.addLeft(pagedDemandList);
+            final HtmlRenderer<Feature> featureItemRenderer = new IdeasListItem();
+            final FeatureListPageUrl clonedUrl = url.clone();
+            pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, results, clonedUrl, clonedUrl.getPagedFeatureListUrl());
+            layout.addLeft(pagedFeatureList);
         } else {
             final HtmlDiv noResultBlock = new HtmlDiv("no_result_block");
             {
@@ -250,7 +249,7 @@ public final class DemandListPage extends MasterPage {
 
     @Override
     public String getPageTitle() {
-        return Context.tr("View demands - search demands");
+        return Context.tr("View features - search features");
     }
 
     @Override
@@ -261,21 +260,21 @@ public final class DemandListPage extends MasterPage {
     @Override
     protected List<String> getCustomCss() {
         ArrayList<String> custom = new ArrayList<String>();
-        custom.add("demands-list.css");
+        custom.add("features-list.css");
         return custom;
     }
 
     static class IdeasListItem implements HtmlRenderer<Feature> {
-        private Feature demand;
+        private Feature feature;
 
         @Override
-        public XmlNode generate(final Feature demand) {
-            this.demand = demand;
+        public XmlNode generate(final Feature feature) {
+            this.feature = feature;
             return generateContent();
         }
 
         private XmlNode generateContent() {
-            return new HtmlDemandSumary(demand, Compacity.NORMAL);
+            return new HtmlFeatureSumary(feature, Compacity.NORMAL);
         }
     };
 

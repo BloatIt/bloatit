@@ -28,7 +28,7 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
-import com.bloatit.web.components.IndexDemandBlock;
+import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -53,12 +53,12 @@ public final class IndexPage extends MasterPage {
             // final HtmlParagraph needText = new HtmlParagraph();
             // needText.addText(Context.tr("If you have a need about a free software, you can "));
             // needText.add(new
-            // CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demand")));
+            // CreateFeaturePageUrl().getHtmlLink(Context.tr("create a new feature")));
             // needText.addText(Context.tr(" and contribute to it."));
             // globalDescription.add(needText);
             //
             // final HtmlParagraph devText = new HtmlParagraph();
-            // devText.addText(Context.tr("If you are a developer, you can make an offer on existing demands to develop it again money."));
+            // devText.addText(Context.tr("If you are a developer, you can make an offer on existing features to develop it again money."));
             // globalDescription.add(devText);
             //
             // final HtmlParagraph moreText = new HtmlParagraph();
@@ -78,56 +78,56 @@ public final class IndexPage extends MasterPage {
         TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true);
         twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"), 1));
 
-        final HtmlDiv demandList = new HtmlDiv("demand_list");
+        final HtmlDiv featureList = new HtmlDiv("feature_list");
         {
 
-            final int demandCount = 6;
+            final int featureCount = 6;
 
-            final PageIterable<HighlightFeature> hightlightDemandList = HighlightFeatureManager.getAll();
+            final PageIterable<HighlightFeature> hightlightFeatureList = HighlightFeatureManager.getAll();
 
-            final HighlightFeature[] hightlightDemandArray = new HighlightFeature[demandCount];
+            final HighlightFeature[] hightlightFeatureArray = new HighlightFeature[featureCount];
 
-            for (final HighlightFeature highlightDemand : hightlightDemandList) {
-                final int position = highlightDemand.getPosition() - 1;
-                if (position < demandCount) {
-                    if (hightlightDemandArray[position] == null) {
-                        hightlightDemandArray[position] = highlightDemand;
+            for (final HighlightFeature highlightFeature : hightlightFeatureList) {
+                final int position = highlightFeature.getPosition() - 1;
+                if (position < featureCount) {
+                    if (hightlightFeatureArray[position] == null) {
+                        hightlightFeatureArray[position] = highlightFeature;
                     } else {
-                        if (hightlightDemandArray[position].getActivationDate().before(highlightDemand.getActivationDate())) {
-                            hightlightDemandArray[position] = highlightDemand;
+                        if (hightlightFeatureArray[position].getActivationDate().before(highlightFeature.getActivationDate())) {
+                            hightlightFeatureArray[position] = highlightFeature;
                         }
                     }
                 }
             }
 
-            for (int i = 0; i < (demandCount + 1) / 2; i++) {
+            for (int i = 0; i < (featureCount + 1) / 2; i++) {
 
-                final HtmlDiv demandListRow = new HtmlDiv("demand_list_row");
+                final HtmlDiv featureListRow = new HtmlDiv("feature_list_row");
                 {
-                    final HtmlDiv demandListLeftCase = new HtmlDiv("demand_list_left_case");
+                    final HtmlDiv featureListLeftCase = new HtmlDiv("feature_list_left_case");
                     {
 
-                        HighlightFeature highlightDemand = hightlightDemandArray[i * 2];
-                        if (highlightDemand != null) {
-                            demandListLeftCase.add(new IndexDemandBlock(highlightDemand));
+                        HighlightFeature highlightFeature = hightlightFeatureArray[i * 2];
+                        if (highlightFeature != null) {
+                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature));
                         }
                     }
-                    demandListRow.add(demandListLeftCase);
+                    featureListRow.add(featureListLeftCase);
 
-                    final HtmlDiv demandListRightCase = new HtmlDiv("demand_list_right_case");
+                    final HtmlDiv featureListRightCase = new HtmlDiv("feature_list_right_case");
                     {
-                        HighlightFeature highlightDemand = hightlightDemandArray[i * 2 + 1];
-                        if (highlightDemand != null) {
-                            demandListRightCase.add(new IndexDemandBlock(highlightDemand));
+                        HighlightFeature highlightFeature = hightlightFeatureArray[i * 2 + 1];
+                        if (highlightFeature != null) {
+                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature));
                         }
                     }
-                    demandListRow.add(demandListRightCase);
+                    featureListRow.add(featureListRightCase);
 
                 }
-                demandList.add(demandListRow);
+                featureList.add(featureListRow);
             }
         }
-        twoColumnLayout.addLeft(demandList);
+        twoColumnLayout.addLeft(featureList);
 
         twoColumnLayout.addRight(new SideBarElementLayout() {
             {

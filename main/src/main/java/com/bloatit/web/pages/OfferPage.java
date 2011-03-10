@@ -11,9 +11,6 @@
  */
 package com.bloatit.web.pages;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -41,8 +38,8 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.LanguageSelector;
-import com.bloatit.web.components.SideBarDemandBlock;
-import com.bloatit.web.linkable.demands.DemandOfferListComponent;
+import com.bloatit.web.components.SideBarFeatureBlock;
+import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.OfferActionUrl;
@@ -52,8 +49,8 @@ import com.bloatit.web.url.OfferPageUrl;
 public final class OfferPage extends LoggedPage {
 
     @RequestParam
-    @ParamConstraint(optionalErrorMsg = @tr("The demand id is not optional !"))
-    private final Feature demand;
+    @ParamConstraint(optionalErrorMsg = @tr("The feature id is not optional !"))
+    private final Feature feature;
 
     @RequestParam
     @Optional
@@ -61,7 +58,7 @@ public final class OfferPage extends LoggedPage {
 
     public OfferPage(final OfferPageUrl url) {
         super(url);
-        this.demand = url.getDemand();
+        this.feature = url.getFeature();
         this.offer = url.getOffer();
     }
 
@@ -86,7 +83,7 @@ public final class OfferPage extends LoggedPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateOfferForm());
 
-        layout.addRight(new SideBarDemandBlock(demand));
+        layout.addRight(new SideBarFeatureBlock(feature));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
@@ -97,14 +94,14 @@ public final class OfferPage extends LoggedPage {
 
         try {
             if (offer != null) {
-                offerPageContainer.add(new DemandOfferListComponent.OfferBlock(offer, true));
+                offerPageContainer.add(new FeatureOfferListComponent.OfferBlock(offer, true));
             }
         } catch (final UnauthorizedOperationException e1) {
             offerPageContainer.addText(Context.tr("For an unknown raison you have not the right to see the Offer you are constructing..."));
         }
 
         // Create offer form
-        final OfferActionUrl offerActionUrl = new OfferActionUrl(demand);
+        final OfferActionUrl offerActionUrl = new OfferActionUrl(feature);
         offerActionUrl.setDraftOffer(offer);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 

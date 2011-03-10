@@ -29,17 +29,17 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Translation;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.linkable.demands.DemandsTools;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 
-public final class HtmlDemandSumary extends HtmlDiv {
+public final class HtmlFeatureSumary extends HtmlDiv {
 
-    private final Feature demand;
+    private final Feature feature;
     private Locale defaultLocale;
 
     public enum Compacity {
-        NORMAL("demand_summary"), COMPACT("compact_demand_summary"), LINE("line_demand_summary");
+        NORMAL("feature_summary"), COMPACT("compact_feature_summary"), LINE("line_feature_summary");
 
         private final String cssClass;
 
@@ -54,11 +54,11 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
     }
 
-    // "demand_summary"
-    public HtmlDemandSumary(final Feature demand, final Compacity compacity) {
+    // "feature_summary"
+    public HtmlFeatureSumary(final Feature feature, final Compacity compacity) {
         super(compacity.getCssClass());
-        this.demand = demand;
-        if (demand == null) {
+        this.feature = feature;
+        if (feature == null) {
             addText("");
             return;
         }
@@ -89,34 +89,34 @@ public final class HtmlDemandSumary extends HtmlDiv {
      * @throws UnauthorizedOperationException
      */
     private void generateCompactStructure() throws UnauthorizedOperationException {
-        final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
+        final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
-            demandSummaryTop.add(generateTitle());
+            featureSummaryTop.add(generateTitle());
         }
-        add(demandSummaryTop);
+        add(featureSummaryTop);
 
-        final HtmlDiv demandSummaryBottom = new HtmlDiv("demand_sumary_bottom");
+        final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_sumary_bottom");
         {
 
-            final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
+            final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
             {
                 // Add project image
-                demandSummaryLeft.add(generateProjectImage());
+                featureSummaryLeft.add(generateProjectImage());
             }
-            demandSummaryBottom.add(demandSummaryLeft);
+            featureSummaryBottom.add(featureSummaryLeft);
 
-            final HtmlDiv demandSummaryCenter = new HtmlDiv("demand_summary_center");
+            final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
             {
 
-                final HtmlDiv demandSummaryProgress = DemandsTools.generateProgress(demand);
-                demandSummaryProgress.add(DemandsTools.generateDetails(demand));
-                demandSummaryCenter.add(demandSummaryProgress);
+                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature);
+                featureummaryProgress.add(FeaturesTools.generateDetails(feature));
+                featureSummaryCenter.add(featureummaryProgress);
 
             }
-            demandSummaryBottom.add(demandSummaryCenter);
+            featureSummaryBottom.add(featureSummaryCenter);
 
         }
-        add(demandSummaryBottom);
+        add(featureSummaryBottom);
 
     }
 
@@ -124,48 +124,48 @@ public final class HtmlDemandSumary extends HtmlDiv {
      * @throws UnauthorizedOperationException
      */
     private void generateNormalStructure() throws UnauthorizedOperationException {
-        final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
+        final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
-            final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
+            final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
             {
                 // Add project image
-                demandSummaryLeft.add(generateProjectImage());
+                featureSummaryLeft.add(generateProjectImage());
             }
-            demandSummaryTop.add(demandSummaryLeft);
+            featureSummaryTop.add(featureSummaryLeft);
 
-            final HtmlDiv demandSummaryCenter = new HtmlDiv("demand_summary_center");
+            final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
             {
                 // Try to display the title
-                demandSummaryCenter.add(generateTitle());
+                featureSummaryCenter.add(generateTitle());
             }
-            demandSummaryTop.add(demandSummaryCenter);
+            featureSummaryTop.add(featureSummaryCenter);
         }
-        add(demandSummaryTop);
+        add(featureSummaryTop);
 
-        final HtmlDiv demandSummaryBottom = new HtmlDiv("demand_sumary_bottom");
+        final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_sumary_bottom");
         {
-            demandSummaryBottom.add(generatePopularityBlock());
+            featureSummaryBottom.add(generatePopularityBlock());
 
-            final HtmlDiv demandSummaryProgress = DemandsTools.generateProgress(demand);
-            demandSummaryProgress.add(DemandsTools.generateDetails(demand));
-            demandSummaryBottom.add(demandSummaryProgress);
+            final HtmlDiv featureSummaryProgress = FeaturesTools.generateProgress(feature);
+            featureSummaryProgress.add(FeaturesTools.generateDetails(feature));
+            featureSummaryBottom.add(featureSummaryProgress);
         }
-        add(demandSummaryBottom);
+        add(featureSummaryBottom);
     }
 
     /**
      * @return
      */
     private HtmlDiv generatePopularityBlock() {
-        final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
+        final HtmlDiv featureSummaryPopularity = new HtmlDiv("feature_summary_popularity");
         {
-            final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
-            final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_score");
+            final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "feature_popularity_text");
+            final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(feature.getPopularity()), "feature_popularity_score");
 
-            demandSummaryPopularity.add(popularityText);
-            demandSummaryPopularity.add(popularityScore);
+            featureSummaryPopularity.add(popularityText);
+            featureSummaryPopularity.add(popularityScore);
         }
-        return demandSummaryPopularity;
+        return featureSummaryPopularity;
     }
 
     /**
@@ -175,7 +175,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
     private XmlNode generateProjectImage() throws UnauthorizedOperationException {
         // TODO: set a fixed size block to not depend of the image
         // size
-        FileMetadata image = demand.getProject().getImage();
+        FileMetadata image = feature.getProject().getImage();
         if (image != null) {
             final FileResourceUrl imageUrl = new FileResourceUrl(image);
             return new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
@@ -191,14 +191,14 @@ public final class HtmlDemandSumary extends HtmlDiv {
      * @throws UnauthorizedOperationException
      */
     private XmlNode generateTitle() throws UnauthorizedOperationException {
-        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlSpan projectSpan = new HtmlSpan("demand_project_title");
-        projectSpan.addText(demand.getProject().getName());
+        final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
+        final HtmlSpan projectSpan = new HtmlSpan("feature_project_title");
+        projectSpan.addText(feature.getProject().getName());
         final HtmlTitle title = new HtmlTitle(1);
-        title.setCssClass("demand_title");
+        title.setCssClass("feature_title");
         title.add(projectSpan);
         title.addText(" – ");
-        title.add(new DemandPageUrl(demand).getHtmlLink(translatedDescription.getTitle()));
+        title.add(new FeaturePageUrl(feature).getHtmlLink(translatedDescription.getTitle()));
 
         return title;
     }

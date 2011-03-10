@@ -82,10 +82,10 @@ public class BloatitExampleDB {
         // Add groups
         final Group other = new Group("other", "plop@elveos.org", "An other group", Right.PROTECTED, yoann);
         other.setAvatar(getImage(yoann, "teams/other.png"));
-        
+
         final Group b219 = new Group("b219", "b219@elveos.org", "The group for b219", Right.PROTECTED, fred);
         b219.setAvatar(getImage(fred, "teams/b219.png"));
-        
+
         final Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", "The group for ubuntu users", Right.PUBLIC, thomas);
         ubuntuUsers.setAvatar(getImage(thomas, "teams/ubuntuUsers.png"));
 
@@ -95,22 +95,22 @@ public class BloatitExampleDB {
         generateLibreOfficeProject();
         generateMageiaProject();
 
-        // Generate demands
+        // Generate features
 
-        final Feature twoSubtitlesInVlcDemand = generateVlcDemandTwoSubtitles();
-        final Feature addPerroquetInMageiaDemand = generateMageiaDemandPerroquetPackage();
-        final Feature colorPickerDemand = generateLibreOfficeDemandColorPicker();
-        Feature libreOfficeDemandDefaultTemplate = generateLibreOfficeDemandDefaultTemplate();
-        Feature perroquetDemandArabicSupport = generatePerroquetDemandArabicSupport();
-        Feature mageiaDemandRemoveEmacs = generateMageiaDemandRemoveEmacs();
+        final Feature twoSubtitlesInVlcFeature = generateVlcFeatureTwoSubtitles();
+        final Feature addPerroquetInMageiaFeature = generateMageiaFeaturePerroquetPackage();
+        final Feature colorPickerFeature = generateLibreOfficeFeatureColorPicker();
+        Feature libreOfficeFeatureDefaultTemplate = generateLibreOfficeFeatureDefaultTemplate();
+        Feature perroquetFeatureArabicSupport = generatePerroquetFeatureArabicSupport();
+        Feature mageiaFeatureRemoveEmacs = generateMageiaFeatureRemoveEmacs();
 
-        // Highlight demands
-        new HighlightFeature(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightFeature(colorPickerDemand, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightFeature(addPerroquetInMageiaDemand, 3, "In developement", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightFeature(libreOfficeDemandDefaultTemplate, 4, "Need your help quicky", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightFeature(perroquetDemandArabicSupport, 5, "Random", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightFeature(mageiaDemandRemoveEmacs, 6, "Success", DateUtils.now(), DateUtils.flyingPigDate());
+        // Highlight features
+        new HighlightFeature(twoSubtitlesInVlcFeature, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(colorPickerFeature, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(addPerroquetInMageiaFeature, 3, "In developement", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(libreOfficeFeatureDefaultTemplate, 4, "Need your help quicky", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(perroquetFeatureArabicSupport, 5, "Random", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(mageiaFeatureRemoveEmacs, 6, "Success", DateUtils.now(), DateUtils.flyingPigDate());
 
         SessionManager.endWorkUnitAndFlush();
 
@@ -154,11 +154,11 @@ public class BloatitExampleDB {
         vlc.setImage(getImage(thomas, "vlc.png"));
     }
 
-    public Feature generateVlcDemandTwoSubtitles() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public Feature generateVlcFeatureTwoSubtitles() throws UnauthorizedOperationException, NotEnoughMoneyException {
 
-        // Demand with offers selected, not validated and not founded
+        // Feature with offers selected, not validated and not founded
 
-        final String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n"
+        final String twoSubtitlesInVlcFeatureDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n"
                 + "\n"
                 + "Afin de m'entrainer à parler anglais et néerlandais à la fois, je souhaite pouvoir afficher les sous-titre de ces deux langues en même temps dans VLC.\n"
                 + "Parce que je suis très gentil, si on peut afficher deux sous-titre de n'importe quelle langue ça m'ira aussi (si le néerlandais font bien sûr partis des langues supportées).\n"
@@ -171,16 +171,16 @@ public class BloatitExampleDB {
                 + "\n"
                 + "J'aimerais que ce soit implémenté dans la semaine, je suis en-effet en train de me préparer à un concours extrèmement complexe (le concours de la bicéphalie) qui aura lieu dans 3 semaines, et j'ai besoin d'au moins deux semaines pour maitriser parfaitement ces deux langues (j'ai pu apprendre le Chinois et l'Arabe en 3 jours auparavant, mais le néerlandais est quand même très complexe).";
 
-        final String twoSubtitlesInVlcDemandTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
+        final String twoSubtitlesInVlcFeatureTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
-        final Feature twoSubtitlesInVlcDemand = FeatureFactory.createFeature(chogall,
+        final Feature twoSubtitlesInVlcFeature = FeatureFactory.createFeature(chogall,
                                                                           chogall.getLocale(),
-                                                                          twoSubtitlesInVlcDemandTitle,
-                                                                          twoSubtitlesInVlcDemandDescription,
+                                                                          twoSubtitlesInVlcFeatureTitle,
+                                                                          twoSubtitlesInVlcFeatureDescription,
                                                                           vlc);
 
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
-        final Comment comment1 = twoSubtitlesInVlcDemand.addComment("Super idée !\n"
+        twoSubtitlesInVlcFeature.authenticate(new AuthToken(cerbere));
+        final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
                 + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
         comment1.authenticate(new AuthToken(hydre));
@@ -190,15 +190,15 @@ public class BloatitExampleDB {
         comment1.authenticate(new AuthToken(chogall));
         comment1.addComment("OK pour moi, j'aurais dû y penser dès le début, j'ai merdé, j'avais mon cerveau gauche qui avait bu trop de vodka. ");
 
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(elephantman));
-        final Comment comment2 = twoSubtitlesInVlcDemand.addComment("Elle est naze votre idée, moi j'apprends une langue en 2.53 minutes (moyenne vérifiée sur un échantillon de 353 langues) du coup autant afficher un seul sous-titre à la fois");
+        twoSubtitlesInVlcFeature.authenticate(new AuthToken(elephantman));
+        final Comment comment2 = twoSubtitlesInVlcFeature.addComment("Elle est naze votre idée, moi j'apprends une langue en 2.53 minutes (moyenne vérifiée sur un échantillon de 353 langues) du coup autant afficher un seul sous-titre à la fois");
 
         comment2.authenticate(new AuthToken(chogall));
         comment2.addComment("On ne peut pas vaincre un éléphant ! Abandonnons cette demande !");
 
         final String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(rataxes));
-        final Offer rataxesOffer = twoSubtitlesInVlcDemand.addOffer(rataxes,
+        twoSubtitlesInVlcFeature.authenticate(new AuthToken(rataxes));
+        final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(rataxes,
                                                                     new BigDecimal(2300),
                                                                     rataxesOfferDescription,
                                                                     rataxes.getLocale(),
@@ -210,10 +210,10 @@ public class BloatitExampleDB {
         rataxesOffer.authenticate(new AuthToken(hydre));
         rataxesOffer.voteUp();
 
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(celeste));
+        twoSubtitlesInVlcFeature.authenticate(new AuthToken(celeste));
         final String celesteBatch1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
-        final Offer celesteOffer = twoSubtitlesInVlcDemand.addOffer(celeste,
+        final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(celeste,
                                                                     new BigDecimal(2500),
                                                                     celesteBatch1Description,
                                                                     celeste.getLocale(),
@@ -230,55 +230,55 @@ public class BloatitExampleDB {
         celesteOffer.voteUp();
 
         // Contributions
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
-        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("800"), "On est prêts, non moi j'suis pas prêt !");
+        twoSubtitlesInVlcFeature.authenticate(new AuthToken(chogall));
+        twoSubtitlesInVlcFeature.addContribution(new BigDecimal("800"), "On est prêts, non moi j'suis pas prêt !");
 
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
-        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
+        twoSubtitlesInVlcFeature.authenticate(new AuthToken(cerbere));
+        twoSubtitlesInVlcFeature.addContribution(new BigDecimal("500"), "Grrrrrr");
 
-        twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
-        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("300"), "");
+        twoSubtitlesInVlcFeature.authenticate(new AuthToken(hydre));
+        twoSubtitlesInVlcFeature.addContribution(new BigDecimal("300"), "");
 
-        return twoSubtitlesInVlcDemand;
+        return twoSubtitlesInVlcFeature;
     }
 
-    public Feature generateMageiaDemandPerroquetPackage() throws UnauthorizedOperationException, NotEnoughMoneyException {
-        // Mageia demand
+    public Feature generateMageiaFeaturePerroquetPackage() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // Mageia feature
 
-        // Demand in development
+        // Feature in development
 
-        final String addPerroquetInMageiaDemandDescription = "Le logiciel perroquet (http://perroquet.b219.org) a des paquets pour Ubuntu et ArchLinux mais pas pour Mageia.\n"
+        final String addPerroquetInMageiaFeatureDescription = "Le logiciel perroquet (http://perroquet.b219.org) a des paquets pour Ubuntu et ArchLinux mais pas pour Mageia.\n"
                 + "\n"
                 + "Le but de cette demande est de créer un paquet pour perroquet et si possible l'intégrer dans les paquets officiels de Mageia.\n"
                 + "Le paquet devra avoir le même niveau d'intégration que celui pour Ubuntu : icones, handle sur les fichiers .perroquet, ...";
 
-        final String addPerroquetInMageiaDemandtitle = "Make a packet for Mageia for the Perroquet software";
+        final String addPerroquetInMageiaFeaturetitle = "Make a packet for Mageia for the Perroquet software";
 
-        final Feature addPerroquetInMageiaDemand = FeatureFactory.createFeature(fred,
+        final Feature addPerroquetInMageiaFeature = FeatureFactory.createFeature(fred,
                                                                              fred.getLocale(),
-                                                                             addPerroquetInMageiaDemandtitle,
-                                                                             addPerroquetInMageiaDemandDescription,
+                                                                             addPerroquetInMageiaFeaturetitle,
+                                                                             addPerroquetInMageiaFeatureDescription,
                                                                              mageia);
 
         final String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
-        addPerroquetInMageiaDemand.authenticate(new AuthToken(hydre));
-        final Offer hydrePerroquetOffer = addPerroquetInMageiaDemand.addOffer(hydre,
+        addPerroquetInMageiaFeature.authenticate(new AuthToken(hydre));
+        final Offer hydrePerroquetOffer = addPerroquetInMageiaFeature.addOffer(hydre,
                                                                               new BigDecimal(200),
                                                                               hydrePerroquetOfferDescription,
                                                                               hydre.getLocale(),
                                                                               DateUtils.tomorrow(),
                                                                               0);
         // Contributions
-        addPerroquetInMageiaDemand.authenticate(new AuthToken(hydre));
-        addPerroquetInMageiaDemand.addContribution(new BigDecimal("10"), "");
+        addPerroquetInMageiaFeature.authenticate(new AuthToken(hydre));
+        addPerroquetInMageiaFeature.addContribution(new BigDecimal("10"), "");
 
-        addPerroquetInMageiaDemand.authenticate(new AuthToken(fred));
-        addPerroquetInMageiaDemand.addContribution(new BigDecimal("230"), "");
+        addPerroquetInMageiaFeature.authenticate(new AuthToken(fred));
+        addPerroquetInMageiaFeature.addContribution(new BigDecimal("230"), "");
 
         // Add bugs
-        setDemandInDevelopmentState(addPerroquetInMageiaDemand);
+        setFeatureInDevelopmentState(addPerroquetInMageiaFeature);
 
-        final Batch firstBatch = addPerroquetInMageiaDemand.getSelectedOffer().getBatches().iterator().next();
+        final Batch firstBatch = addPerroquetInMageiaFeature.getSelectedOffer().getBatches().iterator().next();
         firstBatch.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
         firstBatch.addBug(elephantman,
                           "Faible qualité graphique pour les éléphants",
@@ -291,114 +291,114 @@ public class BloatitExampleDB {
                           yoann.getLocale(),
                           Level.MAJOR);
 
-        return addPerroquetInMageiaDemand;
+        return addPerroquetInMageiaFeature;
     }
 
-    public Feature generateLibreOfficeDemandColorPicker() throws UnauthorizedOperationException {
-        // LibreOffice demand
+    public Feature generateLibreOfficeFeatureColorPicker() throws UnauthorizedOperationException {
+        // LibreOffice feature
 
-        // Demand without offer
-        final String colorPickerDemandDescription = "Actuellement dans LibreOffice, il y a un lot de couleur pré-tiré moche. Si l'on veut une jolie couleur, il faut passer dans tous les menus et on arrive enfin sur un outils anti-ergonomique.\n"
+        // Feature without offer
+        final String colorPickerFeatureDescription = "Actuellement dans LibreOffice, il y a un lot de couleur pré-tiré moche. Si l'on veut une jolie couleur, il faut passer dans tous les menus et on arrive enfin sur un outils anti-ergonomique.\n"
                 + "Il faudrait donc ajouter un color picker à un endroit accessible, par exemple dans le selecteur de couleur des styles.";
 
-        final String colorPickerDemandTitle = "Permettre de choisir facilement n'importe quelle couleur";
+        final String colorPickerFeatureTitle = "Permettre de choisir facilement n'importe quelle couleur";
 
-        final Feature colorPickerDemand = FeatureFactory.createFeature(yoann,
+        final Feature colorPickerFeature = FeatureFactory.createFeature(yoann,
                                                                     yoann.getLocale(),
-                                                                    colorPickerDemandTitle,
-                                                                    colorPickerDemandDescription,
+                                                                    colorPickerFeatureTitle,
+                                                                    colorPickerFeatureDescription,
                                                                     libreOffice);
-        return colorPickerDemand;
+        return colorPickerFeature;
     }
 
-    public Feature generateLibreOfficeDemandDefaultTemplate() throws UnauthorizedOperationException, NotEnoughMoneyException {
-        // LibreOffice demand
+    public Feature generateLibreOfficeFeatureDefaultTemplate() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice feature
 
-        // Demand with offer validated but not funded
-        final String demandDescription = "Actuellement dans LibreOffice, le template par défaut n'est pas très beau. Un jeu de template élégant inclus par défaut serait vraiment utile.";
+        // Feature with offer validated but not funded
+        final String featureDescription = "Actuellement dans LibreOffice, le template par défaut n'est pas très beau. Un jeu de template élégant inclus par défaut serait vraiment utile.";
 
-        final String demandTitle = "Jolie template par défaut dans Libre Office ";
+        final String featureTitle = "Jolie template par défaut dans Libre Office ";
 
-        final Feature demand = FeatureFactory.createFeature(yoann, yoann.getLocale(), demandTitle, demandDescription, libreOffice);
+        final Feature feature = FeatureFactory.createFeature(yoann, yoann.getLocale(), featureTitle, featureDescription, libreOffice);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
-        demand.authenticate(new AuthToken(celeste));
-        final Offer offer = demand.addOffer(celeste, new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
+        feature.authenticate(new AuthToken(celeste));
+        final Offer offer = feature.addOffer(celeste, new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
 
-        FeatureImplementation demandImpl = (FeatureImplementation) demand;
-        demandImpl.getDao().setValidationDate(DateUtils.now());
+        FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
-        demand.authenticate(new AuthToken(chogall));
-        demand.addContribution(new BigDecimal("10"), "");
+        feature.authenticate(new AuthToken(chogall));
+        feature.addContribution(new BigDecimal("10"), "");
 
-        return demand;
+        return feature;
     }
 
-    public Feature generatePerroquetDemandArabicSupport() throws UnauthorizedOperationException, NotEnoughMoneyException {
-        // LibreOffice demand
+    public Feature generatePerroquetFeatureArabicSupport() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice feature
 
-        // Demand with offer not validated and funded
-        final String demandDescription = "Il faut que perroquet soit capable de gérer les langue qui vont de droite à gauche (en particulier les langues arabes) et vérifier que toutes les caractères sont bien supportés.";
+        // Feature with offer not validated and funded
+        final String featureDescription = "Il faut que perroquet soit capable de gérer les langue qui vont de droite à gauche (en particulier les langues arabes) et vérifier que toutes les caractères sont bien supportés.";
 
-        final String demandTitle = "Support des langues arabe";
+        final String featureTitle = "Support des langues arabe";
 
-        final Feature demand = FeatureFactory.createFeature(yoann, yoann.getLocale(), demandTitle, demandDescription, perroquet);
+        final Feature feature = FeatureFactory.createFeature(yoann, yoann.getLocale(), featureTitle, featureDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
-        demand.authenticate(new AuthToken(fred));
-        final Offer offer = demand.addOffer(fred, new BigDecimal(750), offerDescription, fred.getLocale(), DateUtils.tomorrow(), 0);
+        feature.authenticate(new AuthToken(fred));
+        final Offer offer = feature.addOffer(fred, new BigDecimal(750), offerDescription, fred.getLocale(), DateUtils.tomorrow(), 0);
 
         // Contributions
-        demand.authenticate(new AuthToken(yoann));
-        demand.addContribution(new BigDecimal("760"), "");
+        feature.authenticate(new AuthToken(yoann));
+        feature.addContribution(new BigDecimal("760"), "");
 
-        return demand;
+        return feature;
     }
 
-    public Feature generateMageiaDemandRemoveEmacs() throws UnauthorizedOperationException, NotEnoughMoneyException {
-        // LibreOffice demand
+    public Feature generateMageiaFeatureRemoveEmacs() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        // LibreOffice feature
 
-        // Demand with offer not validated and not funded
-        final String demandDescription = "Il faut absolument supprimer emacs des paquets disponible dans Mageia. En effet, le successeur d'emacs vim est maintenant mature et le logiciel emacs qui a bien servi est maintenant dépassé et encombre les paquets. Des sources indiquent aussi qu'emacs est dangereux pour la santé et qu'il peut engendrer un Syndrome du Canal Carpien. D'autre part emacs est peu accessible car il est difficilement utilisable par les personnes ne disposant que d'un seul doigt. ";
+        // Feature with offer not validated and not funded
+        final String featureDescription = "Il faut absolument supprimer emacs des paquets disponible dans Mageia. En effet, le successeur d'emacs vim est maintenant mature et le logiciel emacs qui a bien servi est maintenant dépassé et encombre les paquets. Des sources indiquent aussi qu'emacs est dangereux pour la santé et qu'il peut engendrer un Syndrome du Canal Carpien. D'autre part emacs est peu accessible car il est difficilement utilisable par les personnes ne disposant que d'un seul doigt. ";
 
-        final String demandTitle = "Suppression du paquet emacs déprécié";
+        final String featureTitle = "Suppression du paquet emacs déprécié";
 
-        final Feature demand = FeatureFactory.createFeature(thomas, thomas.getLocale(), demandTitle, demandDescription, mageia);
+        final Feature feature = FeatureFactory.createFeature(thomas, thomas.getLocale(), featureTitle, featureDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
-        demand.authenticate(new AuthToken(cerbere));
-        final Offer offer = demand.addOffer(cerbere, new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
+        feature.authenticate(new AuthToken(cerbere));
+        final Offer offer = feature.addOffer(cerbere, new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
-        FeatureImplementation demandImpl = (FeatureImplementation) demand;
-        demandImpl.getDao().setValidationDate(DateUtils.now());
+        FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
-        demand.authenticate(new AuthToken(thomas));
-        demand.addContribution(new BigDecimal("400"), "");
+        feature.authenticate(new AuthToken(thomas));
+        feature.addContribution(new BigDecimal("400"), "");
 
-        setDemandInFinishedState(demand);
+        setFeatureInFinishedState(feature);
 
-        return demand;
+        return feature;
     }
 
     /**
      * Work only if the money is available
-     * @param demand
+     * @param feature
      */
-    private void setDemandInDevelopmentState(final Feature demand) {
-        final FeatureImplementation demandImpl = (FeatureImplementation) demand;
-        demandImpl.getDao().setValidationDate(DateUtils.now());
+    private void setFeatureInDevelopmentState(final Feature feature) {
+        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        featureImpl.getDao().setValidationDate(DateUtils.now());
     }
 
-    private void setDemandInFinishedState(final Feature demand) {
-        final FeatureImplementation demandImpl = (FeatureImplementation) demand;
-        demandImpl.getDao().setFeatureState(FeatureState.FINISHED);
+    private void setFeatureInFinishedState(final Feature feature) {
+        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
-    private void setDemandInDiscardedState(final Feature demand) {
-        final FeatureImplementation demandImpl = (FeatureImplementation) demand;
-        demandImpl.getDao().setFeatureState(FeatureState.DISCARDED);
+    private void setFeatureInDiscardedState(final Feature feature) {
+        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        featureImpl.getDao().setFeatureState(FeatureState.DISCARDED);
     }
 
     public void giveMoney(final Member member, final int amount) {

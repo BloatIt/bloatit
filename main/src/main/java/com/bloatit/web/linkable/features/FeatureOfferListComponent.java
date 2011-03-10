@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -52,34 +52,34 @@ import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
-public class DemandOfferListComponent extends HtmlDiv {
+public class FeatureOfferListComponent extends HtmlDiv {
 
-    private final Feature demand;
+    private final Feature feature;
 
-    public DemandOfferListComponent(final Feature demand) {
+    public FeatureOfferListComponent(final Feature feature) {
         super();
-        this.demand = demand;
+        this.feature = feature;
         try {
 
             PageIterable<Offer> offers = new EmptyPageIterable<Offer>();
-            offers = demand.getOffers();
+            offers = feature.getOffers();
             int nbUnselected = offers.size();
 
-            final Offer selectedOffer = demand.getSelectedOffer();
+            final Offer selectedOffer = feature.getSelectedOffer();
             if (selectedOffer != null) {
                 nbUnselected--;
             }
 
             final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
-            switch (demand.getFeatureState()) {
+            switch (feature.getFeatureState()) {
                 case PENDING: {
                     offersBlock.add(new HtmlTitle(Context.tr("No offer"), 1));
                     BicolumnOfferBlock block = new BicolumnOfferBlock(true);
                     offersBlock.add(block);
                     block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The fisrt offer is selected by default.")));
 
-                    final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
+                    final HtmlLink link = new OfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
                     link.setCssClass("button");
 
 
@@ -102,10 +102,10 @@ public class DemandOfferListComponent extends HtmlDiv {
                     // Generating the left column
 
                     block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
-                    if (demand.getValidationDate() != null && DateUtils.isInTheFuture(demand.getValidationDate())) {
-                        TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), demand.getValidationDate()));
+                    if (feature.getValidationDate() != null && DateUtils.isInTheFuture(feature.getValidationDate())) {
+                        TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
-                        BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
+                        BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
 
                         if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
                             CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
@@ -118,7 +118,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                         }
                     } else {
 
-                        BigDecimal amountLeft = demand.getSelectedOffer().getAmount().subtract(demand.getContribution());
+                        BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
 
                         CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
 
@@ -133,7 +133,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                     offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
                     BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
                     offersBlock.add(unselectedBlock);
-                    unselectedBlock.addInLeftColumn(new OfferPageUrl(demand).getHtmlLink(tr("Make a concurrent offer")));
+                    unselectedBlock.addInLeftColumn(new OfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
                     unselectedBlock.addInLeftColumn(new HtmlParagraph("The concurrent offers must be voted enought to become the selected offer."));
 
                     for (final Offer offer : offers) {
@@ -163,7 +163,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                     generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
                     break;
                 case DISCARDED:
-                    offersBlock.add(new HtmlTitle(Context.tr("Demand discared ..."), 1));
+                    offersBlock.add(new HtmlTitle(Context.tr("Feature discared ..."), 1));
                     break;
                 default:
                     break;

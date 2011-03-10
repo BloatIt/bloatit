@@ -40,7 +40,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
 /**
  * Page that hosts the form to create a new Idea
  */
-@ParamContainer("demand/bug/report")
+@ParamContainer("feature/bug/report")
 public final class ReportBugPage extends LoggedPage {
 
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;

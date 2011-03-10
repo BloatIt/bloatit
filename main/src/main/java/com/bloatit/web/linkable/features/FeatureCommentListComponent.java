@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
@@ -22,16 +22,16 @@ import com.bloatit.model.Feature;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.pages.tools.CommentTools;
 
-public final class DemandCommentListComponent extends HtmlPageComponent {
+public final class FeatureCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
-    private final Feature targetDemand;
+    private final Feature targetFeature;
 
-    public DemandCommentListComponent(final Feature demand) {
+    public FeatureCommentListComponent(final Feature feature) {
         super();
-        this.targetDemand = demand;
+        this.targetFeature = feature;
         try {
-            this.comments = demand.getComments();
+            this.comments = feature.getComments();
             add(produce());
         } catch (final UnauthorizedOperationException e) {
             this.comments = null;
@@ -50,7 +50,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", comments.size()), 1).setCssClass("comments_title"));
 
             commentsBlock.add(CommentTools.generateCommentList(comments));
-            commentsBlock.add(CommentTools.generateNewCommentComponent(targetDemand));
+            commentsBlock.add(CommentTools.generateNewCommentComponent(targetFeature));
         }
         return commentsBlock;
     }

@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.demands;
+package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -29,16 +29,16 @@ import com.bloatit.model.Feature;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
-public class DemandBugListComponent extends HtmlDiv {
+public class FeatureBugListComponent extends HtmlDiv {
 
-    public DemandBugListComponent(final Feature demand) {
+    public FeatureBugListComponent(final Feature feature) {
         super("padding");
         // Open bugs
-        final PageIterable<Bug> openBugs = demand.getOpenBugs();
+        final PageIterable<Bug> openBugs = feature.getOpenBugs();
         final HtmlTitle openBugsTitle = new HtmlTitle(Context.tr("Open bugs ({0})", openBugs.size()), 1);
         add(openBugsTitle);
         try {
-            add(new ReportBugPageUrl(demand.getSelectedOffer()).getHtmlLink(tr("Report a new bug")));
+            add(new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(tr("Report a new bug")));
         } catch (UnauthorizedOperationException e) {
         }
 
@@ -46,7 +46,7 @@ public class DemandBugListComponent extends HtmlDiv {
         add(openBugsTable);
 
         // Closed bugs
-        final PageIterable<Bug> closedBugs = demand.getClosedBugs();
+        final PageIterable<Bug> closedBugs = feature.getClosedBugs();
         final HtmlTitle closedBugsTitle = new HtmlTitle(Context.tr("Closed bugs ({0})", closedBugs.size()), 1);
         add(closedBugsTitle);
         final HtmlTable closedBugsTable = new HtmlTable(new HtmlBugsTableModel(closedBugs));

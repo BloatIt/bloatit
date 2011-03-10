@@ -39,7 +39,7 @@ import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 
-@ParamContainer("demand/bug")
+@ParamContainer("feature/bug")
 public final class BugPage extends MasterPage {
 
     public static final String BUG_FIELD_NAME = "id";

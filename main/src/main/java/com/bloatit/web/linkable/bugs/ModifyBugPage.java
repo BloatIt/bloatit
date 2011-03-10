@@ -34,7 +34,7 @@ import com.bloatit.web.url.ModifyBugPageUrl;
 /**
  * Page that hosts the form to create a new Idea
  */
-@ParamContainer("demand/bug/modify")
+@ParamContainer("feature/bug/modify")
 public final class ModifyBugPage extends LoggedPage {
 
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_LINES = 5;

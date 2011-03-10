@@ -32,8 +32,8 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
-import com.bloatit.web.linkable.demands.DemandTabPane;
-import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.linkable.features.FeatureTabPane;
+import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 
@@ -44,7 +44,7 @@ import com.bloatit.web.url.OfferPageUrl;
 public final class OfferAction extends LoggedAction {
 
     @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
-    private final Feature demand;
+    private final Feature feature;
 
     @RequestParam(role = Role.GET)
     @Optional
@@ -93,7 +93,7 @@ public final class OfferAction extends LoggedAction {
         this.locale = url.getLocale();
         this.expiryDate = url.getExpiryDate();
         this.price = url.getPrice();
-        this.demand = url.getDemand();
+        this.feature = url.getFeature();
         this.draftOffer = url.getDraftOffer();
         this.group = url.getGroup();
         this.daysBeforeValidation = url.getDaysBeforeValidation();
@@ -125,7 +125,7 @@ public final class OfferAction extends LoggedAction {
             Batch constructingBatch;
             if (draftOffer == null) {
                 System.err.println(expiryDate);
-                constructingOffer = demand.addOffer(session.getAuthToken().getMember(),
+                constructingOffer = feature.addOffer(session.getAuthToken().getMember(),
                                                     price,
                                                     description,
                                                     new Locale(locale),
@@ -146,9 +146,9 @@ public final class OfferAction extends LoggedAction {
             if (isFinished) {
                 constructingOffer.setDraftFinished();
 
-                final DemandPageUrl demandPageUrl = new DemandPageUrl(demand);
-                demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
-                return demandPageUrl;
+                final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+                featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+                return featurePageUrl;
             }
 
         } catch (final UnauthorizedOperationException e) {
@@ -157,7 +157,7 @@ public final class OfferAction extends LoggedAction {
             return session.pickPreferredPage();
         }
 
-        OfferPageUrl returnUrl = new OfferPageUrl(demand);
+        OfferPageUrl returnUrl = new OfferPageUrl(feature);
         returnUrl.setOffer(constructingOffer);
         return returnUrl;
     }
@@ -166,9 +166,9 @@ public final class OfferAction extends LoggedAction {
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
-        if (demand != null) {
+        if (feature != null) {
             transmitParameters();
-            final OfferPageUrl redirectUrl = new OfferPageUrl(demand);
+            final OfferPageUrl redirectUrl = new OfferPageUrl(feature);
             redirectUrl.setOffer(draftOffer);
             return redirectUrl;
         }
