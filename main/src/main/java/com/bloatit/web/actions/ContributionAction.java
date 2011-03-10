@@ -39,10 +39,10 @@ public final class ContributionAction extends LoggedAction {
 
     public static final String AMOUNT_CODE = "contributionAmount";
     public static final String COMMENT_CODE = "comment";
-    public static final String TARGET_IDEA = "targetIdea";
+    public static final String TARGET_FEATURE = "targetFeature";
 
-    @RequestParam(name = TARGET_IDEA)
-    private final Feature targetIdea;
+    @RequestParam(name = TARGET_FEATURE)
+    private final Feature targetFeature;
 
     @RequestParam(name = COMMENT_CODE, role = Role.POST)
     @ParamConstraint(max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
@@ -60,7 +60,7 @@ public final class ContributionAction extends LoggedAction {
     public ContributionAction(final ContributionActionUrl url) {
         super(url);
         this.url = url;
-        this.targetIdea = url.getTargetIdea();
+        this.targetFeature = url.getTargetFeature();
         this.comment = url.getComment();
         this.amount = url.getAmount();
     }
@@ -68,9 +68,9 @@ public final class ContributionAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
         try {
-            targetIdea.addContribution(amount, comment);
-            session.notifyGood(Context.tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(targetIdea);
+            targetFeature.addContribution(amount, comment);
+            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator().getCurrency(amount).getLocaleString()));
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(targetFeature);
             featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.PARTICIPATIONS_TAB);
             return featurePageUrl;
         } catch (final NotEnoughMoneyException e) {
@@ -81,8 +81,8 @@ public final class ContributionAction extends LoggedAction {
             session.setTargetPage(this.url);
             return new AccountChargingPageUrl();
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-            return new ContributePageUrl(targetIdea);
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
+            return new ContributePageUrl(targetFeature);
         }
     }
 
@@ -92,7 +92,7 @@ public final class ContributionAction extends LoggedAction {
         session.addParameter(url.getCommentParameter());
         session.addParameter(url.getAmountParameter());
 
-        return new ContributePageUrl(targetIdea);
+        return new ContributePageUrl(targetFeature);
     }
 
     @Override

@@ -34,7 +34,7 @@ import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("feature/bug/doreport")
 public final class ReportBugAction extends Action {

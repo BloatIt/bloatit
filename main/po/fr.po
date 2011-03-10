@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-10 13:47+0100\n"
+"POT-Creation-Date: 2011-03-10 16:07+0100\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -916,7 +916,8 @@ msgid "Elveos documentation: {0}"
 msgstr "Accueil de la documentation d'Elveos"
 
 #: com/bloatit/web/actions/OfferAction.java:46
-msgid "The target idea is mandatory to make an offer."
+#, fuzzy
+msgid "The target feature is mandatory to make an offer."
 msgstr "L'idée cible est obligatoire pour faire une offre."
 
 #: com/bloatit/web/actions/OfferAction.java:53
@@ -950,7 +951,9 @@ msgid "You cannot talk on the behalf of this group."
 msgstr ""
 
 #: com/bloatit/web/actions/OfferAction.java:156
-msgid "For obscure reasons, you are not allowed to make an offer on this idea."
+#, fuzzy
+msgid ""
+"For obscure reasons, you are not allowed to make an offer on this feature."
 msgstr ""
 "Pour des raisons obscures, vous n'êtes pas autorisé à faire une offre sur "
 "cette idée."
@@ -1059,8 +1062,8 @@ msgid "Please do not use Cents."
 msgstr "N'utilisez pas les centimes."
 
 #: com/bloatit/web/actions/ContributionAction.java:72
-#, java-format
-msgid "Thanks you for crediting {0} on this idea"
+#, fuzzy, java-format
+msgid "Thanks you for crediting {0} on this feature"
 msgstr "Merci d''avoir crédité {0} sur cette idée"
 
 #: com/bloatit/web/actions/ContributionAction.java:77
@@ -1068,7 +1071,8 @@ msgid "You need to charge your account before you can contribute."
 msgstr "Vous devez créditer votre compte avant de contribuer."
 
 #: com/bloatit/web/actions/ContributionAction.java:84
-msgid "For obscure reasons, you are not allowed to contribute on this idea."
+#, fuzzy
+msgid "For obscure reasons, you are not allowed to contribute on this feature."
 msgstr ""
 "Pour des raisons obscures, vous n'êtes pas autorisé à contribuer à cette "
 "idée."
@@ -1722,7 +1726,8 @@ msgid "Error you forgot to write a title"
 msgstr "Error vous avez oublié d'écrire un titre"
 
 #: com/bloatit/web/linkable/features/CreateFeatureAction.java:74
-msgid "You must be logged in to create an idea."
+#, fuzzy
+msgid "You must be logged in to create a feature."
 msgstr "Vous devez être connecté pour créer une idée."
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:102
@@ -1768,7 +1773,8 @@ msgid "Sort by: "
 msgstr "Trier par :"
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:225
-msgid "If you have an idea or a need about a free software, you can "
+#, fuzzy
+msgid "If you have an feature or a need about a free software, you can "
 msgstr ""
 "Si vous avez une idée ou un besoin concernant un logiciel libre, vous pouvez "
 
@@ -1928,9 +1934,10 @@ msgid "Title"
 msgstr "Titre"
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:93
+#, fuzzy
 msgid ""
-"The title of the new idea must be permit to identify clearly the idea's "
-"specificity."
+"The title of the new feature must be permit to identify clearly the "
+"feature's specificity."
 msgstr ""
 "Le titre de la nouvelle idée doit permettre d'identifier clairement la "
 "spécificité de l'idée."
@@ -1940,19 +1947,22 @@ msgid "Project"
 msgstr "Projet"
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:114
-msgid "Describe the idea"
+#, fuzzy
+msgid "Describe the feature"
 msgstr "Décrivez l'idée"
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:119
+#, fuzzy
 msgid ""
-"Enter a long description of the idea : list all features, describe them "
+"Enter a long description of the feature : list all features, describe them "
 "all ... Try to leave as little room for ambiguity as possible."
 msgstr ""
 "Tapez une longue description de l'idée : liste des fonctionnalités, décrivez "
 "les toutes... Essayez de laisser le moins d'ambiguité possible."
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:148
-msgid "You must be logged to create a new idea."
+#, fuzzy
+msgid "You must be logged to create a new feature."
 msgstr "Vous devez être connecté pour créer une nouvelle idée."
 
 #: com/bloatit/web/linkable/features/FeatureBugListComponent.java:38
@@ -1979,7 +1989,8 @@ msgid "Last update"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeaturePage.java:70
-msgid "Idea not found !"
+#, fuzzy
+msgid "Feature not found !"
 msgstr "Idée introuvable !"
 
 #: com/bloatit/web/linkable/team/JoinTeamPage.java:35

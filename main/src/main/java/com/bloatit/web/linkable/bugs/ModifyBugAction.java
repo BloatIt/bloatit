@@ -33,7 +33,7 @@ import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("feature/bug/domodify")
 public final class ModifyBugAction extends Action {

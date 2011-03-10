@@ -31,15 +31,15 @@ import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
-@ParamContainer("idea/docreate")
+@ParamContainer("feature/docreate")
 public final class CreateFeatureAction extends Action {
 
     public static final String DESCRIPTION_CODE = "description";
     public static final String SPECIFICATION_CODE = "specification";
     public static final String PROJECT_CODE = "project";
-    public static final String LANGUAGE_CODE = "bloatit_idea_lang";
+    public static final String LANGUAGE_CODE = "feature_lang";
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
     @ParamConstraint(max = "80", maxErrorMsg = @tr("The title must be 80 chars length max."), //
@@ -71,7 +71,7 @@ public final class CreateFeatureAction extends Action {
     protected Url doProcess() {
         session.notifyList(url.getMessages());
         if (!FeatureManager.canCreate(session.getAuthToken())) {
-            session.notifyError(Context.tr("You must be logged in to create an idea."));
+            session.notifyError(Context.tr("You must be logged in to create a feature."));
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);

@@ -29,7 +29,7 @@ import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("member/changeavatar")
 public final class ChangeAvatarAction extends Action {

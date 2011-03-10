@@ -27,7 +27,7 @@ import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.AddReleaseActionUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("release/doadd")
 public final class AddReleaseAction extends LoggedAction {

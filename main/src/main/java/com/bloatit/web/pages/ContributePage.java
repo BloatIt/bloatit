@@ -39,14 +39,14 @@ import com.bloatit.web.url.ContributionActionUrl;
 public final class ContributePage extends LoggedPage {
 
     @RequestParam()
-    private final Feature targetIdea;
+    private final Feature targetFeature;
 
     private final ContributePageUrl url;
 
     public ContributePage(final ContributePageUrl url) {
         super(url);
         this.url = url;
-        targetIdea = url.getTargetIdea();
+        targetFeature = url.getTargetFeature();
     }
 
     @Override
@@ -60,14 +60,14 @@ public final class ContributePage extends LoggedPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateContributeForm());
 
-        layout.addRight(new SideBarFeatureBlock(targetIdea));
+        layout.addRight(new SideBarFeatureBlock(targetFeature));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
     }
 
     public HtmlElement generateContributeForm() {
-        final ContributionActionUrl formActionUrl = new ContributionActionUrl(targetIdea);
+        final ContributionActionUrl formActionUrl = new ContributionActionUrl(targetFeature);
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 

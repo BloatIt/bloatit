@@ -31,9 +31,9 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("feature")
 public final class FeaturePage extends MasterPage {
 
-    public static final String IDEA_FIELD_NAME = "id";
+    public static final String FEATURE_FIELD_NAME = "id";
 
-    @RequestParam(name = IDEA_FIELD_NAME)
+    @RequestParam(name = FEATURE_FIELD_NAME)
     private final Feature feature;
 
     @SuppressWarnings("unused")
@@ -67,7 +67,7 @@ public final class FeaturePage extends MasterPage {
                 // Return the default one.
             }
         }
-        return tr("Idea not found !");
+        return tr("Feature not found !");
     }
 
     @Override

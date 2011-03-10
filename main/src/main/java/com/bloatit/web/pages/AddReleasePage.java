@@ -30,7 +30,7 @@ import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 
 /**
- * Page that hosts the form to create a new Idea
+ * Page that hosts the form to create a new feature
  */
 @ParamContainer("release/add")
 public final class AddReleasePage extends LoggedPage {

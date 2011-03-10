@@ -25,7 +25,7 @@ import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("member/activate")
 public final class MemberActivationAction extends Action {

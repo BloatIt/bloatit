@@ -28,7 +28,7 @@ import com.bloatit.model.right.InternalAccountRight;
  * An internal account is an account containing the money we store for a user.
  * There is one internal account for each user and only one. An internal account
  * can never have an amount under zero. An internal account can have some money
- * blocked. When you contribute on an idea, you do not spend the money directly,
+ * blocked. When you contribute on an feature, you do not spend the money directly,
  * but it is blocked and you cannot use it elsewhere.
  *
  * @author tguyard
@@ -67,7 +67,7 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
     }
 
     /**
-     * Return the amount blocked into contribution on non finished idea.
+     * Return the amount blocked into contribution on non finished feature.
      *
      * @return a positive {@link BigDecimal}.
      * @throws UnauthorizedOperationException if you do not have the right to

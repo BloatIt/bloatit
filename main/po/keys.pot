@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-10 13:47+0100\n"
+"POT-Creation-Date: 2011-03-10 16:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -880,7 +880,7 @@ msgid "Elveos documentation: {0}"
 msgstr ""
 
 #: com/bloatit/web/actions/OfferAction.java:46
-msgid "The target idea is mandatory to make an offer."
+msgid "The target feature is mandatory to make an offer."
 msgstr ""
 
 #: com/bloatit/web/actions/OfferAction.java:53
@@ -914,7 +914,8 @@ msgid "You cannot talk on the behalf of this group."
 msgstr ""
 
 #: com/bloatit/web/actions/OfferAction.java:156
-msgid "For obscure reasons, you are not allowed to make an offer on this idea."
+msgid ""
+"For obscure reasons, you are not allowed to make an offer on this feature."
 msgstr ""
 
 #: com/bloatit/web/actions/OfferAction.java:180
@@ -1017,7 +1018,7 @@ msgstr ""
 
 #: com/bloatit/web/actions/ContributionAction.java:72
 #, java-format
-msgid "Thanks you for crediting {0} on this idea"
+msgid "Thanks you for crediting {0} on this feature"
 msgstr ""
 
 #: com/bloatit/web/actions/ContributionAction.java:77
@@ -1025,7 +1026,7 @@ msgid "You need to charge your account before you can contribute."
 msgstr ""
 
 #: com/bloatit/web/actions/ContributionAction.java:84
-msgid "For obscure reasons, you are not allowed to contribute on this idea."
+msgid "For obscure reasons, you are not allowed to contribute on this feature."
 msgstr ""
 
 #: com/bloatit/web/actions/ContributionAction.java:100
@@ -1647,7 +1648,7 @@ msgid "Error you forgot to write a title"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeatureAction.java:74
-msgid "You must be logged in to create an idea."
+msgid "You must be logged in to create a feature."
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:102
@@ -1692,7 +1693,7 @@ msgid "Sort by: "
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:225
-msgid "If you have an idea or a need about a free software, you can "
+msgid "If you have an feature or a need about a free software, you can "
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:226
@@ -1843,8 +1844,8 @@ msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:93
 msgid ""
-"The title of the new idea must be permit to identify clearly the idea's "
-"specificity."
+"The title of the new feature must be permit to identify clearly the "
+"feature's specificity."
 msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:97
@@ -1852,17 +1853,17 @@ msgid "Project"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:114
-msgid "Describe the idea"
+msgid "Describe the feature"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:119
 msgid ""
-"Enter a long description of the idea : list all features, describe them "
+"Enter a long description of the feature : list all features, describe them "
 "all ... Try to leave as little room for ambiguity as possible."
 msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:148
-msgid "You must be logged to create a new idea."
+msgid "You must be logged to create a new feature."
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureBugListComponent.java:38
@@ -1888,7 +1889,7 @@ msgid "Last update"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeaturePage.java:70
-msgid "Idea not found !"
+msgid "Feature not found !"
 msgstr ""
 
 #: com/bloatit/web/linkable/team/JoinTeamPage.java:35

@@ -38,7 +38,7 @@ import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
 /**
- * Page that hosts the form to create a new Idea
+ * Page that hosts the form to create a new feature
  */
 @ParamContainer("feature/bug/report")
 public final class ReportBugPage extends LoggedPage {

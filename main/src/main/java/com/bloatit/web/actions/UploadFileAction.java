@@ -21,7 +21,7 @@ import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.UploadFileActionUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("file/doupload")
 public final class UploadFileAction extends Action {

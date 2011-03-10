@@ -28,7 +28,7 @@ import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 
 /**
- * Page that hosts the form to create a new Idea
+ * Page that hosts the form to create a new feature
  */
 @ParamContainer("project/add")
 public final class AddProjectPage extends LoggedPage {
@@ -55,18 +55,18 @@ public final class AddProjectPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        return new HtmlDiv("padding_box").add(generateIdeaCreationForm());
+        return new HtmlDiv("padding_box").add(generateFeatureCreationForm());
     }
 
-    private HtmlElement generateIdeaCreationForm() {
-        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Add a new project"), 1);
+    private HtmlElement generateFeatureCreationForm() {
+        final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new project"), 1);
         final AddProjectActionUrl doCreateUrl = new AddProjectActionUrl();
 
         // Create the form stub
         final HtmlForm addProjectForm = new HtmlForm(doCreateUrl.urlString());
         addProjectForm.enableFileUpload();
 
-        createIdeaTitle.add(addProjectForm);
+        createFeatureTitle.add(addProjectForm);
 
         // Create the field for the name of the project
         final FieldData projectNameData = doCreateUrl.getProjectNameParameter().pickFieldData();
@@ -113,7 +113,7 @@ public final class AddProjectPage extends LoggedPage {
         addProjectForm.add(new HtmlSubmit(Context.tr("submit")));
 
         final HtmlDiv group = new HtmlDiv();
-        group.add(createIdeaTitle);
+        group.add(createFeatureTitle);
         return group;
     }
 

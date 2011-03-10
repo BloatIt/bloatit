@@ -39,7 +39,7 @@ import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 
 /**
- * Page that hosts the form to create a new Idea
+ * Page that hosts the form to create a new Feature
  */
 @ParamContainer("feature/create")
 public final class CreateFeaturePage extends LoggedPage {
@@ -47,8 +47,8 @@ public final class CreateFeaturePage extends LoggedPage {
     private static final int SPECIF_INPUT_NB_LINES = 20;
     private static final int SPECIF_INPUT_NB_COLUMNS = 100;
 
-    public CreateFeaturePage(final CreateFeaturePageUrl createIdeaPageUrl) {
-        super(createIdeaPageUrl);
+    public CreateFeaturePage(final CreateFeaturePageUrl createFeaturePageUrl) {
+        super(createFeaturePageUrl);
     }
 
     @Override
@@ -65,33 +65,33 @@ public final class CreateFeaturePage extends LoggedPage {
     public HtmlElement createRestrictedContent() {
         if (FeatureManager.canCreate(session.getAuthToken())) {
 
-            add(generateIdeaCreationForm());
+            add(generateFeatureCreationForm());
         }
         return generateBadRightError();
     }
 
-    private HtmlElement generateIdeaCreationForm() {
+    private HtmlElement generateFeatureCreationForm() {
 
         final TwoColumnLayout layout = new TwoColumnLayout();
 
         final BoxLayout box = new BoxLayout();
 
-        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
+        final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
         final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl();
 
         // Create the form stub
-        final HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
+        final HtmlForm createFeatureForm = new HtmlForm(doCreateUrl.urlString());
 
-        createIdeaTitle.add(createIdeaForm);
+        createFeatureTitle.add(createFeatureForm);
 
-        // Create the fields that will describe the description of the idea
+        // Create the fields that will describe the description of the feature
         final FieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData.getName(), tr("Title"));
         descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
         descriptionInput.setCssClass("input_long_400px");
-        descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
-        createIdeaForm.add(descriptionInput);
+        descriptionInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
+        createFeatureForm.add(descriptionInput);
 
         // Linked project
         final HtmlDropDown projectInput = new HtmlDropDown(CreateFeatureAction.PROJECT_CODE, Context.tr("Project"));
@@ -106,27 +106,27 @@ public final class CreateFeaturePage extends LoggedPage {
         // TODO: set the default value to "select a project"
         // TODO: add form to create a new project
 
-        createIdeaForm.add(projectInput);
+        createFeatureForm.add(projectInput);
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
         final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData.getName(),
-                                                                 tr("Describe the idea"),
+                                                                 tr("Describe the feature"),
                                                                  SPECIF_INPUT_NB_LINES,
                                                                  SPECIF_INPUT_NB_COLUMNS);
         specificationInput.setDefaultValue(specificationFieldData.getSuggestedValue());
         specificationInput.addErrorMessages(specificationFieldData.getErrorMessages());
-        specificationInput.setComment(tr("Enter a long description of the idea : list all features, describe them all "
+        specificationInput.setComment(tr("Enter a long description of the feature : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
-        createIdeaForm.add(specificationInput);
+        createFeatureForm.add(specificationInput);
 
         final LanguageSelector languageInput = new LanguageSelector(CreateFeatureAction.LANGUAGE_CODE, tr("Language"));
-        createIdeaForm.add(languageInput);
+        createFeatureForm.add(languageInput);
 
         // Submit button
-        createIdeaForm.add(new HtmlSubmit(tr("submit")));
+        createFeatureForm.add(new HtmlSubmit(tr("submit")));
 
-        box.add(createIdeaTitle);
+        box.add(createFeatureTitle);
 
         layout.addLeft(box);
 
@@ -145,7 +145,7 @@ public final class CreateFeaturePage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to create a new idea.");
+        return tr("You must be logged to create a new feature.");
     }
 
     /**

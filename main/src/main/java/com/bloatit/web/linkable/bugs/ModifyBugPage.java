@@ -32,7 +32,7 @@ import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 
 /**
- * Page that hosts the form to create a new Idea
+ * Page that hosts the form to create a new feature
  */
 @ParamContainer("feature/bug/modify")
 public final class ModifyBugPage extends LoggedPage {

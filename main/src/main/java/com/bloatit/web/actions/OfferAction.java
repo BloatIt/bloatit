@@ -43,7 +43,7 @@ import com.bloatit.web.url.OfferPageUrl;
 @ParamContainer("action/offer")
 public final class OfferAction extends LoggedAction {
 
-    @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
+    @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target feature is mandatory to make an offer."))
     private final Feature feature;
 
     @RequestParam(role = Role.GET)
@@ -153,7 +153,7 @@ public final class OfferAction extends LoggedAction {
 
         } catch (final UnauthorizedOperationException e) {
             Log.web().error("Should never happend", e);
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this feature."));
             return session.pickPreferredPage();
         }
 

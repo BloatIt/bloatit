@@ -222,7 +222,7 @@ public final class FeatureListPage extends MasterPage {
             // Create a feature
             final HtmlDiv createFeatureBlock = new HtmlDiv("feature_create_block");
             {
-                createFeatureBlock.addText(Context.tr("If you have an idea or a need about a free software, you can "));
+                createFeatureBlock.addText(Context.tr("If you have an feature or a need about a free software, you can "));
                 final HtmlLink creatFeatureLink = new CreateFeaturePageUrl().getHtmlLink(Context.tr("submit a new feature"));
                 createFeatureBlock.add(creatFeatureLink);
             }
@@ -233,7 +233,7 @@ public final class FeatureListPage extends MasterPage {
         // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Feature> featureItemRenderer = new IdeasListItem();
+            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
             final FeatureListPageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, results, clonedUrl, clonedUrl.getPagedFeatureListUrl());
             layout.addLeft(pagedFeatureList);
@@ -264,7 +264,7 @@ public final class FeatureListPage extends MasterPage {
         return custom;
     }
 
-    static class IdeasListItem implements HtmlRenderer<Feature> {
+    static class FeaturesListItem implements HtmlRenderer<Feature> {
         private Feature feature;
 
         @Override

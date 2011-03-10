@@ -32,18 +32,18 @@ import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("project/doadd")
 public final class AddProjectAction extends Action {
 
     public static final String SHORT_DESCRIPTION_CODE = "bloatit_project_short_description";
-    public static final String DESCRIPTION_CODE = "bloatit_project_description";
-    public static final String PROJECT_NAME_CODE = "bloatit_idea_project";
+    public static final String DESCRIPTION_CODE = "feature_project_description";
+    public static final String PROJECT_NAME_CODE = "feature_project";
     public static final String IMAGE_CODE = "image";
     public static final String IMAGE_NAME_CODE = "image/filename";
     public static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";
-    public static final String LANGUAGE_CODE = "bloatit_idea_lang";
+    public static final String LANGUAGE_CODE = "feature_lang";
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
     @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //

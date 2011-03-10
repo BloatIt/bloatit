@@ -28,7 +28,7 @@ import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A response to a form used to create a new feature
  */
 @ParamContainer("usercontent/attachfile")
 public final class AddAttachementAction extends Action {
