@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-10 16:07+0100\n"
+"POT-Creation-Date: 2011-03-10 17:47+0100\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -140,11 +140,11 @@ msgid "Change the feature state"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/AdminActionManager.java:24
-msgid "Validate batch if possible"
+msgid "Validate milestone if possible"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/AdminActionManager.java:25
-msgid "Validate batch --force !"
+msgid "Validate milestone --force !"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/DisplayableFilterType.java:8
@@ -162,16 +162,41 @@ msgstr ""
 msgid "Without"
 msgstr ""
 
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:9
+msgid "<select>"
+msgstr ""
+
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:10
+#: com/bloatit/web/pages/admin/DisplayableState.java:11
+#: com/bloatit/web/pages/admin/DisplayableFeatureState.java:11
+msgid "Pending"
+msgstr ""
+
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:11
+#: com/bloatit/web/pages/admin/DisplayableFeatureState.java:12
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:432
+msgid "Developing"
+msgstr ""
+
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:12
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:434
+msgid "Released"
+msgstr ""
+
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:13
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:436
+msgid "Validated"
+msgstr ""
+
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:14
+#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:438
+msgid "Canceled"
+msgstr ""
+
 #: com/bloatit/web/pages/admin/DisplayableState.java:10
 #: com/bloatit/web/pages/admin/IdentifiablesAdminPage.java:134
 #: com/bloatit/web/pages/admin/DisplayableFeatureState.java:10
 msgid "Validate"
-msgstr ""
-
-#: com/bloatit/web/pages/admin/DisplayableState.java:11
-#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:10
-#: com/bloatit/web/pages/admin/DisplayableFeatureState.java:11
-msgid "Pending"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/DisplayableState.java:12
@@ -198,9 +223,8 @@ msgid "Member"
 msgstr "Membres"
 
 #: com/bloatit/web/pages/admin/UserContentAdminPage.java:34
-#, fuzzy
-msgid "Group"
-msgstr "Groupes"
+msgid "Team"
+msgstr ""
 
 #: com/bloatit/web/pages/admin/UserContentAdminPage.java:35
 #: com/bloatit/web/pages/admin/UserContentAdminPage.java:163
@@ -235,9 +259,8 @@ msgid "Nb files"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/UserContentAdminPage.java:173
-#, fuzzy
-msgid "asGroup"
-msgstr "Groupes"
+msgid "asTeam"
+msgstr ""
 
 #: com/bloatit/web/pages/admin/UserContentAdminPage.java:193
 #: com/bloatit/web/linkable/features/FeatureContributorsComponent.java:151
@@ -258,41 +281,13 @@ msgstr "Filtre :"
 msgid "id"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/UserContentAdminPageImplementation.java:24
-msgid "Administration UserContent"
-msgstr ""
-
-#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:9
-msgid "<select>"
-msgstr ""
-
-#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:11
-#: com/bloatit/web/pages/admin/DisplayableFeatureState.java:12
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:432
-msgid "Developing"
-msgstr ""
-
-#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:12
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:434
-msgid "Released"
-msgstr ""
-
-#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:13
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:436
-msgid "Validated"
-msgstr ""
-
-#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:14
-#: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:438
-msgid "Canceled"
-msgstr ""
-
 #: com/bloatit/web/pages/admin/MilestoneAdminPage.java:71
-msgid "Filter by batch state"
-msgstr ""
+#, fuzzy
+msgid "Filter by milestone state"
+msgstr "Filtre :"
 
 #: com/bloatit/web/pages/admin/MilestoneAdminPage.java:79
-msgid "batchState"
+msgid "milestoneState"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/MilestoneAdminPage.java:85
@@ -308,6 +303,10 @@ msgstr ""
 
 #: com/bloatit/web/pages/admin/MilestoneAdminPage.java:103
 msgid "Should validated"
+msgstr ""
+
+#: com/bloatit/web/pages/admin/UserContentAdminPageImplementation.java:24
+msgid "Administration UserContent"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/DisplayableFeatureState.java:13
@@ -354,9 +353,8 @@ msgid "contribution"
 msgstr "contribution"
 
 #: com/bloatit/web/pages/admin/FeatureAdminPage.java:167
-#, fuzzy
-msgid "project"
-msgstr "Projet"
+msgid "software"
+msgstr ""
 
 #: com/bloatit/web/pages/admin/KudosableAdminPage.java:84
 msgid "Is locked"
@@ -444,14 +442,14 @@ msgstr ""
 
 #: com/bloatit/web/pages/AddReleasePage.java:96
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:109
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:102
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:102
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:123
 #: com/bloatit/web/linkable/login/RegisterPage.java:95
 msgid "Language"
 msgstr "Langue"
 
 #: com/bloatit/web/pages/AddReleasePage.java:99
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:106
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:106
 msgid "Language of the descriptions."
 msgstr "Langue des descriptions."
 
@@ -460,14 +458,14 @@ msgid "Attached file"
 msgstr ""
 
 #: com/bloatit/web/pages/AddReleasePage.java:110
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:113
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:113
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:127
 msgid "submit"
 msgstr "valider"
 
 #: com/bloatit/web/pages/AddReleasePage.java:119
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:122
-msgid "You must be logged to add a new project."
+#, fuzzy
+msgid "You must be logged to add a new release."
 msgstr "Vous devez être connecté pour créer un nouveau projet."
 
 #: com/bloatit/web/pages/ReleasePage.java:34
@@ -516,8 +514,8 @@ msgid "Content"
 msgstr "Contenu"
 
 #: com/bloatit/web/pages/CommentReplyPage.java:66
-#: com/bloatit/web/linkable/members/MemberPage.java:132
-#: com/bloatit/web/linkable/team/SendGroupInvitationPage.java:83
+#: com/bloatit/web/linkable/members/MemberPage.java:131
+#: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:83
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:89
 #: com/bloatit/web/linkable/login/RegisterPage.java:99
 #: com/bloatit/web/linkable/money/AccountChargingPage.java:62
@@ -626,7 +624,8 @@ msgid "Contribute"
 msgstr "Contribuer"
 
 #: com/bloatit/web/pages/ContributePage.java:106
-msgid "Contribute to a project"
+#, fuzzy
+msgid "Contribute to a feature"
 msgstr "Contribuer à un projet"
 
 #: com/bloatit/web/pages/ContributePage.java:116
@@ -729,8 +728,9 @@ msgid "Create a feature"
 msgstr "Créer une nouvelle demande"
 
 #: com/bloatit/web/pages/master/Footer.java:26
-msgid "Add a project"
-msgstr "Ajouter un projet"
+#: com/bloatit/web/linkable/softwares/SoftwareListPage.java:76
+msgid "Add a software"
+msgstr ""
 
 #: com/bloatit/web/pages/master/Footer.java:29
 #: com/bloatit/web/linkable/team/TeamPage.java:205
@@ -738,9 +738,10 @@ msgid "Members"
 msgstr "Membres"
 
 #: com/bloatit/web/pages/master/Footer.java:30
-#: com/bloatit/web/linkable/projects/ProjectListPage.java:86
-msgid "Project list"
-msgstr "Liste des projets"
+#: com/bloatit/web/linkable/softwares/SoftwareListPage.java:86
+#, fuzzy
+msgid "Software list"
+msgstr "Liste non numérotée"
 
 #: com/bloatit/web/pages/master/Footer.java:31
 msgid "Signal a bug"
@@ -778,8 +779,8 @@ msgid "Features"
 msgstr ""
 
 #: com/bloatit/web/pages/master/Menu.java:21
-msgid "Projects"
-msgstr "Projets"
+msgid "Softwares"
+msgstr ""
 
 #: com/bloatit/web/pages/master/Menu.java:22
 msgid "Brainstorm"
@@ -947,7 +948,7 @@ msgid "The specified offer is not editable. You cannot add a lot in it."
 msgstr ""
 
 #: com/bloatit/web/actions/OfferAction.java:120
-msgid "You cannot talk on the behalf of this group."
+msgid "You cannot talk on the behalf of this team."
 msgstr ""
 
 #: com/bloatit/web/actions/OfferAction.java:156
@@ -1140,9 +1141,9 @@ msgid "You must be logged to create a release."
 msgstr "Vous devez être connecté pour créer une nouvelle idée."
 
 #: com/bloatit/web/linkable/bugs/BugPage.java:47
-#: com/bloatit/web/linkable/projects/ProjectPage.java:42
-msgid "The id of the project is incorrect or missing"
-msgstr "L'identifiant du projet est incorrect ou manquant"
+#, fuzzy
+msgid "The id of the bug is incorrect or missing"
+msgstr "L'identifiant du membre est incorrect ou manquant"
 
 #: com/bloatit/web/linkable/bugs/BugPage.java:72
 #, java-format
@@ -1171,17 +1172,17 @@ msgid "Add attachement"
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ReportBugAction.java:53
-#: com/bloatit/web/linkable/projects/AddProjectAction.java:49
+#: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:49
 msgid "The short description must be 120 chars length max."
 msgstr "La description courte doit faire au maximum 120 caractères de long."
 
 #: com/bloatit/web/linkable/bugs/ReportBugAction.java:54
-#: com/bloatit/web/linkable/projects/AddProjectAction.java:50
+#: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:50
 msgid "The short description must have at least 10 chars."
 msgstr "La description courte doit avoir au moins 10 caractères."
 
 #: com/bloatit/web/linkable/bugs/ReportBugAction.java:54
-#: com/bloatit/web/linkable/projects/AddProjectAction.java:50
+#: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:50
 msgid "You forgot to write a short description"
 msgstr "Vous avez oublié d'écrire une description courte"
 
@@ -1370,7 +1371,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/messages/MessageListPage.java:44
 #, fuzzy
-msgid "Group invites"
+msgid "Team invites"
 msgstr "Groupes"
 
 #: com/bloatit/web/linkable/messages/MessageListPage.java:58
@@ -1381,71 +1382,88 @@ msgstr ""
 msgid "refuse"
 msgstr ""
 
-#: com/bloatit/web/linkable/projects/AddProjectAction.java:59
-msgid "The project name must be 1OO chars length max."
+#: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:59
+#, fuzzy
+msgid "The software name must be 1OO chars length max."
 msgstr "Le nom du projet doit avoir au maximun 100 caractères."
 
-#: com/bloatit/web/linkable/projects/AddProjectAction.java:60
-msgid "The project name must have at least 3 chars."
+#: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:60
+#, fuzzy
+msgid "The software name must have at least 3 chars."
 msgstr "Le nom du projet doit avoir au moins 3 caractères."
 
-#: com/bloatit/web/linkable/projects/AddProjectAction.java:60
-msgid "The project name is requiered."
+#: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:60
+#, fuzzy
+msgid "The software name is requiered."
 msgstr "Le nom du projet est obligatoire."
 
-#: com/bloatit/web/linkable/projects/AddProjectAction.java:98
-msgid "You must be logged in to add a project."
+#: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:98
+#, fuzzy
+msgid "You must be logged in to add a software."
 msgstr "Vous devez être connecté pour ajouter un projet."
 
-#: com/bloatit/web/linkable/projects/ProjectPage.java:85
+#: com/bloatit/web/linkable/softwares/SoftwaresTools.java:20
+#: com/bloatit/web/linkable/softwares/SoftwaresTools.java:23
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:109
+msgid "Software logo"
+msgstr ""
+
+#: com/bloatit/web/linkable/softwares/SoftwarePage.java:42
+#, fuzzy
+msgid "The id of the software is incorrect or missing"
+msgstr "L'id de la ressource est manquante ou incorrecte"
+
+#: com/bloatit/web/linkable/softwares/SoftwarePage.java:85
+#, fuzzy
 msgid ""
-"For obscure reasons, you are not allowed to see the details of this project."
+"For obscure reasons, you are not allowed to see the details of this software."
 msgstr ""
 "Pour des raisons obscures, vous n'êtes pas autorisé à voir les détails de ce "
 "projet."
 
-#: com/bloatit/web/linkable/projects/ProjectPage.java:93
-msgid "Project - "
-msgstr "Projet - "
+#: com/bloatit/web/linkable/softwares/SoftwarePage.java:93
+msgid "Software - "
+msgstr ""
 
-#: com/bloatit/web/linkable/projects/ProjectPage.java:95
-msgid "Project - Windows 8"
+#: com/bloatit/web/linkable/softwares/SoftwarePage.java:95
+#, fuzzy
+msgid "Software - Windows 8"
 msgstr "Projet - Windows 8"
 
-#: com/bloatit/web/linkable/projects/ProjectPage.java:98
-#: com/bloatit/web/linkable/members/MemberPage.java:147
+#: com/bloatit/web/linkable/softwares/SoftwarePage.java:98
+#: com/bloatit/web/linkable/members/MemberPage.java:146
 msgid "Member - No member"
 msgstr "Membre - Personne"
 
-#: com/bloatit/web/linkable/projects/ProjectListPage.java:76
-msgid "Add a software"
-msgstr ""
-
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:62
-msgid "Add a new project"
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:62
+#, fuzzy
+msgid "Add a new software"
 msgstr "Ajouter un nouveau projet"
 
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:73
-msgid "Project name"
-msgstr "Nom du projet"
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:73
+msgid "Software name"
+msgstr ""
 
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:76
-msgid "The name of the existing project."
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:76
+#, fuzzy
+msgid "The name of the existing software."
 msgstr "Le nom d'un projet existant."
 
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:82
-msgid "Describe briefly the project"
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:82
+#, fuzzy
+msgid "Describe briefly the software"
 msgstr "Décrivez brievement le projet"
 
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:87
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:87
 msgid "Enter a short description of the projet in 120 characters."
 msgstr "Entrez une courte description du projet en 120 caractères."
 
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:92
-msgid "Describe the project"
-msgstr "Décrivez le projet"
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:92
+#, fuzzy
+msgid "Describe the software"
+msgstr "Décrivez l'idée"
 
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:97
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:97
 msgid ""
 "Mininum 10 character. You can enter a long description of the projet : list "
 "all features, add siteweb links, etc."
@@ -1453,11 +1471,10 @@ msgstr ""
 "Minimum 10 caractère. Vous pouvez entrez un longue description du projet : "
 "liste des fonctionnalités, liens vers le site, etc."
 
-#: com/bloatit/web/linkable/projects/AddProjectPage.java:109
-#: com/bloatit/web/linkable/projects/ProjectsTools.java:20
-#: com/bloatit/web/linkable/projects/ProjectsTools.java:23
-msgid "Project logo"
-msgstr "Logo du projet"
+#: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:122
+#, fuzzy
+msgid "You must be logged to add a new software."
+msgstr "Vous devez être connecté pour créer un nouveau projet."
 
 #: com/bloatit/web/linkable/members/MembersTools.java:18
 #: com/bloatit/web/linkable/members/MembersTools.java:21
@@ -1477,59 +1494,60 @@ msgstr ""
 msgid "Avatar change to '{0}'"
 msgstr ""
 
-#: com/bloatit/web/linkable/members/MemberPage.java:66
+#: com/bloatit/web/linkable/members/MemberPage.java:65
 msgid "The id of the member is incorrect or missing"
 msgstr "L'identifiant du membre est incorrect ou manquant"
 
-#: com/bloatit/web/linkable/members/MemberPage.java:87
+#: com/bloatit/web/linkable/members/MemberPage.java:86
 #, fuzzy
 msgid "Member: "
 msgstr "Membres - "
 
-#: com/bloatit/web/linkable/members/MemberPage.java:94
+#: com/bloatit/web/linkable/members/MemberPage.java:93
 msgid "Full name: "
 msgstr "Nom complet :"
 
-#: com/bloatit/web/linkable/members/MemberPage.java:95
+#: com/bloatit/web/linkable/members/MemberPage.java:94
 msgid "Login: "
 msgstr "Se connecter :"
 
-#: com/bloatit/web/linkable/members/MemberPage.java:97
+#: com/bloatit/web/linkable/members/MemberPage.java:96
 msgid "Email: "
 msgstr "Email :"
 
-#: com/bloatit/web/linkable/members/MemberPage.java:99
+#: com/bloatit/web/linkable/members/MemberPage.java:98
 msgid "Karma: "
 msgstr "Karma :"
 
-#: com/bloatit/web/linkable/members/MemberPage.java:102
-msgid "List of groups"
-msgstr ""
+#: com/bloatit/web/linkable/members/MemberPage.java:101
+#, fuzzy
+msgid "List of teams"
+msgstr "Listes"
 
-#: com/bloatit/web/linkable/members/MemberPage.java:112
+#: com/bloatit/web/linkable/members/MemberPage.java:111
 msgid "Change avatar"
 msgstr ""
 
-#: com/bloatit/web/linkable/members/MemberPage.java:118
+#: com/bloatit/web/linkable/members/MemberPage.java:117
 msgid ""
 "For obscure reasons, you are not allowed to see the details of this member."
 msgstr ""
 "Pour des raisons obscures, vous n'êtes pas autorisé à voir les détails de ce "
 "membre."
 
-#: com/bloatit/web/linkable/members/MemberPage.java:128
+#: com/bloatit/web/linkable/members/MemberPage.java:127
 msgid "Avatar image file"
 msgstr ""
 
-#: com/bloatit/web/linkable/members/MemberPage.java:129
+#: com/bloatit/web/linkable/members/MemberPage.java:128
 msgid "64px x 64px. 2Go max. Accecpted formats: png, jpg"
 msgstr ""
 
-#: com/bloatit/web/linkable/members/MemberPage.java:142
+#: com/bloatit/web/linkable/members/MemberPage.java:141
 msgid "Member - "
 msgstr "Membres - "
 
-#: com/bloatit/web/linkable/members/MemberPage.java:144
+#: com/bloatit/web/linkable/members/MemberPage.java:143
 msgid "Member - John Doe"
 msgstr "Membre - Monsieur X"
 
@@ -1943,8 +1961,8 @@ msgstr ""
 "spécificité de l'idée."
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:97
-msgid "Project"
-msgstr "Projet"
+msgid "Software"
+msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:114
 #, fuzzy
@@ -2011,13 +2029,35 @@ msgstr ""
 msgid "Request to join a team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/GiveRightAction.java:72
-msgid "You are not allowed to promote people in the group: "
+#: com/bloatit/web/linkable/team/TeamTools.java:36
+#: com/bloatit/web/linkable/team/TeamTools.java:39
+#, fuzzy
+msgid "Team avatar"
+msgstr "Liste des membres"
+
+#: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:55
+#: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:71
+#, fuzzy
+msgid "Select team"
+msgstr "Titre de l'offre"
+
+#: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:94
+#, fuzzy
+msgid "Your must be logged to send team invitations"
+msgstr "Vous devez être connecté pour faire une offre"
+
+#: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:99
+msgid "Send team invitations"
 msgstr ""
+
+#: com/bloatit/web/linkable/team/GiveRightAction.java:72
+#, fuzzy
+msgid "You are not allowed to promote people in the team: "
+msgstr "Vous n'avez pas l'autorisation de voir ceci."
 
 #: com/bloatit/web/linkable/team/GiveRightAction.java:75
 #, fuzzy
-msgid "You are not allowed to promote people in this group"
+msgid "You are not allowed to promote people in this team"
 msgstr "Vous n'avez pas l'autorisation de voir ceci."
 
 #: com/bloatit/web/linkable/team/GiveRightAction.java:95
@@ -2025,19 +2065,30 @@ msgstr "Vous n'avez pas l'autorisation de voir ceci."
 msgid "You must be logged to promote or demote a user"
 msgstr "Vous devez être connecté pour faire une offre"
 
-#: com/bloatit/web/linkable/team/SendGroupInvitationPage.java:55
-#: com/bloatit/web/linkable/team/SendGroupInvitationPage.java:71
-msgid "Select group"
+#: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:45
+msgid "You cannot join a team you already belong in"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/SendGroupInvitationPage.java:94
+#: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:54
+msgid ""
+"Oops looks like we had an issue with accepting this team invitation. Please "
+"try again later."
+msgstr ""
+
+#: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:59
+msgid "You are now a member of team ''"
+msgstr ""
+
+#: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:70
+msgid ""
+"Oops looks like we had an issue with refusing this team invitation. Please "
+"try again later."
+msgstr ""
+
+#: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:84
 #, fuzzy
-msgid "Your must be logged to send group invitations"
+msgid "You must be logged before you accept (or refuse) a team invite"
 msgstr "Vous devez être connecté pour créditer votre compte"
-
-#: com/bloatit/web/linkable/team/SendGroupInvitationPage.java:99
-msgid "Send group invitations"
-msgstr ""
 
 #: com/bloatit/web/linkable/team/TeamsPage.java:51
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:50
@@ -2051,10 +2102,10 @@ msgstr "Créer une nouvelle demande"
 msgid "Team listing page"
 msgstr "Page de test du Html"
 
-#: com/bloatit/web/linkable/team/GroupTools.java:36
-#: com/bloatit/web/linkable/team/GroupTools.java:39
-msgid "Group avatar"
-msgstr ""
+#: com/bloatit/web/linkable/team/SendTeamInvitationAction.java:62
+#, fuzzy
+msgid "You must be logged to send an invitation"
+msgstr "Vous devez être connecté pour faire une offre"
 
 #: com/bloatit/web/linkable/team/TeamPage.java:77
 msgid "Consult team information"
@@ -2074,16 +2125,16 @@ msgid "Team: "
 msgstr ""
 
 #: com/bloatit/web/linkable/team/TeamPage.java:129
-#, java-format
-msgid "({0} group)"
-msgstr ""
+#, fuzzy, java-format
+msgid "({0} team)"
+msgstr "il y a {0} minute"
 
 #: com/bloatit/web/linkable/team/TeamPage.java:134
-msgid "Join this group"
+msgid "Join this team"
 msgstr ""
 
 #: com/bloatit/web/linkable/team/TeamPage.java:153
-msgid "Group financial information"
+msgid "Team financial information"
 msgstr ""
 
 #: com/bloatit/web/linkable/team/TeamPage.java:164
@@ -2149,52 +2200,27 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/HandleJoinGroupInvitationAction.java:45
-msgid "You cannot join a group you already belong in"
-msgstr ""
-
-#: com/bloatit/web/linkable/team/HandleJoinGroupInvitationAction.java:54
-msgid ""
-"Oops looks like we had an issue with accepting this group invitation. Please "
-"try again later."
-msgstr ""
-
-#: com/bloatit/web/linkable/team/HandleJoinGroupInvitationAction.java:59
-msgid "You are now a member of group ''"
-msgstr ""
-
-#: com/bloatit/web/linkable/team/HandleJoinGroupInvitationAction.java:70
-msgid ""
-"Oops looks like we had an issue with refusing this group invitation. Please "
-"try again later."
-msgstr ""
-
-#: com/bloatit/web/linkable/team/HandleJoinGroupInvitationAction.java:84
-#, fuzzy
-msgid "You must be logged before you accept (or refuse) a group invite"
-msgstr "Vous devez être connecté pour créditer votre compte"
-
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:63
-msgid "Name of the group: "
+msgid "Name of the team: "
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:66
-msgid "The public name of the group. Between 5 and 50 characters."
+msgid "The public name of the team. Between 5 and 50 characters."
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:69
-msgid "Contact of the group: "
+msgid "Contact of the team: "
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:72
 msgid ""
-"The ways to contact the group. Email, IRC channel, mailing list ... Maximum "
+"The ways to contact the team. Email, IRC channel, mailing list ... Maximum "
 "300 characters"
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:75
 #, fuzzy
-msgid "Description of the group"
+msgid "Description of the team"
 msgstr "Description de l'offre"
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:78
@@ -2202,7 +2228,7 @@ msgid "Doesn't work yet. Between 5 and 5000 characters."
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:81
-msgid "Type of the group : "
+msgid "Type of the team : "
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:84
@@ -2214,7 +2240,7 @@ msgid "Protected"
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:86
-msgid "Public groups can be joined by anybody without an invitation."
+msgid "Public teams can be joined by anybody without an invitation."
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:35
@@ -2252,11 +2278,6 @@ msgstr ""
 #, fuzzy
 msgid "You must be logged to create a new team"
 msgstr "Vous devez être connecté pour créer une nouvelle idée."
-
-#: com/bloatit/web/linkable/team/SendGroupInvitationAction.java:62
-#, fuzzy
-msgid "You must be logged to send an invitation"
-msgstr "Vous devez être connecté pour faire une offre"
 
 #: com/bloatit/web/linkable/login/LogoutAction.java:38
 msgid "Logout success."
@@ -2404,9 +2425,8 @@ msgstr "Vous devez être connecté pour créditer votre compte"
 
 #: com/bloatit/web/components/IndexFeatureBlock.java:37
 #: com/bloatit/web/components/SideBarFeatureBlock.java:25
-#, fuzzy
-msgid "Project: "
-msgstr "Projet"
+msgid "Software: "
+msgstr ""
 
 #: com/bloatit/web/components/IndexFeatureBlock.java:41
 #: com/bloatit/web/components/SideBarFeatureBlock.java:30
@@ -2438,6 +2458,56 @@ msgstr "Suivant"
 #: com/bloatit/web/FileResource.java:32
 msgid "The id of the resource is incorrect or missing"
 msgstr "L'id de la ressource est manquante ou incorrecte"
+
+#, fuzzy
+#~ msgid "Group"
+#~ msgstr "Groupes"
+
+#, fuzzy
+#~ msgid "asGroup"
+#~ msgstr "Groupes"
+
+#, fuzzy
+#~ msgid "project"
+#~ msgstr "Projet"
+
+#~ msgid "Add a project"
+#~ msgstr "Ajouter un projet"
+
+#~ msgid "Project list"
+#~ msgstr "Liste des projets"
+
+#~ msgid "Projects"
+#~ msgstr "Projets"
+
+#~ msgid "The id of the project is incorrect or missing"
+#~ msgstr "L'identifiant du projet est incorrect ou manquant"
+
+#~ msgid "Project - "
+#~ msgstr "Projet - "
+
+#~ msgid "Add a new project"
+#~ msgstr "Ajouter un nouveau projet"
+
+#~ msgid "Project name"
+#~ msgstr "Nom du projet"
+
+#~ msgid "Describe the project"
+#~ msgstr "Décrivez le projet"
+
+#~ msgid "Project logo"
+#~ msgstr "Logo du projet"
+
+#~ msgid "Project"
+#~ msgstr "Projet"
+
+#, fuzzy
+#~ msgid "Your must be logged to send group invitations"
+#~ msgstr "Vous devez être connecté pour créditer votre compte"
+
+#, fuzzy
+#~ msgid "Project: "
+#~ msgstr "Projet"
 
 #~ msgid "Create a demand"
 #~ msgstr "Créer une demande"
