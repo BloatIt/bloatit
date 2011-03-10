@@ -6,7 +6,7 @@ import org.apache.lucene.search.SortField;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
 
-public class DemandSearch extends Search<DaoFeature> {
+public class FeatureSearch extends Search<DaoFeature> {
 
     private SortMethod sortMethod;
 
@@ -14,7 +14,7 @@ public class DemandSearch extends Search<DaoFeature> {
         SORT_BY_RELEVANCE, SORT_BY_CONTRIBUTION, SORT_BY_PROGRESS, SORT_BY_POPULARITY, SORT_BY_CREATION_DATE, SORT_BY_EXPIRATION_DATE
     }
 
-    public DemandSearch(String searchText) {
+    public FeatureSearch(String searchText) {
         super();
         sortMethod = SortMethod.SORT_BY_RELEVANCE;
         configure(DaoFeature.class, new String[] { "description.translations.title",
@@ -23,12 +23,12 @@ public class DemandSearch extends Search<DaoFeature> {
     }
 
     /**
-     * The demands with state as DemandState will not be in the search results
+     * The features with state as FeatureState will not be in the search results
      *
      * @param state
      */
-    public void addDemandStateFilter(FeatureState state) {
-        addFilterTerm("demandState", state.toString());
+    public void addFeatureStateFilter(FeatureState state) {
+        addFilterTerm("featureState", state.toString());
     }
 
     @Override

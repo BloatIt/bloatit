@@ -64,7 +64,7 @@ public class DaoProject extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "project")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<DaoFeature> demands = new ArrayList<DaoFeature>();
+    private List<DaoFeature> features = new ArrayList<DaoFeature>();
 
     // ======================================================================
     // Static HQL requests
@@ -101,8 +101,8 @@ public class DaoProject extends DaoIdentifiable {
         this.description = description;
     }
 
-    protected void addDemand(final DaoFeature demand) {
-        this.demands.add(demand);
+    protected void addFeature(final DaoFeature feature) {
+        this.features.add(feature);
     }
 
     // ======================================================================
@@ -123,8 +123,8 @@ public class DaoProject extends DaoIdentifiable {
         return this.image;
     }
 
-    public PageIterable<DaoFeature> getDemands() {
-        return new MappedList<DaoFeature>(this.demands);
+    public PageIterable<DaoFeature> getFeatures() {
+        return new MappedList<DaoFeature>(this.features);
     }
 
     /**

@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -21,7 +20,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * List of hightlighted demands with the reason, the position and the hightlight
+ * List of hightlighted features with the reason, the position and the hightlight
  * date
  */
 @Entity
@@ -29,20 +28,20 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "highlightDemand.byIsActivated",
-                           query = "FROM DaoHighlightDemand " +
+                           name = "highlightFeature.byIsActivated",
+                           query = "FROM DaoHighlightFeature " +
                                    "WHERE activationDate < now() " +
                                    "AND desactivationDate > now()"),
                        @NamedQuery(
-                           name = "highlightDemand.byIsActivated.size",
+                           name = "highlightFeature.byIsActivated.size",
                            query = "SELECT count(*) " +
-                                   "FROM DaoHighlightDemand " +
+                                   "FROM DaoHighlightFeature " +
                                    "WHERE activationDate < now() " +
                                    "AND desactivationDate > now()")
                        }
              )
 // @formatter:on
-public class DaoHighlightDemand extends DaoIdentifiable {
+public class DaoHighlightFeature extends DaoIdentifiable {
 
     @Basic(optional = false)
     private int position;
@@ -52,7 +51,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
 
     @ManyToOne(optional = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-    private DaoFeature demand;
+    private DaoFeature feature;
 
     @Column(updatable = false, nullable = false)
     private Date activationDate;
@@ -65,46 +64,46 @@ public class DaoHighlightDemand extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * Create a DaoHighlightDemand and add it into the db.
+     * Create a DaoHighlightFeature and add it into the db.
      *
-     * @param demand the demand
+     * @param feature the feature
      * @param position the position
      * @param reason the reason
      * @param activationDate the activation date
      * @param desactivationDate the desactivation date
-     * @return the dao highlight demand
+     * @return the dao highlight feature
      */
-    public static DaoHighlightDemand createAndPersist(final DaoFeature demand,
+    public static DaoHighlightFeature createAndPersist(final DaoFeature feature,
                                                       final int position,
                                                       final String reason,
                                                       final Date activationDate,
                                                       final Date desactivationDate) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoHighlightDemand hightlightDemand = new DaoHighlightDemand(demand, position, reason, activationDate, desactivationDate);
+        final DaoHighlightFeature hightlightFeature = new DaoHighlightFeature(feature, position, reason, activationDate, desactivationDate);
         try {
-            session.save(hightlightDemand);
+            session.save(hightlightFeature);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return hightlightDemand;
+        return hightlightFeature;
     }
 
     /**
-     * Create a DaoHighlightDemand
+     * Create a DaoHighlightFeature
      *
-     * @param demand
+     * @param feature
      * @param position
      * @param reason
      * @param activationDate
      * @param desactivationDate
      */
-    public DaoHighlightDemand(final DaoFeature demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
-        if (demand == null || activationDate == null || desactivationDate == null) {
+    public DaoHighlightFeature(final DaoFeature feature, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
+        if (feature == null || activationDate == null || desactivationDate == null) {
             throw new NonOptionalParameterException();
         }
-        this.demand = demand;
+        this.feature = feature;
         this.position = position;
         this.reason = reason;
         this.activationDate = activationDate;
@@ -119,8 +118,8 @@ public class DaoHighlightDemand extends DaoIdentifiable {
     /**
      * @return all the member in this group. (Use a HQL query).
      */
-    public PageIterable<DaoHighlightDemand> getActiveHightlightDemands() {
-        return new QueryCollection<DaoHighlightDemand>("highlightDemand.byIsActivated");
+    public PageIterable<DaoHighlightFeature> getActiveHightlightFeatures() {
+        return new QueryCollection<DaoHighlightFeature>("highlightFeature.byIsActivated");
     }
 
     public int getPosition() {
@@ -151,8 +150,8 @@ public class DaoHighlightDemand extends DaoIdentifiable {
         return this.reason;
     }
 
-    public DaoFeature getDemand() {
-        return this.demand;
+    public DaoFeature getFeature() {
+        return this.feature;
     }
 
     @Override
@@ -160,7 +159,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.activationDate == null) ? 0 : this.activationDate.hashCode());
-        result = prime * result + ((this.demand == null) ? 0 : this.demand.hashCode());
+        result = prime * result + ((this.feature == null) ? 0 : this.feature.hashCode());
         result = prime * result + ((this.desactivationDate == null) ? 0 : this.desactivationDate.hashCode());
         result = prime * result + this.position;
         result = prime * result + ((this.reason == null) ? 0 : this.reason.hashCode());
@@ -178,7 +177,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoHighlightDemand other = (DaoHighlightDemand) obj;
+        final DaoHighlightFeature other = (DaoHighlightFeature) obj;
         if (this.activationDate == null) {
             if (other.activationDate != null) {
                 return false;
@@ -186,11 +185,11 @@ public class DaoHighlightDemand extends DaoIdentifiable {
         } else if (!this.activationDate.equals(other.activationDate)) {
             return false;
         }
-        if (this.demand == null) {
-            if (other.demand != null) {
+        if (this.feature == null) {
+            if (other.feature != null) {
                 return false;
             }
-        } else if (!this.demand.equals(other.demand)) {
+        } else if (!this.feature.equals(other.feature)) {
             return false;
         }
         if (this.desactivationDate == null) {
@@ -226,7 +225,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoHighlightDemand() {
+    protected DaoHighlightFeature() {
         super();
     }
 

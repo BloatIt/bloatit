@@ -393,12 +393,12 @@ public class BloatitExampleDB {
 
     private void setDemandInFinishedState(final Feature demand) {
         final DemandImplementation demandImpl = (DemandImplementation) demand;
-        demandImpl.getDao().setDemandState(FeatureState.FINISHED);
+        demandImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
     private void setDemandInDiscardedState(final Feature demand) {
         final DemandImplementation demandImpl = (DemandImplementation) demand;
-        demandImpl.getDao().setDemandState(FeatureState.DISCARDED);
+        demandImpl.getDao().setFeatureState(FeatureState.DISCARDED);
     }
 
     public void giveMoney(final Member member, final int amount) {

@@ -31,7 +31,7 @@ import com.bloatit.data.SessionManager;
 public class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
 
     /**
-     * Instantiates a new dao demand list factory.
+     * Instantiates a new dao milestone list factory.
      */
     public DaoBatchQuery() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoBatch.class));

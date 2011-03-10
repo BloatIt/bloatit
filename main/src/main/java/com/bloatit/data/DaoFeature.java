@@ -50,46 +50,46 @@ import org.hibernate.search.annotations.Store;
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
-import com.bloatit.data.search.DaoDemandSearchFilterFactory;
+import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A DaoDemand is a kudosable content. It has a translatable description, and
- * can have a specification and some offers. The state of the demand is managed
- * by its super class DaoKudosable. On a demand we can add some comment and some
+ * A DaoFeature is a kudosable content. It has a translatable description, and
+ * can have a specification and some offers. The state of the feature is managed
+ * by its super class DaoKudosable. On a feature we can add some comment and some
  * contriutions.
  */
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Indexed
-@FullTextFilterDef(name = "searchFilter", impl = DaoDemandSearchFilterFactory.class)
+@FullTextFilterDef(name = "searchFilter", impl = DaoFeatureSearchFilterFactory.class)
 //@formatter:off
 @NamedQueries(value = {@NamedQuery(
-                           name = "demand.getOffers.bySelected",
+                           name = "feature.getOffers.bySelected",
                            query = "FROM DaoOffer " +
-                                   "WHERE demand = :this " +
+                                   "WHERE feature = :this " +
                                    "AND state <= :state " + // <= PENDING and VALIDATED.
-                                   "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
+                                   "AND popularity = (select max(popularity) from DaoOffer where feature = :this) " + //
                                    "AND popularity >= 0 " +
                                    "ORDER BY amount ASC, creationDate DESC"),
 
                         @NamedQuery(
-                           name = "demand.getAmounts.min",
-                           query = "SELECT min(amount) FROM DaoContribution WHERE demand = :this"),
+                           name = "feature.getAmounts.min",
+                           query = "SELECT min(amount) FROM DaoContribution WHERE feature = :this"),
 
                         @NamedQuery(
-                           name = "demand.getAmounts.max",
-                           query = "SELECT max(amount) FROM DaoContribution WHERE demand = :this"),
+                           name = "feature.getAmounts.max",
+                           query = "SELECT max(amount) FROM DaoContribution WHERE feature = :this"),
 
                        @NamedQuery(
-                           name = "demand.getAmounts.avg",
-                           query = "SELECT avg(amount) FROM DaoContribution WHERE demand = :this"),
+                           name = "feature.getAmounts.avg",
+                           query = "SELECT avg(amount) FROM DaoContribution WHERE feature = :this"),
 
                         @NamedQuery(
-                            name = "demand.getBugs.byNonState",
+                            name = "feature.getBugs.byNonState",
                             query = "SELECT bugs_ " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.batches as bs " +
@@ -98,7 +98,7 @@ import com.bloatit.framework.utils.PageIterable;
                                     "AND bugs_.state != :state "),
 
                         @NamedQuery(
-                            name = "demand.getBugs.byNonState.size",
+                            name = "feature.getBugs.byNonState.size",
                             query = "SELECT count(bugs_) " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.batches as bs " +
@@ -107,7 +107,7 @@ import com.bloatit.framework.utils.PageIterable;
                                     "AND bugs_.state != :state "),
 
                         @NamedQuery(
-                            name = "demand.getBugs.byState",
+                            name = "feature.getBugs.byState",
                             query = "SELECT bugs_ " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.batches as bs " +
@@ -116,7 +116,7 @@ import com.bloatit.framework.utils.PageIterable;
                                     "AND bugs_.state = :state "),
 
                         @NamedQuery(
-                            name = "demand.getBugs.byState.size",
+                            name = "feature.getBugs.byState.size",
                             query = "SELECT count(bugs_) " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
                                     "JOIN offer_.batches as bs " +
@@ -129,7 +129,7 @@ import com.bloatit.framework.utils.PageIterable;
 public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
-     * This is the state of the demand. It's used in the workflow modeling. The
+     * This is the state of the feature. It's used in the workflow modeling. The
      * order is important !
      */
     public enum FeatureState {
@@ -142,7 +142,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         /** Development in progress */
         DEVELOPPING,
 
-        /** Something went wrong, the demand is canceled */
+        /** Something went wrong, the feature is canceled */
         DISCARDED,
 
         /** All is good, the developer is paid and the users are happy */
@@ -160,7 +160,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     @Basic(optional = false)
     @Field(store = Store.NO)
     @Enumerated
-    private FeatureState demandState;
+    private FeatureState featureState;
 
     /**
      * A description is a translatable text with an title.
@@ -171,18 +171,18 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded
     private DaoDescription description;
 
-    @OneToMany(mappedBy = "demand")
+    @OneToMany(mappedBy = "feature")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @IndexedEmbedded
-    private List<DaoOffer> offers = new ArrayList<DaoOffer>(0);
+    private final List<DaoOffer> offers = new ArrayList<DaoOffer>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
+    private final List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
 
-    @OneToMany(mappedBy = "demand")
+    @OneToMany(mappedBy = "feature")
     @OrderBy(clause = "id")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -214,25 +214,25 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     /**
-     * @see #DaoDemand(DaoMember, DaoDescription, DaoProject)
+     * @see #DaoFeature(DaoMember, DaoDescription, DaoProject)
      */
     public static DaoFeature createAndPersist(final DaoMember member, final DaoDescription description, final DaoProject project) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFeature demand = new DaoFeature(member, description, project);
+        final DaoFeature feature = new DaoFeature(member, description, project);
         try {
-            session.save(demand);
+            session.save(feature);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return demand;
+        return feature;
     }
 
     /**
-     * Create a DaoDemand and set its state to the state PENDING.
+     * Create a DaoFeature and set its state to the state PENDING.
      *
-     * @param member is the author of the demand
+     * @param member is the author of the feature
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
@@ -242,16 +242,16 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             throw new NonOptionalParameterException();
         }
         this.project = project;
-        project.addDemand(this);
+        project.addFeature(this);
         this.description = description;
         this.validationDate = null;
         setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
-        setDemandState(FeatureState.PENDING);
+        setFeatureState(FeatureState.PENDING);
     }
 
     /**
-     * Delete this DaoDemand from the database. "this" will remain, but
+     * Delete this DaoFeature from the database. "this" will remain, but
      * unmapped. (You shoudn't use it then)
      */
     public void delete() {
@@ -265,7 +265,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * Add a contribution to a demand.
+     * Add a contribution to a feature.
      *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
@@ -290,7 +290,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * Add a new offer for this demand. If there is no selected offer, select
+     * Add a new offer for this feature. If there is no selected offer, select
      * this one.
      */
     public void addOffer(final DaoOffer offer) {
@@ -298,7 +298,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * delete offer from this demand AND FROM DB !
+     * delete offer from this feature AND FROM DB !
      *
      * @param offer the offer we want to delete.
      */
@@ -349,8 +349,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         this.contribution = this.contribution.subtract(amount);
     }
 
-    public void setDemandState(final FeatureState demandState) {
-        this.demandState = demandState;
+    public void setFeatureState(final FeatureState featureState) {
+        this.featureState = featureState;
     }
 
     // ======================================================================
@@ -365,11 +365,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * The current offer is the offer with the max popularity then the min
      * amount.
      *
-     * @return the current offer for this demand, or null if there is no offer.
+     * @return the current offer for this feature, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
         try {
-            return (DaoOffer) SessionManager.getNamedQuery("demand.getOffers.bySelected")
+            return (DaoOffer) SessionManager.getNamedQuery("feature.getOffers.bySelected")
                                             .setEntity("this", this)
                                             .setParameter("state", DaoKudosable.PopularityState.PENDING)
                                             .iterate()
@@ -383,8 +383,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         return new MappedList<DaoOffer>(this.offers);
     }
 
-    public FeatureState getDemandState() {
-        return this.demandState;
+    public FeatureState getFeatureState() {
+        return this.featureState;
     }
 
     public PageIterable<DaoContribution> getContributions() {
@@ -414,24 +414,24 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * @return the minimum value of the contributions on this demand.
+     * @return the minimum value of the contributions on this feature.
      */
     public BigDecimal getContributionMin() {
-        return (BigDecimal) SessionManager.getNamedQuery("demand.getAmounts.min").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.min").setEntity("this", this).uniqueResult();
     }
 
     /**
-     * @return the maximum value of the contributions on this demand.
+     * @return the maximum value of the contributions on this feature.
      */
     public BigDecimal getContributionMax() {
-        return (BigDecimal) SessionManager.getNamedQuery("demand.getAmounts.max").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.max").setEntity("this", this).uniqueResult();
     }
 
     /**
-     * @return the average value of the contributions on this demand.
+     * @return the average value of the contributions on this feature.
      */
     public BigDecimal getContributionAvg() {
-        return (BigDecimal) SessionManager.getNamedQuery("demand.getAmounts.avg").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg").setEntity("this", this).uniqueResult();
     }
 
     public Date getValidationDate() {
@@ -446,19 +446,19 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     public int countOpenBugs() {
-        final Query query = SessionManager.getNamedQuery("demand.getBugs.byNonState.size");
+        final Query query = SessionManager.getNamedQuery("feature.getBugs.byNonState.size");
         query.setEntity("offer", this.selectedOffer);
         query.setParameter("state", DaoBug.BugState.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();
     }
 
     public PageIterable<DaoBug> getOpenBugs() {
-        return new QueryCollection<DaoBug>("demand.getBugs.byNonState").setEntity("offer", this.selectedOffer).setParameter("state",
+        return new QueryCollection<DaoBug>("feature.getBugs.byNonState").setEntity("offer", this.selectedOffer).setParameter("state",
                                                                                                                             DaoBug.BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
-        return new QueryCollection<DaoBug>("demand.getBugs.byState").setEntity("offer", this.selectedOffer).setParameter("state",
+        return new QueryCollection<DaoBug>("feature.getBugs.byState").setEntity("offer", this.selectedOffer).setParameter("state",
                                                                                                                          DaoBug.BugState.RESOLVED);
     }
 

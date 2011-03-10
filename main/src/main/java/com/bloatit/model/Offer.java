@@ -182,7 +182,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     private DemandImplementation getDemandImplementation() {
-        return DemandImplementation.create(getDao().getDemand());
+        return DemandImplementation.create(getDao().getFeature());
     }
 
     public BigDecimal getAmount() {

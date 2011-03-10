@@ -26,7 +26,7 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoGroup;
-import com.bloatit.data.DaoHighlightDemand;
+import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinGroupInvitation;
 import com.bloatit.data.DaoKudos;
@@ -120,7 +120,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      */
     @Override
     public Class<?> visit(HighlightDemand model) {
-        return DaoHighlightDemand.class;
+        return DaoHighlightFeature.class;
     }
 
     /*

@@ -12,7 +12,7 @@ import org.apache.lucene.util.OpenBitSet;
 
 import com.bloatit.data.search.Search.Pair;
 
-public class DaoDemandSearchFilter extends Filter {
+public class DaoFeatureSearchFilter extends Filter {
 
     private static long serialVersionUID = 2532131753889492412L;
 

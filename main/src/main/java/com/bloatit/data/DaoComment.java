@@ -60,7 +60,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @ManyToOne(fetch = FetchType.LAZY)
     private DaoBug bug;
     @ManyToOne(fetch = FetchType.LAZY)
-    private DaoFeature demand;
+    private DaoFeature feature;
     @ManyToOne(fetch = FetchType.LAZY)
     private DaoRelease release;
 
@@ -76,54 +76,54 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
 
     public static DaoComment createAndPersist(final DaoBug father, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment demand = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, member, text);
         try {
-            session.save(demand);
+            session.save(comment);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return demand;
+        return comment;
     }
 
     public static DaoComment createAndPersist(final DaoFeature father, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment demand = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, member, text);
         try {
-            session.save(demand);
+            session.save(comment);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return demand;
+        return comment;
     }
 
     public static DaoComment createAndPersist(final DaoRelease father, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment demand = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, member, text);
         try {
-            session.save(demand);
+            session.save(comment);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return demand;
+        return comment;
     }
 
     public static DaoComment createAndPersist(final DaoComment father, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment demand = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, member, text);
         try {
-            session.save(demand);
+            session.save(comment);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return demand;
+        return comment;
     }
 
     /**
@@ -151,7 +151,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
 
     private DaoComment(final DaoFeature father, final DaoMember member, final String text) {
         this(member, text);
-        this.demand = father;
+        this.feature = father;
     }
 
     private DaoComment(final DaoRelease father, final DaoMember member, final String text) {
@@ -215,8 +215,8 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         if (bug != null) {
             return bug;
         }
-        if (demand != null) {
-            return demand;
+        if (feature != null) {
+            return feature;
         }
         if (release != null) {
             return release;

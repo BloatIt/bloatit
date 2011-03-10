@@ -98,51 +98,51 @@ public class DBRequests {
                                      .uniqueResult()).intValue();
     }
 
-    public static PageIterable<DaoFeature> demandsOrderByPopularity() {
-        return demandsOrderBy("popularity");
+    public static PageIterable<DaoFeature> featuresOrderByPopularity() {
+        return featuresOrderBy("popularity");
     }
 
-    public static PageIterable<DaoFeature> demandsOrderByContribution() {
-        return demandsOrderBy("contribution");
+    public static PageIterable<DaoFeature> featuresOrderByContribution() {
+        return featuresOrderBy("contribution");
     }
 
-    public static PageIterable<DaoFeature> demandsOrderByDate() {
-        return demandsOrderBy("creationDate");
+    public static PageIterable<DaoFeature> featuresOrderByDate() {
+        return featuresOrderBy("creationDate");
     }
 
-    private static PageIterable<DaoFeature> demandsOrderBy(final String field) {
-        final Query query = SessionManager.createQuery("from DaoDemand where state == PENDING order by " + field);
-        final Query size = SessionManager.createQuery("SELECT count(*) from DaoDemand where state == PENDING order by " + field);
+    private static PageIterable<DaoFeature> featuresOrderBy(final String field) {
+        final Query query = SessionManager.createQuery("from DaoFeature where state == PENDING order by " + field);
+        final Query size = SessionManager.createQuery("SELECT count(*) from DaoFeature where state == PENDING order by " + field);
         return new QueryCollection<DaoFeature>(query, size);
     }
 
-    public static PageIterable<DaoFeature> demandsThatShouldBeValidated() {
-        final Query query = SessionManager.createQuery("FROM DaoDemand " + //
+    public static PageIterable<DaoFeature> featuresThatShouldBeValidated() {
+        final Query query = SessionManager.createQuery("FROM DaoFeature " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate < now() " + //
-                "AND demandState = :state");
+                "AND featureState = :state");
         final Query size = SessionManager.createQuery("SELECT count(*) " + //
-                "FROM DaoDemand " + //
+                "FROM DaoFeature " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate < now() " + //
-                "AND demandState = :state");
+                "AND featureState = :state");
         return new QueryCollection<DaoFeature>(query, size).setParameter("state", DaoFeature.FeatureState.PREPARING);
     }
 
-    public static PageIterable<DaoFeature> demandsThatShouldBeValidatedInTheFuture() {
-        final Query query = SessionManager.createQuery("FROM DaoDemand " + //
+    public static PageIterable<DaoFeature> featuresThatShouldBeValidatedInTheFuture() {
+        final Query query = SessionManager.createQuery("FROM DaoFeature " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate > now() " + //
-                "AND demandState = :state");
+                "AND featureState = :state");
         final Query size = SessionManager.createQuery("SELECT count(*) " + //
-                "FROM DaoDemand " + //
+                "FROM DaoFeature " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate > now() " + //
-                "AND demandState = :state");
+                "AND featureState = :state");
         return new QueryCollection<DaoFeature>(query, size).setParameter("state", DaoFeature.FeatureState.PREPARING);
     }
 

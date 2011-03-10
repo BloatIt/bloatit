@@ -39,13 +39,13 @@ public class Model implements AbstractModel {
 
         open();
         // Find the demand with selected offer that should pass into validated.
-        PageIterable<Feature> demandsToValidate = new DemandList(DBRequests.demandsThatShouldBeValidated());
+        PageIterable<Feature> demandsToValidate = new DemandList(DBRequests.featuresThatShouldBeValidated());
         for (Feature demand : demandsToValidate) {
             demand.updateDevelopmentState();
         }
 
         // Find the demand with selected offer that should pass into validated.
-        PageIterable<Feature> demandsToValidateInTheFuture = new DemandList(DBRequests.demandsThatShouldBeValidatedInTheFuture());
+        PageIterable<Feature> demandsToValidateInTheFuture = new DemandList(DBRequests.featuresThatShouldBeValidatedInTheFuture());
         for (Feature demand : demandsToValidateInTheFuture) {
             new TaskUpdateDevelopingState(demand.getId(), demand.getValidationDate());
         }

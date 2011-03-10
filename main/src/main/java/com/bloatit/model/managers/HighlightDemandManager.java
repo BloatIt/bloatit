@@ -16,7 +16,7 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DaoHighlightDemand;
+import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightDemand;
@@ -42,7 +42,7 @@ public final class HighlightDemandManager {
      * @return the {@link HighlightDemand} or null if not found.
      */
     public static HighlightDemand getById(final Integer id) {
-        return HighlightDemand.create(DBRequests.getById(DaoHighlightDemand.class, id));
+        return HighlightDemand.create(DBRequests.getById(DaoHighlightFeature.class, id));
     }
 
     /**
@@ -51,6 +51,6 @@ public final class HighlightDemandManager {
      * @return the {@link HighlightDemand} demands.
      */
     public static PageIterable<HighlightDemand> getAll() {
-        return new HighlightDemandList(DBRequests.getAll(DaoHighlightDemand.class));
+        return new HighlightDemandList(DBRequests.getAll(DaoHighlightFeature.class));
     }
 }

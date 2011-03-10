@@ -114,14 +114,14 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     public static DaoJoinGroupInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
+        final DaoJoinGroupInvitation joinInvitation = new DaoJoinGroupInvitation(sender, reciever, group);
         try {
-            session.save(joinDemand);
+            session.save(joinInvitation);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             throw e;
         }
-        return joinDemand;
+        return joinInvitation;
     }
 
     /**

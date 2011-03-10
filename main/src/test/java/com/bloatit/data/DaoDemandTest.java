@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import com.bloatit.data.queries.DBRequests;
-import com.bloatit.data.search.DemandSearch;
+import com.bloatit.data.search.FeatureSearch;
 import com.bloatit.framework.utils.DateUtils;
 
 /**
@@ -18,7 +18,7 @@ public class DaoDemandTest extends DataTestUnit {
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
-        assertEquals(demand, yo.getDemands().iterator().next());
+        assertEquals(demand, yo.getFeatures().iterator().next());
     }
 
     public void testRetrieveDemand() {
@@ -188,7 +188,7 @@ public class DaoDemandTest extends DataTestUnit {
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
 
-        DemandSearch search = new DemandSearch("super");
+        FeatureSearch search = new FeatureSearch("super");
 
         assertTrue(search.doSearch().size() > 0);
     }

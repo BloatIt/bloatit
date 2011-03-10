@@ -97,11 +97,11 @@ public class Project extends Identifiable<DaoProject> {
     /**
      * @return
      * @throws UnauthorizedOperationException
-     * @see com.bloatit.data.DaoProject#getDemands()
+     * @see com.bloatit.data.DaoProject#getFeatures()
      */
     public final DemandList getDemands() throws UnauthorizedOperationException {
         tryAccess(new ProjectRight.Name(), Action.READ);
-        return new DemandList(getDao().getDemands());
+        return new DemandList(getDao().getFeatures());
 
     }
 

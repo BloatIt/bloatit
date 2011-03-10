@@ -86,9 +86,9 @@ import com.bloatit.data.DaoProject;
 import com.bloatit.data.SessionManager;
 
 /**
- * A Factory to create query on the DB and return list of DaoDemand.
+ * A Factory to create query on the DB and return list of DaoFeature.
  */
-public class DaoDemandQuery extends DaoKudosableQuery<DaoFeature> {
+public class DaoFeatureQuery extends DaoKudosableQuery<DaoFeature> {
 
     /** The Constant CONTRIBUTION. */
     private static String CONTRIBUTION = "contribution";
@@ -102,23 +102,23 @@ public class DaoDemandQuery extends DaoKudosableQuery<DaoFeature> {
     /** The Constant PROJECT. */
     private static String PROJECT = "project";
 
-    /** The Constant DEMAND_STATE. */
-    private static String DEMAND_STATE = "demandState";
+    /** The Constant FEATURE_STATE. */
+    private static String FEATURE_STATE = "featureState";
 
     /**
-     * Instantiates a new dao demand list factory.
+     * Instantiates a new dao feature list factory.
      */
-    public DaoDemandQuery() {
+    public DaoFeatureQuery() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoFeature.class));
     }
 
     /**
-     * Add a WHERE close with demandState = <code>state</code>.
+     * Add a WHERE close with featureState = <code>state</code>.
      *
      * @param state the state
      */
     public void stateEquals(final FeatureState state) {
-        add(Restrictions.eq(DEMAND_STATE, state));
+        add(Restrictions.eq(FEATURE_STATE, state));
     }
 
     /**
@@ -132,7 +132,7 @@ public class DaoDemandQuery extends DaoKudosableQuery<DaoFeature> {
 
     /**
      * Add a WHERE close ensuring that there is a selected offer on each
-     * returned daoDemand.
+     * returned daoFeature.
      */
     public void withSelectedOffer() {
         add(Restrictions.isNotNull(SELECTED_OFFER));
@@ -140,28 +140,28 @@ public class DaoDemandQuery extends DaoKudosableQuery<DaoFeature> {
 
     /**
      * Add a WHERE close ensuring that there isn't a selected offer on each
-     * returned daoDemand.
+     * returned daoFeature.
      */
     public void withoutSelectedOffer() {
         add(Restrictions.isNull(SELECTED_OFFER));
     }
 
     /**
-     * Add a WHERE close ensuring that the demands have at least one offer.
+     * Add a WHERE close ensuring that the features have at least one offer.
      */
     public void withOffer() {
         add(Restrictions.isNotEmpty(OFFERS));
     }
 
     /**
-     * Add a WHERE close ensuring that the demands have no offer.
+     * Add a WHERE close ensuring that the features have no offer.
      */
     public void withoutOffer() {
         add(Restrictions.isEmpty(OFFERS));
     }
 
     /**
-     * Add a WHERE close ensuring that the demands have at least one
+     * Add a WHERE close ensuring that the features have at least one
      * contribution.
      */
     public void hasContributions() {
@@ -169,7 +169,7 @@ public class DaoDemandQuery extends DaoKudosableQuery<DaoFeature> {
     }
 
     /**
-     * Add a WHERE close ensuring that the demands have no contribution.
+     * Add a WHERE close ensuring that the features have no contribution.
      */
     public void hasNoContribution() {
         add(Restrictions.isEmpty(CONTRIBUTION));
@@ -177,13 +177,13 @@ public class DaoDemandQuery extends DaoKudosableQuery<DaoFeature> {
 
     /**
      * Add a WHERE close restricting the total contribution value of the
-     * returning demands. For example if you want your query to return only the
-     * demands that have less than 42 €, you can call:
+     * returning features. For example if you want your query to return only the
+     * features that have less than 42 €, you can call:
      *
      * <pre>
-     * DaoDemandListFactory factory = new DaoDemandListfactory();
+     * DaoFeatureListFactory factory = new DaoFeatureListfactory();
      * factory.contribution(Comparator.LESS, 42);
-     * PageIterable&lt;DaoDemand&gt; demands = factory.createCollection();
+     * PageIterable&lt;DaoFeature&gt; features = factory.createCollection();
      * </pre>
      *
      * @param cmp the cmp.

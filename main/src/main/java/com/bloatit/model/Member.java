@@ -424,7 +424,7 @@ public final class Member extends Actor<DaoMember> {
     }
 
     public PageIterable<Feature> getDemands() {
-        return new DemandList(getDao().getDemands());
+        return new DemandList(getDao().getFeatures());
     }
 
     public PageIterable<Kudos> getKudos() {

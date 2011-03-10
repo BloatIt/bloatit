@@ -16,7 +16,7 @@ public interface DataClassVisitor<ReturnType> {
 
     ReturnType visit(DaoGroup dao);
 
-    ReturnType visit(DaoHighlightDemand dao);
+    ReturnType visit(DaoHighlightFeature dao);
 
     ReturnType visit(DaoImage dao);
 

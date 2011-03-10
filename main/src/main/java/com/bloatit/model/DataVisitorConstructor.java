@@ -26,7 +26,7 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoGroup;
-import com.bloatit.data.DaoHighlightDemand;
+import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoImage;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinGroupInvitation;
@@ -123,7 +123,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
      * )
      */
     @Override
-    public Identifiable<?> visit(final DaoHighlightDemand dao) {
+    public Identifiable<?> visit(final DaoHighlightFeature dao) {
         return HighlightDemand.create(dao);
     }
 

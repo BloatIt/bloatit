@@ -22,14 +22,14 @@ public abstract class Search<T> {
     private Class<T> persistent;
     private String[] fields;
     private String filter = null;
-    private List<Pair<String, String>> filteredTerms = new ArrayList<Pair<String, String>>();
+    private final List<Pair<String, String>> filteredTerms = new ArrayList<Pair<String, String>>();
     private Sort sort = null;
 
     /**
      * Create a search on the db using Hibernate Search and Lucene
      *
      * <pre>
-     * DBRequests.search(DaoDemand.class, new String[] { &quot;description.translations.title&quot;,
+     * DBRequests.search(DaoFeature.class, new String[] { &quot;description.translations.title&quot;,
      *                                                  &quot;description.translations.text&quot;,
      *                                                  &quot;offers.description.translations.title&quot; }, &quot;Search string&quot;);
      * </pre>

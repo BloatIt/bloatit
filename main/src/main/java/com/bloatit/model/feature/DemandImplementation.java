@@ -312,7 +312,7 @@ public final class DemandImplementation extends Kudosable<DaoFeature> implements
         if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().getAmount().compareTo(getDao().getContribution()) > 0) {
             throw new WrongStateException("Cannot be in development state, not enough money.");
         }
-        getDao().setDemandState(FeatureState.DEVELOPPING);
+        getDao().setFeatureState(FeatureState.DEVELOPPING);
         getSelectedOfferUnprotected().getCurrentBatch().setDeveloping();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
@@ -321,7 +321,7 @@ public final class DemandImplementation extends Kudosable<DaoFeature> implements
      * Slot called when the demand change to {@link DiscardedState}.
      */
     private void inDiscardedState() {
-        getDao().setDemandState(FeatureState.DISCARDED);
+        getDao().setFeatureState(FeatureState.DISCARDED);
 
         for (final Contribution contribution : getContributionsUnprotected()) {
             contribution.cancel();
@@ -336,7 +336,7 @@ public final class DemandImplementation extends Kudosable<DaoFeature> implements
         if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().hasBatchesLeft()) {
             throw new WrongStateException("Cannot be in finished state if the current offer has lots to validate.");
         }
-        getDao().setDemandState(FeatureState.FINISHED);
+        getDao().setFeatureState(FeatureState.FINISHED);
     }
 
     /**
@@ -346,7 +346,7 @@ public final class DemandImplementation extends Kudosable<DaoFeature> implements
         if (getDemandState() == FeatureState.PENDING) {
             return;
         }
-        getDao().setDemandState(FeatureState.PENDING);
+        getDao().setFeatureState(FeatureState.PENDING);
     }
 
     /**
@@ -362,7 +362,7 @@ public final class DemandImplementation extends Kudosable<DaoFeature> implements
         } else {
             getDao().computeSelectedOffer();
         }
-        getDao().setDemandState(FeatureState.PREPARING);
+        getDao().setFeatureState(FeatureState.PREPARING);
     }
 
     /**
@@ -693,7 +693,7 @@ public final class DemandImplementation extends Kudosable<DaoFeature> implements
      */
     @Override
     public FeatureState getDemandState() {
-        return getDao().getDemandState();
+        return getDao().getFeatureState();
     }
 
     /**
@@ -712,7 +712,7 @@ public final class DemandImplementation extends Kudosable<DaoFeature> implements
      */
     private AbstractDemandState getStateObject() {
 
-        switch (getDao().getDemandState()) {
+        switch (getDao().getFeatureState()) {
             case PENDING:
                 if (stateObject == null || !stateObject.getClass().equals(PendingState.class)) {
                     setStateObject(new PendingState(this));

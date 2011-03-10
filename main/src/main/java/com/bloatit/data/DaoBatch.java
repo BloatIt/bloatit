@@ -262,19 +262,19 @@ public class DaoBatch extends DaoIdentifiable {
         //
         if (this.levelToValidate == Level.FATAL && (force || shouldValidatePart(Level.FATAL))) {
             this.levelToValidate = Level.MAJOR;
-            this.offer.getDemand().validateContributions(fatalPercent);
+            this.offer.getFeature().validateContributions(fatalPercent);
         }
         // if fatalBugPercent == 100, there is nothing left to validate so it is
         // automatically validated.
         if (this.levelToValidate == Level.MAJOR && (force || shouldValidatePart(Level.MAJOR) || this.fatalBugsPercent == 100)) {
             this.levelToValidate = Level.MINOR;
-            this.offer.getDemand().validateContributions(majorPercent);
+            this.offer.getFeature().validateContributions(majorPercent);
         }
         // when minorBugPercent == 0, there is nothing left to validate so it is
         // automatically validated.
         if (this.levelToValidate == Level.MINOR && (force || shouldValidatePart(Level.MINOR) || getMinorBugsPercent() == 0)) {
             this.levelToValidate = null;
-            this.offer.getDemand().validateContributions(minorPercent);
+            this.offer.getFeature().validateContributions(minorPercent);
         }
         if (this.levelToValidate == null) {
             this.batchState = BatchState.VALIDATED;

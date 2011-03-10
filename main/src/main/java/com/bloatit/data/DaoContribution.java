@@ -39,7 +39,7 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 /**
- * A contribution is a financial participation on a demand. Each contribution
+ * A contribution is a financial participation on a feature. Each contribution
  * can have a little comment/description text on it (144 char max like twitter)
  */
 @Entity
@@ -50,7 +50,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * The state of a contribution should follow the state of the associated
-     * demand.
+     * feature.
      */
     public enum State {
         PENDING, VALIDATED, CANCELED
@@ -64,7 +64,7 @@ public class DaoContribution extends DaoUserContent {
     private BigDecimal amount;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private DaoFeature demand;
+    private DaoFeature feature;
 
     @Basic(optional = false)
     @Enumerated
@@ -74,7 +74,7 @@ public class DaoContribution extends DaoUserContent {
     private String comment;
 
     /**
-     * If the demand is validated then the contribution is also validated and
+     * If the feature is validated then the contribution is also validated and
      * then we create a transaction. So there should be a non null transaction
      * on each validated contribution and only on those. (Except when a user add
      * on offer on his own offer -> no transaction)
@@ -82,7 +82,7 @@ public class DaoContribution extends DaoUserContent {
     @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST)
     // TODO add a nullable contribution into daoTransaction to have a mapped by
     // ?
-    private List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
+    private final List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
 
     @Basic(optional = false)
     private int percentDone;
@@ -95,7 +95,7 @@ public class DaoContribution extends DaoUserContent {
      * (block the value that is reserved to this contribution)
      *
      * @param member the person making the contribution.
-     * @param demand the demand on which we add a contribution.
+     * @param feature the feature on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
      * @throws NonOptionalParameterException if any of the parameter is null
@@ -103,9 +103,9 @@ public class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if the account of "member" has not enough
      *             money in it.
      */
-    public DaoContribution(final DaoMember member, final DaoFeature demand, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution(final DaoMember member, final DaoFeature feature, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         super(member);
-        if (demand == null) {
+        if (feature == null) {
             throw new NonOptionalParameterException();
         }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
@@ -114,7 +114,7 @@ public class DaoContribution extends DaoUserContent {
         }
         this.amount = amount;
         this.state = State.PENDING;
-        this.demand = demand;
+        this.feature = feature;
         this.comment = comment;
         this.percentDone = 0;
         this.alreadyGivenMoney = BigDecimal.ZERO;
@@ -193,7 +193,7 @@ public class DaoContribution extends DaoUserContent {
         try {
             final BigDecimal moneyToCancel = this.amount.subtract(this.alreadyGivenMoney);
             getAuthor().getInternalAccount().unBlock(moneyToCancel);
-            this.demand.cancelContribution(moneyToCancel);
+            this.feature.cancelContribution(moneyToCancel);
         } catch (final NotEnoughMoneyException e) {
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
         }
@@ -229,8 +229,8 @@ public class DaoContribution extends DaoUserContent {
         super();
     }
 
-    protected DaoFeature getDemand() {
-        return this.demand;
+    protected DaoFeature getFeature() {
+        return this.feature;
     }
 
     // ======================================================================
@@ -247,7 +247,7 @@ public class DaoContribution extends DaoUserContent {
         int result = super.hashCode();
         result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
         result = prime * result + ((this.comment == null) ? 0 : this.comment.hashCode());
-        result = prime * result + ((this.demand == null) ? 0 : this.demand.hashCode());
+        result = prime * result + ((this.feature == null) ? 0 : this.feature.hashCode());
         return result;
     }
 
@@ -281,11 +281,11 @@ public class DaoContribution extends DaoUserContent {
         } else if (!this.comment.equals(other.comment)) {
             return false;
         }
-        if (this.demand == null) {
-            if (other.demand != null) {
+        if (this.feature == null) {
+            if (other.feature != null) {
                 return false;
             }
-        } else if (!this.demand.equals(other.demand)) {
+        } else if (!this.feature.equals(other.feature)) {
             return false;
         }
         return true;

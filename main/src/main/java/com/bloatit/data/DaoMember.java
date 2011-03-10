@@ -63,7 +63,7 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "member.byLoginPassword",
                            query = "FROM DaoMember WHERE login = :login AND password = :password"),
 
-                           
+
                        @NamedQuery(
                            name = "member.getReceivedInvitations.byStateGroup",
                            query = "FROM DaoJoinGroupInvitation " +
@@ -169,7 +169,7 @@ public class DaoMember extends DaoActor {
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
+    private final List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
 
     // ======================================================================
     // Static HQL requests
@@ -392,9 +392,9 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * @return All the demands created by this member.
+     * @return All the features created by this member.
      */
-    public PageIterable<DaoFeature> getDemands() {
+    public PageIterable<DaoFeature> getFeatures() {
         return getUserContent(DaoFeature.class);
     }
 

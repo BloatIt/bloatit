@@ -261,7 +261,7 @@ public class DaoOffer extends DaoKudosable {
         super();
     }
 
-    public DaoFeature getDemand() {
+    public DaoFeature getFeature() {
         return this.demand;
     }
 

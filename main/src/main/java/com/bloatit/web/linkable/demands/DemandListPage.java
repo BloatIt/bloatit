@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.data.search.DemandSearch;
-import com.bloatit.data.search.DemandSearch.SortMethod;
+import com.bloatit.data.search.FeatureSearch;
+import com.bloatit.data.search.FeatureSearch.SortMethod;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -281,15 +281,15 @@ public final class DemandListPage extends MasterPage {
 
     private DemandList searchResult() {
 
-        final DemandSearch search = new DemandSearch(searchString);
+        final FeatureSearch search = new FeatureSearch(searchString);
         if (!filter.equals(FILTER_ALL)) {
             if (filter.equals(FILTER_IN_PROGRESS)) {
-                search.addDemandStateFilter(FeatureState.FINISHED);
-                search.addDemandStateFilter(FeatureState.DISCARDED);
+                search.addFeatureStateFilter(FeatureState.FINISHED);
+                search.addFeatureStateFilter(FeatureState.DISCARDED);
             } else if (filter.equals(FILTER_FINISHED)) {
-                search.addDemandStateFilter(FeatureState.DEVELOPPING);
-                search.addDemandStateFilter(FeatureState.PENDING);
-                search.addDemandStateFilter(FeatureState.PREPARING);
+                search.addFeatureStateFilter(FeatureState.DEVELOPPING);
+                search.addFeatureStateFilter(FeatureState.PENDING);
+                search.addFeatureStateFilter(FeatureState.PREPARING);
             }
         }
 

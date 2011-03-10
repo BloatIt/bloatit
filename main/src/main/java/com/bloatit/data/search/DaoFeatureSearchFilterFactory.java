@@ -10,7 +10,7 @@ import org.hibernate.search.filter.StandardFilterKey;
 
 import com.bloatit.data.search.Search.Pair;
 
-public class DaoDemandSearchFilterFactory {
+public class DaoFeatureSearchFilterFactory {
 
     private List<Pair<String, String>> filteredTerms = null;
 
@@ -27,7 +27,7 @@ public class DaoDemandSearchFilterFactory {
 
     @Factory
     public Filter getFilter() {
-        DaoDemandSearchFilter searchFilter = new DaoDemandSearchFilter();
+        DaoFeatureSearchFilter searchFilter = new DaoFeatureSearchFilter();
         searchFilter.setFilteredTerms(filteredTerms);
         filteredTerms = null;
         return searchFilter;

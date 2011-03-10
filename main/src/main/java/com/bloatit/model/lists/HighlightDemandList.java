@@ -16,7 +16,7 @@
 //
 package com.bloatit.model.lists;
 
-import com.bloatit.data.DaoHighlightDemand;
+import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightDemand;
 
@@ -24,8 +24,8 @@ import com.bloatit.model.HighlightDemand;
  * The Class HighlightDemandList transforms PageIterable<DaoHighlightDemand> to
  * PageIterable<HighlightDemand>.
  */
-public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHighlightDemand> {
-    public HighlightDemandList(PageIterable<DaoHighlightDemand> daoCollection) {
+public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHighlightFeature> {
+    public HighlightDemandList(PageIterable<DaoHighlightFeature> daoCollection) {
         super(daoCollection);
     }
 }
