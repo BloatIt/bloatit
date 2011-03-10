@@ -26,31 +26,31 @@ public class PendingState extends CanContributeMetaState {
     /**
      * Instantiates a new pending state.
      *
-     * @param demand the demand on which this state apply.
+     * @param feature the feature on which this state apply.
      */
-    public PendingState(final DemandImplementation demand) {
-        super(demand);
-        demand.setDemandStateUnprotected(getState());
+    public PendingState(final FeatureImplementation feature) {
+        super(feature);
+        feature.setFeatureStateUnprotected(getState());
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit
+     * com.bloatit.model.feature.AbstractFeatureState#eventAddOffer(com.bloatit
      * .model.Offer)
      */
     @Override
-    public AbstractDemandState eventAddOffer() {
-        return new PreparingState(demand);
+    public AbstractFeatureState eventAddOffer() {
+        return new PreparingState(feature);
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
+     * com.bloatit.model.feature.CanContributeMetaState#notifyAddContribution()
      */
     @Override
-    protected AbstractDemandState notifyAddContribution() {
+    protected AbstractFeatureState notifyAddContribution() {
         return this;
     }
 

@@ -161,12 +161,12 @@ public class RestProject extends RestElement<Project> {
     }
 
     /**
-     * @see com.bloatit.model.Project#getDemands()
+     * @see com.bloatit.model.Project#getFeatures()
      */
     @XmlElement
     public RestDemandList getDemands() throws RestException {
         try {
-            return new RestDemandList(model.getDemands());
+            return new RestDemandList(model.getFeatures());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDemands on Project", e);
         }

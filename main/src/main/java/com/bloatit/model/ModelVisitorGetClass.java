@@ -21,9 +21,9 @@ import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoHighlightFeature;
@@ -115,11 +115,11 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.HighlightDemand
+     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.HighlightFeature
      * )
      */
     @Override
-    public Class<?> visit(HighlightDemand model) {
+    public Class<?> visit(HighlightFeature model) {
         return DaoHighlightFeature.class;
     }
 
@@ -201,7 +201,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Demand)
+     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Feature)
      */
     @Override
     public Class<?> visit(Feature model) {

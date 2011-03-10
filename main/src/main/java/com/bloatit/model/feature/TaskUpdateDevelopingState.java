@@ -28,7 +28,7 @@ import com.bloatit.model.PlannedTask;
  * introduce multithred bugs)
  * </p>
  * <p>
- * Tells that the selected offer of a specified demand is validated (and may
+ * Tells that the selected offer of a specified feature is validated (and may
  * begin the Development)
  * </p>
  */
@@ -58,11 +58,11 @@ public class TaskUpdateDevelopingState extends PlannedTask {
     @Override
     public void doRun() {
         try {
-            final DemandImplementation demand = DemandManager.getDemandImplementationById(id);
-            if (demand != null) {
-                demand.updateDevelopmentState();
+            final FeatureImplementation feature = FeatureManager.getFeatureImplementationById(id);
+            if (feature != null) {
+                feature.updateDevelopmentState();
             } else {
-                Log.framework().fatal("Cannot perform the selectedOfferTimeOut. DemandImplementation not found: " + id);
+                Log.framework().fatal("Cannot perform the selectedOfferTimeOut. FeatureImplementation not found: " + id);
             }
 
         } catch (final WrongStateException e) {

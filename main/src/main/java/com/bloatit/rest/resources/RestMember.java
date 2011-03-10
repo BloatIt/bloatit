@@ -157,7 +157,7 @@ public class RestMember extends RestElement<Member> {
 
     @XmlElement
     public RestDemandList getDemands() {
-        return new RestDemandList(model.getDemands());
+        return new RestDemandList(model.getFeatures());
     }
 
     @XmlIDREF

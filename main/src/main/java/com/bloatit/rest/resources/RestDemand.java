@@ -40,7 +40,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Feature;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestContributionList;
@@ -120,7 +120,7 @@ public class RestDemand extends RestElement<Feature> {
      */
     @REST(name = "demands", method = RequestMethod.GET)
     public static RestDemand getById(int id) {
-        RestDemand restDemand = new RestDemand(DemandManager.getDemandById(id));
+        RestDemand restDemand = new RestDemand(FeatureManager.getFeatureById(id));
         if (restDemand.isNull()) {
             return null;
         }
@@ -134,7 +134,7 @@ public class RestDemand extends RestElement<Feature> {
      */
     @REST(name = "demands", method = RequestMethod.GET)
     public static RestDemandList getAll() {
-        return new RestDemandList(DemandManager.getDemands());
+        return new RestDemandList(FeatureManager.getFeatures());
     }
 
     // ---------------------------------------------------------------------------------------

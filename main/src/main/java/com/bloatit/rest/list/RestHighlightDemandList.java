@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.HighlightDemand;
+import com.bloatit.model.HighlightFeature;
 import com.bloatit.rest.list.master.RestListBinder;
 import com.bloatit.rest.resources.RestHighlightDemand;
 
@@ -47,7 +47,7 @@ import com.bloatit.rest.resources.RestHighlightDemand;
  * <p>
  */
 @XmlRootElement(name = "highlightdemands")
-public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand, HighlightDemand> {
+public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand, HighlightFeature> {
 
     /**
      * Provided for XML generation
@@ -63,7 +63,7 @@ public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand,
      *
      * @param collection the list of elements from the model
      */
-    public RestHighlightDemandList(PageIterable<HighlightDemand> collection) {
+    public RestHighlightDemandList(PageIterable<HighlightFeature> collection) {
         super(collection);
     }
 

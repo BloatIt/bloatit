@@ -18,12 +18,12 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoProject;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.model.feature.DemandList;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureList;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ProjectRight;
@@ -50,12 +50,12 @@ public class Project extends Identifiable<DaoProject> {
     }
 
     /**
-     * Create a new project. The right management for creating a demand is
+     * Create a new project. The right management for creating a feature is
      * specific. (The Right management system is not working in this case). You
-     * have to use the {@link DemandManager#canCreate(AuthToken)} to make sure
-     * you can create a new demand.
+     * have to use the {@link FeatureManager#canCreate(AuthToken)} to make sure
+     * you can create a new feature.
      *
-     * @see DaoFeature#DaoDemand(Member,Locale,String, String)
+     * @see DaoFeature#DaoFeature(Member,Locale,String, String)
      */
     public Project(final String name, final Member author, final Locale locale, final String title, final String description) {
         this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
@@ -99,9 +99,9 @@ public class Project extends Identifiable<DaoProject> {
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoProject#getFeatures()
      */
-    public final DemandList getDemands() throws UnauthorizedOperationException {
+    public final FeatureList getFeatures() throws UnauthorizedOperationException {
         tryAccess(new ProjectRight.Name(), Action.READ);
-        return new DemandList(getDao().getFeatures());
+        return new FeatureList(getDao().getFeatures());
 
     }
 

@@ -29,7 +29,7 @@ import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Group;
-import com.bloatit.model.HighlightDemand;
+import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.Kudos;
@@ -79,7 +79,7 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<HighlightDemand> visit(final HighlightDemand model) {
+    public RestElement<HighlightFeature> visit(final HighlightFeature model) {
         return new RestHighlightDemand(model);
     }
 

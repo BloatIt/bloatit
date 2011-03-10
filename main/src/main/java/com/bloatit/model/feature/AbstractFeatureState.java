@@ -23,38 +23,38 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.model.Offer;
 
 /**
- * The Class AbstractDemandState implement the Abstract base class of the State
+ * The Class AbstractFeatureState implement the Abstract base class of the State
  * design pattern. Each method in it is an event that can change the
- * demandState. Each sub-class is a state.
+ * featureState. Each sub-class is a state.
  */
-abstract class AbstractDemandState {
+abstract class AbstractFeatureState {
 
-    /** The demand. */
-    protected final DemandImplementation demand;
+    /** The feature. */
+    protected final FeatureImplementation feature;
 
     /**
-     * Instantiates a new abstract demand state.
+     * Instantiates a new abstract feature state.
      *
-     * @param demand the demand on which this state apply.
+     * @param feature the feature on which this state apply.
      */
-    public AbstractDemandState(final DemandImplementation demand) {
-        this.demand = demand;
+    public AbstractFeatureState(final FeatureImplementation feature) {
+        this.feature = feature;
     }
 
     /**
-     * Gets the demandState associated with this state.
+     * Gets the featureState associated with this state.
      *
      * @return the state
      */
     public abstract FeatureState getState();
 
     /**
-     * Event add offer. Called when an offer is add to the demand.
+     * Event add offer. Called when an offer is add to the feature.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
      */
-    public AbstractDemandState eventAddOffer() {
+    public AbstractFeatureState eventAddOffer() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -63,10 +63,10 @@ abstract class AbstractDemandState {
      * Event remove offer.
      *
      * @param offer the offer
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
      */
-    public AbstractDemandState eventRemoveOffer(final Offer offer) {
+    public AbstractFeatureState eventRemoveOffer(final Offer offer) {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -74,10 +74,10 @@ abstract class AbstractDemandState {
     /**
      * Event add contribution.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
      */
-    public AbstractDemandState eventAddContribution() {
+    public AbstractFeatureState eventAddContribution() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -86,10 +86,10 @@ abstract class AbstractDemandState {
      * Event selected offer time out.
      *
      * @param contribution the contribution
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
      */
-    public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
+    public AbstractFeatureState eventSelectedOfferTimeOut(final BigDecimal contribution) {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -97,10 +97,10 @@ abstract class AbstractDemandState {
     /**
      * Event development time out.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
      */
-    public AbstractDemandState eventDevelopmentTimeOut() {
+    public AbstractFeatureState eventDevelopmentTimeOut() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -108,27 +108,27 @@ abstract class AbstractDemandState {
     /**
      * Event developer canceled.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState eventDeveloperCanceled() {
+    public AbstractFeatureState eventDeveloperCanceled() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
     /**
-     * Event demand rejected.
+     * Event feature rejected.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState eventDemandRejected() {
+    public AbstractFeatureState eventFeatureRejected() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -136,13 +136,13 @@ abstract class AbstractDemandState {
     /**
      * Event popularity pending.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState eventPopularityPending() {
+    public AbstractFeatureState eventPopularityPending() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -150,13 +150,13 @@ abstract class AbstractDemandState {
     /**
      * Popularity validated.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState popularityValidated() {
+    public AbstractFeatureState popularityValidated() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -164,13 +164,13 @@ abstract class AbstractDemandState {
     /**
      * Event batch released.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState eventBatchReleased() {
+    public AbstractFeatureState eventBatchReleased() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -178,13 +178,13 @@ abstract class AbstractDemandState {
     /**
      * Event batch is rejected.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState eventBatchIsRejected() {
+    public AbstractFeatureState eventBatchIsRejected() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -192,13 +192,13 @@ abstract class AbstractDemandState {
     /**
      * Event batch is validated.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState eventBatchIsValidated() {
+    public AbstractFeatureState eventBatchIsValidated() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -206,13 +206,13 @@ abstract class AbstractDemandState {
     /**
      * Event offer is validated is called when every batches are finished.
      *
-     * @return the state object representing the demandState, after receiving
+     * @return the state object representing the featureState, after receiving
      *         this event
-     * @throws WrongStateException if this event occurs whereas the demand was
+     * @throws WrongStateException if this event occurs whereas the feature was
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractDemandState eventOfferIsValidated() {
+    public AbstractFeatureState eventOfferIsValidated() {
         // Implement me if you wish.
         throw new WrongStateException();
     }

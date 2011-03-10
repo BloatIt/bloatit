@@ -17,7 +17,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.feature.DemandImplementation;
+import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.url.DemandPageUrl;
 
@@ -47,8 +47,8 @@ public class DemandsTools {
 
             progressValue = (float) Math.floor(demand.getProgression());
             float cappedProgressValue = progressValue;
-            if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
-                cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
+            if (cappedProgressValue > FeatureImplementation.PROGRESSION_PERCENT) {
+                cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT;
             }
 
             final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue, slim);

@@ -30,56 +30,56 @@ public class PreparingState extends CanContributeMetaState {
     /**
      * Instantiates a new preparing state.
      *
-     * @param demand the demand on which this state apply.
+     * @param feature the feature on which this state apply.
      */
-    public PreparingState(final DemandImplementation demand) {
-        super(demand);
-        demand.setDemandStateUnprotected(getState());
+    public PreparingState(final FeatureImplementation feature) {
+        super(feature);
+        feature.setFeatureStateUnprotected(getState());
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit
+     * com.bloatit.model.feature.AbstractFeatureState#eventAddOffer(com.bloatit
      * .model.Offer)
      */
     @Override
-    public AbstractDemandState eventAddOffer() {
+    public AbstractFeatureState eventAddOffer() {
         return this;
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventRemoveOffer(com.bloatit
+     * com.bloatit.model.feature.AbstractFeatureState#eventRemoveOffer(com.bloatit
      * .model .Offer)
      */
     @Override
-    public AbstractDemandState eventRemoveOffer(final Offer offer) {
-        if (demand.getDao().getOffers().size() > 0) {
+    public AbstractFeatureState eventRemoveOffer(final Offer offer) {
+        if (feature.getDao().getOffers().size() > 0) {
             return this;
         }
-        return new PendingState(demand);
+        return new PendingState(feature);
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventSelectedOfferTimeOut
+     * com.bloatit.model.feature.AbstractFeatureState#eventSelectedOfferTimeOut
      * (java.math .BigDecimal)
      */
     @Override
-    public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
+    public AbstractFeatureState eventSelectedOfferTimeOut(final BigDecimal contribution) {
         return handleEvent();
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
+     * com.bloatit.model.feature.CanContributeMetaState#notifyAddContribution()
      */
     @Override
-    public AbstractDemandState notifyAddContribution() {
+    public AbstractFeatureState notifyAddContribution() {
         return handleEvent();
     }
 

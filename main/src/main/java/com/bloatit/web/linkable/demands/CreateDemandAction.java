@@ -22,9 +22,9 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Feature;
-import com.bloatit.model.DemandFactory;
+import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Project;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
@@ -70,12 +70,12 @@ public final class CreateDemandAction extends Action {
     @Override
     protected Url doProcess() {
         session.notifyList(url.getMessages());
-        if (!DemandManager.canCreate(session.getAuthToken())) {
+        if (!FeatureManager.canCreate(session.getAuthToken())) {
             session.notifyError(Context.tr("You must be logged in to create an idea."));
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
-        final Feature d = DemandFactory.createDemand(session.getAuthToken().getMember(), langLocale, description, specification, project);
+        final Feature d = FeatureFactory.createFeature(session.getAuthToken().getMember(), langLocale, description, specification, project);
 
         final DemandPageUrl to = new DemandPageUrl(d);
 

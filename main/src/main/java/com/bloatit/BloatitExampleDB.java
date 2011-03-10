@@ -16,14 +16,14 @@ import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
-import com.bloatit.model.DemandFactory;
+import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Group;
-import com.bloatit.model.HighlightDemand;
+import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
-import com.bloatit.model.feature.DemandImplementation;
+import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
@@ -105,12 +105,12 @@ public class BloatitExampleDB {
         Feature mageiaDemandRemoveEmacs = generateMageiaDemandRemoveEmacs();
 
         // Highlight demands
-        new HighlightDemand(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(colorPickerDemand, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(addPerroquetInMageiaDemand, 3, "In developement", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(libreOfficeDemandDefaultTemplate, 4, "Need your help quicky", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(perroquetDemandArabicSupport, 5, "Random", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(mageiaDemandRemoveEmacs, 6, "Success", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(colorPickerDemand, 2, "Recent", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(addPerroquetInMageiaDemand, 3, "In developement", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(libreOfficeDemandDefaultTemplate, 4, "Need your help quicky", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(perroquetDemandArabicSupport, 5, "Random", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightFeature(mageiaDemandRemoveEmacs, 6, "Success", DateUtils.now(), DateUtils.flyingPigDate());
 
         SessionManager.endWorkUnitAndFlush();
 
@@ -173,7 +173,7 @@ public class BloatitExampleDB {
 
         final String twoSubtitlesInVlcDemandTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
-        final Feature twoSubtitlesInVlcDemand = DemandFactory.createDemand(chogall,
+        final Feature twoSubtitlesInVlcDemand = FeatureFactory.createFeature(chogall,
                                                                           chogall.getLocale(),
                                                                           twoSubtitlesInVlcDemandTitle,
                                                                           twoSubtitlesInVlcDemandDescription,
@@ -254,7 +254,7 @@ public class BloatitExampleDB {
 
         final String addPerroquetInMageiaDemandtitle = "Make a packet for Mageia for the Perroquet software";
 
-        final Feature addPerroquetInMageiaDemand = DemandFactory.createDemand(fred,
+        final Feature addPerroquetInMageiaDemand = FeatureFactory.createFeature(fred,
                                                                              fred.getLocale(),
                                                                              addPerroquetInMageiaDemandtitle,
                                                                              addPerroquetInMageiaDemandDescription,
@@ -303,7 +303,7 @@ public class BloatitExampleDB {
 
         final String colorPickerDemandTitle = "Permettre de choisir facilement n'importe quelle couleur";
 
-        final Feature colorPickerDemand = DemandFactory.createDemand(yoann,
+        final Feature colorPickerDemand = FeatureFactory.createFeature(yoann,
                                                                     yoann.getLocale(),
                                                                     colorPickerDemandTitle,
                                                                     colorPickerDemandDescription,
@@ -319,13 +319,13 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Jolie template par défaut dans Libre Office ";
 
-        final Feature demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, libreOffice);
+        final Feature demand = FeatureFactory.createFeature(yoann, yoann.getLocale(), demandTitle, demandDescription, libreOffice);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         demand.authenticate(new AuthToken(celeste));
         final Offer offer = demand.addOffer(celeste, new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
 
-        DemandImplementation demandImpl = (DemandImplementation) demand;
+        FeatureImplementation demandImpl = (FeatureImplementation) demand;
         demandImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
@@ -343,7 +343,7 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Support des langues arabe";
 
-        final Feature demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, perroquet);
+        final Feature demand = FeatureFactory.createFeature(yoann, yoann.getLocale(), demandTitle, demandDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         demand.authenticate(new AuthToken(fred));
@@ -364,13 +364,13 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Suppression du paquet emacs déprécié";
 
-        final Feature demand = DemandFactory.createDemand(thomas, thomas.getLocale(), demandTitle, demandDescription, mageia);
+        final Feature demand = FeatureFactory.createFeature(thomas, thomas.getLocale(), demandTitle, demandDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
         demand.authenticate(new AuthToken(cerbere));
         final Offer offer = demand.addOffer(cerbere, new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
-        DemandImplementation demandImpl = (DemandImplementation) demand;
+        FeatureImplementation demandImpl = (FeatureImplementation) demand;
         demandImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
@@ -387,17 +387,17 @@ public class BloatitExampleDB {
      * @param demand
      */
     private void setDemandInDevelopmentState(final Feature demand) {
-        final DemandImplementation demandImpl = (DemandImplementation) demand;
+        final FeatureImplementation demandImpl = (FeatureImplementation) demand;
         demandImpl.getDao().setValidationDate(DateUtils.now());
     }
 
     private void setDemandInFinishedState(final Feature demand) {
-        final DemandImplementation demandImpl = (DemandImplementation) demand;
+        final FeatureImplementation demandImpl = (FeatureImplementation) demand;
         demandImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
     private void setDemandInDiscardedState(final Feature demand) {
-        final DemandImplementation demandImpl = (DemandImplementation) demand;
+        final FeatureImplementation demandImpl = (FeatureImplementation) demand;
         demandImpl.getDao().setFeatureState(FeatureState.DISCARDED);
     }
 

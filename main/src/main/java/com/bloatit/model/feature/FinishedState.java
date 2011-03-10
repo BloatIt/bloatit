@@ -22,16 +22,16 @@ import com.bloatit.data.DaoFeature.FeatureState;
  * The Class FinishedState. It is the final state. You cannot change of state
  * here (no event method implemented).
  */
-public class FinishedState extends AbstractDemandState {
+public class FinishedState extends AbstractFeatureState {
 
     /**
      * Instantiates a new finished state.
      *
-     * @param demand the demand on which this state apply.
+     * @param feature the feature on which this state apply.
      */
-    public FinishedState(final DemandImplementation demand) {
-        super(demand);
-        demand.setDemandStateUnprotected(getState());
+    public FinishedState(final FeatureImplementation feature) {
+        super(feature);
+        feature.setFeatureStateUnprotected(getState());
     }
 
     @Override

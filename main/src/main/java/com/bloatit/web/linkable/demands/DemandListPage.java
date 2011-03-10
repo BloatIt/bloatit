@@ -32,7 +32,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Feature;
-import com.bloatit.model.feature.DemandList;
+import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
@@ -232,7 +232,7 @@ public final class DemandListPage extends MasterPage {
         layout.addLeft(demandSearchBlock);
 
         // Demand list
-        final DemandList results = searchResult();
+        final FeatureList results = searchResult();
         if (results.size() > 0) {
             final HtmlRenderer<Feature> demandItemRenderer = new IdeasListItem();
             final DemandListPageUrl clonedUrl = url.clone();
@@ -279,7 +279,7 @@ public final class DemandListPage extends MasterPage {
         }
     };
 
-    private DemandList searchResult() {
+    private FeatureList searchResult() {
 
         final FeatureSearch search = new FeatureSearch(searchString);
         if (!filter.equals(FILTER_ALL)) {
@@ -307,6 +307,6 @@ public final class DemandListPage extends MasterPage {
             search.setSortMethod(SortMethod.SORT_BY_EXPIRATION_DATE);
         }
 
-        return new DemandList(search.doSearch());
+        return new FeatureList(search.doSearch());
     }
 }

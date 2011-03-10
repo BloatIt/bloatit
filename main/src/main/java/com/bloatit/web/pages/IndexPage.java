@@ -26,8 +26,8 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
-import com.bloatit.model.HighlightDemand;
-import com.bloatit.model.managers.HighlightDemandManager;
+import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.components.IndexDemandBlock;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
@@ -83,11 +83,11 @@ public final class IndexPage extends MasterPage {
 
             final int demandCount = 6;
 
-            final PageIterable<HighlightDemand> hightlightDemandList = HighlightDemandManager.getAll();
+            final PageIterable<HighlightFeature> hightlightDemandList = HighlightFeatureManager.getAll();
 
-            final HighlightDemand[] hightlightDemandArray = new HighlightDemand[demandCount];
+            final HighlightFeature[] hightlightDemandArray = new HighlightFeature[demandCount];
 
-            for (final HighlightDemand highlightDemand : hightlightDemandList) {
+            for (final HighlightFeature highlightDemand : hightlightDemandList) {
                 final int position = highlightDemand.getPosition() - 1;
                 if (position < demandCount) {
                     if (hightlightDemandArray[position] == null) {
@@ -107,7 +107,7 @@ public final class IndexPage extends MasterPage {
                     final HtmlDiv demandListLeftCase = new HtmlDiv("demand_list_left_case");
                     {
 
-                        HighlightDemand highlightDemand = hightlightDemandArray[i * 2];
+                        HighlightFeature highlightDemand = hightlightDemandArray[i * 2];
                         if (highlightDemand != null) {
                             demandListLeftCase.add(new IndexDemandBlock(highlightDemand));
                         }
@@ -116,7 +116,7 @@ public final class IndexPage extends MasterPage {
 
                     final HtmlDiv demandListRightCase = new HtmlDiv("demand_list_right_case");
                     {
-                        HighlightDemand highlightDemand = hightlightDemandArray[i * 2 + 1];
+                        HighlightFeature highlightDemand = hightlightDemandArray[i * 2 + 1];
                         if (highlightDemand != null) {
                             demandListRightCase.add(new IndexDemandBlock(highlightDemand));
                         }

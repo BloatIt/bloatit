@@ -93,7 +93,7 @@ public class AdministrationAction extends LoggedAction {
                         if (demand.getSelectedOffer() == null || demand.getSelectedOffer().getAmount().compareTo(demand.getContribution()) > 0) {
                             session.notifyBad("There is no offer or not enough money. So no developement state for id: " + demand.getId());
                         } else {
-                            demand.setDemandState(FeatureState.DEVELOPPING);
+                            demand.setFeatureState(FeatureState.DEVELOPPING);
                         }
                         break;
                     case VALIDATE_BATCH:

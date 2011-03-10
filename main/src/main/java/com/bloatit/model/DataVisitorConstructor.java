@@ -38,7 +38,7 @@ import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.DataClassVisitor;
-import com.bloatit.model.feature.DemandImplementation;
+import com.bloatit.model.feature.FeatureImplementation;
 
 /**
  * The Class ConstructorVisitor is a visitor that visit the Dao layer and
@@ -124,7 +124,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
      */
     @Override
     public Identifiable<?> visit(final DaoHighlightFeature dao) {
-        return HighlightDemand.create(dao);
+        return HighlightFeature.create(dao);
     }
 
     /*
@@ -218,7 +218,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
      */
     @Override
     public Identifiable<?> visit(final DaoFeature dao) {
-        return DemandImplementation.create(dao);
+        return FeatureImplementation.create(dao);
     }
 
     /*

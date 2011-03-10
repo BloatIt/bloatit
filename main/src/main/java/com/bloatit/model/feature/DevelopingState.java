@@ -21,44 +21,44 @@ import com.bloatit.data.DaoFeature.FeatureState;
 /**
  * The Class DeveloppingState.
  */
-public class DevelopingState extends AbstractDemandState {
+public class DevelopingState extends AbstractFeatureState {
 
     /**
      * Instantiates a new developing state.
      *
-     * @param demand the demand on which this state apply.
+     * @param feature the feature on which this state apply.
      */
-    public DevelopingState(final DemandImplementation demand) {
-        super(demand);
-        demand.setDemandStateUnprotected(getState());
+    public DevelopingState(final FeatureImplementation feature) {
+        super(feature);
+        feature.setFeatureStateUnprotected(getState());
     }
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.demand.AbstractDemandState#eventBatchReleased()
+     * @see com.bloatit.model.feature.AbstractFeatureState#eventBatchReleased()
      */
     @Override
-    public AbstractDemandState eventBatchReleased() {
+    public AbstractFeatureState eventBatchReleased() {
         return this;
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
+     * com.bloatit.model.feature.AbstractFeatureState#eventDeveloperCanceled()
      */
     @Override
-    public AbstractDemandState eventDeveloperCanceled() {
-        return new DiscardedState(demand);
+    public AbstractFeatureState eventDeveloperCanceled() {
+        return new DiscardedState(feature);
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventDevelopmentTimeOut()
+     * com.bloatit.model.feature.AbstractFeatureState#eventDevelopmentTimeOut()
      */
     @Override
-    public AbstractDemandState eventDevelopmentTimeOut() {
+    public AbstractFeatureState eventDevelopmentTimeOut() {
         // TODO: make Penality.
         return this;
     }

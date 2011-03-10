@@ -21,35 +21,35 @@ import com.bloatit.data.DaoFeature.FeatureState;
 /**
  * The Class DiscardedState.
  */
-public class DiscardedState extends AbstractDemandState {
+public class DiscardedState extends AbstractFeatureState {
 
     /**
      * Instantiates a new discarded state.
      *
-     * @param demand the demand on which this state apply.
+     * @param feature the feature on which this state apply.
      */
-    public DiscardedState(final DemandImplementation demand) {
-        super(demand);
-        demand.setDemandStateUnprotected(getState());
+    public DiscardedState(final FeatureImplementation feature) {
+        super(feature);
+        feature.setFeatureStateUnprotected(getState());
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventPopularityPending()
+     * com.bloatit.model.feature.AbstractFeatureState#eventPopularityPending()
      */
     @Override
-    public AbstractDemandState eventPopularityPending() {
-        return new PendingState(demand);
+    public AbstractFeatureState eventPopularityPending() {
+        return new PendingState(feature);
     }
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.demand.AbstractDemandState#popularityValidated()
+     * @see com.bloatit.model.feature.AbstractFeatureState#popularityValidated()
      */
     @Override
-    public AbstractDemandState popularityValidated() {
-        return new PendingState(demand);
+    public AbstractFeatureState popularityValidated() {
+        return new PendingState(feature);
     }
 
     @Override

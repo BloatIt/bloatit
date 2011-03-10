@@ -47,7 +47,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * An offer is a developer offer to a demand.
+ * An offer is a developer offer to a feature.
  */
 @Entity
 @Cacheable
@@ -65,10 +65,10 @@ import com.bloatit.framework.utils.PageIterable;
 public class DaoOffer extends DaoKudosable {
 
     /**
-     * This is demand on which this offer is done.
+     * This is feature on which this offer is done.
      */
     @ManyToOne(optional = false)
-    private DaoFeature demand;
+    private DaoFeature feature;
 
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
@@ -105,23 +105,23 @@ public class DaoOffer extends DaoKudosable {
      * Create a DaoOffer.
      *
      * @param member is the author of the offer. Must be non null.
-     * @param demand is the demand on which this offer is made. Must be non
+     * @param feature is the feature on which this offer is made. Must be non
      *            null.
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
      *             future.
      */
     public DaoOffer(final DaoMember member,
-                    final DaoFeature demand,
+                    final DaoFeature feature,
                     final BigDecimal amount,
                     final DaoDescription description,
                     final Date dateExpire,
                     final int secondsBeforeValidation) {
         super(member);
-        if (demand == null) {
+        if (feature == null) {
             throw new NonOptionalParameterException();
         }
-        this.demand = demand;
+        this.feature = feature;
         this.amount = BigDecimal.ZERO; // Will be updated by addBatch
         this.expirationDate = new Date();// Will be updated by addBatch
         this.currentBatch = 0;
@@ -262,7 +262,7 @@ public class DaoOffer extends DaoKudosable {
     }
 
     public DaoFeature getFeature() {
-        return this.demand;
+        return this.feature;
     }
 
     // ======================================================================
@@ -278,7 +278,7 @@ public class DaoOffer extends DaoKudosable {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
-        result = prime * result + ((this.demand == null) ? 0 : this.demand.hashCode());
+        result = prime * result + ((this.feature == null) ? 0 : this.feature.hashCode());
         result = prime * result + ((this.expirationDate == null) ? 0 : this.expirationDate.hashCode());
         return result;
     }
@@ -306,11 +306,11 @@ public class DaoOffer extends DaoKudosable {
         } else if (!this.amount.equals(other.amount)) {
             return false;
         }
-        if (this.demand == null) {
-            if (other.demand != null) {
+        if (this.feature == null) {
+            if (other.feature != null) {
                 return false;
             }
-        } else if (!this.demand.equals(other.demand)) {
+        } else if (!this.feature.equals(other.feature)) {
             return false;
         }
         if (this.expirationDate == null) {

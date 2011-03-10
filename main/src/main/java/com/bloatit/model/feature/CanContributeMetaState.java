@@ -25,48 +25,48 @@ import com.bloatit.data.DaoOffer;
  * The Class CanContributeMetaState is not a real state. Every state that allows
  * to contribute should inherit from it.
  */
-public abstract class CanContributeMetaState extends AbstractDemandState {
+public abstract class CanContributeMetaState extends AbstractFeatureState {
 
     /**
      * Instantiates a new can contribute meta state.
      *
-     * @param demand the demand on which this state apply.
+     * @param feature the feature on which this state apply.
      */
-    public CanContributeMetaState(final DemandImplementation demand) {
-        super(demand);
+    public CanContributeMetaState(final FeatureImplementation feature) {
+        super(feature);
     }
 
     /**
      * Notify that a new contribution arrived. This method is called each time a
-     * new contribution is done on the demand.
+     * new contribution is done on the feature.
      *
-     * @return the abstract demand state
+     * @return the abstract feature state
      */
-    protected abstract AbstractDemandState notifyAddContribution();
+    protected abstract AbstractFeatureState notifyAddContribution();
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.demand.AbstractDemandState#eventAddContribution()
+     * @see com.bloatit.model.feature.AbstractFeatureState#eventAddContribution()
      */
     @Override
-    public final AbstractDemandState eventAddContribution() {
+    public final AbstractFeatureState eventAddContribution() {
         return notifyAddContribution();
     }
 
     /**
-     * Test if the current demand should pass in DevelopingState. To pass in
+     * Test if the current feature should pass in DevelopingState. To pass in
      * {@link DevelopingState} state we have to have a selected offer, enough
      * contribution and the validation period spent.
      *
-     * @return the abstract demand state (Developing or this.)
+     * @return the abstract feature state (Developing or this.)
      */
-    protected final AbstractDemandState handleEvent() {
-        final BigDecimal contribution = demand.getDao().getContribution();
-        final DaoOffer selectedOffer = demand.getDao().getSelectedOffer();
-        final Date validationDate = demand.getDao().getValidationDate();
+    protected final AbstractFeatureState handleEvent() {
+        final BigDecimal contribution = feature.getDao().getContribution();
+        final DaoOffer selectedOffer = feature.getDao().getSelectedOffer();
+        final Date validationDate = feature.getDao().getValidationDate();
         if (selectedOffer != null && validationDate != null && contribution.compareTo(selectedOffer.getAmount()) >= 0
                 && new Date().after(validationDate)) {
-            return new DevelopingState(demand);
+            return new DevelopingState(feature);
         }
         return this;
     }

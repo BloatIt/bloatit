@@ -24,14 +24,14 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.lists.ListBinder;
 
 /**
- * The Class DemandList. It is a ListBinder to transform PageIterable<DaoDemand>
- * to PageIterable<Demand>
+ * The Class FeatureList. It is a ListBinder to transform PageIterable<DaoFeature>
+ * to PageIterable<Feature>
  */
-public final class DemandList implements PageIterable<Feature> {
-    private final ListBinder<DemandImplementation, DaoFeature> listBinder;
+public final class FeatureList implements PageIterable<Feature> {
+    private final ListBinder<FeatureImplementation, DaoFeature> listBinder;
 
-    public DemandList(PageIterable<DaoFeature> daoList) {
-        listBinder = new ListBinder<DemandImplementation, DaoFeature>(daoList);
+    public FeatureList(PageIterable<DaoFeature> daoList) {
+        listBinder = new ListBinder<FeatureImplementation, DaoFeature>(daoList);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

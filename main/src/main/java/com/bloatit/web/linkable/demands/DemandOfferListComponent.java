@@ -41,7 +41,7 @@ import com.bloatit.model.Batch;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
-import com.bloatit.model.feature.DemandImplementation;
+import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.members.MembersTools;
@@ -72,7 +72,7 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
-            switch (demand.getDemandState()) {
+            switch (demand.getFeatureState()) {
                 case PENDING: {
                     offersBlock.add(new HtmlTitle(Context.tr("No offer"), 1));
                     BicolumnOfferBlock block = new BicolumnOfferBlock(true);
@@ -276,8 +276,8 @@ public class DemandOfferListComponent extends HtmlDiv {
                         progressPara.add(progress);
 
                         int cappedProgressValue = progression;
-                        if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
-                            cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
+                        if (cappedProgressValue > FeatureImplementation.PROGRESSION_PERCENT) {
+                            cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT;
                         }
 
                         final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
@@ -421,7 +421,7 @@ public class DemandOfferListComponent extends HtmlDiv {
 
         private boolean isDeveloper() throws UnauthorizedOperationException {
             return Context.getSession().isLogged()
-                    && Context.getSession().getAuthToken().getMember().equals(offer.getDemand().getSelectedOffer().getAuthor());
+                    && Context.getSession().getAuthToken().getMember().equals(offer.getFeature().getSelectedOffer().getAuthor());
         }
 
         private String getLotState(Batch lot) {

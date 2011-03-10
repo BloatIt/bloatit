@@ -140,13 +140,13 @@ public class MemberTest extends ModelTestUnit {
     public void testGetDemands() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
-        assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());
+        assertEquals("Mon titre", yo.getFeatures().iterator().next().getTitle());
 
         yo.authenticate(yoAuthToken);
-        assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());
+        assertEquals("Mon titre", yo.getFeatures().iterator().next().getTitle());
 
         yo.authenticate(fredAuthToken);
-        assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());
+        assertEquals("Mon titre", yo.getFeatures().iterator().next().getTitle());
     }
 
     public void testGetKudos() {

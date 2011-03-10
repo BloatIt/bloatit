@@ -26,7 +26,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Bug;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
@@ -62,7 +62,7 @@ public final class ModifyBugPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        if (DemandManager.canCreate(session.getAuthToken())) {
+        if (FeatureManager.canCreate(session.getAuthToken())) {
             return new HtmlDiv("padding_box").add(generateModifyBugForm());
         }
         return generateBadRightError();

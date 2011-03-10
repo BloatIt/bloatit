@@ -5,11 +5,11 @@ import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.queries.DaoFeatureQuery;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Feature;
-import com.bloatit.model.feature.DemandList;
+import com.bloatit.model.feature.FeatureList;
 
-public class DemandAdminListFactory extends KudosableAdminListFactory<DaoFeature, Feature> {
+public class FeatureAdminListFactory extends KudosableAdminListFactory<DaoFeature, Feature> {
 
-    public DemandAdminListFactory() {
+    public FeatureAdminListFactory() {
         super(new DaoFeatureQuery());
     }
 
@@ -20,7 +20,7 @@ public class DemandAdminListFactory extends KudosableAdminListFactory<DaoFeature
 
     @Override
     public PageIterable<Feature> list() {
-        return new DemandList(getfactory().createCollection());
+        return new FeatureList(getfactory().createCollection());
     }
 
     public void stateEquals(final FeatureState state) {

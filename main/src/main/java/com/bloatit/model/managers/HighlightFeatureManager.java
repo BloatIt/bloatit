@@ -19,38 +19,38 @@ package com.bloatit.model.managers;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.HighlightDemand;
-import com.bloatit.model.lists.HighlightDemandList;
+import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.lists.HighlightFeatureList;
 
 /**
- * The Class HighlightDemandManager is an utility class containing static
- * methods for {@link HighlightDemand} loading etc.
+ * The Class HighlightFeatureManager is an utility class containing static
+ * methods for {@link HighlightFeature} loading etc.
  */
-public final class HighlightDemandManager {
+public final class HighlightFeatureManager {
 
     /**
      * Desactivated constructor on utility class.
      */
-    private HighlightDemandManager() {
+    private HighlightFeatureManager() {
         // Desactivate default ctor
     }
 
     /**
-     * Gets a {@link HighlightDemand} by its id.
+     * Gets a {@link HighlightFeature} by its id.
      *
      * @param id the id
-     * @return the {@link HighlightDemand} or null if not found.
+     * @return the {@link HighlightFeature} or null if not found.
      */
-    public static HighlightDemand getById(final Integer id) {
-        return HighlightDemand.create(DBRequests.getById(DaoHighlightFeature.class, id));
+    public static HighlightFeature getById(final Integer id) {
+        return HighlightFeature.create(DBRequests.getById(DaoHighlightFeature.class, id));
     }
 
     /**
-     * Gets the all th {@link HighlightDemand}s.
+     * Gets the all th {@link HighlightFeature}s.
      *
-     * @return the {@link HighlightDemand} demands.
+     * @return the {@link HighlightFeature} features.
      */
-    public static PageIterable<HighlightDemand> getAll() {
-        return new HighlightDemandList(DBRequests.getAll(DaoHighlightFeature.class));
+    public static PageIterable<HighlightFeature> getAll() {
+        return new HighlightFeatureList(DBRequests.getAll(DaoHighlightFeature.class));
     }
 }

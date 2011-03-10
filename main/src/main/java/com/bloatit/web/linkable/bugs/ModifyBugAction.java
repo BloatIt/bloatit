@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Bug;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
@@ -77,7 +77,7 @@ public final class ModifyBugAction extends Action {
     @Override
     protected Url doProcess() {
         session.notifyList(url.getMessages());
-        if (!DemandManager.canCreate(session.getAuthToken())) {
+        if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use BugManager and not DemandManager here
             session.notifyError(Context.tr("You must be logged in to report a bug."));
             return new LoginPageUrl();

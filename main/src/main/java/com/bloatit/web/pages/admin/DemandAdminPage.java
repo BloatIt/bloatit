@@ -16,12 +16,12 @@ import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.Feature;
-import com.bloatit.model.admin.DemandAdminListFactory;
+import com.bloatit.model.admin.FeatureAdminListFactory;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.url.DemandAdminPageUrl;
 
 @ParamContainer("admin/demands")
-public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Feature, DemandAdminListFactory> {
+public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Feature, FeatureAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
     protected DisplayableDemandState filterByState;
@@ -38,7 +38,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Featur
     private final DemandAdminPageUrl url;
 
     public DemandAdminPage(final DemandAdminPageUrl url) {
-        super(url, new DemandAdminListFactory());
+        super(url, new FeatureAdminListFactory());
         this.url = url;
         filterByState = url.getFilterByState();
         filterSelectedOffer = url.getFilterSelectedOffer();
@@ -147,7 +147,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Featur
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Demand state")), new StringColumnGenerator<Feature>() {
             @Override
             public String getStringBody(final Feature element) {
-                return String.valueOf(element.getDemandState());
+                return String.valueOf(element.getFeatureState());
             }
         });
 

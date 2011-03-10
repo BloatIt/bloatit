@@ -34,7 +34,7 @@ public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(Group model);
 
-    ReturnType visit(HighlightDemand model);
+    ReturnType visit(HighlightFeature model);
 
     ReturnType visit(JoinGroupInvitation model);
 

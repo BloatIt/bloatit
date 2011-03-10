@@ -1,12 +1,12 @@
 package com.bloatit.model;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 
 public class KudosableTest extends ModelTestUnit {
 
     public void testCanKudos() throws UnauthorizedOperationException {
-        final Feature demand = DemandManager.getDemandById(db.getDemand().getId());
+        final Feature demand = FeatureManager.getFeatureById(db.getDemand().getId());
 
         demand.authenticate(fredAuthToken);
         assertTrue(demand.canVoteUp().isEmpty());
@@ -24,7 +24,7 @@ public class KudosableTest extends ModelTestUnit {
     }
 
     public void testUnkudos() {
-        final Feature demand = DemandManager.getDemandById(db.getDemand().getId());
+        final Feature demand = FeatureManager.getFeatureById(db.getDemand().getId());
 
         assertEquals(0, demand.getPopularity());
         demand.authenticate(yoAuthToken);
@@ -33,7 +33,7 @@ public class KudosableTest extends ModelTestUnit {
     }
 
     public void testKudos() throws UnauthorizedOperationException {
-        final Feature demand = DemandManager.getDemandById(db.getDemand().getId());
+        final Feature demand = FeatureManager.getFeatureById(db.getDemand().getId());
 
         demand.authenticate(fredAuthToken);
         demand.voteUp();

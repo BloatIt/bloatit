@@ -28,7 +28,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Project;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
@@ -63,7 +63,7 @@ public final class CreateDemandPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        if (DemandManager.canCreate(session.getAuthToken())) {
+        if (FeatureManager.canCreate(session.getAuthToken())) {
 
             add(generateIdeaCreationForm());
         }

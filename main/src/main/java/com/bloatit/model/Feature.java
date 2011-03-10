@@ -69,7 +69,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     boolean canAccessDescription();
 
     /**
-     * Add a contribution on this demand.
+     * Add a contribution on this feature.
      *
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char
@@ -84,9 +84,9 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
     /**
-     * Add a new Offer on this Demand. You can do this operation when you are in
+     * Add a new Offer on this Feature. You can do this operation when you are in
      * the {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}
-     * DemandState. When you add the first Offer, the state pass from
+     * FeatureState. When you add the first Offer, the state pass from
      * {@link FeatureState#PENDING} to {@link FeatureState#PREPARING}; and this
      * offer is selected (see {@link DaoFeature#setSelectedOffer(DaoOffer)}). The
      * parameters of this function are used to create the first (non optional)
@@ -135,7 +135,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     Date getValidationDate();
 
     /**
-     * @return the first level comments on this demand.
+     * @return the first level comments on this feature.
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#READ} right on the <code>Comment</code>
      *             property.
@@ -144,7 +144,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     PageIterable<Comment> getComments() throws UnauthorizedOperationException;
 
     /**
-     * @return all the Contributions on this Demand.
+     * @return all the Contributions on this Feature.
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#READ} right on the <code>Contribution</code>
      *             property.
@@ -168,7 +168,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
 
     /**
      * @return return the sum of the values of all the contributions on this
-     *         demand.
+     *         feature.
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#READ} right on the <code>Contribution</code>
      *             property.
@@ -195,7 +195,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     BigDecimal getContributionMin() throws UnauthorizedOperationException;
 
     /**
-     * @return the current Description of this demand.
+     * @return the current Description of this feature.
      * @throws UnauthorizedOperationException if the user does not has the right
      *             on the <code>Description</code> property.
      * @see #authenticate(AuthToken)
@@ -203,7 +203,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     Description getDescription() throws UnauthorizedOperationException;
 
     /**
-     * @return the current associate project of this demand.
+     * @return the current associate project of this feature.
      * @throws UnauthorizedOperationException if the user does not has the right
      *             on the <code>Project</code> property.
      * @see #authenticate(AuthToken)
@@ -211,7 +211,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     Project getProject() throws UnauthorizedOperationException;
 
     /**
-     * @return all the offers on this demand.
+     * @return all the offers on this feature.
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>READ</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
@@ -222,7 +222,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      * The current offer is the offer with the max popularity then the min
      * amount.
      *
-     * @return the current offer for this demand, or null if there is no offer.
+     * @return the current offer for this feature, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>READ</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
@@ -249,7 +249,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      */
     String getTitle() throws UnauthorizedOperationException;
 
-    FeatureState getDemandState();
+    FeatureState getFeatureState();
 
     int countOpenBugs();
 
@@ -261,6 +261,6 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
 
     void computeSelectedOffer() throws UnauthorizedOperationException;
 
-    void setDemandState(FeatureState demandState) throws UnauthorizedOperationException;
+    void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
 
 }

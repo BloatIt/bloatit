@@ -20,7 +20,7 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.feature.DemandList;
+import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
 
 public class Model implements AbstractModel {
@@ -38,16 +38,16 @@ public class Model implements AbstractModel {
         ModelConfiguration.loadConfiguration();
 
         open();
-        // Find the demand with selected offer that should pass into validated.
-        PageIterable<Feature> demandsToValidate = new DemandList(DBRequests.featuresThatShouldBeValidated());
-        for (Feature demand : demandsToValidate) {
-            demand.updateDevelopmentState();
+        // Find the feature with selected offer that should pass into validated.
+        PageIterable<Feature> featuresToValidate = new FeatureList(DBRequests.featuresThatShouldBeValidated());
+        for (Feature feature : featuresToValidate) {
+            feature.updateDevelopmentState();
         }
 
-        // Find the demand with selected offer that should pass into validated.
-        PageIterable<Feature> demandsToValidateInTheFuture = new DemandList(DBRequests.featuresThatShouldBeValidatedInTheFuture());
-        for (Feature demand : demandsToValidateInTheFuture) {
-            new TaskUpdateDevelopingState(demand.getId(), demand.getValidationDate());
+        // Find the feature with selected offer that should pass into validated.
+        PageIterable<Feature> featuresToValidateInTheFuture = new FeatureList(DBRequests.featuresThatShouldBeValidatedInTheFuture());
+        for (Feature feature : featuresToValidateInTheFuture) {
+            new TaskUpdateDevelopingState(feature.getId(), feature.getValidationDate());
         }
         close();
     }

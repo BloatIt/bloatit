@@ -109,7 +109,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         });
 
         // Create Bugtracker tab only after preparation
-        if (demand.getDemandState() != FeatureState.PENDING && demand.getDemandState() != FeatureState.PREPARING) {
+        if (demand.getFeatureState() != FeatureState.PENDING && demand.getFeatureState() != FeatureState.PREPARING) {
 
             tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", demand.countOpenBugs()), BUGS_TAB) {
                 @Override

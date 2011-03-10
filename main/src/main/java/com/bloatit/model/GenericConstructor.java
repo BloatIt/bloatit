@@ -58,7 +58,7 @@ public class GenericConstructor {
         if (clazz.equals(Group.class)) {
             return DaoGroup.class;
         }
-        if (clazz.equals(HighlightDemand.class)) {
+        if (clazz.equals(HighlightFeature.class)) {
             return DaoHighlightFeature.class;
         }
         if (clazz.equals(JoinGroupInvitation.class)) {

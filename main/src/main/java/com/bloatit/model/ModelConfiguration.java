@@ -16,10 +16,10 @@ public class ModelConfiguration {
     private final int kudosableCommentTurnRejected;
     private final int kudosableCommentTurnHidden;
     private final int kudosableCommentTurnPending;
-    private final int kudosableDemandTurnValid;
-    private final int kudosableDemandTurnRejected;
-    private final int kudosableDemandTurnHidden;
-    private final int kudosableDemandTurnPending;
+    private final int kudosableFeatureTurnValid;
+    private final int kudosableFeatureTurnRejected;
+    private final int kudosableFeatureTurnHidden;
+    private final int kudosableFeatureTurnPending;
     private final int kudosableOfferTurnValid;
     private final int kudosableOfferTurnRejected;
     private final int kudosableOfferTurnHidden;
@@ -42,16 +42,16 @@ public class ModelConfiguration {
         kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -10);
         kudosableDefaultTurnPending = properties.getInt("kudosable.default.turn_pending", 10);
 
-        // Comment demand offer translation
+        // Comment feature offer translation
         kudosableCommentTurnValid = properties.getInt("kudosable.comment.turn_valid", kudosableDefaultTurnValid);
         kudosableCommentTurnRejected = properties.getInt("kudosable.comment.turn_rejected", kudosableDefaultTurnRejected);
         kudosableCommentTurnHidden = properties.getInt("kudosable.comment.turn_hidden", kudosableDefaultTurnHidden);
         kudosableCommentTurnPending = properties.getInt("kudosable.comment.turn_pending", kudosableDefaultTurnPending);
 
-        kudosableDemandTurnValid = properties.getInt("kudosable.demand.turn_valid", kudosableDefaultTurnValid);
-        kudosableDemandTurnRejected = properties.getInt("kudosable.demand.turn_rejected", kudosableDefaultTurnRejected);
-        kudosableDemandTurnHidden = properties.getInt("kudosable.demand.turn_hidden", kudosableDefaultTurnHidden);
-        kudosableDemandTurnPending = properties.getInt("kudosable.demand.turn_pending", kudosableDefaultTurnPending);
+        kudosableFeatureTurnValid = properties.getInt("kudosable.feature.turn_valid", kudosableDefaultTurnValid);
+        kudosableFeatureTurnRejected = properties.getInt("kudosable.feature.turn_rejected", kudosableDefaultTurnRejected);
+        kudosableFeatureTurnHidden = properties.getInt("kudosable.feature.turn_hidden", kudosableDefaultTurnHidden);
+        kudosableFeatureTurnPending = properties.getInt("kudosable.feature.turn_pending", kudosableDefaultTurnPending);
 
         kudosableOfferTurnValid = properties.getInt("kudosable.offer.turn_valid", kudosableDefaultTurnValid);
         kudosableOfferTurnRejected = properties.getInt("kudosable.offer.turn_rejected", kudosableDefaultTurnRejected);
@@ -115,20 +115,20 @@ public class ModelConfiguration {
         return configuration.kudosableCommentTurnPending;
     }
 
-    public static int getKudosableDemandTurnValid() {
-        return configuration.kudosableDemandTurnValid;
+    public static int getKudosableFeatureTurnValid() {
+        return configuration.kudosableFeatureTurnValid;
     }
 
-    public static int getKudosableDemandTurnRejected() {
-        return configuration.kudosableDemandTurnRejected;
+    public static int getKudosableFeatureTurnRejected() {
+        return configuration.kudosableFeatureTurnRejected;
     }
 
-    public static int getKudosableDemandTurnHidden() {
-        return configuration.kudosableDemandTurnHidden;
+    public static int getKudosableFeatureTurnHidden() {
+        return configuration.kudosableFeatureTurnHidden;
     }
 
-    public static int getKudosableDemandTurnPending() {
-        return configuration.kudosableDemandTurnPending;
+    public static int getKudosableFeatureTurnPending() {
+        return configuration.kudosableFeatureTurnPending;
     }
 
     public static int getKudosableOfferTurnValid() {

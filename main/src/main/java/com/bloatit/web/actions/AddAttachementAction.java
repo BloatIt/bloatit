@@ -22,7 +22,7 @@ import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -77,7 +77,7 @@ public final class AddAttachementAction extends Action {
     @Override
     protected Url doProcess() {
         session.notifyList(url.getMessages());
-        if (!DemandManager.canCreate(session.getAuthToken())) {
+        if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use UserContentManager and not DemandManager here
             session.notifyError(Context.tr("You must be logged in to report a bug."));
             return new LoginPageUrl();

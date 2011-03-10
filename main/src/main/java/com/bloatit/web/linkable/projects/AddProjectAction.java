@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Project;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
@@ -93,7 +93,7 @@ public final class AddProjectAction extends Action {
     @Override
     protected Url doProcess() {
         session.notifyList(url.getMessages());
-        if (!DemandManager.canCreate(session.getAuthToken())) {
+        if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use ProjectManager and not DemandManager here
             session.notifyError(Context.tr("You must be logged in to add a project."));
             return new LoginPageUrl();

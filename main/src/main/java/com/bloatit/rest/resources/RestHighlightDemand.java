@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.HighlightDemand;
-import com.bloatit.model.managers.HighlightDemandManager;
+import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestHighlightDemandList;
 
@@ -78,8 +78,8 @@ import com.bloatit.rest.list.RestHighlightDemandList;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestHighlightDemand extends RestElement<HighlightDemand> {
-    private HighlightDemand model;
+public class RestHighlightDemand extends RestElement<HighlightFeature> {
+    private HighlightFeature model;
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors
@@ -92,7 +92,7 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
     private RestHighlightDemand() {
     }
 
-    protected RestHighlightDemand(HighlightDemand model) {
+    protected RestHighlightDemand(HighlightFeature model) {
         this.model = model;
     }
 
@@ -109,7 +109,7 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      */
     @REST(name = "highlightdemands", method = RequestMethod.GET)
     public static RestHighlightDemand getById(int id) {
-        RestHighlightDemand restHighlightDemand = new RestHighlightDemand(HighlightDemandManager.getById(id));
+        RestHighlightDemand restHighlightDemand = new RestHighlightDemand(HighlightFeatureManager.getById(id));
         if (restHighlightDemand.isNull()) {
             return null;
         }
@@ -123,7 +123,7 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      */
     @REST(name = "highlightdemands", method = RequestMethod.GET)
     public static RestHighlightDemandList getAll() {
-        return new RestHighlightDemandList(HighlightDemandManager.getAll());
+        return new RestHighlightDemandList(HighlightFeatureManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
     }
 
     /**
-     * @see com.bloatit.model.HighlightDemand#getPosition()
+     * @see com.bloatit.model.HighlightFeature#getPosition()
      */
     @XmlAttribute
     public int getPosition() {
@@ -145,15 +145,15 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
     }
 
     /**
-     * @see com.bloatit.model.HighlightDemand#getDemand()
+     * @see com.bloatit.model.HighlightFeature#getFeature()
      */
     @XmlElement
     public RestDemand getDemand() {
-        return new RestDemand(model.getDemand());
+        return new RestDemand(model.getFeature());
     }
 
     /**
-     * @see com.bloatit.model.HighlightDemand#getActivationDate()
+     * @see com.bloatit.model.HighlightFeature#getActivationDate()
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
@@ -168,14 +168,14 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
     /**
      * Provided for JAXB
      */
-    void setModel(HighlightDemand model) {
+    void setModel(HighlightFeature model) {
         this.model = model;
     }
 
     /**
      * Package method to find the model
      */
-    HighlightDemand getModel() {
+    HighlightFeature getModel() {
         return model;
     }
 

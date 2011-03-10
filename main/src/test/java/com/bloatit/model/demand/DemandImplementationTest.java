@@ -25,8 +25,8 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.ModelTestUnit;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
-import com.bloatit.model.feature.DemandImplementation;
-import com.bloatit.model.feature.DemandManager;
+import com.bloatit.model.feature.FeatureImplementation;
+import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
@@ -34,7 +34,7 @@ import com.bloatit.model.right.AuthToken;
 public class DemandImplementationTest extends ModelTestUnit {
 
     public void testCreate() {
-        final Feature demand = DemandImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
+        final Feature demand = FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
                                                                                      DaoDescription.createAndPersist(tomAuthToken.getMember()
                                                                                                                                  .getDao(),
                                                                                                                      Locale.FRANCE,
@@ -42,11 +42,11 @@ public class DemandImplementationTest extends ModelTestUnit {
                                                                                                                      "description"),
                                                                                      DaoProject.getByName("VLC")));
         assertNotNull(demand);
-        assertNull(DemandImplementation.create(null));
+        assertNull(FeatureImplementation.create(null));
     }
 
     private Feature createDemandByThomas() {
-        return DemandImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
+        return FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
                                                                       DaoDescription.createAndPersist(tomAuthToken.getMember().getDao(),
                                                                                                       Locale.FRANCE,
                                                                                                       "title",
@@ -55,7 +55,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testDemand() {
-        final Feature demand = new DemandImplementation(tomAuthToken.getMember(),
+        final Feature demand = new FeatureImplementation(tomAuthToken.getMember(),
                                                        Locale.FRANCE,
                                                        "title",
                                                        "Description",
@@ -141,7 +141,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     public void testAddContribution() throws UnauthorizedOperationException {
         final Feature demand = createDemandByThomas();
 
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
 
         demand.authenticate(fredAuthToken);
         try {
@@ -237,13 +237,13 @@ public class DemandImplementationTest extends ModelTestUnit {
         }
 
         assertEquals(demand.getContribution(), new BigDecimal("30"));
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
     }
 
     public void testAddOffer() {
         final Feature demand = createDemandByThomas();
 
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
         demand.authenticate(fredAuthToken);
 
         try {
@@ -260,14 +260,14 @@ public class DemandImplementationTest extends ModelTestUnit {
             fail();
         }
 
-        assertEquals(FeatureState.PREPARING, demand.getDemandState());
+        assertEquals(FeatureState.PREPARING, demand.getFeatureState());
 
         try {
             assertNotNull(demand.getSelectedOffer());
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
-        assertEquals(FeatureState.PREPARING, demand.getDemandState());
+        assertEquals(FeatureState.PREPARING, demand.getFeatureState());
     }
 
     public static class MockDemandValidationTimeOut {
@@ -279,23 +279,23 @@ public class DemandImplementationTest extends ModelTestUnit {
 
     public void testBeginDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
         Feature demand = createDemandByThomas();
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
 
         demand.authenticate(fredAuthToken);
         demand.addContribution(new BigDecimal("100"), "plop");
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
 
         demand.authenticate(tomAuthToken);
         demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
-        assertEquals(FeatureState.PREPARING, demand.getDemandState());
+        assertEquals(FeatureState.PREPARING, demand.getFeatureState());
 
         demand.authenticate(yoAuthToken);
         demand.addContribution(new BigDecimal("20"), "plip");
-        assertEquals(FeatureState.PREPARING, demand.getDemandState());
+        assertEquals(FeatureState.PREPARING, demand.getFeatureState());
 
         demand = passeIntoDev(demand);
 
-        assertEquals(FeatureState.DEVELOPPING, demand.getDemandState());
+        assertEquals(FeatureState.DEVELOPPING, demand.getFeatureState());
     }
 
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
@@ -303,16 +303,16 @@ public class DemandImplementationTest extends ModelTestUnit {
         final DaoMember admin = DaoMember.createAndPersist("admin1", "admin1", "admin1", Locale.FRANCE);
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
 
         demand.authenticate(fredAuthToken);
         demand.addContribution(new BigDecimal("100"), "plop");
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
 
         demand.authenticate(tomAuthToken);
 
         demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
-        assertEquals(FeatureState.PREPARING, demand.getDemandState());
+        assertEquals(FeatureState.PREPARING, demand.getFeatureState());
 
         assertNotNull(demand.getSelectedOffer());
 
@@ -350,7 +350,7 @@ public class DemandImplementationTest extends ModelTestUnit {
             demand.cancelDevelopment();
             fail();
         } catch (final UnauthorizedOperationException e) {
-            assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_CANCEL_DEMAND, e.getCode());
+            assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_CANCEL_FEATURE, e.getCode());
         }
 
         demand.authenticate(tomAuthToken);
@@ -361,31 +361,31 @@ public class DemandImplementationTest extends ModelTestUnit {
 
         assertEquals(0, demand.getContribution().intValue());
 
-        assertEquals(FeatureState.DISCARDED, demand.getDemandState());
+        assertEquals(FeatureState.DISCARDED, demand.getFeatureState());
 
     }
 
     private Feature createDemandAddOffer120AddContribution120BeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
         Feature demand = createDemandByThomas();
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
 
         demand.authenticate(fredAuthToken);
         demand.addContribution(new BigDecimal("100"), "plop");
-        assertEquals(FeatureState.PENDING, demand.getDemandState());
+        assertEquals(FeatureState.PENDING, demand.getFeatureState());
 
         demand.authenticate(tomAuthToken);
 
         demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
 
-        assertEquals(FeatureState.PREPARING, demand.getDemandState());
+        assertEquals(FeatureState.PREPARING, demand.getFeatureState());
 
         demand.authenticate(yoAuthToken);
         demand.addContribution(new BigDecimal("20"), "plip");
-        assertEquals(FeatureState.PREPARING, demand.getDemandState());
+        assertEquals(FeatureState.PREPARING, demand.getFeatureState());
 
         demand = passeIntoDev(demand);
 
-        assertEquals(FeatureState.DEVELOPPING, demand.getDemandState());
+        assertEquals(FeatureState.DEVELOPPING, demand.getFeatureState());
         return demand;
     }
 
@@ -445,7 +445,7 @@ public class DemandImplementationTest extends ModelTestUnit {
 
         demand = passeIntoDev(demand);
 
-        assertEquals(FeatureState.DEVELOPPING, demand.getDemandState());
+        assertEquals(FeatureState.DEVELOPPING, demand.getFeatureState());
 
         // demand.authenticate(tomAuthToken);
         // demand.releaseCurrentBatch();
@@ -517,7 +517,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         ModelAccessor.close();
         ModelAccessor.open();
 
-        return DemandManager.getDemandById(demand.getId());
+        return FeatureManager.getFeatureById(demand.getId());
 
     }
 }

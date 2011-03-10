@@ -23,16 +23,16 @@ import java.util.Locale;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.feature.DemandImplementation;
+import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.BatchList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.DemandRight;
+import com.bloatit.model.right.FeatureRight;
 
 // TODO rightManagement
 public final class Offer extends Kudosable<DaoOffer> {
@@ -69,14 +69,14 @@ public final class Offer extends Kudosable<DaoOffer> {
      *            non null. Must be in the future.
      */
     public Offer(final Member member,
-                 final Feature demand,
+                 final Feature feature,
                  final BigDecimal amount,
                  final String description,
                  final Locale local,
                  final Date dateExpire,
                  final int secondsBeforeValidation) {
         super(new DaoOffer(member.getDao(),
-                           DBRequests.getById(DaoFeature.class, demand.getId()),
+                           DBRequests.getById(DaoFeature.class, feature.getId()),
                            amount,
                            DaoDescription.createAndPersist(member.getDao(), local, "RFU", description),
                            dateExpire,
@@ -111,7 +111,7 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     public boolean validateCurrentBatch(final boolean force) {
         // If the validation is not complete, there is nothing to do in the
-        // demand
+        // feature
         DaoBatch currentBatch = findCurrentDaoBatch();
         if (currentBatch == null) {
             Log.framework().error("You tried to validate a batch, but no batch to validate found.");
@@ -120,9 +120,9 @@ public final class Offer extends Kudosable<DaoOffer> {
         final boolean isAllValidated = currentBatch.validate(force);
         if (isAllValidated) {
             if (getDao().hasBatchesLeft()) {
-                getDemandImplementation().setBatchIsValidated();
+                getFeatureImplementation().setBatchIsValidated();
             } else {
-                getDemandImplementation().setOfferIsValidated();
+                getFeatureImplementation().setOfferIsValidated();
             }
         }
         return isAllValidated;
@@ -157,12 +157,12 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     @Override
     protected void notifyKudos(final boolean positif) {
-        getDemandImplementation().notifyOfferKudos(this, positif);
+        getFeatureImplementation().notifyOfferKudos(this, positif);
     }
 
     @Override
     protected void notifyRejected() {
-        getDemand().unSelectOffer(this);
+        getFeature().unSelectOffer(this);
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -177,12 +177,12 @@ public final class Offer extends Kudosable<DaoOffer> {
         return getDao().isDraft();
     }
 
-    public Feature getDemand() {
-        return getDemandImplementation();
+    public Feature getFeature() {
+        return getFeatureImplementation();
     }
 
-    private DemandImplementation getDemandImplementation() {
-        return DemandImplementation.create(getDao().getFeature());
+    private FeatureImplementation getFeatureImplementation() {
+        return FeatureImplementation.create(getDao().getFeature());
     }
 
     public BigDecimal getAmount() {
@@ -202,7 +202,7 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     /**
      * Return the progression of the funding of this offer with the amount
-     * available on the demand
+     * available on the feature
      *
      * @return
      * @throws UnauthorizedOperationException
@@ -210,9 +210,9 @@ public final class Offer extends Kudosable<DaoOffer> {
     public float getProgression() throws UnauthorizedOperationException {
 
         if (getAmount().floatValue() != 0) {
-            tryAccess(new DemandRight.Contribute(), Action.READ);
+            tryAccess(new FeatureRight.Contribute(), Action.READ);
 
-            return (getDemand().getContribution().floatValue() * PROGRESSION_PERCENT) / getAmount().floatValue();
+            return (getFeature().getContribution().floatValue() * PROGRESSION_PERCENT) / getAmount().floatValue();
         }
         return Float.POSITIVE_INFINITY;
     }

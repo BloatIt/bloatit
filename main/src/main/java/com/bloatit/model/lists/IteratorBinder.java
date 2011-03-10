@@ -19,7 +19,6 @@ package com.bloatit.model.lists;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.model.DataVisitorConstructor;
-import com.bloatit.model.Identifiable;
 
 /**
  * The Class IteratorBinder is the base class of the iterator used in the List
@@ -27,8 +26,8 @@ import com.bloatit.model.Identifiable;
  * PageIterable<...>.
  *
  * @param <E> the Model representation of a Dao element.
- * @param <DAO> the Dao Element. (If <code>E</code> id Demand then
- *            <code>DAO</code> must be DaoDemand.
+ * @param <DAO> the Dao Element. (If <code>E</code> id Feature then
+ *            <code>DAO</code> must be DaoFeature.
  */
 public class IteratorBinder<E extends IdentifiableInterface, DAO extends DaoIdentifiable> implements java.util.Iterator<E> {
 

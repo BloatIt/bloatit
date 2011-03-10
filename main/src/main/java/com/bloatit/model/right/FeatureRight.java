@@ -19,10 +19,10 @@ package com.bloatit.model.right;
 import com.bloatit.model.Feature;
 
 /**
- * The Class DemandRight store the properties accessor for the {@link Feature}
+ * The Class FeatureRight store the properties accessor for the {@link Feature}
  * class.
  */
-public class DemandRight extends RightManager {
+public class FeatureRight extends RightManager {
 
     /**
      * The Class Description is an accessor for the Description property.
@@ -89,9 +89,9 @@ public class DemandRight extends RightManager {
     }
 
     /**
-     * The Class DemandContent is an accessor for the DemandContent property.
+     * The Class FeatureContent is an accessor for the FeatureContent property.
      */
-    public static class DemandContent extends Public {
+    public static class FeatureContent extends Public {
         // nothing this is just a rename.
     }
 

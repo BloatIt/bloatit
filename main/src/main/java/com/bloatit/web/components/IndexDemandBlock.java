@@ -8,7 +8,7 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.HighlightDemand;
+import com.bloatit.model.HighlightFeature;
 import com.bloatit.web.linkable.demands.DemandsTools;
 import com.bloatit.web.linkable.projects.ProjectsTools;
 import com.bloatit.web.pages.master.DefineParagraph;
@@ -18,7 +18,7 @@ public class IndexDemandBlock extends HtmlDiv {
 
     private final PlaceHolderElement floatRight;
 
-    public IndexDemandBlock(HighlightDemand highlightDemand) {
+    public IndexDemandBlock(HighlightFeature highlightDemand) {
         super("index_element");
 
         add(new HtmlTitle(highlightDemand.getReason(), 2));
@@ -29,18 +29,18 @@ public class IndexDemandBlock extends HtmlDiv {
 
         try {
 
-            setFloatRight(ProjectsTools.getProjectLogo(highlightDemand.getDemand().getProject()));
+            setFloatRight(ProjectsTools.getProjectLogo(highlightDemand.getFeature().getProject()));
 
-            indexBodyElement.add(new HtmlTitle(new DemandPageUrl(highlightDemand.getDemand()).getHtmlLink(DemandsTools.getTitle(highlightDemand.getDemand())),
+            indexBodyElement.add(new HtmlTitle(new DemandPageUrl(highlightDemand.getFeature()).getHtmlLink(DemandsTools.getTitle(highlightDemand.getFeature())),
                                                3));
 
-            indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightDemand.getDemand().getProject())));
+            indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightDemand.getFeature().getProject())));
 
-            indexBodyElement.add(DemandsTools.generateProgress(highlightDemand.getDemand(), true));
+            indexBodyElement.add(DemandsTools.generateProgress(highlightDemand.getFeature(), true));
 
-            indexBodyElement.add(new DemandPageUrl(highlightDemand.getDemand()).getHtmlLink(tr("more details...")));
+            indexBodyElement.add(new DemandPageUrl(highlightDemand.getFeature()).getHtmlLink(tr("more details...")));
 
-            indexBodyElement.add(DemandsTools.generateDetails(highlightDemand.getDemand()));
+            indexBodyElement.add(DemandsTools.generateDetails(highlightDemand.getFeature()));
 
         } catch (UnauthorizedOperationException e) {
         }

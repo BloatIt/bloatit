@@ -14,15 +14,18 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model;
+package com.bloatit.model.lists;
 
-import java.util.Locale;
+import com.bloatit.data.DaoHighlightFeature;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.HighlightFeature;
 
-import com.bloatit.model.feature.DemandImplementation;
-
-public class DemandFactory {
-
-    public static Feature createDemand(final Member author, final Locale locale, final String title, final String description, final Project project) {
-        return new DemandImplementation(author, locale, title, description, project);
+/**
+ * The Class HighlightFeatureList transforms PageIterable<DaoHighlightFeature> to
+ * PageIterable<HighlightFeature>.
+ */
+public final class HighlightFeatureList extends ListBinder<HighlightFeature, DaoHighlightFeature> {
+    public HighlightFeatureList(PageIterable<DaoHighlightFeature> daoCollection) {
+        super(daoCollection);
     }
 }

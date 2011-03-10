@@ -28,7 +28,7 @@ import com.bloatit.model.PlannedTask;
  * introduce multithred bugs)
  * </p>
  * <p>
- * Tells that the current development of a specified demand should be finish
+ * Tells that the current development of a specified feature should be finish
  * (the expiration date is reached).
  * </p>
  */
@@ -37,19 +37,19 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5639581628713974313L;
 
-    /** The demand id. */
-    private final int demandId;
+    /** The feature id. */
+    private final int featureId;
 
     /**
      * Instantiates a new task development time out.
      *
-     * @param demandId the demand id on which we will have to perform a
+     * @param featureId the feature id on which we will have to perform a
      *            "development time out".
      * @param time the date when this task will be run.
      */
-    public TaskDevelopmentTimeOut(final int demandId, final Date time) {
-        super(time, demandId);
-        this.demandId = demandId;
+    public TaskDevelopmentTimeOut(final int featureId, final Date time) {
+        super(time, featureId);
+        this.featureId = featureId;
     }
 
     /*
@@ -59,11 +59,11 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
     @Override
     public void doRun() {
         try {
-            final DemandImplementation demand = DemandManager.getDemandImplementationById(demandId);
-            if (demand != null) {
-                demand.developmentTimeOut();
+            final FeatureImplementation feature = FeatureManager.getFeatureImplementationById(featureId);
+            if (feature != null) {
+                feature.developmentTimeOut();
             } else {
-                Log.framework().fatal("Cannot perform the developmentTimeOut. DemandImplementation not found: " + demandId);
+                Log.framework().fatal("Cannot perform the developmentTimeOut. FeatureImplementation not found: " + featureId);
             }
         } catch (final WrongStateException e) {
             Log.model().fatal("Wrong state when trying to perform the developmentTimeOut", e);

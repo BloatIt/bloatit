@@ -23,8 +23,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.TranslationList;
 
 /**
- * A description must be created through the Demand class. (For example, you
- * create a description each time you create a demand.) There is no right
+ * A description must be created through the Feature class. (For example, you
+ * create a description each time you create a feature.) There is no right
  * management for this class. I assume that if you can get a
  * <code>Description</code> then you can access every property in it.
  *

@@ -193,7 +193,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
             {
                 final HtmlDiv actionsButtons = new HtmlDiv("demand_summary_actions_buttons");
                 actions.add(actionsButtons);
-                switch (demand.getDemandState()) {
+                switch (demand.getFeatureState()) {
                     case PENDING:
                         actionsButtons.add(new HtmlDiv("contribute_block").add(generateContributeAction()));
                         actionsButtons.add(new HtmlDiv("make_offer_block").add(generateMakeAnOfferAction()));

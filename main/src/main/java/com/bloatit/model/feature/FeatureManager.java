@@ -20,66 +20,65 @@ import com.bloatit.data.DaoFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Project;
 import com.bloatit.model.right.AuthToken;
 
 /**
- * The Class DemandManager is a class with only static member. Use it to do some
- * requests on the DB returning demands.
+ * The Class FeatureManager is a class with only static member. Use it to do some
+ * requests on the DB returning features.
  */
-public final class DemandManager {
+public final class FeatureManager {
 
     /**
      * Desactivate default ctor
      */
-    private DemandManager() {
+    private FeatureManager() {
         // Desactivate default ctor
     }
 
     /**
-     * Gets the all demands stored in the DB.
+     * Gets the all features stored in the DB.
      *
-     * @return the demands
+     * @return the features
      */
-    public static PageIterable<Feature> getDemands() {
-        return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoFeature.class));
+    public static PageIterable<Feature> getFeatures() {
+        return new FeatureList(DBRequests.getAllUserContentOrderByDate(DaoFeature.class));
     }
 
     /**
-     * Gets the demand by id.
+     * Gets the feature by id.
      *
-     * @param id the id of the demand we are looking for.
-     * @return the demand or null if not found.
+     * @param id the id of the feature we are looking for.
+     * @return the feature or null if not found.
      */
-    public static Feature getDemandById(final Integer id) {
-        return getDemandImplementationById(id);
+    public static Feature getFeatureById(final Integer id) {
+        return getFeatureImplementationById(id);
     }
 
     /**
-     * Gets the demandImplementation by id.
+     * Gets the featureImplementation by id.
      *
-     * @param id the id of the demand
-     * @return the demand or null if not found
+     * @param id the id of the feature
+     * @return the feature or null if not found
      */
-    static DemandImplementation getDemandImplementationById(final Integer id) {
-        return DemandImplementation.create(DBRequests.getById(DaoFeature.class, id));
+    static FeatureImplementation getFeatureImplementationById(final Integer id) {
+        return FeatureImplementation.create(DBRequests.getById(DaoFeature.class, id));
     }
 
     /**
-     * Gets the number of demand.
+     * Gets the number of feature.
      *
-     * @return the number of demand.
+     * @return the number of feature.
      */
-    public static int getDemandsCount() {
+    public static int getFeaturesCount() {
         return DBRequests.count(DaoFeature.class);
     }
 
     // Can create if authenticated.
     /**
-     * Tells if a user can create a demand.
+     * Tells if a user can create a feature.
      *
      * @param authToken the auth token representing the user wanting to create a
-     *            demand.
+     *            feature.
      * @return true, if successful
      */
     public static boolean canCreate(final AuthToken authToken) {

@@ -5,34 +5,34 @@ import java.util.Date;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.queries.DBRequests;
-import com.bloatit.model.feature.DemandImplementation;
+import com.bloatit.model.feature.FeatureImplementation;
 
-public class HighlightDemand extends Identifiable<DaoHighlightFeature> {
+public class HighlightFeature extends Identifiable<DaoHighlightFeature> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static final class MyCreator extends Creator<DaoHighlightFeature, HighlightDemand> {
+    private static final class MyCreator extends Creator<DaoHighlightFeature, HighlightFeature> {
         @Override
-        public HighlightDemand doCreate(final DaoHighlightFeature dao) {
-            return new HighlightDemand(dao);
+        public HighlightFeature doCreate(final DaoHighlightFeature dao) {
+            return new HighlightFeature(dao);
         }
     }
 
-    public static HighlightDemand create(final DaoHighlightFeature dao) {
+    public static HighlightFeature create(final DaoHighlightFeature dao) {
         return new MyCreator().create(dao);
     }
 
-    public HighlightDemand(final Feature demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
-        super(DaoHighlightFeature.createAndPersist(DBRequests.getById(DaoFeature.class, demand.getId()),
+    public HighlightFeature(final Feature feature, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
+        super(DaoHighlightFeature.createAndPersist(DBRequests.getById(DaoFeature.class, feature.getId()),
                                                   position,
                                                   reason,
                                                   activationDate,
                                                   desactivationDate));
     }
 
-    private HighlightDemand(final DaoHighlightFeature dao) {
+    private HighlightFeature(final DaoHighlightFeature dao) {
         super(dao);
     }
 
@@ -44,8 +44,8 @@ public class HighlightDemand extends Identifiable<DaoHighlightFeature> {
         return getDao().getActivationDate();
     }
 
-    public Feature getDemand() {
-        return DemandImplementation.create(getDao().getFeature());
+    public Feature getFeature() {
+        return FeatureImplementation.create(getDao().getFeature());
     }
 
     public String getReason() {
