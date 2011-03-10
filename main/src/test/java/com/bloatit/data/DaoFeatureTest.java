@@ -10,57 +10,57 @@ import com.bloatit.framework.utils.DateUtils;
 /**
  * I assume the DaoGroupMemberTest is run without error.
  */
-public class DaoDemandTest extends DataTestUnit {
+public class DaoFeatureTest extends DataTestUnit {
 
-    public void testCreateDemand() {
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+    public void testCreateFeature() {
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
-        assertEquals(demand, yo.getFeatures().iterator().next());
+        assertEquals(feature, yo.getFeatures().iterator().next());
     }
 
-    public void testRetrieveDemand() {
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+    public void testRetrieveFeature() {
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
-        assertEquals(demand, DBRequests.getAll(DaoFeature.class).iterator().next());
+        assertEquals(feature, DBRequests.getAll(DaoFeature.class).iterator().next());
 
-        assertEquals(yo, demand.getAuthor());
+        assertEquals(yo, feature.getAuthor());
     }
 
-    public void testDeleteDemand() {
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+    public void testDeleteFeature() {
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
         SessionManager.flush();
 
-        demand.delete();
+        feature.delete();
 
         assertFalse(DBRequests.getAll(DaoFeature.class).iterator().hasNext());
     }
 
     public void testAddContribution() throws Throwable {
-        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
         fred.getInternalAccount().setAmount(new BigDecimal("100"));
         yo.getInternalAccount().setAmount(new BigDecimal("100"));
 
-        demand.addContribution(fred, new BigDecimal("25.00"), "Contribution");
-        demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous");
+        feature.addContribution(fred, new BigDecimal("25.00"), "Contribution");
+        feature.addContribution(yo, new BigDecimal("18.00"), "I'm so generous");
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
 
-        demand = DBRequests.getById(DaoFeature.class, demand.getId());
+        feature = DBRequests.getById(DaoFeature.class, feature.getId());
 
-        assertEquals(2, demand.getContributions().size());
+        assertEquals(2, feature.getContributions().size());
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("25")));
         assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("75")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("18")));
@@ -68,52 +68,52 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     public void testAddOffer() {
-        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
-        demand = DBRequests.getById(DaoFeature.class, demand.getId());
+        feature = DBRequests.getById(DaoFeature.class, feature.getId());
 
-        demand.addOffer(createOffer(demand));
+        feature.addOffer(createOffer(feature));
 
-        assertEquals(1, demand.getOffers().size());
+        assertEquals(1, feature.getOffers().size());
     }
 
     public void testAddComment() throws Throwable {
-        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
-        demand.addComment(DaoComment.createAndPersist(demand, yo, "4"));
-        demand.addComment(DaoComment.createAndPersist(demand, yo, "3"));
-        demand.addComment(DaoComment.createAndPersist(demand, yo, "2"));
-        demand.addComment(DaoComment.createAndPersist(demand, yo, "1"));
+        feature.addComment(DaoComment.createAndPersist(feature, yo, "4"));
+        feature.addComment(DaoComment.createAndPersist(feature, yo, "3"));
+        feature.addComment(DaoComment.createAndPersist(feature, yo, "2"));
+        feature.addComment(DaoComment.createAndPersist(feature, yo, "1"));
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
-        demand = DBRequests.getById(DaoFeature.class, demand.getId());
+        feature = DBRequests.getById(DaoFeature.class, feature.getId());
 
-        assertEquals(4, demand.getComments().size());
+        assertEquals(4, feature.getComments().size());
     }
 
     public void testAcceptContributions() throws Throwable {
         fred.getInternalAccount().setAmount(new BigDecimal(50));
         yo.getInternalAccount().setAmount(new BigDecimal(50));
 
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
-        final DaoOffer offer = createOffer(demand);
-        demand.addOffer(offer);
+        final DaoOffer offer = createOffer(feature);
+        feature.addOffer(offer);
 
-        demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
-        demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
+        feature.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
+        feature.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
-        for (final DaoContribution Contribution : demand.getContributions()) {
+        for (final DaoContribution Contribution : feature.getContributions()) {
             Contribution.validate(offer, 100);
         }
 
@@ -123,9 +123,9 @@ public class DaoDemandTest extends DataTestUnit {
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("32")));
     }
 
-    private DaoOffer createOffer(final DaoFeature demand) {
+    private DaoOffer createOffer(final DaoFeature feature) {
         return new DaoOffer(fred,
-                            demand,
+                            feature,
                             new BigDecimal("200"),
                             DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
                             DateUtils.tomorrow(),
@@ -135,23 +135,23 @@ public class DaoDemandTest extends DataTestUnit {
     public void testRejectContribution() throws Throwable {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
-        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
-        demand.addOffer(createOffer(demand));
+        feature.addOffer(createOffer(feature));
         fred.getInternalAccount().setAmount(new BigDecimal("100"));
         yo.getInternalAccount().setAmount(new BigDecimal("100"));
-        demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
-        demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
+        feature.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
+        feature.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
-        demand = DBRequests.getById(DaoFeature.class, demand.getId());
+        feature = DBRequests.getById(DaoFeature.class, feature.getId());
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
 
-        for (final DaoContribution contribution : demand.getContributions()) {
+        for (final DaoContribution contribution : feature.getContributions()) {
             contribution.cancel();
         }
 
@@ -164,27 +164,27 @@ public class DaoDemandTest extends DataTestUnit {
     public void testGetCurrentOffer() {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
-        final DaoOffer offer = createOffer(demand);
-        demand.addOffer(offer);
+        final DaoOffer offer = createOffer(feature);
+        feature.addOffer(offer);
         SessionManager.flush();
 
-        demand.computeSelectedOffer();
-        assertEquals(demand.getSelectedOffer(), offer);
+        feature.computeSelectedOffer();
+        assertEquals(feature.getSelectedOffer(), offer);
     }
 
-    public void testSearchDemand() {
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+    public void testSearchFeature() {
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
-        demand.addOffer(createOffer(demand));
+        feature.addOffer(createOffer(feature));
 
-        // This is needed to index the new Demand.
+        // This is needed to index the new Feature.
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
 
@@ -194,12 +194,12 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     public void testGetComment() {
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
-        demand.addComment(DaoComment.createAndPersist(demand, yo, "plop"));
-        assertNotNull(demand.getComments().iterator().next());
+        feature.addComment(DaoComment.createAndPersist(feature, yo, "plop"));
+        assertNotNull(feature.getComments().iterator().next());
     }
 
 }

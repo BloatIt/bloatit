@@ -11,14 +11,14 @@ public class DaoIdentifiableListFactoryTest extends DataTestUnit {
 
     public void testDaoIdentifiableListFactory() {
 
-        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
         DaoIdentifiableQuery<DaoIdentifiable> factory = new DaoIdentifiableQuery<DaoIdentifiable>();
-        factory.idEquals(demand.getId());
-        assertEquals(demand, factory.uniqueResult());
+        factory.idEquals(feature.getId());
+        assertEquals(feature, factory.uniqueResult());
     }
 
     public void testCreateCollection() {

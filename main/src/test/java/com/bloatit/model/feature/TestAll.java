@@ -1,4 +1,4 @@
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -24,8 +24,8 @@ public class TestAll {
     public static Test suite() {
         TestSuite suite;
 
-        suite = new TestSuite("Tests in package com.bloatit.model.demand");
-        suite.addTestSuite(DemandImplementationTest.class);
+        suite = new TestSuite("Tests in package com.bloatit.model.feature");
+        suite.addTestSuite(FeatureImplementationTest.class);
         return suite;
     }
 }

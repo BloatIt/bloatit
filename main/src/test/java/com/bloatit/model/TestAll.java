@@ -27,7 +27,7 @@ public class TestAll {
         suite = new TestSuite("Tests in package com.bloatit.model");
         suite.addTestSuite(KudosableTest.class);
         suite.addTestSuite(MemberTest.class);
-        suite.addTest(com.bloatit.model.demand.TestAll.suite());
+        suite.addTest(com.bloatit.model.feature.TestAll.suite());
         return suite;
     }
 }

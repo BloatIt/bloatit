@@ -71,7 +71,7 @@ public class BigDB {
         project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 
         for (int i = 0; i < nbUsers; i++) {
-            final DaoFeature demand = DaoFeature.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
+            final DaoFeature feature = DaoFeature.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
                                                                                                                 new Locale("fr"),
                                                                                                                 fortune(140),
                                                                                                                 fortune(1000) + fortune(1000)
@@ -81,16 +81,16 @@ public class BigDB {
 
             for (int j = 0; j < commentCount; j++) {
 
-                final DaoComment comment = DaoComment.createAndPersist(demand, members.get(i), fortune());
+                final DaoComment comment = DaoComment.createAndPersist(feature, members.get(i), fortune());
                 createComment(comment);
-                demand.addComment(comment);
+                feature.addComment(comment);
             }
 
             final int nbContrib = pick(12);
             for (int j = 0; j < nbContrib; j++) {
                 final DaoMember m = members.get(pick(nbUsers));
                 try {
-                    demand.addContribution(m, new BigDecimal((pick(10) + 1) * 10), fortune(144));
+                    feature.addContribution(m, new BigDecimal((pick(10) + 1) * 10), fortune(144));
                 } catch (final NotEnoughMoneyException e) {
                     e.printStackTrace();
                 }
@@ -98,16 +98,16 @@ public class BigDB {
 
             final DaoMember member = members.get(pick(nbUsers));
             if (pick(2) == 0) {
-                demand.addOffer(new DaoOffer(member,
-                                             demand,
+                feature.addOffer(new DaoOffer(member,
+                                             feature,
                                              new BigDecimal((pick(50) + 10) * 10),
                                              DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
                                              new Date(System.currentTimeMillis() + 200),
                                              0));
                 if (pick(2) == 0) {
-                    for (final DaoContribution contrib : demand.getContributions()) {
+                    for (final DaoContribution contrib : feature.getContributions()) {
                         try {
-                            contrib.validate(demand.getOffers().iterator().next(), 100);
+                            contrib.validate(feature.getOffers().iterator().next(), 100);
                         } catch (final NotEnoughMoneyException e) {
                             e.printStackTrace();
                         }

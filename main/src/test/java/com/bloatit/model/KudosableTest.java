@@ -6,38 +6,38 @@ import com.bloatit.model.feature.FeatureManager;
 public class KudosableTest extends ModelTestUnit {
 
     public void testCanKudos() throws UnauthorizedOperationException {
-        final Feature demand = FeatureManager.getFeatureById(db.getDemand().getId());
+        final Feature feature = FeatureManager.getFeatureById(db.getFeature().getId());
 
-        demand.authenticate(fredAuthToken);
-        assertTrue(demand.canVoteUp().isEmpty());
-        demand.voteUp();
-        assertFalse(demand.canVoteUp().isEmpty());
+        feature.authenticate(fredAuthToken);
+        assertTrue(feature.canVoteUp().isEmpty());
+        feature.voteUp();
+        assertFalse(feature.canVoteUp().isEmpty());
 
-        // Yo is the author of the demand
-        demand.authenticate(yoAuthToken);
-        assertFalse(demand.canVoteUp().isEmpty());
+        // Yo is the author of the feature
+        feature.authenticate(yoAuthToken);
+        assertFalse(feature.canVoteUp().isEmpty());
 
-        demand.authenticate(tomAuthToken);
-        assertTrue(demand.canVoteUp().isEmpty());
-        demand.voteUp();
-        assertFalse(demand.canVoteUp().isEmpty());
+        feature.authenticate(tomAuthToken);
+        assertTrue(feature.canVoteUp().isEmpty());
+        feature.voteUp();
+        assertFalse(feature.canVoteUp().isEmpty());
     }
 
     public void testUnkudos() {
-        final Feature demand = FeatureManager.getFeatureById(db.getDemand().getId());
+        final Feature feature = FeatureManager.getFeatureById(db.getFeature().getId());
 
-        assertEquals(0, demand.getPopularity());
-        demand.authenticate(yoAuthToken);
-        // demand.unkudos();
-        // assertEquals(-1, demand.getPopularity());
+        assertEquals(0, feature.getPopularity());
+        feature.authenticate(yoAuthToken);
+        // feature.unkudos();
+        // assertEquals(-1, feature.getPopularity());
     }
 
     public void testKudos() throws UnauthorizedOperationException {
-        final Feature demand = FeatureManager.getFeatureById(db.getDemand().getId());
+        final Feature feature = FeatureManager.getFeatureById(db.getFeature().getId());
 
-        demand.authenticate(fredAuthToken);
-        demand.voteUp();
-        assertEquals(1, demand.getPopularity());
+        feature.authenticate(fredAuthToken);
+        feature.voteUp();
+        assertEquals(1, feature.getPopularity());
     }
 
 }

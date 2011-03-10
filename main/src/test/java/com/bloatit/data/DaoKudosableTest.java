@@ -9,16 +9,16 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 public class DaoKudosableTest extends TestCase {
 
     public void testAddKudos() {
-        demand.addKudos(fred, 12);
-        demand.addKudos(yo, -12);
-        demand.addKudos(tom, 42);
+        feature.addKudos(fred, 12);
+        feature.addKudos(yo, -12);
+        feature.addKudos(tom, 42);
     }
 
     private DaoMember yo;
     private DaoMember tom;
     private DaoMember fred;
 
-    private DaoFeature demand;
+    private DaoFeature feature;
 
     @Override
     protected void setUp() throws Exception {
@@ -48,7 +48,7 @@ public class DaoKudosableTest extends TestCase {
         DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
 
-        demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                 new Locale("fr"),
                                                                                 "Ma super demande !",
                                                                                 "Ceci est la descption de ma demande :) "), project);

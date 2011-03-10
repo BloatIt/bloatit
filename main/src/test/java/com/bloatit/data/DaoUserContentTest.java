@@ -9,17 +9,17 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 public class DaoUserContentTest extends TestCase {
 
     public void testGetAuthor() {
-        assertEquals(yo, demand.getAuthor());
+        assertEquals(yo, feature.getAuthor());
     }
 
     public void testSetAsGroup() {
-        demand.setAsGroup(b219);
+        feature.setAsGroup(b219);
     }
 
     public void testGetAsGroup() {
-        assertNull(demand.getAsGroup());
-        demand.setAsGroup(b219);
-        assertEquals(b219, demand.getAsGroup());
+        assertNull(feature.getAsGroup());
+        feature.setAsGroup(b219);
+        assertEquals(b219, feature.getAsGroup());
 
     }
 
@@ -28,7 +28,7 @@ public class DaoUserContentTest extends TestCase {
     private DaoMember fred;
     private DaoGroup b219;
 
-    private DaoFeature demand;
+    private DaoFeature feature;
 
     @Override
     protected void setUp() throws Exception {
@@ -58,7 +58,7 @@ public class DaoUserContentTest extends TestCase {
         DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
 
-        demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                 new Locale("fr"),
                                                                                 "Ma super demande !",
                                                                                 "Ceci est la descption de ma demande :) "), project);

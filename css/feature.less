@@ -2,24 +2,24 @@
 @import "include/tools";
 @import "include/components";
 
-@import "demand/offer-list";
+@import "feature/offer-list";
 
 
-.demand_summary {
+.feature_summary {
     .box;
     
     padding : 10px;
 }
 
-.demand_summary_top{
+.feature_summary_top{
     margin-bottom:20px;
 }
 
-.demand_summary_left {
+.feature_summary_left {
     display:table-cell;
 }
 
-.demand_summary_center {
+.feature_summary_center {
     display:table-cell;
     vertical-align : middle;
     padding-left : 20px;
@@ -32,13 +32,13 @@
     }
 }
 
-.demand_summary_left {
+.feature_summary_left {
     padding-right: 15px;
     border-right: 2px solid @border_color;
 
 }
 
-.demand_sumary_bottom {
+.feature_sumary_bottom {
     .display-box;
     .box-align(end);
     width: 100%;
@@ -46,13 +46,13 @@
 }
 
 
-.demand_summary_popularity {
+.feature_summary_popularity {
     vertical-align : bottom;
     width:80px;
 }
 
 
-.demand_summary_progress {
+.feature_summary_progress {
     .box-flex;
     
     padding-bottom: 10px;
@@ -62,7 +62,7 @@
     }
 }
 
-.demand_summary_share_button {
+.feature_summary_share_button {
     
     vertical-align : bottom;
     width:50px;
@@ -70,14 +70,14 @@
 
 
 
-.demand_summary_actions {
+.feature_summary_actions {
     width:100%;
     margin-bottom: 25px;
     margin-top: 20px;
 }
 
 
-.demand_summary_actions_buttons {
+.feature_summary_actions_buttons {
     width:100%;
     display:block;
 
@@ -135,11 +135,11 @@
 }
 
 
-.demand_summary_share {
+.feature_summary_share {
     font-size: 0.7em;
 }
 
-.demand_popularity_text {
+.feature_popularity_text {
     .no_insets;
     text-align: center;
     font-size: 0.7em;
@@ -147,7 +147,7 @@
 
 
 
-.demand_popularity_score {
+.feature_popularity_score {
     .no_insets;
 display:table-cell;
     width:100%;
@@ -157,7 +157,7 @@ display:table-cell;
     color: @title_color;
 }
 
-.demand_popularity_judge {
+.feature_popularity_judge {
     .no_insets;
     display:table-cell;
     vertical-align: middle;
@@ -180,7 +180,7 @@ display:table-cell;
     }
 }
 
-.demand_popularity_judged {
+.feature_popularity_judged {
     .no_insets;
     display:table-cell;
     vertical-align: top;
@@ -202,14 +202,14 @@ display:table-cell;
     }
 }
 
-.demand_popularity_none {
+.feature_popularity_none {
     .no_insets;
     display:table-cell;
     width: 10px;
     height: 10px;
 }
 
-#demand_summary_share {
+#feature_summary_share {
     border-top : 1px solid @border_color;
     margin-top: 30px;
     margin-left: 150px;

@@ -32,7 +32,7 @@ public class SimpleTestDB {
     private final DaoGroup other;
     private final DaoGroup b219;
     private final DaoGroup ubuntuUsers;
-    private final DaoFeature demand;
+    private final DaoFeature feature;
     private final DaoProject project;
 
     public SimpleTestDB() {
@@ -81,16 +81,16 @@ public class SimpleTestDB {
         project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
-        demand = DaoFeature.createAndPersist(yo,
+        feature = DaoFeature.createAndPersist(yo,
                                             DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
                                             project);
-        final DaoComment c1 = DaoComment.createAndPersist(demand, tom, "Pas tres constructif hein !");
-        final DaoComment c2 = DaoComment.createAndPersist(demand, fred, "Plop");
+        final DaoComment c1 = DaoComment.createAndPersist(feature, tom, "Pas tres constructif hein !");
+        final DaoComment c2 = DaoComment.createAndPersist(feature, fred, "Plop");
         final DaoComment c21 = DaoComment.createAndPersist(c2, tom, "plup");
         final DaoComment c22 = DaoComment.createAndPersist(c2, tom, "CCC-Combo Breaker ;) ");
         final DaoComment c23 = DaoComment.createAndPersist(c2, fred, "Plip");
-        demand.addComment(c1);
-        demand.addComment(c2);
+        feature.addComment(c1);
+        feature.addComment(c2);
         c1.addChildComment(DaoComment.createAndPersist(c1, yo, "Je sais c'est just un test"));
         c2.addChildComment(c21);
         c2.addChildComment(c22);
@@ -103,37 +103,37 @@ public class SimpleTestDB {
         c21.addKudos(fred, -1);
 
         try {
-            demand.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
-            demand.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
+            feature.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
+            feature.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
-            demand.addOffer(new DaoOffer(fred,
-                                         demand,
+            feature.addOffer(new DaoOffer(fred,
+                                         feature,
                                          new BigDecimal("200"),
                                          DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
                                          DateUtils.tomorrow(),
                                          0));
 
-            demand.getOffers().iterator().next().setState(PopularityState.VALIDATED);
+            feature.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 
-            for (final DaoContribution contribution : demand.getContributions()) {
+            for (final DaoContribution contribution : feature.getContributions()) {
                 try {
-                    contribution.validate(demand.getOffers().iterator().next(), 100);
+                    contribution.validate(feature.getOffers().iterator().next(), 100);
                 } catch (final NotEnoughMoneyException e) {
                     e.printStackTrace();
                 }
             }
 
-            final DaoFeature demand1 = DaoFeature.createAndPersist(fred, DaoDescription.createAndPersist(fred,
+            final DaoFeature feature1 = DaoFeature.createAndPersist(fred, DaoDescription.createAndPersist(fred,
                                                                                                        new Locale("en"),
                                                                                                        "I try it in English",
                                                                                                        "Hello world"), project);
-            demand1.getDescription().addTranslation(new DaoTranslation(tom,
-                                                                       demand1.getDescription(),
+            feature1.getDescription().addTranslation(new DaoTranslation(tom,
+                                                                       feature1.getDescription(),
                                                                        new Locale("fr"),
                                                                        "J'essaie en anglais",
                                                                        "Salut le monde"));
-            demand1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
-            demand1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
+            feature1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
+            feature1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
         } catch (final NotEnoughMoneyException e1) {
             e1.printStackTrace();
         }
@@ -166,8 +166,8 @@ public class SimpleTestDB {
         return ubuntuUsers;
     }
 
-    public DaoFeature getDemand() {
-        return demand;
+    public DaoFeature getFeature() {
+        return feature;
     }
 
     public static void main(final String[] args) {

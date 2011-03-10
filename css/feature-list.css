@@ -1,7 +1,7 @@
-@import "demand/compact-demand";
+@import "feature/compact-feature";
 
 
-.demand_create_block {
+.feature_create_block {
     //.padding_box;
     
     text-align:center;
@@ -9,7 +9,7 @@
     margin: 15px;
 }
 
-.demand_search_block {
+.feature_search_block {
     .padding;
     
     form {
@@ -20,12 +20,12 @@
     margin-bottom: 15px;
 }
 
-.demand_advanced_search_button {
+.feature_advanced_search_button {
     text-align: right;
     font-size: 0.7em;
 }
 
-.demand_filter, .demand_sort, .demand_order {
+.feature_filter, .feature_sort, .feature_order {
     font-size: 0.8em;
 }
 

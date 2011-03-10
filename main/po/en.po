@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-10 13:12+0100\n"
+"POT-Creation-Date: 2011-03-10 13:47+0100\n"
 "PO-Revision-Date: 2010-09-22 02:42+0100\n"
 "Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
 "Language-Team: French\n"
@@ -118,7 +118,7 @@ msgid "Change the state"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/AdminActionManager.java:19
-msgid "Re calculate if this demand should passe into development."
+msgid "Re calculate if this feature should passe into development."
 msgstr ""
 
 #: com/bloatit/web/pages/admin/AdminActionManager.java:20
@@ -131,7 +131,7 @@ msgstr ""
 
 #: com/bloatit/web/pages/admin/AdminActionManager.java:22
 #: com/bloatit/web/pages/admin/FeatureAdminPage.java:92
-msgid "Change the demand state"
+msgid "Change the feature state"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/AdminActionManager.java:24
@@ -310,7 +310,7 @@ msgid "Finished"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/FeatureAdminPage.java:108
-msgid "Filter by demand state"
+msgid "Filter by feature state"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/FeatureAdminPage.java:115
@@ -326,7 +326,7 @@ msgid "Filter by contribution"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/FeatureAdminPage.java:147
-msgid "Demand state"
+msgid "Feature state"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/FeatureAdminPage.java:155
@@ -531,7 +531,7 @@ msgstr ""
 
 #: com/bloatit/web/pages/tools/CommentTools.java:165
 msgid ""
-"Use this field to comment the demand. If you want to reply to a previous "
+"Use this field to comment the feature. If you want to reply to a previous "
 "comment, use the reply link."
 msgstr ""
 
@@ -693,7 +693,7 @@ msgid "Upload file"
 msgstr ""
 
 #: com/bloatit/web/pages/master/Footer.java:25
-msgid "Create a demand"
+msgid "Create a feature"
 msgstr ""
 
 #: com/bloatit/web/pages/master/Footer.java:26
@@ -741,7 +741,7 @@ msgid "Sign in"
 msgstr ""
 
 #: com/bloatit/web/pages/master/Menu.java:20
-msgid "Demands"
+msgid "Features"
 msgstr ""
 
 #: com/bloatit/web/pages/master/Menu.java:21
@@ -764,82 +764,82 @@ msgstr ""
 msgid "elveos.org logo"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:55
-msgid "The demand id is not optional !"
+#: com/bloatit/web/pages/OfferPage.java:52
+msgid "The feature id is not optional !"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:70
-#: com/bloatit/web/pages/OfferPage.java:96
+#: com/bloatit/web/pages/OfferPage.java:67
+#: com/bloatit/web/pages/OfferPage.java:93
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:246
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:82
 #: com/bloatit/web/linkable/login/RegisterPage.java:107
 msgid "Make an offer"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:80
+#: com/bloatit/web/pages/OfferPage.java:77
 msgid "You must be logged to make an offer"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:103
+#: com/bloatit/web/pages/OfferPage.java:100
 msgid ""
 "For an unknown raison you have not the right to see the Offer you are "
 "constructing..."
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:117
+#: com/bloatit/web/pages/OfferPage.java:114
 msgid "On the behalf of"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:121
+#: com/bloatit/web/pages/OfferPage.java:118
 msgid "Myself"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:140
+#: com/bloatit/web/pages/OfferPage.java:137
 msgid "Offer price"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:143
+#: com/bloatit/web/pages/OfferPage.java:140
 msgid "The price must be in euros (€) and can't contains cents."
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:148
+#: com/bloatit/web/pages/OfferPage.java:145
 msgid "Release date"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:151
+#: com/bloatit/web/pages/OfferPage.java:148
 msgid "You will have to release this feature before the release date."
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:156
+#: com/bloatit/web/pages/OfferPage.java:153
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:72
 #: com/bloatit/web/linkable/team/TeamPage.java:146
 msgid "Description"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:163
+#: com/bloatit/web/pages/OfferPage.java:160
 msgid "description langue"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:166
+#: com/bloatit/web/pages/OfferPage.java:163
 msgid "The language in which you have maid the description."
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:171
+#: com/bloatit/web/pages/OfferPage.java:168
 msgid "Days before validation"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:174
+#: com/bloatit/web/pages/OfferPage.java:171
 msgid ""
 "The number of days to wait before this offer is can be validated. During "
 "this time users can add bugs un the bug tracker. Fatal bugs have to be "
 "colsed before the validation."
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:180
+#: com/bloatit/web/pages/OfferPage.java:177
 msgid "Percent gained when no FATAL bugs"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:183
+#: com/bloatit/web/pages/OfferPage.java:180
 msgid ""
 "If you want to add some warenty to the contributor you can say that you want "
 "to gain less than 100% of the amount on this feature request when all the "
@@ -849,11 +849,11 @@ msgid ""
 "transfered when all the FATAL bugs are closed."
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:191
+#: com/bloatit/web/pages/OfferPage.java:188
 msgid "Percent gained when no MAJOR bugs"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:194
+#: com/bloatit/web/pages/OfferPage.java:191
 msgid ""
 "If you specified a value for the 'FATAL bugs percent', you have to also "
 "specify one for the MAJOR bugs. You can say that you want to gain less than "
@@ -862,15 +862,15 @@ msgid ""
 "that (FATAL percent + MAJOR percent) <= 100."
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:204
+#: com/bloatit/web/pages/OfferPage.java:201
 msgid "Finish your Offer"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:205
+#: com/bloatit/web/pages/OfferPage.java:202
 msgid "Add an other lot"
 msgstr ""
 
-#: com/bloatit/web/pages/OfferPage.java:208
+#: com/bloatit/web/pages/OfferPage.java:205
 msgid "Validate !"
 msgstr ""
 
@@ -1775,7 +1775,7 @@ msgid "This offer is finished."
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:166
-msgid "Demand discared ..."
+msgid "Feature discared ..."
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:182

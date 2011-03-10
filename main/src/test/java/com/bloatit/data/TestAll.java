@@ -29,7 +29,7 @@ public class TestAll {
         suite.addTestSuite(DaoTranslationTest.class);
         suite.addTestSuite(DaoGroupMemberTest.class);
         suite.addTestSuite(DaoKudosableTest.class);
-        suite.addTestSuite(DaoDemandTest.class);
+        suite.addTestSuite(DaoFeatureTest.class);
         suite.addTestSuite(DaoUserContentTest.class);
         suite.addTestSuite(DaoMemberCreationTest.class);
         suite.addTestSuite(DaoTransactionTest.class);

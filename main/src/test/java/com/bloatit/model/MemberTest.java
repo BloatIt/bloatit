@@ -137,7 +137,7 @@ public class MemberTest extends ModelTestUnit {
         }
     }
 
-    public void testGetDemands() throws UnauthorizedOperationException {
+    public void testGetFeatures() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         assertEquals("Mon titre", yo.getFeatures().iterator().next().getTitle());
