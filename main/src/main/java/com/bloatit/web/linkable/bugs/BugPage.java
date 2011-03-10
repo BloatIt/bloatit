@@ -44,7 +44,7 @@ public final class BugPage extends MasterPage {
 
     public static final String BUG_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg = @tr("The id of the project is incorrect or missing"))
+    @ParamConstraint(optionalErrorMsg = @tr("The id of the bug is incorrect or missing"))
     @RequestParam(name = BUG_FIELD_NAME)
     private final Bug bug;
 

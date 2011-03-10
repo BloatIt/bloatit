@@ -36,7 +36,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Release;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.members.MembersTools;
-import com.bloatit.web.linkable.projects.ProjectsTools;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -68,7 +68,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_left
                     final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
                     {
-                        featureSummaryLeft.add(ProjectsTools.getProjectLogo(feature.getProject()));
+                        featureSummaryLeft.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
                     }
                     featureSummaryTop.add(featureSummaryLeft);
 
@@ -80,7 +80,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("feature_title");
-                        title.add(ProjectsTools.getProjectLink(feature.getProject()));
+                        title.add(SoftwaresTools.getSoftwareLink(feature.getSoftware()));
                         title.addText(" – ");
                         title.addText(FeaturesTools.getTitle(feature));
 

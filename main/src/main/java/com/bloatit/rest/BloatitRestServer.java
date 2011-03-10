@@ -40,8 +40,8 @@ import com.bloatit.rest.list.RestJoinGroupInvitationList;
 import com.bloatit.rest.list.RestKudosList;
 import com.bloatit.rest.list.RestMemberList;
 import com.bloatit.rest.list.RestOfferList;
-import com.bloatit.rest.list.RestProjectList;
 import com.bloatit.rest.list.RestReleaseList;
+import com.bloatit.rest.list.RestSoftwareList;
 import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestAuthenticate;
@@ -61,8 +61,8 @@ import com.bloatit.rest.resources.RestJoinGroupInvitation;
 import com.bloatit.rest.resources.RestKudos;
 import com.bloatit.rest.resources.RestMember;
 import com.bloatit.rest.resources.RestOffer;
-import com.bloatit.rest.resources.RestProject;
 import com.bloatit.rest.resources.RestRelease;
+import com.bloatit.rest.resources.RestSoftware;
 import com.bloatit.rest.resources.RestTransaction;
 import com.bloatit.rest.resources.RestTranslation;
 
@@ -87,7 +87,7 @@ public class BloatitRestServer extends RestServer {
             put("joingroupinvitations", RestJoinGroupInvitation.class);
             put("kudos", RestKudos.class); // Note : kudos not kudosS
             put("offers", RestOffer.class);
-            put("projects", RestProject.class);
+            put("softwares", RestSoftware.class);
             put("releases", RestRelease.class);
             put("transactions", RestTransaction.class);
             put("translations", RestTranslation.class);
@@ -111,7 +111,7 @@ public class BloatitRestServer extends RestServer {
                                                        RestJoinGroupInvitation.class,
                                                        RestKudos.class,
                                                        RestOffer.class,
-                                                       RestProject.class,
+                                                       RestSoftware.class,
                                                        RestRelease.class,
                                                        RestTransaction.class,
                                                        RestTranslation.class,
@@ -133,7 +133,7 @@ public class BloatitRestServer extends RestServer {
                                                        RestJoinGroupInvitationList.class,
                                                        RestKudosList.class,
                                                        RestOfferList.class,
-                                                       RestProjectList.class,
+                                                       RestSoftwareList.class,
                                                        RestReleaseList.class,
                                                        RestTransactionList.class,
                                                        RestTranslationList.class,

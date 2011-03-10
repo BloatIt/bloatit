@@ -116,6 +116,6 @@ public final class AddReleasePage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to add a new project.");
+        return tr("You must be logged to add a new release.");
     }
 }

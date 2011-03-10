@@ -203,12 +203,12 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     Description getDescription() throws UnauthorizedOperationException;
 
     /**
-     * @return the current associate project of this feature.
+     * @return the current associate software of this feature.
      * @throws UnauthorizedOperationException if the user does not has the right
-     *             on the <code>Project</code> property.
+     *             on the <code>Software</code> property.
      * @see #authenticate(AuthToken)
      */
-    Project getProject() throws UnauthorizedOperationException;
+    Software getSoftware() throws UnauthorizedOperationException;
 
     /**
      * @return all the offers on this feature.

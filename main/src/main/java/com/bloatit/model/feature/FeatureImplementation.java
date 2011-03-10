@@ -44,7 +44,7 @@ import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.ModelConfiguration;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
@@ -95,14 +95,14 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @param locale the locale in which this feature is written
      * @param title the title of the feature
      * @param description the description of the feature
-     * @param project the project {@link FeatureManager#canCreate(AuthToken)} to
+     * @param software the software {@link FeatureManager#canCreate(AuthToken)} to
      *            make sure you can create a new feature.
      * @see DaoFeature
      */
-    public FeatureImplementation(final Member author, final Locale locale, final String title, final String description, final Project project) {
+    public FeatureImplementation(final Member author, final Locale locale, final String title, final String description, final Software software) {
         this(DaoFeature.createAndPersist(author.getDao(),
                                         DaoDescription.createAndPersist(author.getDao(), locale, title, description),
-                                        project.getDao()));
+                                        software.getDao()));
     }
 
     /**
@@ -613,12 +613,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getProject()
+     * @see com.bloatit.model.Feature#getSoftware()
      */
     @Override
-    public Project getProject() throws UnauthorizedOperationException {
+    public Software getSoftware() throws UnauthorizedOperationException {
         // TODO: access right
-        return Project.create(getDao().getProject());
+        return Software.create(getDao().getSoftware());
     }
 
     /*

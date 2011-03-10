@@ -38,10 +38,10 @@ import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylinePage;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
-import com.bloatit.web.linkable.projects.AddProjectAction;
-import com.bloatit.web.linkable.projects.AddProjectPage;
-import com.bloatit.web.linkable.projects.ProjectListPage;
-import com.bloatit.web.linkable.projects.ProjectPage;
+import com.bloatit.web.linkable.softwares.AddSoftwareAction;
+import com.bloatit.web.linkable.softwares.AddSoftwarePage;
+import com.bloatit.web.linkable.softwares.SoftwareListPage;
+import com.bloatit.web.linkable.softwares.SoftwarePage;
 import com.bloatit.web.linkable.team.CreateTeamAction;
 import com.bloatit.web.linkable.team.CreateTeamPage;
 import com.bloatit.web.linkable.team.GiveRightAction;
@@ -69,8 +69,8 @@ import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
-import com.bloatit.web.url.AddProjectActionUrl;
-import com.bloatit.web.url.AddProjectPageUrl;
+import com.bloatit.web.url.AddSoftwareActionUrl;
+import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
@@ -114,8 +114,8 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.ProjectListPageUrl;
-import com.bloatit.web.url.ProjectPageUrl;
+import com.bloatit.web.url.SoftwareListPageUrl;
+import com.bloatit.web.url.SoftwarePageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.ReleasePageUrl;
@@ -189,14 +189,14 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(FileUploadPageUrl.getName())) {
             return new FileUploadPage(new FileUploadPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(ProjectPageUrl.getName())) {
-            return new ProjectPage(new ProjectPageUrl(params, session.getParameters()));
+        if (pageCode.equals(SoftwarePageUrl.getName())) {
+            return new SoftwarePage(new SoftwarePageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(AddProjectPageUrl.getName())) {
-            return new AddProjectPage(new AddProjectPageUrl(params, session.getParameters()));
+        if (pageCode.equals(AddSoftwarePageUrl.getName())) {
+            return new AddSoftwarePage(new AddSoftwarePageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(ProjectListPageUrl.getName())) {
-            return new ProjectListPage(new ProjectListPageUrl(params, session.getParameters()));
+        if (pageCode.equals(SoftwareListPageUrl.getName())) {
+            return new SoftwareListPage(new SoftwareListPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(UserContentAdminPageUrl.getName())) {
             return new UserContentAdminPageImplementation(new UserContentAdminPageUrl(params, session.getParameters()));
@@ -281,8 +281,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(CommentCommentActionUrl.getName())) {
             return new CommentCommentAction(new CommentCommentActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(AddProjectActionUrl.getName())) {
-            return new AddProjectAction(new AddProjectActionUrl(params, session.getParameters()));
+        if (pageCode.equals(AddSoftwareActionUrl.getName())) {
+            return new AddSoftwareAction(new AddSoftwareActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(UploadFileActionUrl.getName())) {
             return new UploadFileAction(new UploadFileActionUrl(params, session.getParameters()));

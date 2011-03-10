@@ -14,7 +14,7 @@ import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.model.Feature;
 import com.bloatit.model.ModelTestUnit;
 import com.bloatit.model.Offer;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 
@@ -37,7 +37,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                                                                                      Locale.FRANCE,
                                                                                                                      "title",
                                                                                                                      "description"),
-                                                                                     DaoProject.getByName("VLC")));
+                                                                                     DaoSoftware.getByName("VLC")));
         assertNotNull(feature);
         assertNull(FeatureImplementation.create(null));
     }
@@ -48,7 +48,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                                                                       Locale.FRANCE,
                                                                                                       "title",
                                                                                                       "description"),
-                                                                      DaoProject.getByName("VLC")));
+                                                                      DaoSoftware.getByName("VLC")));
     }
 
     public void testFeature() {
@@ -56,7 +56,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                        Locale.FRANCE,
                                                        "title",
                                                        "Description",
-                                                       Project.create(DaoProject.getByName("VLC")));
+                                                       Software.create(DaoSoftware.getByName("VLC")));
         assertEquals(feature.getAuthor(), tomAuthToken.getMember());
         try {
             assertEquals(feature.getDescription().getDefaultLocale(), Locale.FRANCE);

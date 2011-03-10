@@ -44,12 +44,12 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "project.byName",
-                           query = "FROM DaoProject WHERE name = :name"),
+                           name = "software.byName",
+                           query = "FROM DaoSoftware WHERE name = :name"),
                        }
              )
 // @formatter:on
-public class DaoProject extends DaoIdentifiable {
+public class DaoSoftware extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = false)
     private String name;
@@ -62,37 +62,37 @@ public class DaoProject extends DaoIdentifiable {
     @OrderBy(clause = "id")
     private DaoFileMetadata image;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "software")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<DaoFeature> features = new ArrayList<DaoFeature>();
+    private final List<DaoFeature> features = new ArrayList<DaoFeature>();
 
     // ======================================================================
     // Static HQL requests
     // ======================================================================
 
-    public static DaoProject getByName(final String name) {
-        final Query query = SessionManager.getNamedQuery("project.byName").setString("name", name);
-        return (DaoProject) query.uniqueResult();
+    public static DaoSoftware getByName(final String name) {
+        final Query query = SessionManager.getNamedQuery("software.byName").setString("name", name);
+        return (DaoSoftware) query.uniqueResult();
     }
 
     // ======================================================================
     // Construction
     // ======================================================================
 
-    public static DaoProject createAndPersist(final String name, final DaoDescription description) {
+    public static DaoSoftware createAndPersist(final String name, final DaoDescription description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoProject project = new DaoProject(name, description);
+        final DaoSoftware software = new DaoSoftware(name, description);
         try {
-            session.save(project);
+            session.save(software);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return project;
+        return software;
     }
 
-    private DaoProject(final String name, final DaoDescription description) {
+    private DaoSoftware(final String name, final DaoDescription description) {
         super();
         if (name == null || name.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
@@ -147,7 +147,7 @@ public class DaoProject extends DaoIdentifiable {
     // For Hibernate mapping.
     // ======================================================================
 
-    protected DaoProject() {
+    protected DaoSoftware() {
         super();
     }
 
@@ -182,7 +182,7 @@ public class DaoProject extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoProject other = (DaoProject) obj;
+        final DaoSoftware other = (DaoSoftware) obj;
         if (this.description == null) {
             if (other.description != null) {
                 return false;

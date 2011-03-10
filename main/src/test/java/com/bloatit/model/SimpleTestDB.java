@@ -17,7 +17,7 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.SessionManager;
@@ -33,7 +33,7 @@ public class SimpleTestDB {
     private final DaoGroup b219;
     private final DaoGroup ubuntuUsers;
     private final DaoFeature feature;
-    private final DaoProject project;
+    private final DaoSoftware project;
 
     public SimpleTestDB() {
 
@@ -78,7 +78,7 @@ public class SimpleTestDB {
             e.printStackTrace();
         }
 
-        project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"));
+        project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
         feature = DaoFeature.createAndPersist(yo,

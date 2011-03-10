@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.projects;
+package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -26,22 +26,22 @@ import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.Project;
-import com.bloatit.model.managers.ProjectManager;
+import com.bloatit.model.Software;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.url.AddProjectPageUrl;
-import com.bloatit.web.url.ProjectListPageUrl;
-import com.bloatit.web.url.ProjectPageUrl;
+import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.SoftwareListPageUrl;
+import com.bloatit.web.url.SoftwarePageUrl;
 
-@ParamContainer("project/list")
-public final class ProjectListPage extends MasterPage {
+@ParamContainer("software/list")
+public final class SoftwareListPage extends MasterPage {
 
     // Keep me here ! I am needed for the Url generation !
-    private HtmlPagedList<Project> pagedProjectList;
-    private final ProjectListPageUrl url;
+    private HtmlPagedList<Software> pagedSoftwareList;
+    private final SoftwareListPageUrl url;
 
-    public ProjectListPage(final ProjectListPageUrl url) {
+    public SoftwareListPage(final SoftwareListPageUrl url) {
         super(url);
         this.url = url;
     }
@@ -51,15 +51,15 @@ public final class ProjectListPage extends MasterPage {
 
         final HtmlDiv box = new HtmlDiv("padding_box");
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Project list", 1);
-        final PageIterable<Project> projectList = ProjectManager.getAll();
-        final HtmlRenderer<Project> projectItemRenderer = new HtmlRenderer<Project>() {
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
+        final PageIterable<Software> softwareList = SoftwareManager.getAll();
+        final HtmlRenderer<Software> softwareItemRenderer = new HtmlRenderer<Software>() {
             @Override
-            public XmlNode generate(final Project project) {
-                final ProjectPageUrl memberUrl = new ProjectPageUrl(project);
+            public XmlNode generate(final Software software) {
+                final SoftwarePageUrl memberUrl = new SoftwarePageUrl(software);
                 try {
                     HtmlLink htmlLink;
-                    htmlLink = memberUrl.getHtmlLink(project.getName());
+                    htmlLink = memberUrl.getHtmlLink(software.getName());
 
                     return new HtmlListItem(htmlLink);
                 } catch (final UnauthorizedOperationException e) {
@@ -70,11 +70,11 @@ public final class ProjectListPage extends MasterPage {
         };
 
         // TODO: avoid conflict
-        final ProjectListPageUrl clonedUrl = url.clone();
-        pagedProjectList = new HtmlPagedList<Project>(projectItemRenderer, projectList, clonedUrl, clonedUrl.getPagedProjectListUrl());
+        final SoftwareListPageUrl clonedUrl = url.clone();
+        pagedSoftwareList = new HtmlPagedList<Software>(softwareItemRenderer, softwareList, clonedUrl, clonedUrl.getPagedSoftwareListUrl());
 
-        pageTitle.add(new AddProjectPageUrl().getHtmlLink(tr("Add a software")));
-        pageTitle.add(pagedProjectList);
+        pageTitle.add(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
+        pageTitle.add(pagedSoftwareList);
 
         box.add(pageTitle);
         add(box);
@@ -83,7 +83,7 @@ public final class ProjectListPage extends MasterPage {
 
     @Override
     protected String getPageTitle() {
-        return Context.tr("Project list");
+        return Context.tr("Software list");
     }
 
     @Override

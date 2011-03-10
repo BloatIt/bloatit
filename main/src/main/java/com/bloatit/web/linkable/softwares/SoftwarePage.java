@@ -8,7 +8,7 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.projects;
+package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -28,27 +28,27 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.FileResourceUrl;
-import com.bloatit.web.url.ProjectPageUrl;
+import com.bloatit.web.url.SoftwarePageUrl;
 
-@ParamContainer("project")
-public final class ProjectPage extends MasterPage {
+@ParamContainer("software")
+public final class SoftwarePage extends MasterPage {
 
-    public static final String PROJECT_FIELD_NAME = "id";
+    public static final String SOFTWARE_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg = @tr("The id of the project is incorrect or missing"))
-    @RequestParam(name = PROJECT_FIELD_NAME)
-    private final Project project;
+    @ParamConstraint(optionalErrorMsg = @tr("The id of the software is incorrect or missing"))
+    @RequestParam(name = SOFTWARE_FIELD_NAME)
+    private final Software software;
 
-    private final ProjectPageUrl url;
+    private final SoftwarePageUrl url;
 
-    public ProjectPage(final ProjectPageUrl url) {
+    public SoftwarePage(final SoftwarePageUrl url) {
         super(url);
         this.url = url;
-        this.project = url.getProject();
+        this.software = url.getSoftware();
     }
 
     @Override
@@ -62,17 +62,17 @@ public final class ProjectPage extends MasterPage {
 
             final HtmlDiv box = new HtmlDiv("padding_box");
 
-            HtmlTitle projectName;
-            projectName = new HtmlTitle(project.getName(), 1);
-            box.add(projectName);
+            HtmlTitle softwareName;
+            softwareName = new HtmlTitle(software.getName(), 1);
+            box.add(softwareName);
 
-            FileMetadata image = project.getImage();
+            FileMetadata image = software.getImage();
             if (image != null) {
                 box.add(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
             }
 
             final Locale defaultLocale = Context.getLocalizator().getLocale();
-            final Translation translatedDescription = project.getDescription().getTranslationOrDefault(defaultLocale);
+            final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
 
             final HtmlParagraph shortDescription = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle()));
             final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
@@ -82,17 +82,17 @@ public final class ProjectPage extends MasterPage {
 
             add(box);
         } catch (final UnauthorizedOperationException e) {
-            add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this project.")));
+            add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this software.")));
         }
     }
 
     @Override
     protected String getPageTitle() {
-        if (project != null) {
+        if (software != null) {
             try {
-                return tr("Project - ") + project.getName();
+                return tr("Software - ") + software.getName();
             } catch (final UnauthorizedOperationException e) {
-                return tr("Project - Windows 8");
+                return tr("Software - Windows 8");
             }
         }
         return tr("Member - No member");

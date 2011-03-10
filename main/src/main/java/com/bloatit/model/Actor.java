@@ -155,7 +155,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     /**
      * The internal account is the account we manage internally. Users can
      * add/get money to/from it, and can use this money to contribute on
-     * projects.
+     * softwares.
      *
      * @return the internal account
      * @throws UnauthorizedOperationException the unauthorized operation

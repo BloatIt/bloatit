@@ -204,7 +204,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @IndexedEmbedded
-    private DaoProject project;
+    private DaoSoftware software;
 
     @Basic(optional = true)
     private Date validationDate;
@@ -214,11 +214,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     /**
-     * @see #DaoFeature(DaoMember, DaoDescription, DaoProject)
+     * @see #DaoFeature(DaoMember, DaoDescription, DaoSoftware)
      */
-    public static DaoFeature createAndPersist(final DaoMember member, final DaoDescription description, final DaoProject project) {
+    public static DaoFeature createAndPersist(final DaoMember member, final DaoDescription description, final DaoSoftware software) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFeature feature = new DaoFeature(member, description, project);
+        final DaoFeature feature = new DaoFeature(member, description, software);
         try {
             session.save(feature);
         } catch (final HibernateException e) {
@@ -236,13 +236,13 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
-    private DaoFeature(final DaoMember member, final DaoDescription description, final DaoProject project) {
+    private DaoFeature(final DaoMember member, final DaoDescription description, final DaoSoftware software) {
         super(member);
-        if (description == null || project == null) {
+        if (description == null || software == null) {
             throw new NonOptionalParameterException();
         }
-        this.project = project;
-        project.addFeature(this);
+        this.software = software;
+        software.addFeature(this);
         this.description = description;
         this.validationDate = null;
         setSelectedOffer(null);
@@ -439,10 +439,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * @return the project
+     * @return the software
      */
-    public DaoProject getProject() {
-        return this.project;
+    public DaoSoftware getSoftware() {
+        return this.software;
     }
 
     public int countOpenBugs() {

@@ -82,7 +82,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.SessionManager;
 
 /**
@@ -99,8 +99,8 @@ public class DaoFeatureQuery extends DaoKudosableQuery<DaoFeature> {
     /** The Constant SELECTED_OFFER. */
     private static String SELECTED_OFFER = "selectedOffer";
 
-    /** The Constant PROJECT. */
-    private static String PROJECT = "project";
+    /** The Constant SOFTWARE. */
+    private static String SOFTWARE = "software";
 
     /** The Constant FEATURE_STATE. */
     private static String FEATURE_STATE = "featureState";
@@ -122,12 +122,12 @@ public class DaoFeatureQuery extends DaoKudosableQuery<DaoFeature> {
     }
 
     /**
-     * Add a WHERE close with project = <code>project</code>.
+     * Add a WHERE close with software = <code>software</code>.
      *
-     * @param project the project
+     * @param software the software
      */
-    public void projectEquals(final DaoProject project) {
-        add(Restrictions.eq(PROJECT, project));
+    public void softwareEquals(final DaoSoftware software) {
+        add(Restrictions.eq(SOFTWARE, software));
     }
 
     /**

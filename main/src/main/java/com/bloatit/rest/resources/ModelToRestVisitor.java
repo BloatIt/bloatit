@@ -36,7 +36,7 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.Offer;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.Release;
 import com.bloatit.model.Transaction;
 import com.bloatit.model.Translation;
@@ -89,8 +89,8 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<Project> visit(final Project model) {
-        return new RestProject(model);
+    public RestElement<Software> visit(final Software model) {
+        return new RestSoftware(model);
     }
 
     @Override

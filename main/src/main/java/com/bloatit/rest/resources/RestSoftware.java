@@ -31,17 +31,17 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.model.Project;
-import com.bloatit.model.managers.ProjectManager;
+import com.bloatit.model.Software;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.rest.list.RestFeatureList;
-import com.bloatit.rest.list.RestProjectList;
+import com.bloatit.rest.list.RestSoftwareList;
 
 /**
  * <p>
- * Representation of a Project for the ReST RPC calls
+ * Representation of a Software for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from Project that needs to be called
+ * This class should implement any methods from Software that needs to be called
  * through the ReST RPC. Every such method needs to be mapped with the
  * {@code @REST} interface.
  * <p>
@@ -73,13 +73,13 @@ import com.bloatit.rest.list.RestProjectList;
  * <li>@XmlAttribute on each method/attribute that will yield <i>simple</i> data
  * </li>
  * <li>Methods that return a list need to be annotated with @XmlElement and to
- * return a RestProjectList</li>
+ * return a RestSoftwareList</li>
  * </p>
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestProject extends RestElement<Project> {
-    private Project model;
+public class RestSoftware extends RestElement<Software> {
+    private Software model;
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors
@@ -89,10 +89,10 @@ public class RestProject extends RestElement<Project> {
      * Provided for JAXB
      */
     @SuppressWarnings("unused")
-    private RestProject() {
+    private RestSoftware() {
     }
 
-    protected RestProject(Project model) {
+    protected RestSoftware(Software model) {
         this.model = model;
     }
 
@@ -102,28 +102,28 @@ public class RestProject extends RestElement<Project> {
 
     /**
      * <p>
-     * Finds the RestProject matching the <code>id</code>
+     * Finds the RestSoftware matching the <code>id</code>
      * </p>
      *
-     * @param id the id of the RestProject
+     * @param id the id of the RestSoftware
      */
-    @REST(name = "projects", method = RequestMethod.GET)
-    public static RestProject getById(int id) {
-        RestProject restProject = new RestProject(ProjectManager.getById(id));
-        if (restProject.isNull()) {
+    @REST(name = "softwares", method = RequestMethod.GET)
+    public static RestSoftware getById(int id) {
+        RestSoftware restSoftware = new RestSoftware(SoftwareManager.getById(id));
+        if (restSoftware.isNull()) {
             return null;
         }
-        return restProject;
+        return restSoftware;
     }
 
     /**
      * <p>
-     * Finds the list of all (valid) RestProject
+     * Finds the list of all (valid) RestSoftware
      * </p>
      */
-    @REST(name = "projects", method = RequestMethod.GET)
-    public static RestProjectList getAll() {
-        return new RestProjectList(ProjectManager.getAll());
+    @REST(name = "softwares", method = RequestMethod.GET)
+    public static RestSoftwareList getAll() {
+        return new RestSoftwareList(SoftwareManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -137,50 +137,50 @@ public class RestProject extends RestElement<Project> {
     }
 
     /**
-     * @see com.bloatit.model.Project#getName()
+     * @see com.bloatit.model.Software#getName()
      */
     @XmlAttribute
     public String getName() throws RestException {
         try {
             return model.getName();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getName on Project", e);
+            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getName on Software", e);
         }
     }
 
     /**
-     * @see com.bloatit.model.Project#getDescription()
+     * @see com.bloatit.model.Software#getDescription()
      */
     @XmlElement
     public RestDescription getDescription() throws RestException {
         try {
             return new RestDescription(model.getDescription());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDescription on Project", e);
+            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDescription on Software", e);
         }
     }
 
     /**
-     * @see com.bloatit.model.Project#getFeatures()
+     * @see com.bloatit.model.Software#getFeatures()
      */
     @XmlElement
     public RestFeatureList getFeatures() throws RestException {
         try {
             return new RestFeatureList(model.getFeatures());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getFeatures on Project", e);
+            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getFeatures on Software", e);
         }
     }
 
     /**
-     * @see com.bloatit.model.Project#getImage()
+     * @see com.bloatit.model.Software#getImage()
      */
     @XmlElement
     public RestFileMetadata getImage() throws RestException {
         try {
             return new RestFileMetadata(model.getImage());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getImage on Project", e);
+            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getImage on Software", e);
         }
     }
 
@@ -191,14 +191,14 @@ public class RestProject extends RestElement<Project> {
     /**
      * Provided for JAXB
      */
-    void setModel(Project model) {
+    void setModel(Software model) {
         this.model = model;
     }
 
     /**
      * Package method to find the model
      */
-    Project getModel() {
+    Software getModel() {
         return model;
     }
 

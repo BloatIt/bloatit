@@ -45,7 +45,7 @@ public class DaoKudosableTest extends TestCase {
             DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PROTECTED).addMember(yo, true);
         }
 
-        DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
+        DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
 
         feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,

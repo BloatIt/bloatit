@@ -224,11 +224,11 @@ public class RestFeature extends RestElement<Feature> {
 
     @XmlAttribute
     @XmlIDREF
-    public RestProject getProject() throws RestException {
+    public RestSoftware getSoftware() throws RestException {
         try {
-            return new RestProject(model.getProject());
+            return new RestSoftware(model.getSoftware());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getProject()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getSoftware()");
         }
     }
 

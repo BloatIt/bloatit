@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.projects;
+package com.bloatit.web.linkable.softwares;
 
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -24,14 +24,14 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.url.AddProjectActionUrl;
-import com.bloatit.web.url.AddProjectPageUrl;
+import com.bloatit.web.url.AddSoftwareActionUrl;
+import com.bloatit.web.url.AddSoftwarePageUrl;
 
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("project/add")
-public final class AddProjectPage extends LoggedPage {
+@ParamContainer("software/add")
+public final class AddSoftwarePage extends LoggedPage {
 
     private static final int SHORT_DESCRIPTION_INPUT_NB_LINES = 3;
     private static final int SHORT_DESCRIPTION_INPUT_NB_COLUMNS = 80;
@@ -39,13 +39,13 @@ public final class AddProjectPage extends LoggedPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    public AddProjectPage(final AddProjectPageUrl addProjectPageUrl) {
-        super(addProjectPageUrl);
+    public AddSoftwarePage(final AddSoftwarePageUrl addSoftwarePageUrl) {
+        super(addSoftwarePageUrl);
     }
 
     @Override
     protected String getPageTitle() {
-        return "Add a project";
+        return "Add a software";
     }
 
     @Override
@@ -59,43 +59,43 @@ public final class AddProjectPage extends LoggedPage {
     }
 
     private HtmlElement generateFeatureCreationForm() {
-        final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new project"), 1);
-        final AddProjectActionUrl doCreateUrl = new AddProjectActionUrl();
+        final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new software"), 1);
+        final AddSoftwareActionUrl doCreateUrl = new AddSoftwareActionUrl();
 
         // Create the form stub
-        final HtmlForm addProjectForm = new HtmlForm(doCreateUrl.urlString());
-        addProjectForm.enableFileUpload();
+        final HtmlForm addSoftwareForm = new HtmlForm(doCreateUrl.urlString());
+        addSoftwareForm.enableFileUpload();
 
-        createFeatureTitle.add(addProjectForm);
+        createFeatureTitle.add(addSoftwareForm);
 
-        // Create the field for the name of the project
-        final FieldData projectNameData = doCreateUrl.getProjectNameParameter().pickFieldData();
-        final HtmlTextField projectNameInput = new HtmlTextField(projectNameData.getName(), Context.tr("Project name"));
-        projectNameInput.setDefaultValue(projectNameData.getSuggestedValue());
-        projectNameInput.addErrorMessages(projectNameData.getErrorMessages());
-        projectNameInput.setComment(Context.tr("The name of the existing project."));
-        addProjectForm.add(projectNameInput);
+        // Create the field for the name of the software
+        final FieldData softwareNameData = doCreateUrl.getSoftwareNameParameter().pickFieldData();
+        final HtmlTextField softwareNameInput = new HtmlTextField(softwareNameData.getName(), Context.tr("Software name"));
+        softwareNameInput.setDefaultValue(softwareNameData.getSuggestedValue());
+        softwareNameInput.addErrorMessages(softwareNameData.getErrorMessages());
+        softwareNameInput.setComment(Context.tr("The name of the existing software."));
+        addSoftwareForm.add(softwareNameInput);
 
-        // Create the fields that will describe the descriptions of the project
+        // Create the fields that will describe the descriptions of the software
         final FieldData shortDescriptionData = doCreateUrl.getShortDescriptionParameter().pickFieldData();
         final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionData.getName(),
-                                                                    Context.tr("Describe briefly the project"),
+                                                                    Context.tr("Describe briefly the software"),
                                                                     SHORT_DESCRIPTION_INPUT_NB_LINES,
                                                                     SHORT_DESCRIPTION_INPUT_NB_COLUMNS);
         shortDescriptionInput.setDefaultValue(shortDescriptionData.getSuggestedValue());
         shortDescriptionInput.addErrorMessages(shortDescriptionData.getErrorMessages());
         shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
-        addProjectForm.add(shortDescriptionInput);
+        addSoftwareForm.add(shortDescriptionInput);
 
         final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(),
-                                                               Context.tr("Describe the project"),
+                                                               Context.tr("Describe the software"),
                                                                DESCRIPTION_INPUT_NB_LINES,
                                                                DESCRIPTION_INPUT_NB_COLUMNS);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the projet : list all features, add siteweb links, etc."));
-        addProjectForm.add(descriptionInput);
+        addSoftwareForm.add(descriptionInput);
 
         // Language
         final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
@@ -104,13 +104,13 @@ public final class AddProjectPage extends LoggedPage {
         languageInput.addErrorMessages(languageData.getErrorMessages());
 
         languageInput.setComment(Context.tr("Language of the descriptions."));
-        addProjectForm.add(languageInput);
+        addSoftwareForm.add(languageInput);
 
-        final HtmlFileInput projectImageInput = new HtmlFileInput(AddProjectAction.IMAGE_CODE, Context.tr("Project logo"));
-        projectImageInput.setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be 50px × 50px.");
-        addProjectForm.add(projectImageInput);
+        final HtmlFileInput softwareImageInput = new HtmlFileInput(AddSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
+        softwareImageInput.setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be 50px × 50px.");
+        addSoftwareForm.add(softwareImageInput);
 
-        addProjectForm.add(new HtmlSubmit(Context.tr("submit")));
+        addSoftwareForm.add(new HtmlSubmit(Context.tr("submit")));
 
         final HtmlDiv group = new HtmlDiv();
         group.add(createFeatureTitle);
@@ -119,6 +119,6 @@ public final class AddProjectPage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return Context.tr("You must be logged to add a new project.");
+        return Context.tr("You must be logged to add a new software.");
     }
 }

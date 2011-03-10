@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.projects;
+package com.bloatit.web.linkable.softwares;
 
 import java.util.Locale;
 
@@ -23,23 +23,23 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.web.url.AddProjectActionUrl;
-import com.bloatit.web.url.AddProjectPageUrl;
+import com.bloatit.web.url.AddSoftwareActionUrl;
+import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.LoginPageUrl;
-import com.bloatit.web.url.ProjectPageUrl;
+import com.bloatit.web.url.SoftwarePageUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("project/doadd")
-public final class AddProjectAction extends Action {
+@ParamContainer("software/doadd")
+public final class AddSoftwareAction extends Action {
 
-    public static final String SHORT_DESCRIPTION_CODE = "bloatit_project_short_description";
-    public static final String DESCRIPTION_CODE = "feature_project_description";
-    public static final String PROJECT_NAME_CODE = "feature_project";
+    public static final String SHORT_DESCRIPTION_CODE = "bloatit_software_short_description";
+    public static final String DESCRIPTION_CODE = "feature_software_description";
+    public static final String SOFTWARE_NAME_CODE = "feature_software";
     public static final String IMAGE_CODE = "image";
     public static final String IMAGE_NAME_CODE = "image/filename";
     public static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";
@@ -55,10 +55,10 @@ public final class AddProjectAction extends Action {
     @Optional
     private final String description;
 
-    @RequestParam(name = PROJECT_NAME_CODE, role = Role.POST)
-    @ParamConstraint(max = "100", maxErrorMsg = @tr("The project name must be 1OO chars length max."), //
-    min = "3", minErrorMsg = @tr("The project name must have at least 3 chars."), optionalErrorMsg = @tr("The project name is requiered."))
-    private final String projectName;
+    @RequestParam(name = SOFTWARE_NAME_CODE, role = Role.POST)
+    @ParamConstraint(max = "100", maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
+    min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."), optionalErrorMsg = @tr("The software name is requiered."))
+    private final String softwareName;
 
     @Optional
     @RequestParam(name = IMAGE_CODE, role = Role.POST)
@@ -74,15 +74,15 @@ public final class AddProjectAction extends Action {
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
-    private final AddProjectActionUrl url;
+    private final AddSoftwareActionUrl url;
 
-    public AddProjectAction(final AddProjectActionUrl url) {
+    public AddSoftwareAction(final AddSoftwareActionUrl url) {
         super(url);
         this.url = url;
 
         this.shortDescription = url.getShortDescription();
         this.description = url.getDescription();
-        this.projectName = url.getProjectName();
+        this.softwareName = url.getSoftwareName();
         this.lang = url.getLang();
         this.image = url.getImage();
         this.imageFileName = url.getImageFileName();
@@ -94,23 +94,23 @@ public final class AddProjectAction extends Action {
     protected Url doProcess() {
         session.notifyList(url.getMessages());
         if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use ProjectManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to add a project."));
+            // TODO: use SoftwareManager and not FeatureManager here
+            session.notifyError(Context.tr("You must be logged in to add a software."));
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
 
-        final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description);
+        final Software p = new Software(softwareName, session.getAuthToken().getMember(), langLocale, shortDescription, description);
 
         if (image != null) {
             final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                                   image,
                                                                                   imageFileName,
-                                                                                  "Image for the project '" + projectName + "'");
+                                                                                  "Image for the software '" + softwareName + "'");
             p.setImage(fileImage);
         }
 
-        final ProjectPageUrl to = new ProjectPageUrl(p);
+        final SoftwarePageUrl to = new SoftwarePageUrl(p);
 
         return to;
     }
@@ -121,9 +121,9 @@ public final class AddProjectAction extends Action {
 
         session.addParameter(url.getShortDescriptionParameter());
         session.addParameter(url.getDescriptionParameter());
-        session.addParameter(url.getProjectNameParameter());
+        session.addParameter(url.getSoftwareNameParameter());
         session.addParameter(url.getLangParameter());
 
-        return new AddProjectPageUrl();
+        return new AddSoftwarePageUrl();
     }
 }

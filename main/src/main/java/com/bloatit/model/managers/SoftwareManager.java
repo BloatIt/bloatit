@@ -16,40 +16,40 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Project;
-import com.bloatit.model.lists.ProjectList;
+import com.bloatit.model.Software;
+import com.bloatit.model.lists.SoftwareList;
 
 /**
- * The Class ProjectManager is an utility class containing static methods.
+ * The Class SoftwareManager is an utility class containing static methods.
  */
-public final class ProjectManager {
+public final class SoftwareManager {
 
     /**
      * Desactivated constructor on utility class.
      */
-    private ProjectManager() {
+    private SoftwareManager() {
         // Desactivate default ctor
     }
 
     /**
-     * Gets the project by id.
+     * Gets the software by id.
      *
      * @param id the id
-     * @return the project or null if not found.
+     * @return the software or null if not found.
      */
-    public static Project getById(final Integer id) {
-        return Project.create(DBRequests.getById(DaoProject.class, id));
+    public static Software getById(final Integer id) {
+        return Software.create(DBRequests.getById(DaoSoftware.class, id));
     }
 
     /**
-     * Gets all the projects.
+     * Gets all the softwares.
      *
-     * @return all the projects
+     * @return all the softwares
      */
-    public static PageIterable<Project> getAll() {
-        return new ProjectList(DBRequests.getAll(DaoProject.class));
+    public static PageIterable<Software> getAll() {
+        return new SoftwareList(DBRequests.getAll(DaoSoftware.class));
     }
 }

@@ -16,16 +16,16 @@
 //
 package com.bloatit.model.lists;
 
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 
 /**
- * The Class ProjectList transforms PageIterable<DaoProject> to
- * PageIterable<Project>.
+ * The Class SoftwareList transforms PageIterable<DaoSoftware> to
+ * PageIterable<Software>.
  */
-public final class ProjectList extends ListBinder<Project, DaoProject> {
-    public ProjectList(PageIterable<DaoProject> daoCollection) {
+public final class SoftwareList extends ListBinder<Software, DaoSoftware> {
+    public SoftwareList(PageIterable<DaoSoftware> daoCollection) {
         super(daoCollection);
     }
 }

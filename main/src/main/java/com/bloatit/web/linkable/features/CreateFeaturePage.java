@@ -27,9 +27,9 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.model.managers.ProjectManager;
+import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
@@ -93,20 +93,20 @@ public final class CreateFeaturePage extends LoggedPage {
         descriptionInput.setComment(tr("The title of the new feature must be permit to identify clearly the feature's specificity."));
         createFeatureForm.add(descriptionInput);
 
-        // Linked project
-        final HtmlDropDown projectInput = new HtmlDropDown(CreateFeatureAction.PROJECT_CODE, Context.tr("Project"));
-        for (final Project project : ProjectManager.getAll()) {
+        // Linked software
+        final HtmlDropDown softwareInput = new HtmlDropDown(CreateFeatureAction.SOFTWARE_CODE, Context.tr("Software"));
+        for (final Software software : SoftwareManager.getAll()) {
             try {
-                projectInput.addDropDownElement(String.valueOf(project.getId()), project.getName());
+                softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
             } catch (final UnauthorizedOperationException e) {
                 Log.web().warn(e);
-                // Not display private projects
+                // Not display private softwarets
             }
         }
-        // TODO: set the default value to "select a project"
-        // TODO: add form to create a new project
+        // TODO: set the default value to "select a software"
+        // TODO: add form to create a new software
 
-        createFeatureForm.add(projectInput);
+        createFeatureForm.add(softwareInput);
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
@@ -149,16 +149,16 @@ public final class CreateFeaturePage extends LoggedPage {
     }
 
     /**
-     * Class use to display projects in a dropdown html element
+     * Class use to display softwares in a dropdown html element
      */
-    class ProjectElement implements DropDownElement {
+    class SoftwareElement implements DropDownElement {
 
         private final String name;
         private final String code;
 
-        public ProjectElement(final Project project) throws UnauthorizedOperationException {
-            name = project.getName();
-            code = String.valueOf(project.getId());
+        public SoftwareElement(final Software software) throws UnauthorizedOperationException {
+            name = software.getName();
+            code = String.valueOf(software.getId());
         }
 
         @Override

@@ -22,7 +22,7 @@ import com.bloatit.model.Group;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
@@ -30,7 +30,7 @@ import com.bloatit.web.WebConfiguration;
 
 public class BloatitExampleDB {
 
-    private Project libreOffice;
+    private Software libreOffice;
     private final Member yoann;
     private final Member fred;
     private final Member thomas;
@@ -41,9 +41,9 @@ public class BloatitExampleDB {
     private final Member celeste;
     private final Member elephantman;
     private final Member rataxes;
-    private Project vlc;
-    private Project perroquet;
-    private Project mageia;
+    private Software vlc;
+    private Software perroquet;
+    private Software mageia;
 
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException {
 
@@ -89,11 +89,11 @@ public class BloatitExampleDB {
         final Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", "The group for ubuntu users", Right.PUBLIC, thomas);
         ubuntuUsers.setAvatar(getImage(thomas, "teams/ubuntuUsers.png"));
 
-        // Generate projects
-        generateVlcProject();
-        generatePerroquetProject();
-        generateLibreOfficeProject();
-        generateMageiaProject();
+        // Generate softwares
+        generateVlcSoftware();
+        generatePerroquetSoftware();
+        generateLibreOfficeSoftware();
+        generateMageiaSoftware();
 
         // Generate features
 
@@ -116,41 +116,41 @@ public class BloatitExampleDB {
 
     }
 
-    public void generateMageiaProject() {
-        // Mageia project
+    public void generateMageiaSoftware() {
+        // Mageia software
 
         final String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail.";
         final String mageiaDescription = "http://mageia.org/fr/";
-        mageia = new Project("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription);
+        mageia = new Software("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription);
         mageia.setImage(getImage(yoann, "mageia.png"));
     }
 
-    public void generateLibreOfficeProject() {
-        // LibreOffice project
+    public void generateLibreOfficeSoftware() {
+        // LibreOffice software
 
         final String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle.";
         final String libreOfficeDescription = "LibreOffice is the free power-packed Open Source personal productivity suite for Windows, Macintosh and Linux, that gives you six feature-rich applications for all your document production and data processing needs: Writer, Calc, Impress, Draw, Math and Base. Support and documentation is free from our large, dedicated community of users, contributors and developers. You, too, can also get involved!"
                 + "\n" + "http://www.libreoffice.org/";
-        libreOffice = new Project("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription);
+        libreOffice = new Software("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription);
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
     }
 
-    public void generatePerroquetProject() {
-        // Perroquet project
+    public void generatePerroquetSoftware() {
+        // Perroquet software
 
         final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères";
         final String perroquetDescription = "Le principe de Perroquet est d'utiliser une vidéo ou un fichier audio et les sous-titres associés pour vous faire écouter et comprendre les dialogues ou paroles. Après lui avoir indiqué les fichiers à utiliser, Perroquet va lire un morceau de la vidéo et puis la mettre en pause. Il vous indiquera alors le nombre de mot à trouver et vous devrez les taper pour pouvoir continuer la lecture. Il est possible de réécouter une séquence autant de fois que nécessaire. Si vous ne comprenez pas tout, Perroquet présente plusieurs moyen de vous aider. \n"
                 + "http://perroquet.b219.org/";
-        perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription);
+        perroquet = new Software("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription);
         perroquet.setImage(getImage(fred, "perroquet.png"));
     }
 
-    public void generateVlcProject() {
-        // VLC project
+    public void generateVlcSoftware() {
+        // VLC software
 
         final String vlcTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
         final String vlcDescription = "http://www.videolan.org/vlc/";
-        vlc = new Project("VLC", thomas, Locale.FRANCE, vlcTitle, vlcDescription);
+        vlc = new Software("VLC", thomas, Locale.FRANCE, vlcTitle, vlcDescription);
         vlc.setImage(getImage(thomas, "vlc.png"));
     }
 

@@ -92,7 +92,7 @@ public final class ReportBugPage extends LoggedPage {
         bugTitleInput.addErrorMessages(bugTitleFieldData.getErrorMessages());
         reportBugForm.add(bugTitleInput);
 
-        // Create the fields that will describe the descriptions of the project
+        // Create the fields that will describe the descriptions of the bug
 
         final FieldData descriptionFieldData = doReportUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFieldData.getName(),

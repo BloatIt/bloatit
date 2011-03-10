@@ -18,7 +18,7 @@ import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
@@ -64,8 +64,8 @@ public class GenericConstructor {
         if (clazz.equals(JoinGroupInvitation.class)) {
             return DaoJoinGroupInvitation.class;
         }
-        if (clazz.equals(Project.class)) {
-            return DaoProject.class;
+        if (clazz.equals(Software.class)) {
+            return DaoSoftware.class;
         }
         if (clazz.equals(Transaction.class)) {
             return DaoTransaction.class;

@@ -10,7 +10,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.web.linkable.features.FeaturesTools;
-import com.bloatit.web.linkable.projects.ProjectsTools;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.DefineParagraph;
 import com.bloatit.web.url.FeaturePageUrl;
 
@@ -29,12 +29,12 @@ public class IndexFeatureBlock extends HtmlDiv {
 
         try {
 
-            setFloatRight(ProjectsTools.getProjectLogo(highlightFeature.getFeature().getProject()));
+            setFloatRight(SoftwaresTools.getSoftwareLogo(highlightFeature.getFeature().getSoftware()));
 
             indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature()).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
                                                3));
 
-            indexBodyElement.add(new DefineParagraph(tr("Project: "), ProjectsTools.getProjectLink(highlightFeature.getFeature().getProject())));
+            indexBodyElement.add(new DefineParagraph(tr("Software: "), SoftwaresTools.getSoftwareLink(highlightFeature.getFeature().getSoftware())));
 
             indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), true));
 

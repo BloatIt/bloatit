@@ -33,8 +33,8 @@ import com.bloatit.data.DaoJoinGroupInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
-import com.bloatit.data.DaoProject;
 import com.bloatit.data.DaoRelease;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.DataClassVisitor;
@@ -148,11 +148,11 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoProject)
+     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoSoftware)
      */
     @Override
-    public Identifiable<?> visit(final DaoProject dao) {
-        return Project.create(dao);
+    public Identifiable<?> visit(final DaoSoftware dao) {
+        return Software.create(dao);
     }
 
     /*

@@ -22,60 +22,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.rest.list.master.RestListBinder;
-import com.bloatit.rest.resources.RestProject;
+import com.bloatit.rest.resources.RestSoftware;
 
 /**
  * <p>
- * Wraps a list of Project into a list of RestElements
+ * Wraps a list of Software into a list of RestElements
  * </p>
  * <p>
- * This class can be represented in Xml as a list of Project<br />
+ * This class can be represented in Xml as a list of Software<br />
  * Example:
  *
  * <pre>
- * {@code <Projects>}
- *     {@code <Project name=Project1 />}
- *     {@code <Project name=Project2 />}
- * {@code </Projects>}
+ * {@code <Softwares>}
+ *     {@code <Software name=Software1 />}
+ *     {@code <Software name=Software2 />}
+ * {@code </Softwares>}
  * </pre>
  * <p>
  */
-@XmlRootElement(name = "projects")
-public class RestProjectList extends RestListBinder<RestProject, Project> {
+@XmlRootElement(name = "softwares")
+public class RestSoftwareList extends RestListBinder<RestSoftware, Software> {
 
     /**
      * Provided for XML generation
      */
     @SuppressWarnings("unused")
-    private RestProjectList() {
+    private RestSoftwareList() {
         super();
     }
 
     /**
-     * Creates a RestProjectList from a {@codePageIterable<Project>}
+     * Creates a RestSoftwareList from a {@codePageIterable<Software>}
      *
      * @param collection the list of elements from the model
      */
-    public RestProjectList(PageIterable<Project> collection) {
+    public RestSoftwareList(PageIterable<Software> collection) {
         super(collection);
     }
 
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElement(name = "project")
+    @XmlElement(name = "software")
     @XmlIDREF
-    public List<RestProject> getProjects() {
-        List<RestProject> projects = new ArrayList<RestProject>();
-        for (RestProject project : this) {
-            projects.add(project);
+    public List<RestSoftware> getSoftwares() {
+        List<RestSoftware> softwares = new ArrayList<RestSoftware>();
+        for (RestSoftware software : this) {
+            softwares.add(software);
         }
-        return projects;
+        return softwares;
     }
 }

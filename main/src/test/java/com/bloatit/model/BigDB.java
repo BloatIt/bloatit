@@ -19,7 +19,7 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -67,7 +67,7 @@ public class BigDB {
 
         DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", "description", DaoGroup.Right.PUBLIC);
 
-        DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"));
+        DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 
         for (int i = 0; i < nbUsers; i++) {

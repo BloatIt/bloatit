@@ -103,7 +103,7 @@ public final class ContributePage extends LoggedPage {
 
     @Override
     protected String getPageTitle() {
-        return tr("Contribute to a project");
+        return tr("Contribute to a feature");
     }
 
     @Override

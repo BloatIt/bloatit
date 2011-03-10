@@ -22,7 +22,7 @@ public interface DataClassVisitor<ReturnType> {
 
     ReturnType visit(DaoJoinGroupInvitation dao);
 
-    ReturnType visit(DaoProject dao);
+    ReturnType visit(DaoSoftware dao);
 
     ReturnType visit(DaoTransaction dao);
 

@@ -100,8 +100,8 @@ public final class HtmlFeatureSumary extends HtmlDiv {
 
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
             {
-                // Add project image
-                featureSummaryLeft.add(generateProjectImage());
+                // Add software image
+                featureSummaryLeft.add(generateSoftwareImage());
             }
             featureSummaryBottom.add(featureSummaryLeft);
 
@@ -128,8 +128,8 @@ public final class HtmlFeatureSumary extends HtmlDiv {
         {
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
             {
-                // Add project image
-                featureSummaryLeft.add(generateProjectImage());
+                // Add software image
+                featureSummaryLeft.add(generateSoftwareImage());
             }
             featureSummaryTop.add(featureSummaryLeft);
 
@@ -172,13 +172,13 @@ public final class HtmlFeatureSumary extends HtmlDiv {
      * @return
      * @throws UnauthorizedOperationException
      */
-    private XmlNode generateProjectImage() throws UnauthorizedOperationException {
+    private XmlNode generateSoftwareImage() throws UnauthorizedOperationException {
         // TODO: set a fixed size block to not depend of the image
         // size
-        FileMetadata image = feature.getProject().getImage();
+        FileMetadata image = feature.getSoftware().getImage();
         if (image != null) {
             final FileResourceUrl imageUrl = new FileResourceUrl(image);
-            return new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
+            return new HtmlImage(imageUrl, image.getShortDescription(), "software_image");
         } else {
             // TODO: add a fallback image
             return new PlaceHolderElement();
@@ -192,11 +192,11 @@ public final class HtmlFeatureSumary extends HtmlDiv {
      */
     private XmlNode generateTitle() throws UnauthorizedOperationException {
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlSpan projectSpan = new HtmlSpan("feature_project_title");
-        projectSpan.addText(feature.getProject().getName());
+        final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
+        softwareSpan.addText(feature.getSoftware().getName());
         final HtmlTitle title = new HtmlTitle(1);
         title.setCssClass("feature_title");
-        title.add(projectSpan);
+        title.add(softwareSpan);
         title.addText(" – ");
         title.add(new FeaturePageUrl(feature).getHtmlLink(translatedDescription.getTitle()));
 

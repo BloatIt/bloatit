@@ -164,11 +164,11 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
             }
         });
 
-        tableModel.addColumn(tr("project"), new StringColumnGenerator<Feature>() {
+        tableModel.addColumn(tr("software"), new StringColumnGenerator<Feature>() {
             @Override
             public String getStringBody(final Feature element) {
                 try {
-                    return element.getProject().getName();
+                    return element.getSoftware().getName();
                 } catch (final UnauthorizedOperationException e) {
                     Log.web().fatal("", e);
                     return "";

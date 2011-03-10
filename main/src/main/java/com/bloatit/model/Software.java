@@ -20,45 +20,45 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
-import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoSoftware;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.ProjectRight;
+import com.bloatit.model.right.SoftwareRight;
 
-public class Project extends Identifiable<DaoProject> {
+public class Software extends Identifiable<DaoSoftware> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static final class MyCreator extends Creator<DaoProject, Project> {
+    private static final class MyCreator extends Creator<DaoSoftware, Software> {
         @Override
-        public Project doCreate(final DaoProject dao) {
-            return new Project(dao);
+        public Software doCreate(final DaoSoftware dao) {
+            return new Software(dao);
         }
     }
 
-    public static Project create(final DaoProject dao) {
+    public static Software create(final DaoSoftware dao) {
         return new MyCreator().create(dao);
     }
 
-    private Project(final DaoProject id) {
+    private Software(final DaoSoftware id) {
         super(id);
     }
 
     /**
-     * Create a new project. The right management for creating a feature is
+     * Create a new software. The right management for creating a feature is
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link FeatureManager#canCreate(AuthToken)} to make sure
      * you can create a new feature.
      *
      * @see DaoFeature#DaoFeature(Member,Locale,String, String)
      */
-    public Project(final String name, final Member author, final Locale locale, final String title, final String description) {
-        this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
+    public Software(final String name, final Member author, final Locale locale, final String title, final String description) {
+        this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -67,40 +67,40 @@ public class Project extends Identifiable<DaoProject> {
 
     /**
      * @return
-     * @see com.bloatit.data.DaoProject#getName()
+     * @see com.bloatit.data.DaoSoftware#getName()
      */
     public String getName() throws UnauthorizedOperationException {
-        tryAccess(new ProjectRight.Name(), Action.READ);
+        tryAccess(new SoftwareRight.Name(), Action.READ);
         return getDao().getName();
     }
 
     /**
      * @return
      * @throws UnauthorizedOperationException
-     * @see com.bloatit.data.DaoProject#getDescription()
+     * @see com.bloatit.data.DaoSoftware#getDescription()
      */
     public final Description getDescription() throws UnauthorizedOperationException {
-        tryAccess(new ProjectRight.Name(), Action.READ);
+        tryAccess(new SoftwareRight.Name(), Action.READ);
         return Description.create(getDao().getDescription());
     }
 
     /**
      * @return
      * @throws UnauthorizedOperationException
-     * @see com.bloatit.data.DaoProject#getImage()
+     * @see com.bloatit.data.DaoSoftware#getImage()
      */
     public final FileMetadata getImage() throws UnauthorizedOperationException {
-        tryAccess(new ProjectRight.Name(), Action.READ);
+        tryAccess(new SoftwareRight.Name(), Action.READ);
         return FileMetadata.create(getDao().getImage());
     }
 
     /**
      * @return
      * @throws UnauthorizedOperationException
-     * @see com.bloatit.data.DaoProject#getFeatures()
+     * @see com.bloatit.data.DaoSoftware#getFeatures()
      */
     public final FeatureList getFeatures() throws UnauthorizedOperationException {
-        tryAccess(new ProjectRight.Name(), Action.READ);
+        tryAccess(new SoftwareRight.Name(), Action.READ);
         return new FeatureList(getDao().getFeatures());
 
     }

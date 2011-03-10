@@ -16,13 +16,13 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 
 /**
- * The Class ProjectRight store the properties accessor for the {@link Project}
+ * The Class SoftwareRight store the properties accessor for the {@link Software}
  * class.
  */
-public class ProjectRight extends RightManager {
+public class SoftwareRight extends RightManager {
 
     /**
      * The Class GroupList is an accessor for the GroupList property.

@@ -23,7 +23,7 @@ import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
-import com.bloatit.model.Project;
+import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -38,7 +38,7 @@ public final class CreateFeatureAction extends Action {
 
     public static final String DESCRIPTION_CODE = "description";
     public static final String SPECIFICATION_CODE = "specification";
-    public static final String PROJECT_CODE = "project";
+    public static final String SOFTWARE_CODE = "Software";
     public static final String LANGUAGE_CODE = "feature_lang";
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
@@ -49,8 +49,8 @@ public final class CreateFeatureAction extends Action {
     @RequestParam(name = SPECIFICATION_CODE, role = Role.POST)
     private final String specification;
 
-    @RequestParam(name = PROJECT_CODE, role = Role.POST)
-    private final Project project;
+    @RequestParam(name = SOFTWARE_CODE, role = Role.POST)
+    private final Software software;
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
@@ -62,7 +62,7 @@ public final class CreateFeatureAction extends Action {
 
         this.description = url.getDescription();
         this.specification = url.getSpecification();
-        this.project = url.getProject();
+        this.software = url.getSoftware();
         this.lang = url.getLang();
 
     }
@@ -75,7 +75,7 @@ public final class CreateFeatureAction extends Action {
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
-        final Feature d = FeatureFactory.createFeature(session.getAuthToken().getMember(), langLocale, description, specification, project);
+        final Feature d = FeatureFactory.createFeature(session.getAuthToken().getMember(), langLocale, description, specification, software);
 
         final FeaturePageUrl to = new FeaturePageUrl(d);
 
@@ -88,7 +88,7 @@ public final class CreateFeatureAction extends Action {
 
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSpecificationParameter());
-        session.addParameter(url.getProjectParameter());
+        session.addParameter(url.getSoftwareParameter());
         session.addParameter(url.getLangParameter());
 
         return new CreateFeaturePageUrl();
