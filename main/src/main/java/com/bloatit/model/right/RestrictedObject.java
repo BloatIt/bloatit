@@ -20,8 +20,8 @@ package com.bloatit.model.right;
 import java.util.EnumSet;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webserver.Context;
@@ -60,15 +60,15 @@ public abstract class RestrictedObject implements RestrictedInterface {
     /** The owning state of the current user authenticated on this content. */
     private OwningState owningState;
 
-    /** The group rights of the current user authenticated on this content. */
-    private EnumSet<UserGroupRight> groupRights;
+    /** The team rights of the current user authenticated on this content. */
+    private EnumSet<UserTeamRight> teamRights;
 
     /**
      * Instantiates a new restricted object.
      */
     public RestrictedObject() {
         owningState = OwningState.NOBODY;
-        groupRights = EnumSet.noneOf(UserGroupRight.class);
+        teamRights = EnumSet.noneOf(UserTeamRight.class);
     }
 
     /*
@@ -108,19 +108,19 @@ public abstract class RestrictedObject implements RestrictedInterface {
             owningState = OwningState.AUTHENTICATED;
         }
 
-        groupRights = calculateMyGroupRights(member);
+        teamRights = calculateMyTeamRights(member);
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.right.RestrictedInterface#hasGroupPrivilege(com.bloatit
-     * .data. DaoGroupRight.UserGroupRight)
+     * com.bloatit.model.right.RestrictedInterface#hasTeamPrivilege(com.bloatit
+     * .data. DaoTeamRight.UserTeamRight)
      */
     @Override
-    public final boolean hasGroupPrivilege(final UserGroupRight right) {
+    public final boolean hasTeamPrivilege(final UserTeamRight right) {
         automaticAuthentication();
-        return groupRights.contains(right);
+        return teamRights.contains(right);
     }
 
     /*
@@ -177,13 +177,13 @@ public abstract class RestrictedObject implements RestrictedInterface {
     protected abstract boolean isMine(Member member);
 
     /**
-     * Calculate my group rights.
+     * Calculate my team rights.
      *
      * @param member the member
      * @return the enum set
      */
-    protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
-        return EnumSet.noneOf(UserGroupRight.class);
+    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
+        return EnumSet.noneOf(UserTeamRight.class);
     }
 
     /**

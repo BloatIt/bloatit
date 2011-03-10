@@ -16,7 +16,7 @@
 //
 package com.bloatit.framework.exceptions;
 
-import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RestrictedObject;
 
@@ -73,11 +73,11 @@ public class UnauthorizedOperationException extends Exception {
         INFLUENCE_LOW_ON_VOTE_UP,
 
         /**
-         * You try to add somebody in a group, but this group is not public. You
-         * have to use {@link JoinGroupInvitation} object to join a non public
-         * group.
+         * You try to add somebody in a team, but this team is not public. You
+         * have to use {@link JoinTeamInvitation} object to join a non public
+         * team.
          */
-        GROUP_NOT_PUBLIC,
+        TEAM_NOT_PUBLIC,
 
         /**
          * You try to accept/refuse an invitation, but you are not the receiver.

@@ -68,8 +68,8 @@ import com.bloatit.framework.utils.PageIterable;
 public abstract class DaoActor extends DaoIdentifiable {
 
     /**
-     * The login represent the user login and the group name. It must be unique
-     * (means that a group cannot have the same name as a user)
+     * The login represent the user login and the team name. It must be unique
+     * (means that a team cannot have the same name as a user)
      */
     @Basic(optional = false)
     @Column(unique = true, updatable = false)

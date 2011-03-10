@@ -16,8 +16,8 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 
 /**
  * The Interface RestrictedInterface represent a Restricted by some right
@@ -35,12 +35,12 @@ public interface RestrictedInterface {
     public abstract void authenticate(AuthToken token);
 
     /**
-     * Checks for group privilege.
+     * Checks for team privilege.
      *
      * @param right the right
      * @return true, if successful
      */
-    public abstract boolean hasGroupPrivilege(UserGroupRight right);
+    public abstract boolean hasTeamPrivilege(UserTeamRight right);
 
     /**
      * Checks for user privilege.

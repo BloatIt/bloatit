@@ -35,7 +35,7 @@ public final class KudosableAdminPageImplementation extends
     protected void addColumns(final HtmlGenericTableModel<Kudosable<DaoKudosable>> tableModel) {
         KudosableAdminPageUrl clonedUrl = url.clone();
 
-        addAsGroupColumn(tableModel, clonedUrl);
+        addAsTeamColumn(tableModel, clonedUrl);
         addCreationDateColumn(tableModel, clonedUrl);
         addTypeColumn(tableModel);
         // addNbFilesColumn(tableModel);
@@ -55,7 +55,7 @@ public final class KudosableAdminPageImplementation extends
     protected void addFormFilters(final HtmlForm form) {
         addIsDeletedFilter(form, url);
         addHasFileFilter(form, url);
-        addAsGroupFilter(form, url);
+        addAsTeamFilter(form, url);
         addPopularityStateFilter(form);
     }
 

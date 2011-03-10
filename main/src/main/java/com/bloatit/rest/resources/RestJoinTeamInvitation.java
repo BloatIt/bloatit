@@ -28,16 +28,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.JoinGroupInvitation;
-import com.bloatit.model.managers.JoinGroupInvitationManager;
-import com.bloatit.rest.list.RestJoinGroupInvitationList;
+import com.bloatit.model.JoinTeamInvitation;
+import com.bloatit.model.managers.JoinTeamInvitationManager;
+import com.bloatit.rest.list.RestJoinTeamInvitationList;
 
 /**
  * <p>
- * Representation of a JoinGroupInvitation for the ReST RPC calls
+ * Representation of a JoinTeamInvitation for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from JoinGroupInvitation that needs
+ * This class should implement any methods from JoinTeamInvitation that needs
  * to be called through the ReST RPC. Every such method needs to be mapped with
  * the {@code @REST} interface.
  * <p>
@@ -69,13 +69,13 @@ import com.bloatit.rest.list.RestJoinGroupInvitationList;
  * <li>@XmlAttribute on each method/attribute that will yield <i>simple</i> data
  * </li>
  * <li>Methods that return a list need to be annotated with @XmlElement and to
- * return a RestJoinGroupInvitationList</li>
+ * return a RestJoinTeamInvitationList</li>
  * </p>
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
-    private JoinGroupInvitation model;
+public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
+    private JoinTeamInvitation model;
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors
@@ -85,10 +85,10 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
      * Provided for JAXB
      */
     @SuppressWarnings("unused")
-    private RestJoinGroupInvitation() {
+    private RestJoinTeamInvitation() {
     }
 
-    protected RestJoinGroupInvitation(JoinGroupInvitation model) {
+    protected RestJoinTeamInvitation(JoinTeamInvitation model) {
         this.model = model;
     }
 
@@ -98,28 +98,28 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
 
     /**
      * <p>
-     * Finds the RestJoinGroupInvitation matching the <code>id</code>
+     * Finds the RestJoinTeamInvitation matching the <code>id</code>
      * </p>
      *
-     * @param id the id of the RestJoinGroupInvitation
+     * @param id the id of the RestJoinTeamInvitation
      */
-    @REST(name = "joingroupinvitations", method = RequestMethod.GET)
-    public static RestJoinGroupInvitation getById(int id) {
-        RestJoinGroupInvitation restJoinGroupInvitation = new RestJoinGroupInvitation(JoinGroupInvitationManager.getById(id));
-        if (restJoinGroupInvitation.isNull()) {
+    @REST(name = "jointeaminvitations", method = RequestMethod.GET)
+    public static RestJoinTeamInvitation getById(int id) {
+        RestJoinTeamInvitation restJoinTeamInvitation = new RestJoinTeamInvitation(JoinTeamInvitationManager.getById(id));
+        if (restJoinTeamInvitation.isNull()) {
             return null;
         }
-        return restJoinGroupInvitation;
+        return restJoinTeamInvitation;
     }
 
     /**
      * <p>
-     * Finds the list of all (valid) RestJoinGroupInvitation
+     * Finds the list of all (valid) RestJoinTeamInvitation
      * </p>
      */
-    @REST(name = "joingroupinvitations", method = RequestMethod.GET)
-    public static RestJoinGroupInvitationList getAll() {
-        return new RestJoinGroupInvitationList(JoinGroupInvitationManager.getAll());
+    @REST(name = "jointeaminvitations", method = RequestMethod.GET)
+    public static RestJoinTeamInvitationList getAll() {
+        return new RestJoinTeamInvitationList(JoinTeamInvitationManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
     }
 
     /**
-     * @see com.bloatit.model.JoinGroupInvitation#getReciever()
+     * @see com.bloatit.model.JoinTeamInvitation#getReciever()
      */
     @XmlElement
     public RestMember getReceiver() {
@@ -141,15 +141,15 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
     }
 
     /**
-     * @see com.bloatit.model.JoinGroupInvitation#getGroup()
+     * @see com.bloatit.model.JoinTeamInvitation#getTeam()
      */
     @XmlElement
-    public RestGroup getGroup() {
-        return new RestGroup(model.getGroup());
+    public RestTeam getTeam() {
+        return new RestTeam(model.getTeam());
     }
 
     /**
-     * @see com.bloatit.model.JoinGroupInvitation#getSender()
+     * @see com.bloatit.model.JoinTeamInvitation#getSender()
      */
     @XmlElement
     public RestMember getSender() {
@@ -163,14 +163,14 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
     /**
      * Provided for JAXB
      */
-    void setModel(JoinGroupInvitation model) {
+    void setModel(JoinTeamInvitation model) {
         this.model = model;
     }
 
     /**
      * Package method to find the model
      */
-    JoinGroupInvitation getModel() {
+    JoinTeamInvitation getModel() {
         return model;
     }
 

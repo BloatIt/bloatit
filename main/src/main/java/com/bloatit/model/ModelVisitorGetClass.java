@@ -25,15 +25,15 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
-import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoInternalAccount;
-import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 
@@ -105,11 +105,11 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Group)
+     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Team)
      */
     @Override
-    public Class<?> visit(Group model) {
-        return DaoGroup.class;
+    public Class<?> visit(Team model) {
+        return DaoTeam.class;
     }
 
     /*
@@ -126,11 +126,11 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     /*
      * (non-Javadoc)
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.
-     * JoinGroupInvitation)
+     * JoinTeamInvitation)
      */
     @Override
-    public Class<?> visit(JoinGroupInvitation model) {
-        return DaoJoinGroupInvitation.class;
+    public Class<?> visit(JoinTeamInvitation model) {
+        return DaoJoinTeamInvitation.class;
     }
 
     /*

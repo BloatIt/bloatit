@@ -22,60 +22,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Group;
+import com.bloatit.model.Team;
 import com.bloatit.rest.list.master.RestListBinder;
-import com.bloatit.rest.resources.RestGroup;
+import com.bloatit.rest.resources.RestTeam;
 
 /**
  * <p>
- * Wraps a list of Group into a list of RestElements
+ * Wraps a list of Team into a list of RestElements
  * </p>
  * <p>
- * This class can be represented in Xml as a list of Group<br />
+ * This class can be represented in Xml as a list of Team<br />
  * Example:
  *
  * <pre>
- * {@code <Groups>}
- *     {@code <Group name=Group1 />}
- *     {@code <Group name=Group2 />}
- * {@code </Groups>}
+ * {@code <Teams>}
+ *     {@code <Team name=Team1 />}
+ *     {@code <Team name=Team2 />}
+ * {@code </Teams>}
  * </pre>
  * <p>
  */
-@XmlRootElement(name = "groups")
-public class RestGroupList extends RestListBinder<RestGroup, Group> {
+@XmlRootElement(name = "teams")
+public class RestTeamList extends RestListBinder<RestTeam, Team> {
 
     /**
      * Provided for XML generation
      */
     @SuppressWarnings("unused")
-    private RestGroupList() {
+    private RestTeamList() {
         super();
     }
 
     /**
-     * Creates a RestGroupList from a {@codePageIterable<Group>}
+     * Creates a RestTeamList from a {@codePageIterable<Team>}
      *
      * @param collection the list of elements from the model
      */
-    public RestGroupList(PageIterable<Group> collection) {
+    public RestTeamList(PageIterable<Team> collection) {
         super(collection);
     }
 
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElement(name = "group")
+    @XmlElement(name = "team")
     @XmlIDREF
-    public List<RestGroup> getGroups() {
-        List<RestGroup> groups = new ArrayList<RestGroup>();
-        for (RestGroup group : this) {
-            groups.add(group);
+    public List<RestTeam> getTeams() {
+        List<RestTeam> teams = new ArrayList<RestTeam>();
+        for (RestTeam team : this) {
+            teams.add(team);
         }
-        return groups;
+        return teams;
     }
 }

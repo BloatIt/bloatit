@@ -41,7 +41,7 @@ import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A user content is a content created by a user. A user content as an Author,
- * and can be posted in the name of a group. It also has a creation date.
+ * and can be posted in the name of a team. It also has a creation date.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -58,11 +58,11 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /**
      * Most of the time this is null. But when a user create a content in the
-     * name of a group, asGroup point on it.
+     * name of a team, asTeam point on it.
      */
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private DaoGroup asGroup;
+    private DaoTeam asTeam;
 
     @Basic(optional = false)
     @Field(store = Store.NO)
@@ -100,8 +100,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return (Date) this.creationDate.clone();
     }
 
-    public DaoGroup getAsGroup() {
-        return this.asGroup;
+    public DaoTeam getAsTeam() {
+        return this.asTeam;
     }
 
     /**
@@ -123,8 +123,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * null is the default value and means that the content has a member as
      * author.
      */
-    public void setAsGroup(final DaoGroup asGroup) {
-        this.asGroup = asGroup;
+    public void setAsTeam(final DaoTeam asTeam) {
+        this.asTeam = asTeam;
     }
 
     public void addFile(final DaoFileMetadata daoFileMetadata) {
@@ -151,7 +151,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.asGroup == null) ? 0 : this.asGroup.hashCode());
+        result = prime * result + ((this.asTeam == null) ? 0 : this.asTeam.hashCode());
         result = prime * result + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
         result = prime * result + ((this.member == null) ? 0 : this.member.hashCode());
         return result;
@@ -173,11 +173,11 @@ public abstract class DaoUserContent extends DaoIdentifiable {
             return false;
         }
         final DaoUserContent other = (DaoUserContent) obj;
-        if (this.asGroup == null) {
-            if (other.asGroup != null) {
+        if (this.asTeam == null) {
+            if (other.asTeam != null) {
                 return false;
             }
-        } else if (!this.asGroup.equals(other.asGroup)) {
+        } else if (!this.asTeam.equals(other.asTeam)) {
             return false;
         }
         if (this.creationDate == null) {

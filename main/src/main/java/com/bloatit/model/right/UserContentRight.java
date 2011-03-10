@@ -16,8 +16,8 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
-import com.bloatit.model.Group;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.model.Team;
 import com.bloatit.model.UserContent;
 
 /**
@@ -27,15 +27,15 @@ import com.bloatit.model.UserContent;
 public class UserContentRight extends RightManager {
 
     /**
-     * The Class AsGroup is an accessor for the AsGroup property.
+     * The Class AsTeam is an accessor for the AsTeam property.
      */
-    public static class AsGroup extends Accessor {
+    public static class AsTeam extends Accessor {
 
-        private final Group group;
+        private final Team team;
 
         // TODO document
-        public AsGroup(Group group) {
-            this.group = group;
+        public AsTeam(Team team) {
+            this.team = team;
         }
 
         /*
@@ -45,7 +45,7 @@ public class UserContentRight extends RightManager {
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
-            return canRead(action) || (group.hasGroupPrivilege(UserGroupRight.TALK) && canWrite(action));
+            return canRead(action) || (team.hasTeamPrivilege(UserTeamRight.TALK) && canWrite(action));
         }
     }
 }

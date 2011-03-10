@@ -19,21 +19,21 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
- * Action used to give a user a new right in a group
+ * Action used to give a user a new right in a team
  */
 @ParamContainer("team/dogiveright")
 public class GiveRightAction extends LoggedAction {
@@ -42,13 +42,13 @@ public class GiveRightAction extends LoggedAction {
     private final GiveRightActionUrl url;
 
     @RequestParam()
-    private final Group targetTeam;
+    private final Team targetTeam;
 
     @RequestParam
     private final Member targetMember;
 
     @RequestParam
-    private final UserGroupRight right;
+    private final UserTeamRight right;
 
     @RequestParam
     private final Boolean give;
@@ -69,18 +69,18 @@ public class GiveRightAction extends LoggedAction {
 
         if (!connected.equals(targetMember) && !connected.canPromote(targetTeam)) {
             try {
-                session.notifyBad(Context.tr("You are not allowed to promote people in the group: " + targetTeam.getLogin()));
+                session.notifyBad(Context.tr("You are not allowed to promote people in the team: " + targetTeam.getLogin()));
             } catch (UnauthorizedOperationException e) {
-                Log.web().warn("Couldn't display a group name", e);
-                session.notifyBad(Context.tr("You are not allowed to promote people in this group"));
+                Log.web().warn("Couldn't display a team name", e);
+                session.notifyBad(Context.tr("You are not allowed to promote people in this team"));
             }
             return new TeamPageUrl(targetTeam);
         }
 
         if (give) {
-            targetMember.addGroupRight(targetTeam, right);
+            targetMember.addTeamRight(targetTeam, right);
         } else {
-            targetMember.removeGroupRight(targetTeam, right);
+            targetMember.removeTeamRight(targetTeam, right);
         }
         return new TeamPageUrl(targetTeam);
     }

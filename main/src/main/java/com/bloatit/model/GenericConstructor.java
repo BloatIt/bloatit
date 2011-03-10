@@ -9,11 +9,11 @@ import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFileMetadata;
-import com.bloatit.data.DaoGroup;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoInternalAccount;
-import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoMember;
@@ -55,14 +55,14 @@ public class GenericConstructor {
         if (clazz.equals(Description.class)) {
             return DaoDescription.class;
         }
-        if (clazz.equals(Group.class)) {
-            return DaoGroup.class;
+        if (clazz.equals(Team.class)) {
+            return DaoTeam.class;
         }
         if (clazz.equals(HighlightFeature.class)) {
             return DaoHighlightFeature.class;
         }
-        if (clazz.equals(JoinGroupInvitation.class)) {
-            return DaoJoinGroupInvitation.class;
+        if (clazz.equals(JoinTeamInvitation.class)) {
+            return DaoJoinTeamInvitation.class;
         }
         if (clazz.equals(Software.class)) {
             return DaoSoftware.class;

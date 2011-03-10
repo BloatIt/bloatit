@@ -25,9 +25,9 @@ import com.bloatit.model.Software;
 public class SoftwareRight extends RightManager {
 
     /**
-     * The Class GroupList is an accessor for the GroupList property.
+     * The Class TeamList is an accessor for the TeamList property.
      */
-    public static class GroupList extends Accessor {
+    public static class TeamList extends Accessor {
 
         /*
          * (non-Javadoc)

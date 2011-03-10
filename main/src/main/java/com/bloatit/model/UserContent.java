@@ -19,8 +19,8 @@ package com.bloatit.model;
 import java.util.Date;
 import java.util.EnumSet;
 
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
@@ -65,29 +65,29 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     }
 
     @Override
-    public final boolean canAccessAsGroup(final Group asGroup) {
-        return canAccess(new UserContentRight.AsGroup(asGroup), Action.WRITE);
+    public final boolean canAccessAsTeam(final Team asTeam) {
+        return canAccess(new UserContentRight.AsTeam(asTeam), Action.WRITE);
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.UserContentInterface#setAsGroup(com.bloatit.model.Group
+     * com.bloatit.model.UserContentInterface#setAsTeam(com.bloatit.model.Team
      * )
      */
     @Override
-    public final void setAsGroup(final Group asGroup) throws UnauthorizedOperationException {
-        tryAccess(new UserContentRight.AsGroup(asGroup), Action.WRITE);
-        getDao().setAsGroup(asGroup.getDao());
+    public final void setAsTeam(final Team asTeam) throws UnauthorizedOperationException {
+        tryAccess(new UserContentRight.AsTeam(asTeam), Action.WRITE);
+        getDao().setAsTeam(asTeam.getDao());
     }
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.UserContentInterface#getAsGroup()
+     * @see com.bloatit.model.UserContentInterface#getAsTeam()
      */
     @Override
-    public final Group getAsGroup() {
-        return Group.create(getDao().getAsGroup());
+    public final Team getAsTeam() {
+        return Team.create(getDao().getAsTeam());
     }
 
     /*
@@ -130,11 +130,11 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     }
 
     @Override
-    protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
-        if (getAsGroup() != null && member.isInGroup(getAsGroup())) {
-            return getAsGroup().getUserGroupRight(member);
+    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
+        if (getAsTeam() != null && member.isInTeam(getAsTeam())) {
+            return getAsTeam().getUserTeamRight(member);
         }
-        return EnumSet.noneOf(UserGroupRight.class);
+        return EnumSet.noneOf(UserTeamRight.class);
     }
 
     @Override

@@ -25,10 +25,10 @@ import java.util.Locale;
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBatch.BatchState;
 import com.bloatit.data.DaoBug;
-import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.BugState;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoRelease;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
@@ -129,9 +129,9 @@ public class Batch extends Identifiable<DaoBatch> {
         if (file != null) {
             release.addFile(file);
         }
-        // TODO as group ?
-        // if (getOffer().getAsGroup() != null){
-        // release.setAsGroup(getOffer().getAsGroup());
+        // TODO as team ?
+        // if (getOffer().getAsTeam() != null){
+        // release.setAsTeam(getOffer().getAsTeam());
         // }
         getDao().addRelease(release.getDao());
 
@@ -350,12 +350,12 @@ public class Batch extends Identifiable<DaoBatch> {
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.right.RestrictedObject#calculateMyGroupRights(com.bloatit
+     * com.bloatit.model.right.RestrictedObject#calculateMyTeamRights(com.bloatit
      * .model .Member)
      */
     @Override
-    protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
-        return Offer.create(getDao().getOffer()).calculateMyGroupRights(member);
+    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
+        return Offer.create(getDao().getOffer()).calculateMyTeamRights(member);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

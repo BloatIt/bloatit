@@ -3,7 +3,7 @@ package com.bloatit.model.admin;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
 import com.bloatit.data.queries.DaoUserContentQuery;
-import com.bloatit.model.Group;
+import com.bloatit.model.Team;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
@@ -32,20 +32,20 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         getfactory().idEquals(id);
     }
 
-    public void groupByMember() {
-        getfactory().groupByMember();
+    public void teamByMember() {
+        getfactory().teamByMember();
     }
 
-    public void groupByAsGroup() {
-        getfactory().groupByAsGroup();
+    public void teamByAsTeam() {
+        getfactory().teamByAsTeam();
     }
 
     public void orderByMember(final OrderType order) {
         getfactory().orderByMember(order);
     }
 
-    public void orderByAsGroup(final OrderType order) {
-        getfactory().orderByAsGroup(order);
+    public void orderByAsTeam(final OrderType order) {
+        getfactory().orderByAsTeam(order);
     }
 
     public void orderByCreationDate(final OrderType orderType) {
@@ -68,19 +68,19 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         getfactory().withFile();
     }
 
-    public void withAnyGroup() {
-        getfactory().withAnyGroup();
+    public void withAnyTeam() {
+        getfactory().withAnyTeam();
     }
 
-    public void withNoGroup() {
-        getfactory().withNoGroup();
+    public void withNoTeam() {
+        getfactory().withNoTeam();
     }
 
     public void fromMember(final Member member) {
         getfactory().fromMember(member.getDao());
     }
 
-    public void fromGroup(final Group group) {
-        getfactory().fromGroup(group.getDao());
+    public void fromTeam(final Team team) {
+        getfactory().fromTeam(team.getDao());
     }
 }

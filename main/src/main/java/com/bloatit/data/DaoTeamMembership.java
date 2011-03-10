@@ -36,64 +36,64 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 
 /**
  * This class is for Hibernate only.
  */
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_id", "bloatitGroup_id" }) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_id", "bloatitTeam_id" }) })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "groupMembership.byGroupMember",
-                           query = "FROM DaoGroupMembership gm WHERE gm.bloatitGroup = :bloatitGroup AND gm.member = :member")
+                           name = "teamMembership.byTeamMember",
+                           query = "FROM DaoTeamMembership gm WHERE gm.bloatitTeam = :bloatitTeam AND gm.member = :member")
                       }
              )
 // @formatter:on
-class DaoGroupMembership extends DaoIdentifiable {
+class DaoTeamMembership extends DaoIdentifiable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoMember member;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private DaoGroup bloatitGroup;
+    private DaoTeam bloatitTeam;
 
     @OneToMany(mappedBy = "membership", orphanRemoval = true, cascade = { CascadeType.ALL })
     @Cascade(value = {})
-    private final List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
+    private final List<DaoTeamRight> memberRight = new ArrayList<DaoTeamRight>(0);
 
     /**
-     * Get a GroupMembership line using its composite key. (HQL request)
+     * Get a TeamMembership line using its composite key. (HQL request)
      */
-    protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
+    protected static DaoTeamMembership get(final DaoTeam team, final DaoMember member) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.getNamedQuery("groupMembership.byGroupMember");
-        q.setEntity("bloatitGroup", group);
+        final Query q = session.getNamedQuery("teamMembership.byTeamMember");
+        q.setEntity("bloatitTeam", team);
         q.setEntity("member", member);
-        return (DaoGroupMembership) q.uniqueResult();
+        return (DaoTeamMembership) q.uniqueResult();
     }
 
-    protected DaoGroupMembership(final DaoMember member, final DaoGroup group) {
+    protected DaoTeamMembership(final DaoMember member, final DaoTeam team) {
         this.member = member;
-        this.bloatitGroup = group;
+        this.bloatitTeam = team;
     }
 
     protected DaoMember getMember() {
         return this.member;
     }
 
-    protected DaoGroup getGroup() {
-        return this.bloatitGroup;
+    protected DaoTeam getTeam() {
+        return this.bloatitTeam;
     }
 
-    protected List<DaoGroupRight> getRights() {
+    protected List<DaoTeamRight> getRights() {
         return this.memberRight;
     }
 
-    protected void addUserRight(final UserGroupRight newRight) {
-        this.memberRight.add(new DaoGroupRight(this, newRight));
+    protected void addUserRight(final UserTeamRight newRight) {
+        this.memberRight.add(new DaoTeamRight(this, newRight));
     }
 
     // ======================================================================
@@ -109,7 +109,7 @@ class DaoGroupMembership extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoGroupMembership() {
+    protected DaoTeamMembership() {
         super();
     }
 
@@ -125,7 +125,7 @@ class DaoGroupMembership extends DaoIdentifiable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.bloatitGroup == null) ? 0 : this.bloatitGroup.hashCode());
+        result = prime * result + ((this.bloatitTeam == null) ? 0 : this.bloatitTeam.hashCode());
         result = prime * result + ((this.member == null) ? 0 : this.member.hashCode());
         return result;
     }
@@ -139,15 +139,15 @@ class DaoGroupMembership extends DaoIdentifiable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof DaoGroupMembership)) {
+        if (!(obj instanceof DaoTeamMembership)) {
             return false;
         }
-        final DaoGroupMembership other = (DaoGroupMembership) obj;
-        if (this.bloatitGroup == null) {
-            if (other.bloatitGroup != null) {
+        final DaoTeamMembership other = (DaoTeamMembership) obj;
+        if (this.bloatitTeam == null) {
+            if (other.bloatitTeam != null) {
                 return false;
             }
-        } else if (!this.bloatitGroup.equals(other.bloatitGroup)) {
+        } else if (!this.bloatitTeam.equals(other.bloatitTeam)) {
             return false;
         }
         if (this.member == null) {

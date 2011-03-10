@@ -3,65 +3,65 @@ package com.bloatit.model;
 import java.util.EnumSet;
 import java.util.Set;
 
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 
 /**
- * A class used to describe various actions possible by group members
+ * A class used to describe various actions possible by team members
  */
 public class TeamRole {
-    private final Set<UserGroupRight> rights;
+    private final Set<UserTeamRight> rights;
 
-    public final static TeamRole MEMBER = new TeamRole(EnumSet.of(UserGroupRight.CONSULT));
-    public final static TeamRole DEVELOPER = new TeamRole(EnumSet.range(UserGroupRight.CONSULT, UserGroupRight.TALK));
-    public final static TeamRole ADMIN = new TeamRole(EnumSet.allOf(UserGroupRight.class));
+    public final static TeamRole MEMBER = new TeamRole(EnumSet.of(UserTeamRight.CONSULT));
+    public final static TeamRole DEVELOPER = new TeamRole(EnumSet.range(UserTeamRight.CONSULT, UserTeamRight.TALK));
+    public final static TeamRole ADMIN = new TeamRole(EnumSet.allOf(UserTeamRight.class));
 
-    public TeamRole(final Set<UserGroupRight> rights) {
+    public TeamRole(final Set<UserTeamRight> rights) {
         this.rights = rights;
     }
 
     /**
-     * Indicates whether the user with the role can consult group information
+     * Indicates whether the user with the role can consult team information
      *
-     * @return <code>true</code> if the user can consult group information,
+     * @return <code>true</code> if the user can consult team information,
      *         <code>false</code> otherwise
      */
     public boolean consult() {
-        return rights.contains(UserGroupRight.CONSULT);
+        return rights.contains(UserTeamRight.CONSULT);
     }
 
     /**
-     * Indicates whether the user with the role can talk for the group
+     * Indicates whether the user with the role can talk for the team
      *
-     * @return <code>true</code> if the user can talk for the group,
+     * @return <code>true</code> if the user can talk for the team,
      *         <code>false</code> otherwise
      */
     public boolean talk() {
-        return rights.contains(UserGroupRight.TALK);
+        return rights.contains(UserTeamRight.TALK);
     }
 
     /**
-     * Indicates whether the user with the role can invite people into the group
+     * Indicates whether the user with the role can invite people into the team
      *
-     * @return <code>true</code> if the user can invite people into the group,
+     * @return <code>true</code> if the user can invite people into the team,
      *         <code>false</code> otherwise
      */
     public boolean invite() {
-        return rights.contains(UserGroupRight.INVITE);
+        return rights.contains(UserTeamRight.INVITE);
     }
 
     /**
-     * Indicates whether the user with the role can modify group information
+     * Indicates whether the user with the role can modify team information
      *
-     * @return <code>true</code> if the user can modify group information,
+     * @return <code>true</code> if the user can modify team information,
      *         <code>false</code> otherwise
      */
     public boolean modify() {
-        return rights.contains(UserGroupRight.MODIFY);
+        return rights.contains(UserTeamRight.MODIFY);
     }
 
     /**
      * Indicates whether the user with the role can change the role of people in
-     * the group
+     * the team
      * <p>
      * Note : giving promoting rights means the user can also demote
      * </p>
@@ -70,7 +70,7 @@ public class TeamRole {
      *         <code>false</code> otherwise
      */
     public boolean promote() {
-        return rights.contains(UserGroupRight.PROMOTE);
+        return rights.contains(UserTeamRight.PROMOTE);
     }
 
     /**
@@ -81,7 +81,7 @@ public class TeamRole {
      *         <code>false</code> otherwise
      */
     public boolean bank() {
-        return rights.contains(UserGroupRight.BANK);
+        return rights.contains(UserTeamRight.BANK);
     }
 
     /**
@@ -89,7 +89,7 @@ public class TeamRole {
      *
      * @return a set containing every right for this role
      */
-    public Set<UserGroupRight> getRights() {
+    public Set<UserTeamRight> getRights() {
         return rights;
     }
 }

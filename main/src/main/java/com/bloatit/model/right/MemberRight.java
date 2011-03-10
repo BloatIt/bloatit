@@ -16,7 +16,7 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.Member;
 
 /**
@@ -26,9 +26,9 @@ import com.bloatit.model.Member;
 public class MemberRight extends RightManager {
 
     /**
-     * The Class GroupList is an accessor for the GroupList property.
+     * The Class TeamList is an accessor for the TeamList property.
      */
-    public static class GroupList extends Accessor {
+    public static class TeamList extends Accessor {
 
         /*
          * (non-Javadoc)
@@ -39,7 +39,7 @@ public class MemberRight extends RightManager {
         protected final boolean can(final RestrictedInterface role, final Action action) {
             boolean can = false;
             can = can || canRead(action);
-            can = can || role.hasGroupPrivilege(UserGroupRight.PROMOTE) && ownerCanWrite(role, action);
+            can = can || role.hasTeamPrivilege(UserTeamRight.PROMOTE) && ownerCanWrite(role, action);
             can = can || ownerCanDelete(role, action);
             return can;
         }
@@ -60,7 +60,7 @@ public class MemberRight extends RightManager {
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
             boolean returnValue = false;
-            returnValue = role.hasGroupPrivilege(UserGroupRight.INVITE) && (action == Action.WRITE);
+            returnValue = role.hasTeamPrivilege(UserTeamRight.INVITE) && (action == Action.WRITE);
             returnValue = returnValue || ownerCanRead(role, action) || ownerCanDelete(role, action);
             return returnValue;
         }

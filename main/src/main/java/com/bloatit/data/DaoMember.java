@@ -41,8 +41,8 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
-import com.bloatit.data.DaoJoinGroupInvitation.State;
+import com.bloatit.data.DaoJoinTeamInvitation.State;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -65,65 +65,65 @@ import com.bloatit.framework.utils.PageIterable;
 
 
                        @NamedQuery(
-                           name = "member.getReceivedInvitations.byStateGroup",
-                           query = "FROM DaoJoinGroupInvitation " +
+                           name = "member.getReceivedInvitations.byStateTeam",
+                           query = "FROM DaoJoinTeamInvitation " +
                                       "WHERE receiver = :receiver " +
                                       "AND state = :state  " +
-                                      "AND group = :group"),
+                                      "AND team = :team"),
                           @NamedQuery(
-                              name = "member.getReceivedInvitations.byStateGroup.size",
+                              name = "member.getReceivedInvitations.byStateTeam.size",
                               query =  "SELECT count(*)" +
-                                          "FROM DaoJoinGroupInvitation " +
+                                          "FROM DaoJoinTeamInvitation " +
                                        "WHERE receiver = :receiver " +
                                        "AND state = :state  " +
-                                       "AND group = :group"),
+                                       "AND team = :team"),
 
                        @NamedQuery(
                            name = "member.getReceivedInvitations.byState",
-                           query = "FROM DaoJoinGroupInvitation " +
+                           query = "FROM DaoJoinTeamInvitation " +
                                    "WHERE receiver = :receiver " +
                                    "AND state = :state "),
                        @NamedQuery(
                            name = "member.getReceivedInvitations.byState.size",
                            query = "SELECT count(*)" +
-                                      "FROM DaoJoinGroupInvitation " +
+                                      "FROM DaoJoinTeamInvitation " +
                                    "WHERE receiver = :receiver " +
                                    "AND state = :state "),
 
                        @NamedQuery(
                            name = "member.getSentInvitations.byState",
-                           query = "FROM DaoJoinGroupInvitation " +
+                           query = "FROM DaoJoinTeamInvitation " +
                                    "WHERE sender = :sender " +
                                    "AND state = :state "),
                        @NamedQuery(
                            name = "member.getSentInvitations.byState.size",
                            query = "SELECT count(*)" +
-                                   "FROM DaoJoinGroupInvitation " +
+                                   "FROM DaoJoinTeamInvitation " +
                                    "WHERE sender = :sender " +
                                    "AND state = :state "),
 
                        @NamedQuery(
-                           name = "member.getSentInvitations.byStateGroup",
+                           name = "member.getSentInvitations.byStateTeam",
                            query = "SELECT count(*)" +
-                                   "FROM DaoJoinGroupInvitation " +
+                                   "FROM DaoJoinTeamInvitation " +
                                    "WHERE sender = :sender " +
                                    "AND state = :state " +
-                                   "AND group = :group"),
+                                   "AND team = :team"),
                        @NamedQuery(
-                           name = "member.getSentInvitations.byStateGroup.size",
+                           name = "member.getSentInvitations.byStateTeam.size",
                            query = "SELECT count(*)" +
-                                   "FROM DaoJoinGroupInvitation " +
+                                   "FROM DaoJoinTeamInvitation " +
                                    "WHERE sender = :sender " +
                                    "AND state = :state " +
-                                   "AND group = :group"),
+                                   "AND team = :team"),
 
                        @NamedQuery(
-                           name = "member.isInGroup",
+                           name = "member.isInTeam",
                            query = "SELECT count(*) " +
                                    "FROM DaoMember m " +
-                                   "JOIN m.groupMembership AS gm " +
-                                   "JOIN gm.bloatitGroup AS g " +
-                                   "WHERE m = :member AND g = :group"),
+                                   "JOIN m.teamMembership AS gm " +
+                                   "JOIN gm.bloatitTeam AS g " +
+                                   "WHERE m = :member AND g = :team"),
 
 
                       }
@@ -169,7 +169,7 @@ public class DaoMember extends DaoActor {
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private final List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
+    private final List<DaoTeamMembership> teamMembership = new ArrayList<DaoTeamMembership>(0);
 
     // ======================================================================
     // Static HQL requests
@@ -269,54 +269,54 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * @param aGroup the group in which this member is added.
+     * @param aTeam the team in which this member is added.
      */
-    public void addToGroup(final DaoGroup aGroup) {
-        final DaoGroupMembership daoGroupMembership = new DaoGroupMembership(this, aGroup);
-        if (this.groupMembership.contains(daoGroupMembership)) {
-            throw new FatalErrorException("This member is already in the group: " + aGroup.getId());
+    public void addToTeam(final DaoTeam aTeam) {
+        final DaoTeamMembership daoTeamMembership = new DaoTeamMembership(this, aTeam);
+        if (this.teamMembership.contains(daoTeamMembership)) {
+            throw new FatalErrorException("This member is already in the team: " + aTeam.getId());
         }
-        this.groupMembership.add(daoGroupMembership);
-        addGroupRight(aGroup, UserGroupRight.CONSULT);
+        this.teamMembership.add(daoTeamMembership);
+        addTeamRight(aTeam, UserTeamRight.CONSULT);
     }
 
     /**
-     * @param aGroup the group from which this member is removed.
+     * @param aTeam the team from which this member is removed.
      */
-    public void removeFromGroup(final DaoGroup aGroup) {
-        final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
+    public void removeFromTeam(final DaoTeam aTeam) {
+        final DaoTeamMembership link = DaoTeamMembership.get(aTeam, this);
         if (link != null) {
-            this.groupMembership.remove(link);
-            aGroup.getGroupMembership().remove(link);
+            this.teamMembership.remove(link);
+            aTeam.getTeamMembership().remove(link);
             SessionManager.getSessionFactory().getCurrentSession().delete(link);
         } else {
-            Log.data().error("Try to remove a non existing DaoGroupMembership: group = " + aGroup.getId() + " member = " + getId());
+            Log.data().error("Try to remove a non existing DaoTeamMembership: team = " + aTeam.getId() + " member = " + getId());
         }
     }
 
-    public void addGroupRight(final DaoGroup aGroup, final UserGroupRight newRight) {
-        final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
+    public void addTeamRight(final DaoTeam aTeam, final UserTeamRight newRight) {
+        final DaoTeamMembership link = DaoTeamMembership.get(aTeam, this);
         if (link != null) {
             link.addUserRight(newRight);
         } else {
-            Log.data().error("Trying to give user some rights in a group he doesn't belong: group = " + aGroup.getId() + " member = " + getId());
+            Log.data().error("Trying to give user some rights in a team he doesn't belong: team = " + aTeam.getId() + " member = " + getId());
         }
     }
 
-    public Set<UserGroupRight> getGroupRights(final DaoGroup aGroup) {
-        return aGroup.getUserGroupRight(this);
+    public Set<UserTeamRight> getTeamRights(final DaoTeam aTeam) {
+        return aTeam.getUserTeamRight(this);
     }
 
-    public void removeGroupRight(final DaoGroup aGroup, final UserGroupRight removeRight) {
-        final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
-        for (final DaoGroupRight dgr : link.getRights()) {
+    public void removeTeamRight(final DaoTeam aTeam, final UserTeamRight removeRight) {
+        final DaoTeamMembership link = DaoTeamMembership.get(aTeam, this);
+        for (final DaoTeamRight dgr : link.getRights()) {
             if (dgr.getUserStatus().equals(removeRight)) {
                 link.getRights().remove(dgr);
                 SessionManager.getSessionFactory().getCurrentSession().delete(dgr);
                 return;
             }
         }
-        Log.data().error("Trying to remove user some rights in a group he doesn't belong: group = " + aGroup.getId() + " member = " + getId()
+        Log.data().error("Trying to remove user some rights in a team he doesn't belong: team = " + aTeam.getId() + " member = " + getId()
                 + " right : " + removeRight);
     }
 
@@ -355,15 +355,15 @@ public class DaoMember extends DaoActor {
 
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
-     * PROTECTED groups. ]
+     * PROTECTED teams. ]
      *
-     * @return All the groups this member is in. (Use a HQL query)
+     * @return All the teams this member is in. (Use a HQL query)
      */
-    public PageIterable<DaoGroup> getGroups() {
+    public PageIterable<DaoTeam> getTeams() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filter = session.createFilter(getGroupMembership(), "select this.bloatitGroup order by login");
-        final Query count = session.createFilter(getGroupMembership(), "select count(*)");
-        return new QueryCollection<DaoGroup>(filter, count);
+        final Query filter = session.createFilter(getTeamMembership(), "select this.bloatitTeam order by login");
+        final Query count = session.createFilter(getTeamMembership(), "select count(*)");
+        return new QueryCollection<DaoTeam>(filter, count);
     }
 
     public Role getRole() {
@@ -434,47 +434,47 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * @return All the received invitation to join a group which are in a
+     * @return All the received invitation to join a team which are in a
      *         specified state
      */
-    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
-        return new QueryCollection<DaoJoinGroupInvitation>("member.getReceivedInvitations.byState").setEntity("receiver", this).setParameter("state",
+    public PageIterable<DaoJoinTeamInvitation> getReceivedInvitation(final State state) {
+        return new QueryCollection<DaoJoinTeamInvitation>("member.getReceivedInvitations.byState").setEntity("receiver", this).setParameter("state",
                                                                                                                                              state);
     }
 
     /**
      * @param state the state of the invitation (ACCEPTED, PENDING, REFUSED)
-     * @param group the group for which the invitations have been sent
-     * @return All the received invitation to join a specific group, which are
+     * @param team the team for which the invitations have been sent
+     * @return All the received invitation to join a specific team, which are
      *         in a given state
      */
-    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state, final DaoGroup group) {
-        return new QueryCollection<DaoJoinGroupInvitation>("member.getReceivedInvitations.byStateGroup").setEntity("receiver", this)
+    public PageIterable<DaoJoinTeamInvitation> getReceivedInvitation(final State state, final DaoTeam team) {
+        return new QueryCollection<DaoJoinTeamInvitation>("member.getReceivedInvitations.byStateTeam").setEntity("receiver", this)
                                                                                                         .setParameter("state", state)
-                                                                                                        .setEntity("group", group);
+                                                                                                        .setEntity("team", team);
     }
 
-    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state, final DaoGroup group) {
-        return new QueryCollection<DaoJoinGroupInvitation>("member.getSentInvitations.byStateGroup").setEntity("sender", this)
+    public PageIterable<DaoJoinTeamInvitation> getSentInvitation(final State state, final DaoTeam team) {
+        return new QueryCollection<DaoJoinTeamInvitation>("member.getSentInvitations.byStateTeam").setEntity("sender", this)
                                                                                                     .setParameter("state", state)
-                                                                                                    .setEntity("group", group);
+                                                                                                    .setEntity("team", team);
     }
 
     /**
-     * @return All the sent invitation to join a group which are in a specified
+     * @return All the sent invitation to join a team which are in a specified
      *         state
      */
-    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
-        return new QueryCollection<DaoJoinGroupInvitation>("member.getSentInvitations.byState").setEntity("sender", this).setEntity("state", state);
+    public PageIterable<DaoJoinTeamInvitation> getSentInvitation(final State state) {
+        return new QueryCollection<DaoJoinTeamInvitation>("member.getSentInvitations.byState").setEntity("sender", this).setEntity("state", state);
     }
 
     /**
-     * @return if the current member is in the "group".
+     * @return if the current member is in the "team".
      */
-    public boolean isInGroup(final DaoGroup group) {
-        final Query q = SessionManager.getNamedQuery("member.isInGroup");
+    public boolean isInTeam(final DaoTeam team) {
+        final Query q = SessionManager.getNamedQuery("member.isInTeam");
         q.setEntity("member", this);
-        q.setEntity("group", group);
+        q.setEntity("team", team);
         return ((Long) q.uniqueResult()) >= 1;
     }
 
@@ -495,10 +495,10 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * used by DaoGroup
+     * used by DaoTeam
      */
-    protected List<DaoGroupMembership> getGroupMembership() {
-        return this.groupMembership;
+    protected List<DaoTeamMembership> getTeamMembership() {
+        return this.teamMembership;
     }
 
     /**

@@ -18,20 +18,20 @@
  */
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.queries.DBRequests;
-import com.bloatit.model.JoinGroupInvitation;
-import com.bloatit.model.lists.JoinGroupInvitationList;
+import com.bloatit.model.JoinTeamInvitation;
+import com.bloatit.model.lists.JoinTeamInvitationList;
 
 /**
  *
  */
-public class JoinGroupInvitationManager {
-    public static JoinGroupInvitation getById(final Integer id) {
-        return JoinGroupInvitation.create(DBRequests.getById(DaoJoinGroupInvitation.class, id));
+public class JoinTeamInvitationManager {
+    public static JoinTeamInvitation getById(final Integer id) {
+        return JoinTeamInvitation.create(DBRequests.getById(DaoJoinTeamInvitation.class, id));
     }
 
-    public static JoinGroupInvitationList getAll() {
-        return new JoinGroupInvitationList(DBRequests.getAll(DaoJoinGroupInvitation.class));
+    public static JoinTeamInvitationList getAll() {
+        return new JoinTeamInvitationList(DBRequests.getAll(DaoJoinTeamInvitation.class));
     }
 }

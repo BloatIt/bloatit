@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -18,11 +18,11 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Group;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
+import com.bloatit.model.Team;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
@@ -79,14 +79,14 @@ public class BloatitExampleDB {
         giveMoney(hydre, 500);
         giveMoney(elephantman, 100000000);
 
-        // Add groups
-        final Group other = new Group("other", "plop@elveos.org", "An other group", Right.PROTECTED, yoann);
+        // Add teams
+        final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
         other.setAvatar(getImage(yoann, "teams/other.png"));
 
-        final Group b219 = new Group("b219", "b219@elveos.org", "The group for b219", Right.PROTECTED, fred);
+        final Team b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
         b219.setAvatar(getImage(fred, "teams/b219.png"));
 
-        final Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", "The group for ubuntu users", Right.PUBLIC, thomas);
+        final Team ubuntuUsers = new Team("ubuntuUsers", "ubuntu.users@elveos.org", "The team for ubuntu users", Right.PUBLIC, thomas);
         ubuntuUsers.setAvatar(getImage(thomas, "teams/ubuntuUsers.png"));
 
         // Generate softwares

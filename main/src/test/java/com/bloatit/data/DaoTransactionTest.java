@@ -38,7 +38,7 @@ public class DaoTransactionTest extends TestCase {
     private DaoMember tom;
     private DaoMember fred;
 
-    private DaoGroup b219;
+    private DaoTeam b219;
 
     @Override
     protected void setUp() throws Exception {
@@ -60,9 +60,9 @@ public class DaoTransactionTest extends TestCase {
             yo.setFullname("Yoann Plénet");
             SessionManager.flush();
 
-            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PROTECTED)).addMember(yo, true);
+            DaoTeam.createAndPersiste("Other", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC).addMember(yo, false);
+            DaoTeam.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoTeam.Right.PUBLIC).addMember(yo, false);
+            (b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED)).addMember(yo, true);
         }
 
         SessionManager.endWorkUnitAndFlush();

@@ -57,12 +57,12 @@ public class DBRequests {
      * Make sure you test if the return is != null:
      *
      * <pre>
-     * public static Group create() {
-     *     DaoGroup dao = DBRequests.getById(DaoGroup.class, 12);
+     * public static Team create() {
+     *     DaoTeam dao = DBRequests.getById(DaoTeam.class, 12);
      *     if (dao == null) {
      *         return null;
      *     }
-     *     return new Group(dao);
+     *     return new Team(dao);
      * }
      * </pre>
      *

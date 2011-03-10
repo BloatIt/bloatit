@@ -18,58 +18,58 @@ package com.bloatit.model;
 
 import java.util.EnumSet;
 
-import com.bloatit.data.DaoGroup;
-import com.bloatit.data.DaoGroup.Right;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeam;
+import com.bloatit.data.DaoTeam.Right;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MemberList;
 
 /**
- * This is a group ... There are member in it.
+ * This is a team ... There are member in it.
  *
- * @see DaoGroup
+ * @see DaoTeam
  */
-public final class Group extends Actor<DaoGroup> {
+public final class Team extends Actor<DaoTeam> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static final class MyCreator extends Creator<DaoGroup, Group> {
+    private static final class MyCreator extends Creator<DaoTeam, Team> {
         @Override
-        public Group doCreate(final DaoGroup dao) {
-            return new Group(dao);
+        public Team doCreate(final DaoTeam dao) {
+            return new Team(dao);
         }
     }
 
-    public static Group create(final DaoGroup dao) {
+    public static Team create(final DaoTeam dao) {
         return new MyCreator().create(dao);
     }
 
     /**
      * <p>
-     * Creates a new group
+     * Creates a new team
      * </p>
      *
-     * @param login the displayed name of the group
-     * @param contact a string with various means to contact the group
-     * @param description a textual description of the group
-     * @param right <ether the group is <code>PUBLIC</code> or
+     * @param login the displayed name of the team
+     * @param contact a string with various means to contact the team
+     * @param description a textual description of the team
+     * @param right <ether the team is <code>PUBLIC</code> or
      *            <code>PROTECTED</code>
-     * @param author the creator of the group
+     * @param author the creator of the team
      */
-    public Group(final String login, final String contact, final String description, final Right right, final Member author) {
-        super(DaoGroup.createAndPersiste(login, contact, description, right));
-        author.addToGroupUnprotected(this);
-        author.setGroupRoleUnprotected(this, TeamRole.ADMIN);
+    public Team(final String login, final String contact, final String description, final Right right, final Member author) {
+        super(DaoTeam.createAndPersiste(login, contact, description, right));
+        author.addToTeamUnprotected(this);
+        author.setTeamRoleUnprotected(this, TeamRole.ADMIN);
     }
 
-    private Group(final DaoGroup dao) {
+    private Team(final DaoTeam dao) {
         super(dao);
     }
 
     /**
-     * Sets the type of group: either <code>PROTECTED</code> or
+     * Sets the type of team: either <code>PROTECTED</code> or
      * <code>PUBLIC</code>
      */
     public void setRight(final Right right) {
@@ -81,14 +81,14 @@ public final class Group extends Actor<DaoGroup> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @return the list of members that are part of this group
+     * @return the list of members that are part of this team
      */
     public PageIterable<Member> getMembers() {
         return new MemberList(getDao().getMembers());
     }
 
     /**
-     * @return the type of group: either <code>PROTECTED</code> or
+     * @return the type of team: either <code>PROTECTED</code> or
      *         <code>PUBLIC</code>
      */
     public Right getRight() {
@@ -96,9 +96,9 @@ public final class Group extends Actor<DaoGroup> {
     }
 
     /**
-     * Indicates wheter the group is public or not
+     * Indicates wheter the team is public or not
      *
-     * @return <code>true</code> if the group is public, <code>false</code>
+     * @return <code>true</code> if the team is public, <code>false</code>
      *         otherwise
      */
     public boolean isPublic() {
@@ -106,16 +106,16 @@ public final class Group extends Actor<DaoGroup> {
     }
 
     /**
-     * @return the textual representation of this group
+     * @return the textual representation of this team
      */
     public String getDescription() {
         return getDao().getDescription();
     }
 
-    public EnumSet<UserGroupRight> getUserGroupRight(final Member member) {
-        return getDao().getUserGroupRight(member.getDao());
+    public EnumSet<UserTeamRight> getUserTeamRight(final Member member) {
+        return getDao().getUserTeamRight(member.getDao());
     }
-    
+
     public FileMetadata getAvatar() {
         return FileMetadata.create(getDao().getAvatar());
     }
@@ -139,10 +139,10 @@ public final class Group extends Actor<DaoGroup> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
-        if (member.isInGroup(this)) {
-            return this.getUserGroupRight(member);
+    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
+        if (member.isInTeam(this)) {
+            return this.getUserTeamRight(member);
         }
-        return EnumSet.noneOf(UserGroupRight.class);
+        return EnumSet.noneOf(UserTeamRight.class);
     }
 }

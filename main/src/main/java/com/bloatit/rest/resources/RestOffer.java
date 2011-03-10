@@ -232,15 +232,15 @@ public class RestOffer extends RestElement<Offer> {
     }
 
     /**
-     * @see com.bloatit.model.UserContent#getAsGroup()
+     * @see com.bloatit.model.UserContent#getAsTeam()
      */
-    @XmlElement(name = "asgroup")
-    public RestGroup getAsGroup() {
-        RestGroup restGroup = new RestGroup(model.getAsGroup());
-        if (restGroup.isNull()) {
+    @XmlElement(name = "asteam")
+    public RestTeam getAsTeam() {
+        RestTeam restTeam = new RestTeam(model.getAsTeam());
+        if (restTeam.isNull()) {
             return null;
         }
-        return restGroup;
+        return restTeam;
     }
 
     /**

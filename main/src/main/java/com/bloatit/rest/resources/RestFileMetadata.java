@@ -197,15 +197,15 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
     }
 
     /**
-     * @see com.bloatit.model.UserContent#getAsGroup()
+     * @see com.bloatit.model.UserContent#getAsTeam()
      */
     // @XmlElement
-    public RestGroup getAsGroup() {
-        RestGroup asGroup = new RestGroup(model.getAsGroup());
-        if (asGroup.isNull()) {
+    public RestTeam getAsTeam() {
+        RestTeam asTeam = new RestTeam(model.getAsTeam());
+        if (asTeam.isNull()) {
             return null;
         }
-        return asGroup;
+        return asTeam;
     }
 
     /**

@@ -8,33 +8,33 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.SendGroupInvitationActionUrl;
+import com.bloatit.web.url.SendTeamInvitationActionUrl;
 
 /**
  * <p>
- * An action used to send group invitations
+ * An action used to send team invitations
  * </p>
  */
 @ParamContainer("invitation/dosend")
-public class SendGroupInvitationAction extends LoggedAction {
-    public final static String GROUP_JOIN_CODE = "bloatit_join_group";
+public class SendTeamInvitationAction extends LoggedAction {
+    public final static String TEAM_JOIN_CODE = "bloatit_join_team";
     public final static String RECEIVER_CODE = "bloatit_join_receiver";
 
-    @RequestParam(name = GROUP_JOIN_CODE, role = Role.POST)
-    private final Group group;
+    @RequestParam(name = TEAM_JOIN_CODE, role = Role.POST)
+    private final Team team;
 
     @RequestParam(name = RECEIVER_CODE, role = Role.POST)
     private final Member receiver;
 
-    private final SendGroupInvitationActionUrl url;
+    private final SendTeamInvitationActionUrl url;
 
-    public SendGroupInvitationAction(final SendGroupInvitationActionUrl url) {
+    public SendTeamInvitationAction(final SendTeamInvitationActionUrl url) {
         super(url);
         this.url = url;
-        this.group = url.getGroup();
+        this.team = url.getTeam();
         this.receiver = url.getReceiver();
     }
 
@@ -43,8 +43,8 @@ public class SendGroupInvitationAction extends LoggedAction {
         final Member me = session.getAuthToken().getMember();
 
         try {
-            me.sendInvitation(receiver, group);
-            session.notifyGood("Invitation sent to " + receiver.getDisplayName() + " for group " + group.getLogin());
+            me.sendInvitation(receiver, team);
+            session.notifyGood("Invitation sent to " + receiver.getDisplayName() + " for team " + team.getLogin());
         } catch (final UnauthorizedOperationException e) {
             e.printStackTrace();
         }

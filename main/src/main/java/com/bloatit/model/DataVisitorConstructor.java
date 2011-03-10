@@ -25,16 +25,16 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
-import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoImage;
 import com.bloatit.data.DaoInternalAccount;
-import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.DataClassVisitor;
@@ -109,11 +109,11 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoGroup)
+     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoTeam)
      */
     @Override
-    public Identifiable<?> visit(final DaoGroup dao) {
-        return Group.create(dao);
+    public Identifiable<?> visit(final DaoTeam dao) {
+        return Team.create(dao);
     }
 
     /*
@@ -139,11 +139,11 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     /*
      * (non-Javadoc)
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.
-     * DaoJoinGroupInvitation)
+     * DaoJoinTeamInvitation)
      */
     @Override
-    public Identifiable<?> visit(final DaoJoinGroupInvitation dao) {
-        return JoinGroupInvitation.create(dao);
+    public Identifiable<?> visit(final DaoJoinTeamInvitation dao) {
+        return JoinTeamInvitation.create(dao);
     }
 
     /*

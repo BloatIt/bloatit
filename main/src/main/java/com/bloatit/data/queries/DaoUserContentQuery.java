@@ -21,8 +21,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.SessionManager;
 
@@ -33,7 +33,7 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
     private static String MEMBER_LOGIN = "m.member";
     private static String FILES = "files";
     private static String IS_DELETED = "isDeleted";
-    private static String AS_GROUP = "asGroup";
+    private static String AS_TEAM = "asTeam";
 
     protected DaoUserContentQuery(final Criteria criteria) {
         super(criteria);
@@ -45,12 +45,12 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         this(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoUserContent.class));
     }
 
-    public void groupByMember() {
+    public void teamByMember() {
         add(Projections.groupProperty(MEMBER));
     }
 
-    public void groupByAsGroup() {
-        add(Projections.groupProperty(AS_GROUP));
+    public void teamByAsTeam() {
+        add(Projections.groupProperty(AS_TEAM));
     }
 
     public void orderByMember(final DaoAbstractQuery.OrderType order) {
@@ -61,11 +61,11 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         }
     }
 
-    public void orderByAsGroup(final DaoAbstractQuery.OrderType order) {
+    public void orderByAsTeam(final DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
-            addOrder(Order.asc(AS_GROUP));
+            addOrder(Order.asc(AS_TEAM));
         } else {
-            addOrder(Order.desc(AS_GROUP));
+            addOrder(Order.desc(AS_TEAM));
         }
     }
 
@@ -93,20 +93,20 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         add(Restrictions.isNotEmpty(FILES));
     }
 
-    public void withAnyGroup() {
-        add(Restrictions.isNotNull(AS_GROUP));
+    public void withAnyTeam() {
+        add(Restrictions.isNotNull(AS_TEAM));
     }
 
-    public void withNoGroup() {
-        add(Restrictions.isNull(AS_GROUP));
+    public void withNoTeam() {
+        add(Restrictions.isNull(AS_TEAM));
     }
 
     public void fromMember(final DaoMember member) {
         add(Restrictions.eq(MEMBER, member));
     }
 
-    public void fromGroup(final DaoGroup group) {
-        add(Restrictions.eq(AS_GROUP, group));
+    public void fromTeam(final DaoTeam team) {
+        add(Restrictions.eq(AS_TEAM, team));
     }
 
 }

@@ -13,37 +13,37 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlHidden;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.url.SendGroupInvitationActionUrl;
-import com.bloatit.web.url.SendGroupInvitationPageUrl;
+import com.bloatit.web.url.SendTeamInvitationActionUrl;
+import com.bloatit.web.url.SendTeamInvitationPageUrl;
 
 /**
  * <p>
- * A page to send invitations to groups
+ * A page to send invitations to teams
  * </p>
  */
 @ParamContainer("invitation/send")
-public class SendGroupInvitationPage extends LoggedPage {
+public class SendTeamInvitationPage extends LoggedPage {
     @SuppressWarnings("unused")
-    private final SendGroupInvitationPageUrl url;
+    private final SendTeamInvitationPageUrl url;
 
     @RequestParam
-    private final Group group;
+    private final Team team;
 
-    public SendGroupInvitationPage(final SendGroupInvitationPageUrl url) {
+    public SendTeamInvitationPage(final SendTeamInvitationPageUrl url) {
         super(url);
         this.url = url;
-        this.group = url.getGroup();
+        this.team = url.getTeam();
     }
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 
-        final SendGroupInvitationActionUrl target = new SendGroupInvitationActionUrl();
+        final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl();
         final HtmlForm form = new HtmlForm(target.urlString());
         master.add(form);
 
@@ -51,24 +51,24 @@ public class SendGroupInvitationPage extends LoggedPage {
         me.authenticate(session.getAuthToken());
 
         try {
-            if (group == null) {
-                final HtmlDropDown groupInput = new HtmlDropDown(SendGroupInvitationAction.GROUP_JOIN_CODE, Context.tr("Select group"));
-                form.add(groupInput);
-                PageIterable<Group> groups;
-                groups = me.getGroups();
-                for (final Group g : groups) {
+            if (team == null) {
+                final HtmlDropDown teamInput = new HtmlDropDown(SendTeamInvitationAction.TEAM_JOIN_CODE, Context.tr("Select team"));
+                form.add(teamInput);
+                PageIterable<Team> teams;
+                teams = me.getTeams();
+                for (final Team g : teams) {
                     try {
-                        groupInput.addDropDownElement(g.getId().toString(), g.getLogin());
+                        teamInput.addDropDownElement(g.getId().toString(), g.getLogin());
                     } catch (final UnauthorizedOperationException e) {
                         e.printStackTrace();
                     }
                 }
             } else {
-                final HtmlHidden hiddenGroup = new HtmlHidden(SendGroupInvitationAction.GROUP_JOIN_CODE, group.getId().toString());
-                form.add(hiddenGroup);
+                final HtmlHidden hiddenTeam = new HtmlHidden(SendTeamInvitationAction.TEAM_JOIN_CODE, team.getId().toString());
+                form.add(hiddenTeam);
             }
 
-            final HtmlDropDown receiverInput = new HtmlDropDown(SendGroupInvitationAction.RECEIVER_CODE, Context.tr("Select group"));
+            final HtmlDropDown receiverInput = new HtmlDropDown(SendTeamInvitationAction.RECEIVER_CODE, Context.tr("Select team"));
             form.add(receiverInput);
             for (final Member m : MemberManager.getAll()) {
                 try {
@@ -91,12 +91,12 @@ public class SendGroupInvitationPage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return Context.tr("Your must be logged to send group invitations");
+        return Context.tr("Your must be logged to send team invitations");
     }
 
     @Override
     protected String getPageTitle() {
-        return Context.tr("Send group invitations");
+        return Context.tr("Send team invitations");
     }
 
     @Override

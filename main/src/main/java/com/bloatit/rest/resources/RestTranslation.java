@@ -201,15 +201,15 @@ public class RestTranslation extends RestElement<Translation> {
     }
 
     /**
-     * @see com.bloatit.model.UserContent#getAsGroup()
+     * @see com.bloatit.model.UserContent#getAsTeam()
      */
     @XmlElement
-    public RestGroup getAsGroup() {
-        RestGroup restGroup = new RestGroup(model.getAsGroup());
-        if (restGroup.isNull()) {
+    public RestTeam getAsTeam() {
+        RestTeam restTeam = new RestTeam(model.getAsTeam());
+        if (restTeam.isNull()) {
             return null;
         }
-        return restGroup;
+        return restTeam;
     }
 
     /**

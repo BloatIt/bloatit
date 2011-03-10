@@ -19,7 +19,7 @@ import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.model.Group;
+import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.url.UserContentAdminPageUrl;
@@ -31,7 +31,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     public enum OrderByUserContent implements Displayable {
         NOTHING(tr("No order")), //
         MEMBER(tr("Member")), //
-        GROUP(tr("Group")), //
+        TEAM(tr("Team")), //
         DATE(tr("Creation date")), //
         TYPE(tr("Type"));
 
@@ -57,7 +57,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
     @RequestParam
     @Optional("NO_FILTER")
-    private final DisplayableFilterType filterGroup;
+    private final DisplayableFilterType filterTeam;
 
     private final T factory;
     private final UserContentAdminPageUrl url;
@@ -68,14 +68,14 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         this.factory = factory;
         filterDeleted = url.getFilterDeleted();
         filterFile = url.getFilterFile();
-        filterGroup = url.getFilterGroup();
+        filterTeam = url.getFilterTeam();
 
         // Save parameters
         Context.getSession().addParameter(url.getOrderByStrParameter());
         Context.getSession().addParameter(url.getAscParameter());
         Context.getSession().addParameter(url.getFilterDeletedParameter());
         Context.getSession().addParameter(url.getFilterFileParameter());
-        Context.getSession().addParameter(url.getFilterGroupParameter());
+        Context.getSession().addParameter(url.getFilterTeamParameter());
 
         if (filterDeleted == DisplayableFilterType.WITH) {
             factory.deletedOnly();
@@ -87,21 +87,21 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         } else if (filterFile == DisplayableFilterType.WITHOUT) {
             factory.withFile();
         }
-        if (filterGroup == DisplayableFilterType.WITH) {
-            factory.withAnyGroup();
-        } else if (filterGroup == DisplayableFilterType.WITHOUT) {
-            factory.withNoGroup();
+        if (filterTeam == DisplayableFilterType.WITH) {
+            factory.withAnyTeam();
+        } else if (filterTeam == DisplayableFilterType.WITHOUT) {
+            factory.withNoTeam();
         }
     }
 
-    protected void addAsGroupFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
-        final FieldData groupAsGroupData = url.getFilterGroupParameter().pickFieldData();
-        final HtmlDropDown groupAsGroup = new HtmlDropDown(groupAsGroupData.getName());
-        groupAsGroup.setDefaultValue(groupAsGroupData.getSuggestedValue());
-        groupAsGroup.addErrorMessages(groupAsGroupData.getErrorMessages());
-        groupAsGroup.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
-        groupAsGroup.setLabel(tr("Filter by Content created as a group"));
-        filterForm.add(groupAsGroup);
+    protected void addAsTeamFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
+        final FieldData groupAsTeamData = url.getFilterTeamParameter().pickFieldData();
+        final HtmlDropDown groupAsTeam = new HtmlDropDown(groupAsTeamData.getName());
+        groupAsTeam.setDefaultValue(groupAsTeamData.getSuggestedValue());
+        groupAsTeam.addErrorMessages(groupAsTeamData.getErrorMessages());
+        groupAsTeam.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
+        groupAsTeam.setLabel(tr("Filter by Content created as a group"));
+        filterForm.add(groupAsTeam);
     }
 
     protected void addHasFileFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
@@ -168,15 +168,15 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         });
     }
 
-    protected void addAsGroupColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
-        clonedUrl.setOrderByStr("asGroup");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("asGroup")), new StringColumnGenerator<V>() {
+    protected void addAsTeamColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
+        clonedUrl.setOrderByStr("asTeam");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("asTeam")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
                 try {
-                    final Group asGroup = element.getAsGroup();
-                    if (asGroup != null) {
-                        return asGroup.getLogin();
+                    final Team asTeam = element.getAsTeam();
+                    if (asTeam != null) {
+                        return asTeam.getLogin();
                     }
                     return "null";
                 } catch (final UnauthorizedOperationException e) {
@@ -205,7 +205,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     }
 
     @Override
-    protected void addActions(final HtmlDropDown dropDown, final HtmlBranch actionGroup) {
+    protected void addActions(final HtmlDropDown dropDown, final HtmlBranch actionTeam) {
         // redefine me in subclasses.
         dropDown.addDropDownElements(new AdminActionManager().userContentActions());
     }

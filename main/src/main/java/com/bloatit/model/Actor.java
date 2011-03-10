@@ -49,7 +49,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * unlock this Actor using the {@link Actor#authenticate(AuthToken)} method.
      *
      * @param action can be read/write/delete. for example use <code>READ</code>
-     *            to know if you can use {@link Member#getGroups()}.
+     *            to know if you can use {@link Member#getTeams()}.
      * @return true if you can access the parameter <code>Email</code>.
      * @see Actor#getEmail()
      * @see Actor#setEmail(String)

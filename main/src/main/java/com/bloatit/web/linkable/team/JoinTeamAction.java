@@ -6,8 +6,8 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -23,7 +23,7 @@ public class JoinTeamAction extends LoggedAction {
     private JoinTeamActionUrl url;
 
     @RequestParam()
-    private final Group targetTeam;
+    private final Team targetTeam;
 
     public JoinTeamAction(final JoinTeamActionUrl url) {
         super(url);
@@ -36,10 +36,10 @@ public class JoinTeamAction extends LoggedAction {
 
         if (targetTeam.isPublic()) {
             try {
-                me.addToPublicGroup(targetTeam);
+                me.addToPublicTeam(targetTeam);
             } catch (final UnauthorizedOperationException e) {
-                Log.web().fatal("User tries to join public group, but is not allowed to", e);
-                session.notifyBad("Oops we had an internal issue preventing you to join group, please try again later.");
+                Log.web().fatal("User tries to join public team, but is not allowed to", e);
+                session.notifyBad("Oops we had an internal issue preventing you to join team, please try again later.");
                 return session.getLastVisitedPage();
             }
         } else {

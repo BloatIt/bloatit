@@ -32,11 +32,11 @@ public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(Description model);
 
-    ReturnType visit(Group model);
+    ReturnType visit(Team model);
 
     ReturnType visit(HighlightFeature model);
 
-    ReturnType visit(JoinGroupInvitation model);
+    ReturnType visit(JoinTeamInvitation model);
 
     ReturnType visit(Software model);
 

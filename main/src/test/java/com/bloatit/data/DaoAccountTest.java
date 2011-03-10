@@ -18,7 +18,7 @@ public class DaoAccountTest extends DataTestUnit {
         final DaoMember localTom = DaoMember.getByLogin(tom.getLogin());
         localTom.setExternalAccount(DaoExternalAccount.createAndPersist(localTom, AccountType.IBAN, "Bank code !"));
 
-        final DaoGroup localB219 = DaoGroup.getByName(b219.getLogin());
+        final DaoTeam localB219 = DaoTeam.getByName(b219.getLogin());
         localB219.setExternalAccount(DaoExternalAccount.createAndPersist(localB219, AccountType.IBAN, "Bank code !"));
 
         try {

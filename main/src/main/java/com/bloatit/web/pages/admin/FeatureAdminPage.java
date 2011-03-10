@@ -96,7 +96,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
     @Override
     protected void addFormFilters(final HtmlForm form) {
 
-        addAsGroupFilter(form, url);
+        addAsTeamFilter(form, url);
         addIsDeletedFilter(form, url);
         addPopularityStateFilter(form);
 

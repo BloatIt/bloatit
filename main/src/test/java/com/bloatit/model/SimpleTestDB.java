@@ -11,7 +11,7 @@ import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
-import com.bloatit.data.DaoGroup;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.ActivationState;
@@ -29,9 +29,9 @@ public class SimpleTestDB {
     private final DaoMember tom;
     private final DaoMember fred;
     private final DaoMember yo;
-    private final DaoGroup other;
-    private final DaoGroup b219;
-    private final DaoGroup ubuntuUsers;
+    private final DaoTeam other;
+    private final DaoTeam b219;
+    private final DaoTeam ubuntuUsers;
     private final DaoFeature feature;
     private final DaoSoftware project;
 
@@ -54,9 +54,9 @@ public class SimpleTestDB {
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
 
-        other = DaoGroup.createAndPersiste("other", "plop@plop.com", "A group description", DaoGroup.Right.PROTECTED);
-        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PROTECTED);
-        ubuntuUsers = DaoGroup.createAndPersiste("ubuntuUsers", "plop3@plop.com", "A group description", DaoGroup.Right.PUBLIC);
+        other = DaoTeam.createAndPersiste("other", "plop@plop.com", "A group description", DaoTeam.Right.PROTECTED);
+        b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
+        ubuntuUsers = DaoTeam.createAndPersiste("ubuntuUsers", "plop3@plop.com", "A group description", DaoTeam.Right.PUBLIC);
 
         other.addMember(yo, true);
         b219.addMember(yo, false);
@@ -154,15 +154,15 @@ public class SimpleTestDB {
         return yo;
     }
 
-    public DaoGroup getOther() {
+    public DaoTeam getOther() {
         return other;
     }
 
-    public DaoGroup getB219() {
+    public DaoTeam getB219() {
         return b219;
     }
 
-    public DaoGroup getUbuntuUsers() {
+    public DaoTeam getUbuntuUsers() {
         return ubuntuUsers;
     }
 

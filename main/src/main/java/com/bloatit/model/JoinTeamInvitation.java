@@ -16,32 +16,32 @@
 //
 package com.bloatit.model;
 
-import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoJoinTeamInvitation;
 
 /**
- * This is an invitation to join a group. Some groups are not public, and you
+ * This is an invitation to join a team. Some teams are not public, and you
  * have to have an invitation to join it.
  *
  * @author Thomas Guyard
  */
-public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitation> {
+public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static final class MyCreator extends Creator<DaoJoinGroupInvitation, JoinGroupInvitation> {
+    private static final class MyCreator extends Creator<DaoJoinTeamInvitation, JoinTeamInvitation> {
         @Override
-        public JoinGroupInvitation doCreate(final DaoJoinGroupInvitation dao) {
-            return new JoinGroupInvitation(dao);
+        public JoinTeamInvitation doCreate(final DaoJoinTeamInvitation dao) {
+            return new JoinTeamInvitation(dao);
         }
     }
 
-    private JoinGroupInvitation(final DaoJoinGroupInvitation dao) {
+    private JoinTeamInvitation(final DaoJoinTeamInvitation dao) {
         super(dao);
     }
 
-    public static JoinGroupInvitation create(final DaoJoinGroupInvitation dao) {
+    public static JoinTeamInvitation create(final DaoJoinTeamInvitation dao) {
         return new MyCreator().create(dao);
     }
 
@@ -53,26 +53,26 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
         return Member.create(getDao().getReceiver());
     }
 
-    public Group getGroup() {
-        return Group.create(getDao().getGroup());
+    public Team getTeam() {
+        return Team.create(getDao().getTeam());
     }
 
     /**
-     * @see DaoJoinGroupInvitation#accept()
+     * @see DaoJoinTeamInvitation#accept()
      */
     protected void accept() {
         getDao().accept();
     }
 
     /**
-     * @see DaoJoinGroupInvitation#refuse()
+     * @see DaoJoinTeamInvitation#refuse()
      */
     protected void refuse() {
         getDao().refuse();
     }
 
     /**
-     * @see DaoJoinGroupInvitation#discard()
+     * @see DaoJoinTeamInvitation#discard()
      */
     protected void discard() {
         getDao().discard();

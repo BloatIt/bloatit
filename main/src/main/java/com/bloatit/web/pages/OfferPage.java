@@ -12,7 +12,7 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
@@ -33,9 +33,9 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
+import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
@@ -107,28 +107,28 @@ public final class OfferPage extends LoggedPage {
 
         // Offering on the behalf of
         final Member me = session.getAuthToken().getMember();
-        if (me.canAccessGroups(Action.READ)) {
+        if (me.canAccessTeams(Action.READ)) {
             try {
-                final PageIterable<Group> groups = me.getGroups();
-                final FieldData groupData = offerActionUrl.getGroupParameter().pickFieldData();
-                final HtmlDropDown groupInput = new HtmlDropDown(groupData.getName(), Context.tr("On the behalf of"));
-                groupInput.setDefaultValue(groupData.getSuggestedValue());
-                groupInput.addErrorMessages(groupData.getErrorMessages());
-                groupInput.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
-                groupInput.addDropDownElement("", Context.tr("Myself"));
-                int nbGroup = 0;
-                for (final Group group : groups) {
-                    if (group.getUserGroupRight(me).contains(UserGroupRight.TALK)) {
-                        groupInput.addDropDownElement(group.getId().toString(), group.getLogin());
-                        nbGroup++;
+                final PageIterable<Team> teams = me.getTeams();
+                final FieldData teamData = offerActionUrl.getTeamParameter().pickFieldData();
+                final HtmlDropDown teamInput = new HtmlDropDown(teamData.getName(), Context.tr("On the behalf of"));
+                teamInput.setDefaultValue(teamData.getSuggestedValue());
+                teamInput.addErrorMessages(teamData.getErrorMessages());
+                teamInput.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
+                teamInput.addDropDownElement("", Context.tr("Myself"));
+                int nbTeam = 0;
+                for (final Team team : teams) {
+                    if (team.getUserTeamRight(me).contains(UserTeamRight.TALK)) {
+                        teamInput.addDropDownElement(team.getId().toString(), team.getLogin());
+                        nbTeam++;
                     }
                 }
-                if (nbGroup > 0) {
-                    offerForm.add(groupInput);
+                if (nbTeam > 0) {
+                    offerForm.add(teamInput);
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Shouldn't happen
-                Log.web().error("Can't access current user groups (I check before tho)", e);
+                Log.web().error("Can't access current user teams (I check before tho)", e);
             }
         }
 

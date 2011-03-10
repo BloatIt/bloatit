@@ -13,20 +13,20 @@ public class DaoUserContentTest extends TestCase {
     }
 
     public void testSetAsGroup() {
-        feature.setAsGroup(b219);
+        feature.setAsTeam(b219);
     }
 
     public void testGetAsGroup() {
-        assertNull(feature.getAsGroup());
-        feature.setAsGroup(b219);
-        assertEquals(b219, feature.getAsGroup());
+        assertNull(feature.getAsTeam());
+        feature.setAsTeam(b219);
+        assertEquals(b219, feature.getAsTeam());
 
     }
 
     private DaoMember yo;
     private DaoMember tom;
     private DaoMember fred;
-    private DaoGroup b219;
+    private DaoTeam b219;
 
     private DaoFeature feature;
 
@@ -50,9 +50,9 @@ public class DaoUserContentTest extends TestCase {
             yo.setFullname("Yoann Plénet");
             SessionManager.flush();
 
-            DaoGroup.createAndPersiste("Other", "plop@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PROTECTED)).addMember(yo, true);
+            DaoTeam.createAndPersiste("Other", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC).addMember(yo, false);
+            DaoTeam.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoTeam.Right.PUBLIC).addMember(yo, false);
+            (b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED)).addMember(yo, true);
         }
 
         DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));

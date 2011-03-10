@@ -1,6 +1,6 @@
 package com.bloatit.web.linkable.messages;
 
-import com.bloatit.data.DaoJoinGroupInvitation.State;
+import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
@@ -12,13 +12,13 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Group;
-import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
+import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.MessageListPageUrl;
-import com.bloatit.web.url.SendGroupInvitationPageUrl;
+import com.bloatit.web.url.SendTeamInvitationPageUrl;
 
 /**
  * A plain list of messages received by the user
@@ -40,23 +40,23 @@ public class MessageListPage extends LoggedPage {
         final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Bloatit private messages"), 1);
         master.add(main);
 
-        // Generating links to group invites
-        final HtmlTitleBlock groupInvites = new HtmlTitleBlock(Context.tr("Group invites"), 2);
-        main.add(groupInvites);
+        // Generating links to team invites
+        final HtmlTitleBlock teamInvites = new HtmlTitleBlock(Context.tr("Team invites"), 2);
+        main.add(teamInvites);
 
-        final HtmlLink inviteToGroup = new HtmlLink(new SendGroupInvitationPageUrl((Group) null).urlString(), "Invite people to your group");
-        groupInvites.add(new HtmlParagraph().add(inviteToGroup));
+        final HtmlLink inviteToTeam = new HtmlLink(new SendTeamInvitationPageUrl((Team) null).urlString(), "Invite people to your team");
+        teamInvites.add(new HtmlParagraph().add(inviteToTeam));
 
         final Member me = session.getAuthToken().getMember();
-        final PageIterable<JoinGroupInvitation> invitations = me.getReceivedInvitation(State.PENDING);
-        for (final JoinGroupInvitation invitation : invitations) {
+        final PageIterable<JoinTeamInvitation> invitations = me.getReceivedInvitation(State.PENDING);
+        for (final JoinTeamInvitation invitation : invitations) {
             final HtmlParagraph p = new HtmlParagraph();
             try {
-                p.addText("Received an invitation to group '" + invitation.getGroup().getLogin() + "' from: '"
+                p.addText("Received an invitation to team '" + invitation.getTeam().getLogin() + "' from: '"
                         + invitation.getSender().getDisplayName() + "'");
 
-                final HtmlLink accept = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
-                final HtmlLink refuse = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
+                final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
+                final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
                 final HtmlGenericElement empty = new HtmlGenericElement();
                 empty.addText(" (");
                 empty.add(accept);
@@ -66,9 +66,9 @@ public class MessageListPage extends LoggedPage {
                 p.add(empty);
 
             } catch (final UnauthorizedOperationException e) {
-                p.addText("You have been invited to a group, but you can't see its name");
+                p.addText("You have been invited to a team, but you can't see its name");
             }
-            groupInvites.add(p);
+            teamInvites.add(p);
         }
         return master;
     }

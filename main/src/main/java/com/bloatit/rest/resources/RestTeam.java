@@ -28,24 +28,24 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.bloatit.data.DaoGroup.Right;
+import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.model.Group;
-import com.bloatit.model.managers.GroupManager;
+import com.bloatit.model.Team;
+import com.bloatit.model.managers.TeamManager;
 import com.bloatit.rest.adapters.DateAdapter;
-import com.bloatit.rest.list.RestGroupList;
 import com.bloatit.rest.list.RestMemberList;
+import com.bloatit.rest.list.RestTeamList;
 
 /**
  * <p>
- * Representation of a Group for the ReST RPC calls
+ * Representation of a Team for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from Group that needs to be called
+ * This class should implement any methods from Team that needs to be called
  * through the ReST RPC. Every such method needs to be mapped with the
  * {@code @REST} interface.
  * <p>
@@ -77,13 +77,13 @@ import com.bloatit.rest.list.RestMemberList;
  * <li>@XmlAttribute on each method/attribute that will yield <i>simple</i> data
  * </li>
  * <li>Methods that return a list need to be annotated with @XmlElement and to
- * return a RestGroupList</li>
+ * return a RestTeamList</li>
  * </p>
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestGroup extends RestElement<Group> {
-    private Group model;
+public class RestTeam extends RestElement<Team> {
+    private Team model;
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors
@@ -93,10 +93,10 @@ public class RestGroup extends RestElement<Group> {
      * Provided for JAXB
      */
     @SuppressWarnings("unused")
-    private RestGroup() {
+    private RestTeam() {
     }
 
-    protected RestGroup(Group model) {
+    protected RestTeam(Team model) {
         this.model = model;
     }
 
@@ -106,28 +106,28 @@ public class RestGroup extends RestElement<Group> {
 
     /**
      * <p>
-     * Finds the RestGroup matching the <code>id</code>
+     * Finds the RestTeam matching the <code>id</code>
      * </p>
      *
-     * @param id the id of the RestGroup
+     * @param id the id of the RestTeam
      */
-    @REST(name = "groups", method = RequestMethod.GET)
-    public static RestGroup getById(int id) {
-        RestGroup restGroup = new RestGroup(GroupManager.getById(id));
-        if (restGroup.isNull()) {
+    @REST(name = "teams", method = RequestMethod.GET)
+    public static RestTeam getById(int id) {
+        RestTeam restTeam = new RestTeam(TeamManager.getById(id));
+        if (restTeam.isNull()) {
             return null;
         }
-        return restGroup;
+        return restTeam;
     }
 
     /**
      * <p>
-     * Finds the list of all (valid) RestGroup
+     * Finds the list of all (valid) RestTeam
      * </p>
      */
-    @REST(name = "groups", method = RequestMethod.GET)
-    public static RestGroupList getAll() {
-        return new RestGroupList(GroupManager.getAll());
+    @REST(name = "teams", method = RequestMethod.GET)
+    public static RestTeamList getAll() {
+        return new RestTeamList(TeamManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -141,7 +141,7 @@ public class RestGroup extends RestElement<Group> {
     }
 
     /**
-     * @see com.bloatit.model.Group#getDescription()
+     * @see com.bloatit.model.Team#getDescription()
      */
     @XmlElement
     public String getDescription() {
@@ -149,7 +149,7 @@ public class RestGroup extends RestElement<Group> {
     }
 
     /**
-     * @see com.bloatit.model.Group#getRight()
+     * @see com.bloatit.model.Team#getRight()
      */
     @XmlElement
     public Right getRight() {
@@ -157,7 +157,7 @@ public class RestGroup extends RestElement<Group> {
     }
 
     /**
-     * @see com.bloatit.model.Group#getMembers()
+     * @see com.bloatit.model.Team#getMembers()
      */
     @XmlElement
     public RestMemberList getMembers() {
@@ -174,7 +174,7 @@ public class RestGroup extends RestElement<Group> {
         } catch (UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-            // "Not allowed to use getLogin on Group", e);
+            // "Not allowed to use getLogin on Team", e);
         }
     }
 
@@ -188,7 +188,7 @@ public class RestGroup extends RestElement<Group> {
         } catch (UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-            // "Not allowed to use getInternalAccount on Group", e);
+            // "Not allowed to use getInternalAccount on Team", e);
         }
     }
 
@@ -202,7 +202,7 @@ public class RestGroup extends RestElement<Group> {
         } catch (UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-            // "Not allowed to use getExternalAccount on Group", e);
+            // "Not allowed to use getExternalAccount on Team", e);
         }
     }
 
@@ -216,7 +216,7 @@ public class RestGroup extends RestElement<Group> {
         } catch (UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-            // "Not allowed to use getEmail on Group", e);
+            // "Not allowed to use getEmail on Team", e);
         }
     }
 
@@ -231,7 +231,7 @@ public class RestGroup extends RestElement<Group> {
         } catch (UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-            // "Not allowed to use getDateCreation on Group", e);
+            // "Not allowed to use getDateCreation on Team", e);
         }
     }
 
@@ -242,14 +242,14 @@ public class RestGroup extends RestElement<Group> {
     /**
      * Provided for JAXB
      */
-    void setModel(Group model) {
+    void setModel(Team model) {
         this.model = model;
     }
 
     /**
      * Package method to find the model
      */
-    Group getModel() {
+    Team getModel() {
         return model;
     }
 

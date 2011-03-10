@@ -1,6 +1,6 @@
 package com.bloatit.web.linkable.team;
 
-import com.bloatit.data.DaoGroup.Right;
+import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -9,7 +9,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Group;
+import com.bloatit.model.Team;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
@@ -62,19 +62,19 @@ public class CreateTeamAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
-        Right groupRight = Right.PUBLIC;
+        Right teamRight = Right.PUBLIC;
         if (right.equals(PUBLIC)) {
-            groupRight = Right.PUBLIC;
+            teamRight = Right.PUBLIC;
         } else if (right.equals(PROTECTED)) {
-            groupRight = Right.PROTECTED;
+            teamRight = Right.PROTECTED;
         } else {
             session.notifyBad(Context.tr("A team can either be public or protected (and dude, stop playing with our post data)"));
             transmitParameters();
             return new CreateTeamPageUrl();
         }
-        final Group newGroup = new Group(login, contact, description, groupRight, session.getAuthToken().getMember());
+        final Team newTeam = new Team(login, contact, description, teamRight, session.getAuthToken().getMember());
 
-        return new TeamPageUrl(newGroup);
+        return new TeamPageUrl(newTeam);
     }
 
     @Override

@@ -116,7 +116,7 @@ public class DaoHighlightFeature extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * @return all the member in this group. (Use a HQL query).
+     * @return all the member in this team. (Use a HQL query).
      */
     public PageIterable<DaoHighlightFeature> getActiveHightlightFeatures() {
         return new QueryCollection<DaoHighlightFeature>("highlightFeature.byIsActivated");

@@ -14,13 +14,13 @@ public interface DataClassVisitor<ReturnType> {
 
     ReturnType visit(DaoDescription dao);
 
-    ReturnType visit(DaoGroup dao);
+    ReturnType visit(DaoTeam dao);
 
     ReturnType visit(DaoHighlightFeature dao);
 
     ReturnType visit(DaoImage dao);
 
-    ReturnType visit(DaoJoinGroupInvitation dao);
+    ReturnType visit(DaoJoinTeamInvitation dao);
 
     ReturnType visit(DaoSoftware dao);
 

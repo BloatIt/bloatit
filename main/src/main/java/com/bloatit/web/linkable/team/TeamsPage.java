@@ -11,8 +11,8 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Group;
-import com.bloatit.model.managers.GroupManager;
+import com.bloatit.model.Team;
+import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
@@ -29,7 +29,7 @@ import com.bloatit.web.url.TeamsPageUrl;
 @ParamContainer("team/list")
 public class TeamsPage extends MasterPage {
     // Keep me here ! I am needed for the Url generation !
-    private HtmlPagedList<Group> pagedTeamList;
+    private HtmlPagedList<Team> pagedTeamList;
     private final TeamsPageUrl url;
 
     public TeamsPage(final TeamsPageUrl url) {
@@ -50,11 +50,11 @@ public class TeamsPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv();
         master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 
-        final PageIterable<Group> teamList = GroupManager.getAll();
-        final HtmlRenderer<Group> teamRenderer = new TeamListRenderer();
+        final PageIterable<Team> teamList = TeamManager.getAll();
+        final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
 
         final TeamsPageUrl clonedUrl = url.clone();
-        pagedTeamList = new HtmlPagedList<Group>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
+        pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
 
         master.add(pagedTeamList);
 

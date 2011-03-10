@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -29,9 +29,9 @@ import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.model.ExternalAccount;
-import com.bloatit.model.Group;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.MasterPage;
@@ -40,7 +40,7 @@ import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.SendGroupInvitationPageUrl;
+import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -54,7 +54,7 @@ public class TeamPage extends MasterPage {
     private final TeamPageUrl url; // we keep it for consistency
 
     @RequestParam()
-    private final Group targetTeam;
+    private final Team targetTeam;
 
     public TeamPage(final TeamPageUrl url) {
         super(url);
@@ -118,28 +118,28 @@ public class TeamPage extends MasterPage {
             }
         }
 
-        // Title and group type
+        // Title and team type
         HtmlTitleBlock title;
         try {
             title = new HtmlTitleBlock(Context.tr("Team: ") + targetTeam.getLogin(), 1);
         } catch (final UnauthorizedOperationException e) {
-            throw new FatalErrorException("Not allowed to see group name in group page, should not happen", e);
+            throw new FatalErrorException("Not allowed to see team name in team page, should not happen", e);
         }
         master.add(title);
-        title.add(new HtmlParagraph().addText(Context.tr("({0} group)", targetTeam.isPublic() ? "Public" : "Private")));
+        title.add(new HtmlParagraph().addText(Context.tr("({0} team)", targetTeam.isPublic() ? "Public" : "Private")));
 
         // Link to join if needed
-        if (me != null && !me.isInGroup(targetTeam)) {
+        if (me != null && !me.isInTeam(targetTeam)) {
             if (targetTeam.isPublic()) {
-                final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
+                final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this team"));
                 title.add(joinLink);
             } else {
-                title.add(new HtmlParagraph().addText("Send a request to join group"));
+                title.add(new HtmlParagraph().addText("Send a request to join team"));
             }
         }
-        
+
         // Avatar
-        title.add(new HtmlDiv("float_right").add(GroupTools.getGroupAvatar(targetTeam)));
+        title.add(new HtmlDiv("float_right").add(TeamTools.getTeamAvatar(targetTeam)));
 
         // Description
         // TODO add cache
@@ -150,7 +150,7 @@ public class TeamPage extends MasterPage {
 
         HtmlBranch financial;
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetInternalAccount()) {
-            financial = new HtmlTitleBlock(Context.tr("Group financial information"), 2);
+            financial = new HtmlTitleBlock(Context.tr("Team financial information"), 2);
         } else {
             financial = new PlaceHolderElement();
         }
@@ -205,8 +205,8 @@ public class TeamPage extends MasterPage {
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);
         title.add(memberTitle);
 
-        if (me != null && me.isInGroup(targetTeam) && me.canSendInvitation(targetTeam, Action.WRITE)) {
-            final SendGroupInvitationPageUrl sendInvitePage = new SendGroupInvitationPageUrl(targetTeam);
+        if (me != null && me.isInTeam(targetTeam) && me.canSendInvitation(targetTeam, Action.WRITE)) {
+            final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(targetTeam);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
         }
@@ -244,7 +244,7 @@ public class TeamPage extends MasterPage {
 
         @Override
         public int getColumnCount() {
-            return UserGroupRight.values().length + 1;
+            return UserTeamRight.values().length + 1;
         }
 
         @Override
@@ -252,8 +252,8 @@ public class TeamPage extends MasterPage {
             if (column == 0) {
                 return new HtmlText(Context.tr("Member name"));
             }
-            final EnumSet<UserGroupRight> e = EnumSet.allOf(UserGroupRight.class);
-            final UserGroupRight ugr = (UserGroupRight) e.toArray()[column - 1];
+            final EnumSet<UserTeamRight> e = EnumSet.allOf(UserTeamRight.class);
+            final UserTeamRight ugr = (UserTeamRight) e.toArray()[column - 1];
             switch (ugr) {
                 case CONSULT:
                     return new HtmlText(Context.tr("Consult"));
@@ -283,31 +283,31 @@ public class TeamPage extends MasterPage {
                         return new HtmlText("");
                     }
                 case CONSULT:
-                    return getUserRightStatus(UserGroupRight.CONSULT);
+                    return getUserRightStatus(UserTeamRight.CONSULT);
                 case TALK:
-                    return getUserRightStatus(UserGroupRight.TALK);
+                    return getUserRightStatus(UserTeamRight.TALK);
                 case MODIFY:
-                    return getUserRightStatus(UserGroupRight.MODIFY);
+                    return getUserRightStatus(UserTeamRight.MODIFY);
                 case INVITE:
-                    return getUserRightStatus(UserGroupRight.INVITE);
+                    return getUserRightStatus(UserTeamRight.INVITE);
                 case PROMOTE:
-                    return getUserRightStatus(UserGroupRight.PROMOTE);
+                    return getUserRightStatus(UserTeamRight.PROMOTE);
                 case BANK:
-                    return getUserRightStatus(UserGroupRight.BANK);
+                    return getUserRightStatus(UserTeamRight.BANK);
                 default:
                     return new HtmlText("");
             }
         }
 
-        private XmlNode getUserRightStatus(UserGroupRight right) {
-            if (member.canInGroup(targetTeam, right)) {
+        private XmlNode getUserRightStatus(UserTeamRight right) {
+            if (member.canInTeam(targetTeam, right)) {
                 if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
                     PlaceHolderElement ph = new PlaceHolderElement();
-                    ph.add(new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "group_can"));
+                    ph.add(new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "team_can"));
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
                     return ph;
                 }
-                return new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "group_can");
+                return new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "team_can");
             } else if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
                 return new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Promote"));
             }

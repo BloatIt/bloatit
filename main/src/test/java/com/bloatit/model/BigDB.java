@@ -16,7 +16,7 @@ import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
-import com.bloatit.data.DaoGroup;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoSoftware;
@@ -54,7 +54,7 @@ public class BigDB {
 
         // Create Some Groups
         for (int i = 0; i < nbUsers / 4; i += 4) {
-            final DaoGroup group = DaoGroup.createAndPersiste("group " + (i / 4), "plop" + i + "@plop.com", "description", DaoGroup.Right.PUBLIC);
+            final DaoTeam group = DaoTeam.createAndPersiste("group " + (i / 4), "plop" + i + "@plop.com", "description", DaoTeam.Right.PUBLIC);
             group.addMember(members.get(i), true);
             group.addMember(members.get(i + 1), false);
             group.addMember(members.get(i + 2), false);
@@ -65,7 +65,7 @@ public class BigDB {
             }
         }
 
-        DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", "description", DaoGroup.Right.PUBLIC);
+        DaoTeam.createAndPersiste("b2 ", "plop" + "@plop.com", "description", DaoTeam.Right.PUBLIC);
 
         DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));

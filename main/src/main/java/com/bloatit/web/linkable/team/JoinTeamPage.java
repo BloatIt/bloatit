@@ -8,7 +8,7 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Group;
+import com.bloatit.model.Team;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.JoinTeamPageUrl;
@@ -19,7 +19,7 @@ public class JoinTeamPage extends LoggedPage {
     private JoinTeamPageUrl url;
 
     @RequestParam()
-    private Group targetTeam;
+    private Team targetTeam;
 
     public JoinTeamPage(final JoinTeamPageUrl url) {
         super(url);

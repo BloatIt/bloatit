@@ -257,9 +257,9 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         final HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
-                        if (offer.getAsGroup() != null) {
+                        if (offer.getAsTeam() != null) {
                             authorPara.addText(Context.tr(" on the behalf of "));
-                            authorPara.add(new TeamPageUrl(offer.getAsGroup()).getHtmlLink(offer.getAsGroup().getLogin()));
+                            authorPara.add(new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getLogin()));
                         }
                     }
                     offerRightTopColumn.add(authorPara);

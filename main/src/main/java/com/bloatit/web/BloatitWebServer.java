@@ -45,11 +45,11 @@ import com.bloatit.web.linkable.softwares.SoftwarePage;
 import com.bloatit.web.linkable.team.CreateTeamAction;
 import com.bloatit.web.linkable.team.CreateTeamPage;
 import com.bloatit.web.linkable.team.GiveRightAction;
-import com.bloatit.web.linkable.team.HandleJoinGroupInvitationAction;
+import com.bloatit.web.linkable.team.HandleJoinTeamInvitationAction;
 import com.bloatit.web.linkable.team.JoinTeamAction;
 import com.bloatit.web.linkable.team.JoinTeamPage;
-import com.bloatit.web.linkable.team.SendGroupInvitationAction;
-import com.bloatit.web.linkable.team.SendGroupInvitationPage;
+import com.bloatit.web.linkable.team.SendTeamInvitationAction;
+import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.pages.AddReleasePage;
@@ -93,7 +93,7 @@ import com.bloatit.web.url.DocumentationUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.GiveRightActionUrl;
-import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
+import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.JoinTeamPageUrl;
@@ -121,8 +121,8 @@ import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
-import com.bloatit.web.url.SendGroupInvitationActionUrl;
-import com.bloatit.web.url.SendGroupInvitationPageUrl;
+import com.bloatit.web.url.SendTeamInvitationActionUrl;
+import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
@@ -219,8 +219,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(MessageListPageUrl.getName())) {
             return new MessageListPage(new MessageListPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(SendGroupInvitationPageUrl.getName())) {
-            return new SendGroupInvitationPage(new SendGroupInvitationPageUrl(params, session.getParameters()));
+        if (pageCode.equals(SendTeamInvitationPageUrl.getName())) {
+            return new SendTeamInvitationPage(new SendTeamInvitationPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(KudosableAdminPageUrl.getName())) {
             return new KudosableAdminPageImplementation(new KudosableAdminPageUrl(params, session.getParameters()));
@@ -302,11 +302,11 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(JoinTeamActionUrl.getName())) {
             return new JoinTeamAction(new JoinTeamActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(SendGroupInvitationActionUrl.getName())) {
-            return new SendGroupInvitationAction(new SendGroupInvitationActionUrl(params, session.getParameters()));
+        if (pageCode.equals(SendTeamInvitationActionUrl.getName())) {
+            return new SendTeamInvitationAction(new SendTeamInvitationActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(HandleJoinGroupInvitationActionUrl.getName())) {
-            return new HandleJoinGroupInvitationAction(new HandleJoinGroupInvitationActionUrl(params, session.getParameters()));
+        if (pageCode.equals(HandleJoinTeamInvitationActionUrl.getName())) {
+            return new HandleJoinTeamInvitationAction(new HandleJoinTeamInvitationActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ReportBugActionUrl.getName())) {
             return new ReportBugAction(new ReportBugActionUrl(params, session.getParameters()));

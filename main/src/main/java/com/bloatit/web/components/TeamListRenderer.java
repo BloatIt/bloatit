@@ -8,22 +8,22 @@ import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.Group;
-import com.bloatit.web.linkable.team.GroupTools;
+import com.bloatit.model.Team;
+import com.bloatit.web.linkable.team.TeamTools;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
  * A simple renderer for teams that display only their name on one line, plus a
  * link to their page
  */
-public class TeamListRenderer implements HtmlRenderer<Group> {
+public class TeamListRenderer implements HtmlRenderer<Team> {
     @Override
-    public XmlNode generate(final Group team) {
+    public XmlNode generate(final Team team) {
         final TeamPageUrl teamUrl = new TeamPageUrl(team);
         try {
             HtmlDiv box = new HtmlDiv("team_box");
 
-            box.add(new HtmlDiv("float_right").add(GroupTools.getGroupAvatar(team)));
+            box.add(new HtmlDiv("float_right").add(TeamTools.getTeamAvatar(team)));
 
             HtmlDiv textBox = new HtmlDiv("team_text");
             HtmlLink htmlLink;

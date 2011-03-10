@@ -132,7 +132,7 @@ public class RestMember extends RestElement<Member> {
         return model.getId().toString();
     }
 
-    // public PageIterable<JoinGroupInvitation> getReceivedInvitation(State
+    // public PageIterable<JoinTeamInvitation> getReceivedInvitation(State
     // state) {
     // return model.getReceivedInvitation(state);
     // }

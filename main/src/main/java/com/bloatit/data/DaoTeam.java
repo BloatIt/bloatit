@@ -38,28 +38,28 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A group is an entity where people can be group...
+ * A team is an entity where people can be team...
  */
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "group.byName",
-                           query = "FROM DaoGroup WHERE login = :login")
+                           name = "team.byName",
+                           query = "FROM DaoTeam WHERE login = :login")
                        }
              )
 // @formatter:on
-public class DaoGroup extends DaoActor {
+public class DaoTeam extends DaoActor {
 
     /**
-     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go
+     * There is 2 kinds of teams : The PUBLIC that everybody can see and and go
      * in. The PROTECTED that everybody can see, but require an invitation to go
      * in.
      */
@@ -68,10 +68,10 @@ public class DaoGroup extends DaoActor {
     }
 
     /**
-     * WARNING right is a SQL keyword. This is mapped as "group_right".
+     * WARNING right is a SQL keyword. This is mapped as "team_right".
      */
     @Basic(optional = false)
-    @Column(name = "group_right")
+    @Column(name = "team_right")
     private Right right;
 
     @Basic(optional = false)
@@ -81,25 +81,25 @@ public class DaoGroup extends DaoActor {
     @Basic(optional = false)
     @Column(columnDefinition = "TEXT")
     private String description;
-    
+
     @ManyToOne(optional = true, cascade = { javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoFileMetadata avatar;
 
-    @OneToMany(mappedBy = "bloatitGroup")
+    @OneToMany(mappedBy = "bloatitTeam")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
+    private final List<DaoTeamMembership> teamMembership = new ArrayList<DaoTeamMembership>(0);
 
     // ======================================================================
     // Static HQL Requests
     // ======================================================================
 
-    public static DaoGroup getByName(final String name) {
+    public static DaoTeam getByName(final String name) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.getNamedQuery("group.byName");
+        final Query q = session.getNamedQuery("team.byName");
         q.setString("login", name);
-        return (DaoGroup) q.uniqueResult();
+        return (DaoTeam) q.uniqueResult();
     }
 
     // ======================================================================
@@ -107,33 +107,33 @@ public class DaoGroup extends DaoActor {
     // ======================================================================
 
     /**
-     * Create a group and add it into the db.
+     * Create a team and add it into the db.
      *
-     * @param login it the unique and non updatable name of the group.
-     * @param right is the type of group we are creating (Public or Private).
-     * @return the newly created group.
+     * @param login it the unique and non updatable name of the team.
+     * @param right is the type of team we are creating (Public or Private).
+     * @return the newly created team.
      * @throws HibernateException
      */
-    public static DaoGroup createAndPersiste(final String login, final String contact, final String description, final Right right) {
+    public static DaoTeam createAndPersiste(final String login, final String contact, final String description, final Right right) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoGroup group = new DaoGroup(login, contact, description, right);
+        final DaoTeam team = new DaoTeam(login, contact, description, right);
         try {
-            session.save(group);
+            session.save(team);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             throw e;
         }
-        return group;
+        return team;
     }
 
     /**
-     * Create a DaoGroup
+     * Create a DaoTeam
      *
-     * @param login is the name of the group. It must be unique.
+     * @param login is the name of the team. It must be unique.
      * @param contact ...
-     * @param right is the default right value for this group.
+     * @param right is the default right value for this team.
      */
-    private DaoGroup(final String login, final String contact, final String description, final Right right) {
+    private DaoTeam(final String login, final String contact, final String description, final Right right) {
         super(login);
         if (right == null || contact == null || contact.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
@@ -153,26 +153,26 @@ public class DaoGroup extends DaoActor {
     }
 
     /**
-     * Add a member in this group.
+     * Add a member in this team.
      *
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer
-     *            this group. (This may change if the number of role change !)
+     *            this team. (This may change if the number of role change !)
      */
     public void addMember(final DaoMember member, final boolean isAdmin) {
-        this.groupMembership.add(new DaoGroupMembership(member, this));
+        this.teamMembership.add(new DaoTeamMembership(member, this));
     }
 
     /**
-     * Remove a member from the group
+     * Remove a member from the team
      */
     public void removeMember(final DaoMember member) {
-        final DaoGroupMembership link = DaoGroupMembership.get(this, member);
-        this.groupMembership.remove(link);
-        member.getGroupMembership().remove(link);
+        final DaoTeamMembership link = DaoTeamMembership.get(this, member);
+        this.teamMembership.remove(link);
+        member.getTeamMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
     }
-    
+
     /**
      * @return the avatar
      */
@@ -201,12 +201,12 @@ public class DaoGroup extends DaoActor {
     // ======================================================================
 
     /**
-     * @return all the member in this group. (Use a HQL query).
+     * @return all the member in this team. (Use a HQL query).
      */
     public PageIterable<DaoMember> getMembers() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
-        final Query count = session.createFilter(getGroupMembership(), "select count(*)");
+        final Query filter = session.createFilter(getTeamMembership(), "select this.member order by login");
+        final Query count = session.createFilter(getTeamMembership(), "select count(*)");
         return new QueryCollection<DaoMember>(filter, count);
     }
 
@@ -215,25 +215,25 @@ public class DaoGroup extends DaoActor {
     }
 
     /**
-     * Finds if a member is in this group, and which is its status.
+     * Finds if a member is in this team, and which is its status.
      *
-     * @return {@code null} if the member is not in this group, or a set
+     * @return {@code null} if the member is not in this team, or a set
      *         otherwise. <br />
      *         Note, the returned set can be empty if the user is only a Member
      */
-    public EnumSet<UserGroupRight> getUserGroupRight(final DaoMember member) {
+    public EnumSet<UserTeamRight> getUserTeamRight(final DaoMember member) {
         final Query q = SessionManager.getSessionFactory()
                                       .getCurrentSession()
-                                      .createQuery("select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
+                                      .createQuery("select gm from com.bloatit.data.DaoTeam g join g.teamMembership as gm join gm.member as m where g = :team and m = :member");
         q.setEntity("member", member);
-        q.setEntity("group", this);
-        final DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
-        final EnumSet<UserGroupRight> rights = EnumSet.noneOf(UserGroupRight.class);
+        q.setEntity("team", this);
+        final DaoTeamMembership gm = (DaoTeamMembership) q.uniqueResult();
+        final EnumSet<UserTeamRight> rights = EnumSet.noneOf(UserTeamRight.class);
         if (gm == null || gm.getRights() == null) {
             return rights;
         }
-        for (final DaoGroupRight groupRight : gm.getRights()) {
-            rights.add(groupRight.getUserStatus());
+        for (final DaoTeamRight teamRight : gm.getRights()) {
+            rights.add(teamRight.getUserStatus());
         }
         return rights;
     }
@@ -254,15 +254,15 @@ public class DaoGroup extends DaoActor {
     /**
      * Used in DaoMember.
      */
-    protected List<DaoGroupMembership> getGroupMembership() {
-        return this.groupMembership;
+    protected List<DaoTeamMembership> getTeamMembership() {
+        return this.teamMembership;
     }
 
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoGroup() {
+    protected DaoTeam() {
         super();
     }
 

@@ -9,34 +9,34 @@ import javax.persistence.ManyToOne;
 /**
  * This class is for Hibernate only
  * <p>
- * Describes what a member can do in a given group
+ * Describes what a member can do in a given team
  * </p>
  */
 @Entity
-public class DaoGroupRight extends DaoIdentifiable {
+public class DaoTeamRight extends DaoIdentifiable {
 
-    public enum UserGroupRight {
+    public enum UserTeamRight {
         CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK,
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private DaoGroupMembership membership;
+    private DaoTeamMembership membership;
 
     @Basic(optional = false)
     @Enumerated
-    private UserGroupRight userStatus;
+    private UserTeamRight userStatus;
 
-    protected DaoGroupRight(final DaoGroupMembership membership, final UserGroupRight userStatus) {
+    protected DaoTeamRight(final DaoTeamMembership membership, final UserTeamRight userStatus) {
         super();
         this.membership = membership;
         this.userStatus = userStatus;
     }
 
-    protected DaoGroupMembership getMembership() {
+    protected DaoTeamMembership getMembership() {
         return this.membership;
     }
 
-    protected UserGroupRight getUserStatus() {
+    protected UserTeamRight getUserStatus() {
         return this.userStatus;
     }
 
@@ -53,7 +53,7 @@ public class DaoGroupRight extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoGroupRight() {
+    protected DaoTeamRight() {
         super();
     }
 
@@ -81,7 +81,7 @@ public class DaoGroupRight extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoGroupRight other = (DaoGroupRight) obj;
+        final DaoTeamRight other = (DaoTeamRight) obj;
         if (this.membership == null) {
             if (other.membership != null) {
                 return false;

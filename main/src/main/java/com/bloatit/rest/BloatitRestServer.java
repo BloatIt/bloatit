@@ -33,15 +33,15 @@ import com.bloatit.rest.list.RestDescriptionList;
 import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestFeatureList;
 import com.bloatit.rest.list.RestFileMetadataList;
-import com.bloatit.rest.list.RestGroupList;
 import com.bloatit.rest.list.RestHighlightFeatureList;
 import com.bloatit.rest.list.RestInternalAccountList;
-import com.bloatit.rest.list.RestJoinGroupInvitationList;
+import com.bloatit.rest.list.RestJoinTeamInvitationList;
 import com.bloatit.rest.list.RestKudosList;
 import com.bloatit.rest.list.RestMemberList;
 import com.bloatit.rest.list.RestOfferList;
 import com.bloatit.rest.list.RestReleaseList;
 import com.bloatit.rest.list.RestSoftwareList;
+import com.bloatit.rest.list.RestTeamList;
 import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestAuthenticate;
@@ -54,15 +54,15 @@ import com.bloatit.rest.resources.RestDescription;
 import com.bloatit.rest.resources.RestExternalAccount;
 import com.bloatit.rest.resources.RestFeature;
 import com.bloatit.rest.resources.RestFileMetadata;
-import com.bloatit.rest.resources.RestGroup;
 import com.bloatit.rest.resources.RestHighlightFeature;
 import com.bloatit.rest.resources.RestInternalAccount;
-import com.bloatit.rest.resources.RestJoinGroupInvitation;
+import com.bloatit.rest.resources.RestJoinTeamInvitation;
 import com.bloatit.rest.resources.RestKudos;
 import com.bloatit.rest.resources.RestMember;
 import com.bloatit.rest.resources.RestOffer;
 import com.bloatit.rest.resources.RestRelease;
 import com.bloatit.rest.resources.RestSoftware;
+import com.bloatit.rest.resources.RestTeam;
 import com.bloatit.rest.resources.RestTransaction;
 import com.bloatit.rest.resources.RestTranslation;
 
@@ -81,10 +81,10 @@ public class BloatitRestServer extends RestServer {
             put("descriptions", RestDescription.class);
             put("externalaccounts", RestExternalAccount.class);
             put("filemetadatas", RestFileMetadata.class);
-            put("groups", RestGroup.class);
+            put("teams", RestTeam.class);
             put("highlightfeatures", RestHighlightFeature.class);
             put("internalaccounts", RestInternalAccount.class);
-            put("joingroupinvitations", RestJoinGroupInvitation.class);
+            put("jointeaminvitations", RestJoinTeamInvitation.class);
             put("kudos", RestKudos.class); // Note : kudos not kudosS
             put("offers", RestOffer.class);
             put("softwares", RestSoftware.class);
@@ -105,10 +105,10 @@ public class BloatitRestServer extends RestServer {
                                                        RestDescription.class,
                                                        RestExternalAccount.class,
                                                        RestFileMetadata.class,
-                                                       RestGroup.class,
+                                                       RestTeam.class,
                                                        RestHighlightFeature.class,
                                                        RestInternalAccount.class,
-                                                       RestJoinGroupInvitation.class,
+                                                       RestJoinTeamInvitation.class,
                                                        RestKudos.class,
                                                        RestOffer.class,
                                                        RestSoftware.class,
@@ -127,10 +127,10 @@ public class BloatitRestServer extends RestServer {
                                                        RestDescriptionList.class,
                                                        RestExternalAccountList.class,
                                                        RestFileMetadataList.class,
-                                                       RestGroupList.class,
+                                                       RestTeamList.class,
                                                        RestHighlightFeatureList.class,
                                                        RestInternalAccountList.class,
-                                                       RestJoinGroupInvitationList.class,
+                                                       RestJoinTeamInvitationList.class,
                                                        RestKudosList.class,
                                                        RestOfferList.class,
                                                        RestSoftwareList.class,

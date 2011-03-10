@@ -36,11 +36,10 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.components.TeamListRenderer;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -58,7 +57,7 @@ import com.bloatit.web.url.TeamPageUrl;
 @ParamContainer("member")
 public final class MemberPage extends MasterPage {
     // Keep me here ! I am needed for the Url generation !
-    private HtmlPagedList<Group> pagedTeamList;
+    private HtmlPagedList<Team> pagedTeamList;
     private final MemberPageUrl url;
 
     public static final String MEMBER_FIELD_NAME = "id";
@@ -98,14 +97,14 @@ public final class MemberPage extends MasterPage {
             }
             memberInfo.add(new HtmlText(tr("Karma: ") + member.getKarma()));
 
-            // A list of all users group
-            final HtmlTitleBlock memberGroups = new HtmlTitleBlock(Context.tr("List of groups"), 2);
-            memberTitle.add(memberGroups);
-            final PageIterable<Group> teamList = member.getGroups();
-            final HtmlRenderer<Group> teamRenderer = new TeamListRenderer();
+            // A list of all users team
+            final HtmlTitleBlock memberTeams = new HtmlTitleBlock(Context.tr("List of teams"), 2);
+            memberTitle.add(memberTeams);
+            final PageIterable<Team> teamList = member.getTeams();
+            final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
             final MemberPageUrl clonedUrl = new MemberPageUrl(url);
-            pagedTeamList = new HtmlPagedList<Group>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
-            memberGroups.add(pagedTeamList);
+            pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
+            memberTeams.add(pagedTeamList);
 
             // Change avatar (only is the member is the user)
             if (member.isOwner()) {
@@ -152,9 +151,9 @@ public final class MemberPage extends MasterPage {
         return true;
     }
 
-    private class GroupListRenderer implements HtmlRenderer<Group> {
+    private class TeamListRenderer implements HtmlRenderer<Team> {
         @Override
-        public XmlNode generate(final Group team) {
+        public XmlNode generate(final Team team) {
             final TeamPageUrl teamUrl = new TeamPageUrl(team);
             try {
                 HtmlLink htmlLink;

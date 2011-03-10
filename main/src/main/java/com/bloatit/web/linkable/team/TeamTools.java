@@ -24,21 +24,21 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Group;
+import com.bloatit.model.Team;
 import com.bloatit.web.url.FileResourceUrl;
 
-public class GroupTools {
-    
-    public static HtmlElement getGroupAvatar(Group group) {
+public class TeamTools {
+
+    public static HtmlElement getTeamAvatar(Team team) {
 
         HtmlDiv avatarDiv = new HtmlDiv("avatar_block");
-        if (group.getAvatar() == null) {
-            avatarDiv.add(new HtmlImage(new Image("none.png", Image.ImageType.LOCAL), tr("Group avatar"), "avatar"));
+        if (team.getAvatar() == null) {
+            avatarDiv.add(new HtmlImage(new Image("none.png", Image.ImageType.LOCAL), tr("Team avatar"), "avatar"));
         } else {
-            final FileResourceUrl imageUrl = new FileResourceUrl(group.getAvatar());
-            avatarDiv.add(new HtmlImage(imageUrl, tr("Group avatar"), "avatar"));
+            final FileResourceUrl imageUrl = new FileResourceUrl(team.getAvatar());
+            avatarDiv.add(new HtmlImage(imageUrl, tr("Team avatar"), "avatar"));
         }
 
         return avatarDiv;
-    } 
+    }
 }

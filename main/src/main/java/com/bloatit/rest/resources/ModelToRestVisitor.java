@@ -28,10 +28,10 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Group;
+import com.bloatit.model.Team;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
-import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.ModelClassVisitor;
@@ -74,8 +74,8 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<Group> visit(final Group model) {
-        return new RestGroup(model);
+    public RestElement<Team> visit(final Team model) {
+        return new RestTeam(model);
     }
 
     @Override
@@ -84,8 +84,8 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<JoinGroupInvitation> visit(final JoinGroupInvitation model) {
-        return new RestJoinGroupInvitation(model);
+    public RestElement<JoinTeamInvitation> visit(final JoinTeamInvitation model) {
+        return new RestJoinTeamInvitation(model);
     }
 
     @Override

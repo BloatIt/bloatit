@@ -27,7 +27,7 @@ import com.bloatit.model.right.RestrictedInterface;
 /**
  * The Interface UserContentInterface. A User content is a content created by a
  * user. The {@link Member} that has created the content can say he has done so
- * in the name of a group.
+ * in the name of a team.
  *
  * @param <T> the Dao class corresponding to this UserContent.
  */
@@ -47,24 +47,24 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
      */
     Date getCreationDate();
 
-    public abstract boolean canAccessAsGroup(final Group asGroup);
+    public abstract boolean canAccessAsTeam(final Team asTeam);
 
     /**
-     * Sets the as group. The author is saying that he is creating this content
-     * in the name of the group <code>asGroup</code>.
+     * Sets the as team. The author is saying that he is creating this content
+     * in the name of the team <code>asTeam</code>.
      *
-     * @param asGroup the new as group
+     * @param asTeam the new as team
      * @throws UnauthorizedOperationException
      */
-    void setAsGroup(final Group asGroup) throws UnauthorizedOperationException;
+    void setAsTeam(final Team asTeam) throws UnauthorizedOperationException;
 
     /**
-     * Gets the as group. Can (may) be null. See {@link #setAsGroup(Group)} for
+     * Gets the as team. Can (may) be null. See {@link #setAsTeam(Team)} for
      * more information on this property.
      *
-     * @return the as group
+     * @return the as team
      */
-    Group getAsGroup();
+    Team getAsTeam();
 
     /**
      * Gets the files associated with this user content.

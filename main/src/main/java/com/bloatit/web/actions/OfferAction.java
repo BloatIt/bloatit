@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
@@ -29,9 +29,9 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
+import com.bloatit.model.Team;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.OfferActionUrl;
@@ -82,7 +82,7 @@ public final class OfferAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @Optional
-    private final Group group;
+    private final Team team;
 
     private final OfferActionUrl url;
 
@@ -95,7 +95,7 @@ public final class OfferAction extends LoggedAction {
         this.price = url.getPrice();
         this.feature = url.getFeature();
         this.draftOffer = url.getDraftOffer();
-        this.group = url.getGroup();
+        this.team = url.getTeam();
         this.daysBeforeValidation = url.getDaysBeforeValidation();
         this.percentFatal = url.getPercentFatal();
         this.percentMajor = url.getPercentMajor();
@@ -116,8 +116,8 @@ public final class OfferAction extends LoggedAction {
             session.notifyBad(Context.tr("The specified offer is not editable. You cannot add a lot in it."));
             return session.pickPreferredPage();
         }
-        if (group != null && !group.getUserGroupRight(authenticatedMember).contains(UserGroupRight.TALK)) {
-            session.notifyBad(Context.tr("You cannot talk on the behalf of this group."));
+        if (team != null && !team.getUserTeamRight(authenticatedMember).contains(UserTeamRight.TALK)) {
+            session.notifyBad(Context.tr("You cannot talk on the behalf of this team."));
             return session.pickPreferredPage();
         }
         Offer constructingOffer;
@@ -131,8 +131,8 @@ public final class OfferAction extends LoggedAction {
                                                     new Locale(locale),
                                                     expiryDate.getJavaDate(),
                                                     daysBeforeValidation * DateUtils.SECOND_PER_DAY);
-                if (group != null) {
-                    constructingOffer.setAsGroup(group);
+                if (team != null) {
+                    constructingOffer.setAsTeam(team);
                 }
                 constructingBatch = constructingOffer.getBatches().iterator().next();
             } else {
@@ -186,7 +186,7 @@ public final class OfferAction extends LoggedAction {
         session.addParameter(url.getLocaleParameter());
         session.addParameter(url.getExpiryDateParameter());
         session.addParameter(url.getPriceParameter());
-        session.addParameter(url.getGroupParameter());
+        session.addParameter(url.getTeamParameter());
         session.addParameter(url.getDaysBeforeValidationParameter());
         session.addParameter(url.getPercentFatalParameter());
         session.addParameter(url.getPercentMajorParameter());

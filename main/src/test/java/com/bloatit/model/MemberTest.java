@@ -3,7 +3,7 @@ package com.bloatit.model;
 import javassist.NotFoundException;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.model.managers.GroupManager;
+import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
 
@@ -13,14 +13,14 @@ public class MemberTest extends ModelTestUnit {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
-        yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
+        yo.addToPublicTeam(TeamManager.getByName("ubuntuUsers"));
 
-        assertTrue(yo.isInGroup(GroupManager.getByName("ubuntuUsers")));
+        assertTrue(yo.isInTeam(TeamManager.getByName("ubuntuUsers")));
 
         try {
             yo.authenticate(fredAuthToken);
             // A user can only add himself to a public group.
-            yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
+            yo.addToPublicTeam(TeamManager.getByName("ubuntuUsers"));
             fail();
         } catch (final Exception e) {
             assertTrue(true);
@@ -32,13 +32,13 @@ public class MemberTest extends ModelTestUnit {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
-        yo.removeFromGroup(GroupManager.getByName("b219"));
-        assertFalse(yo.isInGroup(GroupManager.getByName("b219")));
+        yo.removeFromTeam(TeamManager.getByName("b219"));
+        assertFalse(yo.isInTeam(TeamManager.getByName("b219")));
 
         try {
             yo.authenticate(fredAuthToken);
             // A user can only remove himself from a group.
-            yo.removeFromGroup(GroupManager.getByName("b219"));
+            yo.removeFromTeam(TeamManager.getByName("b219"));
             fail();
         } catch (final Exception e) {
             assertTrue(true);

@@ -33,7 +33,7 @@ public class UserContentAdminPageImplementation extends
     protected void addColumns(final HtmlGenericTableModel<UserContent<DaoUserContent>> tableModel) {
         UserContentAdminPageUrl clonedUrl = url.clone();
 
-        addAsGroupColumn(tableModel, clonedUrl);
+        addAsTeamColumn(tableModel, clonedUrl);
         addCreationDateColumn(tableModel, clonedUrl);
         addNbFilesColumn(tableModel);
         addIsDeletedColumn(tableModel, clonedUrl);
@@ -44,7 +44,7 @@ public class UserContentAdminPageImplementation extends
     protected void addFormFilters(final HtmlForm form) {
         addIsDeletedFilter(form, url);
         addHasFileFilter(form, url);
-        addAsGroupFilter(form, url);
+        addAsTeamFilter(form, url);
     }
 
 }

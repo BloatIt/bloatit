@@ -21,25 +21,25 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Set;
 
-import com.bloatit.data.DaoGroup.Right;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
-import com.bloatit.data.DaoJoinGroupInvitation;
-import com.bloatit.data.DaoJoinGroupInvitation.State;
+import com.bloatit.data.DaoJoinTeamInvitation;
+import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoTeam.Right;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.MemberNotInGroupException;
+import com.bloatit.framework.exceptions.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
-import com.bloatit.model.lists.GroupList;
-import com.bloatit.model.lists.JoinGroupInvitationList;
+import com.bloatit.model.lists.JoinTeamInvitationList;
 import com.bloatit.model.lists.KudosList;
 import com.bloatit.model.lists.OfferList;
+import com.bloatit.model.lists.TeamList;
 import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
@@ -81,26 +81,26 @@ public final class Member extends Actor<DaoMember> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Tells if a user can access the group property. You have to unlock this
+     * Tells if a user can access the team property. You have to unlock this
      * Member using the {@link Member#authenticate(AuthToken)} method.
      *
      * @param action can be read/write/delete. for example use READ to know if
-     *            you can use {@link Member#getGroups()}.
+     *            you can use {@link Member#getTeams()}.
      * @return true if you can use the method.
      */
-    public boolean canAccessGroups(final Action action) {
-        return canAccess(new MemberRight.GroupList(), action);
+    public boolean canAccessTeams(final Action action) {
+        return canAccess(new MemberRight.TeamList(), action);
     }
 
     /**
      * Tells if a user can access the property "invite".
      *
-     * @param group the group in which you want to invite somebody
+     * @param team the team in which you want to invite somebody
      * @param action WRITE for create a new invitation, DELETED to accept/refuse
      *            it, READ to list the invitations you have recieved.
      * @return true if you can invite/accept/refuse.
      */
-    public boolean canSendInvitation(final Group group, final Action action) {
+    public boolean canSendInvitation(final Team team, final Action action) {
         return canAccess(new MemberRight.SendInvitation(), action);
     }
 
@@ -124,110 +124,110 @@ public final class Member extends Actor<DaoMember> {
     // Setter / modification
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    // / GROUP RIGHTS
+    // / TEAM RIGHTS
 
     /**
      * <p>
-     * Gives some new rights to a user in a groups
+     * Gives some new rights to a user in a teams
      * </p>
      *
      * @param newRole the new role of the user
-     * @throws MemberNotInGroupException when <code>this</code> is not part of
-     *             <code>group</code>
+     * @throws MemberNotInTeamException when <code>this</code> is not part of
+     *             <code>team</code>
      * @throws UnauthorizedOperationException if the authenticated user is not
-     *             <code>ADMIN</code> of <code>group</code>
+     *             <code>ADMIN</code> of <code>team</code>
      */
-    public void setGroupRole(final Group group, final TeamRole newRole) throws UnauthorizedOperationException, MemberNotInGroupException {
-        if (!isInGroup(group)) {
-            throw new MemberNotInGroupException();
+    public void setTeamRole(final Team team, final TeamRole newRole) throws UnauthorizedOperationException, MemberNotInTeamException {
+        if (!isInTeam(team)) {
+            throw new MemberNotInTeamException();
         }
 
-        tryAccess(new MemberRight.GroupList(), Action.WRITE);
-        setGroupRoleUnprotected(group, newRole);
+        tryAccess(new MemberRight.TeamList(), Action.WRITE);
+        setTeamRoleUnprotected(team, newRole);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public Set<UserGroupRight> getGroupRights(Group g) {
-        return getDao().getGroupRights(g.getDao());
+    public Set<UserTeamRight> getTeamRights(Team g) {
+        return getDao().getTeamRights(g.getDao());
     }
 
-    public void addGroupRight(Group aGroup, UserGroupRight aRight) {
-        getDao().addGroupRight(aGroup.getDao(), aRight);
+    public void addTeamRight(Team aTeam, UserTeamRight aRight) {
+        getDao().addTeamRight(aTeam.getDao(), aRight);
     }
 
-    public void removeGroupRight(Group aGroup, UserGroupRight removeRight) {
-        getDao().removeGroupRight(aGroup.getDao(), removeRight);
+    public void removeTeamRight(Team aTeam, UserTeamRight removeRight) {
+        getDao().removeTeamRight(aTeam.getDao(), removeRight);
     }
 
-    public boolean canInGroup(Group aGroup, UserGroupRight aRight) {
-        if (getGroupRights(aGroup) == null) {
+    public boolean canInTeam(Team aTeam, UserTeamRight aRight) {
+        if (getTeamRights(aTeam) == null) {
             return false;
         }
-        return getGroupRights(aGroup).contains(aRight);
+        return getTeamRights(aTeam).contains(aRight);
     }
 
-    public boolean canConsult(Group aGroup) {
-        return canInGroup(aGroup, UserGroupRight.CONSULT);
+    public boolean canConsult(Team aTeam) {
+        return canInTeam(aTeam, UserTeamRight.CONSULT);
     }
 
-    public boolean canTalk(Group aGroup) {
-        return canInGroup(aGroup, UserGroupRight.TALK);
+    public boolean canTalk(Team aTeam) {
+        return canInTeam(aTeam, UserTeamRight.TALK);
     }
 
-    public boolean canInvite(Group aGroup) {
-        return canInGroup(aGroup, UserGroupRight.INVITE);
+    public boolean canInvite(Team aTeam) {
+        return canInTeam(aTeam, UserTeamRight.INVITE);
     }
 
-    public boolean canModify(Group aGroup) {
-        return canInGroup(aGroup, UserGroupRight.MODIFY);
+    public boolean canModify(Team aTeam) {
+        return canInTeam(aTeam, UserTeamRight.MODIFY);
     }
 
-    public boolean canPromote(Group aGroup) {
-        return canInGroup(aGroup, UserGroupRight.PROMOTE);
+    public boolean canPromote(Team aTeam) {
+        return canInTeam(aTeam, UserTeamRight.PROMOTE);
     }
 
-    public boolean canBank(Group aGroup) {
-        return canInGroup(aGroup, UserGroupRight.BANK);
+    public boolean canBank(Team aTeam) {
+        return canInTeam(aTeam, UserTeamRight.BANK);
     }
 
-    // / END GROUP RIGHTS
+    // / END TEAM RIGHTS
 
     /**
-     * Give some right to the user to a group without checking if the user can
+     * Give some right to the user to a team without checking if the user can
      * get these rights
      *
-     * @param group the group to add rights to the user
+     * @param team the team to add rights to the user
      * @param newRight the new new role of the user
      */
-    protected void setGroupRoleUnprotected(final Group group, final TeamRole newRole) {
-        for (final UserGroupRight r : newRole.getRights()) {
-            getDao().addGroupRight(group.getDao(), r);
+    protected void setTeamRoleUnprotected(final Team team, final TeamRole newRole) {
+        for (final UserTeamRight r : newRole.getRights()) {
+            getDao().addTeamRight(team.getDao(), r);
         }
     }
 
     /**
-     * Adds a user to a group without checking if the group is Public or not
+     * Adds a user to a team without checking if the team is Public or not
      *
-     * @param group the group to which the user will be added
+     * @param team the team to which the user will be added
      */
-    protected void addToGroupUnprotected(final Group group) {
-        getDao().addToGroup(group.getDao());
+    protected void addToTeamUnprotected(final Team team) {
+        getDao().addToTeam(team.getDao());
     }
 
     /**
-     * To invite a member into a group you have to have the WRITE right on the
+     * To invite a member into a team you have to have the WRITE right on the
      * "invite" property.
      *
      * @param member The member you want to invite
-     * @param group The group in which you invite a member.
+     * @param team The team in which you invite a member.
      * @throws UnauthorizedOperationException
      */
-    public void sendInvitation(final Member member, final Group group) throws UnauthorizedOperationException {
+    public void sendInvitation(final Member member, final Team team) throws UnauthorizedOperationException {
         tryAccess(new MemberRight.SendInvitation(), Action.WRITE);
-        DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
+        DaoJoinTeamInvitation.createAndPersist(getDao(), member.getDao(), team.getDao());
     }
 
     /**
@@ -238,7 +238,7 @@ public final class Member extends Actor<DaoMember> {
      *            invitation.
      * @throws UnauthorizedOperationException
      */
-    public void acceptInvitation(final JoinGroupInvitation invitation) throws UnauthorizedOperationException {
+    public void acceptInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
         if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
@@ -247,10 +247,10 @@ public final class Member extends Actor<DaoMember> {
         // Accept the invitation
         invitation.accept();
 
-        // discard all other invitation to join the same group
-        final Group group = invitation.getGroup();
-        final PageIterable<JoinGroupInvitation> receivedInvitation = this.getReceivedInvitation(State.PENDING, group);
-        for (final JoinGroupInvitation invite : receivedInvitation) {
+        // discard all other invitation to join the same team
+        final Team team = invitation.getTeam();
+        final PageIterable<JoinTeamInvitation> receivedInvitation = this.getReceivedInvitation(State.PENDING, team);
+        for (final JoinTeamInvitation invite : receivedInvitation) {
             invite.discard();
         }
     }
@@ -263,7 +263,7 @@ public final class Member extends Actor<DaoMember> {
      *            invitation.
      * @throws UnauthorizedOperationException
      */
-    public void refuseInvitation(final JoinGroupInvitation invitation) throws UnauthorizedOperationException {
+    public void refuseInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
         if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
@@ -272,16 +272,16 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To remove this member from a group you have to have the DELETED right on
-     * the "group" property. If the member is not in the "group", nothing is
+     * To remove this member from a team you have to have the DELETED right on
+     * the "team" property. If the member is not in the "team", nothing is
      * done. (Although it should be considered as an error and will be logged)
      *
-     * @param group is the group from which the user will be removed.
+     * @param team is the team from which the user will be removed.
      * @throws UnauthorizedOperationException
      */
-    public void removeFromGroup(final Group group) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.GroupList(), Action.DELETE);
-        getDao().removeFromGroup(group.getDao());
+    public void removeFromTeam(final Team team) throws UnauthorizedOperationException {
+        tryAccess(new MemberRight.TeamList(), Action.DELETE);
+        getDao().removeFromTeam(team.getDao());
     }
 
     public void setPassword(final String password) throws UnauthorizedOperationException {
@@ -321,19 +321,19 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To add a user into a public group, you have to make sure you can access
-     * the groups with the {@link Action#WRITE} action.
+     * To add a user into a public team, you have to make sure you can access
+     * the teams with the {@link Action#WRITE} action.
      *
-     * @param group must be a public group.
+     * @param team must be a public team.
      * @throws UnauthorizedOperationException if the authenticated member do not
      *             have the right to use this methods.
-     * @see Member#canAccessGroups(Action)
+     * @see Member#canAccessTeams(Action)
      */
-    public void addToPublicGroup(final Group group) throws UnauthorizedOperationException {
-        if (group.getRight() != Right.PUBLIC) {
-            throw new UnauthorizedOperationException(SpecialCode.GROUP_NOT_PUBLIC);
+    public void addToPublicTeam(final Team team) throws UnauthorizedOperationException {
+        if (team.getRight() != Right.PUBLIC) {
+            throw new UnauthorizedOperationException(SpecialCode.TEAM_NOT_PUBLIC);
         }
-        getDao().addToGroup(group.getDao());
+        getDao().addToTeam(team.getDao());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -344,37 +344,37 @@ public final class Member extends Actor<DaoMember> {
      * @param state can be PENDING, ACCEPTED or REFUSED
      * @return all the received invitation with the specified state.
      */
-    public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state) {
-        return new JoinGroupInvitationList(getDao().getReceivedInvitation(state));
+    public PageIterable<JoinTeamInvitation> getReceivedInvitation(final State state) {
+        return new JoinTeamInvitationList(getDao().getReceivedInvitation(state));
     }
 
     /**
      * @param state can be PENDING, ACCEPTED or REFUSED
-     * @param group the group invited to join
-     * @return all the received invitation with the specified state and group
+     * @param team the team invited to join
+     * @return all the received invitation with the specified state and team
      */
-    public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state, final Group group) {
-        return new JoinGroupInvitationList(getDao().getReceivedInvitation(state, group.getDao()));
+    public PageIterable<JoinTeamInvitation> getReceivedInvitation(final State state, final Team team) {
+        return new JoinTeamInvitationList(getDao().getReceivedInvitation(state, team.getDao()));
     }
 
     /**
      * @param state can be PENDING, ACCEPTED or REFUSED
      * @return all the sent invitation with the specified state.
      */
-    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
+    public PageIterable<DaoJoinTeamInvitation> getSentInvitation(final State state) {
         return getDao().getSentInvitation(state);
     }
 
     /**
-     * To get the groups you have the have the READ right on the "group"
+     * To get the teams you have the have the READ right on the "team"
      * property.
      *
-     * @return all the group in which this member is.
+     * @return all the team in which this member is.
      * @throws UnauthorizedOperationException
      */
-    public PageIterable<Group> getGroups() throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.GroupList(), Action.READ);
-        return new GroupList(getDao().getGroups());
+    public PageIterable<Team> getTeams() throws UnauthorizedOperationException {
+        tryAccess(new MemberRight.TeamList(), Action.READ);
+        return new TeamList(getDao().getTeams());
     }
 
     public int getKarma() throws UnauthorizedOperationException {
@@ -447,33 +447,33 @@ public final class Member extends Actor<DaoMember> {
         return new TranslationList(getDao().getTranslations());
     }
 
-    public boolean isInGroup(final Group group) {
-        return isInGroupUnprotected(group);
+    public boolean isInTeam(final Team team) {
+        return isInTeamUnprotected(team);
     }
 
     /**
-     * Returns the status of the member in a given <code>group</code> <<<<<<<
+     * Returns the status of the member in a given <code>team</code> <<<<<<<
      * Updated upstream
      *
-     * @param group the group in which we want to know member status =======
-     * @param group the group in which we want to know member status >>>>>>>
+     * @param team the team in which we want to know member status =======
+     * @param team the team in which we want to know member status >>>>>>>
      *            Stashed changes
      * @return a <code>Set</code> containing all the roles of the member for
-     *         <code>group</code> or <code>null</code> if the member is not part
-     *         of this group. <br />
+     *         <code>team</code> or <code>null</code> if the member is not part
+     *         of this team. <br />
      *         Note the set can be empty if the member has no preset role
      *         (standard member).
      */
-    protected TeamRole getRoleUnprotected(final Group group) {
-        final Set<UserGroupRight> memberStatus = group.getDao().getUserGroupRight(getDao());
+    protected TeamRole getRoleUnprotected(final Team team) {
+        final Set<UserTeamRight> memberStatus = team.getDao().getUserTeamRight(getDao());
         if (memberStatus != null) {
             return new TeamRole(memberStatus);
         }
         return null;
     }
 
-    protected boolean isInGroupUnprotected(final Group group) {
-        return getDao().isInGroup(group.getDao());
+    protected boolean isInTeamUnprotected(final Team team) {
+        return getDao().isInTeam(team.getDao());
     }
 
     protected void addToKarma(final int value) {

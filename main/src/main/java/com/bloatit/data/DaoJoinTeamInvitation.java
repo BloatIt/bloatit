@@ -18,7 +18,6 @@ package com.bloatit.data;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
@@ -33,22 +32,22 @@ import org.hibernate.annotations.NamedQuery;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 /**
- * This represent an invitation to join a group.
+ * This represent an invitation to join a team.
  */
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "joinGroupInvitation.byGroupReceiver",
-                           query = "FROM DaoJoinGroupInvitation WHERE group = :group AND receiver = :member"),
+                           name = "joinTeamInvitation.byTeamReceiver",
+                           query = "FROM DaoJoinTeamInvitation WHERE team = :team AND receiver = :member"),
                        @NamedQuery(
-                           name = "joinGroupInvitation.byGroupSender",
-                           query = "FROM DaoJoinGroupInvitation WHERE group = :group AND sender = :member")
+                           name = "joinTeamInvitation.byTeamSender",
+                           query = "FROM DaoJoinTeamInvitation WHERE team = :team AND sender = :member")
                        }
              )
 // @formatter:on
-public class DaoJoinGroupInvitation extends DaoIdentifiable {
+public class DaoJoinTeamInvitation extends DaoIdentifiable {
 
     /**
      * <p>
@@ -57,8 +56,8 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
      * </p>
      * <p>
      * The state DISCARDED means the invitation have been refused cause the user
-     * accepted another invitation for the same group, canceling all other
-     * invitations for this group. It is therefore an alternative to REFUSED or
+     * accepted another invitation for the same team, canceling all other
+     * invitations for this team. It is therefore an alternative to REFUSED or
      * ACCEPTED
      * </p>
      */
@@ -76,7 +75,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     @ManyToOne(optional = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-    private DaoGroup group;
+    private DaoTeam team;
 
     @Basic(optional = false)
     @Enumerated
@@ -87,23 +86,23 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * Gets the invitation to join a group.
+     * Gets the invitation to join a team.
      *
-     * @param group the group this invitation is on.
+     * @param team the team this invitation is on.
      * @param member the member this invitation was sent to.
      * @return the invitation, are null if there is no invitation on that
-     *         <code>group</code> sent to this <code>member</code>.
+     *         <code>team</code> sent to this <code>member</code>.
      */
-    public static DaoJoinGroupInvitation getRecievedInvitation(final DaoGroup group, final DaoMember member) {
-        return (DaoJoinGroupInvitation) SessionManager.getNamedQuery("joinGroupInvitation.byGroupReceiver")
-                                                      .setEntity("group", group)
+    public static DaoJoinTeamInvitation getRecievedInvitation(final DaoTeam team, final DaoMember member) {
+        return (DaoJoinTeamInvitation) SessionManager.getNamedQuery("joinTeamInvitation.byTeamReceiver")
+                                                      .setEntity("team", team)
                                                       .setEntity("member", member)
                                                       .uniqueResult();
     }
 
-    public static DaoJoinGroupInvitation getSentInvitation(final DaoGroup group, final DaoMember member) {
-        return (DaoJoinGroupInvitation) SessionManager.getNamedQuery("joinGroupInvitation.byGroupSender")
-                                                      .setEntity("group", group)
+    public static DaoJoinTeamInvitation getSentInvitation(final DaoTeam team, final DaoMember member) {
+        return (DaoJoinTeamInvitation) SessionManager.getNamedQuery("joinTeamInvitation.byTeamSender")
+                                                      .setEntity("team", team)
                                                       .setEntity("member", member)
                                                       .uniqueResult();
     }
@@ -112,9 +111,9 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     // Construction.
     // ======================================================================
 
-    public static DaoJoinGroupInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
+    public static DaoJoinTeamInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoTeam team) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoJoinGroupInvitation joinInvitation = new DaoJoinGroupInvitation(sender, reciever, group);
+        final DaoJoinTeamInvitation joinInvitation = new DaoJoinTeamInvitation(sender, reciever, team);
         try {
             session.save(joinInvitation);
         } catch (final HibernateException e) {
@@ -129,24 +128,24 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
      *
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
-    private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember receiver, final DaoGroup group) {
+    private DaoJoinTeamInvitation(final DaoMember sender, final DaoMember receiver, final DaoTeam team) {
         super();
-        if (sender == null || receiver == null || group == null) {
+        if (sender == null || receiver == null || team == null) {
             throw new NonOptionalParameterException();
         }
         this.sender = sender;
         this.receiver = receiver;
-        this.group = group;
+        this.team = team;
         this.state = State.PENDING;
     }
 
     /**
      * Set the state to accepted and add the receiver into the list of members
-     * of this.group. If the state is not PENDING then do nothing.
+     * of this.team. If the state is not PENDING then do nothing.
      */
     public void accept() {
         if (this.state == State.PENDING) {
-            this.receiver.addToGroup(this.group);
+            this.receiver.addToTeam(this.team);
             this.state = State.ACCEPTED;
         }
     }
@@ -199,15 +198,15 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
         return this.state;
     }
 
-    public DaoGroup getGroup() {
-        return this.group;
+    public DaoTeam getTeam() {
+        return this.team;
     }
 
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoJoinGroupInvitation() {
+    protected DaoJoinTeamInvitation() {
         super();
     }
 
@@ -223,7 +222,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((this.group == null) ? 0 : this.group.hashCode());
+        result = prime * result + ((this.team == null) ? 0 : this.team.hashCode());
         result = prime * result + ((this.receiver == null) ? 0 : this.receiver.hashCode());
         result = prime * result + ((this.sender == null) ? 0 : this.sender.hashCode());
         return result;
@@ -241,15 +240,15 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof DaoJoinGroupInvitation)) {
+        if (!(obj instanceof DaoJoinTeamInvitation)) {
             return false;
         }
-        final DaoJoinGroupInvitation other = (DaoJoinGroupInvitation) obj;
-        if (this.group == null) {
-            if (other.group != null) {
+        final DaoJoinTeamInvitation other = (DaoJoinTeamInvitation) obj;
+        if (this.team == null) {
+            if (other.team != null) {
                 return false;
             }
-        } else if (!this.group.equals(other.group)) {
+        } else if (!this.team.equals(other.team)) {
             return false;
         }
         if (this.receiver == null) {
