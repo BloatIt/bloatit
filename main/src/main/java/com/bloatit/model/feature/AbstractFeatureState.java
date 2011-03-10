@@ -162,7 +162,7 @@ abstract class AbstractFeatureState {
     }
 
     /**
-     * Event batch released.
+     * Event milestone released.
      *
      * @return the state object representing the featureState, after receiving
      *         this event
@@ -170,13 +170,13 @@ abstract class AbstractFeatureState {
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractFeatureState eventBatchReleased() {
+    public AbstractFeatureState eventMilestoneReleased() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
     /**
-     * Event batch is rejected.
+     * Event milestone is rejected.
      *
      * @return the state object representing the featureState, after receiving
      *         this event
@@ -184,13 +184,13 @@ abstract class AbstractFeatureState {
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractFeatureState eventBatchIsRejected() {
+    public AbstractFeatureState eventMilestoneIsRejected() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
     /**
-     * Event batch is validated.
+     * Event milestone is validated.
      *
      * @return the state object representing the featureState, after receiving
      *         this event
@@ -198,13 +198,13 @@ abstract class AbstractFeatureState {
      *             not in the right state (For example you cannot Finish a
      *             development if you are not in development state).
      */
-    public AbstractFeatureState eventBatchIsValidated() {
+    public AbstractFeatureState eventMilestoneIsValidated() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
     /**
-     * Event offer is validated is called when every batches are finished.
+     * Event offer is validated is called when every milestonees are finished.
      *
      * @return the state object representing the featureState, after receiving
      *         this event

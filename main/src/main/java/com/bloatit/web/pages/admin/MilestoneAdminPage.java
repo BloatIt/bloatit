@@ -4,7 +4,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
-import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
@@ -20,27 +20,27 @@ import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Release;
-import com.bloatit.model.admin.BatchAdminListFactory;
-import com.bloatit.web.url.BatchAdminPageUrl;
+import com.bloatit.model.admin.MilestoneAdminListFactory;
+import com.bloatit.web.url.MilestoneAdminPageUrl;
 
-@ParamContainer("admin/batches")
-public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch, BatchAdminListFactory> {
+@ParamContainer("admin/milestonees")
+public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMilestone, Milestone, MilestoneAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
-    private DisplayableBatchState batchState;
+    private DisplayableMilestoneState milestoneState;
 
-    private final BatchAdminPageUrl url;
+    private final MilestoneAdminPageUrl url;
 
-    public BatchAdminPage(final BatchAdminPageUrl url) {
-        super(url, new BatchAdminListFactory());
+    public MilestoneAdminPage(final MilestoneAdminPageUrl url) {
+        super(url, new MilestoneAdminListFactory());
         this.url = url;
-        batchState = url.getBatchState();
+        milestoneState = url.getMilestoneState();
 
-        if (batchState != null && batchState != DisplayableBatchState.NOT_SELECTED) {
-            getFactory().stateEquals(DisplayableBatchState.getState(batchState));
-            Context.getSession().addParameter(url.getBatchStateParameter());
+        if (milestoneState != null && milestoneState != DisplayableMilestoneState.NOT_SELECTED) {
+            getFactory().stateEquals(DisplayableMilestoneState.getState(milestoneState));
+            Context.getSession().addParameter(url.getMilestoneStateParameter());
         }
     }
 
@@ -57,40 +57,40 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
     @Override
     protected void addActions(final HtmlDropDown dropDown, final HtmlBranch block) {
         // Add actions into the drop down
-        dropDown.addDropDownElements(new AdminActionManager().batchActions());
+        dropDown.addDropDownElements(new AdminActionManager().milestoneActions());
     }
 
     @Override
     protected void addFormFilters(final HtmlForm form) {
 
-        final FieldData stateData = url.getBatchStateParameter().pickFieldData();
+        final FieldData stateData = url.getMilestoneStateParameter().pickFieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());
         stateInput.setDefaultValue(stateData.getSuggestedValue());
         stateInput.addErrorMessages(stateData.getErrorMessages());
-        stateInput.addDropDownElements(EnumSet.allOf(DisplayableBatchState.class));
-        stateInput.setLabel(tr("Filter by batch state"));
+        stateInput.addDropDownElements(EnumSet.allOf(DisplayableMilestoneState.class));
+        stateInput.setLabel(tr("Filter by milestone state"));
         form.add(stateInput);
     }
 
     @Override
-    protected void addColumns(final HtmlGenericTableModel<Batch> tableModel) {
-        final BatchAdminPageUrl clonedUrl = url.clone();
-        clonedUrl.setOrderByStr("batchState");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("batchState")), new StringColumnGenerator<Batch>() {
+    protected void addColumns(final HtmlGenericTableModel<Milestone> tableModel) {
+        final MilestoneAdminPageUrl clonedUrl = url.clone();
+        clonedUrl.setOrderByStr("milestoneState");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("milestoneState")), new StringColumnGenerator<Milestone>() {
             @Override
-            public String getStringBody(final Batch element) {
-                return String.valueOf(element.getBatchState());
+            public String getStringBody(final Milestone element) {
+                return String.valueOf(element.getMilestoneState());
             }
         });
-        tableModel.addColumn(tr("description"), new StringColumnGenerator<Batch>() {
+        tableModel.addColumn(tr("description"), new StringColumnGenerator<Milestone>() {
             @Override
-            public String getStringBody(final Batch element) {
+            public String getStringBody(final Milestone element) {
                 return element.getDescription();
             }
         });
-        tableModel.addColumn(tr("Release"), new ColumnGenerator<Batch>() {
+        tableModel.addColumn(tr("Release"), new ColumnGenerator<Milestone>() {
             @Override
-            public XmlNode getBody(final Batch element) {
+            public XmlNode getBody(final Milestone element) {
 
                 final PlaceHolderElement place = new PlaceHolderElement();
                 for (final Release release : element.getReleases()) {
@@ -100,9 +100,9 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
                 return place;
             }
         });
-        tableModel.addColumn(tr("Should validated"), new ColumnGenerator<Batch>() {
+        tableModel.addColumn(tr("Should validated"), new ColumnGenerator<Milestone>() {
             @Override
-            public XmlNode getBody(final Batch element) {
+            public XmlNode getBody(final Milestone element) {
                 final PlaceHolderElement place = new PlaceHolderElement();
                 for (final Level level : EnumSet.allOf(Level.class)) {
                     if (element.partIsValidated(level)) {

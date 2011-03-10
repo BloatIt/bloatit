@@ -20,7 +20,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.FileMetadataManager;
@@ -59,7 +59,7 @@ public final class AddReleaseAction extends LoggedAction {
     private final String version;
 
     @RequestParam
-    private final Batch batch;
+    private final Milestone milestone;
 
     private final AddReleaseActionUrl url;
 
@@ -72,13 +72,13 @@ public final class AddReleaseAction extends LoggedAction {
         this.attachedfileContentType = url.getAttachedfileContentType();
         this.attachedfileFileName = url.getAttachedfileFileName();
         this.lang = url.getLang();
-        this.batch = url.getBatch();
+        this.milestone = url.getMilestone();
         this.version = url.getVersion();
     }
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
-        if (!batch.getOffer().getAuthor().equals(authenticatedMember)) {
+        if (!milestone.getOffer().getAuthor().equals(authenticatedMember)) {
             return session.pickPreferredPage();
         }
 
@@ -87,7 +87,7 @@ public final class AddReleaseAction extends LoggedAction {
                                                                               attachedfile,
                                                                               attachedfileFileName,
                                                                               null);
-        batch.addRelease(description, version, langLocale, fileImage);
+        milestone.addRelease(description, version, langLocale, fileImage);
         session.notifyGood(Context.tr("Release created successfuly !"));
         return session.getLastStablePage();
     }

@@ -26,56 +26,56 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.rest.list.master.RestListBinder;
-import com.bloatit.rest.resources.RestBatch;
+import com.bloatit.rest.resources.RestMilestone;
 
 /**
  * <p>
- * Wraps a list of Batch into a list of RestElements
+ * Wraps a list of Milestone into a list of RestElements
  * </p>
  * <p>
- * This class can be represented in Xml as a list of Batch<br />
+ * This class can be represented in Xml as a list of Milestone<br />
  * Example:
  *
  * <pre>
- * {@code <Batchs>}
- *     {@code <Batch name=Batch1 />}
- *     {@code <Batch name=Batch2 />}
- * {@code </Batchs>}
+ * {@code <Milestones>}
+ *     {@code <Milestone name=Milestone1 />}
+ *     {@code <Milestone name=Milestone2 />}
+ * {@code </Milestones>}
  * </pre>
  * <p>
  */
-@XmlRootElement(name = "batchs")
-public class RestBatchList extends RestListBinder<RestBatch, Batch> {
+@XmlRootElement(name = "milestones")
+public class RestMilestoneList extends RestListBinder<RestMilestone, Milestone> {
 
     /**
      * Provided for XML generation
      */
     @SuppressWarnings("unused")
-    private RestBatchList() {
+    private RestMilestoneList() {
         super();
     }
 
     /**
-     * Creates a RestBatchList from a {@codePageIterable<Batch>}
+     * Creates a RestMilestoneList from a {@codePageIterable<Milestone>}
      *
      * @param collection the list of elements from the model
      */
-    public RestBatchList(PageIterable<Batch> collection) {
+    public RestMilestoneList(PageIterable<Milestone> collection) {
         super(collection);
     }
 
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElement(name = "batch")
+    @XmlElement(name = "milestone")
     @XmlIDREF
-    public List<RestBatch> getBatchs() {
-        List<RestBatch> batchs = new ArrayList<RestBatch>();
-        for (RestBatch batch : this) {
-            batchs.add(batch);
+    public List<RestMilestone> getMilestones() {
+        List<RestMilestone> milestones = new ArrayList<RestMilestone>();
+        for (RestMilestone milestone : this) {
+            milestones.add(milestone);
         }
-        return batchs;
+        return milestones;
     }
 }

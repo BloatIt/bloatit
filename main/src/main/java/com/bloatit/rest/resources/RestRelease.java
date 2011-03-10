@@ -156,11 +156,11 @@ public class RestRelease extends RestElement<Release> {
     }
 
     /**
-     * @see com.bloatit.model.Release#getBatch()
+     * @see com.bloatit.model.Release#getMilestone()
      */
     @XmlElement
-    public RestBatch getBatch() {
-        return new RestBatch(model.getBatch());
+    public RestMilestone getMilestone() {
+        return new RestMilestone(model.getMilestone());
     }
 
     /**

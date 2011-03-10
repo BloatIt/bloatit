@@ -104,7 +104,7 @@ public class FeatureBugListComponent extends HtmlDiv {
                     text = new HtmlText(bug.getErrorLevel().toString());
                     break;
                 case 2:
-                    text = new HtmlText(String.valueOf(bug.getBatch().getPosition()));
+                    text = new HtmlText(String.valueOf(bug.getMilestone().getPosition()));
                     break;
                 case 3:
                     text = new BugPageUrl(bug).getHtmlLink(bug.getTitle());

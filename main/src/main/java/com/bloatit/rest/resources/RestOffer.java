@@ -40,7 +40,7 @@ import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Offer;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.rest.adapters.DateAdapter;
-import com.bloatit.rest.list.RestBatchList;
+import com.bloatit.rest.list.RestMilestoneList;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestOfferList;
 
@@ -162,11 +162,11 @@ public class RestOffer extends RestElement<Offer> {
     }
 
     /**
-     * @see com.bloatit.model.Offer#getBatches()
+     * @see com.bloatit.model.Offer#getMilestonees()
      */
     @XmlElement
-    public RestBatchList getBatches() {
-        return new RestBatchList(model.getBatches());
+    public RestMilestoneList getMilestonees() {
+        return new RestMilestoneList(model.getMilestonees());
     }
 
     /**
@@ -178,11 +178,11 @@ public class RestOffer extends RestElement<Offer> {
     }
 
     /**
-     * @see com.bloatit.model.Offer#getCurrentBatch()
+     * @see com.bloatit.model.Offer#getCurrentMilestone()
      */
     @XmlElement
-    public RestBatch getCurrentBatch() {
-        return new RestBatch(model.getCurrentBatch());
+    public RestMilestone getCurrentMilestone() {
+        return new RestMilestone(model.getCurrentMilestone());
     }
 
     /**

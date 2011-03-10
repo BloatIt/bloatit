@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
@@ -122,7 +122,7 @@ public final class OfferAction extends LoggedAction {
         }
         Offer constructingOffer;
         try {
-            Batch constructingBatch;
+            Milestone constructingMilestone;
             if (draftOffer == null) {
                 System.err.println(expiryDate);
                 constructingOffer = feature.addOffer(session.getAuthToken().getMember(),
@@ -134,14 +134,14 @@ public final class OfferAction extends LoggedAction {
                 if (team != null) {
                     constructingOffer.setAsTeam(team);
                 }
-                constructingBatch = constructingOffer.getBatches().iterator().next();
+                constructingMilestone = constructingOffer.getMilestonees().iterator().next();
             } else {
                 constructingOffer = draftOffer;
-                constructingBatch = draftOffer.addBatch(price, description, new Locale(locale), expiryDate.getJavaDate(), daysBeforeValidation
+                constructingMilestone = draftOffer.addMilestone(price, description, new Locale(locale), expiryDate.getJavaDate(), daysBeforeValidation
                         * DateUtils.SECOND_PER_DAY);
             }
             if (percentFatal != null && percentMajor != null) {
-                constructingBatch.updateMajorFatalPercent(percentFatal, percentMajor);
+                constructingMilestone.updateMajorFatalPercent(percentFatal, percentMajor);
             }
             if (isFinished) {
                 constructingOffer.setDraftFinished();

@@ -90,7 +90,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      * {@link FeatureState#PENDING} to {@link FeatureState#PREPARING}; and this
      * offer is selected (see {@link DaoFeature#setSelectedOffer(DaoOffer)}). The
      * parameters of this function are used to create the first (non optional)
-     * batch in this offer.
+     * milestone in this offer.
      *
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#WRITE} right on the <code>Offer</code>
@@ -122,7 +122,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     void cancelDevelopment() throws UnauthorizedOperationException;
 
     // TODO authorization
-    boolean validateCurrentBatch(final boolean force);
+    boolean validateCurrentMilestone(final boolean force);
 
     /**
      * Used by Offer class. You should never have to use it

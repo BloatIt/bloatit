@@ -2,10 +2,10 @@ package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.data.DaoBatch.BatchState;
+import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.framework.webserver.components.form.Displayable;
 
-public enum DisplayableBatchState implements Displayable {
+public enum DisplayableMilestoneState implements Displayable {
     NOT_SELECTED(tr("<select>")), //
     PENDING(tr("Pending")), //
     DEVELOPING(tr("Developing")), //
@@ -20,15 +20,15 @@ public enum DisplayableBatchState implements Displayable {
         return displayName;
     }
 
-    private DisplayableBatchState(final String displayName) {
+    private DisplayableMilestoneState(final String displayName) {
         this.displayName = displayName;
     }
 
-    public static DisplayableBatchState getState(final BatchState cmp) {
-        return Enum.valueOf(DisplayableBatchState.class, cmp.name());
+    public static DisplayableMilestoneState getState(final MilestoneState cmp) {
+        return Enum.valueOf(DisplayableMilestoneState.class, cmp.name());
     }
 
-    public static BatchState getState(final DisplayableBatchState cmp) {
-        return Enum.valueOf(BatchState.class, cmp.name());
+    public static MilestoneState getState(final DisplayableMilestoneState cmp) {
+        return Enum.valueOf(MilestoneState.class, cmp.name());
     }
 }

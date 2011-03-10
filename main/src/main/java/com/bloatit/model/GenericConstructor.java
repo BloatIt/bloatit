@@ -1,7 +1,7 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoBankTransaction;
-import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
@@ -49,8 +49,8 @@ public class GenericConstructor {
         if (clazz.equals(BankTransaction.class)) {
             return DaoBankTransaction.class;
         }
-        if (clazz.equals(Batch.class)) {
-            return DaoBatch.class;
+        if (clazz.equals(Milestone.class)) {
+            return DaoMilestone.class;
         }
         if (clazz.equals(Description.class)) {
             return DaoDescription.class;

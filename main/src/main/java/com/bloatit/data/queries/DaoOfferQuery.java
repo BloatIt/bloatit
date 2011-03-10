@@ -114,12 +114,12 @@ public class DaoOfferQuery extends DaoKudosableQuery<DaoOffer> {
         add(createNbCriterion(cmp, "amount", value));
     }
 
-    public void withBatches() {
-        add(Restrictions.sizeGe("batches", 1));
+    public void withMilestonees() {
+        add(Restrictions.sizeGe("milestonees", 1));
     }
 
-    public void withoutBatches() {
-        add(Restrictions.sizeEq("batches", 1));
+    public void withoutMilestonees() {
+        add(Restrictions.sizeEq("milestonees", 1));
     }
 
     public void hasExpired() {

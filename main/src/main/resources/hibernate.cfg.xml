@@ -49,7 +49,7 @@
 		<mapping class="com.bloatit.data.DaoJoinGroupInvitation" />
 		<mapping class="com.bloatit.data.DaoBankTransaction" />
 		<mapping class="com.bloatit.data.DaoBug" />
-		<mapping class="com.bloatit.data.DaoBatch" />
+		<mapping class="com.bloatit.data.DaoMilestone" />
 		<mapping class="com.bloatit.data.DaoFileMetadata" />
 		<mapping class="com.bloatit.data.DaoImage" />
 		<mapping class="com.bloatit.data.DaoProject" />

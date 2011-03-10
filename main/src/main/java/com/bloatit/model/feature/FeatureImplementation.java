@@ -238,12 +238,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.Feature#validateCurrentBatch(boolean)
+     * @see com.bloatit.model.Feature#validateCurrentMilestone(boolean)
      */
     @Override
-    public boolean validateCurrentBatch(final boolean force) {
+    public boolean validateCurrentMilestone(final boolean force) {
         throwWrongStateExceptionOnNondevelopingState();
-        return getSelectedOfferUnprotected().validateCurrentBatch(force);
+        return getSelectedOfferUnprotected().validateCurrentMilestone(force);
     }
 
     /*
@@ -311,8 +311,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             throw new WrongStateException("Cannot be in development state, not enough money.");
         }
         getDao().setFeatureState(FeatureState.DEVELOPPING);
-        getSelectedOfferUnprotected().getCurrentBatch().setDeveloping();
-        new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
+        getSelectedOfferUnprotected().getCurrentMilestone().setDeveloping();
+        new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentMilestone().getExpirationDate());
     }
 
     /**
@@ -331,8 +331,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * Slot called when this feature state change to {@link FinishedState}.
      */
     private void inFinishedState() {
-        if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().hasBatchesLeft()) {
-            throw new WrongStateException("Cannot be in finished state if the current offer has lots to validate.");
+        if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().hasMilestoneesLeft()) {
+            throw new WrongStateException("Cannot be in finished state if the current offer has milestone to validate.");
         }
         getDao().setFeatureState(FeatureState.FINISHED);
     }
@@ -473,19 +473,19 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     /**
-     * Tell that the current batch is validate. This method is called by
+     * Tell that the current milestone is validate. This method is called by
      * {@link Offer} when needed.
      */
-    public void setBatchIsValidated() {
-        setStateObject(getStateObject().eventBatchIsValidated());
+    public void setMilestoneIsValidated() {
+        setStateObject(getStateObject().eventMilestoneIsValidated());
     }
 
     /**
-     * Tell that the current batch is rejected. This method is called by
+     * Tell that the current milestone is rejected. This method is called by
      * {@link Offer} when needed.
      */
-    public void setBatchIsRejected() {
-        setStateObject(getStateObject().eventBatchIsRejected());
+    public void setMilestoneIsRejected() {
+        setStateObject(getStateObject().eventMilestoneIsRejected());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

@@ -25,7 +25,7 @@ import java.util.Set;
 
 import com.bloatit.framework.rest.RestServer;
 import com.bloatit.rest.list.RestBankTransactionList;
-import com.bloatit.rest.list.RestBatchList;
+import com.bloatit.rest.list.RestMilestoneList;
 import com.bloatit.rest.list.RestBugList;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestContributionList;
@@ -46,7 +46,7 @@ import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestAuthenticate;
 import com.bloatit.rest.resources.RestBankTransaction;
-import com.bloatit.rest.resources.RestBatch;
+import com.bloatit.rest.resources.RestMilestone;
 import com.bloatit.rest.resources.RestBug;
 import com.bloatit.rest.resources.RestComment;
 import com.bloatit.rest.resources.RestContribution;
@@ -73,7 +73,7 @@ public class BloatitRestServer extends RestServer {
             put("authenticate", RestAuthenticate.class);
             put("members", RestMember.class);
             put("banktransactions", RestBankTransaction.class);
-            put("batchs", RestBatch.class);
+            put("milestones", RestMilestone.class);
             put("bugs", RestBug.class);
             put("comments", RestComment.class);
             put("contributions", RestContribution.class);
@@ -97,7 +97,7 @@ public class BloatitRestServer extends RestServer {
     private final Class<?>[] classes = new Class<?>[] { RestAuthenticate.class,
                                                        RestMember.class,
                                                        RestBankTransaction.class,
-                                                       RestBatch.class,
+                                                       RestMilestone.class,
                                                        RestBug.class,
                                                        RestComment.class,
                                                        RestContribution.class,
@@ -119,7 +119,7 @@ public class BloatitRestServer extends RestServer {
 
                                                        RestMemberList.class,
                                                        RestBankTransactionList.class,
-                                                       RestBatchList.class,
+                                                       RestMilestoneList.class,
                                                        RestBugList.class,
                                                        RestCommentList.class,
                                                        RestContributionList.class,

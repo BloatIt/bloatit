@@ -16,15 +16,15 @@
 //
 package com.bloatit.model.lists;
 
-import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 
 /**
- * The Class BatchList transforms PageIterable<DaoBatch> to PageIterable<Batch>.
+ * The Class MilestoneList transforms PageIterable<DaoMilestone> to PageIterable<Milestone>.
  */
-public final class BatchList extends ListBinder<Batch, DaoBatch> {
-    public BatchList(PageIterable<DaoBatch> daoCollection) {
+public final class MilestoneList extends ListBinder<Milestone, DaoMilestone> {
+    public MilestoneList(PageIterable<DaoMilestone> daoCollection) {
         super(daoCollection);
     }
 }

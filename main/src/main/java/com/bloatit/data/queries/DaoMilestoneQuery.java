@@ -21,31 +21,31 @@ import java.math.BigDecimal;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-import com.bloatit.data.DaoBatch;
-import com.bloatit.data.DaoBatch.BatchState;
+import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.SessionManager;
 
 /**
- * A query on DaoBatch, using {@link Criteria}.
+ * A query on DaoMilestone, using {@link Criteria}.
  */
-public class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
+public class DaoMilestoneQuery extends DaoIdentifiableQuery<DaoMilestone> {
 
     /**
      * Instantiates a new dao milestone list factory.
      */
-    public DaoBatchQuery() {
-        super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoBatch.class));
+    public DaoMilestoneQuery() {
+        super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoMilestone.class));
     }
 
     /**
      * Add a WHERE close restricting the <code>amount</code> value of the
-     * returning batches. For example if you want your query to return only the
-     * batches that have less than 42 €, you can call:
+     * returning milestonees. For example if you want your query to return only the
+     * milestonees that have less than 42 €, you can call:
      *
      * <pre>
-     * DaoOfferListFactory factory = new DaoBatchesListFactory();
+     * DaoOfferListFactory factory = new DaoMilestoneesListFactory();
      * factory.amount(Comparator.LESS, 42);
-     * PageIterable&lt;DaoBatches&gt; batches = factory.createCollection();
+     * PageIterable&lt;DaoMilestonees&gt; milestonees = factory.createCollection();
      * </pre>
      *
      * @param cmp the cmp.
@@ -56,23 +56,23 @@ public class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
     }
 
     /**
-     * Add a close on the state of this batch.
+     * Add a close on the state of this milestone.
      *
-     * @param state the state of the resulting batches.
+     * @param state the state of the resulting milestonees.
      */
-    public void stateEquals(final BatchState state) {
-        add(Restrictions.eq("batchState", state));
+    public void stateEquals(final MilestoneState state) {
+        add(Restrictions.eq("milestoneState", state));
     }
 
     /**
-     * Make sure this query will only return batch having released.
+     * Make sure this query will only return milestone having released.
      */
     public void withRelease() {
         add(Restrictions.isNotEmpty("releases"));
     }
 
     /**
-     * Make sure this query will only return batch having no released.
+     * Make sure this query will only return milestone having no released.
      */
     public void withoutRelease() {
         add(Restrictions.isEmpty("releases"));

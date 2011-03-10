@@ -163,7 +163,7 @@ msgid "Validate"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/DisplayableState.java:11
-#: com/bloatit/web/pages/admin/DisplayableBatchState.java:10
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:10
 #: com/bloatit/web/pages/admin/DisplayableFeatureState.java:11
 msgid "Pending"
 msgstr ""
@@ -177,7 +177,7 @@ msgid "Rejected"
 msgstr ""
 
 #: com/bloatit/web/pages/admin/KudosableAdminPageImplementation.java:26
-#: com/bloatit/web/pages/admin/BatchAdminPage.java:49
+#: com/bloatit/web/pages/admin/MilestoneAdminPage.java:49
 #: com/bloatit/web/pages/admin/FeatureAdminPage.java:76
 msgid "Administration Kudosable"
 msgstr ""
@@ -250,50 +250,50 @@ msgstr ""
 msgid "Administration UserContent"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/DisplayableBatchState.java:9
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:9
 msgid "<select>"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/DisplayableBatchState.java:11
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:11
 #: com/bloatit/web/pages/admin/DisplayableFeatureState.java:12
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:432
 msgid "Developing"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/DisplayableBatchState.java:12
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:12
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:434
 msgid "Released"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/DisplayableBatchState.java:13
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:13
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:436
 msgid "Validated"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/DisplayableBatchState.java:14
+#: com/bloatit/web/pages/admin/DisplayableMilestoneState.java:14
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:438
 msgid "Canceled"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/BatchAdminPage.java:71
+#: com/bloatit/web/pages/admin/MilestoneAdminPage.java:71
 msgid "Filter by batch state"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/BatchAdminPage.java:79
+#: com/bloatit/web/pages/admin/MilestoneAdminPage.java:79
 msgid "batchState"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/BatchAdminPage.java:85
+#: com/bloatit/web/pages/admin/MilestoneAdminPage.java:85
 msgid "description"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/BatchAdminPage.java:91
+#: com/bloatit/web/pages/admin/MilestoneAdminPage.java:91
 #: com/bloatit/web/pages/ReleasePage.java:48
 #: com/bloatit/web/pages/ReleasePage.java:66
 msgid "Release"
 msgstr ""
 
-#: com/bloatit/web/pages/admin/BatchAdminPage.java:103
+#: com/bloatit/web/pages/admin/MilestoneAdminPage.java:103
 msgid "Should validated"
 msgstr ""
 

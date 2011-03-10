@@ -28,7 +28,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
 /**
- * This is a bug report. A bug report is associated with a batch. it is quite
+ * This is a bug report. A bug report is associated with a milestone. it is quite
  * similar to the bug report in a classical bugTracker.
  *
  * @author Thomas Guyard
@@ -79,14 +79,14 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * Create a new Bug.
      *
      * @param member is the author of the bug.
-     * @param batch is the batch on which this bug has been set.
+     * @param milestone is the milestone on which this bug has been set.
      * @param title is the title of the bug.
      * @param description is a complete description of the bug.
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
-    Bug(final Member member, final Batch batch, final String title, final String description, final Locale locale, final Level errorLevel) {
-        super(DaoBug.createAndPersist(member.getDao(), batch.getDao(), title, description, locale, errorLevel));
+    Bug(final Member member, final Milestone milestone, final String title, final String description, final Locale locale, final Level errorLevel) {
+        super(DaoBug.createAndPersist(member.getDao(), milestone.getDao(), title, description, locale, errorLevel));
     }
 
     /**
@@ -140,13 +140,13 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
     }
 
     /**
-     * Gets the batch on which this bug has been added.
+     * Gets the milestone on which this bug has been added.
      *
-     * @return the batch
-     * @see com.bloatit.data.DaoBug#getBatch()
+     * @return the milestone
+     * @see com.bloatit.data.DaoBug#getMilestone()
      */
-    public Batch getBatch() {
-        return Batch.create(getDao().getBatch());
+    public Milestone getMilestone() {
+        return Milestone.create(getDao().getMilestone());
     }
 
     /**

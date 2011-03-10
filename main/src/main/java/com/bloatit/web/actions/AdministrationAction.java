@@ -13,7 +13,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
@@ -96,10 +96,10 @@ public class AdministrationAction extends LoggedAction {
                         }
                         break;
                     case VALIDATE_BATCH:
-                        ((Batch) content).validate();
+                        ((Milestone) content).validate();
                         break;
                     case FORCE_VALIDATE_BATCH:
-                        ((Batch) content).forceValidate();
+                        ((Milestone) content).forceValidate();
                         break;
                     default:
                         break;

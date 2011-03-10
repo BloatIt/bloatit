@@ -30,22 +30,22 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.bloatit.data.DaoBatch.BatchState;
+import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Batch;
-import com.bloatit.model.managers.BatchManager;
+import com.bloatit.model.Milestone;
+import com.bloatit.model.managers.MilestoneManager;
 import com.bloatit.rest.adapters.DateAdapter;
-import com.bloatit.rest.list.RestBatchList;
+import com.bloatit.rest.list.RestMilestoneList;
 import com.bloatit.rest.list.RestReleaseList;
 
 /**
  * <p>
- * Representation of a Batch for the ReST RPC calls
+ * Representation of a Milestone for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from Batch that needs to be called
+ * This class should implement any methods from Milestone that needs to be called
  * through the ReST RPC. Every such method needs to be mapped with the
  * {@code @REST} interface.
  * <p>
@@ -77,13 +77,13 @@ import com.bloatit.rest.list.RestReleaseList;
  * <li>@XmlAttribute on each method/attribute that will yield <i>simple</i> data
  * </li>
  * <li>Methods that return a list need to be annotated with @XmlElement and to
- * return a RestBatchList</li>
+ * return a RestMilestoneList</li>
  * </p>
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestBatch extends RestElement<Batch> {
-    private Batch model;
+public class RestMilestone extends RestElement<Milestone> {
+    private Milestone model;
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors
@@ -93,10 +93,10 @@ public class RestBatch extends RestElement<Batch> {
      * Provided for JAXB
      */
     @SuppressWarnings("unused")
-    private RestBatch() {
+    private RestMilestone() {
     }
 
-    protected RestBatch(Batch model) {
+    protected RestMilestone(Milestone model) {
         this.model = model;
     }
 
@@ -106,28 +106,28 @@ public class RestBatch extends RestElement<Batch> {
 
     /**
      * <p>
-     * Finds the RestBatch matching the <code>id</code>
+     * Finds the RestMilestone matching the <code>id</code>
      * </p>
      *
-     * @param id the id of the RestBatch
+     * @param id the id of the RestMilestone
      */
-    @REST(name = "batchs", method = RequestMethod.GET)
-    public static RestBatch getById(int id) {
-        RestBatch restBatch = new RestBatch(BatchManager.getById(id));
-        if (restBatch.isNull()) {
+    @REST(name = "milestones", method = RequestMethod.GET)
+    public static RestMilestone getById(int id) {
+        RestMilestone restMilestone = new RestMilestone(MilestoneManager.getById(id));
+        if (restMilestone.isNull()) {
             return null;
         }
-        return restBatch;
+        return restMilestone;
     }
 
     /**
      * <p>
-     * Finds the list of all (valid) RestBatch
+     * Finds the list of all (valid) RestMilestone
      * </p>
      */
-    @REST(name = "batchs", method = RequestMethod.GET)
-    public static RestBatchList getAll() {
-        return new RestBatchList(BatchManager.getAll());
+    @REST(name = "milestones", method = RequestMethod.GET)
+    public static RestMilestoneList getAll() {
+        return new RestMilestoneList(MilestoneManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -141,7 +141,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getOffer()
+     * @see com.bloatit.model.Milestone#getOffer()
      */
     @XmlElement
     @XmlIDREF
@@ -154,7 +154,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getReleaseDate()
+     * @see com.bloatit.model.Milestone#getReleaseDate()
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
@@ -163,7 +163,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getFatalBugsPercent()
+     * @see com.bloatit.model.Milestone#getFatalBugsPercent()
      */
     @XmlElement
     public int getFatalBugsPercent() {
@@ -171,7 +171,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getMajorBugsPercent()
+     * @see com.bloatit.model.Milestone#getMajorBugsPercent()
      */
     @XmlElement
     public int getMajorBugsPercent() {
@@ -179,7 +179,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getMinorBugsPercent()
+     * @see com.bloatit.model.Milestone#getMinorBugsPercent()
      */
     @XmlElement
     public int getMinorBugsPercent() {
@@ -187,7 +187,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getExpirationDate()
+     * @see com.bloatit.model.Milestone#getExpirationDate()
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
@@ -196,7 +196,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getAmount()
+     * @see com.bloatit.model.Milestone#getAmount()
      */
     @XmlAttribute
     public BigDecimal getAmount() {
@@ -204,7 +204,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getTitle()
+     * @see com.bloatit.model.Milestone#getTitle()
      */
     @XmlElement
     public String getTitle() {
@@ -212,7 +212,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getDescription()
+     * @see com.bloatit.model.Milestone#getDescription()
      */
     @XmlElement
     public String getDescription() {
@@ -220,7 +220,7 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getPosition()
+     * @see com.bloatit.model.Milestone#getPosition()
      */
     @XmlElement
     public int getPosition() {
@@ -228,15 +228,15 @@ public class RestBatch extends RestElement<Batch> {
     }
 
     /**
-     * @see com.bloatit.model.Batch#getBatchState()
+     * @see com.bloatit.model.Milestone#getMilestoneState()
      */
     @XmlElement
-    public BatchState getBatchState() {
-        return model.getBatchState();
+    public MilestoneState getMilestoneState() {
+        return model.getMilestoneState();
     }
 
     /**
-     * @see com.bloatit.model.Batch#getReleases()
+     * @see com.bloatit.model.Milestone#getReleases()
      */
     @XmlElement
     public RestReleaseList getReleases() {
@@ -250,14 +250,14 @@ public class RestBatch extends RestElement<Batch> {
     /**
      * Provided for JAXB
      */
-    void setModel(Batch model) {
+    void setModel(Milestone model) {
         this.model = model;
     }
 
     /**
      * Package method to find the model
      */
-    Batch getModel() {
+    Milestone getModel() {
         return model;
     }
 

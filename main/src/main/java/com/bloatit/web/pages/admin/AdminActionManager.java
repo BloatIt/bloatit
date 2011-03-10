@@ -21,8 +21,8 @@ public class AdminActionManager {
         SET_VALIDATION_DATE(tr("Update the validation Date")), //
         SET_FEATURE_IN_DEVELOPMENT(tr("Change the feature state")), //
 
-        VALIDATE_BATCH(tr("Validate batch if possible")), //
-        FORCE_VALIDATE_BATCH(tr("Validate batch --force !")), //
+        VALIDATE_BATCH(tr("Validate milestone if possible")), //
+        FORCE_VALIDATE_BATCH(tr("Validate milestone --force !")), //
         ;
 
         private final String displayName;
@@ -49,7 +49,7 @@ public class AdminActionManager {
         return EnumSet.range(Action.UPDATE_DEVELOPMENT_STATE, Action.SET_FEATURE_IN_DEVELOPMENT);
     }
 
-    public EnumSet<Action> batchActions() {
+    public EnumSet<Action> milestoneActions() {
         return EnumSet.range(Action.VALIDATE_BATCH, Action.FORCE_VALIDATE_BATCH);
     }
 

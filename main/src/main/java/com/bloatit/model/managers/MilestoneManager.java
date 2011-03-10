@@ -16,39 +16,39 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.queries.DBRequests;
-import com.bloatit.model.Batch;
-import com.bloatit.model.lists.BatchList;
+import com.bloatit.model.Milestone;
+import com.bloatit.model.lists.MilestoneList;
 
 /**
- * The Class BatchManager. Utility class containing static methods to get
- * {@link Batch}s from the DB.
+ * The Class MilestoneManager. Utility class containing static methods to get
+ * {@link Milestone}s from the DB.
  */
-public final class BatchManager {
+public final class MilestoneManager {
 
     /**
      * Desactivated constructor on utility class.
      */
-    private BatchManager() {
+    private MilestoneManager() {
         // Desactivate default ctor
     }
 
     /**
-     * Gets the a batch by Id.
+     * Gets the a milestone by Id.
      *
-     * @param id the batch id.
-     * @return the batch or null if not found.
+     * @param id the milestone id.
+     * @return the milestone or null if not found.
      */
-    public static Batch getById(final Integer id) {
-        return Batch.create(DBRequests.getById(DaoBatch.class, id));
+    public static Milestone getById(final Integer id) {
+        return Milestone.create(DBRequests.getById(DaoMilestone.class, id));
     }
 
     /**
      * @return
      */
-    public static BatchList getAll() {
-        return new BatchList(DBRequests.getAll(DaoBatch.class));
+    public static MilestoneList getAll() {
+        return new MilestoneList(DBRequests.getAll(DaoMilestone.class));
     }
 
 }

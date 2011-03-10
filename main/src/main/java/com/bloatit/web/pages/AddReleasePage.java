@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
@@ -39,11 +39,11 @@ public final class AddReleasePage extends LoggedPage {
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
     @RequestParam
-    Batch batch;
+    Milestone milestone;
 
     public AddReleasePage(final AddReleasePageUrl url) {
         super(url);
-        batch = url.getBatch();
+        milestone = url.getMilestone();
     }
 
     @Override
@@ -64,7 +64,7 @@ public final class AddReleasePage extends LoggedPage {
     private HtmlElement generateReleaseCreationForm() {
         final HtmlTitleBlock createReleaseTitle = new HtmlTitleBlock(tr("Add a new Release"), 1);
 
-        final AddReleaseActionUrl doCreateUrl = new AddReleaseActionUrl(batch);
+        final AddReleaseActionUrl doCreateUrl = new AddReleaseActionUrl(milestone);
 
         // Create the form stub
         final HtmlForm form = new HtmlForm(doCreateUrl.urlString());

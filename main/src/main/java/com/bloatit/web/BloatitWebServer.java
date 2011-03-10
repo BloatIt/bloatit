@@ -63,7 +63,7 @@ import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.ReleasePage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
-import com.bloatit.web.pages.admin.BatchAdminPage;
+import com.bloatit.web.pages.admin.MilestoneAdminPage;
 import com.bloatit.web.pages.admin.FeatureAdminPage;
 import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
@@ -74,7 +74,7 @@ import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
-import com.bloatit.web.url.BatchAdminPageUrl;
+import com.bloatit.web.url.MilestoneAdminPageUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
@@ -243,8 +243,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ReleasePageUrl.getName())) {
             return new ReleasePage(new ReleasePageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(BatchAdminPageUrl.getName())) {
-            return new BatchAdminPage(new BatchAdminPageUrl(params, session.getParameters()));
+        if (pageCode.equals(MilestoneAdminPageUrl.getName())) {
+            return new MilestoneAdminPage(new MilestoneAdminPageUrl(params, session.getParameters()));
         }
 
         // Actions

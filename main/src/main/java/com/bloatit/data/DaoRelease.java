@@ -59,28 +59,28 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-    private DaoBatch batch;
+    private DaoMilestone milestone;
 
     private String version;
 
-    public DaoRelease(final DaoMember member, final DaoBatch batch, final String description, final String version, final Locale locale) {
+    public DaoRelease(final DaoMember member, final DaoMilestone milestone, final String description, final String version, final Locale locale) {
         super(member);
-        if (description == null || batch == null || locale == null || version == null || description.isEmpty()) {
+        if (description == null || milestone == null || locale == null || version == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
-        this.batch = batch;
+        this.milestone = milestone;
         this.description = description;
         this.locale = locale;
         this.version = version;
     }
 
     public static DaoRelease createAndPersist(final DaoMember member,
-                                              final DaoBatch batch,
+                                              final DaoMilestone milestone,
                                               final String description,
                                               final String version,
                                               final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoRelease release = new DaoRelease(member, batch, description, version, locale);
+        final DaoRelease release = new DaoRelease(member, milestone, description, version, locale);
         try {
             session.save(release);
         } catch (final HibernateException e) {
@@ -114,8 +114,8 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
         return this.locale;
     }
 
-    public DaoBatch getBatch() {
-        return this.batch;
+    public DaoMilestone getMilestone() {
+        return this.milestone;
     }
 
     /**

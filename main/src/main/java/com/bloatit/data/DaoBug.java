@@ -40,7 +40,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * Represent a bug on a Released part of a batch. It is like a bug in a
+ * Represent a bug on a Released part of a milestone. It is like a bug in a
  * bugtracker.
  */
 @Entity
@@ -88,18 +88,18 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private DaoBatch batch;
+    private DaoMilestone milestone;
 
     @Basic(optional = false)
     @Enumerated
     private BugState state;
 
-    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
+    public DaoBug(final DaoMember member, final DaoMilestone milestone, final String title, final String description, final Locale locale, final Level level) {
         super(member);
-        if (title == null || description == null || batch == null || locale == null || level == null || description.isEmpty()) {
+        if (title == null || description == null || milestone == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
-        this.batch = batch;
+        this.milestone = milestone;
         this.title = title;
         this.description = description;
         this.locale = locale;
@@ -108,13 +108,13 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     public static DaoBug createAndPersist(final DaoMember member,
-                                          final DaoBatch batch,
+                                          final DaoMilestone milestone,
                                           final String title,
                                           final String description,
                                           final Locale locale,
                                           final Level level) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoBug bug = new DaoBug(member, batch, title, description, locale, level);
+        final DaoBug bug = new DaoBug(member, milestone, title, description, locale, level);
         try {
             session.save(bug);
         } catch (final HibernateException e) {
@@ -142,7 +142,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
-        return getBatch().getOffer().getAuthor();
+        return getMilestone().getOffer().getAuthor();
     }
 
     /**
@@ -173,8 +173,8 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
         return this.level;
     }
 
-    public DaoBatch getBatch() {
-        return this.batch;
+    public DaoMilestone getMilestone() {
+        return this.milestone;
     }
 
     public BugState getState() {

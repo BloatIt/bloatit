@@ -28,7 +28,7 @@ public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(BankTransaction model);
 
-    ReturnType visit(Batch model);
+    ReturnType visit(Milestone model);
 
     ReturnType visit(Description model);
 

@@ -400,7 +400,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         //
         // try {
         // feature.authenticate(yoAuthToken);
-        // feature.releaseCurrentBatch();
+        // feature.releaseCurrentMilestone();
         // fail();
         // } catch (final UnauthorizedOperationException e) {
         // assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_FEATURE,
@@ -408,14 +408,14 @@ public class FeatureImplementationTest extends ModelTestUnit {
         // }
         //
         // feature.authenticate(tomAuthToken);
-        // feature.releaseCurrentBatch();
+        // feature.releaseCurrentMilestone();
         //
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
         // assertEquals(120, feature.getContribution().intValue());
         // TODO
     }
 
-    public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public void testOfferWithALotOfMilestone() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Feature feature = createFeatureByThomas();
 
         feature.authenticate(tomAuthToken);
@@ -426,10 +426,10 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                             DateUtils.tomorrow(),
                                             DateUtils.SECOND_PER_WEEK);
 
-        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
+        offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
 
         feature.authenticate(yoAuthToken);
         feature.addContribution(new BigDecimal("12"), null);
@@ -445,30 +445,30 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
 
         // feature.authenticate(tomAuthToken);
-        // feature.releaseCurrentBatch();
+        // feature.releaseCurrentMilestone();
         //
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentBatch(true));
+        // assertTrue(feature.validateCurrentMilestone(true));
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
         //
-        // feature.releaseCurrentBatch();
+        // feature.releaseCurrentMilestone();
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentBatch(true));
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        //
-        // feature.releaseCurrentBatch();
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentBatch(true));
+        // assertTrue(feature.validateCurrentMilestone(true));
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
         //
-        // feature.releaseCurrentBatch();
+        // feature.releaseCurrentMilestone();
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentBatch(true));
+        // assertTrue(feature.validateCurrentMilestone(true));
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
         //
-        // feature.releaseCurrentBatch();
+        // feature.releaseCurrentMilestone();
         // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentBatch(true));
+        // assertTrue(feature.validateCurrentMilestone(true));
+        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        //
+        // feature.releaseCurrentMilestone();
+        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        // assertTrue(feature.validateCurrentMilestone(true));
         // assertEquals(FeatureState.FINISHED, feature.getFeatureState());
         // TODO
 

@@ -23,7 +23,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.feature.FeatureManager;
@@ -42,7 +42,7 @@ public final class ReportBugAction extends Action {
     public static final String BUG_TITLE = "bug_title";
     public static final String BUG_DESCRIPTION = "bug_description";
     public static final String BUG_LEVEL = "bug_level";
-    public static final String BUG_BATCH = "bug_batch";
+    public static final String BUG_BATCH = "bug_milestone";
     public static final String LANGUAGE_CODE = "bug_description_language";
     public static final String ATTACHEMENT_CODE = "attachement";
     public static final String ATTACHEMENT_NAME_CODE = "attachement/filename";
@@ -69,7 +69,7 @@ public final class ReportBugAction extends Action {
 
     @ParamConstraint(optionalErrorMsg = @tr("A new bug must be linked to a milestone"))
     @RequestParam(name = BUG_BATCH, role = Role.GET)
-    private final Batch batch;
+    private final Milestone milestone;
 
     @Optional
     @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
@@ -95,7 +95,7 @@ public final class ReportBugAction extends Action {
         this.description = url.getDescription();
         this.lang = url.getLang();
         this.level = url.getLevel();
-        this.batch = url.getBatch();
+        this.milestone = url.getMilestone();
         this.attachement = url.getAttachement();
         this.attachementFileName = url.getAttachementFileName();
         this.attachementContentType = url.getAttachementContentType();
@@ -119,7 +119,7 @@ public final class ReportBugAction extends Action {
 
         final Locale langLocale = new Locale(lang);
 
-        final Bug bug = batch.addBug(session.getAuthToken().getMember(), title, description, langLocale, level.getLevel());
+        final Bug bug = milestone.addBug(session.getAuthToken().getMember(), title, description, langLocale, level.getLevel());
 
         if (attachement != null) {
             final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
@@ -139,7 +139,7 @@ public final class ReportBugAction extends Action {
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
-        if (batch != null) {
+        if (milestone != null) {
             return redirectWithError();
         }
         return new PageNotFoundUrl();
@@ -148,11 +148,11 @@ public final class ReportBugAction extends Action {
     public Url redirectWithError() {
         session.addParameter(url.getTitleParameter());
         session.addParameter(url.getDescriptionParameter());
-        session.addParameter(url.getBatchParameter());
+        session.addParameter(url.getMilestoneParameter());
         session.addParameter(url.getLevelParameter());
         session.addParameter(url.getLangParameter());
         session.addParameter(url.getAttachementDescriptionParameter());
-        return new ReportBugPageUrl(batch.getOffer());
+        return new ReportBugPageUrl(milestone.getOffer());
     }
 
 }

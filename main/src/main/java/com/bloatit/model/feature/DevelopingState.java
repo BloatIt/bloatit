@@ -35,10 +35,10 @@ public class DevelopingState extends AbstractFeatureState {
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.feature.AbstractFeatureState#eventBatchReleased()
+     * @see com.bloatit.model.feature.AbstractFeatureState#eventMilestoneReleased()
      */
     @Override
-    public AbstractFeatureState eventBatchReleased() {
+    public AbstractFeatureState eventMilestoneReleased() {
         return this;
     }
 

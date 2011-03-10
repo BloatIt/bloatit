@@ -207,15 +207,15 @@ public class RestBug extends RestElement<Bug> {
     }
 
     /**
-     * @see com.bloatit.model.Bug#getBatch()
+     * @see com.bloatit.model.Bug#getMilestone()
      */
     @XmlElement
-    public RestBatch getBatch() {
-        RestBatch batch = new RestBatch(model.getBatch());
-        if (batch.isNull()) {
+    public RestMilestone getMilestone() {
+        RestMilestone milestone = new RestMilestone(model.getMilestone());
+        if (milestone.isNull()) {
             return null;
         }
-        return batch;
+        return milestone;
     }
 
     /**

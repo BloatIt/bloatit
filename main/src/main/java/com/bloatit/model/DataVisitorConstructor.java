@@ -17,7 +17,7 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoBankTransaction;
-import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
@@ -90,11 +90,11 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoBatch)
+     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoMilestone)
      */
     @Override
-    public Identifiable<?> visit(final DaoBatch dao) {
-        return Batch.create(dao);
+    public Identifiable<?> visit(final DaoMilestone dao) {
+        return Milestone.create(dao);
     }
 
     /*

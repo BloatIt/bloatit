@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
@@ -30,7 +30,7 @@ import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureImplementation;
-import com.bloatit.model.lists.BatchList;
+import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.FeatureRight;
 
@@ -87,18 +87,18 @@ public final class Offer extends Kudosable<DaoOffer> {
         super(dao);
     }
 
-    public Batch addBatch(final BigDecimal amount,
+    public Milestone addMilestone(final BigDecimal amount,
                           final String description,
                           final Locale local,
                           final Date dateExpire,
                           final int secondBeforeValidation) {
-        DaoBatch daoBatch = new DaoBatch(dateExpire,
+        DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                          amount,
                                          DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
                                          getDao(),
                                          secondBeforeValidation);
-        getDao().addBatch(daoBatch);
-        return Batch.create(daoBatch);
+        getDao().addMilestone(daoMilestone);
+        return Milestone.create(daoMilestone);
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -109,18 +109,18 @@ public final class Offer extends Kudosable<DaoOffer> {
         getDao().setDraft(false);
     }
 
-    public boolean validateCurrentBatch(final boolean force) {
+    public boolean validateCurrentMilestone(final boolean force) {
         // If the validation is not complete, there is nothing to do in the
         // feature
-        DaoBatch currentBatch = findCurrentDaoBatch();
-        if (currentBatch == null) {
-            Log.framework().error("You tried to validate a batch, but no batch to validate found.");
+        DaoMilestone currentMilestone = findCurrentDaoMilestone();
+        if (currentMilestone == null) {
+            Log.framework().error("You tried to validate a milestone, but no milestone to validate found.");
             return false;
         }
-        final boolean isAllValidated = currentBatch.validate(force);
+        final boolean isAllValidated = currentMilestone.validate(force);
         if (isAllValidated) {
-            if (getDao().hasBatchesLeft()) {
-                getFeatureImplementation().setBatchIsValidated();
+            if (getDao().hasMilestoneesLeft()) {
+                getFeatureImplementation().setMilestoneIsValidated();
             } else {
                 getFeatureImplementation().setOfferIsValidated();
             }
@@ -128,27 +128,27 @@ public final class Offer extends Kudosable<DaoOffer> {
         return isAllValidated;
     }
 
-    public boolean shouldValidateCurrentBatchPart(Level level) {
-        DaoBatch currentBatch = findCurrentDaoBatch();
-        if (currentBatch == null) {
+    public boolean shouldValidateCurrentMilestonePart(Level level) {
+        DaoMilestone currentMilestone = findCurrentDaoMilestone();
+        if (currentMilestone == null) {
             return false;
         }
-        return currentBatch.shouldValidatePart(level);
+        return currentMilestone.shouldValidatePart(level);
     }
 
     public void cancelEverythingLeft() {
         getDao().cancelEverythingLeft();
     }
 
-    private DaoBatch findCurrentDaoBatch() {
-        if (getDao().hasBatchesLeft()) {
-            return getDao().getCurrentBatch();
+    private DaoMilestone findCurrentDaoMilestone() {
+        if (getDao().hasMilestoneesLeft()) {
+            return getDao().getCurrentMilestone();
         }
         return null;
     }
 
-    private boolean hasBatchLeft() {
-        return findCurrentDaoBatch() != null;
+    private boolean hasMilestoneLeft() {
+        return findCurrentDaoMilestone() != null;
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -170,7 +170,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     // ////////////////////////////////////////////////////////////////////////
 
     public boolean isFinished() {
-        return !hasBatchLeft();
+        return !hasMilestoneLeft();
     }
 
     public boolean isDraft() {
@@ -189,8 +189,8 @@ public final class Offer extends Kudosable<DaoOffer> {
         return getDao().getAmount();
     }
 
-    public PageIterable<Batch> getBatches() {
-        return new BatchList(getDao().getBatches());
+    public PageIterable<Milestone> getMilestonees() {
+        return new MilestoneList(getDao().getMilestonees());
     }
 
     public Date getExpirationDate() {
@@ -217,8 +217,8 @@ public final class Offer extends Kudosable<DaoOffer> {
         return Float.POSITIVE_INFINITY;
     }
 
-    public Batch getCurrentBatch() {
-        return Batch.create(getDao().getCurrentBatch());
+    public Milestone getCurrentMilestone() {
+        return Milestone.create(getDao().getCurrentMilestone());
     }
 
     public boolean hasRelease() {

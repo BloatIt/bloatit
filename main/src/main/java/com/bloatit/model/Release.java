@@ -28,12 +28,12 @@ public class Release extends UserContent<DaoRelease> {
         super(dao);
     }
 
-    Release(final Member member, final Batch batch, final String description, final String version, final Locale locale) {
-        this(DaoRelease.createAndPersist(member.getDao(), batch.getDao(), description, version, locale));
+    Release(final Member member, final Milestone milestone, final String description, final String version, final Locale locale) {
+        this(DaoRelease.createAndPersist(member.getDao(), milestone.getDao(), description, version, locale));
     }
 
-    public Batch getBatch() {
-        return Batch.create(getDao().getBatch());
+    public Milestone getMilestone() {
+        return Milestone.create(getDao().getMilestone());
     }
 
     public String getDescription() {

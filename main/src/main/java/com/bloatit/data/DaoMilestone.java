@@ -53,7 +53,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A DaoBatch is a part of a DaoOffer.
+ * A DaoMilestone is a part of a DaoOffer.
  *
  * @author Thomas Guyard
  */
@@ -62,40 +62,40 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "batch.getBugs.byNonStateLevel",
-                           query = "FROM DaoBug WHERE batch = :this AND state != :state AND level = :level"),
+                           name = "milestone.getBugs.byNonStateLevel",
+                           query = "FROM DaoBug WHERE milestone = :this AND state != :state AND level = :level"),
                         @NamedQuery(
-                           name = "batch.getBugs.byNonState.size",
-                           query = "SELECT count(*) FROM DaoBug WHERE batch = :this AND state != :state"),
+                           name = "milestone.getBugs.byNonState.size",
+                           query = "SELECT count(*) FROM DaoBug WHERE milestone = :this AND state != :state"),
                         @NamedQuery(
-                           name = "batch.getBugs.byState",
-                           query = "FROM DaoBug WHERE batch = :this AND state = :state"),
+                           name = "milestone.getBugs.byState",
+                           query = "FROM DaoBug WHERE milestone = :this AND state = :state"),
                         @NamedQuery(
-                            name = "batch.getBugs.byState.size",
-                            query = "SELECT count(*) FROM DaoBug WHERE batch = :this AND state != :state"),
+                            name = "milestone.getBugs.byState.size",
+                            query = "SELECT count(*) FROM DaoBug WHERE milestone = :this AND state != :state"),
                         @NamedQuery(
-                            name = "batch.getBugs.byLevel",
-                            query = "FROM DaoBug WHERE batch = :this AND level = :level"),
+                            name = "milestone.getBugs.byLevel",
+                            query = "FROM DaoBug WHERE milestone = :this AND level = :level"),
                         @NamedQuery(
-                            name = "batch.getBugs.byLevel.size",
-                            query = "SELECT count (*) FROM DaoBug WHERE batch = :this AND level = :level"),
+                            name = "milestone.getBugs.byLevel.size",
+                            query = "SELECT count (*) FROM DaoBug WHERE milestone = :this AND level = :level"),
                         @NamedQuery(
-                            name = "batch.getBugs.byStateLevel",
-                            query = "FROM DaoBug WHERE batch = :this AND state = :state AND level = :level"),
+                            name = "milestone.getBugs.byStateLevel",
+                            query = "FROM DaoBug WHERE milestone = :this AND state = :state AND level = :level"),
                         @NamedQuery(
-                            name = "batch.getBugs.byStateLevel.size",
-                            query = "SELECT count(*) FROM DaoBug WHERE batch = :this AND state = :state AND level = :level"),
+                            name = "milestone.getBugs.byStateLevel.size",
+                            query = "SELECT count(*) FROM DaoBug WHERE milestone = :this AND state = :state AND level = :level"),
                      }
              )
 // @formatter:on
-public class DaoBatch extends DaoIdentifiable {
+public class DaoMilestone extends DaoIdentifiable {
 
-    public enum BatchState {
+    public enum MilestoneState {
         PENDING, DEVELOPING, UAT, VALIDATED, CANCELED
     }
 
     /**
-     * After this date, the Batch should be done.
+     * After this date, the Milestone should be done.
      */
     @Basic(optional = false)
     @Field(index = Index.UN_TOKENIZED, store = Store.YES)
@@ -129,7 +129,7 @@ public class DaoBatch extends DaoIdentifiable {
     private Level levelToValidate;
 
     @Basic(optional = false)
-    private BatchState batchState;
+    private MilestoneState milestoneState;
 
     /**
      * Remember a description is a title with some content. (Translatable)
@@ -140,12 +140,12 @@ public class DaoBatch extends DaoIdentifiable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoDescription description;
 
-    @OneToMany(mappedBy = "batch")
+    @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoBug> bugs = new ArrayList<DaoBug>();
 
-    @OneToMany(mappedBy = "batch")
+    @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "id DESC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -159,7 +159,7 @@ public class DaoBatch extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * Create a DaoBatch.
+     * Create a DaoMilestone.
      *
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param dateExpire is the date when this offer should be finish. Must be
@@ -169,7 +169,7 @@ public class DaoBatch extends DaoIdentifiable {
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
      *             future.
      */
-    public DaoBatch(final Date dateExpire,
+    public DaoMilestone(final Date dateExpire,
                     final BigDecimal amount,
                     final DaoDescription description,
                     final DaoOffer offer,
@@ -192,7 +192,7 @@ public class DaoBatch extends DaoIdentifiable {
         this.levelToValidate = Level.FATAL;
         this.fatalBugsPercent = 100;
         this.majorBugsPercent = 0;
-        this.batchState = BatchState.PENDING;
+        this.milestoneState = MilestoneState.PENDING;
     }
 
     /**
@@ -220,15 +220,15 @@ public class DaoBatch extends DaoIdentifiable {
     }
 
     public void setDeveloping() {
-        this.batchState = BatchState.DEVELOPING;
+        this.milestoneState = MilestoneState.DEVELOPING;
     }
 
     public void addRelease(final DaoRelease release) {
         this.releases.add(release);
-        if (this.batchState == BatchState.DEVELOPING) {
-            this.batchState = BatchState.UAT;
+        if (this.milestoneState == MilestoneState.DEVELOPING) {
+            this.milestoneState = MilestoneState.UAT;
         }
-        getOffer().batchHasARelease(this);
+        getOffer().milestoneHasARelease(this);
     }
 
     public void addBug(final DaoBug bug) {
@@ -236,26 +236,26 @@ public class DaoBatch extends DaoIdentifiable {
     }
 
     /**
-     * Tells that the Income state of this batch is finished, and everything is
+     * Tells that the Income state of this milestone is finished, and everything is
      * OK. The validation can be partial (when some major or minor bugs are
      * open). The validate method may also validate nothing if some FATAL bugs
      * are open, or if the validation period is not open. You can change this
      * behavior using the <code>force</code> parameter. The force parameter
-     * allows to validate the batch without taking into account these previous
+     * allows to validate the milestone without taking into account these previous
      * restrictions.
      *
-     * @param force force the validation of this batch. Do not take care of the
+     * @param force force the validation of this milestone. Do not take care of the
      *            bugs and the timeOuts.
-     * @return true if all parts of this batch is validated.
+     * @return true if all parts of this milestone is validated.
      */
     public boolean validate(final boolean force) {
         //
-        // Calculate the real percent (= percent of this batch * percent of this
+        // Calculate the real percent (= percent of this milestone * percent of this
         // level).
-        final int batchPercent = this.offer.getBatchPercent(this);
-        final int fatalPercent = (batchPercent * this.fatalBugsPercent) / 100;
-        final int majorPercent = (batchPercent * this.majorBugsPercent) / 100;
-        final int minorPercent = batchPercent - majorPercent - fatalPercent;
+        final int milestonePercent = this.offer.getMilestonePercent(this);
+        final int fatalPercent = (milestonePercent * this.fatalBugsPercent) / 100;
+        final int majorPercent = (milestonePercent * this.majorBugsPercent) / 100;
+        final int minorPercent = milestonePercent - majorPercent - fatalPercent;
 
         //
         // Do the validation
@@ -277,18 +277,18 @@ public class DaoBatch extends DaoIdentifiable {
             this.offer.getFeature().validateContributions(minorPercent);
         }
         if (this.levelToValidate == null) {
-            this.batchState = BatchState.VALIDATED;
-            this.offer.passToNextBatch();
+            this.milestoneState = MilestoneState.VALIDATED;
+            this.offer.passToNextMilestone();
             return true;
         }
         return false;
     }
 
     /**
-     * You can validate a batch after its release and when the bugs requirement
+     * You can validate a milestone after its release and when the bugs requirement
      * are done.
      *
-     * @return true if an admin should validate this Batch part. False
+     * @return true if an admin should validate this Milestone part. False
      *         otherwise.
      */
     public boolean shouldValidatePart(final Level level) {
@@ -310,8 +310,8 @@ public class DaoBatch extends DaoIdentifiable {
         return new Date(releasedDate.getTime() + ((long) this.secondBeforeValidation) * 1000).before(new Date());
     }
 
-    public void cancelBatch() {
-        this.batchState = BatchState.CANCELED;
+    public void cancelMilestone() {
+        this.milestoneState = MilestoneState.CANCELED;
     }
 
     // ======================================================================
@@ -319,21 +319,21 @@ public class DaoBatch extends DaoIdentifiable {
     // ======================================================================
 
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
-        return new QueryCollection<DaoBug>("batch.getBugs.byNonStateLevel").setEntity("this", this)
+        return new QueryCollection<DaoBug>("milestone.getBugs.byNonStateLevel").setEntity("this", this)
                                                                            .setParameter("level", level)
                                                                            .setParameter("state", BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level) {
-        return new QueryCollection<DaoBug>("batch.getBugs.byLevel").setEntity("this", this).setParameter("level", level);
+        return new QueryCollection<DaoBug>("milestone.getBugs.byLevel").setEntity("this", this).setParameter("level", level);
     }
 
     public PageIterable<DaoBug> getBugs(final BugState state) {
-        return new QueryCollection<DaoBug>("batch.getBugs.byState").setEntity("this", this).setParameter("state", state);
+        return new QueryCollection<DaoBug>("milestone.getBugs.byState").setEntity("this", this).setParameter("state", state);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level, final BugState state) {
-        return new QueryCollection<DaoBug>("batch.getBugs.byStateLevel").setEntity("this", this)
+        return new QueryCollection<DaoBug>("milestone.getBugs.byStateLevel").setEntity("this", this)
                                                                         .setParameter("level", level)
                                                                         .setParameter("state", state);
     }
@@ -346,8 +346,8 @@ public class DaoBatch extends DaoIdentifiable {
         return (Date) this.expirationDate.clone();
     }
 
-    public BatchState getBatchState() {
-        return this.batchState;
+    public MilestoneState getMilestoneState() {
+        return this.milestoneState;
     }
 
     public BigDecimal getAmount() {
@@ -405,7 +405,7 @@ public class DaoBatch extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoBatch() {
+    protected DaoMilestone() {
         super();
     }
 
@@ -446,7 +446,7 @@ public class DaoBatch extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoBatch other = (DaoBatch) obj;
+        final DaoMilestone other = (DaoMilestone) obj;
         if (this.amount == null) {
             if (other.amount != null) {
                 return false;

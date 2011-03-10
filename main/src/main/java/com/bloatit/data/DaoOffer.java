@@ -54,11 +54,11 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "offer.getBatches",
-                           query = "FROM DaoBatch WHERE offer = :this ORDER BY expirationDate, id"),
+                           name = "offer.getMilestonees",
+                           query = "FROM DaoMilestone WHERE offer = :this ORDER BY expirationDate, id"),
                         @NamedQuery(
-                           name = "offer.getBatches.size",
-                           query = "SELECT count(*) FROM DaoBatch WHERE offer = :this"),
+                           name = "offer.getMilestonees.size",
+                           query = "SELECT count(*) FROM DaoMilestone WHERE offer = :this"),
                        }
              )
 // @formatter:on
@@ -73,10 +73,10 @@ public class DaoOffer extends DaoKudosable {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private final List<DaoBatch> batches = new ArrayList<DaoBatch>();
+    private final List<DaoMilestone> milestonees = new ArrayList<DaoMilestone>();
 
     /**
-     * The expirationDate is calculated from the batches variables.
+     * The expirationDate is calculated from the milestonees variables.
      */
     @Basic(optional = false)
     @Field(index = Index.UN_TOKENIZED, store = Store.YES)
@@ -84,12 +84,12 @@ public class DaoOffer extends DaoKudosable {
     private Date expirationDate;
 
     @Basic(optional = false)
-    private int currentBatch;
+    private int currentMilestone;
 
     /**
      * The amount represents the money the member want to have to make his
      * offer. This is a calculated field used for performance speedup.
-     * <code>(= foreach batches; amount += baches.getAmount)</code>
+     * <code>(= foreach milestonees; amount += baches.getAmount)</code>
      */
     @Basic(optional = false)
     private BigDecimal amount;
@@ -122,46 +122,46 @@ public class DaoOffer extends DaoKudosable {
             throw new NonOptionalParameterException();
         }
         this.feature = feature;
-        this.amount = BigDecimal.ZERO; // Will be updated by addBatch
-        this.expirationDate = new Date();// Will be updated by addBatch
-        this.currentBatch = 0;
+        this.amount = BigDecimal.ZERO; // Will be updated by addMilestone
+        this.expirationDate = new Date();// Will be updated by addMilestone
+        this.currentMilestone = 0;
         this.setDraft(true);
-        addBatch(new DaoBatch(dateExpire, amount, description, this, secondsBeforeValidation));
+        addMilestone(new DaoMilestone(dateExpire, amount, description, this, secondsBeforeValidation));
     }
 
     public void cancelEverythingLeft() {
-        for (int i = this.currentBatch; i < this.batches.size(); ++i) {
-            this.batches.get(i).cancelBatch();
+        for (int i = this.currentMilestone; i < this.milestonees.size(); ++i) {
+            this.milestonees.get(i).cancelMilestone();
         }
-        this.currentBatch = this.batches.size();
+        this.currentMilestone = this.milestonees.size();
     }
 
-    public void addBatch(final DaoBatch batch) {
+    public void addMilestone(final DaoMilestone milestone) {
         if (isDraft() == false) {
-            throw new FatalErrorException("You cannot add a batch on a non draft offer.");
+            throw new FatalErrorException("You cannot add a milestone on a non draft offer.");
         }
-        this.amount = batch.getAmount().add(this.amount);
-        final Date expiration = batch.getExpirationDate();
+        this.amount = milestone.getAmount().add(this.amount);
+        final Date expiration = milestone.getExpirationDate();
         if (this.expirationDate.before(expiration)) {
             this.expirationDate = expiration;
         }
-        this.batches.add(batch);
+        this.milestonees.add(milestone);
     }
 
-    public boolean hasBatchesLeft() {
-        return this.currentBatch < this.batches.size();
+    public boolean hasMilestoneesLeft() {
+        return this.currentMilestone < this.milestonees.size();
     }
 
-    void passToNextBatch() {
-        this.currentBatch++;
+    void passToNextMilestone() {
+        this.currentMilestone++;
     }
 
-    void batchHasARelease(final DaoBatch batch) {
-        // Find next batch. Passe it into developing state.
-        for (int i = 0; i < this.batches.size(); ++i) {
-            if (this.batches.get(i).equals(batch)) {
-                if ((i + 1) < this.batches.size()) {
-                    this.batches.get(i + 1).setDeveloping();
+    void milestoneHasARelease(final DaoMilestone milestone) {
+        // Find next milestone. Passe it into developing state.
+        for (int i = 0; i < this.milestonees.size(); ++i) {
+            if (this.milestonees.get(i).equals(milestone)) {
+                if ((i + 1) < this.milestonees.size()) {
+                    this.milestonees.get(i + 1).setDeveloping();
                 }
                 break;
             }
@@ -181,14 +181,14 @@ public class DaoOffer extends DaoKudosable {
     }
 
     /**
-     * @return All the batches for this offer. (Even the MasterBatch).
+     * @return All the milestonees for this offer. (Even the MasterMilestone).
      */
-    public PageIterable<DaoBatch> getBatches() {
-        return new QueryCollection<DaoBatch>("offer.getBatches").setEntity("this", this);
+    public PageIterable<DaoMilestone> getMilestonees() {
+        return new QueryCollection<DaoMilestone>("offer.getMilestonees").setEntity("this", this);
     }
 
-    public DaoBatch getCurrentBatch() {
-        return this.batches.get(this.currentBatch);
+    public DaoMilestone getCurrentMilestone() {
+        return this.milestonees.get(this.currentMilestone);
     }
 
     /**
@@ -203,19 +203,19 @@ public class DaoOffer extends DaoKudosable {
     }
 
     // TODO comment; it make sure the sum returned is 100.
-    int getBatchPercent(final DaoBatch current) {
-        if (this.batches.size() == 1) {
+    int getMilestonePercent(final DaoMilestone current) {
+        if (this.milestonees.size() == 1) {
             return 100;
         }
 
         int alreadyReturned = 0;
-        for (int i = 0; i < this.batches.size(); ++i) {
-            // Calculate the percent of the batch
-            final DaoBatch batch = this.batches.get(i);
-            final int percent = batch.getAmount().divide(this.amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
-            if (current.equals(batch)) {
+        for (int i = 0; i < this.milestonees.size(); ++i) {
+            // Calculate the percent of the milestone
+            final DaoMilestone milestone = this.milestonees.get(i);
+            final int percent = milestone.getAmount().divide(this.amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
+            if (current.equals(milestone)) {
                 // is the current is the last one
-                if (i == (this.batches.size() - 1)) {
+                if (i == (this.milestonees.size() - 1)) {
                     return 100 - alreadyReturned;
                 }
                 return percent;
@@ -223,18 +223,18 @@ public class DaoOffer extends DaoKudosable {
             // Save how much has been sent.
             alreadyReturned += percent;
         }
-        throw new FatalErrorException("This offer has no batch, or the 'current' batch isn't found");
+        throw new FatalErrorException("This offer has no milestone, or the 'current' milestone isn't found");
     }
 
     public boolean hasRelease() {
-        final Query query = SessionManager.createFilter(this.batches, "SELECT count(*) WHERE this.releases is not empty");
+        final Query query = SessionManager.createFilter(this.milestonees, "SELECT count(*) WHERE this.releases is not empty");
         return !((Long) query.uniqueResult()).equals(0L);
     }
 
     public DaoRelease getLastRelease() {
         String q = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
                 "FROM DaoOffer as o " + //
-                "INNER JOIN o.batches as b " + //
+                "INNER JOIN o.milestonees as b " + //
                 "INNER JOIN b.releases as r " + //
                 "WHERE o=:this)";
 

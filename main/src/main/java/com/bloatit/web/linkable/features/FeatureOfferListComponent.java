@@ -16,7 +16,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.math.BigDecimal;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoBatch.BatchState;
+import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
@@ -37,7 +37,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.meta.XmlText;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
@@ -306,9 +306,9 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 final HtmlDiv offerRightBottomColumn = new HtmlDiv("offer_right_bottom_column");
                 {
                     // Lots
-                    final PageIterable<Batch> lots = offer.getBatches();
+                    final PageIterable<Milestone> lots = offer.getMilestonees();
                     if (lots.size() == 1) {
-                        final Batch lot = lots.iterator().next();
+                        final Milestone lot = lots.iterator().next();
 
                         generateAddReleaseLink(lot, offerRightBottomColumn);
 
@@ -339,7 +339,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         generateReleaseList(lot, offerRightBottomColumn);
                     } else {
                         int i = 0;
-                        for (final Batch lot : lots) {
+                        for (final Milestone lot : lots) {
                             i++;
                             final HtmlDiv lotBlock = new HtmlDiv("offer_lot_block");
                             {
@@ -391,7 +391,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         }
 
-        public void generateReleaseList(final Batch lot, final HtmlDiv lotBlock) {
+        public void generateReleaseList(final Milestone lot, final HtmlDiv lotBlock) {
 
             PageIterable<Release> releases = lot.getReleases();
 
@@ -413,8 +413,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
             }
         }
 
-        public void generateAddReleaseLink(final Batch lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
-            if (isDeveloper() && (lot.getBatchState() == BatchState.DEVELOPING || lot.getBatchState() == BatchState.UAT)) {
+        public void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
+            if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
                 lotBlock.add(new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("add a release")));
             }
         }
@@ -424,8 +424,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     && Context.getSession().getAuthToken().getMember().equals(offer.getFeature().getSelectedOffer().getAuthor());
         }
 
-        private String getLotState(Batch lot) {
-            switch (lot.getBatchState()) {
+        private String getLotState(Milestone lot) {
+            switch (lot.getMilestoneState()) {
                 case PENDING:
                     return "";
                 case DEVELOPING:

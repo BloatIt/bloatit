@@ -10,7 +10,7 @@ public interface DataClassVisitor<ReturnType> {
 
     ReturnType visit(DaoBankTransaction dao);
 
-    ReturnType visit(DaoBatch dao);
+    ReturnType visit(DaoMilestone dao);
 
     ReturnType visit(DaoDescription dao);
 

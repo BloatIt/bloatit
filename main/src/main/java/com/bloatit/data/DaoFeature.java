@@ -92,7 +92,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byNonState",
                             query = "SELECT bugs_ " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.batches as bs " +
+                                    "JOIN offer_.milestonees as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state != :state "),
@@ -101,7 +101,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byNonState.size",
                             query = "SELECT count(bugs_) " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.batches as bs " +
+                                    "JOIN offer_.milestonees as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state != :state "),
@@ -110,7 +110,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byState",
                             query = "SELECT bugs_ " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.batches as bs " +
+                                    "JOIN offer_.milestonees as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
@@ -119,7 +119,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byState.size",
                             query = "SELECT count(bugs_) " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.batches as bs " +
+                                    "JOIN offer_.milestonees as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),

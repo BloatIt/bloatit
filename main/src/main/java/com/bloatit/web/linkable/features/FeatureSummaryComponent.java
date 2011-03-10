@@ -277,7 +277,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         PlaceHolderElement element = new PlaceHolderElement();
 
         if (!feature.getSelectedOffer().hasRelease()) {
-            Date releaseDate = feature.getSelectedOffer().getCurrentBatch().getExpirationDate();
+            Date releaseDate = feature.getSelectedOffer().getCurrentMilestone().getExpirationDate();
 
             String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.SHORT);
 
@@ -285,7 +285,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(new HtmlParagraph(tr("Next release is scheduled for {0}.", date)));
 
         } else {
-            int releaseCount = feature.getSelectedOffer().getCurrentBatch().getReleases().size();
+            int releaseCount = feature.getSelectedOffer().getCurrentMilestone().getReleases().size();
 
             Release lastRelease = feature.getSelectedOffer().getLastRelease();
 

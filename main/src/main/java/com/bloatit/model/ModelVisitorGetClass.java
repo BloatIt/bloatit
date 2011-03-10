@@ -17,7 +17,7 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoBankTransaction;
-import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
@@ -86,11 +86,11 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Batch)
+     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Milestone)
      */
     @Override
-    public Class<?> visit(Batch model) {
-        return DaoBatch.class;
+    public Class<?> visit(Milestone model) {
+        return DaoMilestone.class;
     }
 
     /*

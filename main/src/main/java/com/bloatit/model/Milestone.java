@@ -22,8 +22,8 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Locale;
 
-import com.bloatit.data.DaoBatch;
-import com.bloatit.data.DaoBatch.BatchState;
+import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
@@ -34,11 +34,11 @@ import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
 
 /**
- * A batch is a part of an offer. Simple offers are only composed of one batch.
+ * A milestone is a part of an offer. Simple offers are only composed of one milestone.
  *
  * @author Thomas Guyard
  */
-public class Batch extends Identifiable<DaoBatch> {
+public class Milestone extends Identifiable<DaoMilestone> {
 
     // ////////////////////////////////////////////////////////////////////////
     // Construction
@@ -48,7 +48,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * This class implements the method pattern, implementing the doCreate
      * method. See the base class for more informations: {@link Creator}.
      */
-    private static final class MyCreator extends Creator<DaoBatch, Batch> {
+    private static final class MyCreator extends Creator<DaoMilestone, Milestone> {
 
         /*
          * (non-Javadoc)
@@ -56,30 +56,30 @@ public class Batch extends Identifiable<DaoBatch> {
          * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
-        public Batch doCreate(final DaoBatch dao) {
-            return new Batch(dao);
+        public Milestone doCreate(final DaoMilestone dao) {
+            return new Milestone(dao);
         }
     }
 
     /**
-     * Check the cache, if a corresponding Batch exist return it, otherwise
+     * Check the cache, if a corresponding Milestone exist return it, otherwise
      * create a new one using its dao representation. If the dao == null return
      * null;
      *
      * @param dao the dao
-     * @return the batch or null if the dao == null
+     * @return the milestone or null if the dao == null
      * @see Creator
      */
-    public static Batch create(final DaoBatch dao) {
+    public static Milestone create(final DaoMilestone dao) {
         return new MyCreator().create(dao);
     }
 
     /**
-     * Instantiates a new batch.
+     * Instantiates a new milestone.
      *
      * @param dao the dao
      */
-    private Batch(final DaoBatch dao) {
+    private Milestone(final DaoMilestone dao) {
         super(dao);
     }
 
@@ -88,7 +88,7 @@ public class Batch extends Identifiable<DaoBatch> {
      *
      * @param fatalPercent the fatal percent
      * @param majorPercent the major percent
-     * @see com.bloatit.data.DaoBatch#updateMajorFatalPercent(int, int)
+     * @see com.bloatit.data.DaoMilestone#updateMajorFatalPercent(int, int)
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         getDao().updateMajorFatalPercent(fatalPercent, majorPercent);
@@ -102,7 +102,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @param description the description
      * @param locale the locale in which it is written
      * @param errorLevel the error level of the bug
-     * @return the bug added in this batch.
+     * @return the bug added in this milestone.
      */
     public Bug addBug(final Member member, final String title, final String description, final Locale locale, final Level errorLevel) {
         final Bug bug = new Bug(member, this, title, description, locale, errorLevel);
@@ -116,12 +116,12 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * <p>
-     * Add a release on the current batch. A batch can have multiple release.
-     * Each release reset the releasedDate of this batch.
+     * Add a release on the current milestone. A milestone can have multiple release.
+     * Each release reset the releasedDate of this milestone.
      * </p>
      * <p>
-     * To finish the dev state of this batch you have to validate this batch
-     * (done by {@link Offer#validateCurrentBatch(boolean)}).
+     * To finish the dev state of this milestone you have to validate this milestone
+     * (done by {@link Offer#validateCurrentMilestone(boolean)}).
      * </p>
      */
     public void addRelease(final String description, final String version, final Locale locale, FileMetadata file) {
@@ -141,37 +141,37 @@ public class Batch extends Identifiable<DaoBatch> {
         getDao().setDeveloping();
     }
 
-    public void cancelBatch() {
-        getDao().cancelBatch();
+    public void cancelMilestone() {
+        getDao().cancelMilestone();
     }
 
     /**
-     * Validate the batch after it has been relreased.
+     * Validate the milestone after it has been relreased.
      *
      * @return true, if successful
-     * @see com.bloatit.data.DaoBatch#validate(boolean)
+     * @see com.bloatit.data.DaoMilestone#validate(boolean)
      */
     public boolean validate() {
         return getDao().validate(false);
     }
 
     /**
-     * Force validate the batch after it has been released even if there are
+     * Force validate the milestone after it has been released even if there are
      * bugs left.
      *
      * @return true, if successful
-     * @see com.bloatit.data.DaoBatch#validate(boolean)
+     * @see com.bloatit.data.DaoMilestone#validate(boolean)
      */
     public boolean forceValidate() {
         return getDao().validate(true);
     }
 
     /**
-     * Tells if an admin should validate this batch part.
+     * Tells if an admin should validate this milestone part.
      *
      * @param level the level corresponding to the part we want to validate.
      * @return true, if we should do it, false otherwise.
-     * @see com.bloatit.data.DaoBatch#shouldValidatePart(com.bloatit.data.DaoBug.Level)
+     * @see com.bloatit.data.DaoMilestone#shouldValidatePart(com.bloatit.data.DaoBug.Level)
      */
     public boolean shouldValidatePart(final Level level) {
         return getDao().shouldValidatePart(level);
@@ -191,7 +191,7 @@ public class Batch extends Identifiable<DaoBatch> {
      *
      * @param level the level
      * @return the non resolved bugs for the level <code>level</code>.
-     * @see com.bloatit.data.DaoBatch#getNonResolvedBugs(com.bloatit.data.DaoBug.Level)
+     * @see com.bloatit.data.DaoMilestone#getNonResolvedBugs(com.bloatit.data.DaoBug.Level)
      */
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
         return getDao().getNonResolvedBugs(level);
@@ -202,7 +202,7 @@ public class Batch extends Identifiable<DaoBatch> {
      *
      * @param level the level
      * @return the bugs that are at <code>level</code>.
-     * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.Level)
+     * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.Level)
      */
     public PageIterable<DaoBug> getBugs(final Level level) {
         return getDao().getBugs(level);
@@ -213,7 +213,7 @@ public class Batch extends Identifiable<DaoBatch> {
      *
      * @param state the state
      * @return the bugs
-     * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.BugState)
+     * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.BugState)
      */
     public PageIterable<DaoBug> getBugs(final BugState state) {
         return getDao().getBugs(state);
@@ -225,7 +225,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @param level the level
      * @param state the state
      * @return the bugs
-     * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.Level,
+     * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.Level,
      *      com.bloatit.data.DaoBug.BugState)
      */
     public PageIterable<Bug> getBugs(final Level level, final BugState state) {
@@ -236,7 +236,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * Gets the release date.
      *
      * @return the release date
-     * @see com.bloatit.data.DaoBatch#getReleasedDate()
+     * @see com.bloatit.data.DaoMilestone#getReleasedDate()
      */
     public final Date getReleaseDate() {
         return getDao().getReleasedDate();
@@ -246,7 +246,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * Gets the fatal bugs percent.
      *
      * @return the fatal bugs percent
-     * @see com.bloatit.data.DaoBatch#getFatalBugsPercent()
+     * @see com.bloatit.data.DaoMilestone#getFatalBugsPercent()
      */
     public final int getFatalBugsPercent() {
         return getDao().getFatalBugsPercent();
@@ -256,7 +256,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * Gets the major bugs percent.
      *
      * @return the major bugs percent
-     * @see com.bloatit.data.DaoBatch#getMajorBugsPercent()
+     * @see com.bloatit.data.DaoMilestone#getMajorBugsPercent()
      */
     public final int getMajorBugsPercent() {
         return getDao().getMajorBugsPercent();
@@ -266,7 +266,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * Gets the minor bugs percent.
      *
      * @return the minor bugs percent
-     * @see com.bloatit.data.DaoBatch#getMinorBugsPercent()
+     * @see com.bloatit.data.DaoMilestone#getMinorBugsPercent()
      */
     public final int getMinorBugsPercent() {
         return getDao().getMinorBugsPercent();
@@ -314,7 +314,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @return the position
      */
     public int getPosition() {
-        final Iterator<DaoBatch> iterator = getDao().getOffer().getBatches().iterator();
+        final Iterator<DaoMilestone> iterator = getDao().getOffer().getMilestonees().iterator();
 
         final int order = 1;
         while (iterator.hasNext()) {
@@ -329,8 +329,8 @@ public class Batch extends Identifiable<DaoBatch> {
         return Offer.create(getDao().getOffer());
     }
 
-    public BatchState getBatchState() {
-        return getDao().getBatchState();
+    public MilestoneState getMilestoneState() {
+        return getDao().getMilestoneState();
     }
 
     public PageIterable<Release> getReleases() {

@@ -13,7 +13,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.BankTransaction;
-import com.bloatit.model.Batch;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
@@ -211,20 +211,20 @@ public class BloatitExampleDB {
         rataxesOffer.voteUp();
 
         twoSubtitlesInVlcFeature.authenticate(new AuthToken(celeste));
-        final String celesteBatch1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
+        final String celesteMilestone1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
         final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(celeste,
                                                                     new BigDecimal(2500),
-                                                                    celesteBatch1Description,
+                                                                    celesteMilestone1Description,
                                                                     celeste.getLocale(),
                                                                     DateUtils.nowPlusSomeDays(2),
                                                                     0);
 
-        final String celesteBatch2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
-        celesteOffer.addBatch(new BigDecimal(1000), celesteBatch2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
+        final String celesteMilestone2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
+        celesteOffer.addMilestone(new BigDecimal(1000), celesteMilestone2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
 
-        final String celesteBatch3Description = "Pour finir, je vais faire le packaging en tar.gz, deb, rpm et exe de la version patché pour une utilisatation immédiate. Je vais aussi proposer le patch upstream et créer un petit jeu de test fonctionnels.";
-        celesteOffer.addBatch(new BigDecimal(700), celesteBatch3Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(4), 0);
+        final String celesteMilestone3Description = "Pour finir, je vais faire le packaging en tar.gz, deb, rpm et exe de la version patché pour une utilisatation immédiate. Je vais aussi proposer le patch upstream et créer un petit jeu de test fonctionnels.";
+        celesteOffer.addMilestone(new BigDecimal(700), celesteMilestone3Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(4), 0);
 
         celesteOffer.authenticate(new AuthToken(cerbere));
         celesteOffer.voteUp();
@@ -278,14 +278,14 @@ public class BloatitExampleDB {
         // Add bugs
         setFeatureInDevelopmentState(addPerroquetInMageiaFeature);
 
-        final Batch firstBatch = addPerroquetInMageiaFeature.getSelectedOffer().getBatches().iterator().next();
-        firstBatch.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
-        firstBatch.addBug(elephantman,
+        final Milestone firstMilestone = addPerroquetInMageiaFeature.getSelectedOffer().getMilestonees().iterator().next();
+        firstMilestone.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
+        firstMilestone.addBug(elephantman,
                           "Faible qualité graphique pour les éléphants",
                           "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
                           elephantman.getLocale(),
                           Level.MINOR);
-        firstBatch.addBug(yoann,
+        firstMilestone.addBug(yoann,
                           "Fichier de conf système manquant",
                           "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
                           yoann.getLocale(),
