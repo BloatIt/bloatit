@@ -14,57 +14,48 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 
 /**
- * The Class DeveloppingState.
+ * The Class PendingState.
  */
-public class DevelopingState extends AbstractDemandState {
+public class PendingState extends CanContributeMetaState {
 
     /**
-     * Instantiates a new developing state.
+     * Instantiates a new pending state.
      *
      * @param demand the demand on which this state apply.
      */
-    public DevelopingState(final DemandImplementation demand) {
+    public PendingState(final DemandImplementation demand) {
         super(demand);
         demand.setDemandStateUnprotected(getState());
     }
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.demand.AbstractDemandState#eventBatchReleased()
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit
+     * .model.Offer)
      */
     @Override
-    public AbstractDemandState eventBatchReleased() {
-        return this;
+    public AbstractDemandState eventAddOffer() {
+        return new PreparingState(demand);
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
+     * com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
      */
     @Override
-    public AbstractDemandState eventDeveloperCanceled() {
-        return new DiscardedState(demand);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventDevelopmentTimeOut()
-     */
-    @Override
-    public AbstractDemandState eventDevelopmentTimeOut() {
-        // TODO: make Penality.
+    protected AbstractDemandState notifyAddContribution() {
         return this;
     }
 
     @Override
-    public final DemandState getState() {
-        return DemandState.DEVELOPPING;
+    public final FeatureState getState() {
+        return FeatureState.PENDING;
     }
 }

@@ -18,16 +18,16 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Comment;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.pages.tools.CommentTools;
 
 public final class DemandCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
-    private final Demand targetDemand;
+    private final Feature targetDemand;
 
-    public DemandCommentListComponent(final Demand demand) {
+    public DemandCommentListComponent(final Feature demand) {
         super();
         this.targetDemand = demand;
         try {

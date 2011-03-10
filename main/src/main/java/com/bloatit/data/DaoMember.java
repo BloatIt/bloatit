@@ -394,8 +394,8 @@ public class DaoMember extends DaoActor {
     /**
      * @return All the demands created by this member.
      */
-    public PageIterable<DaoDemand> getDemands() {
-        return getUserContent(DaoDemand.class);
+    public PageIterable<DaoFeature> getDemands() {
+        return getUserContent(DaoFeature.class);
     }
 
     /**

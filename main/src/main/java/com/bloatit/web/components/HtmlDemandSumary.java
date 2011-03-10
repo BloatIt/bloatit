@@ -25,7 +25,7 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Translation;
 import com.bloatit.web.HtmlTools;
@@ -35,7 +35,7 @@ import com.bloatit.web.url.FileResourceUrl;
 
 public final class HtmlDemandSumary extends HtmlDiv {
 
-    private final Demand demand;
+    private final Feature demand;
     private Locale defaultLocale;
 
     public enum Compacity {
@@ -55,7 +55,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     // "demand_summary"
-    public HtmlDemandSumary(final Demand demand, final Compacity compacity) {
+    public HtmlDemandSumary(final Feature demand, final Compacity compacity) {
         super(compacity.getCssClass());
         this.demand = demand;
         if (demand == null) {

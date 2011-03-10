@@ -26,7 +26,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Bug;
-import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.feature.DemandManager;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;

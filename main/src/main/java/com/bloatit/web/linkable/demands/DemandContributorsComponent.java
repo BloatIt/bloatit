@@ -31,16 +31,16 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Contribution;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.DemandContributorsComponentUrl;
 
 @ParamContainer(value = "DemandContributorsComponent", isComponent = true)
 public final class DemandContributorsComponent extends HtmlDiv {
 
-    private final Demand demand;
+    private final Feature demand;
 
-    public DemandContributorsComponent(final DemandContributorsComponentUrl url, final Demand demand) {
+    public DemandContributorsComponent(final DemandContributorsComponentUrl url, final Feature demand) {
         super();
         this.demand = demand;
         try {

@@ -33,7 +33,7 @@ import com.bloatit.framework.exceptions.MemberNotInGroupException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.demand.DemandList;
+import com.bloatit.model.feature.DemandList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.GroupList;
@@ -423,7 +423,7 @@ public final class Member extends Actor<DaoMember> {
         return getDao().getLocale();
     }
 
-    public PageIterable<Demand> getDemands() {
+    public PageIterable<Feature> getDemands() {
         return new DemandList(getDao().getDemands());
     }
 

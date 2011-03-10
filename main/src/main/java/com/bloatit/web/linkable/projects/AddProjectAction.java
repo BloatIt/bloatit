@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Project;
-import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.feature.DemandManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;

@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
 import java.math.BigDecimal;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.model.Offer;
 
@@ -46,7 +46,7 @@ abstract class AbstractDemandState {
      *
      * @return the state
      */
-    public abstract DemandState getState();
+    public abstract FeatureState getState();
 
     /**
      * Event add offer. Called when an offer is add to the demand.

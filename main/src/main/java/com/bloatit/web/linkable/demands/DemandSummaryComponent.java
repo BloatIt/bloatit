@@ -31,7 +31,7 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.model.Bug;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Release;
 import com.bloatit.web.HtmlTools;
@@ -48,9 +48,9 @@ import com.bloatit.web.url.ReportBugPageUrl;
 public final class DemandSummaryComponent extends HtmlPageComponent {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
-    private final Demand demand;
+    private final Feature demand;
 
-    public DemandSummaryComponent(final Demand demand) {
+    public DemandSummaryComponent(final Feature demand) {
         super();
         this.demand = demand;
 
@@ -180,7 +180,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
     }
 
-    public HtmlDiv generateProgressBlock(final Demand demand) throws UnauthorizedOperationException {
+    public HtmlDiv generateProgressBlock(final Feature demand) throws UnauthorizedOperationException {
         // ////////////////////
         // Div demand_summary_progress
         final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");

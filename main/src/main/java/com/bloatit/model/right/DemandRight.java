@@ -16,10 +16,10 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 
 /**
- * The Class DemandRight store the properties accessor for the {@link Demand}
+ * The Class DemandRight store the properties accessor for the {@link Feature}
  * class.
  */
 public class DemandRight extends RightManager {

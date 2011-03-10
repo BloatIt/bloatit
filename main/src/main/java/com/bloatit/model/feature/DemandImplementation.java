@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,8 +23,8 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoDemand;
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
@@ -38,7 +38,7 @@ import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Creator;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Description;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
@@ -61,7 +61,7 @@ import com.bloatit.model.right.DemandRight;
 /**
  * A demand is an idea :). It represent a demand made by one user.
  */
-public final class DemandImplementation extends Kudosable<DaoDemand> implements Demand {
+public final class DemandImplementation extends Kudosable<DaoFeature> implements Feature {
 
     /** The state object. */
     private AbstractDemandState stateObject;
@@ -70,9 +70,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static final class MyCreator extends Creator<DaoDemand, DemandImplementation> {
+    private static final class MyCreator extends Creator<DaoFeature, DemandImplementation> {
         @Override
-        public DemandImplementation doCreate(final DaoDemand dao) {
+        public DemandImplementation doCreate(final DaoFeature dao) {
             return new DemandImplementation(dao);
         }
     }
@@ -84,7 +84,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * @param dao the dao
      * @return null if the <code>dao</code> is null.
      */
-    public static DemandImplementation create(final DaoDemand dao) {
+    public static DemandImplementation create(final DaoFeature dao) {
         return new MyCreator().create(dao);
     }
 
@@ -99,20 +99,20 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * @param description the description of the demand
      * @param project the project {@link DemandManager#canCreate(AuthToken)} to
      *            make sure you can create a new demand.
-     * @see DaoDemand
+     * @see DaoFeature
      */
     public DemandImplementation(final Member author, final Locale locale, final String title, final String description, final Project project) {
-        this(DaoDemand.createAndPersist(author.getDao(),
+        this(DaoFeature.createAndPersist(author.getDao(),
                                         DaoDescription.createAndPersist(author.getDao(), locale, title, description),
                                         project.getDao()));
     }
 
     /**
-     * Use the {@link #create(DaoDemand)} method.
+     * Use the {@link #create(DaoFeature)} method.
      *
      * @param dao the dao
      */
-    private DemandImplementation(final DaoDemand dao) {
+    private DemandImplementation(final DaoFeature dao) {
         super(dao);
     }
 
@@ -270,14 +270,14 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     }
 
     @Override
-    public void setDemandState(DemandState demandState) throws UnauthorizedOperationException {
+    public void setDemandState(FeatureState demandState) throws UnauthorizedOperationException {
         if (!hasUserPrivilege(Role.ADMIN)) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         setDemandStateUnprotected(demandState);
     }
 
-    void setDemandStateUnprotected(DemandState demandState) {
+    void setDemandStateUnprotected(FeatureState demandState) {
         if (getDemandState() != demandState) {
             switch (demandState) {
                 case PENDING:
@@ -312,7 +312,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().getAmount().compareTo(getDao().getContribution()) > 0) {
             throw new WrongStateException("Cannot be in development state, not enough money.");
         }
-        getDao().setDemandState(DemandState.DEVELOPPING);
+        getDao().setDemandState(FeatureState.DEVELOPPING);
         getSelectedOfferUnprotected().getCurrentBatch().setDeveloping();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
@@ -321,7 +321,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Slot called when the demand change to {@link DiscardedState}.
      */
     private void inDiscardedState() {
-        getDao().setDemandState(DemandState.DISCARDED);
+        getDao().setDemandState(FeatureState.DISCARDED);
 
         for (final Contribution contribution : getContributionsUnprotected()) {
             contribution.cancel();
@@ -336,17 +336,17 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().hasBatchesLeft()) {
             throw new WrongStateException("Cannot be in finished state if the current offer has lots to validate.");
         }
-        getDao().setDemandState(DemandState.FINISHED);
+        getDao().setDemandState(FeatureState.FINISHED);
     }
 
     /**
      * Slot called when this demand state change to {@link PendingState}.
      */
     private void inPendingState() {
-        if (getDemandState() == DemandState.PENDING) {
+        if (getDemandState() == FeatureState.PENDING) {
             return;
         }
-        getDao().setDemandState(DemandState.PENDING);
+        getDao().setDemandState(FeatureState.PENDING);
     }
 
     /**
@@ -362,7 +362,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         } else {
             getDao().computeSelectedOffer();
         }
-        getDao().setDemandState(DemandState.PREPARING);
+        getDao().setDemandState(FeatureState.PREPARING);
     }
 
     /**
@@ -392,7 +392,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     protected void notifyValid() {
-        if (getStateObject().getState() == DemandState.DISCARDED) {
+        if (getStateObject().getState() == FeatureState.DISCARDED) {
             setStateObject(getStateObject().eventPopularityPending());
         }
     }
@@ -403,7 +403,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     protected void notifyPending() {
-        if (getStateObject().getState() == DemandState.DISCARDED) {
+        if (getStateObject().getState() == FeatureState.DISCARDED) {
             setStateObject(getStateObject().eventPopularityPending());
         }
     }
@@ -495,7 +495,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean isDeveloping() {
-        boolean isDeveloping = getDemandState() == DemandState.DEVELOPPING;
+        boolean isDeveloping = getDemandState() == FeatureState.DEVELOPPING;
         if (isDeveloping) {
             assert getSelectedOfferUnprotected() != null;
             assert getValidatedOfferUnprotected() != null;
@@ -692,7 +692,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * @see com.bloatit.model.Demand#getDemandState()
      */
     @Override
-    public DemandState getDemandState() {
+    public FeatureState getDemandState() {
         return getDao().getDemandState();
     }
 

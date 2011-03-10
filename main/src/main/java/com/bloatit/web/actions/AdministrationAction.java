@@ -4,7 +4,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.List;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -14,7 +14,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Batch;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
@@ -83,17 +83,17 @@ public class AdministrationAction extends LoggedAction {
                         session.notifyBad("SetValidationDate not implemented yet");
                         break;
                     case UPDATE_DEVELOPMENT_STATE:
-                        ((Demand) content).updateDevelopmentState();
+                        ((Feature) content).updateDevelopmentState();
                         break;
                     case COMPUTE_SELECTED_OFFER:
-                        ((Demand) content).computeSelectedOffer();
+                        ((Feature) content).computeSelectedOffer();
                         break;
                     case SET_DEMAND_IN_DEVELOPMENT:
-                        Demand demand = (Demand) content;
+                        Feature demand = (Feature) content;
                         if (demand.getSelectedOffer() == null || demand.getSelectedOffer().getAmount().compareTo(demand.getContribution()) > 0) {
                             session.notifyBad("There is no offer or not enough money. So no developement state for id: " + demand.getId());
                         } else {
-                            demand.setDemandState(DemandState.DEVELOPPING);
+                            demand.setDemandState(FeatureState.DEVELOPPING);
                         }
                         break;
                     case VALIDATE_BATCH:

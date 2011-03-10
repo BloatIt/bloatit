@@ -39,8 +39,8 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.model.Demand;
-import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.Feature;
+import com.bloatit.model.feature.DemandManager;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestContributionList;
@@ -89,8 +89,8 @@ import com.bloatit.rest.list.RestOfferList;
  */
 @XmlRootElement(name = "demand")
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestDemand extends RestElement<Demand> {
-    private Demand model;
+public class RestDemand extends RestElement<Feature> {
+    private Feature model;
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors
@@ -103,7 +103,7 @@ public class RestDemand extends RestElement<Demand> {
     private RestDemand() {
     }
 
-    protected RestDemand(Demand model) {
+    protected RestDemand(Feature model) {
         this.model = model;
     }
 
@@ -245,14 +245,14 @@ public class RestDemand extends RestElement<Demand> {
     /**
      * Provided for JAXB
      */
-    void setModel(Demand model) {
+    void setModel(Feature model) {
         this.model = model;
     }
 
     /**
      * Package method to find the model
      */
-    Demand getModel() {
+    Feature getModel() {
         return model;
     }
 

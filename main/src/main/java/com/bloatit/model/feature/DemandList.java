@@ -14,29 +14,29 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
 import java.util.Iterator;
 
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.lists.ListBinder;
 
 /**
  * The Class DemandList. It is a ListBinder to transform PageIterable<DaoDemand>
  * to PageIterable<Demand>
  */
-public final class DemandList implements PageIterable<Demand> {
-    private final ListBinder<DemandImplementation, DaoDemand> listBinder;
+public final class DemandList implements PageIterable<Feature> {
+    private final ListBinder<DemandImplementation, DaoFeature> listBinder;
 
-    public DemandList(PageIterable<DaoDemand> daoList) {
-        listBinder = new ListBinder<DemandImplementation, DaoDemand>(daoList);
+    public DemandList(PageIterable<DaoFeature> daoList) {
+        listBinder = new ListBinder<DemandImplementation, DaoFeature>(daoList);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public final Iterator<Demand> iterator() {
+    public final Iterator<Feature> iterator() {
         return (Iterator) listBinder.iterator();
     }
 

@@ -13,7 +13,7 @@ import com.bloatit.framework.utils.DateUtils;
 public class DaoDemandTest extends DataTestUnit {
 
     public void testCreateDemand() {
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
@@ -22,18 +22,18 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     public void testRetrieveDemand() {
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
-        assertEquals(demand, DBRequests.getAll(DaoDemand.class).iterator().next());
+        assertEquals(demand, DBRequests.getAll(DaoFeature.class).iterator().next());
 
         assertEquals(yo, demand.getAuthor());
     }
 
     public void testDeleteDemand() {
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
@@ -41,11 +41,11 @@ public class DaoDemandTest extends DataTestUnit {
 
         demand.delete();
 
-        assertFalse(DBRequests.getAll(DaoDemand.class).iterator().hasNext());
+        assertFalse(DBRequests.getAll(DaoFeature.class).iterator().hasNext());
     }
 
     public void testAddContribution() throws Throwable {
-        DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
@@ -58,7 +58,7 @@ public class DaoDemandTest extends DataTestUnit {
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
 
-        demand = DBRequests.getById(DaoDemand.class, demand.getId());
+        demand = DBRequests.getById(DaoFeature.class, demand.getId());
 
         assertEquals(2, demand.getContributions().size());
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("25")));
@@ -68,14 +68,14 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     public void testAddOffer() {
-        DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
-        demand = DBRequests.getById(DaoDemand.class, demand.getId());
+        demand = DBRequests.getById(DaoFeature.class, demand.getId());
 
         demand.addOffer(createOffer(demand));
 
@@ -83,7 +83,7 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     public void testAddComment() throws Throwable {
-        DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
@@ -94,7 +94,7 @@ public class DaoDemandTest extends DataTestUnit {
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
-        demand = DBRequests.getById(DaoDemand.class, demand.getId());
+        demand = DBRequests.getById(DaoFeature.class, demand.getId());
 
         assertEquals(4, demand.getComments().size());
     }
@@ -103,7 +103,7 @@ public class DaoDemandTest extends DataTestUnit {
         fred.getInternalAccount().setAmount(new BigDecimal(50));
         yo.getInternalAccount().setAmount(new BigDecimal(50));
 
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
@@ -123,7 +123,7 @@ public class DaoDemandTest extends DataTestUnit {
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("32")));
     }
 
-    private DaoOffer createOffer(final DaoDemand demand) {
+    private DaoOffer createOffer(final DaoFeature demand) {
         return new DaoOffer(fred,
                             demand,
                             new BigDecimal("200"),
@@ -135,7 +135,7 @@ public class DaoDemandTest extends DataTestUnit {
     public void testRejectContribution() throws Throwable {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
-        DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
@@ -147,7 +147,7 @@ public class DaoDemandTest extends DataTestUnit {
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
-        demand = DBRequests.getById(DaoDemand.class, demand.getId());
+        demand = DBRequests.getById(DaoFeature.class, demand.getId());
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
 
@@ -164,7 +164,7 @@ public class DaoDemandTest extends DataTestUnit {
     public void testGetCurrentOffer() {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
@@ -178,7 +178,7 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     public void testSearchDemand() {
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
@@ -194,7 +194,7 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     public void testGetComment() {
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        final DaoFeature demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);

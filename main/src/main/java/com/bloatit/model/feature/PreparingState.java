@@ -14,21 +14,25 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import java.math.BigDecimal;
 
+import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.model.Offer;
+
+// TODO: Auto-generated Javadoc
 /**
- * The Class PendingState.
+ * The Class PreparingState.
  */
-public class PendingState extends CanContributeMetaState {
+public class PreparingState extends CanContributeMetaState {
 
     /**
-     * Instantiates a new pending state.
+     * Instantiates a new preparing state.
      *
      * @param demand the demand on which this state apply.
      */
-    public PendingState(final DemandImplementation demand) {
+    public PreparingState(final DemandImplementation demand) {
         super(demand);
         demand.setDemandStateUnprotected(getState());
     }
@@ -41,7 +45,32 @@ public class PendingState extends CanContributeMetaState {
      */
     @Override
     public AbstractDemandState eventAddOffer() {
-        return new PreparingState(demand);
+        return this;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventRemoveOffer(com.bloatit
+     * .model .Offer)
+     */
+    @Override
+    public AbstractDemandState eventRemoveOffer(final Offer offer) {
+        if (demand.getDao().getOffers().size() > 0) {
+            return this;
+        }
+        return new PendingState(demand);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventSelectedOfferTimeOut
+     * (java.math .BigDecimal)
+     */
+    @Override
+    public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
+        return handleEvent();
     }
 
     /*
@@ -50,12 +79,12 @@ public class PendingState extends CanContributeMetaState {
      * com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
      */
     @Override
-    protected AbstractDemandState notifyAddContribution() {
-        return this;
+    public AbstractDemandState notifyAddContribution() {
+        return handleEvent();
     }
 
     @Override
-    public final DemandState getState() {
-        return DemandState.PENDING;
+    public final FeatureState getState() {
+        return FeatureState.PREPARING;
     }
 }

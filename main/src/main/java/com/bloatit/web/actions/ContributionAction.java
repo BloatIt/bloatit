@@ -23,7 +23,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.demands.DemandTabPane;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -42,7 +42,7 @@ public final class ContributionAction extends LoggedAction {
     public static final String TARGET_IDEA = "targetIdea";
 
     @RequestParam(name = TARGET_IDEA)
-    private final Demand targetIdea;
+    private final Feature targetIdea;
 
     @RequestParam(name = COMMENT_CODE, role = Role.POST)
     @ParamConstraint(max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))

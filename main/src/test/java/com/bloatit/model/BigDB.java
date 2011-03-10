@@ -10,7 +10,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
@@ -71,7 +71,7 @@ public class BigDB {
         project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
+            final DaoFeature demand = DaoFeature.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
                                                                                                                 new Locale("fr"),
                                                                                                                 fortune(140),
                                                                                                                 fortune(1000) + fortune(1000)

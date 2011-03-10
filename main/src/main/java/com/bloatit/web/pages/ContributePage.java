@@ -25,7 +25,7 @@ import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.web.components.SideBarDemandBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -39,7 +39,7 @@ import com.bloatit.web.url.ContributionActionUrl;
 public final class ContributePage extends LoggedPage {
 
     @RequestParam()
-    private final Demand targetIdea;
+    private final Feature targetIdea;
 
     private final ContributePageUrl url;
 

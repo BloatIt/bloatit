@@ -28,7 +28,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Batch;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
@@ -44,7 +44,7 @@ import com.bloatit.web.url.OfferPageUrl;
 public final class OfferAction extends LoggedAction {
 
     @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
-    private final Demand demand;
+    private final Feature demand;
 
     @RequestParam(role = Role.GET)
     @Optional

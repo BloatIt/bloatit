@@ -126,13 +126,13 @@ import com.bloatit.framework.utils.PageIterable;
                      }
              )
 // @formatter:on
-public class DaoDemand extends DaoKudosable implements DaoCommentable {
+public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * This is the state of the demand. It's used in the workflow modeling. The
      * order is important !
      */
-    public enum DemandState {
+    public enum FeatureState {
         /** No offers, waiting for money and offer */
         PENDING,
 
@@ -160,7 +160,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     @Basic(optional = false)
     @Field(store = Store.NO)
     @Enumerated
-    private DemandState demandState;
+    private FeatureState demandState;
 
     /**
      * A description is a translatable text with an title.
@@ -216,9 +216,9 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     /**
      * @see #DaoDemand(DaoMember, DaoDescription, DaoProject)
      */
-    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description, final DaoProject project) {
+    public static DaoFeature createAndPersist(final DaoMember member, final DaoDescription description, final DaoProject project) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoDemand demand = new DaoDemand(member, description, project);
+        final DaoFeature demand = new DaoFeature(member, description, project);
         try {
             session.save(demand);
         } catch (final HibernateException e) {
@@ -236,7 +236,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
-    private DaoDemand(final DaoMember member, final DaoDescription description, final DaoProject project) {
+    private DaoFeature(final DaoMember member, final DaoDescription description, final DaoProject project) {
         super(member);
         if (description == null || project == null) {
             throw new NonOptionalParameterException();
@@ -247,7 +247,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
         this.validationDate = null;
         setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
-        setDemandState(DemandState.PENDING);
+        setDemandState(FeatureState.PENDING);
     }
 
     /**
@@ -349,7 +349,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
         this.contribution = this.contribution.subtract(amount);
     }
 
-    public void setDemandState(final DemandState demandState) {
+    public void setDemandState(final FeatureState demandState) {
         this.demandState = demandState;
     }
 
@@ -383,7 +383,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
         return new MappedList<DaoOffer>(this.offers);
     }
 
-    public DemandState getDemandState() {
+    public FeatureState getDemandState() {
         return this.demandState;
     }
 
@@ -475,7 +475,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoDemand() {
+    protected DaoFeature() {
         super();
     }
 
@@ -510,7 +510,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoDemand other = (DaoDemand) obj;
+        final DaoFeature other = (DaoFeature) obj;
         if (this.description == null) {
             if (other.description != null) {
                 return false;

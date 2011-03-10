@@ -3,10 +3,10 @@ package com.bloatit.data.search;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 
-import com.bloatit.data.DaoDemand;
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature;
+import com.bloatit.data.DaoFeature.FeatureState;
 
-public class DemandSearch extends Search<DaoDemand> {
+public class DemandSearch extends Search<DaoFeature> {
 
     private SortMethod sortMethod;
 
@@ -17,7 +17,7 @@ public class DemandSearch extends Search<DaoDemand> {
     public DemandSearch(String searchText) {
         super();
         sortMethod = SortMethod.SORT_BY_RELEVANCE;
-        configure(DaoDemand.class, new String[] { "description.translations.title",
+        configure(DaoFeature.class, new String[] { "description.translations.title",
                                                  "description.translations.text",
                                                  "offers.description.translations.title" }, searchText);
     }
@@ -27,7 +27,7 @@ public class DemandSearch extends Search<DaoDemand> {
      *
      * @param state
      */
-    public void addDemandStateFilter(DemandState state) {
+    public void addDemandStateFilter(FeatureState state) {
         addFilterTerm("demandState", state.toString());
     }
 

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.rest.list.master.RestListBinder;
 import com.bloatit.rest.resources.RestDemand;
 
@@ -47,7 +47,7 @@ import com.bloatit.rest.resources.RestDemand;
  * <p>
  */
 @XmlRootElement(name = "demands")
-public class RestDemandList extends RestListBinder<RestDemand, Demand> {
+public class RestDemandList extends RestListBinder<RestDemand, Feature> {
 
     /**
      * Provided for XML generation
@@ -62,7 +62,7 @@ public class RestDemandList extends RestListBinder<RestDemand, Demand> {
      *
      * @param collection the list of elements from the model
      */
-    public RestDemandList(PageIterable<Demand> collection) {
+    public RestDemandList(PageIterable<Feature> collection) {
         super(collection);
     }
 

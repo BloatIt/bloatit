@@ -38,10 +38,10 @@ import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.model.Batch;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
-import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.model.feature.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.members.MembersTools;
@@ -54,9 +54,9 @@ import com.bloatit.web.url.TeamPageUrl;
 
 public class DemandOfferListComponent extends HtmlDiv {
 
-    private final Demand demand;
+    private final Feature demand;
 
-    public DemandOfferListComponent(final Demand demand) {
+    public DemandOfferListComponent(final Feature demand) {
         super();
         this.demand = demand;
         try {

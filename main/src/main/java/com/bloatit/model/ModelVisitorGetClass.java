@@ -21,7 +21,7 @@ import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFileMetadata;
@@ -204,8 +204,8 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Demand)
      */
     @Override
-    public Class<?> visit(Demand model) {
-        return DaoDemand.class;
+    public Class<?> visit(Feature model) {
+        return DaoFeature.class;
     }
 
     /*

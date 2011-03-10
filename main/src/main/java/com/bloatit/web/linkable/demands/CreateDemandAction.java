@@ -21,10 +21,10 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.DemandFactory;
 import com.bloatit.model.Project;
-import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.feature.DemandManager;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
@@ -75,7 +75,7 @@ public final class CreateDemandAction extends Action {
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
-        final Demand d = DemandFactory.createDemand(session.getAuthToken().getMember(), langLocale, description, specification, project);
+        final Feature d = DemandFactory.createDemand(session.getAuthToken().getMember(), langLocale, description, specification, project);
 
         final DemandPageUrl to = new DemandPageUrl(d);
 

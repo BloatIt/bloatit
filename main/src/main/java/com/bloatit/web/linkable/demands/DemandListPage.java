@@ -15,7 +15,7 @@ package com.bloatit.web.linkable.demands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.search.DemandSearch;
 import com.bloatit.data.search.DemandSearch.SortMethod;
 import com.bloatit.framework.exceptions.RedirectException;
@@ -31,8 +31,8 @@ import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.Demand;
-import com.bloatit.model.demand.DemandList;
+import com.bloatit.model.Feature;
+import com.bloatit.model.feature.DemandList;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
@@ -69,7 +69,7 @@ public final class DemandListPage extends MasterPage {
     @Optional("")
     private final String searchString;
 
-    private HtmlPagedList<Demand> pagedDemandList;
+    private HtmlPagedList<Feature> pagedDemandList;
     private final DemandListPageUrl url;
 
     public DemandListPage(final DemandListPageUrl url) {
@@ -234,9 +234,9 @@ public final class DemandListPage extends MasterPage {
         // Demand list
         final DemandList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
+            final HtmlRenderer<Feature> demandItemRenderer = new IdeasListItem();
             final DemandListPageUrl clonedUrl = url.clone();
-            pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
+            pagedDemandList = new HtmlPagedList<Feature>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
             layout.addLeft(pagedDemandList);
         } else {
             final HtmlDiv noResultBlock = new HtmlDiv("no_result_block");
@@ -265,11 +265,11 @@ public final class DemandListPage extends MasterPage {
         return custom;
     }
 
-    static class IdeasListItem implements HtmlRenderer<Demand> {
-        private Demand demand;
+    static class IdeasListItem implements HtmlRenderer<Feature> {
+        private Feature demand;
 
         @Override
-        public XmlNode generate(final Demand demand) {
+        public XmlNode generate(final Feature demand) {
             this.demand = demand;
             return generateContent();
         }
@@ -284,12 +284,12 @@ public final class DemandListPage extends MasterPage {
         final DemandSearch search = new DemandSearch(searchString);
         if (!filter.equals(FILTER_ALL)) {
             if (filter.equals(FILTER_IN_PROGRESS)) {
-                search.addDemandStateFilter(DemandState.FINISHED);
-                search.addDemandStateFilter(DemandState.DISCARDED);
+                search.addDemandStateFilter(FeatureState.FINISHED);
+                search.addDemandStateFilter(FeatureState.DISCARDED);
             } else if (filter.equals(FILTER_FINISHED)) {
-                search.addDemandStateFilter(DemandState.DEVELOPPING);
-                search.addDemandStateFilter(DemandState.PENDING);
-                search.addDemandStateFilter(DemandState.PREPARING);
+                search.addDemandStateFilter(FeatureState.DEVELOPPING);
+                search.addDemandStateFilter(FeatureState.PENDING);
+                search.addDemandStateFilter(FeatureState.PREPARING);
             }
         }
 

@@ -52,7 +52,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
 
     @ManyToOne(optional = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-    private DaoDemand demand;
+    private DaoFeature demand;
 
     @Column(updatable = false, nullable = false)
     private Date activationDate;
@@ -74,7 +74,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
      * @param desactivationDate the desactivation date
      * @return the dao highlight demand
      */
-    public static DaoHighlightDemand createAndPersist(final DaoDemand demand,
+    public static DaoHighlightDemand createAndPersist(final DaoFeature demand,
                                                       final int position,
                                                       final String reason,
                                                       final Date activationDate,
@@ -100,7 +100,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
      * @param activationDate
      * @param desactivationDate
      */
-    public DaoHighlightDemand(final DaoDemand demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
+    public DaoHighlightDemand(final DaoFeature demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
         if (demand == null || activationDate == null || desactivationDate == null) {
             throw new NonOptionalParameterException();
         }
@@ -151,7 +151,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
         return this.reason;
     }
 
-    public DaoDemand getDemand() {
+    public DaoFeature getDemand() {
         return this.demand;
     }
 

@@ -60,7 +60,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @ManyToOne(fetch = FetchType.LAZY)
     private DaoBug bug;
     @ManyToOne(fetch = FetchType.LAZY)
-    private DaoDemand demand;
+    private DaoFeature demand;
     @ManyToOne(fetch = FetchType.LAZY)
     private DaoRelease release;
 
@@ -87,7 +87,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         return demand;
     }
 
-    public static DaoComment createAndPersist(final DaoDemand father, final DaoMember member, final String text) {
+    public static DaoComment createAndPersist(final DaoFeature father, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoComment demand = new DaoComment(father, member, text);
         try {
@@ -149,7 +149,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         this.bug = father;
     }
 
-    private DaoComment(final DaoDemand father, final DaoMember member, final String text) {
+    private DaoComment(final DaoFeature father, final DaoMember member, final String text) {
         this(member, text);
         this.demand = father;
     }

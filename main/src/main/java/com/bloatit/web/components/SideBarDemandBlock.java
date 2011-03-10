@@ -4,7 +4,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.demands.DemandsTools;
 import com.bloatit.web.linkable.projects.ProjectsTools;
 import com.bloatit.web.pages.master.DefineParagraph;
@@ -13,7 +13,7 @@ import com.bloatit.web.url.DemandPageUrl;
 
 public class SideBarDemandBlock extends SideBarElementLayout {
 
-    public SideBarDemandBlock(Demand demand) {
+    public SideBarDemandBlock(Feature demand) {
         setTitle(tr("Demand abstract"));
 
         try {

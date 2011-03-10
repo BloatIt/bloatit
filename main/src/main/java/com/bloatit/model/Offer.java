@@ -23,13 +23,13 @@ import java.util.Locale;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.model.feature.DemandImplementation;
 import com.bloatit.model.lists.BatchList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.DemandRight;
@@ -69,14 +69,14 @@ public final class Offer extends Kudosable<DaoOffer> {
      *            non null. Must be in the future.
      */
     public Offer(final Member member,
-                 final Demand demand,
+                 final Feature demand,
                  final BigDecimal amount,
                  final String description,
                  final Locale local,
                  final Date dateExpire,
                  final int secondsBeforeValidation) {
         super(new DaoOffer(member.getDao(),
-                           DBRequests.getById(DaoDemand.class, demand.getId()),
+                           DBRequests.getById(DaoFeature.class, demand.getId()),
                            amount,
                            DaoDescription.createAndPersist(member.getDao(), local, "RFU", description),
                            dateExpire,
@@ -177,7 +177,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         return getDao().isDraft();
     }
 
-    public Demand getDemand() {
+    public Feature getDemand() {
         return getDemandImplementation();
     }
 

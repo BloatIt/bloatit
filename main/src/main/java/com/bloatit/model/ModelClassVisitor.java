@@ -52,7 +52,7 @@ public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(Comment model);
 
-    ReturnType visit(Demand model);
+    ReturnType visit(Feature model);
 
     ReturnType visit(Offer model);
 

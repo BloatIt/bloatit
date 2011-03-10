@@ -35,7 +35,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
@@ -53,7 +53,7 @@ public final class OfferPage extends LoggedPage {
 
     @RequestParam
     @ParamConstraint(optionalErrorMsg = @tr("The demand id is not optional !"))
-    private final Demand demand;
+    private final Feature demand;
 
     @RequestParam
     @Optional

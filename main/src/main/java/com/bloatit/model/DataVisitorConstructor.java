@@ -21,7 +21,7 @@ import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFileMetadata;
@@ -38,7 +38,7 @@ import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.DataClassVisitor;
-import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.model.feature.DemandImplementation;
 
 /**
  * The Class ConstructorVisitor is a visitor that visit the Dao layer and
@@ -217,7 +217,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoDemand)
      */
     @Override
-    public Identifiable<?> visit(final DaoDemand dao) {
+    public Identifiable<?> visit(final DaoFeature dao) {
         return DemandImplementation.create(dao);
     }
 

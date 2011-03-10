@@ -68,7 +68,7 @@ public class DaoOffer extends DaoKudosable {
      * This is demand on which this offer is done.
      */
     @ManyToOne(optional = false)
-    private DaoDemand demand;
+    private DaoFeature demand;
 
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
@@ -112,7 +112,7 @@ public class DaoOffer extends DaoKudosable {
      *             future.
      */
     public DaoOffer(final DaoMember member,
-                    final DaoDemand demand,
+                    final DaoFeature demand,
                     final BigDecimal amount,
                     final DaoDescription description,
                     final Date dateExpire,
@@ -261,7 +261,7 @@ public class DaoOffer extends DaoKudosable {
         super();
     }
 
-    public DaoDemand getDemand() {
+    public DaoFeature getDemand() {
         return this.demand;
     }
 

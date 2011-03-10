@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 
 /**
  * The Class FinishedState. It is the final state. You cannot change of state
@@ -35,7 +35,7 @@ public class FinishedState extends AbstractDemandState {
     }
 
     @Override
-    public final DemandState getState() {
-        return DemandState.FINISHED;
+    public final FeatureState getState() {
+        return FeatureState.FINISHED;
     }
 }

@@ -2,7 +2,7 @@ package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.webserver.components.form.Displayable;
 
 public enum DisplayableDemandState implements Displayable {
@@ -26,11 +26,11 @@ public enum DisplayableDemandState implements Displayable {
         this.displayName = displayName;
     }
 
-    public static DemandState getDemandState(final DisplayableDemandState cmp) {
-        return Enum.valueOf(DemandState.class, cmp.name());
+    public static FeatureState getDemandState(final DisplayableDemandState cmp) {
+        return Enum.valueOf(FeatureState.class, cmp.name());
     }
 
-    public static DisplayableDemandState getDemandState(final DemandState cmp) {
+    public static DisplayableDemandState getDemandState(final FeatureState cmp) {
         return Enum.valueOf(DisplayableDemandState.class, cmp.name());
     }
 }

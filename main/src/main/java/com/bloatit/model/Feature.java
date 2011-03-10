@@ -20,8 +20,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
-import com.bloatit.data.DaoDemand;
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -30,7 +30,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 
-public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
+public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
 
     /**
      * @param action is the type of action you can do on the property. (READ for
@@ -85,10 +85,10 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
 
     /**
      * Add a new Offer on this Demand. You can do this operation when you are in
-     * the {@link DemandState#PENDING} or {@link DemandState#PREPARING}
+     * the {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}
      * DemandState. When you add the first Offer, the state pass from
-     * {@link DemandState#PENDING} to {@link DemandState#PREPARING}; and this
-     * offer is selected (see {@link DaoDemand#setSelectedOffer(DaoOffer)}). The
+     * {@link FeatureState#PENDING} to {@link FeatureState#PREPARING}; and this
+     * offer is selected (see {@link DaoFeature#setSelectedOffer(DaoOffer)}). The
      * parameters of this function are used to create the first (non optional)
      * batch in this offer.
      *
@@ -96,7 +96,7 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
      *             {@link Action#WRITE} right on the <code>Offer</code>
      *             property.
      * @throws WrongStateException if the state is != from
-     *             {@link DemandState#PENDING} or {@link DemandState#PREPARING}.
+     *             {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
     Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
@@ -231,7 +231,7 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
 
     /**
      * A validated offer is an offer selected for more than one day. (If you are
-     * in {@link DemandState#DEVELOPPING} state then there should be always a
+     * in {@link FeatureState#DEVELOPPING} state then there should be always a
      * validated offer.
      *
      * @return the validated offer or null if there is no valid offer.
@@ -249,7 +249,7 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
      */
     String getTitle() throws UnauthorizedOperationException;
 
-    DemandState getDemandState();
+    FeatureState getDemandState();
 
     int countOpenBugs();
 
@@ -261,6 +261,6 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
 
     void computeSelectedOffer() throws UnauthorizedOperationException;
 
-    void setDemandState(DemandState demandState) throws UnauthorizedOperationException;
+    void setDemandState(FeatureState demandState) throws UnauthorizedOperationException;
 
 }

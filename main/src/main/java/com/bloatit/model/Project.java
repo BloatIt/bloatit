@@ -18,12 +18,12 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoProject;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.model.demand.DemandList;
-import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.feature.DemandList;
+import com.bloatit.model.feature.DemandManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ProjectRight;
@@ -55,7 +55,7 @@ public class Project extends Identifiable<DaoProject> {
      * have to use the {@link DemandManager#canCreate(AuthToken)} to make sure
      * you can create a new demand.
      *
-     * @see DaoDemand#DaoDemand(Member,Locale,String, String)
+     * @see DaoFeature#DaoDemand(Member,Locale,String, String)
      */
     public Project(final String name, final Member author, final Locale locale, final String title, final String description) {
         this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description)));

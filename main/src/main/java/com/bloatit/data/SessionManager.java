@@ -47,7 +47,7 @@ public class SessionManager {
                                                                           .buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
-                Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoDemand.class).startAndWait();
+                Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoFeature.class).startAndWait();
             }
 
             return buildSessionFactory;

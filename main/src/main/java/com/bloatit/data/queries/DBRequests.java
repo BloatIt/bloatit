@@ -21,7 +21,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.metadata.ClassMetadata;
 
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.SessionManager;
@@ -98,25 +98,25 @@ public class DBRequests {
                                      .uniqueResult()).intValue();
     }
 
-    public static PageIterable<DaoDemand> demandsOrderByPopularity() {
+    public static PageIterable<DaoFeature> demandsOrderByPopularity() {
         return demandsOrderBy("popularity");
     }
 
-    public static PageIterable<DaoDemand> demandsOrderByContribution() {
+    public static PageIterable<DaoFeature> demandsOrderByContribution() {
         return demandsOrderBy("contribution");
     }
 
-    public static PageIterable<DaoDemand> demandsOrderByDate() {
+    public static PageIterable<DaoFeature> demandsOrderByDate() {
         return demandsOrderBy("creationDate");
     }
 
-    private static PageIterable<DaoDemand> demandsOrderBy(final String field) {
+    private static PageIterable<DaoFeature> demandsOrderBy(final String field) {
         final Query query = SessionManager.createQuery("from DaoDemand where state == PENDING order by " + field);
         final Query size = SessionManager.createQuery("SELECT count(*) from DaoDemand where state == PENDING order by " + field);
-        return new QueryCollection<DaoDemand>(query, size);
+        return new QueryCollection<DaoFeature>(query, size);
     }
 
-    public static PageIterable<DaoDemand> demandsThatShouldBeValidated() {
+    public static PageIterable<DaoFeature> demandsThatShouldBeValidated() {
         final Query query = SessionManager.createQuery("FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
@@ -128,10 +128,10 @@ public class DBRequests {
                 "AND validationDate is not null " + //
                 "AND validationDate < now() " + //
                 "AND demandState = :state");
-        return new QueryCollection<DaoDemand>(query, size).setParameter("state", DaoDemand.DemandState.PREPARING);
+        return new QueryCollection<DaoFeature>(query, size).setParameter("state", DaoFeature.FeatureState.PREPARING);
     }
 
-    public static PageIterable<DaoDemand> demandsThatShouldBeValidatedInTheFuture() {
+    public static PageIterable<DaoFeature> demandsThatShouldBeValidatedInTheFuture() {
         final Query query = SessionManager.createQuery("FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
@@ -143,7 +143,7 @@ public class DBRequests {
                 "AND validationDate is not null " + //
                 "AND validationDate > now() " + //
                 "AND demandState = :state");
-        return new QueryCollection<DaoDemand>(query, size).setParameter("state", DaoDemand.DemandState.PREPARING);
+        return new QueryCollection<DaoFeature>(query, size).setParameter("state", DaoFeature.FeatureState.PREPARING);
     }
 
 }

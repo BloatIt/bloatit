@@ -13,7 +13,7 @@ package com.bloatit.web.linkable.demands;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.components.advanced.HtmlTabBlock.HtmlTab;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Translation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
@@ -58,7 +58,7 @@ public final class DemandTabPane extends HtmlPageComponent {
     @SuppressWarnings("unused")
     private DemandContributorsComponent contribution;
 
-    public DemandTabPane(final DemandTabPaneUrl url, final Demand demand) {
+    public DemandTabPane(final DemandTabPaneUrl url, final Feature demand) {
         super();
         activeTabKey = url.getActiveTabKey();
 
@@ -109,7 +109,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         });
 
         // Create Bugtracker tab only after preparation
-        if (demand.getDemandState() != DemandState.PENDING && demand.getDemandState() != DemandState.PREPARING) {
+        if (demand.getDemandState() != FeatureState.PENDING && demand.getDemandState() != FeatureState.PREPARING) {
 
             tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", demand.countOpenBugs()), BUGS_TAB) {
                 @Override
@@ -123,7 +123,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
     }
 
-    private XmlNode generateDescriptionTabContent(final Demand demand) {
+    private XmlNode generateDescriptionTabContent(final Feature demand) {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {

@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Project;
 import com.bloatit.model.right.AuthToken;
 
@@ -41,8 +41,8 @@ public final class DemandManager {
      *
      * @return the demands
      */
-    public static PageIterable<Demand> getDemands() {
-        return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
+    public static PageIterable<Feature> getDemands() {
+        return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoFeature.class));
     }
 
     /**
@@ -51,7 +51,7 @@ public final class DemandManager {
      * @param id the id of the demand we are looking for.
      * @return the demand or null if not found.
      */
-    public static Demand getDemandById(final Integer id) {
+    public static Feature getDemandById(final Integer id) {
         return getDemandImplementationById(id);
     }
 
@@ -62,7 +62,7 @@ public final class DemandManager {
      * @return the demand or null if not found
      */
     static DemandImplementation getDemandImplementationById(final Integer id) {
-        return DemandImplementation.create(DBRequests.getById(DaoDemand.class, id));
+        return DemandImplementation.create(DBRequests.getById(DaoFeature.class, id));
     }
 
     /**
@@ -71,7 +71,7 @@ public final class DemandManager {
      * @return the number of demand.
      */
     public static int getDemandsCount() {
-        return DBRequests.count(DaoDemand.class);
+        return DBRequests.count(DaoFeature.class);
     }
 
     // Can create if authenticated.

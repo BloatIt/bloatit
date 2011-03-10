@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
 import java.util.Date;
 
@@ -28,27 +28,28 @@ import com.bloatit.model.PlannedTask;
  * introduce multithred bugs)
  * </p>
  * <p>
- * Tells that the selected offer of a specified demand is validated (and may
- * begin the Development)
+ * Tells that the current development of a specified demand should be finish
+ * (the expiration date is reached).
  * </p>
  */
-public class TaskUpdateDevelopingState extends PlannedTask {
+public class TaskDevelopmentTimeOut extends PlannedTask {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5639581628713974313L;
 
-    /** The id. */
-    private final int id;
+    /** The demand id. */
+    private final int demandId;
 
     /**
-     * Instantiates a new task selected offer time out.
+     * Instantiates a new task development time out.
      *
-     * @param id the id
-     * @param time the date when to run this task.
+     * @param demandId the demand id on which we will have to perform a
+     *            "development time out".
+     * @param time the date when this task will be run.
      */
-    public TaskUpdateDevelopingState(final int id, final Date time) {
-        super(time, id);
-        this.id = id;
+    public TaskDevelopmentTimeOut(final int demandId, final Date time) {
+        super(time, demandId);
+        this.demandId = demandId;
     }
 
     /*
@@ -58,15 +59,14 @@ public class TaskUpdateDevelopingState extends PlannedTask {
     @Override
     public void doRun() {
         try {
-            final DemandImplementation demand = DemandManager.getDemandImplementationById(id);
+            final DemandImplementation demand = DemandManager.getDemandImplementationById(demandId);
             if (demand != null) {
-                demand.updateDevelopmentState();
+                demand.developmentTimeOut();
             } else {
-                Log.framework().fatal("Cannot perform the selectedOfferTimeOut. DemandImplementation not found: " + id);
+                Log.framework().fatal("Cannot perform the developmentTimeOut. DemandImplementation not found: " + demandId);
             }
-
         } catch (final WrongStateException e) {
-            Log.model().fatal("Wrong state when trying to perform the selectedOfferTimeOut", e);
+            Log.model().fatal("Wrong state when trying to perform the developmentTimeOut", e);
         }
     }
 

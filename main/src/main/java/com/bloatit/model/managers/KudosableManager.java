@@ -17,7 +17,7 @@
 package com.bloatit.model.managers;
 
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.queries.DBRequests;
@@ -25,7 +25,7 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.model.feature.DemandImplementation;
 
 /**
  * The Class KudosableManager is an utility class containing static methods for
@@ -55,7 +55,7 @@ public final class KudosableManager {
         }
 
         // Try with demand
-        final DaoDemand demand = DBRequests.getById(DaoDemand.class, id);
+        final DaoFeature demand = DBRequests.getById(DaoFeature.class, id);
         if (demand != null) {
             return DemandImplementation.create(demand);
         }

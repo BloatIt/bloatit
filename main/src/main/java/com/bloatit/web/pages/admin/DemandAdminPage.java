@@ -5,7 +5,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.EnumSet;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -15,13 +15,13 @@ import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.admin.DemandAdminListFactory;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.url.DemandAdminPageUrl;
 
 @ParamContainer("admin/demands")
-public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand, DemandAdminListFactory> {
+public final class DemandAdminPage extends KudosableAdminPage<DaoFeature, Feature, DemandAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
     protected DisplayableDemandState filterByState;
@@ -135,7 +135,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
     }
 
     @Override
-    protected void addColumns(final HtmlGenericTableModel<Demand> tableModel) {
+    protected void addColumns(final HtmlGenericTableModel<Feature> tableModel) {
         final DemandAdminPageUrl clonedUrl = url.clone();
 
         addAuthorColumn(tableModel);
@@ -144,17 +144,17 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
         addPopularityStateColumn(tableModel, clonedUrl);
 
         clonedUrl.setOrderByStr("demandState");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Demand state")), new StringColumnGenerator<Demand>() {
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Demand state")), new StringColumnGenerator<Feature>() {
             @Override
-            public String getStringBody(final Demand element) {
+            public String getStringBody(final Feature element) {
                 return String.valueOf(element.getDemandState());
             }
         });
 
         clonedUrl.setOrderByStr("contribution");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("contribution")), new StringColumnGenerator<Demand>() {
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("contribution")), new StringColumnGenerator<Feature>() {
             @Override
-            public String getStringBody(final Demand element) {
+            public String getStringBody(final Feature element) {
                 try {
                     return String.valueOf(element.getContribution());
                 } catch (final UnauthorizedOperationException e) {
@@ -164,9 +164,9 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
             }
         });
 
-        tableModel.addColumn(tr("project"), new StringColumnGenerator<Demand>() {
+        tableModel.addColumn(tr("project"), new StringColumnGenerator<Feature>() {
             @Override
-            public String getStringBody(final Demand element) {
+            public String getStringBody(final Feature element) {
                 try {
                     return element.getProject().getName();
                 } catch (final UnauthorizedOperationException e) {

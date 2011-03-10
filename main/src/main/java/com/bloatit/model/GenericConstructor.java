@@ -5,7 +5,7 @@ import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFileMetadata;
@@ -85,8 +85,8 @@ public class GenericConstructor {
         if (clazz.equals(Comment.class)) {
             return DaoComment.class;
         }
-        if (clazz.equals(Demand.class)) {
-            return DaoDemand.class;
+        if (clazz.equals(Feature.class)) {
+            return DaoFeature.class;
         }
         if (clazz.equals(Offer.class)) {
             return DaoOffer.class;

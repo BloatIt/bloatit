@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Bug;
-import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.feature.DemandManager;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;

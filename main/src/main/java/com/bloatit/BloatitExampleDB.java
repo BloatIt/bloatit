@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.SessionManager;
@@ -15,7 +15,7 @@ import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Comment;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.DemandFactory;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Group;
@@ -23,7 +23,7 @@ import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
-import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.model.feature.DemandImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
@@ -97,12 +97,12 @@ public class BloatitExampleDB {
 
         // Generate demands
 
-        final Demand twoSubtitlesInVlcDemand = generateVlcDemandTwoSubtitles();
-        final Demand addPerroquetInMageiaDemand = generateMageiaDemandPerroquetPackage();
-        final Demand colorPickerDemand = generateLibreOfficeDemandColorPicker();
-        Demand libreOfficeDemandDefaultTemplate = generateLibreOfficeDemandDefaultTemplate();
-        Demand perroquetDemandArabicSupport = generatePerroquetDemandArabicSupport();
-        Demand mageiaDemandRemoveEmacs = generateMageiaDemandRemoveEmacs();
+        final Feature twoSubtitlesInVlcDemand = generateVlcDemandTwoSubtitles();
+        final Feature addPerroquetInMageiaDemand = generateMageiaDemandPerroquetPackage();
+        final Feature colorPickerDemand = generateLibreOfficeDemandColorPicker();
+        Feature libreOfficeDemandDefaultTemplate = generateLibreOfficeDemandDefaultTemplate();
+        Feature perroquetDemandArabicSupport = generatePerroquetDemandArabicSupport();
+        Feature mageiaDemandRemoveEmacs = generateMageiaDemandRemoveEmacs();
 
         // Highlight demands
         new HighlightDemand(twoSubtitlesInVlcDemand, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
@@ -154,7 +154,7 @@ public class BloatitExampleDB {
         vlc.setImage(getImage(thomas, "vlc.png"));
     }
 
-    public Demand generateVlcDemandTwoSubtitles() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public Feature generateVlcDemandTwoSubtitles() throws UnauthorizedOperationException, NotEnoughMoneyException {
 
         // Demand with offers selected, not validated and not founded
 
@@ -173,7 +173,7 @@ public class BloatitExampleDB {
 
         final String twoSubtitlesInVlcDemandTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
-        final Demand twoSubtitlesInVlcDemand = DemandFactory.createDemand(chogall,
+        final Feature twoSubtitlesInVlcDemand = DemandFactory.createDemand(chogall,
                                                                           chogall.getLocale(),
                                                                           twoSubtitlesInVlcDemandTitle,
                                                                           twoSubtitlesInVlcDemandDescription,
@@ -242,7 +242,7 @@ public class BloatitExampleDB {
         return twoSubtitlesInVlcDemand;
     }
 
-    public Demand generateMageiaDemandPerroquetPackage() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public Feature generateMageiaDemandPerroquetPackage() throws UnauthorizedOperationException, NotEnoughMoneyException {
         // Mageia demand
 
         // Demand in development
@@ -254,7 +254,7 @@ public class BloatitExampleDB {
 
         final String addPerroquetInMageiaDemandtitle = "Make a packet for Mageia for the Perroquet software";
 
-        final Demand addPerroquetInMageiaDemand = DemandFactory.createDemand(fred,
+        final Feature addPerroquetInMageiaDemand = DemandFactory.createDemand(fred,
                                                                              fred.getLocale(),
                                                                              addPerroquetInMageiaDemandtitle,
                                                                              addPerroquetInMageiaDemandDescription,
@@ -294,7 +294,7 @@ public class BloatitExampleDB {
         return addPerroquetInMageiaDemand;
     }
 
-    public Demand generateLibreOfficeDemandColorPicker() throws UnauthorizedOperationException {
+    public Feature generateLibreOfficeDemandColorPicker() throws UnauthorizedOperationException {
         // LibreOffice demand
 
         // Demand without offer
@@ -303,7 +303,7 @@ public class BloatitExampleDB {
 
         final String colorPickerDemandTitle = "Permettre de choisir facilement n'importe quelle couleur";
 
-        final Demand colorPickerDemand = DemandFactory.createDemand(yoann,
+        final Feature colorPickerDemand = DemandFactory.createDemand(yoann,
                                                                     yoann.getLocale(),
                                                                     colorPickerDemandTitle,
                                                                     colorPickerDemandDescription,
@@ -311,7 +311,7 @@ public class BloatitExampleDB {
         return colorPickerDemand;
     }
 
-    public Demand generateLibreOfficeDemandDefaultTemplate() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public Feature generateLibreOfficeDemandDefaultTemplate() throws UnauthorizedOperationException, NotEnoughMoneyException {
         // LibreOffice demand
 
         // Demand with offer validated but not funded
@@ -319,7 +319,7 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Jolie template par défaut dans Libre Office ";
 
-        final Demand demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, libreOffice);
+        final Feature demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, libreOffice);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         demand.authenticate(new AuthToken(celeste));
@@ -335,7 +335,7 @@ public class BloatitExampleDB {
         return demand;
     }
 
-    public Demand generatePerroquetDemandArabicSupport() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public Feature generatePerroquetDemandArabicSupport() throws UnauthorizedOperationException, NotEnoughMoneyException {
         // LibreOffice demand
 
         // Demand with offer not validated and funded
@@ -343,7 +343,7 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Support des langues arabe";
 
-        final Demand demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, perroquet);
+        final Feature demand = DemandFactory.createDemand(yoann, yoann.getLocale(), demandTitle, demandDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         demand.authenticate(new AuthToken(fred));
@@ -356,7 +356,7 @@ public class BloatitExampleDB {
         return demand;
     }
 
-    public Demand generateMageiaDemandRemoveEmacs() throws UnauthorizedOperationException, NotEnoughMoneyException {
+    public Feature generateMageiaDemandRemoveEmacs() throws UnauthorizedOperationException, NotEnoughMoneyException {
         // LibreOffice demand
 
         // Demand with offer not validated and not funded
@@ -364,7 +364,7 @@ public class BloatitExampleDB {
 
         final String demandTitle = "Suppression du paquet emacs déprécié";
 
-        final Demand demand = DemandFactory.createDemand(thomas, thomas.getLocale(), demandTitle, demandDescription, mageia);
+        final Feature demand = DemandFactory.createDemand(thomas, thomas.getLocale(), demandTitle, demandDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
         demand.authenticate(new AuthToken(cerbere));
@@ -386,19 +386,19 @@ public class BloatitExampleDB {
      * Work only if the money is available
      * @param demand
      */
-    private void setDemandInDevelopmentState(final Demand demand) {
+    private void setDemandInDevelopmentState(final Feature demand) {
         final DemandImplementation demandImpl = (DemandImplementation) demand;
         demandImpl.getDao().setValidationDate(DateUtils.now());
     }
 
-    private void setDemandInFinishedState(final Demand demand) {
+    private void setDemandInFinishedState(final Feature demand) {
         final DemandImplementation demandImpl = (DemandImplementation) demand;
-        demandImpl.getDao().setDemandState(DemandState.FINISHED);
+        demandImpl.getDao().setDemandState(FeatureState.FINISHED);
     }
 
-    private void setDemandInDiscardedState(final Demand demand) {
+    private void setDemandInDiscardedState(final Feature demand) {
         final DemandImplementation demandImpl = (DemandImplementation) demand;
-        demandImpl.getDao().setDemandState(DemandState.DISCARDED);
+        demandImpl.getDao().setDemandState(FeatureState.DISCARDED);
     }
 
     public void giveMoney(final Member member, final int amount) {

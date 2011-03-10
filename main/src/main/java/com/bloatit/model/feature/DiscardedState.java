@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.demand;
+package com.bloatit.model.feature;
 
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature.FeatureState;
 
 /**
  * The Class DiscardedState.
@@ -53,8 +53,8 @@ public class DiscardedState extends AbstractDemandState {
     }
 
     @Override
-    public final DemandState getState() {
-        return DemandState.DISCARDED;
+    public final FeatureState getState() {
+        return FeatureState.DISCARDED;
     }
 
 }

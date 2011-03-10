@@ -64,7 +64,7 @@ public class DaoContribution extends DaoUserContent {
     private BigDecimal amount;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private DaoDemand demand;
+    private DaoFeature demand;
 
     @Basic(optional = false)
     @Enumerated
@@ -103,7 +103,7 @@ public class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if the account of "member" has not enough
      *             money in it.
      */
-    public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution(final DaoMember member, final DaoFeature demand, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         super(member);
         if (demand == null) {
             throw new NonOptionalParameterException();
@@ -229,7 +229,7 @@ public class DaoContribution extends DaoUserContent {
         super();
     }
 
-    protected DaoDemand getDemand() {
+    protected DaoFeature getDemand() {
         return this.demand;
     }
 

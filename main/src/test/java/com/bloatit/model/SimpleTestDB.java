@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
@@ -32,7 +32,7 @@ public class SimpleTestDB {
     private final DaoGroup other;
     private final DaoGroup b219;
     private final DaoGroup ubuntuUsers;
-    private final DaoDemand demand;
+    private final DaoFeature demand;
     private final DaoProject project;
 
     public SimpleTestDB() {
@@ -81,7 +81,7 @@ public class SimpleTestDB {
         project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
-        demand = DaoDemand.createAndPersist(yo,
+        demand = DaoFeature.createAndPersist(yo,
                                             DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
                                             project);
         final DaoComment c1 = DaoComment.createAndPersist(demand, tom, "Pas tres constructif hein !");
@@ -123,7 +123,7 @@ public class SimpleTestDB {
                 }
             }
 
-            final DaoDemand demand1 = DaoDemand.createAndPersist(fred, DaoDescription.createAndPersist(fred,
+            final DaoFeature demand1 = DaoFeature.createAndPersist(fred, DaoDescription.createAndPersist(fred,
                                                                                                        new Locale("en"),
                                                                                                        "I try it in English",
                                                                                                        "Hello world"), project);
@@ -166,7 +166,7 @@ public class SimpleTestDB {
         return ubuntuUsers;
     }
 
-    public DaoDemand getDemand() {
+    public DaoFeature getDemand() {
         return demand;
     }
 

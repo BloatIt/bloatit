@@ -28,7 +28,7 @@ public class DaoUserContentTest extends TestCase {
     private DaoMember fred;
     private DaoGroup b219;
 
-    private DaoDemand demand;
+    private DaoFeature demand;
 
     @Override
     protected void setUp() throws Exception {
@@ -58,7 +58,7 @@ public class DaoUserContentTest extends TestCase {
         DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
 
-        demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        demand = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                 new Locale("fr"),
                                                                                 "Ma super demande !",
                                                                                 "Ceci est la descption de ma demande :) "), project);

@@ -25,13 +25,13 @@ import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableMo
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Bug;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
 public class DemandBugListComponent extends HtmlDiv {
 
-    public DemandBugListComponent(final Demand demand) {
+    public DemandBugListComponent(final Feature demand) {
         super("padding");
         // Open bugs
         final PageIterable<Bug> openBugs = demand.getOpenBugs();

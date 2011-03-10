@@ -14,10 +14,10 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
-import com.bloatit.model.Demand;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.model.feature.DemandImplementation;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.url.DemandPageUrl;
 
@@ -25,13 +25,13 @@ public class DemandsTools {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public static String getTitle(Demand demand) throws UnauthorizedOperationException {
+    public static String getTitle(Feature demand) throws UnauthorizedOperationException {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         return translatedDescription.getTitle();
     }
 
-    public static HtmlDiv generateProgress(Demand demand) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(Feature demand) throws UnauthorizedOperationException {
         return generateProgress(demand, false);
     }
 
@@ -39,7 +39,7 @@ public class DemandsTools {
      * @return
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(Demand demand, boolean slim) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(Feature demand, boolean slim) throws UnauthorizedOperationException {
         final HtmlDiv demandSummaryProgress = new HtmlDiv("summary_progress");
         {
             float progressValue = 0;
@@ -61,7 +61,7 @@ public class DemandsTools {
         return demandSummaryProgress;
     }
 
-    private static HtmlElement generateProgressText(final Demand demand, final float progressValue) {
+    private static HtmlElement generateProgressText(final Feature demand, final float progressValue) {
 
         Offer currentOffer = null;
         try {
@@ -127,7 +127,7 @@ public class DemandsTools {
         }
     }
 
-    public static HtmlDiv generateDetails(Demand demand) throws UnauthorizedOperationException {
+    public static HtmlDiv generateDetails(Feature demand) throws UnauthorizedOperationException {
         final HtmlDiv demandSummaryDetails = new HtmlDiv("demand_sumary_details");
         {
 

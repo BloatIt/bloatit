@@ -80,15 +80,15 @@ import java.math.BigDecimal;
 
 import org.hibernate.criterion.Restrictions;
 
-import com.bloatit.data.DaoDemand;
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoFeature;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoProject;
 import com.bloatit.data.SessionManager;
 
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
+public class DaoDemandQuery extends DaoKudosableQuery<DaoFeature> {
 
     /** The Constant CONTRIBUTION. */
     private static String CONTRIBUTION = "contribution";
@@ -109,7 +109,7 @@ public class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
      * Instantiates a new dao demand list factory.
      */
     public DaoDemandQuery() {
-        super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoDemand.class));
+        super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoFeature.class));
     }
 
     /**
@@ -117,7 +117,7 @@ public class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
      *
      * @param state the state
      */
-    public void stateEquals(final DemandState state) {
+    public void stateEquals(final FeatureState state) {
         add(Restrictions.eq(DEMAND_STATE, state));
     }
 

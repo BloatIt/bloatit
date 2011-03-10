@@ -2,10 +2,10 @@ package com.bloatit.model;
 
 import java.util.Date;
 
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoHighlightDemand;
 import com.bloatit.data.queries.DBRequests;
-import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.model.feature.DemandImplementation;
 
 public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
 
@@ -24,8 +24,8 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
         return new MyCreator().create(dao);
     }
 
-    public HighlightDemand(final Demand demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
-        super(DaoHighlightDemand.createAndPersist(DBRequests.getById(DaoDemand.class, demand.getId()),
+    public HighlightDemand(final Feature demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
+        super(DaoHighlightDemand.createAndPersist(DBRequests.getById(DaoFeature.class, demand.getId()),
                                                   position,
                                                   reason,
                                                   activationDate,
@@ -44,7 +44,7 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
         return getDao().getActivationDate();
     }
 
-    public Demand getDemand() {
+    public Feature getDemand() {
         return DemandImplementation.create(getDao().getDemand());
     }
 

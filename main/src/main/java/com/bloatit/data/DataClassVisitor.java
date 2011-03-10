@@ -36,7 +36,7 @@ public interface DataClassVisitor<ReturnType> {
 
     ReturnType visit(DaoComment dao);
 
-    ReturnType visit(DaoDemand dao);
+    ReturnType visit(DaoFeature dao);
 
     ReturnType visit(DaoOffer dao);
 
