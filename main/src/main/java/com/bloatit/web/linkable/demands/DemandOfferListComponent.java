@@ -73,9 +73,24 @@ public class DemandOfferListComponent extends HtmlDiv {
             final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
             switch (demand.getDemandState()) {
-                case PENDING:
-                    offersBlock.add(new HtmlTitle(Context.tr("No selected offer"), 1));
-                    offersBlock.add(new BicolumnOfferBlock(true));
+                case PENDING: {
+                    offersBlock.add(new HtmlTitle(Context.tr("No offer"), 1));
+                    BicolumnOfferBlock block = new BicolumnOfferBlock(true);
+                    offersBlock.add(block);
+                    block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The fisrt offer is selected by default.")));
+
+                    final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
+                    link.setCssClass("button");
+
+
+                    final HtmlDiv noOffer = new HtmlDiv("no_offer_block");
+                    {
+                        noOffer.add(link);
+                    }
+
+                    block.addInRightColumn(noOffer);
+
+                }
                     break;
                 case PREPARING:
                     offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
@@ -135,7 +150,6 @@ public class DemandOfferListComponent extends HtmlDiv {
                         block.addInLeftColumn(new HtmlParagraph(tr("Test the last release and report bugs.")));
                     }
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
-
 
                     generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
 
