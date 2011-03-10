@@ -34,14 +34,14 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.rest.adapters.DateAdapter;
-import com.bloatit.rest.list.RestHighlightDemandList;
+import com.bloatit.rest.list.RestHighlightFeatureList;
 
 /**
  * <p>
- * Representation of a HighlightDemand for the ReST RPC calls
+ * Representation of a HighlightFeature for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from HighlightDemand that needs to be
+ * This class should implement any methods from HighlightFeature that needs to be
  * called through the ReST RPC. Every such method needs to be mapped with the
  * {@code @REST} interface.
  * <p>
@@ -73,12 +73,12 @@ import com.bloatit.rest.list.RestHighlightDemandList;
  * <li>@XmlAttribute on each method/attribute that will yield <i>simple</i> data
  * </li>
  * <li>Methods that return a list need to be annotated with @XmlElement and to
- * return a RestHighlightDemandList</li>
+ * return a RestHighlightFeatureList</li>
  * </p>
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestHighlightDemand extends RestElement<HighlightFeature> {
+public class RestHighlightFeature extends RestElement<HighlightFeature> {
     private HighlightFeature model;
 
     // ---------------------------------------------------------------------------------------
@@ -89,10 +89,10 @@ public class RestHighlightDemand extends RestElement<HighlightFeature> {
      * Provided for JAXB
      */
     @SuppressWarnings("unused")
-    private RestHighlightDemand() {
+    private RestHighlightFeature() {
     }
 
-    protected RestHighlightDemand(HighlightFeature model) {
+    protected RestHighlightFeature(HighlightFeature model) {
         this.model = model;
     }
 
@@ -102,28 +102,28 @@ public class RestHighlightDemand extends RestElement<HighlightFeature> {
 
     /**
      * <p>
-     * Finds the RestHighlightDemand matching the <code>id</code>
+     * Finds the RestHighlightFeature matching the <code>id</code>
      * </p>
      *
-     * @param id the id of the RestHighlightDemand
+     * @param id the id of the RestHighlightFeature
      */
-    @REST(name = "highlightdemands", method = RequestMethod.GET)
-    public static RestHighlightDemand getById(int id) {
-        RestHighlightDemand restHighlightDemand = new RestHighlightDemand(HighlightFeatureManager.getById(id));
-        if (restHighlightDemand.isNull()) {
+    @REST(name = "highlightfeatures", method = RequestMethod.GET)
+    public static RestHighlightFeature getById(int id) {
+        RestHighlightFeature restHighlightFeature = new RestHighlightFeature(HighlightFeatureManager.getById(id));
+        if (restHighlightFeature.isNull()) {
             return null;
         }
-        return restHighlightDemand;
+        return restHighlightFeature;
     }
 
     /**
      * <p>
-     * Finds the list of all (valid) RestHighlightDemand
+     * Finds the list of all (valid) RestHighlightFeature
      * </p>
      */
-    @REST(name = "highlightdemands", method = RequestMethod.GET)
-    public static RestHighlightDemandList getAll() {
-        return new RestHighlightDemandList(HighlightFeatureManager.getAll());
+    @REST(name = "highlightfeatures", method = RequestMethod.GET)
+    public static RestHighlightFeatureList getAll() {
+        return new RestHighlightFeatureList(HighlightFeatureManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -148,8 +148,8 @@ public class RestHighlightDemand extends RestElement<HighlightFeature> {
      * @see com.bloatit.model.HighlightFeature#getFeature()
      */
     @XmlElement
-    public RestDemand getDemand() {
-        return new RestDemand(model.getFeature());
+    public RestFeature getFeature() {
+        return new RestFeature(model.getFeature());
     }
 
     /**

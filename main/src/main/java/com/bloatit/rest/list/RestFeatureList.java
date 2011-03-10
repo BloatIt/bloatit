@@ -22,61 +22,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.Feature;
 import com.bloatit.rest.list.master.RestListBinder;
-import com.bloatit.rest.resources.RestHighlightDemand;
+import com.bloatit.rest.resources.RestFeature;
 
 /**
  * <p>
- * Wraps a list of HighlightDemand into a list of RestElements
+ * Wraps a list of Feature into a list of RestElements
  * </p>
  * <p>
- * This class can be represented in Xml as a list of HighlightDemand<br />
+ * This class can be represented in Xml as a list of Feature<br />
  * Example:
  *
  * <pre>
- * {@code <HighlightDemands>}
- *     {@code <HighlightDemand name=HighlightDemand1 />}
- *     {@code <HighlightDemand name=HighlightDemand2 />}
- * {@code </HighlightDemands>}
+ * {@code <Features>}
+ *     {@code <Feature name=Feature1 />}
+ *     {@code <Feature name=Feature2 />}
+ * {@code </Features>}
  * </pre>
  * <p>
  */
-@XmlRootElement(name = "highlightdemands")
-public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand, HighlightFeature> {
+@XmlRootElement(name = "features")
+public class RestFeatureList extends RestListBinder<RestFeature, Feature> {
 
     /**
      * Provided for XML generation
      */
     @SuppressWarnings("unused")
-    private RestHighlightDemandList() {
+    private RestFeatureList() {
         super();
     }
 
     /**
-     * Creates a RestHighlightDemandList from a
-     * {@codePageIterable<HighlightDemand>}
+     * Creates a RestFeatureList from a {@codePageIterable<Feature>}
      *
      * @param collection the list of elements from the model
      */
-    public RestHighlightDemandList(PageIterable<HighlightFeature> collection) {
+    public RestFeatureList(PageIterable<Feature> collection) {
         super(collection);
     }
 
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElement(name = "highlightdemand")
+    @XmlElement(name = "feature")
     @XmlIDREF
-    public List<RestHighlightDemand> getHighlightDemands() {
-        List<RestHighlightDemand> highlightdemands = new ArrayList<RestHighlightDemand>();
-        for (RestHighlightDemand highlightdemand : this) {
-            highlightdemands.add(highlightdemand);
+    List<RestFeature> getFeaturesID() {
+        List<RestFeature> features = new ArrayList<RestFeature>();
+        for (RestFeature feature : this) {
+            features.add(feature);
         }
-        return highlightdemands;
+        return features;
     }
 }

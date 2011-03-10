@@ -173,8 +173,8 @@ public class RestOffer extends RestElement<Offer> {
      * @see com.bloatit.model.Offer#getFeature()
      */
     @XmlElement
-    public RestDemand getDemand() {
-        return new RestDemand(model.getFeature());
+    public RestFeature getFeature() {
+        return new RestFeature(model.getFeature());
     }
 
     /**

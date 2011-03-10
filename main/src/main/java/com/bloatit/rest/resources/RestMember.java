@@ -35,7 +35,7 @@ import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.rest.list.RestDemandList;
+import com.bloatit.rest.list.RestFeatureList;
 import com.bloatit.rest.list.RestMemberList;
 
 /**
@@ -156,8 +156,8 @@ public class RestMember extends RestElement<Member> {
     }
 
     @XmlElement
-    public RestDemandList getDemands() {
-        return new RestDemandList(model.getFeatures());
+    public RestFeatureList getFeatures() {
+        return new RestFeatureList(model.getFeatures());
     }
 
     @XmlIDREF

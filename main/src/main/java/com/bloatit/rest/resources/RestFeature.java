@@ -29,7 +29,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
@@ -44,15 +43,15 @@ import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestContributionList;
-import com.bloatit.rest.list.RestDemandList;
+import com.bloatit.rest.list.RestFeatureList;
 import com.bloatit.rest.list.RestOfferList;
 
 /**
  * <p>
- * Representation of a Demand for the ReST RPC calls
+ * Representation of a Feature for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from Demand that needs to be called
+ * This class should implement any methods from Feature that needs to be called
  * through the ReST RPC. Every such method needs to be mapped with the
  * {@code @REST} interface.
  * <p>
@@ -84,12 +83,12 @@ import com.bloatit.rest.list.RestOfferList;
  * <li>@XmlAttribute on each method/attribute that will yield <i>simple</i> data
  * </li>
  * <li>Methods that return a list need to be annotated with @XmlElement and to
- * return a RestDemandList</li>
+ * return a RestFeatureList</li>
  * </p>
  */
-@XmlRootElement(name = "demand")
+@XmlRootElement(name = "feature")
 @XmlAccessorType(XmlAccessType.NONE)
-public class RestDemand extends RestElement<Feature> {
+public class RestFeature extends RestElement<Feature> {
     private Feature model;
 
     // ---------------------------------------------------------------------------------------
@@ -100,10 +99,10 @@ public class RestDemand extends RestElement<Feature> {
      * Provided for JAXB
      */
     @SuppressWarnings("unused")
-    private RestDemand() {
+    private RestFeature() {
     }
 
-    protected RestDemand(Feature model) {
+    protected RestFeature(Feature model) {
         this.model = model;
     }
 
@@ -113,28 +112,28 @@ public class RestDemand extends RestElement<Feature> {
 
     /**
      * <p>
-     * Finds the RestDemand matching the <code>id</code>
+     * Finds the RestFeature matching the <code>id</code>
      * </p>
      *
-     * @param id the id of the RestDemand
+     * @param id the id of the RestFeature
      */
-    @REST(name = "demands", method = RequestMethod.GET)
-    public static RestDemand getById(int id) {
-        RestDemand restDemand = new RestDemand(FeatureManager.getFeatureById(id));
-        if (restDemand.isNull()) {
+    @REST(name = "features", method = RequestMethod.GET)
+    public static RestFeature getById(int id) {
+        RestFeature restFeature = new RestFeature(FeatureManager.getFeatureById(id));
+        if (restFeature.isNull()) {
             return null;
         }
-        return restDemand;
+        return restFeature;
     }
 
     /**
      * <p>
-     * Finds the list of all (valid) RestDemand
+     * Finds the list of all (valid) RestFeature
      * </p>
      */
-    @REST(name = "demands", method = RequestMethod.GET)
-    public static RestDemandList getAll() {
-        return new RestDemandList(FeatureManager.getFeatures());
+    @REST(name = "features", method = RequestMethod.GET)
+    public static RestFeatureList getAll() {
+        return new RestFeatureList(FeatureManager.getFeatures());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -169,7 +168,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return model.getTitle();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getTitle()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getTitle()");
         }
     }
 
@@ -183,7 +182,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return new RestCommentList(model.getComments());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getComments()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getComments()");
         }
     }
 
@@ -192,7 +191,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return new RestContributionList(model.getContributions());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getContributions()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getContributions()");
         }
     }
 
@@ -201,7 +200,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return model.getProgression();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getProgression()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getProgression()");
         }
     }
 
@@ -210,7 +209,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return model.getContribution();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getContribution()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getContribution()");
         }
     }
 
@@ -219,7 +218,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return new RestDescription(model.getDescription());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getDescription()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getDescription()");
         }
     }
 
@@ -229,7 +228,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return new RestProject(model.getProject());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getProject()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getProject()");
         }
     }
 
@@ -238,7 +237,7 @@ public class RestDemand extends RestElement<Feature> {
         try {
             return new RestOfferList(model.getOffers());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getOffers()");
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getOffers()");
         }
     }
 

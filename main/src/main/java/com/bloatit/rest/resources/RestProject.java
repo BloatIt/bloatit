@@ -33,7 +33,7 @@ import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Project;
 import com.bloatit.model.managers.ProjectManager;
-import com.bloatit.rest.list.RestDemandList;
+import com.bloatit.rest.list.RestFeatureList;
 import com.bloatit.rest.list.RestProjectList;
 
 /**
@@ -164,11 +164,11 @@ public class RestProject extends RestElement<Project> {
      * @see com.bloatit.model.Project#getFeatures()
      */
     @XmlElement
-    public RestDemandList getDemands() throws RestException {
+    public RestFeatureList getFeatures() throws RestException {
         try {
-            return new RestDemandList(model.getFeatures());
+            return new RestFeatureList(model.getFeatures());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDemands on Project", e);
+            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getFeatures on Project", e);
         }
     }
 

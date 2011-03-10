@@ -80,7 +80,7 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
     @Override
     public RestElement<HighlightFeature> visit(final HighlightFeature model) {
-        return new RestHighlightDemand(model);
+        return new RestHighlightFeature(model);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
     @Override
     public RestElement<Feature> visit(final Feature model) {
-        return new RestDemand(model);
+        return new RestFeature(model);
     }
 
     @Override
