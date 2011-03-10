@@ -32,6 +32,7 @@ import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 
@@ -48,7 +49,7 @@ public final class MembersListPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final HtmlDiv box = new HtmlDiv("padding_box");
+        TwoColumnLayout layout = new TwoColumnLayout(true);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
         final PageIterable<Member> memberList = MemberManager.getAll();
@@ -61,9 +62,9 @@ public final class MembersListPage extends MasterPage {
         pageTitle.add(pagedMemberList);
         pageTitle.add(new HtmlClearer());
 
-        box.add(pageTitle);
+        layout.addLeft(pageTitle);
 
-        add(box);
+        add(layout);
     }
 
     @Override
