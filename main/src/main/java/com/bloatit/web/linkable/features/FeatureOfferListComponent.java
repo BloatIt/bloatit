@@ -37,8 +37,8 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.meta.XmlText;
-import com.bloatit.model.Milestone;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.feature.FeatureImplementation;
@@ -310,7 +310,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     if (lots.size() == 1) {
                         final Milestone lot = lots.iterator().next();
 
-                        generateAddReleaseLink(lot, offerRightBottomColumn);
 
                         final HtmlParagraph datePara = new HtmlParagraph();
                         datePara.setCssClass("offer_block_para");
@@ -336,6 +335,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         }
                         offerRightBottomColumn.add(description);
 
+                        generateAddReleaseLink(lot, offerRightBottomColumn);
+
                         generateReleaseList(lot, offerRightBottomColumn);
                     } else {
                         int i = 0;
@@ -358,7 +359,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                 final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0} - ", i) + getLotState(lot), 2);
                                 lotBlock.add(lotTitle);
 
-                                generateAddReleaseLink(lot, lotBlock);
 
                                 final HtmlParagraph datePara = new HtmlParagraph();
                                 datePara.setCssClass("offer_block_para");
@@ -377,6 +377,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                 final HtmlParagraph description = new HtmlParagraph();
                                 description.addText(lot.getDescription());
                                 lotBlock.add(description);
+
+                                generateAddReleaseLink(lot, lotBlock);
 
                                 generateReleaseList(lot, lotBlock);
 
@@ -415,7 +417,9 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         public void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
             if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
-                lotBlock.add(new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("add a release")));
+                HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("add a release"));
+                link.setCssClass("button");
+                lotBlock.add(link);
             }
         }
 
