@@ -63,7 +63,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         activeTabKey = url.getActiveTabKey();
 
         final FeaturePageUrl featureUrl = new FeaturePageUrl(feature);
-        featureUrl.setFeatureTabPaneUrl(url);
+        featureUrl.setFeatureTabPaneUrl(new FeatureTabPaneUrl());
 
         // Create tab pane
         final HtmlTabBlock tabPane = new HtmlTabBlock("feature_tab_pane", activeTabKey, featureUrl);

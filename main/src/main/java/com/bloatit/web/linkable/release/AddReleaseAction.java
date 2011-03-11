@@ -9,21 +9,23 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.actions;
+package com.bloatit.web.linkable.release;
 
 import java.util.Locale;
 
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Milestone;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AddReleaseActionUrl;
 
 /**
@@ -41,9 +43,11 @@ public final class AddReleaseAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     private final String attachedfile;
 
+    @Optional
     @RequestParam(name = "attachedfile/filename", role = Role.POST)
     private final String attachedfileFileName;
 
+    @Optional
     @RequestParam(name = "attachedfile/contenttype", role = Role.POST)
     private final String attachedfileContentType;
 
@@ -89,7 +93,7 @@ public final class AddReleaseAction extends LoggedAction {
                                                                               null);
         milestone.addRelease(description, version, langLocale, fileImage);
         session.notifyGood(Context.tr("Release created successfuly !"));
-        return session.getLastStablePage();
+        return session.pickPreferredPage();
     }
 
     @Override
@@ -100,7 +104,7 @@ public final class AddReleaseAction extends LoggedAction {
     @Override
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
-        return session.pickPreferredPage();
+        return session.getLastVisitedPage();
     }
 
     @Override

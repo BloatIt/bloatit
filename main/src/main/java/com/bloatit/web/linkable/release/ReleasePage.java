@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.linkable.release;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -25,9 +25,11 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
+import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 
@@ -44,17 +46,18 @@ public final class ReleasePage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final HtmlDiv master = new HtmlDiv("padding_box");
-        add(master);
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addRight(new SideBarFeatureBlock(release.getFeature()));
+        add(layout);
 
-        master.add(new HtmlTitleBlock(Context.tr("Release"), 1));
-        master.add(new HtmlDiv().add(new HtmlParagraph(tr("date: "
+        layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
+        layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("date: "
                 + Context.getLocalizator().getDate(release.getCreationDate()).toString(FormatStyle.MEDIUM)))));
-        master.add(new HtmlDiv().add(new HtmlParagraph(tr("version: " + release.getVersion()))));
-        master.add(new HtmlDiv().add(new HtmlParagraph(tr("description: ")).add(new HtmlParagraph(release.getDescription()))));
+        layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("version: " + release.getVersion()))));
+        layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("description: ")).add(new HtmlParagraph(release.getDescription()))));
 
         HtmlDiv fileBloc = new HtmlDiv();
-        master.add(fileBloc);
+        layout.addLeft(fileBloc);
         for (FileMetadata files : release.getFiles()) {
             final HtmlParagraph attachementPara = new HtmlParagraph();
             attachementPara.add(new FileResourceUrl(files).getHtmlLink(files.getFileName()));
