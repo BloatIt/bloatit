@@ -1,0 +1,127 @@
+#! /bin/sh
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/usr/sbin:/bin:/usr/bin
+DESC="Bloatit web site"
+NAME=bloatit
+SCRIPTNAME=/etc/init.d/$NAME
+
+USER=bloatit
+ROOT=/home/$USER
+MAIN_CLASS=com.bloatit.BloatitServer
+DEPEDENCIES=$ROOT/jars
+SHARE_DIR=$ROOT/.local/share/$USER
+PIDFILE=$SHARE_DIR/.$NAME.pid
+. /lib/lsb/init-functions
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
+    return 1
+fi
+
+CLASSPATH=$ROOT/java
+for i in $DEPEDENCIES/*.jar ; do 
+   CLASSPATH=$CLASSPATH:$i
+done
+
+local tmp_launcher=/tmp/javaLauncher.sh
+echo '
+#!/bin/bash
+CLASSPATH=$1
+MAIN_CLASS=$2
+PID_FILE=$3
+SHARE_DIR=$4
+nohup java -classpath $CLASSPATH $MAIN_CLASS >> $SHARE_DIR/log/log.txt 2>> $SHARE_DIR/log/errors.txt 0< /dev/null &
+echo $! > $3
+' > $tmp_launcher
+chmod uog+x $tmp_launcher
+
+if [ "$(id -un)" != "$USER" ] ; then
+    su $USER -c "$tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR"
+else
+    $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR
+fi
+
+rm $tmp_launcher
+return 0
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
+    kill -15 "$(cat $PIDFILE)"
+    rm $PIDFILE
+    return 0
+fi
+return 1
+}
+
+case "$1" in
+  start)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+	do_start
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  stop)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+	do_stop
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  status)
+       if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
+           echo "Running"
+       else
+           echo "Stopped" 
+       fi
+       exit 0
+       ;;
+  #reload|force-reload)
+	#
+	# If do_reload() is not implemented then leave this commented out
+	# and leave 'force-reload' as an alias for 'restart'.
+	#
+	#log_daemon_msg "Reloading $DESC" "$NAME"
+	#do_reload
+	#log_end_msg $?
+	#;;
+  restart|force-reload)
+	#
+	# If the "reload" option is implemented then remove the
+	# 'force-reload' alias
+	#
+	log_daemon_msg "Restarting $DESC" "$NAME"
+	do_stop
+	case "$?" in
+	  0|1)
+		do_start
+		case "$?" in
+			0) log_end_msg 0 ;;
+			1) log_end_msg 1 ;; # Old process is still running
+			*) log_end_msg 1 ;; # Failed to start
+		esac
+		;;
+	  *)
+	  	# Failed to stop
+		log_end_msg 1
+		;;
+	esac
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+	exit 3
+	;;
+esac
+
+:
