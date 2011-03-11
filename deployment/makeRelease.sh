@@ -63,7 +63,7 @@ done
 
 if [ -z "$HOST" ] || [ -z "$RELEASE_VERSION" ] || [ -z "$NEXT_SNAPSHOT_VERSION" ] || [ -z "$REPOS_DIR" ]
 then
-	echo "Arguments are missing !!! \n" 1>&2
+	echo -e "Arguments are missing !!! \n" 1>&2
 	usage 1>&2
 	exit 1
 fi
