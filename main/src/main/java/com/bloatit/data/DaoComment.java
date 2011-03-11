@@ -72,7 +72,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @OrderBy(clause = "id")
     @IndexedEmbedded(depth = 1)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoComment> children = new ArrayList<DaoComment>(0);
+    private final List<DaoComment> children = new ArrayList<DaoComment>(0);
 
     public static DaoComment createAndPersist(final DaoBug father, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -224,8 +224,20 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         return null;
     }
 
-    protected DaoComment getFather() {
+    public DaoComment getFather() {
         return this.father;
+    }
+
+    public DaoBug  getFatherBug() {
+        return this.bug;
+    }
+
+    public DaoRelease getFatherRelease() {
+        return this.release;
+    }
+
+    public DaoFeature getFatherFeature() {
+        return this.feature;
     }
 
     // ======================================================================

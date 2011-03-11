@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.team;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -13,6 +15,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamActionUrl;
@@ -99,5 +102,18 @@ public class CreateTeamPage extends MasterPage {
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return CreateTeamPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new CreateTeamPageUrl().getHtmlLink(tr("Create a team")));
+
+        return breadcrumb;
     }
 }

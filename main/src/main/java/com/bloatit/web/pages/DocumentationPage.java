@@ -1,5 +1,7 @@
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
@@ -9,8 +11,10 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.web.pages.documentation.HtmlDocumentationRenderer;
 import com.bloatit.web.pages.documentation.HtmlDocumentationRenderer.DocumentationType;
 import com.bloatit.web.pages.master.BoxLayout;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.DocumentationUrl;
 
 /**
@@ -25,7 +29,7 @@ import com.bloatit.web.url.DocumentationUrl;
  * </p>
  */
 @ParamContainer("documentation")
-public class Documentation extends MasterPage {
+public class DocumentationPage extends MasterPage {
     private final static String DOC_TARGET = "doc";
     private final static String DEFAULT_DOC = "home";
 
@@ -33,7 +37,7 @@ public class Documentation extends MasterPage {
     @Optional(DEFAULT_DOC)
     private final String docTarget;
 
-    public Documentation(final DocumentationUrl url) {
+    public DocumentationPage(final DocumentationUrl url) {
         super(url);
         docTarget = url.getDocTarget();
     }
@@ -64,6 +68,33 @@ public class Documentation extends MasterPage {
     @Override
     protected String getPageTitle() {
         return Context.tr("Elveos documentation: {0}", docTarget);
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        if(docTarget.equals(DEFAULT_DOC)) {
+            return DocumentationPage.generateBreadcrumb();
+        }
+
+        return DocumentationPage.generateBreadcrumbPage(docTarget);
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new DocumentationPageUrl().getHtmlLink(tr("Documentation")));
+
+        return breadcrumb;
+    }
+
+    public static Breadcrumb generateBreadcrumbPage(String docTarget) {
+        Breadcrumb breadcrumb = DocumentationPage.generateBreadcrumb();
+
+        DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
+        documentationPageUrl.setDocTarget(docTarget);
+        breadcrumb.pushLink(documentationPageUrl.getHtmlLink(docTarget));
+
+        return breadcrumb;
     }
 
 }

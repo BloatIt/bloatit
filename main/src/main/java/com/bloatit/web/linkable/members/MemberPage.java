@@ -40,6 +40,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -165,5 +166,22 @@ public final class MemberPage extends MasterPage {
             }
             return new PlaceHolderElement();
         }
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return MemberPage.generateBreadcrumb(member);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Member member) {
+        Breadcrumb breadcrumb = MembersListPage.generateBreadcrumb();
+
+        try {
+            breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(member.getDisplayName()));
+        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(tr("Unknown member")));
+        }
+
+        return breadcrumb;
     }
 }

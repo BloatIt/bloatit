@@ -26,6 +26,8 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Milestone;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 
@@ -112,6 +114,19 @@ public final class AddReleasePage extends LoggedPage {
         final HtmlDiv group = new HtmlDiv();
         group.add(createReleaseTitle);
         return group;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return AddReleasePage.generateBreadcrumb(milestone);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Milestone milestone) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(milestone.getOffer().getFeature());
+
+        breadcrumb.pushLink(new AddReleasePageUrl(milestone).getHtmlLink(tr("Add a release")));
+
+        return breadcrumb;
     }
 
     @Override

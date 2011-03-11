@@ -32,6 +32,8 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
@@ -129,6 +131,19 @@ public final class BugPage extends MasterPage {
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachement")));
 
         return addAttachementForm;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return BugPage.generateBreadcrumb(bug);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Bug bug) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(bug.getFeature());
+
+        breadcrumb.pushLink(new BugPageUrl(bug).getHtmlLink(tr("Bug #") + bug.getId()));
+
+        return breadcrumb;
     }
 
 }

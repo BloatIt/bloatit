@@ -55,7 +55,7 @@ import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.pages.AddReleasePage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
-import com.bloatit.web.pages.Documentation;
+import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.OfferPage;
@@ -202,7 +202,7 @@ public class BloatitWebServer extends WebServer {
             return new UserContentAdminPageImplementation(new UserContentAdminPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(DocumentationUrl.getName())) {
-            return new Documentation(new DocumentationUrl(params, session.getParameters()));
+            return new DocumentationPage(new DocumentationUrl(params, session.getParameters()));
         }
         if (pageCode.equals(TeamsPageUrl.getName())) {
             return new TeamsPage(new TeamsPageUrl(params, session.getParameters()));

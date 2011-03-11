@@ -49,14 +49,22 @@ public abstract class MasterPage extends GenericPage {
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
 
+
+
         page.add(content);
 
         content.add(notificationBlock);
+        content.add(generateBreadcrumb());
 
         body.add(new Footer());
 
         doCreate();
 
+    }
+
+    private XmlNode generateBreadcrumb() {
+
+        return getBreadcrumb().toXmlNode();
     }
 
     @Override
@@ -65,6 +73,8 @@ public abstract class MasterPage extends GenericPage {
     }
 
     protected abstract String getPageTitle();
+
+    protected abstract Breadcrumb getBreadcrumb();
 
     @Override
     public final HtmlElement addAttribute(final String name, final String value) {

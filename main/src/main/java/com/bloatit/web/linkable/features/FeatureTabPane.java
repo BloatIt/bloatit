@@ -44,7 +44,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
     public static final String OFFERS_TAB = "offers_tab";
 
-    public static final String PARTICIPATIONS_TAB = "participations_tab";
+    public static final String CONTRIBUTIONS_TAB = "contributions_tab";
 
     public static final String DESCRIPTION_TAB = "description_tab";
 
@@ -78,7 +78,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
         // Create participations tab
         try {
-            tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", feature.getContributions().size()), PARTICIPATIONS_TAB) {
+            tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions().size()), CONTRIBUTIONS_TAB) {
                 @Override
                 public XmlNode generateBody() {
                     return new FeatureContributorsComponent(url.getContributionUrl(), feature);

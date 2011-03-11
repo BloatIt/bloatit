@@ -27,7 +27,9 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Feature;
 import com.bloatit.web.components.SideBarFeatureBlock;
+import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -114,5 +116,18 @@ public final class ContributePage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return tr("You must be logged to contribute");
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return ContributePage.generateBreadcrumb(targetFeature);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Feature feature) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
+
+        breadcrumb.pushLink(new ContributePageUrl(feature).getHtmlLink(tr("Contribute")));
+
+        return breadcrumb;
     }
 }

@@ -32,6 +32,8 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.AddSoftwarePageUrl;
@@ -122,6 +124,19 @@ public final class SoftwareListPage extends MasterPage {
         ArrayList<String> custom = new ArrayList<String>();
         custom.add("software-list.css");
         return custom;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return SoftwareListPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new SoftwareListPageUrl().getHtmlLink(tr("Softwares")));
+
+        return breadcrumb;
     }
 
 }

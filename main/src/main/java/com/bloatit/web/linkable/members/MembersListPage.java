@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.members;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,8 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
@@ -113,5 +117,19 @@ public final class MembersListPage extends MasterPage {
         ArrayList<String> custom = new ArrayList<String>();
         custom.add("members-list.css");
         return custom;
+    }
+
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return MembersListPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new MembersListPageUrl().getHtmlLink(tr("Members")));
+
+        return breadcrumb;
     }
 }

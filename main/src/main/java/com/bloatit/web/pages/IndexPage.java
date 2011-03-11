@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -157,6 +158,22 @@ public final class IndexPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = new Breadcrumb();
+
+        IndexPageUrl pageUrl = new IndexPageUrl();
+
+            breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
+
+
+        return breadcrumb;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return generateBreadcrumb();
     }
 
 }
