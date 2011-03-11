@@ -19,6 +19,8 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlLink;
+import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
@@ -33,24 +35,39 @@ public class FeatureBugListComponent extends HtmlDiv {
 
     public FeatureBugListComponent(final Feature feature) {
         super("padding");
+
+        try {
+            HtmlDiv reportBugBlock = new HtmlDiv("float_right");
+            HtmlLink reportBugLink = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(tr("Report a new bug"));
+            reportBugLink.setCssClass("button");
+            reportBugBlock.add(reportBugLink);
+            add(reportBugBlock);
+        } catch (UnauthorizedOperationException e) {
+        }
+
         // Open bugs
         final PageIterable<Bug> openBugs = feature.getOpenBugs();
         final HtmlTitle openBugsTitle = new HtmlTitle(Context.tr("Open bugs ({0})", openBugs.size()), 1);
         add(openBugsTitle);
-        try {
-            add(new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(tr("Report a new bug")));
-        } catch (UnauthorizedOperationException e) {
-        }
 
-        final HtmlTable openBugsTable = new HtmlTable(new HtmlBugsTableModel(openBugs));
-        add(openBugsTable);
+        if (openBugs.size() == 0) {
+            add(new HtmlParagraph(tr("No open bug")));
+        } else {
+            final HtmlTable openBugsTable = new HtmlTable(new HtmlBugsTableModel(openBugs));
+            add(openBugsTable);
+        }
 
         // Closed bugs
         final PageIterable<Bug> closedBugs = feature.getClosedBugs();
         final HtmlTitle closedBugsTitle = new HtmlTitle(Context.tr("Closed bugs ({0})", closedBugs.size()), 1);
         add(closedBugsTitle);
-        final HtmlTable closedBugsTable = new HtmlTable(new HtmlBugsTableModel(closedBugs));
-        add(closedBugsTable);
+        if (closedBugs.size() == 0) {
+            add(new HtmlParagraph(tr("No open bug")));
+        } else {
+            final HtmlTable closedBugsTable = new HtmlTable(new HtmlBugsTableModel(closedBugs));
+            add(closedBugsTable);
+        }
+
     }
 
     private class HtmlBugsTableModel extends HtmlTableModel {

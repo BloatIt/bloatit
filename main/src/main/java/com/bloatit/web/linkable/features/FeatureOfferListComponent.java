@@ -417,7 +417,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         public void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
             if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
-                HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("add a release"));
+                HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("Add a release"));
                 link.setCssClass("button");
                 lotBlock.add(link);
             }
