@@ -29,6 +29,32 @@ service lighttpd restart
 Verify the loading in logs:hibernate.cfg.xml not found
 cat /var/log/lighttpd/error.log
 
+**********************
+* Install postgresql *
+**********************
+# Install the postgresql package
+sudo apt-get install postgresql
+sudo apt-get install postgresql-client
+
+# Use the postgres User to create a new DB and a new User
+sudo su postgres
+psql
+#> CREATE USER bloatit;
+#> ALTER ROLE bloatit WITH createdb;
+#> CREATE DATABASE bloatit OWNER bloatit;
+#> ALTER USER bloatit WITH ENCRYPTED PASSWORD 'passe' ;
+#>\q
+
+# change the authentification method
+vim /etc/postgresql/8.4/main/pg_hba.conf 
+# Go to the end of the file.
+# change ident to md5 [EXCEPT FOR THE USER "postgres"]
+
+#leave the postgres session
+exit
+
+# restart the server
+sudo service postgresql restart
 
 ************************************
 *  Install gettext                 *
