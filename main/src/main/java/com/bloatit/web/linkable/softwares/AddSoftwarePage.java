@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.softwares;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -24,6 +26,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.AddSoftwareActionUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 
@@ -120,5 +123,18 @@ public final class AddSoftwarePage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to add a new software.");
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return AddSoftwarePage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
+
+        return breadcrumb;
     }
 }

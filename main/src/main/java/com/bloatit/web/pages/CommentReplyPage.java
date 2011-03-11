@@ -10,7 +10,10 @@
  */
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -23,6 +26,9 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Comment;
 import com.bloatit.web.actions.CommentCommentAction;
+import com.bloatit.web.linkable.bugs.BugPage;
+import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 
@@ -86,5 +92,39 @@ public final class CommentReplyPage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return CommentReplyPage.generateBreadcrumb(targetComment);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Comment comment) {
+
+        Breadcrumb breadcrumb;
+
+        switch(comment.getRootParentType()) {
+            case BUG:
+                breadcrumb = BugPage.generateBreadcrumb(comment.getRootComment().getParentBug());
+                break;
+            case FEATURE:
+                breadcrumb = FeaturePage.generateBreadcrumb(comment.getRootComment().getParentFeature());
+                break;
+            case RELEASE:
+                breadcrumb = ReleasePage.generateBreadcrumb(comment.getRootComment().getParentRelease());
+                break;
+            default:
+                breadcrumb = new Breadcrumb();
+        }
+
+
+        try {
+            breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to {0}''s comment",comment.getAuthor().getDisplayName())));
+        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to unknow member''s comment")));
+        }
+
+        return breadcrumb;
+    }
+
 
 }

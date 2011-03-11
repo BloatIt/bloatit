@@ -12,6 +12,8 @@
 package com.bloatit.web.linkable.features;
 
 // import java.util.Random;
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,8 @@ import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.components.HtmlFeatureSumary;
 import com.bloatit.web.components.HtmlFeatureSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -308,4 +312,21 @@ public final class FeatureListPage extends MasterPage {
 
         return new FeatureList(search.doSearch());
     }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
+
+            breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));
+
+
+        return breadcrumb;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return FeatureListPage.generateBreadcrumb();
+    }
+
 }

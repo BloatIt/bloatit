@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.team;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -17,6 +19,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 
@@ -102,5 +105,18 @@ public class SendTeamInvitationPage extends LoggedPage {
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return SendTeamInvitationPage.generateBreadcrumb(team);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Team team) {
+        Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+
+        breadcrumb.pushLink(new SendTeamInvitationPageUrl(team).getHtmlLink(tr("Send team invitation")));
+
+        return breadcrumb;
     }
 }

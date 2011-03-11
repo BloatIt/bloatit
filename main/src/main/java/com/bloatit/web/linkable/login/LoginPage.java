@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.login;
 
+import static com.bloatit.framework.webserver.Context.trc;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -23,6 +25,8 @@ import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -79,5 +83,18 @@ public final class LoginPage extends MasterPage {
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return LoginPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(trc("Login (verb)", "Login")));
+
+        return breadcrumb;
     }
 }

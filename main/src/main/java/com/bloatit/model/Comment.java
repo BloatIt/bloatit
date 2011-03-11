@@ -19,6 +19,7 @@ package com.bloatit.model;
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.CommentList;
 
 /**
@@ -144,6 +145,59 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(), getAuthToken().getMember().getDao(), text);
         getDao().addChildComment(comment);
         return Comment.create(comment);
+    }
+
+    public enum ParentType {
+        COMMENT, FEATURE, BUG, RELEASE
+    }
+
+    public ParentType getParentType() {
+        if (getDao().getFatherFeature() != null) {
+            return ParentType.FEATURE;
+        }
+        if (getDao().getFatherBug() != null) {
+            return ParentType.BUG;
+        }
+        if (getDao().getFatherRelease() != null) {
+            return ParentType.RELEASE;
+        }
+
+        return ParentType.COMMENT;
+    }
+
+    /**
+     * return the type of the comment else if the parent is a comment. In this
+     * case, return the root parent type of the parent comment.
+     */
+    public ParentType getRootParentType() {
+        if (getDao().getFather() != null) {
+            getParentComment().getRootParentType();
+        }
+        return getParentType();
+    }
+
+    public Comment getParentComment() {
+        return Comment.create(getDao().getFather());
+    }
+
+    public Comment getRootComment() {
+        if (getDao().getFather() != null) {
+            return getParentComment().getRootComment();
+        }
+
+        return this;
+    }
+
+    public Feature getParentFeature() {
+        return FeatureImplementation.create(getDao().getFatherFeature());
+    }
+
+    public Release getParentRelease() {
+        return Release.create(getDao().getFatherRelease());
+    }
+
+    public Bug getParentBug() {
+        return Bug.create(getDao().getFatherBug());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

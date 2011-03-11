@@ -52,6 +52,10 @@ public class Release extends UserContent<DaoRelease> {
         return new ListBinder<Comment, DaoComment>(getDao().getComments());
     }
 
+    public Feature getFeature() {
+        return getMilestone().getOffer().getFeature();
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -64,5 +68,7 @@ public class Release extends UserContent<DaoRelease> {
     public String getVersion() {
         return getDao().getVersion();
     }
+
+
 
 }

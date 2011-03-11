@@ -11,11 +11,14 @@
  */
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 
 public class PageNotFound extends MasterPage {
@@ -43,6 +46,19 @@ public class PageNotFound extends MasterPage {
         box.add(errorTitle);
 
         add(box);
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return PageNotFound.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink(tr("Page not found")));
+
+        return breadcrumb;
     }
 
 }

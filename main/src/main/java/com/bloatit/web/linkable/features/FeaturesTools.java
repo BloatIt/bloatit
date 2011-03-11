@@ -144,7 +144,7 @@ public class FeaturesTools {
             offersFeatureUrl.setAnchor("feature_tab_pane");
 
             final FeaturePageUrl contributionsFeatureUrl = new FeaturePageUrl(feature);
-            contributionsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.PARTICIPATIONS_TAB);
+            contributionsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             contributionsFeatureUrl.setAnchor("feature_tab_pane");
 
             featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(Context.trn("{0} comment",

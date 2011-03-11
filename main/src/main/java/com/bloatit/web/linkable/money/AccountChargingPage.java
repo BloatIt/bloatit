@@ -21,7 +21,10 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.model.Member;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 
@@ -72,5 +75,18 @@ public final class AccountChargingPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return "You need to login before you can charge your account";
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return AccountChargingPage.generateBreadcrumb(session.getAuthToken().getMember());
+    }
+
+    public static Breadcrumb generateBreadcrumb(Member member) {
+        Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
+
+        breadcrumb.pushLink(new AccountChargingPageUrl().getHtmlLink(tr("Charge account")));
+
+        return breadcrumb;
     }
 }

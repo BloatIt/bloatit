@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.login;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webserver.Context;
@@ -27,6 +29,8 @@ import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
@@ -36,8 +40,8 @@ import com.bloatit.web.url.RegisterPageUrl;
  * Page used by users to create their bloatit accounts
  * </p>
  */
-@ParamContainer("member/create")
-public final class RegisterPage extends MasterPage {
+@ParamContainer("member/signin")
+public final class SignInPage extends MasterPage {
 
     @SuppressWarnings("unused")
     @RequestParam(name = RegisterAction.COUNTRY_CODE, role = Role.SESSION)
@@ -51,7 +55,7 @@ public final class RegisterPage extends MasterPage {
 
     private final RegisterPageUrl url;
 
-    public RegisterPage(final RegisterPageUrl url) {
+    public SignInPage(final RegisterPageUrl url) {
         super(url);
         this.url = url;
         this.country = url.getCountry();
@@ -104,11 +108,24 @@ public final class RegisterPage extends MasterPage {
 
     @Override
     protected String getPageTitle() {
-        return Context.tr("Make an offer");
+        return Context.tr("Sign-in");
     }
 
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return SignInPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new RegisterPageUrl().getHtmlLink(tr("Sign-in")));
+
+        return breadcrumb;
     }
 }

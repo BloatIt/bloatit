@@ -33,7 +33,9 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Offer;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
@@ -155,4 +157,17 @@ public final class ReportBugPage extends LoggedPage {
         return Context.tr("You must be logged to report a new bug.");
     }
 
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return ReportBugPage.generateBreadcrumb(offer);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Offer offer) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(offer.getFeature());
+
+        breadcrumb.pushLink(new ReportBugPageUrl(offer).getHtmlLink(tr("Report a bug")));
+
+        return breadcrumb;
+    }
 }

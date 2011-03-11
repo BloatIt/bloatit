@@ -9,6 +9,8 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.admin.KudosableAdminListFactory;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 
 public final class KudosableAdminPageImplementation extends
@@ -57,6 +59,19 @@ public final class KudosableAdminPageImplementation extends
         addHasFileFilter(form, url);
         addAsTeamFilter(form, url);
         addPopularityStateFilter(form);
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return KudosableAdminPageImplementation.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new KudosableAdminPageUrl().getHtmlLink(tr("Votable administration")));
+
+        return breadcrumb;
     }
 
 }

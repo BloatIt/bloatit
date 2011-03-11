@@ -24,6 +24,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.model.Feature;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -102,6 +103,89 @@ public final class FeaturePage extends MasterPage {
 
         add(layout);
 
+    }
+
+
+    public static Breadcrumb generateBreadcrumb(Feature feature) {
+        Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
+
+        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+
+        try {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
+        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature {0}", feature.getId() )));
+        }
+
+        return breadcrumb;
+    }
+
+    public static Breadcrumb generateBreadcrumbBugs(Feature feature) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
+
+        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.BUGS_TAB);
+
+        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Bugs")));
+
+        return breadcrumb;
+    }
+
+
+    public static Breadcrumb generateBreadcrumbOffers(Feature feature) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
+
+        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.OFFERS_TAB);
+
+        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Offers")));
+
+        return breadcrumb;
+    }
+
+    public static Breadcrumb generateBreadcrumbContributions(Feature feature) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
+
+        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.CONTRIBUTIONS_TAB);
+
+        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Contributions")));
+
+        return breadcrumb;
+    }
+
+    public static Breadcrumb generateBreadcrumbDetails(Feature feature) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
+
+        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.DETAILS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.DETAILS_TAB);
+
+        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Details")));
+
+        return breadcrumb;
+    }
+
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
+            return FeaturePage.generateBreadcrumbBugs(feature);
+        }
+        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.CONTRIBUTIONS_TAB)) {
+            return FeaturePage.generateBreadcrumbContributions(feature);
+        }
+        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.DETAILS_TAB)) {
+            return FeaturePage.generateBreadcrumbDetails(feature);
+        }
+        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.OFFERS_TAB)) {
+            return FeaturePage.generateBreadcrumbOffers(feature);
+        }
+
+        return FeaturePage.generateBreadcrumb(feature);
     }
 
 }

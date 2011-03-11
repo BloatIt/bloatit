@@ -34,6 +34,7 @@ import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.BoxLayout;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -171,5 +172,18 @@ public final class CreateFeaturePage extends LoggedPage {
             return code;
         }
 
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return CreateFeaturePage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
+
+        return breadcrumb;
     }
 }

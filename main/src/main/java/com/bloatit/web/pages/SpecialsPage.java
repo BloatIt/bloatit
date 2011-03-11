@@ -12,12 +12,15 @@
 
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
@@ -47,5 +50,18 @@ public final class SpecialsPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return SpecialsPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new SpecialsPageUrl().getHtmlLink(tr("Special pages")));
+
+        return breadcrumb;
     }
 }

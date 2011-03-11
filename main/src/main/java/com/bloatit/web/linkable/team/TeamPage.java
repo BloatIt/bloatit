@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.team;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.EnumSet;
 import java.util.Iterator;
 
@@ -34,6 +36,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -326,5 +329,22 @@ public class TeamPage extends MasterPage {
             }
             return false;
         }
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return TeamPage.generateBreadcrumb(targetTeam);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Team team) {
+        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
+
+        try {
+            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
+        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
+        }
+
+        return breadcrumb;
     }
 }

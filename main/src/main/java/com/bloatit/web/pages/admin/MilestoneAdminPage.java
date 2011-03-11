@@ -4,8 +4,8 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
-import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug.Level;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -23,13 +23,15 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Release;
 import com.bloatit.model.admin.MilestoneAdminListFactory;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
 
 @ParamContainer("admin/milestonees")
 public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMilestone, Milestone, MilestoneAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
-    private DisplayableMilestoneState milestoneState;
+    private final DisplayableMilestoneState milestoneState;
 
     private final MilestoneAdminPageUrl url;
 
@@ -118,5 +120,18 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
                 return place;
             }
         });
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return MilestoneAdminPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new MilestoneAdminPageUrl().getHtmlLink(tr("Milestone administration")));
+
+        return breadcrumb;
     }
 }

@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -40,13 +42,15 @@ import com.bloatit.model.right.Action;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeatureOfferListComponent;
+import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 
-@ParamContainer("offer")
-public final class OfferPage extends LoggedPage {
+@ParamContainer("offer/create")
+public final class MakeOfferPage extends LoggedPage {
 
     @RequestParam
     @ParamConstraint(optionalErrorMsg = @tr("The feature id is not optional !"))
@@ -56,7 +60,7 @@ public final class OfferPage extends LoggedPage {
     @Optional
     private final Offer offer;
 
-    public OfferPage(final OfferPageUrl url) {
+    public MakeOfferPage(final OfferPageUrl url) {
         super(url);
         this.feature = url.getFeature();
         this.offer = url.getOffer();
@@ -207,6 +211,19 @@ public final class OfferPage extends LoggedPage {
 
         offerPageContainer.add(offerForm);
         return offerPageContainer;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return MakeOfferPage.generateBreadcrumb(feature);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Feature feature) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
+
+        breadcrumb.pushLink(new OfferPageUrl(feature).getHtmlLink(tr("Make an offer")));
+
+        return breadcrumb;
     }
 
 }

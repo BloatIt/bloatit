@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.team;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,9 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamPageUrl;
@@ -70,12 +74,25 @@ public class TeamsPage extends MasterPage {
     public boolean isStable() {
         return true;
     }
-    
+
     @Override
     protected List<String> getCustomCss() {
         ArrayList<String> custom = new ArrayList<String>();
         custom.add("teams-list.css");
         return custom;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return TeamsPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new TeamsPageUrl().getHtmlLink(tr("Teams")));
+
+        return breadcrumb;
     }
 
 }

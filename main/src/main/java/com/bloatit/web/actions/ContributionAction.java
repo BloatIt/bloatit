@@ -71,7 +71,7 @@ public final class ContributionAction extends LoggedAction {
             targetFeature.addContribution(amount, comment);
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator().getCurrency(amount).getLocaleString()));
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(targetFeature);
-            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.PARTICIPATIONS_TAB);
+            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             return featurePageUrl;
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));

@@ -25,6 +25,8 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
+import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ReleasePageUrl;
@@ -69,5 +71,18 @@ public final class ReleasePage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return ReleasePage.generateBreadcrumb(release);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Release release) {
+        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(release.getFeature());
+
+        breadcrumb.pushLink(new ReleasePageUrl(release).getHtmlLink(tr("Release ") + release.getVersion()));
+
+        return breadcrumb;
     }
 }

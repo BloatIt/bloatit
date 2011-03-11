@@ -20,8 +20,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.data.DaoBug;
-import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.BugState;
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
@@ -232,6 +232,10 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
+    }
+
+    public Feature getFeature() {
+        return getMilestone().getOffer().getFeature();
     }
 
 }
