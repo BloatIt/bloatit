@@ -3,7 +3,7 @@
 	<groupId>com.bloatit</groupId>
 	<artifactId>BloatIt</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1.alfa</version>
+	<version>1.0</version>
 	<name>BloatIt</name>
 	<url>http://maven.apache.org</url>
 
@@ -201,12 +201,12 @@
 		<dependency>
 			<groupId>com.bloatit</groupId>
 			<artifactId>BloatItApt</artifactId>
-			<version>0.1.alfa</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.bloatit</groupId>
 			<artifactId>BloatItPaypalBinding</artifactId>
-			<version>0.1.alfa</version>
+			<version>1.0</version>
 		</dependency>
 
 		<!-- Jakarta language commons (to escape string) -->
