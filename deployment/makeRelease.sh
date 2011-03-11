@@ -1,22 +1,26 @@
 #!/bin/bash
 
-
 USER=bloatit
-REPOS_DIR=/home/thomas/bloatit/
-MVN=mvn
+REPOS_DIR=/home/thomas/tempBloatit/
+MVN="mvn -f $REPOS_DIR/pom.xml "
 
 PREFIX=bloatit
-RELEASE_VERSION=1.0
-NEXT_SNAPSHOT_VERSION=1.1
+RELEASE_VERSION=2.0
+NEXT_SNAPSHOT_VERSION=2.1
 
 . $PWD/log.sh
 . $PWD/conf.sh
 
-SSH=ssh $USER@$HOST
+SSH="ssh $USER@$HOST"
 
 exit_ok(){
     echo "exiting"
     exit 0
+}
+
+exit_fail(){
+    echo "Failure. Abording know ! "
+    exit 128
 }
 
 abort(){
@@ -36,7 +40,6 @@ calculateLogFilename
 log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
 abort_if_non_zero $?
 
-
 ##
 ## Perform the mvn release.
 ##
@@ -44,18 +47,26 @@ abort_if_non_zero $?
 log_date "Make a mvn release." $LOG_FILE
 (
     $MVN release:clean
+    $MVN install -Dmaven.test.skip=true
     $MVN --batch-mode -Dtag=$PREFIX-$RELEASE_VERSION release:prepare \
                       -DreleaseVersion=$RELEASE_VERSION \
-		      -DdevelopmentVersion=$NEXT_SNAPSHOT_VERSION-SNAPSHOT
-		      -DautoVersionSubmodules=true
-    $MVN release:perform
+		      -DdevelopmentVersion=$NEXT_SNAPSHOT_VERSION-SNAPSHOT \
+		      -DautoVersionSubmodules=true -Dmaven.test.skip=true \
+    && $MVN release:perform
+
+    _result=$?
 ) | tee -a $LOG_FILE
+
+[ "$_result" = "0" ] || exit_fail
+
 
 ##
 ## Send newly added data to the distant server
 ##
 
 ./transfert.sh -d $HOST -l $LOG_FILE -s $REPOS_DIR -n $USER
+
+[ $? = 0 ] || exit_fail
 
 ##
 ## Commit the git distant new data
@@ -92,6 +103,9 @@ chmod u+x /tmp/$MERGE_FILE_SCRIPT
 # ressources files
 /tmp/$MERGE_FILE_SCRIPT $UP_RESSOURCES $CLASSES
 "
+
+[ $? = 0 ] || exit_fail
+
 ##
 ## Launching the server.
 ##
