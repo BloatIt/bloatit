@@ -9,7 +9,7 @@
 
 	<scm>
 		<url>https://github.com/BloatIt/bloatit</url>
-		<connection>scm:git:ssh://github.com/BloatIt/bloatit.git</connection>
+		<connection>scm:git:file://home/thomas/tempBloatit</connection>
 	</scm>
 
 	<build>
