@@ -22,3 +22,13 @@ www/resources/css/*.css
 main/src/main/java/com/bloatit/web/url/?*Url.java
 main/src/main/java/com/bloatit/web/url/?*UrlComponent.java
 paylineWebservice/src/main/java/*
+
+# Maven release files
+pom.xml.releaseBackup
+release.properties
+
+# Log from release scripts
+log-*
+
+# vim temp files
+.*.swp
