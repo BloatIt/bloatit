@@ -15,6 +15,7 @@ import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
+import com.bloatit.model.Commentable;
 import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
@@ -92,9 +93,9 @@ public final class Loaders {
         if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
         }
-        // if (Commentable.class.equals(theClass)) {
-        // return (Loader<T>) new LowToIdentifiable();
-        // }
+        if (Commentable.class.equals(theClass)) {
+            return (Loader<T>) new LowToIdentifiable();
+        }
         if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
         }

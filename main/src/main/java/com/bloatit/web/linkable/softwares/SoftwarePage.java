@@ -22,7 +22,6 @@ import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
@@ -31,6 +30,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
@@ -58,17 +58,18 @@ public final class SoftwarePage extends MasterPage {
             throw new PageNotFoundException();
         }
 
+        TwoColumnLayout layout = new TwoColumnLayout(true);
+
         try {
 
-            final HtmlDiv box = new HtmlDiv("padding_box");
 
             HtmlTitle softwareName;
             softwareName = new HtmlTitle(software.getName(), 1);
-            box.add(softwareName);
+            layout.addLeft(softwareName);
 
             FileMetadata image = software.getImage();
             if (image != null) {
-                box.add(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
+                layout.addLeft(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
             }
 
             final Locale defaultLocale = Context.getLocalizator().getLocale();
@@ -77,13 +78,15 @@ public final class SoftwarePage extends MasterPage {
             final HtmlParagraph shortDescription = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle()));
             final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
 
-            box.add(shortDescription);
-            box.add(description);
+            layout.addLeft(shortDescription);
+            layout.addLeft(description);
 
-            add(box);
+
         } catch (final UnauthorizedOperationException e) {
-            add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this software.")));
+            layout.addLeft(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this software.")));
         }
+
+        add(layout);
     }
 
     @Override
