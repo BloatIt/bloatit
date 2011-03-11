@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
@@ -104,5 +105,22 @@ public final class SoftwarePage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return SoftwarePage.generateBreadcrumb(software);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Software software) {
+        Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
+
+        try {
+            breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
+        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(tr("Unknown software")));
+        }
+
+        return breadcrumb;
     }
 }

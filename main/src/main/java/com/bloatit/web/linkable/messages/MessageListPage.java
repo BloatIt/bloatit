@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.messages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -15,7 +17,9 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
@@ -86,5 +90,18 @@ public class MessageListPage extends LoggedPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return MessageListPage.generateBreadcrumb(session.getAuthToken().getMember());
+    }
+
+    public static Breadcrumb generateBreadcrumb(Member member) {
+        Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
+
+        breadcrumb.pushLink(new MessageListPageUrl().getHtmlLink(tr("Message list")));
+
+        return breadcrumb;
     }
 }

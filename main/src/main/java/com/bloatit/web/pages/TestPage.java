@@ -36,6 +36,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.TestPageUrl;
 
@@ -145,5 +146,18 @@ public final class TestPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return TestPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new TestPageUrl().getHtmlLink(tr("Test")));
+
+        return breadcrumb;
     }
 }

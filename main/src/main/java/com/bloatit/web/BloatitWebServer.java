@@ -28,7 +28,7 @@ import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
 import com.bloatit.web.linkable.login.RegisterAction;
-import com.bloatit.web.linkable.login.RegisterPage;
+import com.bloatit.web.linkable.login.SignInPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
@@ -58,7 +58,7 @@ import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.OfferPage;
+import com.bloatit.web.pages.MakeOfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.ReleasePage;
 import com.bloatit.web.pages.SpecialsPage;
@@ -169,7 +169,7 @@ public class BloatitWebServer extends WebServer {
             return new ContributePage(new ContributePageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(OfferPageUrl.getName())) {
-            return new OfferPage(new OfferPageUrl(params, session.getParameters()));
+            return new MakeOfferPage(new OfferPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(TestPageUrl.getName())) {
             return new TestPage(new TestPageUrl(params, session.getParameters()));
@@ -178,7 +178,7 @@ public class BloatitWebServer extends WebServer {
             return new AccountChargingPage(new AccountChargingPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(RegisterPageUrl.getName())) {
-            return new RegisterPage(new RegisterPageUrl(params, session.getParameters()));
+            return new SignInPage(new RegisterPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylinePageUrl.getName())) {
             return new PaylinePage(new PaylinePageUrl(params, session.getParameters()));

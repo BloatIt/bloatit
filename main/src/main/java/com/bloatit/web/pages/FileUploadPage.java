@@ -1,11 +1,14 @@
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.UploadFileActionUrl;
@@ -42,4 +45,19 @@ public class FileUploadPage extends MasterPage {
         plop.add(new HtmlSubmit("Send"));
 
     }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return FileUploadPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new FileUploadPageUrl().getHtmlLink(tr("File upload")));
+
+        return breadcrumb;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.money;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import org.hibernate.CacheMode;
 
 import com.bloatit.common.Log;
@@ -11,6 +13,8 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.TokenNotfoundException;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.PaylinePageUrl;
 
@@ -64,6 +68,19 @@ public final class PaylinePage extends MasterPage {
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return PaylinePage.generateBreadcrumb(ack);
+    }
+
+    public static Breadcrumb generateBreadcrumb(String ack) {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new PaylinePageUrl(ack).getHtmlLink(tr("Transaction result")));
+
+        return breadcrumb;
     }
 
 }

@@ -7,6 +7,8 @@ import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.admin.UserContentAdminListFactory;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 public class UserContentAdminPageImplementation extends
@@ -45,6 +47,19 @@ public class UserContentAdminPageImplementation extends
         addIsDeletedFilter(form, url);
         addHasFileFilter(form, url);
         addAsTeamFilter(form, url);
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return UserContentAdminPageImplementation.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new UserContentAdminPageUrl().getHtmlLink(tr("User content administration")));
+
+        return breadcrumb;
     }
 
 }

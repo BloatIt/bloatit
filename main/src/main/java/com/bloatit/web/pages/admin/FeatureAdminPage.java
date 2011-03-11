@@ -18,6 +18,8 @@ import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.Feature;
 import com.bloatit.model.admin.FeatureAdminListFactory;
 import com.bloatit.web.actions.AdministrationAction;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.FeatureAdminPageUrl;
 
 @ParamContainer("admin/features")
@@ -175,6 +177,19 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
                 }
             }
         });
+    }
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return FeatureAdminPage.generateBreadcrumb();
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+
+        breadcrumb.pushLink(new FeatureAdminPageUrl().getHtmlLink(tr("Feature administration")));
+
+        return breadcrumb;
     }
 
 }

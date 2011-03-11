@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.bugs;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.EnumSet;
 
 import com.bloatit.framework.webserver.Context;
@@ -28,6 +30,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Bug;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 
@@ -124,6 +127,20 @@ public final class ModifyBugPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to modify a bug.");
+    }
+
+
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return ModifyBugPage.generateBreadcrumb(bug);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Bug bug) {
+        Breadcrumb breadcrumb = BugPage.generateBreadcrumb(bug);
+
+        breadcrumb.pushLink(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify")));
+
+        return breadcrumb;
     }
 
 }
