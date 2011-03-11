@@ -11,9 +11,7 @@ OPTIONS:
    -h      Show this message. 
    -r      Release version (Could be 1.0.alfa).
    -s      Next snapshot number version (Must be only numeric).
-   -h      Show this message. 
    -d      Destination host. Requiered.
-   -l      Log file name, messages will be append to the file. Requiered.
    -b      Bloatit root folder (git/mvn root).
    -n      Distant user name. Default is "bloatit".
 EOF
@@ -28,9 +26,6 @@ RELEASE_VERSION=
 NEXT_SNAPSHOT_VERSION=
 REPOS_DIR=
 USER=bloatit
-
-PREFIX=bloatit
-MVN="mvn -f $REPOS_DIR/pom.xml "
 
 while getopts "hd:b:n:r:s:" OPTION
 do
@@ -67,6 +62,9 @@ then
 	usage 1>&2
 	exit 1
 fi
+
+PREFIX=bloatit
+MVN="mvn -f $REPOS_DIR/pom.xml "
 
 . $PWD/log.sh
 . $PWD/conf.sh
