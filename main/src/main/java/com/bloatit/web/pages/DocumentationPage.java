@@ -15,7 +15,6 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.DocumentationPageUrl;
-import com.bloatit.web.url.DocumentationUrl;
 
 /**
  * <p>
@@ -37,7 +36,7 @@ public class DocumentationPage extends MasterPage {
     @Optional(DEFAULT_DOC)
     private final String docTarget;
 
-    public DocumentationPage(final DocumentationUrl url) {
+    public DocumentationPage(final DocumentationPageUrl url) {
         super(url);
         docTarget = url.getDocTarget();
     }

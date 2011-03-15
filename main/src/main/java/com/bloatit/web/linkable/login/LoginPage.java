@@ -30,7 +30,6 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
-import com.bloatit.web.url.RegisterPageUrl;
 
 @ParamContainer("login")
 public final class LoginPage extends MasterPage {
@@ -66,7 +65,7 @@ public final class LoginPage extends MasterPage {
 
             box.add(loginTitle);
 
-            box.add(new HtmlParagraph().add(new RegisterPageUrl().getHtmlLink(Context.tr("No account ? Sign-in now."))));
+            box.add(new HtmlParagraph().add(new SignUpPageUrl().getHtmlLink(Context.tr("No account ? Sign-up now."))));
 
             box.add(new HtmlParagraph().add(new PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
 
