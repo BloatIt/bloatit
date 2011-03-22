@@ -46,8 +46,8 @@ import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
-import com.bloatit.web.url.OfferPageUrl;
 
 @ParamContainer("offer/create")
 public final class MakeOfferPage extends LoggedPage {
@@ -60,7 +60,7 @@ public final class MakeOfferPage extends LoggedPage {
     @Optional
     private final Offer offer;
 
-    public MakeOfferPage(final OfferPageUrl url) {
+    public MakeOfferPage(final MakeOfferPageUrl url) {
         super(url);
         this.feature = url.getFeature();
         this.offer = url.getOffer();
@@ -221,7 +221,7 @@ public final class MakeOfferPage extends LoggedPage {
     public static Breadcrumb generateBreadcrumb(Feature feature) {
         Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
 
-        breadcrumb.pushLink(new OfferPageUrl(feature).getHtmlLink(tr("Make an offer")));
+        breadcrumb.pushLink(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make an offer")));
 
         return breadcrumb;
     }

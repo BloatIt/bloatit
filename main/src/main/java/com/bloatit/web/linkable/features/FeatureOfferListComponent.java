@@ -46,8 +46,8 @@ import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.AddReleasePageUrl;
+import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -79,7 +79,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     offersBlock.add(block);
                     block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The fisrt offer is selected by default.")));
 
-                    final HtmlLink link = new OfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
+                    final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
                     link.setCssClass("button");
 
 
@@ -133,7 +133,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
                     BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
                     offersBlock.add(unselectedBlock);
-                    unselectedBlock.addInLeftColumn(new OfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
+                    unselectedBlock.addInLeftColumn(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
                     unselectedBlock.addInLeftColumn(new HtmlParagraph("The concurrent offers must be voted enought to become the selected offer."));
 
                     for (final Offer offer : offers) {

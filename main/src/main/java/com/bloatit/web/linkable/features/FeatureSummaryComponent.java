@@ -39,8 +39,8 @@ import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributePageUrl;
+import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
@@ -243,7 +243,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         final HtmlParagraph makeOfferText = new HtmlParagraph(Context.tr("You are a developer and want to be paid to achieve this request?"));
         element.add(makeOfferText);
 
-        final HtmlLink link = new OfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
+        final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
         link.setCssClass("button");
         element.add(link);
         return element;
@@ -265,7 +265,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
         }
 
-        final HtmlLink link = new OfferPageUrl(feature).getHtmlLink();
+        final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink();
         final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
                                                                                 link));
         element.add(makeOfferText);

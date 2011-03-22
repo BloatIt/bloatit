@@ -124,7 +124,7 @@ public final class SignUpPage extends MasterPage {
     public static Breadcrumb generateBreadcrumb() {
         Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        breadcrumb.pushLink(new RegisterPageUrl().getHtmlLink(tr("Sign-in")));
+        breadcrumb.pushLink(new SignUpPageUrl().getHtmlLink(tr("Sign-in")));
 
         return breadcrumb;
     }

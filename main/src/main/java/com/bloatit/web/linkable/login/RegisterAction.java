@@ -20,7 +20,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.RegisterActionUrl;
-import com.bloatit.web.url.RegisterPageUrl;
+import com.bloatit.web.url.SignUpPageUrl;
 
 /**
  * A response to a form used sign into the website (creation of a new user)
@@ -104,13 +104,13 @@ public class RegisterAction extends Action {
         return session.pickPreferredPage();
     }
 
-    public RegisterPageUrl sendError() {
+    public SignUpPageUrl sendError() {
         session.addParameter(url.getEmailParameter());
         session.addParameter(url.getLoginParameter());
         session.addParameter(url.getPasswordParameter());
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        return new RegisterPageUrl();
+        return new SignUpPageUrl();
     }
 
     @Override
@@ -121,6 +121,6 @@ public class RegisterAction extends Action {
         session.addParameter(url.getPasswordParameter());
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        return new RegisterPageUrl();
+        return new SignUpPageUrl();
     }
 }

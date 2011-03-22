@@ -30,6 +30,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.web.url.SignUpPageUrl;
 
 @ParamContainer("login")
 public final class LoginPage extends MasterPage {
