@@ -33,7 +33,6 @@ import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.master.BoxLayout;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -73,9 +72,8 @@ public final class CreateFeaturePage extends LoggedPage {
 
     private HtmlElement generateFeatureCreationForm() {
 
-        final TwoColumnLayout layout = new TwoColumnLayout();
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
 
-        final BoxLayout box = new BoxLayout();
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
         final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl();
@@ -150,9 +148,7 @@ public final class CreateFeaturePage extends LoggedPage {
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
 
-        box.add(createFeatureTitle);
-
-        layout.addLeft(box);
+        layout.addLeft(createFeatureTitle);
 
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
