@@ -115,7 +115,30 @@ public final class CreateFeaturePage extends LoggedPage {
                                                                  tr("Describe the feature"),
                                                                  SPECIF_INPUT_NB_LINES,
                                                                  SPECIF_INPUT_NB_COLUMNS);
-        specificationInput.setDefaultValue(specificationFieldData.getSuggestedValue());
+        String suggestedValue = tr("What is the expected work ?\n" +
+        		"\n" +
+        		"What is the requested date ?\n" +
+        		"\n" +
+        		"What is the expected compatibility ?\n" +
+        		"\n" +
+        		"  * Linux 2.6.x\n" +
+        		"  * Windows 7\n" +
+        		"  * Mac Os X\n" +
+        		"  * ...\n" +
+        		"\n" +
+        		"What is the expected output ?\n" +
+        		"\n" +
+        		" * Source tarball\n" +
+        		" * Diff patch\n" +
+        		" * Public repository\n" +
+        		" * Push in the project's official  repository\n" +
+        		" * Windows install\n" +
+        		" * Install shell script\n" +
+        		" * Deb package\n" +
+        		" * Rpm package\n" +
+        		" * ...");
+
+        specificationInput.setDefaultValue(suggestedValue);
         specificationInput.addErrorMessages(specificationFieldData.getErrorMessages());
         specificationInput.setComment(tr("Enter a long description of the feature : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
