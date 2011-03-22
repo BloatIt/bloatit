@@ -7,6 +7,7 @@ import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AdministrationAction;
+import com.bloatit.web.actions.CheckContributionAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateCommentAction;
@@ -54,6 +55,7 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
+import com.bloatit.web.pages.CheckContributionPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.DocumentationPage;
@@ -76,6 +78,8 @@ import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
+import com.bloatit.web.url.CheckContributionActionUrl;
+import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -168,6 +172,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ContributePageUrl.getName())) {
             return new ContributePage(new ContributePageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(CheckContributionPageUrl.getName())) {
+            return new CheckContributionPage(new CheckContributionPageUrl(params, session.getParameters()));
+        }
         if (pageCode.equals(MakeOfferPageUrl.getName())) {
             return new MakeOfferPage(new MakeOfferPageUrl(params, session.getParameters()));
         }
@@ -256,6 +263,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ContributionActionUrl.getName())) {
             return new ContributionAction(new ContributionActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(CheckContributionActionUrl.getName())) {
+            return new CheckContributionAction(new CheckContributionActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(OfferActionUrl.getName())) {
             return new OfferAction(new OfferActionUrl(params, session.getParameters()));

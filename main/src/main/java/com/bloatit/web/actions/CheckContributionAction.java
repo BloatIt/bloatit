@@ -13,8 +13,6 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
-import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -25,17 +23,15 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
-import com.bloatit.web.linkable.features.FeatureTabPane;
-import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.CheckContributionActionUrl;
+import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
-import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.FeaturePageUrl;
 
 /**
  * A response to a form used to create a contribution to a feature
  */
-@ParamContainer("action/contribute")
-public final class ContributionAction extends LoggedAction {
+@ParamContainer("action/contribute/check")
+public final class CheckContributionAction extends LoggedAction {
 
     public static final String AMOUNT_CODE = "contributionAmount";
     public static final String COMMENT_CODE = "comment";
@@ -44,20 +40,20 @@ public final class ContributionAction extends LoggedAction {
     @RequestParam(name = TARGET_FEATURE)
     private final Feature targetFeature;
 
-    @RequestParam(name = COMMENT_CODE, role = Role.GET)
+    @RequestParam(name = COMMENT_CODE, role = Role.POST)
     @ParamConstraint(max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
     @Optional
     private final String comment;
 
-    @RequestParam(name = AMOUNT_CODE, role = Role.GET)
+    @RequestParam(name = AMOUNT_CODE, role = Role.POST)
     @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
     max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
-    precision = 0, precisionErrorMsg = @tr("Please do not use Cents."))
+    precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))
     private final BigDecimal amount;
 
-    private final ContributionActionUrl url;
+    private final CheckContributionActionUrl url;
 
-    public ContributionAction(final ContributionActionUrl url) {
+    public CheckContributionAction(final CheckContributionActionUrl url) {
         super(url);
         this.url = url;
         this.targetFeature = url.getTargetFeature();
@@ -67,23 +63,10 @@ public final class ContributionAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
-        try {
-            targetFeature.addContribution(amount, comment);
-            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator().getCurrency(amount).getLocaleString()));
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(targetFeature);
-            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
-            return featurePageUrl;
-        } catch (final NotEnoughMoneyException e) {
-            session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
-            session.addParameter(url.getAmountParameter());
-            session.addParameter(url.getCommentParameter());
 
-            session.setTargetPage(this.url);
-            return new AccountChargingPageUrl();
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
-            return new ContributePageUrl(targetFeature);
-        }
+            CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(targetFeature, amount);
+            checkContributionPageUrl.setComment(comment);
+            return checkContributionPageUrl;
     }
 
     @Override

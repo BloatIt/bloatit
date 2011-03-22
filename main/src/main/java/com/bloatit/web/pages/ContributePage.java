@@ -31,6 +31,7 @@ import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 
@@ -69,7 +70,7 @@ public final class ContributePage extends LoggedPage {
     }
 
     public HtmlElement generateContributeForm() {
-        final ContributionActionUrl formActionUrl = new ContributionActionUrl(targetFeature);
+        final CheckContributionActionUrl formActionUrl = new CheckContributionActionUrl(targetFeature);
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
