@@ -38,7 +38,7 @@ import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
-import com.bloatit.web.url.ContributePageUrl;
+import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -232,7 +232,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         final HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
         element.add(contributeText);
 
-        final HtmlLink link = new ContributePageUrl(feature).getHtmlLink(Context.tr("Contribute"));
+        final HtmlLink link = new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute"));
         link.setCssClass("button");
         element.add(link);
         return element;

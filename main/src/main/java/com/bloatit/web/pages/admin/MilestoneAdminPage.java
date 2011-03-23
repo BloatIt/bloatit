@@ -6,6 +6,7 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -120,6 +121,11 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
                 return place;
             }
         });
+    }
+
+    @Override
+    public void processErrors() throws RedirectException {
+        session.notifyList(url.getMessages());
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.EnumSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoFeature;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -177,6 +178,11 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
                 }
             }
         });
+    }
+
+    @Override
+    public void processErrors() throws RedirectException {
+        session.notifyList(url.getMessages());
     }
 
     @Override

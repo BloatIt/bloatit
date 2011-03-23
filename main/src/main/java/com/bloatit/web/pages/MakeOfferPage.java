@@ -15,6 +15,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
@@ -79,6 +80,11 @@ public final class MakeOfferPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to make an offer");
+    }
+
+
+    @Override
+    public void processErrors() throws RedirectException {
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
@@ -54,11 +55,16 @@ public abstract class MasterPage extends GenericPage {
         page.add(content);
 
         content.add(notificationBlock);
-        content.add(generateBreadcrumb());
+
+        PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
+
+        content.add(breacrumbPlaceHolder);
 
         body.add(new Footer());
 
         doCreate();
+
+        breacrumbPlaceHolder.add(generateBreadcrumb());
 
     }
 

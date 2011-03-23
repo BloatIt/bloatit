@@ -3,6 +3,7 @@ package com.bloatit.web.pages.admin;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.model.UserContent;
@@ -29,6 +30,11 @@ public class UserContentAdminPageImplementation extends
     @Override
     public final boolean isStable() {
         return true;
+    }
+
+    @Override
+    public void processErrors() throws RedirectException {
+        session.notifyList(url.getMessages());
     }
 
     @Override

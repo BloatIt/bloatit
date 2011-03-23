@@ -7,9 +7,7 @@ import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AdministrationAction;
-import com.bloatit.web.actions.CheckContributionAction;
 import com.bloatit.web.actions.CommentCommentAction;
-import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.OfferAction;
@@ -20,6 +18,11 @@ import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
 import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
+import com.bloatit.web.linkable.contribution.CheckContributionAction;
+import com.bloatit.web.linkable.contribution.CheckContributionPage;
+import com.bloatit.web.linkable.contribution.ContributePage;
+import com.bloatit.web.linkable.contribution.ContributionAction;
+import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -55,9 +58,7 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
-import com.bloatit.web.pages.CheckContributionPage;
 import com.bloatit.web.pages.CommentReplyPage;
-import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
@@ -84,6 +85,7 @@ import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -335,6 +337,11 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(GiveRightActionUrl.getName())) {
             return new GiveRightAction(new GiveRightActionUrl(params, session.getParameters()));
+        }
+
+        // Process
+        if (pageCode.equals(ContributionProcessUrl.getName())) {
+            return new ContributionProcess(new ContributionProcessUrl(params, session.getParameters()));
         }
 
         // Resource page

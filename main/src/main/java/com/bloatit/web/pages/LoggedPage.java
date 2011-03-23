@@ -55,6 +55,9 @@ public abstract class LoggedPage extends MasterPage {
      */
     @Override
     protected final void doCreate() throws RedirectException {
+
+        processErrors();
+
         if (session.isLogged()) {
             add(createRestrictedContent());
         } else {
@@ -98,5 +101,11 @@ public abstract class LoggedPage extends MasterPage {
      * @return a String indicating to the user why he cannot access this page
      */
     public abstract String getRefusalReason();
+
+    /**
+     * Call first to verify the there is url errors.
+     * @throws RedirectException
+     */
+    public abstract void processErrors() throws RedirectException;
 
 }

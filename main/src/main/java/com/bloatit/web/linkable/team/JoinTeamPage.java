@@ -29,6 +29,11 @@ public class JoinTeamPage extends LoggedPage {
     }
 
     @Override
+    public void processErrors() throws RedirectException {
+        session.notifyList(url.getMessages());
+    }
+
+    @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 

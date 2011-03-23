@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.features;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -59,6 +60,10 @@ public final class CreateFeaturePage extends LoggedPage {
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    public void processErrors() throws RedirectException {
     }
 
     @Override

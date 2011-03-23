@@ -54,8 +54,13 @@ public final class CommentReplyPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws RedirectException {
+    public void processErrors() throws RedirectException {
         session.notifyList(url.getMessages());
+    }
+
+    @Override
+    public HtmlElement createRestrictedContent() throws RedirectException {
+
 
         final HtmlDiv box = new HtmlDiv("padding_box");
 

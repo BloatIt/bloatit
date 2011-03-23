@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.release;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -60,7 +61,9 @@ public final class AddReleasePage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
-
+    @Override
+    public void processErrors() throws RedirectException {
+    }
     @Override
     public HtmlElement createRestrictedContent() {
         final TwoColumnLayout layout = new TwoColumnLayout(true);

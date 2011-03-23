@@ -13,7 +13,12 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.math.BigDecimal;
+
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.FieldData;
@@ -34,8 +39,15 @@ import com.bloatit.web.url.PaylineActionUrl;
 @ParamContainer("charging")
 public final class AccountChargingPage extends LoggedPage {
 
+    public static final String CHARGE_AMOUNT_CODE = "amount";
+
+    @Optional
+    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.GET)
+    private final BigDecimal amount;
+
     public AccountChargingPage(final AccountChargingPageUrl url) {
         super(url);
+        this.amount = url.getAmount();
     }
 
     @Override
@@ -46,6 +58,10 @@ public final class AccountChargingPage extends LoggedPage {
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    public void processErrors() throws RedirectException {
     }
 
     @Override
@@ -60,7 +76,12 @@ public final class AccountChargingPage extends LoggedPage {
         {
             final FieldData amountData = chargeActionUrl.getAmountParameter().pickFieldData();
             final HtmlMoneyField amountInput = new HtmlMoneyField(amountData.getName(), "Amount");
-            amountInput.setDefaultValue(amountData.getSuggestedValue());
+            if(amount == null) {
+                amountInput.setDefaultValue(amountData.getSuggestedValue());
+            } else {
+                amountInput.setDefaultValue(amount.toPlainString());
+
+            }
             amountInput.addErrorMessages(amountData.getErrorMessages());
             final HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
 
