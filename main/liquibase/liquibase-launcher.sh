@@ -36,13 +36,13 @@ java -jar $ROOT/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar \
         --referenceUrl=$REFERENCE_URL \
         diffChangeLog
 elif [ "$1" = "update" ] ; then 
-java -jar $ROOT/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar \
-        --classpath=$MIN_CLASSPATH \
-        --changeLogFile=$CURRENT_CHANGELOG_FILE \
-        --url=$URL \
-        --username=$USERNAME \
-        --password=$PASSWORD \
-        updateSQL >> $ROOT/src/main/resources/liquibase/sql/export-$(date --rfc-3339=date).sql
+#java -jar $ROOT/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar \ 
+#        --classpath=$MIN_CLASSPATH \ 
+#        --changeLogFile=$CURRENT_CHANGELOG_FILE \ 
+#        --url=$URL \ 
+#        --username=$USERNAME \ 
+#        --password=$PASSWORD \ 
+#        updateSQL >> $ROOT/src/main/resources/liquibase/sql/export-$(date --rfc-3339=date).sql
 
 java -jar $ROOT/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar \
         --classpath=$MIN_CLASSPATH \
