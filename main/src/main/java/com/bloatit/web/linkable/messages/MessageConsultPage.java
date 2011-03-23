@@ -17,6 +17,10 @@ public class MessageConsultPage extends LoggedPage {
     }
 
     @Override
+    public void processErrors() throws RedirectException {
+    }
+
+    @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
         return null;
     }

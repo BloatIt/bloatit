@@ -51,7 +51,7 @@ public class FeatureBugListComponent extends HtmlDiv {
         add(openBugsTitle);
 
         if (openBugs.size() == 0) {
-            add(new HtmlParagraph(tr("No open bug")));
+            add(new HtmlParagraph(tr("No open bug.")));
         } else {
             final HtmlTable openBugsTable = new HtmlTable(new HtmlBugsTableModel(openBugs));
             add(openBugsTable);
@@ -62,7 +62,7 @@ public class FeatureBugListComponent extends HtmlDiv {
         final HtmlTitle closedBugsTitle = new HtmlTitle(Context.tr("Closed bugs ({0})", closedBugs.size()), 1);
         add(closedBugsTitle);
         if (closedBugs.size() == 0) {
-            add(new HtmlParagraph(tr("No open bug")));
+            add(new HtmlParagraph(tr("No closed bug.")));
         } else {
             final HtmlTable closedBugsTable = new HtmlTable(new HtmlBugsTableModel(closedBugs));
             add(closedBugsTable);

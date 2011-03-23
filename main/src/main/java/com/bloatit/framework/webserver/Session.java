@@ -12,11 +12,16 @@
 
 package com.bloatit.framework.webserver;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.ErrorMessage.Level;
 import com.bloatit.framework.webserver.annotations.Message;
@@ -65,6 +70,7 @@ public final class Session {
      */
     private final SessionParameters parameters = new SessionParameters();
     private Url lastVisitedPage;
+    private final Map<String, WebProcess> processes = new HashMap<String, WebProcess>();
 
     Session() {
         this(UUID.randomUUID());
@@ -193,4 +199,49 @@ public final class Session {
         }
         // Maybe auto notify here ?
     }
+
+    public final String createWebProcess(WebProcess process) {
+
+        int length = 5;
+        String key = null;
+        while(key == null) {
+            String tempKey = sha1(UUID.randomUUID().toString()).substring(0,length);
+
+            if(processes.containsKey(tempKey)) {
+                length++;
+            } else {
+                key = tempKey;
+            }
+
+        }
+        processes.put(key, process);
+        return key;
+    }
+
+    public final WebProcess getWebProcess(String processId) {
+        return processes.get(processId);
+    }
+
+
+    public static String sha1(final String digest) {
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+        } catch (final NoSuchAlgorithmException ex) {
+            throw new FatalErrorException("Algorithm Sha1 not available", ex);
+        }
+        md.update(digest.getBytes());
+        final byte byteData[] = md.digest();
+
+        final StringBuilder sb = new StringBuilder();
+        for (final byte element : byteData) {
+            sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+    }
+
+    public void destroyWebProcess(WebProcess webProcess) {
+        processes.remove(webProcess.getId());
+    }
+
 }

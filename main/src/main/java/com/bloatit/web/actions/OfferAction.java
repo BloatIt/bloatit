@@ -27,15 +27,15 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Milestone;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
-import com.bloatit.web.url.OfferPageUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
@@ -157,7 +157,7 @@ public final class OfferAction extends LoggedAction {
             return session.pickPreferredPage();
         }
 
-        OfferPageUrl returnUrl = new OfferPageUrl(feature);
+        MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);
         returnUrl.setOffer(constructingOffer);
         return returnUrl;
     }
@@ -168,7 +168,7 @@ public final class OfferAction extends LoggedAction {
 
         if (feature != null) {
             transmitParameters();
-            final OfferPageUrl redirectUrl = new OfferPageUrl(feature);
+            final MakeOfferPageUrl redirectUrl = new MakeOfferPageUrl(feature);
             redirectUrl.setOffer(draftOffer);
             return redirectUrl;
         }

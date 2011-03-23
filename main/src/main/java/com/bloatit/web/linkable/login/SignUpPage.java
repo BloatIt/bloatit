@@ -33,15 +33,15 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.RegisterActionUrl;
-import com.bloatit.web.url.RegisterPageUrl;
+import com.bloatit.web.url.SignUpPageUrl;
 
 /**
  * <p>
  * Page used by users to create their bloatit accounts
  * </p>
  */
-@ParamContainer("member/signin")
-public final class SignInPage extends MasterPage {
+@ParamContainer("member/signup")
+public final class SignUpPage extends MasterPage {
 
     @SuppressWarnings("unused")
     @RequestParam(name = RegisterAction.COUNTRY_CODE, role = Role.SESSION)
@@ -53,9 +53,9 @@ public final class SignInPage extends MasterPage {
     @Optional("")
     private final String lang;
 
-    private final RegisterPageUrl url;
+    private final SignUpPageUrl url;
 
-    public SignInPage(final RegisterPageUrl url) {
+    public SignUpPage(final SignUpPageUrl url) {
         super(url);
         this.url = url;
         this.country = url.getCountry();
@@ -118,13 +118,13 @@ public final class SignInPage extends MasterPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        return SignInPage.generateBreadcrumb();
+        return SignUpPage.generateBreadcrumb();
     }
 
     public static Breadcrumb generateBreadcrumb() {
         Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        breadcrumb.pushLink(new RegisterPageUrl().getHtmlLink(tr("Sign-in")));
+        breadcrumb.pushLink(new SignUpPageUrl().getHtmlLink(tr("Sign-in")));
 
         return breadcrumb;
     }

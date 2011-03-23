@@ -9,12 +9,10 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.actions;
+package com.bloatit.web.linkable.contribution;
 
 import java.math.BigDecimal;
 
-import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -23,26 +21,23 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
-import com.bloatit.web.linkable.features.FeatureTabPane;
-import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.url.CheckContributionActionUrl;
+import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
-import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.FeaturePageUrl;
 
 /**
  * A response to a form used to create a contribution to a feature
  */
-@ParamContainer("action/contribute")
-public final class ContributionAction extends LoggedAction {
+@ParamContainer("action/contribute/check")
+public final class CheckContributionAction extends LoggedAction {
 
     public static final String AMOUNT_CODE = "contributionAmount";
     public static final String COMMENT_CODE = "comment";
-    public static final String TARGET_FEATURE = "targetFeature";
 
-    @RequestParam(name = TARGET_FEATURE)
-    private final Feature targetFeature;
+    @RequestParam
+    private final ContributionProcess process;
 
     @RequestParam(name = COMMENT_CODE, role = Role.POST)
     @ParamConstraint(max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
@@ -52,38 +47,27 @@ public final class ContributionAction extends LoggedAction {
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
     @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
     max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
-    precision = 0, precisionErrorMsg = @tr("Please do not use Cents."))
+    precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))
     private final BigDecimal amount;
 
-    private final ContributionActionUrl url;
+    private final CheckContributionActionUrl url;
 
-    public ContributionAction(final ContributionActionUrl url) {
+    public CheckContributionAction(final CheckContributionActionUrl url) {
         super(url);
         this.url = url;
-        this.targetFeature = url.getTargetFeature();
+        this.process = url.getProcess();
         this.comment = url.getComment();
         this.amount = url.getAmount();
     }
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
-        try {
-            targetFeature.addContribution(amount, comment);
-            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator().getCurrency(amount).getLocaleString()));
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(targetFeature);
-            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
-            return featurePageUrl;
-        } catch (final NotEnoughMoneyException e) {
-            session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
-            session.addParameter(url.getAmountParameter());
-            session.addParameter(url.getCommentParameter());
 
-            session.setTargetPage(this.url);
-            return new AccountChargingPageUrl();
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
-            return new ContributePageUrl(targetFeature);
-        }
+            CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
+            process.setAmount(amount);
+            process.setComment(comment);
+
+            return checkContributionPageUrl;
     }
 
     @Override
@@ -92,7 +76,7 @@ public final class ContributionAction extends LoggedAction {
         session.addParameter(url.getCommentParameter());
         session.addParameter(url.getAmountParameter());
 
-        return new ContributePageUrl(targetFeature);
+        return new ContributePageUrl(process);
     }
 
     @Override

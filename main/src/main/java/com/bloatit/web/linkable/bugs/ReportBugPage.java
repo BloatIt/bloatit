@@ -15,6 +15,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -67,6 +68,11 @@ public final class ReportBugPage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
+
+    @Override
+    public void processErrors() throws RedirectException {
+    }
+
 
     @Override
     public HtmlElement createRestrictedContent() {

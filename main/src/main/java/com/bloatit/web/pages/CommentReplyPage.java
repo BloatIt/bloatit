@@ -28,6 +28,7 @@ import com.bloatit.model.Comment;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.release.ReleasePage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
@@ -53,8 +54,13 @@ public final class CommentReplyPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws RedirectException {
+    public void processErrors() throws RedirectException {
         session.notifyList(url.getMessages());
+    }
+
+    @Override
+    public HtmlElement createRestrictedContent() throws RedirectException {
+
 
         final HtmlDiv box = new HtmlDiv("padding_box");
 

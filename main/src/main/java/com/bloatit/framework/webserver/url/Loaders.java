@@ -13,6 +13,7 @@ import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.WebProcess;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
 import com.bloatit.model.Commentable;
@@ -101,6 +102,9 @@ public final class Loaders {
         }
         if (IdentifiableInterface.class.isAssignableFrom(theClass)) {
             return (Loader<T>) new ToIdentifiable(theClass);
+        }
+        if (WebProcess.class.isAssignableFrom(theClass)) {
+            return (Loader<T>) new ToWebProcess(theClass);
         }
         throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
     }
@@ -305,6 +309,31 @@ public final class Loaders {
             } catch (ClassNotFoundException e) {
                 throw new ConversionErrorException(e);
             }
+        }
+    }
+
+    private static class ToWebProcess<T extends WebProcess> extends Loader<T> {
+
+        private final Class<T> theClass;
+
+        public ToWebProcess(Class<T> theClass) {
+            this.theClass = theClass;
+        }
+
+        @Override
+        public final String toString(final T id) {
+            return id.getId().toString();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public final T fromString(final String data) throws ConversionErrorException {
+            WebProcess webProcess = Context.getSession().getWebProcess(data);
+            if(webProcess != null) {
+                webProcess.load();
+            }
+            return (T) webProcess;
+
         }
     }
 

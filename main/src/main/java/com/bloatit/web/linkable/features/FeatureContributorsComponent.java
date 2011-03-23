@@ -32,7 +32,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
-import com.bloatit.web.url.ContributePageUrl;
+import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.FeatureContributorsComponentUrl;
 
 @ParamContainer(value = "FeatureContributorsComponent", isComponent = true)
@@ -88,7 +88,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                 final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
                 contributorsBlock.add(table);
 
-                contributorsBlock.add(new ContributePageUrl(feature).getHtmlLink(Context.tr("Contribute")));
+                contributorsBlock.add(new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute")));
 
             } catch (final UnauthorizedOperationException e) {
             }

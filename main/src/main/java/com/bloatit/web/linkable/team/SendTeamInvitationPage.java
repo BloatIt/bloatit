@@ -42,6 +42,11 @@ public class SendTeamInvitationPage extends LoggedPage {
         this.team = url.getTeam();
     }
 
+
+    @Override
+    public void processErrors() throws RedirectException {
+    }
+
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");

@@ -6,10 +6,8 @@ import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
-import com.bloatit.web.actions.AddReleaseAction;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
-import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.OfferAction;
@@ -20,6 +18,11 @@ import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
 import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
+import com.bloatit.web.linkable.contribution.CheckContributionAction;
+import com.bloatit.web.linkable.contribution.CheckContributionPage;
+import com.bloatit.web.linkable.contribution.ContributePage;
+import com.bloatit.web.linkable.contribution.ContributionAction;
+import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -28,7 +31,7 @@ import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
 import com.bloatit.web.linkable.login.RegisterAction;
-import com.bloatit.web.linkable.login.SignInPage;
+import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
@@ -38,6 +41,9 @@ import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylinePage;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
+import com.bloatit.web.linkable.release.AddReleaseAction;
+import com.bloatit.web.linkable.release.AddReleasePage;
+import com.bloatit.web.linkable.release.ReleasePage;
 import com.bloatit.web.linkable.softwares.AddSoftwareAction;
 import com.bloatit.web.linkable.softwares.AddSoftwarePage;
 import com.bloatit.web.linkable.softwares.SoftwareListPage;
@@ -52,44 +58,43 @@ import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
-import com.bloatit.web.pages.AddReleasePage;
 import com.bloatit.web.pages.CommentReplyPage;
-import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.MakeOfferPage;
 import com.bloatit.web.pages.PageNotFound;
-import com.bloatit.web.pages.ReleasePage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
-import com.bloatit.web.pages.admin.MilestoneAdminPage;
 import com.bloatit.web.pages.admin.FeatureAdminPage;
 import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
+import com.bloatit.web.pages.admin.MilestoneAdminPage;
 import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
-import com.bloatit.web.url.AddSoftwareActionUrl;
-import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
+import com.bloatit.web.url.AddSoftwareActionUrl;
+import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
-import com.bloatit.web.url.MilestoneAdminPageUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
+import com.bloatit.web.url.CheckContributionActionUrl;
+import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
+import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureAdminPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.DocumentationUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.GiveRightActionUrl;
@@ -101,28 +106,29 @@ import com.bloatit.web.url.KudosableAdminPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
+import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MessageListPageUrl;
+import com.bloatit.web.url.MilestoneAdminPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
-import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.SoftwareListPageUrl;
-import com.bloatit.web.url.SoftwarePageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
-import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
+import com.bloatit.web.url.SignUpPageUrl;
+import com.bloatit.web.url.SoftwareListPageUrl;
+import com.bloatit.web.url.SoftwarePageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
@@ -168,8 +174,11 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ContributePageUrl.getName())) {
             return new ContributePage(new ContributePageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(OfferPageUrl.getName())) {
-            return new MakeOfferPage(new OfferPageUrl(params, session.getParameters()));
+        if (pageCode.equals(CheckContributionPageUrl.getName())) {
+            return new CheckContributionPage(new CheckContributionPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MakeOfferPageUrl.getName())) {
+            return new MakeOfferPage(new MakeOfferPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(TestPageUrl.getName())) {
             return new TestPage(new TestPageUrl(params, session.getParameters()));
@@ -177,8 +186,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(AccountChargingPageUrl.getName())) {
             return new AccountChargingPage(new AccountChargingPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(RegisterPageUrl.getName())) {
-            return new SignInPage(new RegisterPageUrl(params, session.getParameters()));
+        if (pageCode.equals(SignUpPageUrl.getName())) {
+            return new SignUpPage(new SignUpPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylinePageUrl.getName())) {
             return new PaylinePage(new PaylinePageUrl(params, session.getParameters()));
@@ -201,8 +210,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(UserContentAdminPageUrl.getName())) {
             return new UserContentAdminPageImplementation(new UserContentAdminPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(DocumentationUrl.getName())) {
-            return new DocumentationPage(new DocumentationUrl(params, session.getParameters()));
+        if (pageCode.equals(DocumentationPageUrl.getName())) {
+            return new DocumentationPage(new DocumentationPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(TeamsPageUrl.getName())) {
             return new TeamsPage(new TeamsPageUrl(params, session.getParameters()));
@@ -256,6 +265,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ContributionActionUrl.getName())) {
             return new ContributionAction(new ContributionActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(CheckContributionActionUrl.getName())) {
+            return new CheckContributionAction(new CheckContributionActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(OfferActionUrl.getName())) {
             return new OfferAction(new OfferActionUrl(params, session.getParameters()));
@@ -325,6 +337,11 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(GiveRightActionUrl.getName())) {
             return new GiveRightAction(new GiveRightActionUrl(params, session.getParameters()));
+        }
+
+        // Process
+        if (pageCode.equals(ContributionProcessUrl.getName())) {
+            return new ContributionProcess(new ContributionProcessUrl(params, session.getParameters()));
         }
 
         // Resource page

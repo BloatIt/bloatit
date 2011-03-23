@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.features;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -33,7 +34,6 @@ import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.master.BoxLayout;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -63,6 +63,10 @@ public final class CreateFeaturePage extends LoggedPage {
     }
 
     @Override
+    public void processErrors() throws RedirectException {
+    }
+
+    @Override
     public HtmlElement createRestrictedContent() {
         if (FeatureManager.canCreate(session.getAuthToken())) {
 
@@ -73,9 +77,8 @@ public final class CreateFeaturePage extends LoggedPage {
 
     private HtmlElement generateFeatureCreationForm() {
 
-        final TwoColumnLayout layout = new TwoColumnLayout();
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
 
-        final BoxLayout box = new BoxLayout();
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
         final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl();
@@ -115,7 +118,30 @@ public final class CreateFeaturePage extends LoggedPage {
                                                                  tr("Describe the feature"),
                                                                  SPECIF_INPUT_NB_LINES,
                                                                  SPECIF_INPUT_NB_COLUMNS);
-        specificationInput.setDefaultValue(specificationFieldData.getSuggestedValue());
+        String suggestedValue = tr("What is the expected work ?\n" +
+        		"\n" +
+        		"What is the requested date ?\n" +
+        		"\n" +
+        		"What is the expected compatibility ?\n" +
+        		"\n" +
+        		"  * Linux 2.6.x\n" +
+        		"  * Windows 7\n" +
+        		"  * Mac Os X\n" +
+        		"  * ...\n" +
+        		"\n" +
+        		"What is the expected output ?\n" +
+        		"\n" +
+        		" * Source tarball\n" +
+        		" * Diff patch\n" +
+        		" * Public repository\n" +
+        		" * Push in the project's official  repository\n" +
+        		" * Windows install\n" +
+        		" * Install shell script\n" +
+        		" * Deb package\n" +
+        		" * Rpm package\n" +
+        		" * ...");
+
+        specificationInput.setDefaultValue(suggestedValue);
         specificationInput.addErrorMessages(specificationFieldData.getErrorMessages());
         specificationInput.setComment(tr("Enter a long description of the feature : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
@@ -127,9 +153,7 @@ public final class CreateFeaturePage extends LoggedPage {
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
 
-        box.add(createFeatureTitle);
-
-        layout.addLeft(box);
+        layout.addLeft(createFeatureTitle);
 
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));

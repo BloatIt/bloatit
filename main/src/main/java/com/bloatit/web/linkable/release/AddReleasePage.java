@@ -9,10 +9,11 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.linkable.release;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -26,8 +27,11 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Milestone;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 
@@ -57,10 +61,15 @@ public final class AddReleasePage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
-
+    @Override
+    public void processErrors() throws RedirectException {
+    }
     @Override
     public HtmlElement createRestrictedContent() {
-        return generateReleaseCreationForm();
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
+        layout.addLeft(generateReleaseCreationForm());
+        return layout;
     }
 
     private HtmlElement generateReleaseCreationForm() {
