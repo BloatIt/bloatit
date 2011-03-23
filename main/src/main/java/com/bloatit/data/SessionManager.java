@@ -43,7 +43,7 @@ public class SessionManager {
     private static SessionFactory buildSessionFactory() {
         try {
             final SessionFactory buildSessionFactory = new Configuration().configure()
-                                                                          .setProperty("hibernate.hbm2ddl.auto", "update")
+                                                                          .setProperty("hibernate.hbm2ddl.auto", "validate")
                                                                           .buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {

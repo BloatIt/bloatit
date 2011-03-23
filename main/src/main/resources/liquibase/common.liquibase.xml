@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+         
+    <changeSet author="Thomas Guyard" id="hibernate-utils-0">
+        <sql>CREATE SEQUENCE hibernate_sequence START WITH 0 INCREMENT BY 1 MINVALUE 0 ;</sql>
+    </changeSet>
+
+   <changeSet author="Thomas Guyard" id="1300878547256-1">
+        <createTable tableName="daoaccount">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoaccountpk"/>
+            </column>
+            <column name="amount" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastmodificationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actor_id" type="int4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-2">
+        <createTable tableName="daoactor">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoactorpk"/>
+            </column>
+            <column name="datecreation" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="externalaccount_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="internalaccount_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-3">
+        <createTable tableName="daobanktransaction">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daobanktransapk"/>
+            </column>
+            <column name="creationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modificationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processinformations" type="varchar(64)"/>
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="state" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="varchar(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="value" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-4">
+        <createTable tableName="daobug">
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="level" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locale" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daobugpk"/>
+            </column>
+            <column name="milestone_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-5">
+        <createTable tableName="daocomment">
+            <column name="text" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daocommentpk"/>
+            </column>
+            <column name="bug_id" type="int4"/>
+            <column name="father_id" type="int4"/>
+            <column name="feature_id" type="int4"/>
+            <column name="release_id" type="int4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-6">
+        <createTable tableName="daocontribution">
+            <column name="alreadygivenmoney" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="varchar(144)"/>
+            <column name="percentdone" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daocontributipk"/>
+            </column>
+            <column name="feature_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-7">
+        <createTable tableName="daocontribution_daotransaction">
+            <column name="daocontribution_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-8">
+        <createTable tableName="daodescription">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daodescriptiopk"/>
+            </column>
+            <column name="defaultlocale" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-9">
+        <createTable tableName="daoexternalaccount">
+            <column name="bankcode" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoexternalacpk"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-10">
+        <createTable tableName="daofeature">
+            <column name="contribution" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="featurestate" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="validationdate" type="datetime"/>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daofeaturepk"/>
+            </column>
+            <column name="description_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="selectedoffer_id" type="int4"/>
+            <column name="software_id" type="int4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-11">
+        <createTable tableName="daofeature_daocontribution">
+            <column name="daofeature_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contributions_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-12">
+        <createTable tableName="daofilemetadata">
+            <column name="filename" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shortdescription" type="TEXT"/>
+            <column name="size" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daofilemetadapk"/>
+            </column>
+            <column name="relatedcontent_id" type="int4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-13">
+        <createTable tableName="daohighlightfeature">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daohighlightfpk"/>
+            </column>
+            <column name="activationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="desactivationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="varchar(255)"/>
+            <column name="feature_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-14">
+        <createTable tableName="daoimage">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoimagepk"/>
+            </column>
+            <column name="compression" type="varchar(64)"/>
+            <column name="horizontalsize" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verticalsize" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-15">
+        <createTable tableName="daointernalaccount">
+            <column name="blocked" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daointernalacpk"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-16">
+        <createTable tableName="daojointeaminvitation">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daojointeaminpk"/>
+            </column>
+            <column name="state" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receiver_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="team_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-17">
+        <createTable tableName="daokudos">
+            <column name="value" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daokudospk"/>
+            </column>
+            <column name="kudosable_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-18">
+        <createTable tableName="daokudosable">
+            <column name="ispopularitylocked" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="popularity" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daokudosablepk"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-19">
+        <createTable tableName="daomember">
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="fullname" type="varchar(255)"/>
+            <column name="karma" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locale" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daomemberpk"/>
+            </column>
+            <column name="avatar_id" type="int4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-20">
+        <createTable tableName="daomilestone">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daomilestonepk"/>
+            </column>
+            <column name="amount" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expirationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fatalbugspercent" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="leveltovalidate" type="int4"/>
+            <column name="majorbugspercent" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="milestonestate" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secondbeforevalidation" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description_id" type="int4"/>
+            <column name="offer_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-21">
+        <createTable tableName="daooffer">
+            <column name="amount" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currentmilestone" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expirationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isdraft" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoofferpk"/>
+            </column>
+            <column name="feature_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-22">
+        <createTable tableName="daorelease">
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locale" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="varchar(255)"/>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoreleasepk"/>
+            </column>
+            <column name="milestone_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-23">
+        <createTable tableName="daosoftware">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daosoftwarepk"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_id" type="int4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-24">
+        <createTable tableName="daoteam">
+            <column name="contact" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="team_right" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoteampk"/>
+            </column>
+            <column name="avatar_id" type="int4"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-25">
+        <createTable tableName="daoteammembership">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoteammemberpk"/>
+            </column>
+            <column name="bloatitteam_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="member_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="daoteammembership" columnNames="member_id,bloatitteam_id"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-26">
+        <createTable tableName="daoteamright">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoteamrightpk"/>
+            </column>
+            <column name="userstatus" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="membership_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-27">
+        <createTable tableName="daotransaction">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daotransactiopk"/>
+            </column>
+            <column name="amount" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-28">
+        <createTable tableName="daotranslation">
+            <column name="locale" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daotranslatiopk"/>
+            </column>
+            <column name="description_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-29">
+        <createTable tableName="daousercontent">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daousercontenpk"/>
+            </column>
+            <column name="creationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isdeleted" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="asteam_id" type="int4"/>
+            <column name="member_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-30">
+        <createIndex indexName="UK643905A38E765AEA" tableName="daoactor">
+            <column name="internalaccount_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-31">
+        <createIndex indexName="UK643905A3A2D17E78" tableName="daoactor">
+            <column name="externalaccount_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-32">
+        <createIndex indexName="UK988DA1493C3C4A1C" tableName="daocontribution_daotransaction">
+            <column name="transaction_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-33">
+        <createIndex indexName="UK44EDA3241AAB9C3E" tableName="daofeature">
+            <column name="description_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-34">
+        <createIndex indexName="UK3A3C9987A0A8D477" tableName="daofeature_daocontribution">
+            <column name="contributions_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-35">
+        <createIndex indexName="UK64AE0509CD09BABE" tableName="daoimage">
+            <column name="file_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-36">
+        <createIndex indexName="key1" tableName="daoteammembership">
+            <column name="member_id"/>
+            <column name="bloatitteam_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-37">
+        <createIndex indexName="key2" tableName="daotranslation">
+            <column name="locale"/>
+            <column name="description_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-38">
+        <addForeignKeyConstraint baseColumnNames="actor_id" baseTableName="daoaccount" constraintName="FK391EB25B7BA58734" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-39">
+        <addForeignKeyConstraint baseColumnNames="externalaccount_id" baseTableName="daoactor" constraintName="FK643905A3E25C0F74" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoexternalaccount" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-40">
+        <addForeignKeyConstraint baseColumnNames="internalaccount_id" baseTableName="daoactor" constraintName="FK643905A362C4B4B4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daointernalaccount" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-41">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="daobanktransaction" constraintName="FKEB8E913035FADFDE" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-42">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daobug" constraintName="FK7993EDA21EA65D63" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-43">
+        <addForeignKeyConstraint baseColumnNames="milestone_id" baseTableName="daobug" constraintName="FK7993EDA2735AB454" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomilestone" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-44">
+        <addForeignKeyConstraint baseColumnNames="bug_id" baseTableName="daocomment" constraintName="FKB7F1168DDA0B6154" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daobug" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-45">
+        <addForeignKeyConstraint baseColumnNames="father_id" baseTableName="daocomment" constraintName="FKB7F1168D154DE457" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daocomment" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-46">
+        <addForeignKeyConstraint baseColumnNames="feature_id" baseTableName="daocomment" constraintName="FKB7F1168D7A295D14" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofeature" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-47">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daocomment" constraintName="FKB7F1168D46A823AD" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daokudosable" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-48">
+        <addForeignKeyConstraint baseColumnNames="release_id" baseTableName="daocomment" constraintName="FKB7F1168DA415F774" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daorelease" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-49">
+        <addForeignKeyConstraint baseColumnNames="feature_id" baseTableName="daocontribution" constraintName="FK39F068A27A295D14" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofeature" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-50">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daocontribution" constraintName="FK39F068A21EA65D63" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-51">
+        <addForeignKeyConstraint baseColumnNames="daocontribution_id" baseTableName="daocontribution_daotransaction" constraintName="FK988DA1499508E70E" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daocontribution" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-52">
+        <addForeignKeyConstraint baseColumnNames="transaction_id" baseTableName="daocontribution_daotransaction" constraintName="FK988DA149B3CA5714" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daotransaction" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-53">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daoexternalaccount" constraintName="FK2D4B0E107755EE62" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoaccount" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-54">
+        <addForeignKeyConstraint baseColumnNames="description_id" baseTableName="daofeature" constraintName="FK44EDA324ABCE5A54" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daodescription" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-55">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daofeature" constraintName="FK44EDA32446A823AD" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daokudosable" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-56">
+        <addForeignKeyConstraint baseColumnNames="selectedoffer_id" baseTableName="daofeature" constraintName="FK44EDA3249961816F" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daooffer" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-57">
+        <addForeignKeyConstraint baseColumnNames="software_id" baseTableName="daofeature" constraintName="FK44EDA324784E4880" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daosoftware" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-58">
+        <addForeignKeyConstraint baseColumnNames="contributions_id" baseTableName="daofeature_daocontribution" constraintName="FK3A3C9987F86681AD" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daocontribution" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-59">
+        <addForeignKeyConstraint baseColumnNames="daofeature_id" baseTableName="daofeature_daocontribution" constraintName="FK3A3C99871ED11226" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofeature" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-60">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daofilemetadata" constraintName="FK81855D5D1EA65D63" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-61">
+        <addForeignKeyConstraint baseColumnNames="relatedcontent_id" baseTableName="daofilemetadata" constraintName="FK81855D5DDC01B154" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-62">
+        <addForeignKeyConstraint baseColumnNames="feature_id" baseTableName="daohighlightfeature" constraintName="FK38A7BF347A295D14" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofeature" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-63">
+        <addForeignKeyConstraint baseColumnNames="file_id" baseTableName="daoimage" constraintName="FK64AE05096C5C5CAF" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofilemetadata" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-64">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daointernalaccount" constraintName="FKC20ED6DE7755EE62" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoaccount" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-65">
+        <addForeignKeyConstraint baseColumnNames="receiver_id" baseTableName="daojointeaminvitation" constraintName="FK7AFAECB27A1975AB" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomember" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-66">
+        <addForeignKeyConstraint baseColumnNames="sender_id" baseTableName="daojointeaminvitation" constraintName="FK7AFAECB2F95717A5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomember" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-67">
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="daojointeaminvitation" constraintName="FK7AFAECB23FD07C0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoteam" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-68">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daokudos" constraintName="FK64CDE34C1EA65D63" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-69">
+        <addForeignKeyConstraint baseColumnNames="kudosable_id" baseTableName="daokudos" constraintName="FK64CDE34CA38A0754" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daokudosable" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-70">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daokudosable" constraintName="FKB980F2A61EA65D63" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-71">
+        <addForeignKeyConstraint baseColumnNames="avatar_id" baseTableName="daomember" constraintName="FK377AA4AC85C627B2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofilemetadata" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-72">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daomember" constraintName="FK377AA4ACDE070CAA" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-73">
+        <addForeignKeyConstraint baseColumnNames="description_id" baseTableName="daomilestone" constraintName="FK99A5EE1EABCE5A54" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daodescription" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-74">
+        <addForeignKeyConstraint baseColumnNames="offer_id" baseTableName="daomilestone" constraintName="FK99A5EE1EB0FE59D4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daooffer" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-75">
+        <addForeignKeyConstraint baseColumnNames="feature_id" baseTableName="daooffer" constraintName="FK64FF760A7A295D14" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofeature" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-76">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daooffer" constraintName="FK64FF760A46A823AD" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daokudosable" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-77">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daorelease" constraintName="FKC04C50351EA65D63" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daousercontent" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-78">
+        <addForeignKeyConstraint baseColumnNames="milestone_id" baseTableName="daorelease" constraintName="FKC04C5035735AB454" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomilestone" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-79">
+        <addForeignKeyConstraint baseColumnNames="description_id" baseTableName="daosoftware" constraintName="FKB8BD3F39ABCE5A54" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daodescription" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-80">
+        <addForeignKeyConstraint baseColumnNames="image_id" baseTableName="daosoftware" constraintName="FKB8BD3F396C162870" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofilemetadata" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-81">
+        <addForeignKeyConstraint baseColumnNames="avatar_id" baseTableName="daoteam" constraintName="FKB8F1B8EF85C627B2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daofilemetadata" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-82">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daoteam" constraintName="FKB8F1B8EFDE070CAA" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-83">
+        <addForeignKeyConstraint baseColumnNames="bloatitteam_id" baseTableName="daoteammembership" constraintName="FK889DFE256E3A82DD" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoteam" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-84">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="daoteammembership" constraintName="FK889DFE25476C9120" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomember" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-85">
+        <addForeignKeyConstraint baseColumnNames="membership_id" baseTableName="daoteamright" constraintName="FKCDEC566D24B03FDD" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoteammembership" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-86">
+        <addForeignKeyConstraint baseColumnNames="from_id" baseTableName="daotransaction" constraintName="FK97A0340CB0E19B9A" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daointernalaccount" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-87">
+        <addForeignKeyConstraint baseColumnNames="to_id" baseTableName="daotransaction" constraintName="FK97A0340C7DEC6EA6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoaccount" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-88">
+        <addForeignKeyConstraint baseColumnNames="description_id" baseTableName="daotranslation" constraintName="FKAA4953DFABCE5A54" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daodescription" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-89">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="daotranslation" constraintName="FKAA4953DF46A823AD" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daokudosable" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-90">
+        <addForeignKeyConstraint baseColumnNames="asteam_id" baseTableName="daousercontent" constraintName="FK3EB8775CDC123F4E" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoteam" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="Thomas Guyard" id="1300878547256-91">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="daousercontent" constraintName="FK3EB8775C476C9120" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomember" referencesUniqueColumn="false"/>
+    </changeSet>
+</databaseChangeLog>

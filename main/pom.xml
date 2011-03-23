@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bloatit</groupId>
 	<artifactId>BloatIt</artifactId>
@@ -9,6 +10,7 @@
 
 	<properties>
 		<hibernate.version>3.6.1.Final</hibernate.version>
+		<liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile>
 	</properties>
 
 	<build>
@@ -113,7 +115,13 @@
 				</executions>
 			</plugin>
 
-
+			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> 
+				<version>1.9.5.0</version> <executions> <execution> <phase>process-resources</phase> 
+				<configuration> <changeLogFile>src/main/resources/liquiabse/current.liquibase.xml</changeLogFile> 
+				<url>jdbc:postgresql://localhost/bloatit</url> <username>bloatit</username> 
+				<password>passe</password> <driver>org.postgresql.Driver</driver> <liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile> 
+				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> 
+				</plugin> -->
 		</plugins>
 	</build>
 
@@ -121,6 +129,15 @@
 		<repository>
 			<id>gettext-commons-site</id>
 			<url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>jboss-public-repository-group</id>
@@ -263,6 +280,20 @@
 			<url>http://download.java.net/maven/2/</url>
 			<layout>default</layout>
 		</pluginRepository>
+
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>
+
 
 	</pluginRepositories>
 
