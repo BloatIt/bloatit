@@ -95,6 +95,13 @@ abort_if_non_zero(){
 calculateLogFilename
 # We can know use the LOG_FILE variable.
 
+echo "HOST=$HOST
+RELEASE_VERSION=$RELEASE_VERSION
+NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
+REPOS_DIR=$REPOS_DIR
+USER=$USER
+"
+
 log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
 abort_if_non_zero $?
 
@@ -141,21 +148,32 @@ git commit -m \"New PreRelease $PREFIX-$RELEASE_VERSION\"
 ##
 log_date "Stopping the bloatit server." $LOG_FILE
 (
-    $SSH "/etc/init.d/bloatit stop ; sleep 2"
+    $SSH "/etc/init.d/bloatit stop && sleep 2"
     _result=$?
 ) | tee -a $LOG_FILE
+
+[ $_result = 0 ] || exit_fail
 
 ##
 ## Migrating DB.
 ##
+(
+LIQUIBASE_DIR=$REPOS_DIR/main/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar
+cat $LIQUIBASE_DIR | $SSH "
+cat > /tmp/$(basename $LIQUIBASE_DIR)
+cd /home/$USER/java/
+java -jar /tmp/$(basename $LIQUIBASE_DIR) \
+    --classpath=.:/home/$USER/jar/dom4j*.jar:/home/$USER/jar/postgresql*.jar:/home/$USER/jar/sl4j-api*.jar:/home/$USER/jar/slfj-jdk*.jar \
+"
+    _result=$?
+) | tee -a $LOG_FILE
 
 ##
 ## Propagate conf files.
 ##
 #remote execute:
 (
-
-MERGE_FILE_SCRIPT=mergeFIles.sh
+MERGE_FILE_SCRIPT=mergeFiles.sh
 cat ./$MERGE_FILE_SCRIPT | $SSH " 
 cat > /tmp/$MERGE_FILE_SCRIPT
 chmod u+x /tmp/$MERGE_FILE_SCRIPT
