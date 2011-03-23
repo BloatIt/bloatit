@@ -7,8 +7,11 @@
 # delete working.liquibase.xml
 # continue your work ...
 
-
+if [ -e "$PWD/target" ] ; then 
+ROOT=$PWD
+else
 ROOT=$(dirname $PWD)
+fi
 
 USERNAME=bloatit
 PASSWORD=passe
