@@ -3,15 +3,19 @@
 usage()
 {
 cat << EOF
-usage: "$0" -d host -r releaseVersion { -s nextSnapshotVersion | -t } -b bloatitFolder [-n name] [-h] 
+usage: "$0" -d host -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name]
+       "$0" -d host -r releaseVersion -t -b bloatitFolder [-n name] 
+       "$0"  -l -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name] 
+       "$0" -h 
 
 This script create a release, tag it and send it to a distant host.
 
 OPTIONS:
    -h      Show this message. 
+   -d      Destination host. Requiered.
+   -l      Do the local work, but do nothing on the remote server.
    -r      Release version (Could be 1.0.alfa).
    -s      Next snapshot number version (Must be only numeric).
-   -d      Destination host. Requiered.
    -b      Bloatit root folder (git/mvn root).
    -n      Distant user name. Default is "bloatit".
    -t      Use tagged version.
@@ -28,8 +32,9 @@ NEXT_SNAPSHOT_VERSION=
 REPOS_DIR=
 USE_TAG=
 USER=bloatit
+LOCAL_ONLY=
 
-while getopts "thd:b:n:r:s:" OPTION
+while getopts "lthd:b:n:r:s:" OPTION
 do
      case $OPTION in
          h)
@@ -48,6 +53,9 @@ do
          b)
              REPOS_DIR=$OPTARG
              ;;
+         l)
+             LOCAL_ONLY="true"
+             ;;
          t)
              USE_TAG="true"
              ;;
@@ -61,9 +69,23 @@ do
      esac
 done
 
-if [ -z "$HOST" ] || [ -z "$RELEASE_VERSION" ] || [ -z "$REPOS_DIR" ]
+if [ -z "$RELEASE_VERSION" ] || [ -z "$REPOS_DIR" ]
 then
 	echo -e "Arguments are missing !!! \n" 1>&2
+	usage 1>&2
+	exit 1
+fi
+
+if [ -z "$HOST" ] && [ -z "$LOCAL_ONLY" ] 
+then 
+	echo -e "You have to specify a host or do the work localy !!! \n" 1>&2
+	usage 1>&2
+	exit 1
+fi
+
+if [ -z "$USE_TAG" ] && [ -z "$NEXT_SNAPSHOT_VERSION" ] 
+then 
+	echo -e "You have to specify a next release snapshot or use a tag !!! \n" 1>&2
 	usage 1>&2
 	exit 1
 fi
@@ -83,6 +105,7 @@ RELEASE_VERSION=$RELEASE_VERSION
 NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
 REPOS_DIR=$REPOS_DIR
 USE_TAG=$USE_TAG
+LOCAL_ONLY=$LOCAL_ONLY
 USER=$USER"
 log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
 abort_if_non_zero $?
@@ -103,6 +126,11 @@ else
     echo "WARNING: Going back to master !! "
 fi
 
+if [ -n "$LOCAL_ONLY" ] ; then
+     echo "local work done."
+     echo "exit."
+     exit 0
+fi
 
 commitPrerelease "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$SSH"
 
