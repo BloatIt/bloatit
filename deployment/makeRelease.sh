@@ -14,6 +14,7 @@ OPTIONS:
    -d      Destination host. Requiered.
    -b      Bloatit root folder (git/mvn root).
    -n      Distant user name. Default is "bloatit".
+   -t      Skip tests in maven.
 EOF
 }
 
@@ -25,9 +26,10 @@ HOST=
 RELEASE_VERSION=
 NEXT_SNAPSHOT_VERSION=
 REPOS_DIR=
+SKIP_TEST=
 USER=bloatit
 
-while getopts "hd:b:n:r:s:" OPTION
+while getopts "thd:b:n:r:s:" OPTION
 do
      case $OPTION in
          h)
@@ -45,6 +47,9 @@ do
              ;;
          b)
              REPOS_DIR=$OPTARG
+             ;;
+         t)
+             SKIP_TEST="-Dmaven.test.skip"
              ;;
          n)
              USER=$OPTARG
@@ -64,7 +69,7 @@ then
 fi
 
 PREFIX=bloatit
-MVN="mvn -f $REPOS_DIR/pom.xml "
+MVN="mvn -f $REPOS_DIR/pom.xml $SKIP_TEST"
 
 . $PWD/log.sh
 . $PWD/conf.sh
@@ -99,8 +104,8 @@ echo "HOST=$HOST
 RELEASE_VERSION=$RELEASE_VERSION
 NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
 REPOS_DIR=$REPOS_DIR
-USER=$USER
-"
+SKIP_TEST=$SKIP_TEST
+USER=$USER"
 
 log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
 abort_if_non_zero $?
@@ -117,7 +122,9 @@ log_date "Make a mvn release." $LOG_FILE
                       -DreleaseVersion=$RELEASE_VERSION \
 		      -DdevelopmentVersion=$NEXT_SNAPSHOT_VERSION-SNAPSHOT \
 		      -DautoVersionSubmodules=true \
-    && $MVN release:perform
+    && $MVN release:clean
+# Do not do the perform.
+# Just clean if there is no errors
 
     _result=$?
 ) | tee -a $LOG_FILE
