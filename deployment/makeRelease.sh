@@ -120,10 +120,12 @@ else
         exit_fail
     fi
     git checkout "$PREFIX-$RELEASE_VERSION"
+
     transferData "$LOG_FILE" "$HOST" "$REPOS_DIR" "$USER"
+
     git checkout HEAD
-    git checkout master
     echo "WARNING: Going back to master !! "
+    git checkout master
 fi
 
 if [ -n "$LOCAL_ONLY" ] ; then
