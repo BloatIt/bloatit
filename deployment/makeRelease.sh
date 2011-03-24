@@ -120,6 +120,7 @@ else
         exit_fail
     fi
     git checkout "$PREFIX-$RELEASE_VERSION"
+    $MVN clean install -Dmaven.test.skip=true
 
     transferData "$LOG_FILE" "$HOST" "$REPOS_DIR" "$USER"
 

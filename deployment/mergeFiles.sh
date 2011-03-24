@@ -1,5 +1,8 @@
 #!/bin/bash
 
+BLUE="\\033[1;34m"
+NORMAL="\\033[0;39m"
+
 if [ ! -e "$1" ] || [ ! -e "$2" ] ; then
     echo "Error. Waiting for 2 existing directories. exiting..."
     exit 1
@@ -23,7 +26,14 @@ case $_reponse in
      3)
 	 # TODO use modification time to know if merge done.
 	 vimdiff "$1" "$2"
-	 echo "    I'm assuming you have made the merge."
+	 echo "    1 -> finish."
+	 echo "    2 -> Back to menu."
+	 read _new_reponse
+	 if [ "$_new_reponse" = "1" ] ; then
+	     exit
+	 else
+	     performMerge "$1" "$2"
+	  fi
          ;;
      4)
 	 # TODO use modification time to know if merge done.
@@ -31,7 +41,14 @@ case $_reponse in
 	 pushd "$(dirname "$2")"
 	 bash -i 
          popd
-	 echo "    I'm assuming you have made the merge."
+	 echo "    1 -> finish."
+	 echo "    2 -> Back to menu."
+	 read _new_reponse
+	 if [ "$_new_reponse" = "1" ] ; then
+	     exit
+	 else
+	     performMerge "$1" "$2"
+	  fi
          ;;
      ?)
          performMerge "$1" "$2"
@@ -61,7 +78,7 @@ local _old_files=( ${_new_files[@]/#$1/$2} )
 for (( i = 0; i < ${#_new_files[@]}; i++)) ; do
     local _new_file="${_new_files[$i]}"
     local _old_file="${_old_files[$i]}"
-    echo "- Merging [$_new_file] to [$_old_file]"
+    echo -e "- Merging [$BLUE $_new_file $NORMAL ] to [$_old_file]"
 
     if [ -e "$_old_file" ] ; then
 	
