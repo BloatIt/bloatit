@@ -3,10 +3,10 @@
 usage()
 {
 cat << EOF
-usage: "$0" -d host -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name]
-       "$0" -d host -r releaseVersion -t -b bloatitFolder [-n name] 
-       "$0"  -l -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name] 
-       "$0" -h 
+usage: $0 -d host -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name]
+       $0 -d host -r releaseVersion -t -b bloatitFolder [-n name] 
+       $0 -l -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name] 
+       $0 -h 
 
 This script create a release, tag it and send it to a distant host.
 
