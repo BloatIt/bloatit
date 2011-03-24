@@ -83,6 +83,7 @@ exit_ok(){
 
 exit_fail(){
     echo "Failure. Abording know ! "
+    kill $$
     exit 128
 }
 
@@ -126,10 +127,11 @@ log_date "Make a mvn release." $LOG_FILE
 # Do not do the perform.
 # Just clean if there is no errors
 
-    _result=$?
+   [ "$?" = "0" ] || exit_fail
+
 ) | tee -a $LOG_FILE
 
-[ "$_result" = "0" ] || exit_fail
+
 
 
 ##
@@ -156,10 +158,11 @@ git commit -m \"New PreRelease $PREFIX-$RELEASE_VERSION\"
 log_date "Stopping the bloatit server." $LOG_FILE
 (
     $SSH "/etc/init.d/bloatit stop && sleep 2"
-    _result=$?
+
+    [ $? = 0 ] || exit_fail
+
 ) | tee -a $LOG_FILE
 
-[ $_result = 0 ] || exit_fail
 
 ##
 ## Migrating DB.
@@ -172,7 +175,7 @@ cd /home/$USER/java/
 java -jar /tmp/$(basename $LIQUIBASE_DIR) \
     --classpath=.:/home/$USER/jar/dom4j*.jar:/home/$USER/jar/postgresql*.jar:/home/$USER/jar/sl4j-api*.jar:/home/$USER/jar/slfj-jdk*.jar \
 "
-    _result=$?
+    [ $? = 0 ] || exit_fail
 ) | tee -a $LOG_FILE
 
 ##
@@ -192,10 +195,9 @@ chmod u+x /tmp/$MERGE_FILE_SCRIPT
 # ressources files
 /tmp/$MERGE_FILE_SCRIPT $UP_RESSOURCES $CLASSES
 "
-    _result=$?
+    [ $? = 0 ] || exit_fail
 ) | tee -a $LOG_FILE
 
-[ $_result = 0 ] || exit_fail
 
 ##
 ## Launching the server.
@@ -203,9 +205,7 @@ chmod u+x /tmp/$MERGE_FILE_SCRIPT
 log_date "Starting the bloatit server." $LOG_FILE
 (
     $SSH "/etc/init.d/bloatit start"
-    _result=$?
+    [ $? = 0 ] || exit_fail
 ) | tee -a $LOG_FILE
-
-[ $_result = 0 ] || exit_fail
 
 echo "Release done ! "
