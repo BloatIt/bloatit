@@ -160,7 +160,7 @@ public class UrlParameter<T, U> extends UrlNode {
     @Override
     protected void constructUrl(final StringBuilder sb) {
         final String stringValue = getStringValue();
-        if (getRole() == Role.GET || getRole() == Role.PRETTY) {
+        if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
                 sb.append("/").append(getName()).append("-").append(stringValue);
             }
