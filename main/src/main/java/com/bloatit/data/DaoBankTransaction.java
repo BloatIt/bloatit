@@ -116,6 +116,8 @@ public class DaoBankTransaction extends DaoIdentifiable {
     private Date modificationDate;
     @Column(nullable = false, updatable = false)
     private BigDecimal value;
+    @Column(nullable = false, updatable = false)
+    private BigDecimal valuePaid;
     @Enumerated
     @Column(nullable = false)
     private State state;
@@ -146,9 +148,10 @@ public class DaoBankTransaction extends DaoIdentifiable {
                                                       final String token,
                                                       final DaoActor author,
                                                       final BigDecimal value,
+                                                      final BigDecimal valuePayed,
                                                       final String orderReference) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, orderReference);
+        final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, valuePayed, orderReference);
         try {
             session.save(bankTransaction);
         } catch (final HibernateException e) {
@@ -163,9 +166,9 @@ public class DaoBankTransaction extends DaoIdentifiable {
      * throw a {@link NonOptionalParameterException} if any of the parameters is
      * null (or string isEmpty).
      */
-    private DaoBankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
+    private DaoBankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
         super();
-        if (message == null || token == null || author == null || value == null || orderReference == null) {
+        if (message == null || token == null || author == null || value == null || valuePayed == null || orderReference == null) {
             throw new NonOptionalParameterException();
         }
         if (message.isEmpty() || token.isEmpty() || orderReference.isEmpty()) {
@@ -175,6 +178,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
         this.token = token;
         this.author = author;
         this.value = value;
+        this.valuePaid = valuePayed;
         this.state = State.PENDING;
         this.reference = orderReference;
         this.creationDate = new Date();
@@ -240,6 +244,10 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     public DaoActor getAuthor() {
         return this.author;
+    }
+
+    public BigDecimal getValuePaid() {
+        return this.valuePaid;
     }
 
     public BigDecimal getValue() {

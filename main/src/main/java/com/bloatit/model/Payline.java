@@ -38,6 +38,10 @@ import com.experian.payline.ws.obj.Result;
 
 public final class Payline extends RestrictedObject {
 
+    public static final BigDecimal COMMISSION_VARIABLE_RATE = new BigDecimal("0.1");
+    public static final BigDecimal COMMISSION_FIX_RATE = new BigDecimal("0.3");
+
+
     private static final String ACCEPTED_CODE = "00000";
     private static final String ORDER_ORIGINE = "payline";
     /**
@@ -168,14 +172,25 @@ public final class Payline extends RestrictedObject {
         paymentRequest.setReturnURL(returnUrl);
         paymentRequest.setNotificationURL(notificationUrl);
 
+        BigDecimal amountToPay = computateAmountToPay(amount);
+
+
         if (getAuthToken() == null) {
             throw new UnauthorizedOperationException(Action.READ);
+        }
+
+        if (amountToPay.scale() > 2) {
+            throw new FatalErrorException("The amount to pay cannot have more than 2 digit after the '.'.");
         }
         if (amount.scale() > 2) {
             throw new FatalErrorException("The amount cannot have more than 2 digit after the '.'.");
         }
 
-        final BigDecimal amountX100 = amount.scaleByPowerOfTen(2);
+        if (amount.compareTo(amountToPay) > 0) {
+            throw new FatalErrorException("The amount to pay must be superior to the amount '.'.");
+        }
+
+        final BigDecimal amountX100 = amountToPay.scaleByPowerOfTen(2);
 
         addPaymentDetails(amountX100, paymentRequest);
         final String orderReference = addOrderDetails(amountX100, paymentRequest);
@@ -190,16 +205,21 @@ public final class Payline extends RestrictedObject {
         final DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
 
         final Reponse reponse = new Reponse(apiReponse);
-        createBankTransaction(amount, orderReference, reponse);
+        createBankTransaction(amount, amountToPay, orderReference, reponse);
         return reponse;
     }
 
-    private void createBankTransaction(final BigDecimal amount, final String orderReference, final Reponse reponse) {
+    public static BigDecimal computateAmountToPay(final BigDecimal amount) {
+        return amount.add(amount.multiply(COMMISSION_VARIABLE_RATE)).add(COMMISSION_FIX_RATE).setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    }
+
+    private void createBankTransaction(final BigDecimal amount, final BigDecimal amountToPay, final String orderReference, final Reponse reponse) {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
                                                                         reponse.getToken(),//
                                                                         getAuthTokenUnprotected().getMember(),//
                                                                         amount, //
+                                                                        amountToPay, //
                                                                         orderReference);
             bankTransaction.setProcessInformations(reponse.getCode());
             if (reponse.isAccepted()) {

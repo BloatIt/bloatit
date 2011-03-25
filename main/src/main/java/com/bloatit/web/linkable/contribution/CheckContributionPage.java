@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
+import com.bloatit.model.Payline;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -160,7 +161,7 @@ public final class CheckContributionPage extends LoggedPage {
         group.add(quotationBlock);
 
         final PaylineActionUrl payActionUrl = new PaylineActionUrl();
-        payActionUrl.setAmount(quotation.getRootEntry().getValue());
+        payActionUrl.setAmount(missingAmount);
 
         HtmlLink payContributionLink = payActionUrl.getHtmlLink(tr("Pay"));
         payContributionLink.setCssClass("button");
@@ -181,8 +182,6 @@ public final class CheckContributionPage extends LoggedPage {
 
     private Quotation generateQuotationModel(BigDecimal amount) {
 
-        String partVariable = "0.1";
-        String partFixe = "0.3";
 
         String fixBank = "0.30";
         String variableBank = "0.03";
@@ -199,13 +198,13 @@ public final class CheckContributionPage extends LoggedPage {
 
         QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
 
-        QuotationPercentEntry percentFeesTotal = new QuotationPercentEntry("Fees", null, contributionTotal, new BigDecimal(partVariable));
+        QuotationPercentEntry percentFeesTotal = new QuotationPercentEntry("Fees", null, contributionTotal, Payline.COMMISSION_VARIABLE_RATE);
 
-        QuotationAmountEntry fixfeesTotal = new QuotationAmountEntry("Fees", null, new BigDecimal(partFixe));
+        QuotationAmountEntry fixfeesTotal = new QuotationAmountEntry("Fees", null, Payline.COMMISSION_FIX_RATE);
         feesTotal.addEntry(percentFeesTotal);
         feesTotal.addEntry(fixfeesTotal);
 
-        QuotationProxyEntry feesProxy = new QuotationProxyEntry("Fees", ""+Float.valueOf(partVariable)*100+"% + "+partFixe+"€", feesTotal);
+        QuotationProxyEntry feesProxy = new QuotationProxyEntry("Fees", ""+Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal(100))+"% + "+Payline.COMMISSION_FIX_RATE+"€", feesTotal);
 
         // Fees details
         // Bank fees
@@ -237,6 +236,8 @@ public final class CheckContributionPage extends LoggedPage {
                               .divide(quotation.getRootEntry().getValue(), BigDecimal.ROUND_HALF_EVEN)
                               .multiply(new BigDecimal(100))
                               .setScale(2, BigDecimal.ROUND_HALF_EVEN));
+
+        quotation.check(Payline.computateAmountToPay(amount));
 
         return quotation;
     }

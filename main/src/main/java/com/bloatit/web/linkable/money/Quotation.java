@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.WebHeader;
@@ -365,5 +366,11 @@ public class Quotation {
         void visit(QuotationProxyEntry entry);
         void visit(QuotationPercentEntry entry);
         void visit(QuotationDifferenceEntry entry);
+    }
+
+    public void check(BigDecimal rightAmount) {
+        if(!rightAmount.equals(getRootEntry().getValue())) {
+            throw new FatalErrorException("Erroned quotation. Expected: "+rightAmount+". Computed: "+getRootEntry().getValue());
+        }
     }
 }

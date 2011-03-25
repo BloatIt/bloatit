@@ -6,5 +6,12 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
          
 	<include file="liquibase/common.liquibase.xml" />
+	<changeSet author="Frédéric Bertolus" id="Add valuePaid column in DaoBankTransaction">
+        <addColumn tableName="daobanktransaction">
+        	<column name="valuepaid" type="numeric(19,2)" defaultValue="0">
+        	<constraints nullable="false" />
+        	</column>
+        </addColumn>
+    </changeSet>
 	
 </databaseChangeLog>

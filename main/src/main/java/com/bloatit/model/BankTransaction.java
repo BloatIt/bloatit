@@ -88,8 +88,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @param orderReference is a reference we have to create and should be
      *            unique.
      */
-    public BankTransaction(final String message, final String token, final Actor<?> author, final BigDecimal value, final String orderReference) {
-        super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, orderReference));
+    public BankTransaction(final String message, final String token, final Actor<?> author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
+        super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, valuePayed, orderReference));
     }
 
     /**
@@ -155,6 +155,15 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
+     * Gets the paid value.
+     *
+     * @return the value
+     */
+    public BigDecimal getValuePaid() {
+        return getDao().getValuePaid();
+    }
+
+    /**
      * Gets the value.
      *
      * @return the value
@@ -162,6 +171,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     public BigDecimal getValue() {
         return getDao().getValue();
     }
+
 
     /**
      * Gets the state.
