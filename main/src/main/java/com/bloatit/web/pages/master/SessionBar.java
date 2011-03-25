@@ -12,7 +12,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -60,7 +60,7 @@ public class SessionBar extends HtmlDiv {
                 final CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
                 euroMoney.add(new HtmlText(cl.getDefaultString()));
 
-                final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
+                final HtmlBranch money = new AccountChargingProcessUrl().getHtmlLink(euroMoney);
                 money.setCssClass("money");
 
                 // Display user money in locale money (when needed)

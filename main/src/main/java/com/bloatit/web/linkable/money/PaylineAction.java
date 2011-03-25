@@ -24,7 +24,7 @@ public final class PaylineAction extends LoggedAction {
 
     public static final String CHARGE_AMOUNT_CODE = "amount";
 
-    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
+    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POSTGET)
     private final BigDecimal amount;
 
     public PaylineAction(final PaylineActionUrl url) {

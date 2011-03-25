@@ -13,10 +13,7 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.math.BigDecimal;
-
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
@@ -39,15 +36,12 @@ import com.bloatit.web.url.PaylineActionUrl;
 @ParamContainer("charging")
 public final class AccountChargingPage extends LoggedPage {
 
-    public static final String CHARGE_AMOUNT_CODE = "amount";
-
-    @Optional
-    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.GET)
-    private final BigDecimal amount;
+    @RequestParam
+    AccountChargingProcess process;
 
     public AccountChargingPage(final AccountChargingPageUrl url) {
         super(url);
-        this.amount = url.getAmount();
+        this.process = url.getProcess();
     }
 
     @Override
@@ -76,10 +70,10 @@ public final class AccountChargingPage extends LoggedPage {
         {
             final FieldData amountData = chargeActionUrl.getAmountParameter().pickFieldData();
             final HtmlMoneyField amountInput = new HtmlMoneyField(amountData.getName(), "Amount");
-            if(amount == null) {
+            if(process.getAmount() == null) {
                 amountInput.setDefaultValue(amountData.getSuggestedValue());
             } else {
-                amountInput.setDefaultValue(amount.toPlainString());
+                amountInput.setDefaultValue(process.getAmount().toPlainString());
 
             }
             amountInput.addErrorMessages(amountData.getErrorMessages());
@@ -100,13 +94,13 @@ public final class AccountChargingPage extends LoggedPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        return AccountChargingPage.generateBreadcrumb(session.getAuthToken().getMember());
+        return AccountChargingPage.generateBreadcrumb(session.getAuthToken().getMember(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(Member member) {
+    public static Breadcrumb generateBreadcrumb(Member member, AccountChargingProcess process) {
         Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
 
-        breadcrumb.pushLink(new AccountChargingPageUrl().getHtmlLink(tr("Charge account")));
+        breadcrumb.pushLink(new AccountChargingPageUrl(process).getHtmlLink(tr("Charge account")));
 
         return breadcrumb;
     }

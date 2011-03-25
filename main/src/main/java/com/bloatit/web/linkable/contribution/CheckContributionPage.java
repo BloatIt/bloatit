@@ -27,18 +27,28 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.money.HtmlQuotation;
+import com.bloatit.web.linkable.money.Quotation;
+import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
+import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
+import com.bloatit.web.linkable.money.Quotation.QuotationPercentEntry;
+import com.bloatit.web.linkable.money.Quotation.QuotationProxyEntry;
+import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.DefineParagraph;
 import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.PaylineActionUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
@@ -47,9 +57,8 @@ import com.bloatit.web.url.FeaturePageUrl;
 public final class CheckContributionPage extends LoggedPage {
 
     @RequestParam
-    @ParamConstraint(optionalErrorMsg=@tr("The process is closed, expired, missing or invalid."))
+    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
-
 
     private final CheckContributionPageUrl url;
 
@@ -59,7 +68,6 @@ public final class CheckContributionPage extends LoggedPage {
         process = url.getProcess();
 
     }
-
 
     @Override
     public void processErrors() throws RedirectException {
@@ -71,10 +79,8 @@ public final class CheckContributionPage extends LoggedPage {
 
     }
 
-
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
-
 
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateCheckContributeForm());
@@ -87,23 +93,35 @@ public final class CheckContributionPage extends LoggedPage {
     public HtmlElement generateCheckContributeForm() throws RedirectException {
         final HtmlTitleBlock group = new HtmlTitleBlock("Check contribution", 1);
 
-        if(process.getComment() != null) {
-            group.add(new XmlText(tr("Contribute for {0} with comment : \"{1}\".", Context.getLocalizator().getCurrency(process.getAmount()).toString(), process.getComment())));
-        } else {
-            group.add(new XmlText(tr("Contribute for {0}.", Context.getLocalizator().getCurrency(process.getAmount()).toString())));
-        }
-
         try {
-            BigDecimal account = Context.getSession().getAuthToken().getMember().getInternalAccount().getAmount();
 
-            if(process.getAmount().compareTo(account) <= 0) {
-                //enought money
-                group.add(new HtmlParagraph(tr("You have enought money on your internal account.")));
+            Member member = Context.getSession().getAuthToken().getMember();
+            BigDecimal account = member.getInternalAccount().getAmount();
+
+            if (process.getAmount().compareTo(account) <= 0) {
+
+                group.add(new DefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(process.getFeature())));
+
+                group.add(new DefineParagraph(tr("Contribution amount: "), Context.getLocalizator()
+                                                                                  .getCurrency(process.getAmount())
+                                                                                  .getDefaultString()));
+
+                if (process.getComment() != null) {
+                    group.add(new DefineParagraph(tr("Comment: "), process.getComment()));
+                } else {
+                    group.add(new DefineParagraph(tr("Comment: "), "No comment"));
+                }
+
+                group.add(new DefineParagraph(tr("Author: "), member.getDisplayName()));
+                group.add(new DefineParagraph(tr("Available money: "), Context.getLocalizator().getCurrency(account).getDecimalDefaultString()));
+
+                // enought money
 
                 BigDecimal accountAfter = account.subtract(process.getAmount());
 
-                group.add(new HtmlParagraph(tr("Money in internal account before the contribution: {0}.", Context.getLocalizator().getCurrency(account))));
-                group.add(new HtmlParagraph(tr("Money in internal account after the contribution: {0}.", Context.getLocalizator().getCurrency(accountAfter))));
+                group.add(new DefineParagraph(tr("Money after contribution: "), Context.getLocalizator()
+                                                                                       .getCurrency(accountAfter)
+                                                                                       .getDecimalDefaultString()));
 
                 ContributionActionUrl contributionActionUrl = new ContributionActionUrl(process);
                 HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Confirm contribution"));
@@ -111,38 +129,118 @@ public final class CheckContributionPage extends LoggedPage {
                 group.add(confirmContributionLink);
 
             } else {
-                group.add(new HtmlParagraph("You haven't enought money on your internal account."));
 
-                BigDecimal missingAmount = process.getAmount().subtract(account);
+                generateNoMoneyContent(group, account);
 
-                group.add(new HtmlParagraph(tr("Missing amount: {0}.", Context.getLocalizator().getCurrency(missingAmount))));
-
-                session.setTargetPage(url);
-
-
-                AccountChargingPageUrl accountChargingPageUrl = new AccountChargingPageUrl();
-                accountChargingPageUrl.setAmount(missingAmount);
-                HtmlLink chargeAccountLink = accountChargingPageUrl.getHtmlLink(tr("Charge account"));
-                chargeAccountLink.setCssClass("button");
-                group.add(chargeAccountLink);
             }
 
-
         } catch (UnauthorizedOperationException e) {
-            Log.web().error("Fail to check contribution",e);
+            Log.web().error("Fail to check contribution", e);
             throw new RedirectException(new FeaturePageUrl(process.getFeature()));
         }
 
-        //Modify contribution button
+        // Modify contribution button
         ContributePageUrl contributePageUrl = new ContributePageUrl(process);
         HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("Modify contribution"));
         modifyContributionLink.setCssClass("button");
-
 
         group.add(modifyContributionLink);
 
         return group;
     }
+
+    public void generateNoMoneyContent(final HtmlTitleBlock group, BigDecimal account) {
+        BigDecimal missingAmount = process.getAmount().subtract(account);
+
+        session.setTargetPage(url);
+
+
+        Quotation quotation = generateQuotationModel(missingAmount);
+        HtmlQuotation quotationBlock = new HtmlQuotation(quotation);
+        group.add(quotationBlock);
+
+        final PaylineActionUrl payActionUrl = new PaylineActionUrl();
+        payActionUrl.setAmount(quotation.getRootEntry().getValue());
+
+        HtmlLink payContributionLink = payActionUrl.getHtmlLink(tr("Pay"));
+        payContributionLink.setCssClass("button");
+
+        group.add(payContributionLink);
+
+        HtmlParagraph chargeAccountPara = new HtmlParagraph(tr("You can also pay now more money for future contributions."));
+        group.add(chargeAccountPara);
+
+        final AccountChargingProcessUrl accountChargingProcess = new AccountChargingProcessUrl();
+        accountChargingProcess.setAmount(missingAmount);
+
+        HtmlLink accountChargingProcessLink = accountChargingProcess.getHtmlLink(tr("Charge account"));
+        accountChargingProcessLink.setCssClass("button");
+        group.add(accountChargingProcessLink);
+
+    }
+
+    private Quotation generateQuotationModel(BigDecimal amount) {
+
+        String partVariable = "0.1";
+        String partFixe = "0.3";
+
+        String fixBank = "0.30";
+        String variableBank = "0.03";
+
+        Quotation quotation = new Quotation();
+
+        QuotationTotalEntry contributionTotal = new QuotationTotalEntry("Contributions", null, "Total before fees");
+        QuotationAmountEntry missingAmount = new QuotationAmountEntry("Missing amount", null, amount);
+
+        QuotationAmountEntry prepaid = new QuotationAmountEntry("Prepaid", null, new BigDecimal(0));
+        contributionTotal.addEntry(missingAmount);
+        contributionTotal.addEntry(prepaid);
+        quotation.getRootEntry().addEntry(contributionTotal);
+
+        QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
+
+        QuotationPercentEntry percentFeesTotal = new QuotationPercentEntry("Fees", null, contributionTotal, new BigDecimal(partVariable));
+
+        QuotationAmountEntry fixfeesTotal = new QuotationAmountEntry("Fees", null, new BigDecimal(partFixe));
+        feesTotal.addEntry(percentFeesTotal);
+        feesTotal.addEntry(fixfeesTotal);
+
+        QuotationProxyEntry feesProxy = new QuotationProxyEntry("Fees", ""+Float.valueOf(partVariable)*100+"% + "+partFixe+"€", feesTotal);
+
+        // Fees details
+        // Bank fees
+        QuotationTotalEntry bankFeesTotal = new QuotationTotalEntry("Bank fees", null, "Total bank fees");
+
+        QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
+
+        QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee", ""+Float.valueOf(variableBank)*100+"%", quotation.getRootEntry(), new BigDecimal(variableBank));
+        bankFeesTotal.addEntry(variableBankFee);
+        bankFeesTotal.addEntry(fixBankFee);
+        feesProxy.addEntry(bankFeesTotal);
+
+        // Our fees
+        QuotationDifferenceEntry commissionTTC = new QuotationDifferenceEntry("Elveos's commission TTC", null, feesTotal, bankFeesTotal);
+
+
+        QuotationPercentEntry commissionHT = new QuotationPercentEntry("Commission HT", null, commissionTTC, new BigDecimal(1/1.196));
+        QuotationDifferenceEntry ourFeesTVA = new QuotationDifferenceEntry("TVA for commission", "19.6%", commissionTTC, commissionHT);
+        commissionTTC.addEntry(commissionHT);
+        commissionTTC.addEntry(ourFeesTVA);
+        feesProxy.addEntry(commissionTTC);
+
+        quotation.getRootEntry().addEntry(feesProxy);
+
+        quotation.getRootEntry().print(0);
+
+        System.out.println("Rendement: "
+                + commissionHT.getValue()
+                              .divide(quotation.getRootEntry().getValue(), BigDecimal.ROUND_HALF_EVEN)
+                              .multiply(new BigDecimal(100))
+                              .setScale(2, BigDecimal.ROUND_HALF_EVEN));
+
+        return quotation;
+    }
+
 
     @Override
     protected String getPageTitle() {
@@ -171,6 +269,5 @@ public final class CheckContributionPage extends LoggedPage {
 
         return breadcrumb;
     }
-
 
 }
