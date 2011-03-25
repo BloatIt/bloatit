@@ -25,7 +25,7 @@ public class SideBarFeatureBlock extends SideBarElementLayout {
             add(new DefineParagraph(tr("Software: "), SoftwaresTools.getSoftwareLink(feature.getSoftware())));
             add(new DefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
 
-            add(new HtmlParagraph(FeaturesTools.generateProgress(feature)));
+            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, true)));
 
             add(new HtmlParagraph(new FeaturePageUrl(feature).getHtmlLink(tr("more details..."))));
 
