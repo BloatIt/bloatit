@@ -165,15 +165,6 @@ revert() {
     _classpath="$_classpath:/home/$_user/jars/slf4j-api-1.6.1.jar"
     _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.5.8.jar"
 
-    log_date "Reverting to git tag: $_prefix-$_release_version" $_log_file
-    (
-        $_ssh "
-	    git checkout \"$_prefix-$_release_version\"
-	    git checkout -b \"$_prefix-$_release_version-branch\"
-        "
-        [ $? = 0 ] || exit_fail
-    )| tee -a $_log_file
-
     log_date "Reverting the db to tag: $_prefix-$_release_version" $_log_file
     (
         cat $_liquibase | $_ssh "
@@ -186,6 +177,15 @@ revert() {
         "
         [ $? = 0 ] || exit_fail
     ) | tee -a $_log_file
+
+    log_date "Reverting to git tag: $_prefix-$_release_version" $_log_file
+    (
+        $_ssh "
+	    git checkout \"$_prefix-$_release_version\"
+	    git checkout -b \"$_prefix-$_release_version-branch\"
+        "
+        [ $? = 0 ] || exit_fail
+    )| tee -a $_log_file
 }
 
 ##
