@@ -3,12 +3,13 @@
 	<groupId>com.bloatit</groupId>
 	<artifactId>BloatIt</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>BloatIt</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<hibernate.version>3.6.1.Final</hibernate.version>
+		<liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile>
 	</properties>
 
 	<build>
@@ -113,7 +114,33 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>install</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>./liquibase/liquibase-launcher.sh</executable>
+					<arguments>
+						<argument>update</argument>
+					</arguments>
+				</configuration>
+			</plugin>
 
+			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> 
+				<version>1.9.5.0</version> <executions> <execution> <phase>process-resources</phase> 
+				<configuration> <changeLogFile>src/main/resources/liquiabse/current.liquibase.xml</changeLogFile> 
+				<url>jdbc:postgresql://localhost/bloatit</url> <username>bloatit</username> 
+				<password>passe</password> <driver>org.postgresql.Driver</driver> <liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile> 
+				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> 
+				</plugin> -->
 		</plugins>
 	</build>
 
@@ -121,6 +148,15 @@
 		<repository>
 			<id>gettext-commons-site</id>
 			<url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>jboss-public-repository-group</id>
@@ -201,12 +237,12 @@
 		<dependency>
 			<groupId>com.bloatit</groupId>
 			<artifactId>BloatItApt</artifactId>
-			<version>1.0</version>
+			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.bloatit</groupId>
 			<artifactId>BloatItPaypalBinding</artifactId>
-			<version>1.0</version>
+			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Jakarta language commons (to escape string) -->
@@ -263,6 +299,20 @@
 			<url>http://download.java.net/maven/2/</url>
 			<layout>default</layout>
 		</pluginRepository>
+
+		<pluginRepository>
+			<id>central</id>
+			<name>Maven Plugin Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>
+
 
 	</pluginRepositories>
 

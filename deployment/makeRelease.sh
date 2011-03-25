@@ -3,17 +3,22 @@
 usage()
 {
 cat << EOF
-usage: $0 -d host -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name] [-h] 
+usage: $0 -d host -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name]
+       $0 -d host -r releaseVersion -t -b bloatitFolder [-n name] 
+       $0 -l -r releaseVersion -s nextSnapshotVersion -b bloatitFolder [-n name] 
+       $0 -h 
 
 This script create a release, tag it and send it to a distant host.
 
 OPTIONS:
    -h      Show this message. 
+   -d      Destination host. Requiered.
+   -l      Do the local work, but do nothing on the remote server.
    -r      Release version (Could be 1.0.alfa).
    -s      Next snapshot number version (Must be only numeric).
-   -d      Destination host. Requiered.
    -b      Bloatit root folder (git/mvn root).
    -n      Distant user name. Default is "bloatit".
+   -t      Use tagged version.
 EOF
 }
 
@@ -25,9 +30,11 @@ HOST=
 RELEASE_VERSION=
 NEXT_SNAPSHOT_VERSION=
 REPOS_DIR=
+USE_TAG=
 USER=bloatit
+LOCAL_ONLY=
 
-while getopts "hd:b:n:r:s:" OPTION
+while getopts "lthd:b:n:r:s:" OPTION
 do
      case $OPTION in
          h)
@@ -46,6 +53,12 @@ do
          b)
              REPOS_DIR=$OPTARG
              ;;
+         l)
+             LOCAL_ONLY="true"
+             ;;
+         t)
+             USE_TAG="true"
+             ;;
          n)
              USER=$OPTARG
              ;;
@@ -56,131 +69,82 @@ do
      esac
 done
 
-if [ -z "$HOST" ] || [ -z "$RELEASE_VERSION" ] || [ -z "$NEXT_SNAPSHOT_VERSION" ] || [ -z "$REPOS_DIR" ]
+if [ -z "$RELEASE_VERSION" ] || [ -z "$REPOS_DIR" ]
 then
 	echo -e "Arguments are missing !!! \n" 1>&2
 	usage 1>&2
 	exit 1
 fi
 
-PREFIX=bloatit
-MVN="mvn -f $REPOS_DIR/pom.xml "
+if [ -z "$HOST" ] && [ -z "$LOCAL_ONLY" ] 
+then 
+	echo -e "You have to specify a host or do the work localy !!! \n" 1>&2
+	usage 1>&2
+	exit 1
+fi
+
+if [ -z "$USE_TAG" ] && [ -z "$NEXT_SNAPSHOT_VERSION" ] 
+then 
+	echo -e "You have to specify a next release snapshot or use a tag !!! \n" 1>&2
+	usage 1>&2
+	exit 1
+fi
 
 . $PWD/log.sh
 . $PWD/conf.sh
+. $PWD/releaseUtils.sh
 
-SSH="ssh $USER@$HOST"
+calculateLogFilename # We can know use the LOG_FILE variable.
+PREFIX=bloatit
+MVN="mvn -f $REPOS_DIR/pom.xml" 
+SSH="ssh -t $USER@$HOST"
+LIQUIBASE_DIR=$REPOS_DIR/main/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar
 
-exit_ok(){
-    echo "exiting"
-    exit 0
-}
-
-exit_fail(){
-    echo "Failure. Abording know ! "
-    exit 128
-}
-
-abort(){
-    echo "aborting"
-    exit 255
-}
-
-abort_if_non_zero(){
-    if [ $1 != "0" ] ; then 
-        abort
-    fi
-}
-
-calculateLogFilename
-# We can know use the LOG_FILE variable.
-
+echo "HOST=$HOST
+RELEASE_VERSION=$RELEASE_VERSION
+NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
+REPOS_DIR=$REPOS_DIR
+USE_TAG=$USE_TAG
+LOCAL_ONLY=$LOCAL_ONLY
+USER=$USER"
 log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
 abort_if_non_zero $?
 
-##
-## Perform the mvn release.
-##
+if [ -z "$USE_TAG" ] ; then
+    performMvnRelease "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$MVN"
+    transferData "$LOG_FILE" "$HOST" "$REPOS_DIR" "$USER"
+else
+    log_date "Using the tag: $PREFIX-$RELEASE_VERSION" "$LOG_FILE"
+    if [ -n "$( git status --porcelain)" ] ; then
+	echo "You have non commited data !"
+        exit_fail
+    fi
+    git checkout "$PREFIX-$RELEASE_VERSION"
+    $MVN clean install -Dmaven.test.skip=true
 
-log_date "Make a mvn release." $LOG_FILE
-(
-    $MVN release:clean
-    $MVN install -Dmaven.test.skip=true
-    $MVN --batch-mode -Dtag=$PREFIX-$RELEASE_VERSION release:prepare \
-                      -DreleaseVersion=$RELEASE_VERSION \
-		      -DdevelopmentVersion=$NEXT_SNAPSHOT_VERSION-SNAPSHOT \
-		      -DautoVersionSubmodules=true \
-    && $MVN release:perform
+    transferData "$LOG_FILE" "$HOST" "$REPOS_DIR" "$USER"
 
-    _result=$?
-) | tee -a $LOG_FILE
+    git checkout HEAD
+    echo "WARNING: Going back to master !! "
+    git checkout master
+fi
 
-[ "$_result" = "0" ] || exit_fail
+if [ -n "$LOCAL_ONLY" ] ; then
+     echo "local work done."
+     echo "exit."
+     exit 0
+fi
 
+commitPrerelease "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$SSH"
 
-##
-## Send newly added data to the distant server
-##
+stopBloatitServer "$LOG_FILE" "$SSH"
 
-./transfert.sh -d $HOST -l $LOG_FILE -s $REPOS_DIR -n $USER
+migratingDB "$LOG_FILE" "$LIQUIBASE_DIR" "$USER" "$SSH"
 
-[ $? = 0 ] || exit_fail
+propagateConfFiles "$LOG_FILE" "$UP_CONF_DIR" "$CONF_DIR" "$UP_SHARE_DIR" "$SHARE_DIR" "$UP_RESSOURCES" "$CLASSES" "$SSH"
 
-##
-## Commit the git distant new data
-##
+commitRelease "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$SSH"
 
-$SSH "
-git status
-git add -A
-git commit -m \"New PreRelease $PREFIX-$RELEASE_VERSION\"
-"
-
-##
-## Stopping the server.
-##
-log_date "Stopping the bloatit server." $LOG_FILE
-(
-    $SSH "/etc/init.d/bloatit stop ; sleep 2"
-    _result=$?
-) | tee -a $LOG_FILE
-
-##
-## Migrating DB.
-##
-
-##
-## Propagate conf files.
-##
-#remote execute:
-(
-
-MERGE_FILE_SCRIPT=mergeFIles.sh
-cat ./$MERGE_FILE_SCRIPT | $SSH " 
-cat > /tmp/$MERGE_FILE_SCRIPT
-chmod u+x /tmp/$MERGE_FILE_SCRIPT
-
-# .config files
-/tmp/$MERGE_FILE_SCRIPT $UP_CONF_DIR $CONF_DIR
-# .local/share files
-/tmp/$MERGE_FILE_SCRIPT $UP_SHARE_DIR $SHARE_DIR
-# ressources files
-/tmp/$MERGE_FILE_SCRIPT $UP_RESSOURCES $CLASSES
-"
-    _result=$?
-) | tee -a $LOG_FILE
-
-[ $_result = 0 ] || exit_fail
-
-##
-## Launching the server.
-##
-log_date "Starting the bloatit server." $LOG_FILE
-(
-    $SSH "/etc/init.d/bloatit start"
-    _result=$?
-) | tee -a $LOG_FILE
-
-[ $_result = 0 ] || exit_fail
+startBloatitServer "$LOG_FILE" "$SSH"
 
 echo "Release done ! "
