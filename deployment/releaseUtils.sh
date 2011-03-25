@@ -108,22 +108,79 @@ stopBloatitServer() {
 ## Migrating DB.
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
+##    PREFIX : the tag prefix name (For example "bloatit").
+##    RELEASE_VERSION : the version string of the release.
 ##    LIQUIBASE_JAR : the full path to the liquibase-core jar.
 ##    USER : the bloatit user
 ##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l bloatit linkeos.org"
 migratingDB() {
     local _log_file="$1"
-    local _liquibase="$2"
-    local _user="$3"
-    local _ssh="$4"
+    local _prefix="$2"
+    local _release_version="$3"
+    local _liquibase="$4"
+    local _user="$5"
+    local _ssh="$6"
+
+    local _classpath="."
+    _classpath="$_classpath:/home/$_user/jars/dom4j-1.6.1.jar"
+    _classpath="$_classpath:/home/$_user/jars/postgresql-8.4-701.jdbc4.jar"
+    _classpath="$_classpath:/home/$_user/jars/slf4j-api-1.6.1.jar"
+    _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.5.8.jar"
+
     log_date "Migrating the DB." $_log_file
     (
         cat $_liquibase | $_ssh "
             cat > /tmp/$(basename $_liquibase)
             cd /home/$_user/java/
-            java -jar /tmp/$(basename $_liquibase) \
-                --classpath=.:/home/$_user/jars/dom4j-1.6.1.jar:/home/$_user/jars/postgresql-8.4-701.jdbc4.jar:/home/$_user/jars/slf4j-api-1.6.1.jar:/home/$_user/jars/slf4j-log4j12-1.5.8.jar \
-                update
+
+            java -jar /tmp/$(basename $_liquibase) --classpath=$_classpath update
+            java -jar /tmp/$(basename $_liquibase) --classpath=$_classpath tag "$_prefix-$_release_version"
+
+            rm /tmp/$(basename $_liquibase)
+        "
+        [ $? = 0 ] || exit_fail
+    ) | tee -a $_log_file
+}
+
+##
+## Perform a revert
+## Ordered parameters :
+##    LOG_FILE : the file where to append log output.
+##    PREFIX : the tag prefix name (For example "bloatit").
+##    RELEASE_VERSION : the version string of the release.
+##    LIQUIBASE_JAR : the full path to the liquibase-core jar.
+##    USER : the bloatit user
+##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l bloatit linkeos.org"
+revert() {
+    local _log_file="$1"
+    local _prefix="$2"
+    local _release_version="$3"
+    local _liquibase="$4"
+    local _user="$5"
+    local _ssh="$6"
+
+    local _classpath="."
+    _classpath="$_classpath:/home/$_user/jars/dom4j-1.6.1.jar"
+    _classpath="$_classpath:/home/$_user/jars/postgresql-8.4-701.jdbc4.jar"
+    _classpath="$_classpath:/home/$_user/jars/slf4j-api-1.6.1.jar"
+    _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.5.8.jar"
+
+    log_date "Reverting to git tag: $_prefix-$_release_version" $_log_file
+    (
+        $_ssh "
+	    git checkout \"$_prefix-$_release_version\"
+	    git checkout -b \"$_prefix-$_release_version-branch\"
+        "
+        [ $? = 0 ] || exit_fail
+    )| tee -a $_log_file
+
+    log_date "Reverting the db to tag: $_prefix-$_release_version" $_log_file
+    (
+        cat $_liquibase | $_ssh "
+            cat > /tmp/$(basename $_liquibase)
+            cd /home/$_user/java/
+
+            java -jar /tmp/$(basename $_liquibase) --classpath=$_classpath rollback "$_prefix-$_release_version"
 
             rm /tmp/$(basename $_liquibase)
         "
@@ -190,6 +247,7 @@ commitRelease() {
         git status
         git add -A
         git commit -m \"New Release $_prefix-$_release_version\"
+        git tag "$_prefix-$_release_version"
     "
 }
 
