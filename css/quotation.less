@@ -1,0 +1,82 @@
+@import "include/constants";
+@import "include/colors";
+@import "include/tools";
+@import "include/components";
+
+
+.quotation_block {
+    width: 80%;
+    margin: auto;
+
+}
+
+.quotation_line_0, .quotation_line_1, .quotation_line_2, .quotation_line_3 {
+    width: 100%;
+
+    .display-box;
+}
+
+.quotation_money {
+    width: 100px;
+    text-align: right;
+}
+
+.quotation_label {
+    .box-flex;
+}
+
+.quotation_total_label {
+    .box-flex;
+}
+
+
+.quotation_total_0 {
+
+    
+
+    .quotation_title_line_0 {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 20px;
+    }
+
+    .quotation_line_0 {
+        color: @default_text_color;
+        font-weight: bold;
+        font-size: 1.1em;
+        border-top: 1px solid @link_title_color;
+        margin-bottom: 20px;
+    }
+}
+
+
+.quotation_total_1, .quotation_proxy_1 {
+
+    color: @default_text_color;
+    
+    
+    .quotation_line_1 {
+        border-bottom: 1px solid @border_color;
+        font-weight: bold;
+        font-size: 1.0em;
+    }
+    margin-bottom: 10px;
+    
+}
+
+.quotation_line_2 {
+    margin-top: 5px;
+    .quotation_label {
+        margin-left: 10px;
+    }
+    
+}
+
+.quotation_line_3 {
+    font-size: 0.9em;
+    color: @light_text_color;
+    .quotation_label {
+        margin-left: 30px;
+    }
+    
+}

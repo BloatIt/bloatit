@@ -237,6 +237,9 @@ public abstract class JavaGenerator {
             case PRETTY:
                 sb.append("Role.PRETTY");
                 break;
+            case POSTGET:
+                sb.append("Role.POSTGET");
+                break;
             default:
                 assert false;
                 break;

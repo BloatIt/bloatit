@@ -39,6 +39,7 @@ public final class CurrencyLocale {
     private static final String RATES_PATH = ConfigurationManager.SHARE_DIR + "locales/rates";
     private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
     private static final int DISPLAY_PRECISION = 0;
+    private static final int DISPLAY_PRECISION_DECIMAL = 2;
 
     private static Semaphore dateMutex = new Semaphore(1);
     private static Date lastParse = null;
@@ -130,6 +131,28 @@ public final class CurrencyLocale {
      */
     public String getDefaultString() {
         return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
+    }
+
+    /**
+     * Returns the localized version of the amount with 2 decimal digits, i.e. : converted to the
+     * locale money, and with the locale symbol.
+     *
+     * @return the localized string
+     */
+    public String getDecimalLocaleString() {
+        return getConvertedAmount().setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE) + getLocaleSymbol();
+    }
+
+
+    /**
+     * Returns the displayed amount with 2 decimal digits within the default currency of the
+     * application (currently euro)
+     *
+     * @return a String representing the <code>amount</code> of money in the
+     *         application default currency
+     */
+    public String getDecimalDefaultString() {
+        return this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**

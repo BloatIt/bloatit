@@ -139,12 +139,21 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     }
 
     /**
+     * @see com.bloatit.model.BankTransaction#getValuePayed()
+     */
+    @XmlAttribute
+    public BigDecimal getValuePaid() {
+        return model.getValuePaid();
+    }
+
+    /**
      * @see com.bloatit.model.BankTransaction#getValue()
      */
     @XmlAttribute
     public BigDecimal getValue() {
         return model.getValue();
     }
+
 
     /**
      * @see com.bloatit.model.BankTransaction#getMessage()

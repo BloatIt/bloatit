@@ -108,7 +108,7 @@ public final class HtmlFeatureSumary extends HtmlDiv {
             final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
             {
 
-                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature);
+                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature, true);
                 featureummaryProgress.add(FeaturesTools.generateDetails(feature));
                 featureSummaryCenter.add(featureummaryProgress);
 

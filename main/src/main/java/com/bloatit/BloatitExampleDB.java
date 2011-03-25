@@ -13,13 +13,13 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.BankTransaction;
-import com.bloatit.model.Milestone;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
@@ -405,6 +405,7 @@ public class BloatitExampleDB {
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),
                                                                     member,
+                                                                    new BigDecimal(amount),
                                                                     new BigDecimal(amount),
                                                                     UUID.randomUUID().toString());
         bankTransaction.setAuthorized();

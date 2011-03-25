@@ -104,6 +104,7 @@ class DateInputBlock extends InputBlock {
     public DateInputBlock(String languageCode) {
         container = new PlaceHolderElement();
         input = new HtmlSimpleInput("text");
+        input.addAttribute("autocomplete","off");
         input.setId("datepicker");
         script = new HtmlGenericElement("script");
         script.add(new XmlText("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n"));

@@ -37,6 +37,7 @@ import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
 import com.bloatit.web.linkable.messages.MessageListPage;
 import com.bloatit.web.linkable.money.AccountChargingPage;
+import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylinePage;
@@ -71,6 +72,7 @@ import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.pages.admin.MilestoneAdminPage;
 import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
@@ -343,6 +345,10 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ContributionProcessUrl.getName())) {
             return new ContributionProcess(new ContributionProcessUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(AccountChargingProcessUrl.getName())) {
+            return new AccountChargingProcess(new AccountChargingProcessUrl(params, session.getParameters()));
+        }
+
 
         // Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {

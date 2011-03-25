@@ -22,9 +22,10 @@ import com.bloatit.web.url.PaylineReturnActionUrl;
 @ParamContainer("paylinedopayment")
 public final class PaylineAction extends LoggedAction {
 
+
     public static final String CHARGE_AMOUNT_CODE = "amount";
 
-    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
+    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POSTGET)
     private final BigDecimal amount;
 
     public PaylineAction(final PaylineActionUrl url) {
@@ -45,6 +46,7 @@ public final class PaylineAction extends LoggedAction {
         if (payline.canMakePayment()) {
             Reponse reponse;
             try {
+
                 reponse = payline.doPayment(amount, cancelUrl, returnUrl, notificationUrl);
                 if (reponse.isAccepted()) {
                     return new UrlStringBinder(reponse.getRedirectUrl());
