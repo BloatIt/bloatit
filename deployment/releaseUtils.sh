@@ -213,17 +213,15 @@ propagateConfFiles() {
 log_date "Merging the conf files." $LOG_FILE
 (
 _merge_file_script=mergeFiles.sh
-cat ./$_merge_file_script | $_ssh " 
-cat > /tmp/$_merge_file_script
-chmod u+x /tmp/$_merge_file_script"
+cat ./$_merge_file_script | $_ssh "cat > /tmp/$_merge_file_script"
 
 $_ssh "
 # .config files
-/tmp/$_merge_file_script $_up_conf_dir $_conf_dir
+bash /tmp/$_merge_file_script $_up_conf_dir $_conf_dir
 # .local/share files
-/tmp/$_merge_file_script $_up_share_dir $_share_dir
+bash /tmp/$_merge_file_script $_up_share_dir $_share_dir
 # ressources files
-/tmp/$_merge_file_script $_up_ressources $_classes
+bash /tmp/$_merge_file_script $_up_ressources $_classes
 
 rm /tmp/$_merge_file_script
 "
