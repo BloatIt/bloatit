@@ -37,12 +37,11 @@ SHARE_DIR=$4
 nohup java -classpath $CLASSPATH $MAIN_CLASS >> $SHARE_DIR/log/log.txt 2>> $SHARE_DIR/log/errors.txt 0< /dev/null &
 echo $! > $3
 ' > $tmp_launcher
-chmod uog+x $tmp_launcher
 
 if [ "$(id -un)" != "$USER" ] ; then
-    su $USER -c "$tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR"
+    su $USER -c "bash $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR"
 else
-    $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR
+    bash $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR
 fi
 
 rm $tmp_launcher
