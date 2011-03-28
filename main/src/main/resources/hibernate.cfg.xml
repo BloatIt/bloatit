@@ -3,12 +3,22 @@
                                          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
+
+		<!-- Encrypting the db password -->
+		<property name="connection.provider_class">
+			org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
+    </property>
+		<property name="connection.encryptor_registered_name">
+			strongHibernateStringEncryptor
+    </property>
+
+
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost/bloatit</property>
 		<property name="hibernate.connection.username">bloatit</property>
-		<property name="hibernate.connection.password">passe</property>
+		<property name="hibernate.connection.password">ENC(us3xLptUBCU5Qc1l7H7M2Q==)</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-		
+
 		<property name="hibernate.hbm2ddl.auto">validate</property>
 
 		<!-- JDBC connection pool (use the built-in) -->

@@ -22,7 +22,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 
 /**
@@ -42,7 +44,7 @@ public class SessionManager {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            final Configuration configuration = new Configuration().configure().setProperty("hibernate.hbm2ddl.auto", "validate");
+            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "validate");
             final SessionFactory buildSessionFactory = configuration.buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
@@ -55,6 +57,13 @@ public class SessionManager {
             Log.data().fatal("Initial SessionFactory creation failed.", ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+
+    private static Configuration createConfiguration() {
+        final HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
+        registry.registerPBEStringEncryptor("strongHibernateStringEncryptor", ConfigurationManager.getEncryptor());
+        final Configuration configuration = new Configuration().configure();
+        return configuration;
     }
 
     public static Query createQuery(final String str) {
@@ -112,12 +121,11 @@ public class SessionManager {
      */
     public static void generateTestSessionFactory() {
         try {
-            final Configuration configuration = new Configuration().configure()
-                                                                   .setProperty("hibernate.hbm2ddl.auto", "create-drop")
-                                                                   .setProperty("hibernate.cache.use_second_level_cache", "false")
-                                                                   .setProperty("hibernate.cache.use_query_cache", "false")
-                                                                   .setProperty("hibernate.connection.url",
-                                                                                "jdbc:postgresql://localhost/bloatit_test");
+            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                                                                     .setProperty("hibernate.cache.use_second_level_cache", "false")
+                                                                     .setProperty("hibernate.cache.use_query_cache", "false")
+                                                                     .setProperty("hibernate.connection.url",
+                                                                                  "jdbc:postgresql://localhost/bloatit_test");
             sessionFactory = configuration.buildSessionFactory();
 
         } catch (final Exception ex) {

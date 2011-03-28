@@ -1,5 +1,6 @@
 package com.bloatit.common;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,6 +11,10 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.properties.EncryptableProperties;
 
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
@@ -24,6 +29,29 @@ public class ConfigurationManager {
     private final static String FALLBACK_ETC_DIR = "/etc/bloatit/";
     private static final String SUFFIX = ".properties";
 
+    private static final StandardPBEStringEncryptor encryptor = createEncryptor();
+
+    private static StandardPBEStringEncryptor createEncryptor() {
+        final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        // Get the root password
+        String password = System.getProperty("masterPassword");
+        if (password == null || password.isEmpty()) {
+            try {
+                System.out.println("I need the master password!");
+                final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+                password = in.readLine();
+            } catch (final IOException e) {
+                throw new FatalErrorException(e);
+            }
+        }
+        encryptor.setPassword(password);
+        return encryptor;
+    }
+
+    public static PBEStringEncryptor getEncryptor() {
+        return encryptor;
+    }
+
     /**
      * <p>
      * Loads the content of a properties file in the default configuration file
@@ -34,7 +62,7 @@ public class ConfigurationManager {
      * The <code>name</code> of the property file is the name of the file, or
      * the path from the root of the configuration directory.
      * </p>
-     *
+     * 
      * @param name the name of the property file
      * @return a map key -> value
      */
@@ -62,7 +90,7 @@ public class ConfigurationManager {
         try {
             fis = new FileInputStream(f);
             final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
-            final Properties props = new Properties();
+            final Properties props = new EncryptableProperties(encryptor);
             props.load(isr);
             return new PropertiesRetriever(props);
         } catch (final FileNotFoundException e) {
