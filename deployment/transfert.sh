@@ -12,7 +12,7 @@ OPTIONS:
    -d      Destination host. Requiered.
    -l      Log file name, messages will be append to the file. Requiered.
    -s      Source folder (Bloatit root git repo). Default is "$PWD".
-   -n      Distant user name. Default is "bloatit".
+   -n      Distant user name. Default is "elveos".
 EOF
 }
 
@@ -22,7 +22,7 @@ EOF
 
 HOST=
 LOG_FILE=
-DISTANT_NAME=bloatit
+DISTANT_NAME=elveos
 SOURCE=$PWD
 
 while getopts "hd:l:s:n:" OPTION

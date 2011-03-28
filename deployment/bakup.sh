@@ -15,7 +15,7 @@ OPTIONS:
    -l      List different versions.
    -r      Restore the version from a specific date.
    -p      Restore to the previous version.
-   -n      Distant user name. Default is "bloatit".
+   -n      Distant user name. Default is "elveos".
 
 DATE FORMAT
   The string "now" (refers to the current time)
@@ -47,7 +47,7 @@ EOF
 }
 
 ACTION=
-USER=bloatit
+USER=elveos
 HOST=
 LOG_FILE=
 

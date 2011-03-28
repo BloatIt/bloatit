@@ -13,7 +13,7 @@ OPTIONS:
    -d      Destination host. Requiered.
    -r      Release version (Could be 1.0.alfa).
    -b      Bloatit root folder (git/mvn root).
-   -n      Distant user name. Default is "bloatit".
+   -n      Distant user name. Default is "elveos".
 EOF
 }
 
@@ -24,7 +24,7 @@ EOF
 HOST=
 RELEASE_VERSION=
 REPOS_DIR=
-USER=bloatit
+USER=elveos
 
 while getopts "d:r:b:n:h" OPTION
 do
@@ -71,7 +71,7 @@ fi
 . $PWD/releaseUtils.sh
 
 calculateLogFilename # We can know use the LOG_FILE variable.
-PREFIX=bloatit
+PREFIX=elveos
 SSH="ssh -t $USER@$HOST"
 LIQUIBASE_DIR=$REPOS_DIR/main/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar
 

@@ -2,12 +2,12 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/usr/sbin:/bin:/usr/bin
 DESC="Bloatit web site"
-NAME=bloatit
+NAME=elveos
 SCRIPTNAME=/etc/init.d/$NAME
 
-USER=bloatit
+USER=elveos
 ROOT=/home/$USER
-MAIN_CLASS=com.bloatit.BloatitServer
+MAIN_CLASS=com.elveos.BloatitServer
 DEPEDENCIES=$ROOT/jars
 SHARE_DIR=$ROOT/.local/share/$USER
 PIDFILE=$SHARE_DIR/.$NAME.pid

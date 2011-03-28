@@ -17,7 +17,7 @@ OPTIONS:
    -r      Release version (Could be 1.0.alfa).
    -s      Next snapshot number version (Must be only numeric).
    -b      Bloatit root folder (git/mvn root).
-   -n      Distant user name. Default is "bloatit".
+   -n      Distant user name. Default is "elveos".
    -t      Use tagged version.
 EOF
 }
@@ -31,7 +31,7 @@ RELEASE_VERSION=
 NEXT_SNAPSHOT_VERSION=
 REPOS_DIR=
 USE_TAG=
-USER=bloatit
+USER=elveos
 LOCAL_ONLY=
 
 while getopts "lthd:b:n:r:s:" OPTION
@@ -95,7 +95,7 @@ fi
 . $PWD/releaseUtils.sh
 
 calculateLogFilename # We can know use the LOG_FILE variable.
-PREFIX=bloatit
+PREFIX=elveos
 MVN="mvn -f $REPOS_DIR/pom.xml" 
 SSH="ssh -t $USER@$HOST"
 LIQUIBASE_DIR=$REPOS_DIR/main/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar

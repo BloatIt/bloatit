@@ -26,7 +26,7 @@ abort_if_non_zero(){
 ## Perform the mvn release.
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
-##    PREFIX : the tag prefix name (For example "bloatit").
+##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    NEXT_SNAPSHOT_VERSION : the version of the next snapshot.
 ##    MVN : the mvn command to launch (for example "mvn -f ../pom.xml") 
@@ -60,7 +60,7 @@ performMvnRelease() {
 ##    LOG_FILE : the file where to append log output.
 ##    HOST : where to transfer the data (for example linkeos.com)
 ##    REPOS_DIR : the bloatit root dir.
-##    USER : the distant user owning the bloatit server.
+##    USER : the distant user owning the elveos server.
 transferData() {
     local _log_file="$1"
     local _host="$2"
@@ -74,9 +74,9 @@ transferData() {
 ## Commit the git distant new data
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
-##    PREFIX : the tag prefix name (For example "bloatit").
+##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
-##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l bloatit linkeos.org"
+##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l elveos linkeos.org"
 commitPrerelease() {
     local _log_file="$1"
     local _prefix="$2"
@@ -93,7 +93,7 @@ commitPrerelease() {
 ## Stopping the server.
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
-##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l bloatit linkeos.org"
+##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l elveos linkeos.org"
 stopBloatitServer() {
     local _log_file="$1"
     local _ssh="$2"
@@ -108,11 +108,11 @@ stopBloatitServer() {
 ## Migrating DB.
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
-##    PREFIX : the tag prefix name (For example "bloatit").
+##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    LIQUIBASE_JAR : the full path to the liquibase-core jar.
-##    USER : the bloatit user
-##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l bloatit linkeos.org"
+##    USER : the elveos user
+##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l elveos linkeos.org"
 migratingDB() {
     local _log_file="$1"
     local _prefix="$2"
@@ -146,11 +146,11 @@ migratingDB() {
 ## Perform a revert
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
-##    PREFIX : the tag prefix name (For example "bloatit").
+##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    LIQUIBASE_JAR : the full path to the liquibase-core jar.
-##    USER : the bloatit user
-##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l bloatit linkeos.org"
+##    USER : the elveos user
+##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l elveos linkeos.org"
 revert() {
     local _log_file="$1"
     local _prefix="$2"
@@ -200,7 +200,7 @@ revert() {
 ##    SHARE_DIR : where to put the share files.
 ##    UP_RESSOURCES : where the resources has been uploaded.
 ##    CLASSES : where to put the resources (where the java classes are)
-##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l bloatit linkeos.org"
+##    SSH : the ssh command to launch ("-t" requiered). For example: "ssh -t -l elveos linkeos.org"
 propagateConfFiles() {
     local _log_file="$1"
     local _up_conf_dir="$2"
@@ -233,9 +233,9 @@ rm /tmp/$_merge_file_script
 ## Commit the git distant new data
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
-##    PREFIX : the tag prefix name (For example "bloatit").
+##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
-##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l bloatit linkeos.org"
+##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l elveos linkeos.org"
 commitRelease() {
     local _log_file="$1"
     local _prefix="$2"
@@ -253,13 +253,13 @@ commitRelease() {
 ## Launching the server.
 ## Ordered parameters :
 ##    LOG_FILE : the file where to append log output.
-##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l bloatit linkeos.org"
+##    SSH : the ssh command to launch (do not forget the "-t"). For example: "ssh -t -l elveos linkeos.org"
 startBloatitServer() {
-    log_date "Starting the bloatit server." $_log_file
+    log_date "Starting the elveos server." $_log_file
     local _log_file="$1"
     local _ssh="$2"
     (
-        $_ssh "/etc/init.d/bloatit start"
+        $_ssh "/etc/init.d/elveos start"
         [ $? = 0 ] || exit_fail
     ) | tee -a $_log_file
 }
