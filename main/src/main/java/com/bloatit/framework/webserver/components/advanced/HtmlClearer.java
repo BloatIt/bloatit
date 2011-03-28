@@ -11,4 +11,10 @@ public class HtmlClearer extends HtmlGenericElement {
         super("hr");
         setCssClass("clearer");
     }
+
+    @Override
+    public boolean selfClosable() {
+        return true;
+    }
+
 }
