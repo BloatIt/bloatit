@@ -16,6 +16,8 @@
 //
 package com.bloatit.data;
 
+import java.util.Map;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -42,9 +44,15 @@ public class SessionManager {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            final SessionFactory buildSessionFactory = new Configuration().configure()
-                                                                          .setProperty("hibernate.hbm2ddl.auto", "validate")
-                                                                          .buildSessionFactory();
+            final Configuration configuration = new Configuration().configure().setProperty("hibernate.hbm2ddl.auto", "validate");
+
+            final Map<String, String> env = System.getenv();
+            final String dbPassword = env.get("BLOATIT_DB_PASSWD");
+            if (dbPassword != null) {
+                configuration.setProperty("hibernate.connection.password", dbPassword);
+            }
+
+            final SessionFactory buildSessionFactory = configuration.buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
                 Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoFeature.class).startAndWait();
@@ -72,7 +80,7 @@ public class SessionManager {
 
     /**
      * singleton pattern implementation.
-     *
+     * 
      * @return the current session.
      */
     public static SessionFactory getSessionFactory() {
@@ -113,13 +121,21 @@ public class SessionManager {
      */
     public static void generateTestSessionFactory() {
         try {
-            // Create the SessionFactory from hibernate.cfg.xml
-            sessionFactory = new Configuration().configure()
-                                                .setProperty("hibernate.hbm2ddl.auto", "create-drop")
-                                                .setProperty("hibernate.cache.use_second_level_cache", "false")
-                                                .setProperty("hibernate.cache.use_query_cache", "false")
-                                                .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test")
-                                                .buildSessionFactory();
+            final Configuration configuration = new Configuration().configure()
+                                                                   .setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                                                                   .setProperty("hibernate.cache.use_second_level_cache", "false")
+                                                                   .setProperty("hibernate.cache.use_query_cache", "false")
+                                                                   .setProperty("hibernate.connection.url",
+                                                                                "jdbc:postgresql://localhost/bloatit_test");
+
+            final Map<String, String> env = System.getenv();
+            final String dbPassword = env.get("BLOATIT_DB_PASSWD");
+            if (dbPassword != null) {
+                configuration.setProperty("hibernate.connection.password", dbPassword);
+            }
+
+            sessionFactory = configuration.buildSessionFactory();
+
         } catch (final Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             Log.data().fatal("Initial SessionFactory creation failed.", ex);
