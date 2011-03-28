@@ -257,7 +257,7 @@ public class MailServer extends Thread {
             } catch (final MessagingException e) {
                 // Happens when trying to send the mail
                 final long waitTime = timeToRetry();
-                Log.mail().fatal("Failed to send mail " + mailFileName + " retrying in : " + waitTime);
+                Log.mail().fatal("Failed to send mail " + mailFileName + " retrying in : " + waitTime, e);
                 mailsFileName.add(mailFileName);
                 try {
                     sleep(waitTime);

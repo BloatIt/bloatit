@@ -43,7 +43,7 @@ public final class CreateCommentAction extends LoggedAction {
     @RequestParam(name = COMMENT_TARGET)
     private final Commentable commentable;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must type a comment"))
+    @ParamConstraint(optionalErrorMsg = @tr("You must type a comment") )
     @RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST)
     private final String comment;
 
