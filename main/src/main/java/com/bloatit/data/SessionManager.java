@@ -16,8 +16,6 @@
 //
 package com.bloatit.data;
 
-import java.util.Map;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -45,13 +43,6 @@ public class SessionManager {
     private static SessionFactory buildSessionFactory() {
         try {
             final Configuration configuration = new Configuration().configure().setProperty("hibernate.hbm2ddl.auto", "validate");
-
-            final Map<String, String> env = System.getenv();
-            final String dbPassword = env.get("BLOATIT_DB_PASSWD");
-            if (dbPassword != null) {
-                configuration.setProperty("hibernate.connection.password", dbPassword);
-            }
-
             final SessionFactory buildSessionFactory = configuration.buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
@@ -127,13 +118,6 @@ public class SessionManager {
                                                                    .setProperty("hibernate.cache.use_query_cache", "false")
                                                                    .setProperty("hibernate.connection.url",
                                                                                 "jdbc:postgresql://localhost/bloatit_test");
-
-            final Map<String, String> env = System.getenv();
-            final String dbPassword = env.get("BLOATIT_DB_PASSWD");
-            if (dbPassword != null) {
-                configuration.setProperty("hibernate.connection.password", dbPassword);
-            }
-
             sessionFactory = configuration.buildSessionFactory();
 
         } catch (final Exception ex) {
