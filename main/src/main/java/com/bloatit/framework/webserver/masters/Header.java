@@ -13,10 +13,22 @@ public final class Header extends HtmlElement {
     public Header(final String title) {
         super("head");
 
-        final HtmlBranch meta = new HtmlGenericElement("meta");
+        final HtmlBranch meta = new HtmlGenericElement("meta") {
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
+        };
         meta.addAttribute("charset", "UTF-8");
 
-        final HtmlBranch link = new HtmlGenericElement("link");
+        final HtmlBranch link = new HtmlGenericElement("link") {
+
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
+
+        };
         link.addAttribute("rel", "stylesheet");
         link.addAttribute("href", DESIGN);
         link.addAttribute("type", "text/css");
@@ -40,7 +52,13 @@ public final class Header extends HtmlElement {
      * @param css the string describing the name of the css
      */
     public void addCss(String css) {
-        final HtmlElement cssLink = new HtmlGenericElement("link").addAttribute("rel", "stylesheet");
+        final HtmlElement cssLink = new HtmlGenericElement("link") {
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
+        }.addAttribute("rel", "stylesheet");
+
         cssLink.addAttribute("href", "/resources/css/" + css);
         cssLink.addAttribute("type", "text/css");
         cssLink.addAttribute("media", "handheld, all");
