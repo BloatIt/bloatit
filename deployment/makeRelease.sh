@@ -124,7 +124,6 @@ else
 
     transferData "$LOG_FILE" "$HOST" "$REPOS_DIR" "$USER"
 
-    git checkout HEAD
     echo "WARNING: Going back to master !! "
     git checkout master
 fi
@@ -139,9 +138,9 @@ commitPrerelease "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$SSH"
 
 stopBloatitServer "$LOG_FILE" "$SSH"
 
-migratingDB "$LOG_FILE" "$LIQUIBASE_DIR" "$USER" "$SSH"
-
 propagateConfFiles "$LOG_FILE" "$UP_CONF_DIR" "$CONF_DIR" "$UP_SHARE_DIR" "$SHARE_DIR" "$UP_RESSOURCES" "$CLASSES" "$SSH"
+
+migratingDB "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$LIQUIBASE_DIR" "$USER" "$SSH"
 
 commitRelease "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$SSH"
 
