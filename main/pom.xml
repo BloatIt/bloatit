@@ -9,7 +9,6 @@
 
 	<properties>
 		<hibernate.version>3.6.1.Final</hibernate.version>
-		<liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile>
 	</properties>
 
 	<build>
@@ -112,26 +111,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>install</phase>
-					</execution>
-				</executions>
-				<configuration>
-					<executable>./liquibase/liquibase-launcher.sh</executable>
-					<arguments>
-						<argument>update</argument>
-					</arguments>
-				</configuration>
 			</plugin>
 
 			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> 
