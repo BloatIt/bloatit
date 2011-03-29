@@ -1,0 +1,90 @@
+@import "include/tools";
+
+.contribution_summary {
+    .display-box;
+    .box-orient;
+    .box-pack(center);
+
+    width:100%;
+    
+    h2 {
+        width:100%;
+        text-align: center;
+        font-family: @title_fonts;
+    }
+
+}
+
+.feature_contribution_summary {
+    .box-flex;
+    border-right: 1px solid @border_color;
+    padding-right: 30px;
+    padding-left: 30px;
+    
+    .define_p{
+        max-width: 300px;
+    }
+    
+}
+
+.author_contribution_summary {
+    .box-flex;
+    padding-right: 30px;
+    padding-left: 30px;
+    
+    .define_p{
+        max-width: 300px;
+    }
+}
+
+.change_line {
+    .display-box;
+    width:100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.money_variation {
+    .box-flex;
+    .display-box;
+    .box-orient;
+
+}
+
+.money_variation_before_up, .money_variation_before_down, .money_variation_after_up, .money_variation_after_down  {
+   .box-flex;
+   font-weight: bold;
+   font-size: 1.3em;
+   margin-left: 15px;
+   margin-right: 15px;
+}
+
+.money_variation_before_up {
+    text-align: right;
+}
+
+.money_variation_before_down {
+    text-align: right;
+    margin-top: 40px;
+}
+
+.money_variation_after_up {
+    text-align: left;
+}
+
+.money_variation_after_down {
+    text-align: left;
+    margin-top: 40px;
+}
+
+.money_variation_image {
+
+}
+
+.contribution_actions {
+
+    margin-top: 30px;
+        margin-bottom: 100px;
+    text-align: center;
+    
+}

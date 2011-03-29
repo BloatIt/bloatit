@@ -130,7 +130,7 @@ public final class CurrencyLocale {
      *         application default currency
      */
     public String getDefaultString() {
-        return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
+        return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
@@ -152,7 +152,7 @@ public final class CurrencyLocale {
      *         application default currency
      */
     public String getDecimalDefaultString() {
-        return this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
+        return this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
