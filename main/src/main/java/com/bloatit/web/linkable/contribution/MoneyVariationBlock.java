@@ -17,25 +17,32 @@ public class MoneyVariationBlock extends HtmlDiv {
         String imageId="";
         String beforeId="";
         String afterId="";
+        String diffId="";
 
         int compareTo = before.compareTo(after);
         if(compareTo > 0) {
             imageId="moneyDown";
             beforeId="up";
             afterId="down";
+            diffId="down";
         } else if( compareTo < 0) {
             imageId="moneyUp";
             beforeId="down";
             afterId="up";
+            diffId="up";
         } else {
             imageId="moneyEqual";
             beforeId="equal";
             afterId="equal";
+            diffId="equal";
         }
 
         add(new HtmlDiv("money_variation_before_"+beforeId).addText(Context.getLocalizator().getCurrency(before).getDefaultString()));
         add(new HtmlDiv().setCssClass("money_variation_image").add(new HtmlImage(new Image(imageId+".png", ImageType.LOCAL), imageId)));
-        add(new HtmlDiv("money_variation_after_"+afterId).addText(Context.getLocalizator().getCurrency(after).getDefaultString()));
+        HtmlDiv afterBlock = new HtmlDiv("money_variation_after_"+afterId);
+        afterBlock.addText(Context.getLocalizator().getCurrency(after).getDefaultString());
+        afterBlock.add(new HtmlDiv("money_diff_"+diffId).addText((diffId.equals("up")?"+":"")+Context.getLocalizator().getCurrency(after.subtract(before)).getDefaultString()));
+        add(afterBlock);
     }
 
 }
