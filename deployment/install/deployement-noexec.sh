@@ -9,8 +9,10 @@ sudo mv /tmp/50remount /etc/apt/apt.conf.d/
 }
 
 update_fstab(){
-sudo sed -i -r '/tmp.*ext4/ s/(ext4 +)(.*)(noexec)/\1noexec,\2/g' /etc/fstab
-sudo sed -i -r '/var.*ext4/ s/(ext4 +)(.*)(noexec)/\1noexec,\2/g' /etc/fstab
+sudo sed -i -r '/tmp.*ext4/ s/noexec,?//g' /etc/fstab
+sudo sed -i -r '/tmp.*ext4/ s/(ext4 +)/\1noexec,/g' /etc/fstab
+sudo sed -i -r '/var.*ext4/ s/noexec,?//g' /etc/fstab
+sudo sed -i -r '/var.*ext4/ s/(ext4 +)/\1noexec,/g' /etc/fstab
 }
 
 create_apt_conf && update_fstab
