@@ -35,7 +35,7 @@ transferData() {
     local _host="$2"
     local _repos_dir="$3"
     local _user="$4"
-    ./transfert.sh -d $_host -l $_log_file -s $_repos_dir -n $_user
+    ./deployment/transfert.sh -d $_host -l $_log_file -s $_repos_dir -n $_user
     [ $? = 0 ] || exit_fail
 }
 
