@@ -125,10 +125,6 @@ $RSYNC $PERMS $SOURCE_UP_CONF_DIR $DEST$UP_CONF_DIR
 log_date "Sending 'share' folder to $DEST$UP_SHARE_DIR" $LOG_FILE
 $RSYNC $PERMS $SOURCE_UP_SHARE_DIR $DEST$UP_SHARE_DIR
 
-# Send the lighttpd conf
-log_date "Sending lighttpd conf files $DEST$LIGHTTPD" $LOG_FILE
-$RSYNC $PERMS $SOURCE_LIGHTTPD $DEST$LIGHTTPD
-
 # Send the website doc files
 log_date "Sending websit doc files $DEST$DOC" $LOG_FILE
 $RSYNC --perms --chmod=o=,Fug+r,F-x  $SOURCE_DOC $DEST$DOC

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . $PWD/commons/includes.sh
+. $PWD/deployment/deployUtils.sh
 
 usage(){
 cat << EOF 
