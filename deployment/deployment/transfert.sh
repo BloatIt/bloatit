@@ -69,8 +69,8 @@ SOURCE_LIGHTTPD=$SOURCE/lighttpd/
 SOURCE_DOC=$SOURCE/doc/websitedoc/
 
 # Include the global conf and the log system.
-. $PWD/conf.sh
-. $PWD/log.sh
+. $PWD/deployment/conf.sh
+. $PWD/deployment/log.sh
 
 # Create a custom rsync launcher
 
