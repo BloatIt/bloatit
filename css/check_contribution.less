@@ -1,0 +1,297 @@
+@import "include/tools";
+
+.contribution_summary {
+    .display-box;
+    .box-orient;
+    .box-pack(center);
+
+    width:100%;
+    
+    h2 {
+        width:100%;
+        text-align: center;
+        font-family: @title_fonts;
+        margin-bottom: 20px;
+    }
+
+}
+
+.feature_contribution_summary {
+    .box-flex;
+    border-right: 1px solid @border_color;
+    padding-right: 30px;
+    padding-left: 30px;
+    
+    .define_p{
+        max-width: 300px;
+    }
+    
+}
+
+.author_contribution_summary {
+    .box-flex;
+    padding-right: 30px;
+    padding-left: 30px;
+    
+    .define_p{
+        max-width: 300px;
+    }
+}
+
+.change_line {
+    .display-box;
+    width:100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.money_variation {
+    .box-flex;
+    .display-box;
+    .box-orient;
+
+}
+
+.money_variation_before_up, .money_variation_before_down, .money_variation_after_up, .money_variation_after_down  {
+   .box-flex;
+   font-weight: bold;
+   font-size: 1.3em;
+   margin-left: 15px;
+   margin-right: 15px;
+}
+
+.money_variation_before_up {
+    text-align: right;
+}
+
+.money_variation_before_down {
+    text-align: right;
+    margin-top: 40px;
+}
+
+.money_variation_after_up {
+    text-align: left;
+}
+
+.money_variation_after_down {
+    text-align: left;
+    margin-top: 40px;
+}
+
+.money_variation_image {
+
+}
+
+.money_diff_up {
+    color: @good_color;
+    font-size: 0.7em;
+    font-weight: normal;
+    margin-left: 10px;
+    font-size: italic;
+}
+
+.money_diff_down {
+    color: @bad_color;
+    font-size: 0.7em;
+    font-weight: normal;
+    margin-left: 10px;
+    font-size: italic;
+}
+
+.contribution_actions {
+
+    margin-top: 30px;
+        margin-bottom: 100px;
+    text-align: center;
+    
+}
+
+.quotation_details_lines {
+    //width: 100%;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.quotation_detail_line {
+    .display-box;
+    .box-orient;
+    .box-align(center);
+    
+    //padding-left: 5px;
+    //padding-right: 0px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    
+    width: 100%;
+    
+    .software_logo_small_block, .avatar_small_block{
+        margin-left: 5px;
+    }
+    
+    .quotation_detail_line_categorie {
+        margin-left: 20px;
+        min-width: 120px;
+    }
+    
+    .quotation_detail_line_description {
+        .box-flex;
+        font-size: 0.7em;
+        color: @light_text_color;
+        //max-width: 300px;
+        margin-left: 30px;
+    }
+    
+    
+    .quotation_detail_line_money {
+        font-size: 1.2em;
+        color: @dark_text_color;
+        width: 5em;
+        text-align: right;
+        padding-right: 10px;    
+        padding-left: 10px;
+    }
+    
+    .quotation_detail_line_amount {
+        .box-flex;
+    
+        .display-box;
+        .box-orient(vertical);
+        margin-left: 20px;
+        
+        .quotation_detail_line_amount_money {
+            font-size: 1.4em;
+            //font-weight: bold;
+            color: @dark_text_color;
+            text-align: right;
+        }
+        
+        .quotation_detail_line_amount_modify {
+            font-size: 0.7em;
+            text-align: right;
+            margin-bottom: -15px;
+            margin-top: -2px;
+            margin-right: 10px;
+        }
+        
+        
+    }
+    
+    .quotation_detail_line_field {
+        
+        .field {
+        
+            
+            font-size: 0.7em;
+            color: @dark_text_color;
+            text-align: right;
+            
+            margin: 0px;
+            
+            .input {
+                .input_field {
+                    float: none;
+                    margin: 0;
+                    
+                    .money_input {
+                    
+                        input {
+                            width: 80px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    border-bottom: 1px solid @border_color;
+}
+
+.quotation_totals_lines_block {
+    float: right;
+    padding-right: 40px;
+}
+
+.quotation_totals_lines {
+    .display-box;
+    .box-orient(vertical);
+    .box-pack(center);
+    .box-align(stretch);
+    margin-top:  50px;
+    
+    
+    .quotation_total_line, .quotation_total_line_ht, .quotation_total_line_total {
+        .display-box;
+        .box-orient(horizontal);
+        .box-align(center);
+        .box-flex;
+        margin-top:  4px;
+        margin-bottom:  4px;
+        
+        .money {
+            .box-flex;
+            text-align: right;
+            font-size: 1.4em;
+
+            color: @dark_text_color;
+            
+        }
+        
+        .details {
+            font-size: 0.7em;
+            color: @light_text_color;
+        }
+        
+        .label {
+            .box-flex;
+            font-size: 1.1em;
+            min-width: 300px;
+        }        
+    }
+    
+    .quotation_total_line {
+        border-bottom: 1px solid @border_color;
+        margin-bottom:  6px;
+    }
+    
+    
+    .quotation_total_line_total {
+        margin-top:  10px;
+        
+         .money {
+            font-size: 1.8em;
+            color: @link_title_color;
+            font-weight: bold;
+            
+        }
+        
+        .label {
+            font-size: 1.5em;
+            color: @dark_text_color;
+        }        
+    }
+}
+
+.pay_actions {
+    margin-top: 50px;
+    margin-bottom: 100px;
+    text-align: right;
+    
+    a {
+        font-size: 0.8em;
+    }
+    
+    .button {
+        font-size: 1.3em;
+        margin-left: 20px;
+        margin-right: 0;
+        padding: 7px;
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+        .rounded_corners(9px);
+        
+    }
+}
+
+
+
+

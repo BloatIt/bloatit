@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="50"
+   height="50"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="fleche_haut.svg"
+   inkscape:export-filename="/home/fred/projets/bloatit/www/resources/img/money_up_small.png"
+   inkscape:export-xdpi="55.959999"
+   inkscape:export-ydpi="55.959999">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.2"
+     inkscape:cx="19.397199"
+     inkscape:cy="23.351439"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1123"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1002.3622)">
+    <path
+       style="fill:#00a700;fill-opacity:1;stroke:#0a5300;stroke-width:1.53988433000000002px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 47.935787,1009.0662 c -6.343769,3.7827 -14.255436,6.9273 -20.395757,8.8578 0.98911,1.0995 2.426171,2.6909 3.358642,3.7149 -6.325035,6.4538 -16.016637,13.6436 -28.0267096,16.7434 1.2587339,2.2861 1.9705195,4.252 2.6885525,7.0204 9.4619251,-2.4426 21.0197921,-12.4958 28.2447941,-20.2029 1.242777,1.7253 2.07021,2.7703 3.045597,4.3102 3.0098,-5.0036 7.449146,-13.8416 11.084881,-20.4438 z"
+       id="path3757"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc" />
+  </g>
+</svg>

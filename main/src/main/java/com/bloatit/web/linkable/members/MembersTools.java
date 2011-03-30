@@ -24,4 +24,17 @@ public class MembersTools {
         return avatarDiv;
     }
 
+    public static HtmlElement getMemberAvatarSmall(Member member) {
+
+        HtmlDiv avatarDiv = new HtmlDiv("avatar_small_block");
+        if (member.getAvatar() == null) {
+            avatarDiv.add(new HtmlImage(new Image("none.png", Image.ImageType.LOCAL), tr("Member avatar"), "avatar_small"));
+        } else {
+            final FileResourceUrl imageUrl = new FileResourceUrl(member.getAvatar());
+            avatarDiv.add(new HtmlImage(imageUrl, tr("Member avatar"), "avatar_small"));
+        }
+
+        return avatarDiv;
+    }
+
 }
