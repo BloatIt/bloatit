@@ -20,18 +20,22 @@ import java.util.List;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.Image;
+import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
+import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
+import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
@@ -39,19 +43,18 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.members.MembersTools;
-import com.bloatit.web.linkable.money.HtmlQuotation;
 import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationPercentEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationProxyEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
+import com.bloatit.web.linkable.money.QuotationEntry;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.DefineParagraph;
 import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -179,73 +182,193 @@ public final class CheckContributionPage extends LoggedPage {
     private void generateNoMoneyContent(final HtmlTitleBlock group, Feature feature, Member member, BigDecimal account)
             throws UnauthorizedOperationException {
 
+        HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
+
+        // Contribution
+
+        detailsLines.add(new HtmlContributionLine(process));
+
+        if (member.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
+            detailsLines.add(new HtmlPrepaidLine(member));
+
+        }
+
+        detailsLines.add(new HtmlChargeAccountLine(member));
+
         BigDecimal missingAmount = process.getAmount().subtract(account);
+        StandardQuotation quotation = new StandardQuotation(missingAmount);
 
-        session.setTargetPage(url);
-
-        Quotation quotation = generateQuotationModel(missingAmount);
-
-        HtmlDiv contributionSummaryDiv = new HtmlDiv("contribution_summary");
+        HtmlDiv totalsLines = new HtmlDiv("quotation_totals_lines");
         {
-            contributionSummaryDiv.add(generateFeatureSummary(feature));
 
-            HtmlDiv authorContributionSummary = new HtmlDiv("author_contribution_summary");
+            HtmlDiv subtotal = new HtmlDiv("quotation_total_line");
+            {
+                subtotal.add(new HtmlDiv("label").addText(tr("Subtotal TTC")));
+                subtotal.add(new HtmlDiv("money").addText(Context.getLocalizator()
+                                                                 .getCurrency(quotation.subTotalTTCEntry.getValue())
+                                                                 .getDecimalDefaultString()));
+            }
+            totalsLines.add(subtotal);
+
+            HtmlDiv feesHT = new HtmlDiv("quotation_total_line_ht");
+            {
+                feesHT.add(new HtmlDiv("label").addText(tr("Fees HT")));
+                feesHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getDecimalDefaultString()));
+            }
+            totalsLines.add(feesHT);
+
+            HtmlDiv feesTTC = new HtmlDiv("quotation_total_line");
             {
 
-                authorContributionSummary.add(new HtmlTitle(tr("Quotation"), 2));
+                HtmlLink showDetailLink = new HtmlLink("");
 
+                HtmlSpan detailSpan = new HtmlSpan("details");
+                detailSpan.add(new HtmlMixedText(tr("({0}% + {1}) <0::fees details>",
+                                                    Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
+                                                    Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getDecimalDefaultString()),
+                                                 showDetailLink));
 
-                authorContributionSummary.add( new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
-                authorContributionSummary.add(new DefineParagraph(tr("Author:"), member.getDisplayName()));
-                if (process.getComment() != null) {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment:"), process.getComment()));
-                } else {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment:"), tr("No comment")));
-                }
-
-                authorContributionSummary.add(new HtmlClearer());
-
-                HtmlQuotation quotationBlock = new HtmlQuotation(quotation);
-                authorContributionSummary.add(quotationBlock);
-
+                feesTTC.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees TTC <0::>"), detailSpan)));
+                feesTTC.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getDecimalDefaultString()));
             }
-            contributionSummaryDiv.add(authorContributionSummary);
+            totalsLines.add(feesTTC);
+
+            HtmlDiv totalHT = new HtmlDiv("quotation_total_line_ht");
+            {
+                totalHT.add(new HtmlDiv("label").addText(tr("Total HT")));
+                totalHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getDecimalDefaultString()));
+            }
+            totalsLines.add(totalHT);
+
+            HtmlDiv totalTTC = new HtmlDiv("quotation_total_line_total");
+            {
+                totalTTC.add(new HtmlDiv("label").addText(tr("Total TTC")));
+                totalTTC.add(new HtmlDiv("money").addText(Context.getLocalizator()
+                                                                 .getCurrency(quotation.totalTTC.getValue())
+                                                                 .getDecimalDefaultString()));
+            }
+            totalsLines.add(totalTTC);
 
         }
-        group.add(contributionSummaryDiv);
 
-        HtmlDiv buttonDiv = new HtmlDiv("contribution_actions");
+        // Pay block
+
+        HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
 
+            // Pay later button
+            HtmlLink continueNavigation = new HtmlLink("", tr("Pay later"));
+            payBlock.add(continueNavigation);
+
             final PaylineActionUrl payActionUrl = new PaylineActionUrl();
-            payActionUrl.setAmount(missingAmount);
+            payActionUrl.setAmount(quotation.subTotalTTCEntry.getValue());
 
-            HtmlLink payContributionLink = payActionUrl.getHtmlLink(tr("Pay {0}",
-                                                                       Context.getLocalizator()
-                                                                              .getCurrency(quotation.getValue())
-                                                                              .getDecimalDefaultString()));
+            HtmlLink payContributionLink = payActionUrl.getHtmlLink(tr("Pay {0}", Context.getLocalizator()
+                                                                                         .getCurrency(quotation.totalTTC.getValue())
+                                                                                         .getDecimalDefaultString()));
             payContributionLink.setCssClass("button");
-            buttonDiv.add(payContributionLink);
-
-            // Modify contribution button
-            ContributePageUrl contributePageUrl = new ContributePageUrl(process);
-            HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("or modify contribution"));
-
-            buttonDiv.add(modifyContributionLink);
+            payBlock.add(payContributionLink);
 
         }
-        group.add(buttonDiv);
 
-        HtmlParagraph chargeAccountPara = new HtmlParagraph(tr("You can also pay now more money for future contributions."));
-        group.add(chargeAccountPara);
+        group.add(detailsLines);
+        group.add(new HtmlDiv("quotation_totals_lines_block").add(totalsLines).add(payBlock));
 
-        final AccountChargingProcessUrl accountChargingProcess = new AccountChargingProcessUrl();
-        accountChargingProcess.setAmount(missingAmount);
 
-        HtmlLink accountChargingProcessLink = accountChargingProcess.getHtmlLink(tr("Charge account"));
-        accountChargingProcessLink.setCssClass("button");
-        group.add(accountChargingProcessLink);
+    }
 
+    public static class HtmlContributionLine extends HtmlDiv {
+
+        public HtmlContributionLine(ContributionProcess contribution) throws UnauthorizedOperationException {
+            super("quotation_detail_line");
+
+            add(SoftwaresTools.getSoftwareLogoSmall(contribution.getFeature().getSoftware()));
+
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(contribution.getFeature().getContribution())
+                                                                          .getDefaultString()));
+            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_up_small.png", ImageType.LOCAL),
+                                                                                                 "money up")));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(contribution.getFeature()
+                                                                                                   .getContribution()
+                                                                                                   .add(contribution.getAmount()))
+                                                                          .getDefaultString()));
+
+            add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Contribution")));
+            add(new HtmlDiv("quotation_detail_line_description").addText(FeaturesTools.getTitle(contribution.getFeature())));
+
+            HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
+
+            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
+                                                                                             .getCurrency(contribution.getAmount())
+                                                                                             .getDecimalDefaultString()));
+
+            // Modify contribution button
+            ContributePageUrl contributePageUrl = new ContributePageUrl(contribution);
+            HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("modify"));
+            HtmlLink deleteContributionLink = contributePageUrl.getHtmlLink(tr("delete"));
+            // TODO: real delete button
+            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_modify").add(modifyContributionLink).addText(" - ").add(deleteContributionLink));
+
+            add(amountBlock);
+
+        }
+    }
+
+    public static class HtmlPrepaidLine extends HtmlDiv {
+
+        public HtmlPrepaidLine(Member member) throws UnauthorizedOperationException {
+            super("quotation_detail_line");
+
+            add(MembersTools.getMemberAvatarSmall(member));
+
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(member.getInternalAccount().getAmount())
+                                                                          .getDefaultString()));
+            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_down_small.png", ImageType.LOCAL),
+                                                                                                 "money up")));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
+
+            add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Prepaid from internal account")));
+
+            HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
+
+            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
+                                                                                             .getCurrency(member.getInternalAccount()
+                                                                                                                .getAmount()
+                                                                                                                .negate())
+                                                                                             .getDecimalDefaultString()));
+
+            add(amountBlock);
+
+        }
+    }
+
+    public static class HtmlChargeAccountLine extends HtmlDiv {
+
+        public HtmlChargeAccountLine(Member member) throws UnauthorizedOperationException {
+            super("quotation_detail_line");
+
+            add(MembersTools.getMemberAvatarSmall(member));
+
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
+            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_up_small.png", ImageType.LOCAL),
+                                                                                                 "money up")));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
+
+            add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
+            add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
+
+            HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_field");
+
+            HtmlMoneyField moneyField = new HtmlMoneyField("preload_field");
+            moneyField.setDefaultValue("0");
+            amountBlock.add(moneyField);
+
+            add(amountBlock);
+
+        }
     }
 
     public HtmlDiv generateFeatureSummary(Feature feature) throws UnauthorizedOperationException {
@@ -267,69 +390,69 @@ public final class CheckContributionPage extends LoggedPage {
         return featureContributionSummary;
     }
 
-    private Quotation generateQuotationModel(BigDecimal amount) {
+    private class StandardQuotation {
 
-        String fixBank = "0.30";
-        String variableBank = "0.03";
+        final public QuotationEntry subTotalTTCEntry;
+        final public QuotationEntry feesHT;
+        final public QuotationEntry feesTTC;
+        final public QuotationEntry totalHT;
+        final public QuotationEntry totalTTC;
+        final public QuotationEntry feesDetails;
 
-        Quotation quotation = new Quotation(Payline.computateAmountToPay(amount));
+        public StandardQuotation(BigDecimal amount) {
 
-        QuotationTotalEntry contributionTotal = new QuotationTotalEntry("Contributions", null, "Total before fees");
-        contributionTotal.setClosed(false);
-        QuotationAmountEntry missingAmount = new QuotationAmountEntry("Missing amount", null, amount);
+            String fixBank = "0.30";
+            String variableBank = "0.03";
+            String TVAInvertedRate = "0.836120401";
 
-        QuotationAmountEntry prepaid = new QuotationAmountEntry("Prepaid", null, new BigDecimal(0));
-        contributionTotal.addEntry(missingAmount);
-        contributionTotal.addEntry(prepaid);
-        quotation.addEntry(contributionTotal);
+            Quotation quotation = new Quotation(Payline.computateAmountToPay(amount));
 
-        QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
+            subTotalTTCEntry = new QuotationAmountEntry("Subtotal TTC", null, amount);
 
+            // Fees TTC
+            QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
+            QuotationPercentEntry feesVariable = new QuotationPercentEntry("Fees", null, subTotalTTCEntry, Payline.COMMISSION_VARIABLE_RATE);
+            QuotationAmountEntry feesFix = new QuotationAmountEntry("Fees", null, Payline.COMMISSION_FIX_RATE);
+            feesTotal.addEntry(feesVariable);
+            feesTotal.addEntry(feesFix);
 
-        QuotationPercentEntry percentFeesTotal = new QuotationPercentEntry("Fees", null, contributionTotal, Payline.COMMISSION_VARIABLE_RATE);
+            feesTTC = feesTotal;
 
-        QuotationAmountEntry fixfeesTotal = new QuotationAmountEntry("Fees", null, Payline.COMMISSION_FIX_RATE);
-        feesTotal.addEntry(percentFeesTotal);
-        feesTotal.addEntry(fixfeesTotal);
+            // Fees HT
 
-        QuotationProxyEntry feesProxy = new QuotationProxyEntry("Fees", "" + Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal(100)) + "% + "
-                + Payline.COMMISSION_FIX_RATE + "€", feesTotal);
+            feesHT = new QuotationPercentEntry("Fees HT", null, feesTotal, new BigDecimal(TVAInvertedRate));
 
-        feesProxy.setClosed(false);
+            // Total TTC
+            totalTTC = quotation;
 
-        // Fees details
-        // Bank fees
-        QuotationTotalEntry bankFeesTotal = new QuotationTotalEntry("Bank fees", null, "Total bank fees");
+            // Total HT
+            totalHT = new QuotationTotalEntry("Fees HT", null, null).addEntry(feesHT).addEntry(subTotalTTCEntry);
 
-        QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
+            // Fees details
+            // Bank fees
+            QuotationTotalEntry bankFeesTotal = new QuotationTotalEntry("Bank fees", null, "Total bank fees");
 
-        QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee",
-                                                                          "" + Float.valueOf(variableBank) * 100 + "%",
-                                                                          quotation,
-                                                                          new BigDecimal(variableBank));
-        bankFeesTotal.addEntry(variableBankFee);
-        bankFeesTotal.addEntry(fixBankFee);
-        feesProxy.addEntry(bankFeesTotal);
+            QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
 
-        // Our fees
-        QuotationDifferenceEntry commissionTTC = new QuotationDifferenceEntry("Elveos's commission TTC", null, feesTotal, bankFeesTotal);
+            QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee",
+                                                                              "" + Float.valueOf(variableBank) * 100 + "%",
+                                                                              quotation,
+                                                                              new BigDecimal(variableBank));
+            bankFeesTotal.addEntry(variableBankFee);
+            bankFeesTotal.addEntry(fixBankFee);
 
-        QuotationPercentEntry commissionHT = new QuotationPercentEntry("Commission HT", null, commissionTTC, new BigDecimal(1 / 1.196));
-        QuotationDifferenceEntry ourFeesTVA = new QuotationDifferenceEntry("TVA for commission", "19.6%", commissionTTC, commissionHT);
-        commissionTTC.addEntry(commissionHT);
-        commissionTTC.addEntry(ourFeesTVA);
-        feesProxy.addEntry(commissionTTC);
+            // Our fees
+            QuotationDifferenceEntry commission = new QuotationDifferenceEntry("Elveos's commission TTC", null, feesTotal, bankFeesTotal);
 
-        quotation.addEntry(feesProxy);
+            // Fees Details proxy
+            feesDetails = new QuotationProxyEntry("Fees details", null, feesTTC);
+            feesDetails.addEntry(commission);
+            feesDetails.addEntry(bankFeesTotal);
 
-        System.out.println("Rendement: "
-                + commissionHT.getValue()
-                              .divide(quotation.getValue(), BigDecimal.ROUND_HALF_EVEN)
-                              .multiply(new BigDecimal(100))
-                              .setScale(2, BigDecimal.ROUND_HALF_EVEN));
+            quotation.addEntry(subTotalTTCEntry);
+            quotation.addEntry(feesTTC);
 
-
-        return quotation;
+        }
     }
 
     @Override

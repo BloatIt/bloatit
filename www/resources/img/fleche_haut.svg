@@ -14,7 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.0 r9654"
-   sodipodi:docname="fleche_haut.svg">
+   sodipodi:docname="fleche_haut.svg"
+   inkscape:export-filename="/home/fred/projets/bloatit/www/resources/img/money_up_small.png"
+   inkscape:export-xdpi="55.959999"
+   inkscape:export-ydpi="55.959999">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -43,7 +46,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

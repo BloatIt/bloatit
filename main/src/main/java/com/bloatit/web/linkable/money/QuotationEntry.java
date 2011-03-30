@@ -37,8 +37,9 @@ public abstract class QuotationEntry {
         return comment;
     }
 
-    public void addEntry(QuotationEntry entry) {
+    public QuotationEntry addEntry(QuotationEntry entry) {
         entries.add(entry);
+        return this;
     }
 
     public List<QuotationEntry> getChildren() {
