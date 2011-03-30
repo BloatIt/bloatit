@@ -37,7 +37,7 @@ do
              ;;
          r)
              RELEASE_VERSION=$OPTARG
-             NEXT_SNAPSHOT_VERSION=$(echo $OPTARG | sed -r "s/-.*$/g")
+             NEXT_SNAPSHOT_VERSION=$(echo $RELEASE_VERSION | sed -r "s/\\-.*$//g")
              ;;
          b)
              REPOS_DIR=$OPTARG
@@ -64,13 +64,9 @@ calculateLogFilename # We can know use the LOG_FILE variable.
 PREFIX=elveos
 MVN="mvn -f $REPOS_DIR/pom.xml" 
 
-echo "HOST=$HOST
-RELEASE_VERSION=$RELEASE_VERSION
+echo "RELEASE_VERSION=$RELEASE_VERSION
 NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
-REPOS_DIR=$REPOS_DIR
-USE_TAG=$USE_TAG
-LOCAL_ONLY=$LOCAL_ONLY
-USER=$USER"
+REPOS_DIR=$REPOS_DIR"
 log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
 abort_if_non_zero $?
 
