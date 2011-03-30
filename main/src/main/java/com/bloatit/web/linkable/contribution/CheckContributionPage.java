@@ -23,6 +23,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -34,6 +35,7 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
+import com.bloatit.framework.webserver.components.javascript.JsShowHide;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.model.Feature;
@@ -47,7 +49,6 @@ import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationPercentEntry;
-import com.bloatit.web.linkable.money.Quotation.QuotationProxyEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
 import com.bloatit.web.linkable.money.QuotationEntry;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -73,10 +74,15 @@ public final class CheckContributionPage extends LoggedPage {
 
     private final CheckContributionPageUrl url;
 
+    @Optional("false")
+    @RequestParam(name = "show_fees_detail")
+    private final Boolean showFeesDetails;
+
     public CheckContributionPage(final CheckContributionPageUrl url) {
         super(url);
         this.url = url;
         process = url.getProcess();
+        showFeesDetails = url.getShowFeesDetails();
 
     }
 
@@ -210,23 +216,52 @@ public final class CheckContributionPage extends LoggedPage {
             }
             totalsLines.add(subtotal);
 
+            HtmlLink showDetailLink = new HtmlLink("", tr("fees details"));
+
             HtmlDiv feesHT = new HtmlDiv("quotation_total_line_ht");
             {
-                feesHT.add(new HtmlDiv("label").addText(tr("Fees HT")));
+
+                HtmlSpan detailSpan = new HtmlSpan("details");
+                detailSpan.add(showDetailLink);
+
+                feesHT.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees HT <0::>"), detailSpan)));
                 feesHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getDecimalDefaultString()));
+
             }
             totalsLines.add(feesHT);
+            // Fee details
+            HtmlDiv feesDetail= new HtmlDiv("quotation_total_line_details_block");
+            HtmlDiv feesBank = new HtmlDiv("quotation_total_line_details");
+            {
+                feesBank.add(new HtmlDiv("label").addText(tr("Bank fees")));
+                feesBank.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getDecimalDefaultString()));
+            }
+            feesDetail.add(feesBank);
+
+            HtmlDiv elveosCommission = new HtmlDiv("quotation_total_line_details");
+            {
+                elveosCommission.add(new HtmlDiv("label").addText(tr("Elveos's commission")));
+                elveosCommission.add(new HtmlDiv("money").addText(Context.getLocalizator()
+                                                                         .getCurrency(quotation.commission.getValue())
+                                                                         .getDecimalDefaultString()));
+
+            }
+            feesDetail.add(elveosCommission);
+            totalsLines.add(feesDetail);
+
+            // Add show/hide template
+            JsShowHide showHideFees = new JsShowHide(showFeesDetails);
+            showHideFees.addActuator(showDetailLink);
+            showHideFees.addListener(feesDetail);
+            showHideFees.apply();
 
             HtmlDiv feesTTC = new HtmlDiv("quotation_total_line");
             {
 
-                HtmlLink showDetailLink = new HtmlLink("");
-
                 HtmlSpan detailSpan = new HtmlSpan("details");
-                detailSpan.add(new HtmlMixedText(tr("({0}% + {1}) <0::fees details>",
-                                                    Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
-                                                    Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getDecimalDefaultString()),
-                                                 showDetailLink));
+                detailSpan.addText(tr("({0}% + {1})",
+                                      Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
+                                      Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getDecimalDefaultString()));
 
                 feesTTC.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees TTC <0::>"), detailSpan)));
                 feesTTC.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getDecimalDefaultString()));
@@ -273,7 +308,6 @@ public final class CheckContributionPage extends LoggedPage {
 
         group.add(detailsLines);
         group.add(new HtmlDiv("quotation_totals_lines_block").add(totalsLines).add(payBlock));
-
 
     }
 
@@ -397,7 +431,8 @@ public final class CheckContributionPage extends LoggedPage {
         final public QuotationEntry feesTTC;
         final public QuotationEntry totalHT;
         final public QuotationEntry totalTTC;
-        final public QuotationEntry feesDetails;
+        final public QuotationEntry bank;
+        final public QuotationEntry commission;
 
         public StandardQuotation(BigDecimal amount) {
 
@@ -430,7 +465,7 @@ public final class CheckContributionPage extends LoggedPage {
 
             // Fees details
             // Bank fees
-            QuotationTotalEntry bankFeesTotal = new QuotationTotalEntry("Bank fees", null, "Total bank fees");
+            bank = new QuotationTotalEntry("Bank fees", null, "Total bank fees");
 
             QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
 
@@ -438,16 +473,11 @@ public final class CheckContributionPage extends LoggedPage {
                                                                               "" + Float.valueOf(variableBank) * 100 + "%",
                                                                               quotation,
                                                                               new BigDecimal(variableBank));
-            bankFeesTotal.addEntry(variableBankFee);
-            bankFeesTotal.addEntry(fixBankFee);
+            bank.addEntry(variableBankFee);
+            bank.addEntry(fixBankFee);
 
             // Our fees
-            QuotationDifferenceEntry commission = new QuotationDifferenceEntry("Elveos's commission TTC", null, feesTotal, bankFeesTotal);
-
-            // Fees Details proxy
-            feesDetails = new QuotationProxyEntry("Fees details", null, feesTTC);
-            feesDetails.addEntry(commission);
-            feesDetails.addEntry(bankFeesTotal);
+            commission = new QuotationDifferenceEntry("Elveos's commission TTC", null, feesHT, bank);
 
             quotation.addEntry(subTotalTTCEntry);
             quotation.addEntry(feesTTC);

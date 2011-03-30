@@ -87,6 +87,7 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
         ArrayList<String> customJsList = new ArrayList<String>();
         customJsList.add("jquery-1.4.4.min.js");
         customJsList.add("jquery-ui-1.8.10.custom.min.js");
+        //TODO: add in config file
         if (!locale.equals(DEFAULT_LOCALE)) {
             customJsList.add("i18n/jquery.ui.datepicker-" + locale + ".js");
         }
