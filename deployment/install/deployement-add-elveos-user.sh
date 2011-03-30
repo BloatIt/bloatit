@@ -12,6 +12,7 @@ www_in_user_group(){
 
 create_directories(){
 sudo su -c '
+cd
 mkdir .upload
 mkdir -p .local/share/bloatit/lucene
 mkdir -p .local/share/bloatit/log
@@ -22,6 +23,7 @@ mkdir www
 
 set_right_restrictive(){
 sudo su -c '
+cd
 find . -type f -execdir chmod 440 {} \;
 find . -type d -execdir chmod 710 {} \;
 ' $USER
@@ -29,6 +31,7 @@ find . -type d -execdir chmod 710 {} \;
 
 set_right_dangerous(){
 sudo su -c '
+cd
 find . -type f -execdir chmod 666 {} \;
 find . -type d -execdir chmod 777 {} \;
 ' $USER
@@ -36,6 +39,7 @@ find . -type d -execdir chmod 777 {} \;
 
 git_versionning_of_home(){
 sudo su -c '
+cd
 # configure the git for bloatit home
 cat << "EOF" > .gitignore
 # Ignoring bash elements
