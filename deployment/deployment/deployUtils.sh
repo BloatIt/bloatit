@@ -84,16 +84,17 @@ propagateConfFiles() {
     local _classes="$7"
 log_date "Merging the conf files." $LOG_FILE
 (
+    _merge_file_script=deployment/mergeFiles.sh
     # .config files
-    bash deployment/$_merge_file_script $_up_conf_dir $_conf_dir
+    bash $_merge_file_script $_up_conf_dir $_conf_dir
     [ $? = 0 ] || exit_fail
 
     # .local/share files
-    bash deployment/$_merge_file_script $_up_share_dir $_share_dir
+    bash $_merge_file_script $_up_share_dir $_share_dir
     [ $? = 0 ] || exit_fail
 
     # ressources files
-    bash deployment/$_merge_file_script $_up_ressources $_classes
+    bash $_merge_file_script $_up_ressources $_classes
     [ $? = 0 ] || exit_fail
 
 ) | tee -a $_log_file
