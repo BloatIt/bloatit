@@ -97,8 +97,8 @@ if [ -n "$( git status --porcelain)" ] ; then
     echo "You have non commited data !"
     exit_fail
 fi
-git checkout "$PREFIX-$RELEASE_VERSION"
-$MVN clean install -Dmaven.test.skip=true
+git checkout "$PREFIX-$RELEASE_VERSION" || exit_fail
+$MVN clean install -Dmaven.test.skip=true || exit_fail
 
 # Then transfer the data to the host
 transferData "$LOG_FILE" "$HOST" "$REPOS_DIR" "$USER"
