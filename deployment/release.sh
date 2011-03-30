@@ -85,11 +85,16 @@ performMvnRelease() {
     local _release_version="$3"
     local _next_snapshot_version="$4"
     local _mvn="$5"
+
+    stty -echo
+    read -p "I need the master password: " _password ; echo
+    stty echo
     log_date "Make a mvn release." $_log_file
     (
         $_mvn release:clean
         $_mvn install -Dmaven.test.skip=true
-        $_mvn --batch-mode -Dtag=$_prefix-$_release_version release:prepare \
+        $_mvn -DargLine=-DmasterPassword=$_password --batch-mode \
+                          -Dtag=$_prefix-$_release_version release:prepare \
                           -DreleaseVersion=$_release_version \
 		          -DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
 		          -DautoVersionSubmodules=true \
