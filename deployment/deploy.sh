@@ -70,7 +70,6 @@ then
 	exit 1
 fi
 
-
 . $PWD/commons/logger.sh
 . $PWD/$FOLDER/conf.sh
 . $PWD/$FOLDER/releaseUtils.sh
@@ -111,6 +110,6 @@ git checkout master
 # Local work is done. do the distant work.
 #
 
-remote_launch "" deployment/deployDoDistantWork.sh "$RELEASE_VERSION" "$UP_CONF_DIR" "$CONF_DIR" "$UP_SHARE_DIR" "$SHARE_DIR" "$UP_RESSOURCES" "$CLASSES"
+remote_launch "$USER@$HOST" deployment/deployDoDistantWork.sh "$RELEASE_VERSION" "$UP_CONF_DIR" "$CONF_DIR" "$UP_SHARE_DIR" "$SHARE_DIR" "$UP_RESSOURCES" "$CLASSES"
 
 success "Release done ! "
