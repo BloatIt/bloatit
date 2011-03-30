@@ -98,7 +98,7 @@ performMvnRelease() {
                 -DreleaseVersion=$_release_version \
 		-DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
 		-DautoVersionSubmodules=true \
-                -DargLine=-DmasterPassword=$_password \
+                -Darguments="-DargLine=-DmasterPassword=$_password" \
         && $_mvn release:clean
     # Do not do the perform.
     # Just clean if there is no errors
