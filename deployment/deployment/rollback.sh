@@ -49,9 +49,9 @@ then
 	exit 1
 fi
 
-. $PWD/log.sh
-. $PWD/conf.sh
-. $PWD/releaseUtils.sh
+. $PWD/commons/logger.sh
+. $PWD/deployment/conf.sh
+. $PWD/deployment/releaseUtils.sh
 
 calculateLogFilename # We can know use the LOG_FILE variable.
 PREFIX=elveos

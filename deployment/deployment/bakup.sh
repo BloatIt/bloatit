@@ -93,8 +93,8 @@ if [ -z "$HOST" ] || [ -z "$ACTION" ] || [ -z "$LOG_FILE" ]; then
     exit 1
 fi
 
-. $PWD/conf.sh
-. $PWD/log.sh
+. $PWD/deployment/conf.sh
+. $PWD/commons/logger.sh
 
 INCLUDE=( $UPLOAD_DIR $CONF_DIR $SHARE_DIR )
 

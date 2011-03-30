@@ -70,7 +70,7 @@ SOURCE_DOC=$SOURCE/doc/websitedoc/
 
 # Include the global conf and the log system.
 . $PWD/deployment/conf.sh
-. $PWD/deployment/log.sh
+. $PWD/commons/logger.sh
 
 # Create a custom rsync launcher
 
