@@ -59,14 +59,6 @@ fi
 
 echo 
 menu "Configure postgres"
-read -p "Configure the user access rights (Y/n) " reponse
-if [ -z "$reponse" ] || [ "$reponse" = "y" ] || [ "$reponse" = "Y" ] ; then 
-    read -p "Input the db user name: (default=$USER) " user
-   if [ -n "$user" ] ; then
-       USER=$user
-   fi
-    $SHELL $ROOT/deployement-postgres.sh right "$USER"
-fi
 conf_postgres(){
 read -p "Add a database and a user into the postgre DB? (Y/n) " reponse
 if [ -z "$reponse" ] || [ "$reponse" = "y" ] || [ "$reponse" = "Y" ] ; then 
@@ -87,6 +79,14 @@ if [ -z "$reponse" ] || [ "$reponse" = "y" ] || [ "$reponse" = "Y" ] ; then
 fi
 }
 conf_postgres
+read -p "Configure the user access rights (Y/n) " reponse
+if [ -z "$reponse" ] || [ "$reponse" = "y" ] || [ "$reponse" = "Y" ] ; then 
+    read -p "Input the db user name: (default=$USER) " user
+   if [ -n "$user" ] ; then
+       USER=$user
+   fi
+    $SHELL $ROOT/deployement-postgres.sh right "$USER"
+fi
 
 echo
 menu "Configure lighttpd"
