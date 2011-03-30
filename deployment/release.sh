@@ -93,16 +93,17 @@ performMvnRelease() {
     (
         $_mvn release:clean
         $_mvn install -Dmaven.test.skip=true
-        $_mvn -DargLine=-DmasterPassword=$_password --batch-mode \
-                          -Dtag=$_prefix-$_release_version release:prepare \
-                          -DreleaseVersion=$_release_version \
-		          -DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
-		          -DautoVersionSubmodules=true \
+        $_mvn --batch-mode \
+                -Dtag=$_prefix-$_release_version release:prepare \
+                -DreleaseVersion=$_release_version \
+		-DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
+		-DautoVersionSubmodules=true \
+                -DargLine=-DmasterPassword=$_password \
         && $_mvn release:clean
     # Do not do the perform.
     # Just clean if there is no errors
     
-       [ "$?" = "0" ] || success "done."
+       [ "$?" = "0" ] && success "done."
     
     ) | tee -a $_log_file
 }
