@@ -465,17 +465,7 @@ var Flexie = (function (win, doc) {
 				caller = caller[0] ? caller : [caller];
 
 				if (caller[0]) {
-            	
 					forEach(caller, function (i, node) {
-					    
-					    hasNodeName = false;
-					    plop = ""
-					    for (j in node) {
-                           j == "nodeName";
-                           plop += " "+j;
-                           hasNodeName = true;
-                        }
-
 					    if(node.nodeName != undefined) {
 						    switch (node.nodeName.toLowerCase()) {
 						    case "script" :
