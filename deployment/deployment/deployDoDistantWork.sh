@@ -89,13 +89,20 @@ migratingDB() {
     _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.5.8.jar"
 
     log_date "Migrating the DB." 
+
+    stty -echo
+    read -p "What is the Postgresql $_user password ? : " _password
+    echo 
+    stty echo
     cd /home/$_user/java/
 
-    java -jar /tmp/$_liquibase --classpath=$_classpath update
+    java -jar /tmp/$_liquibase --classpath=$_classpath --password=$_password update
     exit_on_failure $?
 
-    java -jar /tmp/$_liquibase --classpath=$_classpath tag "$_prefix-$_release_version"
+    java -jar /tmp/$_liquibase --classpath=$_classpath --password=$_password tag "$_prefix-$_release_version"
     exit_on_failure $?
+
+    _password=
 }
 
 ##
@@ -118,15 +125,15 @@ propagateConfFiles() {
     local _classes="$CLASSES"
     log_date "Merging the conf files." 
     # .config files
-    bash $MERGE_FILE_SCRIPT -f $_up_conf_dir -p $_conf_dir
+    bash $MERGE_FILE_SCRIPT -f $_up_conf_dir -t $_conf_dir
     exit_on_failure $?
 
     # .local/share files
-    bash $MERGE_FILE_SCRIPT -f $_up_share_dir -p $_share_dir
+    bash $MERGE_FILE_SCRIPT -f $_up_share_dir -t $_share_dir
     exit_on_failure $?
 
     # ressources files
-    bash $MERGE_FILE_SCRIPT -f $_up_ressources -p $_classes
+    bash $MERGE_FILE_SCRIPT -f $_up_ressources -t $_classes
     exit_on_failure $?
 
 }
@@ -155,13 +162,18 @@ startBloatitServer() {
 }
 
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"
+exit_on_failure $?
 
 stopBloatitServer
+exit_on_failure $?
 
 propagateConfFiles 
+exit_on_failure $?
 
 migratingDB "$PREFIX" "$RELEASE_VERSION" "$LIQUIBASE_DIR" "$USER"
+exit_on_failure $?
 
 commitRelease "$PREFIX" "$RELEASE_VERSION"
+exit_on_failure $?
 
 success "Deployment done."
