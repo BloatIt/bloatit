@@ -1,7 +1,9 @@
 package com.bloatit.framework.webserver.components.meta;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -52,8 +54,8 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
         return css;
     }
 
-    public final List<String> getAllJs() {
-        ArrayList<String> js = new ArrayList<String>();
+    public final Set<String> getAllJs() {
+        Set<String> js = new LinkedHashSet<String>();
         doGetAllCustomJs(js);
         return js;
     }
@@ -67,7 +69,7 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
         }
     }
 
-    private final void doGetAllCustomJs(List<String> js) {
+    private final void doGetAllCustomJs(Set<String> js) {
         for (XmlNode node : this) {
             node.doGetAllCustomJs(js);
         }

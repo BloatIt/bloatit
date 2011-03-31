@@ -219,7 +219,7 @@
     margin-top:  50px;
     
     
-    .quotation_total_line, .quotation_total_line_ht, .quotation_total_line_total {
+    .quotation_total_line, .quotation_total_line_ht, .quotation_total_line_total, .quotation_total_line_details  {
         .display-box;
         .box-orient(horizontal);
         .box-align(center);
@@ -228,11 +228,15 @@
         margin-bottom:  4px;
         
         .money {
-            .box-flex;
+            //.box-flex;
+            width: 100px;
             text-align: right;
             font-size: 1.4em;
 
             color: @dark_text_color;
+            
+            
+            //min-width: 100px;
             
         }
         
@@ -242,9 +246,11 @@
         }
         
         .label {
-            .box-flex;
+            //.box-flex;
             font-size: 1.1em;
-            min-width: 300px;
+            width: 300px;
+            
+         
         }        
     }
     
@@ -268,6 +274,33 @@
             font-size: 1.5em;
             color: @dark_text_color;
         }        
+    }
+    
+   
+    
+    .quotation_total_line_details_block {
+        margin-top:  10px;
+        margin-bottom:  10px;
+        margin-left: 10px;
+        padding-left: 10px;
+        font-size: 0.7em;
+        border-left: 1px solid @border_color;
+
+        .display-box;
+        .box-orient(vertical);
+       
+        .quotation_total_line_details {
+         
+             .money {
+                width: 100px;
+                
+            }
+             
+            .label {
+               width: 279px;
+               
+            }
+        }
     }
 }
 
