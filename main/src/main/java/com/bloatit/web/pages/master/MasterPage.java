@@ -2,6 +2,9 @@ package com.bloatit.web.pages.master;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.Context;
@@ -121,5 +124,24 @@ public abstract class MasterPage extends GenericPage {
 
         return logoDiv;
     }
+
+    @Override
+    public boolean isStable() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected List<String> getCustomJs() {
+        List<String> list = new ArrayList<String>();
+        list.add("jquery-1.5.1.js");
+        list.add("selectivizr-development.js");
+        list.add("flexie.js");
+
+
+        return list;
+    }
+
+
 
 }
