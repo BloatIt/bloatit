@@ -3,7 +3,7 @@
 configure_postgres(){
 USER=$1
 sudo sed -i -r '/all/ s/md5$/reject/g' /etc/postgresql/8.4/main/pg_hba.conf
-sudo sh -c "echo \"local   all         $1                          md5\" >> /etc/postgresql/8.4/main/pg_hba.conf"
+sudo sh -c "echo \"local   $1         $1                          md5\" >> /etc/postgresql/8.4/main/pg_hba.conf"
 
 sudo service postgresql restart
 }

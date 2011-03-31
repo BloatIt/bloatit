@@ -35,12 +35,10 @@ fi
 
 
 log_date() {
-    (
         echo
         info "--------------------------------------------------------------------------------"
         info "$(date +%T): ""$1" 
         info "--------------------------------------------------------------------------------"
-    ) | tee -a $2	
 }
 
 log_ok() {
@@ -48,9 +46,9 @@ log_ok() {
         info "$1"
         read -p "Do you want to continue ? (yes/NO) " response
         if [ "$response" == yes ] || [ "$response" == YES ] ; then
-            info "Continue" >> $2	
+            info "Continue" 	
         else
-            info "Game over" >> $2
+            info "Game over" 
             return 1
         fi
 }

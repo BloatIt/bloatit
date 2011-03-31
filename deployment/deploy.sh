@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# Context: make sure we are in the right directory and that the includes are done.
-cd "$(dirname $0)"
-. $PWD/commons/includes.sh
-
+# Usage / documentation
 usage()
 {
 cat << EOF
@@ -21,6 +18,21 @@ OPTIONS:
 EOF
 }
 
+# Context: Where is this script.
+cd "$(dirname $0)"
+ROOT=$PWD
+cd -
+PREFIX=elveos
+COMMONS=$ROOT/commons/
+LIQUIBASE_DIR=$ROOT/files/liquibase-core-2.0.2-SNAPSHOT.jar
+TRANSFERT_SCRIPT=$ROOT/deployment/transfert.sh
+DEPLOYMENT_REMOTE_SCRIPT=deployment/deployDoDistantWork.sh
+
+# Add the includes 
+. $COMMONS/includes.sh
+
+calculateLogFilename # We can know use the LOG_FILE variable.
+
 #
 # Parsing the arguments
 #
@@ -29,7 +41,6 @@ HOST=
 RELEASE_VERSION=
 REPOS_DIR=
 USER=elveos
-
 while getopts "hd:r:b:n:" OPTION
 do
      case $OPTION in
@@ -55,52 +66,44 @@ do
              ;;
      esac
 done
-
-if [ -z "$RELEASE_VERSION" ] || [ -z "$REPOS_DIR" ]
+# Make sure there is no bug in the command line.
+if [ -z "$RELEASE_VERSION" ] || [ -z "$REPOS_DIR" ] || [ -z "$HOST" ] 
 then
-	echo -e "Arguments are missing !!! \n" 1>&2
+	error "Arguments are missing !!! \n"
 	usage 1>&2
 	exit 1
 fi
-
-if [ -z "$HOST" ] 
-then 
-	echo -e "You have to specify a host !! \n" 1>&2
-	usage 1>&2
-	exit 1
+if [ -e "$REPOS_DIR" ] 
+then
+	cd "$REPOS_DIR"
+	REPOS_DIR=$PWD
+	cd -
+else
+    error "Repos directory is not found !"
+    exit 1
 fi
 
-. $PWD/commons/logger.sh
-. $PWD/$FOLDER/conf.sh
-. $PWD/$FOLDER/releaseUtils.sh
-
-calculateLogFilename # We can know use the LOG_FILE variable.
-PREFIX=elveos
 MVN="mvn -f $REPOS_DIR/pom.xml" 
-SSH="ssh -t $USER@$HOST"
-LIQUIBASE_DIR=$REPOS_DIR/main/liquibase/liquibase-core-2.0.2-SNAPSHOT.jar
 
 echo "HOST=$HOST
 RELEASE_VERSION=$RELEASE_VERSION
-NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
 REPOS_DIR=$REPOS_DIR
-USE_TAG=$USE_TAG
-LOCAL_ONLY=$LOCAL_ONLY
 USER=$USER"
-log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
+log_ok "You are about to create a new release and send it to a distant server" 
 abort_if_non_zero $?
 
 # First checkout the tag.
-log_date "Using the tag: $PREFIX-$RELEASE_VERSION" "$LOG_FILE"
+log_date "Using the tag: $PREFIX-$RELEASE_VERSION" 
 if [ -n "$( git status --porcelain)" ] ; then
-    echo "You have non commited data !"
-    exit_fail
+    error "You have non commited data !"
+    exit 1
 fi
-git checkout "$PREFIX-$RELEASE_VERSION" || exit_fail
-$MVN clean install -Dmaven.test.skip=true || exit_fail
+git checkout "$PREFIX-$RELEASE_VERSION"
+$MVN clean install -Dmaven.test.skip=true 
 
 # Then transfer the data to the host
-transferData "$LOG_FILE" "$HOST" "$REPOS_DIR" "$USER"
+$TRANSFERT_SCRIPT -d $_host -s $_repos_dir -n $_user
+exit_on_failure $?
 
 # And return to the master branch
 warning "WARNING: Going back to master !! "
@@ -109,7 +112,6 @@ git checkout master
 #
 # Local work is done. do the distant work.
 #
-
-remote_launch "$USER@$HOST" deployment/deployDoDistantWork.sh "$RELEASE_VERSION" "$UP_CONF_DIR" "$CONF_DIR" "$UP_SHARE_DIR" "$SHARE_DIR" "$UP_RESSOURCES" "$CLASSES"
+remote_launch "$USER@$HOST" $DEPLOYMENT_REMOTE_SCRIPT "$RELEASE_VERSION" 
 
 success "Release done ! "

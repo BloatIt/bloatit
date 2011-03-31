@@ -15,13 +15,23 @@ OPTIONS:
 EOF
 }
 
+# Context: Where is this script.
+cd "$(dirname $0)"
+ROOT=$PWD
+cd -
+
+LIQUIBASE_DIR=$ROOT/../file/liquibase-core-2.0.2-SNAPSHOT.jar
+PREFIX=elveos
+COMMONS=$ROOT/../commons/
+
+# Add the includes 
+. $COMMONS/includes.sh
+
 #
 # Parsing the arguments
 #
-
 RELEASE_VERSION=
 USER=elveos
-
 while getopts "r:n:h" OPTION
 do
      case $OPTION in
@@ -41,42 +51,31 @@ do
              ;;
      esac
 done
-
 if [ -z "$RELEASE_VERSION" ] 
 then
-	echo -e "Arguments are missing !!! \n" 1>&2
+	error "Arguments are missing !!! "
 	usage 1>&2
 	exit 1
 fi
 
-. $PWD/commons/logger.sh
-. $PWD/deployment/conf.sh
-. $PWD/deployment/releaseUtils.sh
-
-calculateLogFilename # We can know use the LOG_FILE variable.
-PREFIX=elveos
-SSH="ssh -t $USER@$HOST"
-LIQUIBASE_DIR=file/liquibase-core-2.0.2-SNAPSHOT.jar
-
-echo "RELEASE_VERSION=$RELEASE_VERSION
+echo \
+"RELEASE_VERSION=$RELEASE_VERSION
 USER=$USER"
-log_ok "You are about to revert to a prevous version. Are you sure you want to do this?" $LOG_FILE
+log_ok "You are about to revert to a prevous version. Are you sure you want to do this?"
 abort_if_non_zero $?
 
 ##
 ## Perform a revert
 ## Ordered parameters :
-##    LOG_FILE : the file where to append log output.
 ##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    LIQUIBASE_JAR : the full path to the liquibase-core jar.
 ##    USER : the elveos user
 revert() {
-    local _log_file="$1"
-    local _prefix="$2"
-    local _release_version="$3"
-    local _liquibase="$4"
-    local _user="$5"
+    local _prefix="$1"
+    local _release_version="$2"
+    local _liquibase="$3"
+    local _user="$4"
 
     local _classpath="."
     _classpath="$_classpath:/home/$_user/jars/dom4j-1.6.1.jar"
@@ -84,23 +83,19 @@ revert() {
     _classpath="$_classpath:/home/$_user/jars/slf4j-api-1.6.1.jar"
     _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.5.8.jar"
 
-    log_date "Reverting the db to tag: $_prefix-$_release_version" $_log_file
-    (
-        cd /home/$_user/java/
+    log_date "Reverting the db to tag: $_prefix-$_release_version" 
+    cd /home/$_user/java/
 
-        java -jar /tmp/$_liquibase --classpath=$_classpath rollback "$_prefix-$_release_version"
+    java -jar /tmp/$_liquibase --classpath=$_classpath rollback "$_prefix-$_release_version"
 
-        [ $? = 0 ] || exit_fail
-    ) | tee -a $_log_file
+    exit_on_failure $?
 
-    log_date "Reverting to git tag: $_prefix-$_release_version" $_log_file
-    (
-	git checkout \"$_prefix-$_release_version\"
-	git checkout -b \"$_prefix-$_release_version-branch\"
-        [ $? = 0 ] || exit_fail
-    )| tee -a $_log_file
+    log_date "Reverting to git tag: $_prefix-$_release_version"
+    git checkout \"$_prefix-$_release_version\"
+    git checkout -b \"$_prefix-$_release_version-branch\"
+    exit_on_failure $?
 }
 
-revert "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$LIQUIBASE_DIR" "$USER" 
+revert "$PREFIX" "$RELEASE_VERSION" "$LIQUIBASE_DIR" "$USER" 
 
-echo "Revert done !"
+success "Revert done !"
