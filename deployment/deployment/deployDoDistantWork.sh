@@ -118,15 +118,15 @@ propagateConfFiles() {
     local _classes="$CLASSES"
     log_date "Merging the conf files." 
     # .config files
-    bash $MERGE_FILE_SCRIPT $_up_conf_dir $_conf_dir
+    bash $MERGE_FILE_SCRIPT -f $_up_conf_dir -p $_conf_dir
     exit_on_failure $?
 
     # .local/share files
-    bash $MERGE_FILE_SCRIPT $_up_share_dir $_share_dir
+    bash $MERGE_FILE_SCRIPT -f $_up_share_dir -p $_share_dir
     exit_on_failure $?
 
     # ressources files
-    bash $MERGE_FILE_SCRIPT $_up_ressources $_classes
+    bash $MERGE_FILE_SCRIPT -f $_up_ressources -p $_classes
     exit_on_failure $?
 
 }
