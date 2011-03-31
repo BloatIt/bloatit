@@ -178,6 +178,9 @@
     
     .quotation_detail_line_field {
         
+        .display-box;
+        .box-orient(vertical);
+        
         .field {
         
             
@@ -186,7 +189,7 @@
             text-align: right;
             
             margin: 0px;
-            
+           
             .input {
                 .input_field {
                     float: none;
@@ -197,9 +200,23 @@
                         input {
                             width: 80px;
                         }
-                    }
+                    }      
                 }
             }
+            
+            input[type="submit"] {
+                width: 80px;
+                margin: 0;
+                border: none;
+                background: none;
+                color: @default_link_color;
+                font-size: 1.0em;
+                font-weight: normal;
+                .no-shadow;
+                text-shadow: none;
+                padding: 0;
+            }
+            
         }
     }
     
@@ -321,7 +338,6 @@
         padding-left: 1.5em;
         padding-right: 1.5em;
         .rounded_corners(9px);
-        
     }
 }
 

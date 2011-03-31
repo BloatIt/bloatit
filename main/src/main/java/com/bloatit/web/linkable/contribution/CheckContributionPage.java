@@ -34,6 +34,8 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.javascript.JsShowHide;
@@ -196,11 +198,11 @@ public final class CheckContributionPage extends LoggedPage {
         CheckContributionPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
 
-        //HtmlForm detailsLines = new HtmlForm(recalculateUrl.urlString(), Method.GET);
+        HtmlForm detailsLines = new HtmlForm(recalculateUrl.urlString(), Method.GET);
 
-        //detailsLines.setCssClass("quotation_details_lines");
+        detailsLines.setCssClass("quotation_details_lines");
 
-        HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
+        //HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
 
         // Contribution
 
@@ -215,7 +217,7 @@ public final class CheckContributionPage extends LoggedPage {
 
 
         //Total
-        BigDecimal missingAmount = process.getAmount().subtract(account);
+        BigDecimal missingAmount = process.getAmount().subtract(account).add(preload);
         StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         HtmlDiv totalsLines = new HtmlDiv("quotation_totals_lines");
@@ -405,7 +407,7 @@ public final class CheckContributionPage extends LoggedPage {
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_up_small.png", ImageType.LOCAL),
                                                                                                  "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(preload).getDefaultString()));
 
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
             add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
