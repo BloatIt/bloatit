@@ -12,7 +12,7 @@ OPTIONS:
    -d      Destination host. Requiered.
    -l      Log file name, messages will be append to the file. Requiered.
    -s      Source folder (Bloatit root git repo). Default is "$PWD".
-   -n      Distant user name. Default is "bloatit".
+   -n      Distant user name. Default is "elveos".
 EOF
 }
 
@@ -22,7 +22,7 @@ EOF
 
 HOST=
 LOG_FILE=
-DISTANT_NAME=bloatit
+DISTANT_NAME=elveos
 SOURCE=$PWD
 
 while getopts "hd:l:s:n:" OPTION
@@ -69,8 +69,8 @@ SOURCE_LIGHTTPD=$SOURCE/lighttpd/
 SOURCE_DOC=$SOURCE/doc/websitedoc/
 
 # Include the global conf and the log system.
-. $PWD/conf.sh
-. $PWD/log.sh
+. $PWD/deployment/conf.sh
+. $PWD/commons/logger.sh
 
 # Create a custom rsync launcher
 
@@ -124,10 +124,6 @@ $RSYNC $PERMS $SOURCE_UP_CONF_DIR $DEST$UP_CONF_DIR
 # Send the data in share folder (in a temporary directory)
 log_date "Sending 'share' folder to $DEST$UP_SHARE_DIR" $LOG_FILE
 $RSYNC $PERMS $SOURCE_UP_SHARE_DIR $DEST$UP_SHARE_DIR
-
-# Send the lighttpd conf
-log_date "Sending lighttpd conf files $DEST$LIGHTTPD" $LOG_FILE
-$RSYNC $PERMS $SOURCE_LIGHTTPD $DEST$LIGHTTPD
 
 # Send the website doc files
 log_date "Sending websit doc files $DEST$DOC" $LOG_FILE

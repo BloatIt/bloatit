@@ -2,12 +2,12 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/usr/sbin:/bin:/usr/bin
 DESC="Bloatit web site"
-NAME=bloatit
+NAME=elveos
 SCRIPTNAME=/etc/init.d/$NAME
 
-USER=bloatit
+USER=elveos
 ROOT=/home/$USER
-MAIN_CLASS=com.bloatit.BloatitServer
+MAIN_CLASS=com.elveos.BloatitServer
 DEPEDENCIES=$ROOT/jars
 SHARE_DIR=$ROOT/.local/share/$USER
 PIDFILE=$SHARE_DIR/.$NAME.pid
@@ -34,7 +34,10 @@ CLASSPATH=$1
 MAIN_CLASS=$2
 PID_FILE=$3
 SHARE_DIR=$4
-nohup java -classpath $CLASSPATH $MAIN_CLASS >> $SHARE_DIR/log/log.txt 2>> $SHARE_DIR/log/errors.txt 0< /dev/null &
+stty -echo
+read -p "Master password for elveos daemon: " _password ; echo
+stty echo
+echo $_password | nohup java -classpath $CLASSPATH $MAIN_CLASS >> $SHARE_DIR/log/log.txt 2>> $SHARE_DIR/log/errors.txt &
 echo $! > $3
 ' > $tmp_launcher
 

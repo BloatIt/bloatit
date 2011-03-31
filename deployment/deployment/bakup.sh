@@ -15,7 +15,7 @@ OPTIONS:
    -l      List different versions.
    -r      Restore the version from a specific date.
    -p      Restore to the previous version.
-   -n      Distant user name. Default is "bloatit".
+   -n      Distant user name. Default is "elveos".
 
 DATE FORMAT
   The string "now" (refers to the current time)
@@ -47,7 +47,7 @@ EOF
 }
 
 ACTION=
-USER=bloatit
+USER=elveos
 HOST=
 LOG_FILE=
 
@@ -93,8 +93,8 @@ if [ -z "$HOST" ] || [ -z "$ACTION" ] || [ -z "$LOG_FILE" ]; then
     exit 1
 fi
 
-. $PWD/conf.sh
-. $PWD/log.sh
+. $PWD/deployment/conf.sh
+. $PWD/commons/logger.sh
 
 INCLUDE=( $UPLOAD_DIR $CONF_DIR $SHARE_DIR )
 
