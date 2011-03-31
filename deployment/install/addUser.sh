@@ -117,6 +117,7 @@ done
 
 if [ "$MODE" = "complet" ] ; then
     add_user
+    allow_ssh_connection
     www_in_user_group
     create_directories
     set_right_restrictive

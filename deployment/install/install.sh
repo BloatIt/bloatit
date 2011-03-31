@@ -6,7 +6,7 @@ cd "$(dirname $0)"
 ROOT=$PWD
 cd -
 COMMONS=$ROOT/../commons/
-DEPLOYMENT_INSTALL_SCRIPT=$ROOT/install/install.sh
+DEPLOYMENT_INSTALL_SCRIPT=install/install.sh
 FILE_DIR=$ROOT/../files/
 
 # Add the includes 

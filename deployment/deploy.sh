@@ -26,7 +26,7 @@ PREFIX=elveos
 COMMONS=$ROOT/commons/
 LIQUIBASE_DIR=$ROOT/files/liquibase-core-2.0.2-SNAPSHOT.jar
 TRANSFERT_SCRIPT=$ROOT/deployment/transfert.sh
-DEPLOYMENT_REMOTE_SCRIPT=$ROOT/deployment/deployDoDistantWork.sh
+DEPLOYMENT_REMOTE_SCRIPT=deployment/deployDoDistantWork.sh
 
 # Add the includes 
 . $COMMONS/includes.sh

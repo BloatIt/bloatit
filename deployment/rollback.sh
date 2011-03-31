@@ -17,7 +17,7 @@ cd "$(dirname $0)"
 ROOT=$PWD
 cd -
 COMMONS=$ROOT/commons/
-ROLLBACK_SCRIPT=$ROOT/rollback/rollback.sh
+ROLLBACK_SCRIPT=rollback/rollback.sh
 
 # Add the includes 
 . $COMMONS/includes.sh

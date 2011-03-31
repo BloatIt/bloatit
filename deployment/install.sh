@@ -16,7 +16,7 @@ cd "$(dirname $0)"
 ROOT=$PWD
 cd -
 COMMONS=$ROOT/commons/
-DEPLOYMENT_INSTALL_SCRIPT=$ROOT/install/install.sh
+DEPLOYMENT_INSTALL_SCRIPT=install/install.sh
 
 # Add the includes 
 . $COMMONS/includes.sh
