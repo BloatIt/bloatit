@@ -25,12 +25,16 @@ HOST=$1
 SCRIPT=$2
 
 shift
+shift
 
 if [ "$HOST" = "localhost" ] || [ "$HOST" = "127.0.0.1" ] || [ "$HOST" = "::1" ] ; then
-    bash "$SCRIPT" $@
+    cp -r . /tmp
+    cd /tmp
+    bash -- "$SCRIPT" $@
+    cd /tmp && rm -rf deployment file install commons
 else
     scp -r . $HOST:/tmp/
-    ssh -t $HOST "cd /tmp && bash \"$SCRIPT\" $@"
-    #ssh $HOST "cd /tmp && rm -rf \"$(basename $PWD)\""
+    ssh -t $HOST "cd /tmp && bash -- \"$SCRIPT\" $@"
+    ssh $HOST "cd /tmp && rm -rf deployment file install commons"
 fi
 }
