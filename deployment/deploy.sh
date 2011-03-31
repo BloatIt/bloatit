@@ -89,13 +89,13 @@ echo "HOST=$HOST
 RELEASE_VERSION=$RELEASE_VERSION
 REPOS_DIR=$REPOS_DIR
 USER=$USER"
-log_ok "You are about to create a new release and send it to a distant server" 
+log_ok "You are about to deploy a release to a distant server" 
 abort_if_non_zero $?
 
 # First checkout the tag.
 log_date "Using the tag: $PREFIX-$RELEASE_VERSION" 
 if [ -n "$( git status --porcelain)" ] ; then
-    error "You have non commited data !"
+    error "You have non-commited data !"
     exit 1
 fi
 git checkout "$PREFIX-$RELEASE_VERSION"

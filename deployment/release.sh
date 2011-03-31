@@ -84,9 +84,6 @@ performMvnRelease() {
     stty echo
 
     log_date "Make a mvn release." 
-    $_mvn release:clean
-    exit_on_failure $?
-
     $_mvn install -Dmaven.test.skip=true
     exit_on_failure $?
 
@@ -103,5 +100,5 @@ performMvnRelease() {
 
 performMvnRelease "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$MVN"
 
-
+success "Release done."
 
