@@ -96,10 +96,24 @@ migratingDB() {
     stty echo
     cd /home/$_user/java/
 
-    java -jar /tmp/$_liquibase --classpath=$_classpath --password=$_password update
+    java -jar /tmp/$_liquibase --classpath=$_classpath \
+                               --password=$_password \
+                               --driver=org.postgresql.Driver \
+                               --referenceDriver=org.postgresql.Driver \
+                               --url=jdbc:postgresql://localhost/$_user \
+                               --username=$_user \
+                               --changeLogFile=liquibase/current.liquibase.xml \
+                               update
     exit_on_failure $?
 
-    java -jar /tmp/$_liquibase --classpath=$_classpath --password=$_password tag "$_prefix-$_release_version"
+    java -jar /tmp/$_liquibase --classpath=$_classpath \
+                               --password=$_password \
+                               --driver=org.postgresql.Driver \
+                               --referenceDriver=org.postgresql.Driver \
+                               --url=jdbc:postgresql://localhost/$_user \
+                               --username=$_user \
+                               --changeLogFile=liquibase/current.liquibase.xml \
+                                tag "$_prefix-$_release_version"
     exit_on_failure $?
 
     _password=
@@ -173,6 +187,8 @@ migratingDB "$PREFIX" "$RELEASE_VERSION" "$LIQUIBASE_DIR" "$USER"
 exit_on_failure $?
 
 commitRelease "$PREFIX" "$RELEASE_VERSION"
+
+startBloatitServer
 exit_on_failure $?
 
 success "Deployment done."
