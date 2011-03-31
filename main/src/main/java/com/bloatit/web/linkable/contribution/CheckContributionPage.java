@@ -216,7 +216,9 @@ public final class CheckContributionPage extends LoggedPage {
             }
             totalsLines.add(subtotal);
 
-            HtmlLink showDetailLink = new HtmlLink("", tr("fees details"));
+            CheckContributionPageUrl showDetailUrl = url.clone();
+            showDetailUrl.setShowFeesDetails(!showFeesDetails);
+            HtmlLink showDetailLink = showDetailUrl.getHtmlLink(tr("fees details"));
 
             HtmlDiv feesHT = new HtmlDiv("quotation_total_line_ht");
             {

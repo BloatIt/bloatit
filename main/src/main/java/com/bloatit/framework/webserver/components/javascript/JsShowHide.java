@@ -34,7 +34,7 @@ public class JsShowHide {
 
         if (!state) {
             for (HtmlBranch listener : listeners) {
-                // listener.addAttribute("style", "display: none;");
+                 listener.addAttribute("style", "display: none;");
             }
         }
 
@@ -43,8 +43,8 @@ public class JsShowHide {
         for (HtmlBranch actuator : actuators) {
             HtmlGenericElement scriptElement = new HtmlGenericElement("script");
 
-            //String effectCall = "show( \"blind\", {}, 500 )";
-            String effectCall = "show( \"blind\")";
+            //String effectCall = "toggle( \"blind\", {}, 500 )";
+            String effectCall = "toggle( \"blind\")";
 
             String script = "$(function() {\n" + "        function runEffect() {\n";
 
@@ -57,7 +57,7 @@ public class JsShowHide {
                     + "            return false;\n" + "        });\n";
 
             for (HtmlBranch listener : listeners) {
-                script += "$( \"#" + listener.getId() + "\" ).hide();\n";
+                //script += "$( \"#" + listener.getId() + "\" ).hide();\n";
             }
 
             script += "    });";
