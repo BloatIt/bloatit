@@ -102,7 +102,7 @@ git checkout "$PREFIX-$RELEASE_VERSION"
 $MVN clean install -Dmaven.test.skip=true 
 
 # Then transfer the data to the host
-$TRANSFERT_SCRIPT -d $_host -s $_repos_dir -n $_user
+$TRANSFERT_SCRIPT -d $HOST -s $REPOS_DIR -n $USER
 exit_on_failure $?
 
 # And return to the master branch
