@@ -78,7 +78,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /**
      * Create a new FeatureImplementation. This method is not protected by any
      * right management.
-     *
+     * 
      * @param dao the dao
      * @return null if the <code>dao</code> is null.
      */
@@ -90,24 +90,24 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * Create a new feature. The right management for creating a feature is
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link FeatureManager}.
-     *
+     * 
      * @param author the author
      * @param locale the locale in which this feature is written
      * @param title the title of the feature
      * @param description the description of the feature
-     * @param software the software {@link FeatureManager#canCreate(AuthToken)} to
-     *            make sure you can create a new feature.
+     * @param software the software {@link FeatureManager#canCreate(AuthToken)}
+     *            to make sure you can create a new feature.
      * @see DaoFeature
      */
     public FeatureImplementation(final Member author, final Locale locale, final String title, final String description, final Software software) {
         this(DaoFeature.createAndPersist(author.getDao(),
-                                        DaoDescription.createAndPersist(author.getDao(), locale, title, description),
-                                        software.getDao()));
+                                         DaoDescription.createAndPersist(author.getDao(), locale, title, description),
+                                         software.getDao()));
     }
 
     /**
      * Use the {@link #create(DaoFeature)} method.
-     *
+     * 
      * @param dao the dao
      */
     private FeatureImplementation(final DaoFeature dao) {
@@ -268,14 +268,14 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException {
+    public void setFeatureState(final FeatureState featureState) throws UnauthorizedOperationException {
         if (!hasUserPrivilege(Role.ADMIN)) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         setFeatureStateUnprotected(featureState);
     }
 
-    void setFeatureStateUnprotected(FeatureState featureState) {
+    void setFeatureStateUnprotected(final FeatureState featureState) {
         if (getFeatureState() != featureState) {
             switch (featureState) {
                 case PENDING:
@@ -351,7 +351,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * Slot called when this feature state change to {@link PreparingState}.
      */
     void inPreparingState() {
-        PageIterable<DaoOffer> offers = getDao().getOffers();
+        final PageIterable<DaoOffer> offers = getDao().getOffers();
         if (offers.size() < 1) {
             throw new WrongStateException("There must be at least one offer to be in Preparing state.");
         }
@@ -417,7 +417,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Sets the selected offer. Called internally and in featureState.
-     *
+     * 
      * @param offer the new selected offer
      */
     void setSelectedOffer(final Offer offer) {
@@ -438,11 +438,23 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /**
      * Method called by Offer when the offer is kudosed. Update the
      * selectedOffer using it popularity.
-     *
+     * 
      * @param offer the offer that has been kudosed.
      * @param positif true means kudos up, false kudos down.
      */
     public void notifyOfferKudos(final Offer offer, final boolean positif) {
+        if (getFeatureState() == FeatureState.PREPARING) {
+            computeSelectedOffer(offer, positif);
+        }
+    }
+
+    /**
+     * Update the selected offer using the popularity.
+     * 
+     * @param offer The offer that has been kudosed
+     * @param positif true if this is a kudos, false if it is a unkudos.
+     */
+    private void computeSelectedOffer(final Offer offer, final boolean positif) {
         final Offer selectedOffer = getSelectedOfferUnprotected();
         final boolean isSelectedOffer = offer.equals(selectedOffer);
         if (positif && !isSelectedOffer) {
@@ -493,7 +505,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean isDeveloping() {
-        boolean isDeveloping = getFeatureState() == FeatureState.DEVELOPPING;
+        final boolean isDeveloping = getFeatureState() == FeatureState.DEVELOPPING;
         if (isDeveloping) {
             assert getSelectedOfferUnprotected() != null;
             assert getValidatedOfferUnprotected() != null;
@@ -540,7 +552,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the contributions unprotected.
-     *
+     * 
      * @return the contributions unprotected
      * @see #getContribution()
      */
@@ -633,7 +645,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the offers unprotected.
-     *
+     * 
      * @return the offers unprotected
      */
     private PageIterable<Offer> getOffersUnprotected() {
@@ -669,7 +681,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the selected offer with no Right management.
-     *
+     * 
      * @return the selected offer unprotected
      */
     private Offer getSelectedOfferUnprotected() {
@@ -696,7 +708,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Sets the state object.
-     *
+     * 
      * @param stateObject the new state object
      */
     private void setStateObject(final AbstractFeatureState stateObject) {
@@ -705,7 +717,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the state object.
-     *
+     * 
      * @return the state object
      */
     private AbstractFeatureState getStateObject() {
@@ -749,7 +761,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn pending.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnPending()
      */
@@ -760,7 +772,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn valid.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnValid()
      */
@@ -771,7 +783,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn rejected.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnRejected()
      */
@@ -782,7 +794,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn hidden.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnHidden()
      */
