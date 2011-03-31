@@ -35,6 +35,7 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
+import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.javascript.JsShowHide;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
@@ -78,12 +79,16 @@ public final class CheckContributionPage extends LoggedPage {
     @RequestParam(name = "show_fees_detail")
     private final Boolean showFeesDetails;
 
+    @Optional("0")
+    @RequestParam
+    private final BigDecimal preload;
+
     public CheckContributionPage(final CheckContributionPageUrl url) {
         super(url);
         this.url = url;
         process = url.getProcess();
         showFeesDetails = url.getShowFeesDetails();
-
+        preload = url.getPreload();
     }
 
     @Override
@@ -188,6 +193,13 @@ public final class CheckContributionPage extends LoggedPage {
     private void generateNoMoneyContent(final HtmlTitleBlock group, Feature feature, Member member, BigDecimal account)
             throws UnauthorizedOperationException {
 
+        CheckContributionPageUrl recalculateUrl = url.clone();
+        recalculateUrl.setPreload(null);
+
+        //HtmlForm detailsLines = new HtmlForm(recalculateUrl.urlString(), Method.GET);
+
+        //detailsLines.setCssClass("quotation_details_lines");
+
         HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
 
         // Contribution
@@ -201,6 +213,8 @@ public final class CheckContributionPage extends LoggedPage {
 
         detailsLines.add(new HtmlChargeAccountLine(member));
 
+
+        //Total
         BigDecimal missingAmount = process.getAmount().subtract(account);
         StandardQuotation quotation = new StandardQuotation(missingAmount);
 
@@ -381,7 +395,7 @@ public final class CheckContributionPage extends LoggedPage {
         }
     }
 
-    public static class HtmlChargeAccountLine extends HtmlDiv {
+    public class HtmlChargeAccountLine extends HtmlDiv {
 
         public HtmlChargeAccountLine(Member member) throws UnauthorizedOperationException {
             super("quotation_detail_line");
@@ -398,9 +412,13 @@ public final class CheckContributionPage extends LoggedPage {
 
             HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_field");
 
-            HtmlMoneyField moneyField = new HtmlMoneyField("preload_field");
-            moneyField.setDefaultValue("0");
+            HtmlMoneyField moneyField = new HtmlMoneyField("preload");
+            moneyField.setDefaultValue(preload.toPlainString());
+
+            HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
+
             amountBlock.add(moneyField);
+            amountBlock.add(recalculate);
 
             add(amountBlock);
 

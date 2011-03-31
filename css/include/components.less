@@ -172,8 +172,7 @@ input[type=password]{
        background:-moz-linear-gradient(90deg, #fff, #eee); // Firefox 
        background:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff), color-stop(0.2, #fff)); // Webkit 
        border:1px solid #aaa;
-       -moz-border-radius:3px;
-       -webkit-border-radius:3px;
+       .rounded_corners(3px); 
        -moz-box-shadow:0 0 3px #bbb;
        -webkit-box-shadow:0 0 3px #bbb;
        padding:2px;
@@ -195,12 +194,6 @@ input[type=password]:focus{
         font-size: 1em;    
     }
     font-size: 2em;
-}
-
-
-input:after
-{
-    content: "€";
 }
 
 .input_long_500px {
@@ -226,8 +219,7 @@ textarea {
        background:-moz-linear-gradient(90deg, #fff, #fafafa); /* Firefox */
        background:-webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#fff) ); /* Webkit */
        border:1px solid #aaa;
-       -moz-border-radius:3px;
-       -webkit-border-radius:3px;
+       .rounded_corners(3px); 
        -moz-box-shadow:0 0 3px #bbb;
        -webkit-box-shadow:0 0 3px #bbb;
        padding:2px;
@@ -246,7 +238,7 @@ textarea:focus {
 .button {
         
         color:white;
-        background: rgb(200,200,200);
+        background: @default_link_color * 1.2;
        
        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
        
@@ -273,7 +265,7 @@ textarea:focus {
 
 .button:hover{
        color:white;
-       background: rgb(230,230,230);
+       background: @default_link_color * 1.5;
        
        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.9);
        
@@ -281,14 +273,14 @@ textarea:focus {
 
 .button:active,
 .button:focus{
-       background: rgb(210,210,210);
+       background: @default_link_color * 1.1;
        .horizontal-gradient(@default_link_color * 1.9,  @default_link_color * 1.1);
        
 }
 
 input[type=submit],
 a.submit {
-       background: rgb(200,200,200);
+       background: @default_link_color * 1.2;
        
        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
        
@@ -311,7 +303,7 @@ a.submit {
 input[type=submit]:hover,
 a.submit:hover{
     color:white;
-    background: rgb(230,230,230);
+    background: @default_link_color * 1.5;
        
     .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.9);
     text-decoration:none;
@@ -320,7 +312,7 @@ input[type=submit]:active,
 input[type=submit]:focus,
 a.submit:active,
 a.submit:focus{
-    background: rgb(210,210,210);
+    background: @default_link_color * 1.1;
     .horizontal-gradient(@default_link_color * 1.9,  @default_link_color * 1.1);
        
     outline:none;
