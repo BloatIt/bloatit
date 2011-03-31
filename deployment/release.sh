@@ -18,7 +18,7 @@ EOF
 cd "$(dirname $0)"
 ROOT=$PWD
 cd -
-COMMONS=$ROOT/../commons/
+COMMONS=$ROOT/commons/
 PREFIX=elveos
 
 # Add the includes 
@@ -58,7 +58,7 @@ then
 	exit 1
 fi
 
-MVN="mvn -q -f $REPOS_DIR/pom.xml" 
+MVN="mvn -f $REPOS_DIR/pom.xml" 
 
 echo "RELEASE_VERSION=$RELEASE_VERSION
 NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
