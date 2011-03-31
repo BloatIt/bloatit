@@ -162,7 +162,6 @@ startBloatitServer() {
 }
 
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"
-exit_on_failure $?
 
 stopBloatitServer
 exit_on_failure $?

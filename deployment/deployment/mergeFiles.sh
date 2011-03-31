@@ -49,6 +49,7 @@ do
             ;;
     esac
 done
+error $FROM $TO
 # Make sure there is no bug in the command line.
 if [ -z "$FROM" ] || [ -z "$TO" ] 
 then
@@ -61,7 +62,7 @@ then
     error "The FromDir and ToDir must be different"
     exit 1
 fi
-if [ ! -e "$1" ] || [ ! -e "$2" ] ; then
+if [ ! -e "$FROM" ] || [ ! -e "$TO" ] ; then
     error "Error. Waiting for 2 existing directories. exiting..."
     exit 1
 fi
