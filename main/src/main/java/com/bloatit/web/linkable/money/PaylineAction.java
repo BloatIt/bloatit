@@ -2,8 +2,6 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.math.BigDecimal;
-
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -22,24 +20,27 @@ import com.bloatit.web.url.PaylineReturnActionUrl;
 @ParamContainer("paylinedopayment")
 public final class PaylineAction extends LoggedAction {
 
-
-    public static final String CHARGE_AMOUNT_CODE = "amount";
-
-    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POSTGET)
-    private final BigDecimal amount;
+    @RequestParam
+    private final PaylineProcess process;
 
     public PaylineAction(final PaylineActionUrl url) {
         super(url);
-        amount = url.getAmount();
+        process = url.getProcess();
     }
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
         // Constructing the urls.
         final HttpHeader header = Context.getHeader().getHttpHeader();
-        final String returnUrl = new PaylineReturnActionUrl("ok").externalUrlString(header);
-        final String cancelUrl = new PaylineReturnActionUrl("cancel").externalUrlString(header);
-        final String notificationUrl = new PaylineNotifyActionUrl().externalUrlString(header);
+        PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok");
+        paylineReturnActionUrl.setProcess(process);
+        final String returnUrl = paylineReturnActionUrl.externalUrlString(header);
+        PaylineReturnActionUrl paylineReturnActionUrlCancel = new PaylineReturnActionUrl("cancel");
+        paylineReturnActionUrlCancel.setProcess(process);
+        final String cancelUrl = paylineReturnActionUrlCancel.externalUrlString(header);
+        PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl();
+        paylineNotifyActionUrl.setProcess(process);
+        final String notificationUrl = paylineNotifyActionUrl.externalUrlString(header);
 
         // Make the payment request.
         final Payline payline = new Payline();
@@ -47,7 +48,7 @@ public final class PaylineAction extends LoggedAction {
             Reponse reponse;
             try {
 
-                reponse = payline.doPayment(amount, cancelUrl, returnUrl, notificationUrl);
+                reponse = payline.doPayment(process.getAmount(), cancelUrl, returnUrl, notificationUrl);
                 if (reponse.isAccepted()) {
                     return new UrlStringBinder(reponse.getRedirectUrl());
                 }
