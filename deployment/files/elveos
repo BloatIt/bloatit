@@ -7,9 +7,9 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 USER=elveos
 ROOT=/home/$USER
-MAIN_CLASS=com.elveos.BloatitServer
+MAIN_CLASS=com.bloatit.BloatitServer
 DEPEDENCIES=$ROOT/jars
-SHARE_DIR=$ROOT/.local/share/$USER
+SHARE_DIR=$ROOT/.local/share/bloatit
 PIDFILE=$SHARE_DIR/.$NAME.pid
 . /lib/lsb/init-functions
 

@@ -59,6 +59,15 @@ then
 	exit 1
 fi
 
+UPLOAD_DIR=.upload
+UP_RESSOURCES=$UPLOAD_DIR/ressources
+UP_CONF_DIR=$UPLOAD_DIR/conf
+UP_SHARE_DIR=$UPLOAD_DIR/share
+DOC=wwwdoc/
+CLASSES=java/
+DEPEDENCIES=jars
+WWW=www/
+
 DEST=$DISTANT_NAME@$HOST:
 SOURCE_CLASSES=$SOURCE/main/target/classes/
 SOURCE_DEPENDENCIES=$SOURCE/main/target/dependencies/
@@ -92,6 +101,9 @@ PERMS=" --perms --chmod=og=,Fu+r,F-x"
 #
 # Send data
 #
+
+error $PWD
+error $DEST$DEPEDENCIES
 
 # Send the dependencies (mostly it is some jars)
 log_date "Sending jar dependencies to $DEST$DEPEDENCIES"
