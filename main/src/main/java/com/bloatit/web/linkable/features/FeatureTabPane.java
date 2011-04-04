@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.features;
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -85,7 +86,8 @@ public final class FeatureTabPane extends HtmlPageComponent {
                 }
             });
         } catch (final UnauthorizedOperationException e1) {
-            // No access to contributions, the tab is not displayed
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying cotnribution informations. Please notify us."));
+            throw new ShallNotPassException("User cannot access contributions informations", e1); 
         }
 
         // Create Comments tab

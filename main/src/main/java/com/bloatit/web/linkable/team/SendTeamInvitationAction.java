@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.team;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -42,11 +43,17 @@ public class SendTeamInvitationAction extends LoggedAction {
     public Url doProcessRestricted(Member authenticatedMember) {
         final Member me = session.getAuthToken().getMember();
 
+        if (!me.canSendInvitation(team)) {
+            session.notifyBad(Context.tr("You are not allowed to send invitations for this team"));
+            return session.getLastVisitedPage();
+        }
+
         try {
             me.sendInvitation(receiver, team);
             session.notifyGood("Invitation sent to " + receiver.getDisplayName() + " for team " + team.getLogin());
         } catch (final UnauthorizedOperationException e) {
-            e.printStackTrace();
+            session.notifyBad(Context.tr("Oops, an error prevented us from sendint this invitaton. Please notify us of the bug"));
+            throw new ShallNotPassException("User couldn't send a team invitation, while he should be able to", e);
         }
         return session.getLastVisitedPage();
     }

@@ -1,6 +1,7 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -38,15 +39,15 @@ public class JoinTeamAction extends LoggedAction {
             try {
                 me.addToPublicTeam(targetTeam);
             } catch (final UnauthorizedOperationException e) {
-                Log.web().fatal("User tries to join public team, but is not allowed to", e);
-                session.notifyBad("Oops we had an internal issue preventing you to join team, please try again later.");
-                return session.getLastVisitedPage();
+                session.notifyBad("Oops we had an internal issue preventing you to join team. It's a bug, please notify us.");
+                throw new ShallNotPassException("User tries to join public team, but is not allowed to", e);
             }
         } else {
             try {
                 session.notifyBad("The team " + targetTeam.getLogin() + " is not public, you need an invitation to join it");
             } catch (final UnauthorizedOperationException e) {
-                Log.web().warn("Trying to display team name but not allowed to", e);
+                session.notifyBad("Oops we had an internal issue preventing you to see a team name. It's a bug, please notify us.");
+                throw new ShallNotPassException("Couldn't display team name", e);
             }
             return session.getLastVisitedPage();
         }

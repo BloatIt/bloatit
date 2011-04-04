@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
@@ -113,9 +114,9 @@ public final class SoftwareListPage extends MasterPage {
 
                 return box;
             } catch (final UnauthorizedOperationException e) {
-                Log.web().warn(e);
+                session.notifyError("An error prevented us from displaying team information");
+                throw new ShallNotPassException("Cannot display software information", e);
             }
-            return new PlaceHolderElement();
         }
     };
 

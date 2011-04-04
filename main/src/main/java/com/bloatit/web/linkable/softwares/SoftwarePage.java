@@ -14,6 +14,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.Locale;
 
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
@@ -58,12 +59,9 @@ public final class SoftwarePage extends MasterPage {
         if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }
-
         TwoColumnLayout layout = new TwoColumnLayout(true);
 
         try {
-
-
             HtmlTitle softwareName;
             softwareName = new HtmlTitle(software.getName(), 1);
             layout.addLeft(softwareName);
@@ -81,10 +79,9 @@ public final class SoftwarePage extends MasterPage {
 
             layout.addLeft(shortDescription);
             layout.addLeft(description);
-
-
         } catch (final UnauthorizedOperationException e) {
-            layout.addLeft(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this software.")));
+            session.notifyError("An error prevented us from displaying software information. Please notify us.");
+            throw new ShallNotPassException("User cannot access software information", e); 
         }
 
         add(layout);
@@ -96,10 +93,11 @@ public final class SoftwarePage extends MasterPage {
             try {
                 return tr("Software - ") + software.getName();
             } catch (final UnauthorizedOperationException e) {
-                return tr("Software - Windows 8");
+                session.notifyError("An error prevented us from displaying software name. Please notify us.");
+                throw new ShallNotPassException("User cannot access software name", e); 
             }
         }
-        return tr("Member - No member");
+        return tr("Member - software error");
     }
 
     @Override
@@ -114,11 +112,11 @@ public final class SoftwarePage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb(Software software) {
         Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
-
         try {
             breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
         } catch (UnauthorizedOperationException e) {
-            breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(tr("Unknown software")));
+            Context.getSession().notifyError("An error prevented us from displaying software name. Please notify us.");
+            throw new ShallNotPassException("User cannot access software name", e); 
         }
 
         return breadcrumb;

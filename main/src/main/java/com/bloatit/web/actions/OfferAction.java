@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
@@ -152,9 +153,8 @@ public final class OfferAction extends LoggedAction {
             }
 
         } catch (final UnauthorizedOperationException e) {
-            Log.web().error("Should never happend", e);
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this feature."));
-            return session.pickPreferredPage();
+            Context.getSession().notifyError(Context.tr("Error creating an offer. Please notify us"));
+            throw new ShallNotPassException("Error creating an offer", e);
         }
 
         MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);

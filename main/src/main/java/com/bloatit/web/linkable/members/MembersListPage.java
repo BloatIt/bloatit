@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
@@ -106,9 +108,9 @@ public final class MembersListPage extends MasterPage {
 
                 return box;
             } catch (final UnauthorizedOperationException e) {
-                Log.web().warn(e);
+                session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
+                throw new ShallNotPassException("User cannot access user information", e); 
             }
-            return new PlaceHolderElement();
         }
     }
 

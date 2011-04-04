@@ -20,6 +20,7 @@ import java.util.List;
 import javax.mail.IllegalWriteException;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
@@ -119,29 +120,27 @@ public final class CheckContributionPage extends LoggedPage {
     public HtmlElement generateCheckContributeForm() throws RedirectException {
         final HtmlTitleBlock group = new HtmlTitleBlock("Check contribution", 1);
 
+        Feature feature = process.getFeature();
+        Member member = session.getAuthToken().getMember();
+
+        BigDecimal account;
         try {
-
-            Feature feature = process.getFeature();
-            Member member = session.getAuthToken().getMember();
-            BigDecimal account = member.getInternalAccount().getAmount();
-
-            if (process.getAmount().compareTo(account) <= 0) {
-
-                generateWithMoneyContent(group, feature, member);
-
-            } else {
-                generateNoMoneyContent(group, feature, member, account);
-            }
-
+            account = member.getInternalAccount().getAmount();
         } catch (UnauthorizedOperationException e) {
-            Log.web().error("Fail to check contribution", e);
-            throw new RedirectException(new FeaturePageUrl(process.getFeature()));
+            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
+            throw new ShallNotPassException("User cannot access user's account balance", e);
+        }
+
+        if (process.getAmount().compareTo(account) <= 0) {
+            generateWithMoneyContent(group, feature, member);
+        } else {
+            generateNoMoneyContent(group, feature, member, account);
         }
 
         return group;
     }
 
-    public void generateWithMoneyContent(final HtmlTitleBlock group, Feature feature, Member member) throws UnauthorizedOperationException {
+    public void generateWithMoneyContent(final HtmlTitleBlock group, Feature feature, Member member) {
         HtmlDiv contributionSummaryDiv = new HtmlDiv("contribution_summary");
         {
             contributionSummaryDiv.add(generateFeatureSummary(feature));
@@ -151,16 +150,22 @@ public final class CheckContributionPage extends LoggedPage {
 
                 authorContributionSummary.add(new HtmlTitle(tr("Your account"), 2));
 
-                HtmlDiv changeLine = new HtmlDiv("change_line");
-                {
+                try {
+                    HtmlDiv changeLine = new HtmlDiv("change_line");
+                    {
 
-                    changeLine.add(new MoneyVariationBlock(member.getInternalAccount().getAmount(), member.getInternalAccount()
-                                                                                                          .getAmount()
-                                                                                                          .subtract(process.getAmount())));
-                    changeLine.add(MembersTools.getMemberAvatar(member));
+                        changeLine.add(new MoneyVariationBlock(member.getInternalAccount().getAmount(), member.getInternalAccount()
+                                                                                                              .getAmount()
+                                                                                                              .subtract(process.getAmount())));
+                        changeLine.add(MembersTools.getMemberAvatar(member));
+                        authorContributionSummary.add(changeLine);
+                        authorContributionSummary.add(new DefineParagraph(tr("Author:"), member.getDisplayName()));
+                    }
+                } catch (UnauthorizedOperationException e) {
+                    session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+                    throw new ShallNotPassException("User cannot access user information", e);
                 }
-                authorContributionSummary.add(changeLine);
-                authorContributionSummary.add(new DefineParagraph(tr("Author:"), member.getDisplayName()));
+
                 if (process.getComment() != null) {
                     authorContributionSummary.add(new DefineParagraph(tr("Comment:"), process.getComment()));
                 } else {
@@ -194,15 +199,14 @@ public final class CheckContributionPage extends LoggedPage {
         group.add(buttonDiv);
     }
 
-    private void generateNoMoneyContent(final HtmlTitleBlock group, Feature feature, Member member, BigDecimal account)
-            throws UnauthorizedOperationException {
+    private void generateNoMoneyContent(final HtmlTitleBlock group, Feature feature, Member member, BigDecimal account) {
 
-        if(process.isLocked()) {
+        if (process.isLocked()) {
             session.notifyBad(tr("You have a payment in progress. The contribution is locked."));
         }
 
         try {
-            if(!process.getAmountToCharge().equals(preload) && preload != null) {
+            if (!process.getAmountToCharge().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
             }
         } catch (IllegalWriteException e) {
@@ -213,9 +217,8 @@ public final class CheckContributionPage extends LoggedPage {
         BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
         StandardQuotation quotation = new StandardQuotation(missingAmount);
 
-
         try {
-            if(!process.getAmountToPay().equals(quotation.subTotalTTCEntry.getValue())) {
+            if (!process.getAmountToPay().equals(quotation.subTotalTTCEntry.getValue())) {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (IllegalWriteException e) {
@@ -232,14 +235,18 @@ public final class CheckContributionPage extends LoggedPage {
 
         // Contribution
 
-        detailsLines.add(new HtmlContributionLine(process));
+        try {
+            detailsLines.add(new HtmlContributionLine(process));
 
-        if (member.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
-            detailsLines.add(new HtmlPrepaidLine(member));
+            if (member.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
+                detailsLines.add(new HtmlPrepaidLine(member));
+            }
 
+            detailsLines.add(new HtmlChargeAccountLine(member));
+        } catch (UnauthorizedOperationException e) {
+            session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+            throw new ShallNotPassException("User cannot access user information", e);
         }
-
-        detailsLines.add(new HtmlChargeAccountLine(member));
 
         HtmlDiv totalsLines = new HtmlDiv("quotation_totals_lines");
         {
@@ -429,7 +436,9 @@ public final class CheckContributionPage extends LoggedPage {
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_up_small.png", ImageType.LOCAL),
                                                                                                  "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(process.getAmountToCharge()).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(process.getAmountToCharge())
+                                                                          .getDefaultString()));
 
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
             add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
@@ -449,21 +458,24 @@ public final class CheckContributionPage extends LoggedPage {
         }
     }
 
-    public HtmlDiv generateFeatureSummary(Feature feature) throws UnauthorizedOperationException {
+    public HtmlDiv generateFeatureSummary(Feature feature) {
         HtmlDiv featureContributionSummary = new HtmlDiv("feature_contribution_summary");
         {
             featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
 
-            HtmlDiv changeLine = new HtmlDiv("change_line");
-            {
+            try {
+                HtmlDiv changeLine = new HtmlDiv("change_line");
+                {
 
-                changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
-                changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
+                    changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                    changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
+                }
+                featureContributionSummary.add(changeLine);
+                featureContributionSummary.add(new DefineParagraph(tr("Target feature:"), FeaturesTools.getTitle(feature)));
+            } catch (UnauthorizedOperationException e) {
+                session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+                throw new ShallNotPassException("User cannot access user information", e);
             }
-            featureContributionSummary.add(changeLine);
-
-            featureContributionSummary.add(new DefineParagraph(tr("Target feature:"), FeaturesTools.getTitle(feature)));
-
         }
         return featureContributionSummary;
     }

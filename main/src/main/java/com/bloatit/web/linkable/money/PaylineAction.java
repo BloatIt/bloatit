@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -54,7 +55,7 @@ public final class PaylineAction extends LoggedAction {
                 }
                 session.notifyBad(reponse.getMessage());
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad(tr("Unauthorized !"));
+                throw new ShallNotPassException("Not authorized", e);
             }
             return Context.getSession().pickPreferredPage();
         }

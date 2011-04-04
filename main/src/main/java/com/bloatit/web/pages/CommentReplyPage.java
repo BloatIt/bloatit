@@ -12,6 +12,7 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
@@ -122,11 +123,11 @@ public final class CommentReplyPage extends LoggedPage {
                 breadcrumb = new Breadcrumb();
         }
 
-
         try {
             breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to {0}''s comment",comment.getAuthor().getDisplayName())));
         } catch (UnauthorizedOperationException e) {
-            breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to unknow member''s comment")));
+            Context.getSession().notifyBad("For an obscure reason you cannot see a user name, please warn us of the bug");
+            throw new ShallNotPassException("Error displaying a user name",e);
         }
 
         return breadcrumb;

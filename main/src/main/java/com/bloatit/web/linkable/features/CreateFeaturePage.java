@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.features;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
@@ -103,8 +104,8 @@ public final class CreateFeaturePage extends LoggedPage {
             try {
                 softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
             } catch (final UnauthorizedOperationException e) {
-                Log.web().warn(e);
-                // Not display private softwarets
+                session.notifyError(Context.tr("An error prevented us from displaying software information. Please notify us."));
+                throw new ShallNotPassException("User cannot access software information", e); 
             }
         }
         // TODO: set the default value to "select a software"

@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -98,8 +99,8 @@ public final class CreateCommentAction extends LoggedAction {
 
             session.notifyGood(Context.tr("Your comment has been added."));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add a comment on this that."));
-            return session.pickPreferredPage();
+            Context.getSession().notifyError(Context.tr("Error commenting. Please notify us"));
+            throw new ShallNotPassException("user couldn't create to a comment", e);
         }
 
         return session.pickPreferredPage();

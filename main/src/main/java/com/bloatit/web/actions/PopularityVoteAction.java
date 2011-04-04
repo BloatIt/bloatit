@@ -13,6 +13,7 @@ package com.bloatit.web.actions;
 
 import java.util.EnumSet;
 
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webserver.Context;
@@ -75,7 +76,8 @@ public final class PopularityVoteAction extends LoggedAction {
                 }
             }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to vote on that."));
+            Context.getSession().notifyError(Context.tr("Error voting on a component. Please notify us"));
+            throw new ShallNotPassException("Error voting", e);
         }
 
         return session.pickPreferredPage();

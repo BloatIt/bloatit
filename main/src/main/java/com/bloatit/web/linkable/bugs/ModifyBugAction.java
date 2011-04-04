@@ -121,7 +121,7 @@ public final class ModifyBugAction extends Action {
                 bug.addComment(changes + "\n" + tr("Reason:") + "\n" + reason);
             }
         } catch (UnauthorizedOperationException e) {
-            // If the user can change state it should be able to add a comment
+            session.notifyError(Context.tr("An error prevented us from accessing changing state on this bug. Please notify us."));
             throw new ShallNotPassException("The user can change the bug state but not post comments on this bug");
         }
 

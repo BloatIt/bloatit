@@ -100,8 +100,8 @@ public final class Member extends Actor<DaoMember> {
      *            it, READ to list the invitations you have recieved.
      * @return true if you can invite/accept/refuse.
      */
-    public boolean canSendInvitation(final Team team, final Action action) {
-        return canAccess(new MemberRight.SendInvitation(), action);
+    public boolean canSendInvitation(final Team team) {
+        return canAccess(new MemberRight.SendInvitation(), Action.WRITE);
     }
 
     public boolean canGetKarma() {
