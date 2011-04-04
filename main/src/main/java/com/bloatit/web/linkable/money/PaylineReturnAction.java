@@ -23,17 +23,22 @@ public class PaylineReturnAction extends Action {
     @RequestParam(name = "ack")
     private final String ack;
 
+    @RequestParam(name = "process")
+    @Optional
+    private final PaylineProcess process;
+
+
     public PaylineReturnAction(final PaylineReturnActionUrl url) {
         super(url);
         token = url.getToken();
         ack = url.getAck();
+        process = url.getProcess();
     }
 
     @Override
     protected Url doProcess() {
         final Payline payline = new Payline();
         if (ack.equals("ok")) {
-            Context.getSession().notifyGood(tr("Your account has been credited."));
             try {
                 payline.validatePayment(token);
             } catch (final TokenNotfoundException e) {
@@ -47,6 +52,14 @@ public class PaylineReturnAction extends Action {
                 Log.web().fatal("Token not found.", e);
             }
         }
+
+        if(process != null) {
+            Url target = process.getParentProcess().endSubProcess(process);
+            if(target != null) {
+                return target;
+            }
+        }
+
         return Context.getSession().pickPreferredPage();
     }
 

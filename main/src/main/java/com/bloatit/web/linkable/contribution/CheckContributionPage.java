@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.IllegalWriteException;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -34,6 +36,8 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.javascript.JsShowHide;
@@ -61,7 +65,7 @@ import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.PaylineActionUrl;
+import com.bloatit.web.url.PaylineProcessUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
@@ -193,14 +197,38 @@ public final class CheckContributionPage extends LoggedPage {
     private void generateNoMoneyContent(final HtmlTitleBlock group, Feature feature, Member member, BigDecimal account)
             throws UnauthorizedOperationException {
 
+        if(process.isLocked()) {
+            session.notifyBad(tr("You have a payment in progress. The contribution is locked."));
+        }
+
+        try {
+            if(!process.getAmountToCharge().equals(preload) && preload != null) {
+                process.setAmountToCharge(preload);
+            }
+        } catch (IllegalWriteException e) {
+            session.notifyBad(tr("The preload amount is locked during the payment process."));
+        }
+
+        // Total
+        BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
+        StandardQuotation quotation = new StandardQuotation(missingAmount);
+
+
+        try {
+            if(!process.getAmountToPay().equals(quotation.subTotalTTCEntry.getValue())) {
+                process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
+            }
+        } catch (IllegalWriteException e) {
+            session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
+        }
         CheckContributionPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
 
-        //HtmlForm detailsLines = new HtmlForm(recalculateUrl.urlString(), Method.GET);
+        HtmlForm detailsLines = new HtmlForm(recalculateUrl.urlString(), Method.GET);
 
-        //detailsLines.setCssClass("quotation_details_lines");
+        detailsLines.setCssClass("quotation_details_lines");
 
-        HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
+        // HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
 
         // Contribution
 
@@ -212,11 +240,6 @@ public final class CheckContributionPage extends LoggedPage {
         }
 
         detailsLines.add(new HtmlChargeAccountLine(member));
-
-
-        //Total
-        BigDecimal missingAmount = process.getAmount().subtract(account);
-        StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         HtmlDiv totalsLines = new HtmlDiv("quotation_totals_lines");
         {
@@ -246,7 +269,7 @@ public final class CheckContributionPage extends LoggedPage {
             }
             totalsLines.add(feesHT);
             // Fee details
-            HtmlDiv feesDetail= new HtmlDiv("quotation_total_line_details_block");
+            HtmlDiv feesDetail = new HtmlDiv("quotation_total_line_details_block");
             HtmlDiv feesBank = new HtmlDiv("quotation_total_line_details");
             {
                 feesBank.add(new HtmlDiv("label").addText(tr("Bank fees")));
@@ -308,15 +331,16 @@ public final class CheckContributionPage extends LoggedPage {
         {
 
             // Pay later button
-            HtmlLink continueNavigation = new HtmlLink("", tr("Pay later"));
-            payBlock.add(continueNavigation);
+            // HtmlLink continueNavigation = new HtmlLink("", tr("Pay later"));
+            // payBlock.add(continueNavigation);
+            // TODO: real pay later button
 
-            final PaylineActionUrl payActionUrl = new PaylineActionUrl();
-            payActionUrl.setAmount(quotation.subTotalTTCEntry.getValue());
+            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process);
 
-            HtmlLink payContributionLink = payActionUrl.getHtmlLink(tr("Pay {0}", Context.getLocalizator()
-                                                                                         .getCurrency(quotation.totalTTC.getValue())
-                                                                                         .getDecimalDefaultString()));
+            HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
+                                                                            Context.getLocalizator()
+                                                                                   .getCurrency(quotation.totalTTC.getValue())
+                                                                                   .getDecimalDefaultString()));
             payContributionLink.setCssClass("button");
             payBlock.add(payContributionLink);
 
@@ -405,7 +429,7 @@ public final class CheckContributionPage extends LoggedPage {
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_up_small.png", ImageType.LOCAL),
                                                                                                  "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(process.getAmountToCharge()).getDefaultString()));
 
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
             add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
@@ -413,7 +437,7 @@ public final class CheckContributionPage extends LoggedPage {
             HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_field");
 
             HtmlMoneyField moneyField = new HtmlMoneyField("preload");
-            moneyField.setDefaultValue(preload.toPlainString());
+            moneyField.setDefaultValue(process.getAmountToCharge().toPlainString());
 
             HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
 

@@ -18,17 +18,12 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FieldData;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
-import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.AccountChargingPageUrl;
-import com.bloatit.web.url.PaylineActionUrl;
 
 /**
  * A page used to put money onto the internal bloatit account
@@ -65,7 +60,7 @@ public final class AccountChargingPage extends LoggedPage {
 
         title.add(new HtmlParagraph("utiliser la carte de test n° 4970100000325734 avec une date d’expiration valide et le cryptogramme visuel 123."));
 
-        final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
+        /*final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
             final FieldData amountData = chargeActionUrl.getAmountParameter().pickFieldData();
@@ -82,7 +77,7 @@ public final class AccountChargingPage extends LoggedPage {
             form.add(amountInput);
             form.add(submit);
         }
-        title.add(form);
+        title.add(form);*/
 
         return title;
     }
