@@ -60,7 +60,7 @@ public final class XcgiServer {
         Log.framework().info("Init: Start BloatIt serveur");
 
         Log.framework().info("-> initializing all processors");
-        for (XcgiProcessor processor : processors) {
+        for (final XcgiProcessor processor : processors) {
             Log.framework().info("--> initialization processor: " + processor.getClass().getSimpleName());
             if (!processor.initialize()) {
                 throw new FatalErrorException("Initialization of processor failed");
@@ -128,7 +128,7 @@ public final class XcgiServer {
 
         private void generateAndSendReponse() throws IOException {
             // Wait for connection
-            Log.framework().info("Waiting connection");
+            Log.framework().trace("Waiting connection");
 
             // Wait for a connection.
             socket = provider.accept();

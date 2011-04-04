@@ -84,7 +84,8 @@ public class SendTeamInvitationPage extends LoggedPage {
                         receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
                     }
                 } catch (final UnauthorizedOperationException e) {
-                    throw new FatalErrorException(e);
+                    // TODO
+                    throw new FatalErrorException("TODO", e);
                 }
             }
 
@@ -93,7 +94,8 @@ public class SendTeamInvitationPage extends LoggedPage {
             return master;
 
         } catch (final UnauthorizedOperationException e1) {
-            throw new FatalErrorException(e1);
+            // TODO
+            throw new FatalErrorException("TODO", e1);
         }
     }
 
@@ -117,8 +119,8 @@ public class SendTeamInvitationPage extends LoggedPage {
         return SendTeamInvitationPage.generateBreadcrumb(team);
     }
 
-    public static Breadcrumb generateBreadcrumb(Team team) {
-        Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+    public static Breadcrumb generateBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
 
         breadcrumb.pushLink(new SendTeamInvitationPageUrl(team).getHtmlLink(tr("Send team invitation")));
 
