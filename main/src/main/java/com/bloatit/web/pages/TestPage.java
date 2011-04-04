@@ -13,7 +13,7 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

@@ -29,7 +29,7 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 
 /**
  * Represent an image. If you only need the file associated with this image, use

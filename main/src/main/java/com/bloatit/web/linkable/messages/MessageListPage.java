@@ -3,8 +3,8 @@ package com.bloatit.web.linkable.messages;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoJoinTeamInvitation.State;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

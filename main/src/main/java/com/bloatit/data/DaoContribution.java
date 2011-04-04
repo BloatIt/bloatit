@@ -35,8 +35,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 
 /**
  * A contribution is a financial participation on a feature. Each contribution
@@ -110,7 +110,7 @@ public class DaoContribution extends DaoUserContent {
         }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().error("The amount of a contribution cannot be <= 0.");
-            throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
+            throw new BadProgrammerException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
         this.state = State.PENDING;
@@ -139,10 +139,10 @@ public class DaoContribution extends DaoUserContent {
      */
     public void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
         if (this.state != State.PENDING) {
-            throw new FatalErrorException("Cannot validate a contribution if its state isn't PENDING");
+            throw new BadProgrammerException("Cannot validate a contribution if its state isn't PENDING");
         }
         if (percent > 100 || percent <= 0 || (this.percentDone + percent) > 100) {
-            throw new FatalErrorException("Percent must be > 0 and <= 100.");
+            throw new BadProgrammerException("Percent must be > 0 and <= 100.");
         }
         final BigDecimal moneyToGive = calculateHowMuchToTransfer(percent);
         try {
@@ -152,7 +152,7 @@ public class DaoContribution extends DaoUserContent {
             // If it fails then there is a bug in our code. Set the state to
             // canceled and throw a fatalError.
             this.state = State.CANCELED;
-            throw new FatalErrorException("Not enough money exception on cancel !!", e);
+            throw new BadProgrammerException("Not enough money exception on cancel !!", e);
         }
         try {
             // If we succeeded the unblock then we create a transaction.
@@ -188,14 +188,14 @@ public class DaoContribution extends DaoUserContent {
      */
     public void cancel() {
         if (this.state != State.PENDING) {
-            throw new FatalErrorException("Cannot cancel a contribution if its state isn't PENDING");
+            throw new BadProgrammerException("Cannot cancel a contribution if its state isn't PENDING");
         }
         try {
             final BigDecimal moneyToCancel = this.amount.subtract(this.alreadyGivenMoney);
             getAuthor().getInternalAccount().unBlock(moneyToCancel);
             this.feature.cancelContribution(moneyToCancel);
         } catch (final NotEnoughMoneyException e) {
-            throw new FatalErrorException("Not enough money exception on cancel !!", e);
+            throw new BadProgrammerException("Not enough money exception on cancel !!", e);
         }
         this.state = State.CANCELED;
     }

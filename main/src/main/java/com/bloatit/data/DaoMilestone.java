@@ -48,8 +48,8 @@ import org.hibernate.search.annotations.Store;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.queries.QueryCollection;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -166,7 +166,7 @@ public class DaoMilestone extends DaoIdentifiable {
      *            non null, and in the future.
      * @param secondBeforeValidation TODO
      * @throws NonOptionalParameterException if a parameter is null.
-     * @throws FatalErrorException if the amount is < 0 or if the Date is in the
+     * @throws BadProgrammerException if the amount is < 0 or if the Date is in the
      *             future.
      */
     public DaoMilestone(final Date dateExpire,
@@ -179,10 +179,10 @@ public class DaoMilestone extends DaoIdentifiable {
             throw new NonOptionalParameterException();
         }
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new FatalErrorException("Amount must be > 0");
+            throw new BadProgrammerException("Amount must be > 0");
         }
         if (dateExpire.before(new Date())) {
-            throw new FatalErrorException("Make sure the date is in the future.");
+            throw new BadProgrammerException("Make sure the date is in the future.");
         }
         this.expirationDate = (Date) dateExpire.clone();
         this.amount = amount;
@@ -210,10 +210,10 @@ public class DaoMilestone extends DaoIdentifiable {
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         if (fatalPercent < 0 || majorPercent < 0) {
-            throw new FatalErrorException("The parameters must be percents !");
+            throw new BadProgrammerException("The parameters must be percents !");
         }
         if ((fatalPercent + majorPercent) > 100) {
-            throw new FatalErrorException("The sum of the two percent parameters is > 100 !");
+            throw new BadProgrammerException("The sum of the two percent parameters is > 100 !");
         }
         this.fatalBugsPercent = fatalPercent;
         this.majorBugsPercent = majorPercent;

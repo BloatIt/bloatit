@@ -1,6 +1,6 @@
 package com.bloatit.framework.webserver.components.renderer;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
@@ -17,7 +17,7 @@ public class HtmlMarkdownRenderer extends PlaceHolderElement {
 
     /**
      * Creates a new MarkdownRenderer based on markdown or html text
-     *
+     * 
      * @param text the content to display, must be markdown text if
      *            <code>alreadyRenderer</code> is <code>true</code> or html text
      *            if <code>alreadyRenderer</code> is <code>false</code>
@@ -29,7 +29,7 @@ public class HtmlMarkdownRenderer extends PlaceHolderElement {
             renderered = parser.parse(text);
             add(new XmlText(renderered));
         } catch (final ParsingException e) {
-            throw new FatalErrorException("An error occured during markdown parsing", e);
+            throw new BadProgrammerException("An error occured during markdown parsing", e);
         }
     }
 

@@ -11,14 +11,13 @@ server.document-root       = "/home/fred/projets/bloatit/www"
 
 Uncomment 'mod_rewrite' in 'server.modules'
 
-
-Create a symbolic link of 'lighttpd/fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
+Create a symbolic link of '.../deployment/files/fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/
-ln -s /home/fred/bloatit/lighttpd/fastcgi.conf
+ln -s /home/fred/bloatit/deployment/files/fastcgi.conf
 
-Create a symbolic link of 'lighttpd/rewrite.lighttpd.conf' in '/etc/lighttpd/conf-enabled/':
+Create a symbolic link of '.../deployment/files/rewrite.lighttpd.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/
-ln -s /home/fred/bloatit/lighttpd/rewrite.lighttpd.conf
+ln -s /home/fred/bloatit/deployment/files/rewrite.lighttpd.conf
 
 **********************
 *  Restart lighttpd  *
@@ -54,7 +53,13 @@ vim /etc/postgresql/8.4/main/pg_hba.conf
 exit
 
 # restart the server
-sudo service postgresql restart
+sudo service postgresql restartliquibase-launcher.sh
+
+# Initialize the database
+# go to <Project Home>/main/liquibase
+# execute liquibase-launcher.sh update
+cd main/liquibase
+./liquibase-launcher.sh update
 
 ************************************
 *  Install gettext                 *

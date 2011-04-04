@@ -2,7 +2,7 @@ package com.bloatit.data;
 
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 
 public class DaoDescriptionTest extends DataTestUnit {
 

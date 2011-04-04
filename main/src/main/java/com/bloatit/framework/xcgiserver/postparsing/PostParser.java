@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 import com.bloatit.framework.xcgiserver.mime.InvalidMimeEncodingException;
 import com.bloatit.framework.xcgiserver.mime.MalformedMimeException;
 import com.bloatit.framework.xcgiserver.postparsing.exceptions.MalformedPostException;
@@ -79,10 +79,10 @@ public class PostParser {
         try {
             return parser.readNext();
         } catch (final EOFException e) {
-            Log.framework().error("Reached EOF before end of Mime, aborting parsing", e);
+            Log.framework().warn("Reached EOF before end of Mime, aborting parsing", e);
             throw new EOFException();
         } catch (final IOException e) {
-            throw new FatalErrorException("IO Error when parsing post, either reading post stream or writing uploaded file to the disk", e);
+            throw new BadProgrammerException("IO Error when parsing post, either reading post stream or writing uploaded file to the disk", e);
         } catch (final InvalidMimeEncodingException e) {
             Log.framework().error("Mime encoding not supported", e);
             throw new MalformedPostException();

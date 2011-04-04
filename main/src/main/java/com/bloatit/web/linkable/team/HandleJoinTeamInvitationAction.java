@@ -1,7 +1,7 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;

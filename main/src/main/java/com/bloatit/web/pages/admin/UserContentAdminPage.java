@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;

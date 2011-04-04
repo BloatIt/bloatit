@@ -6,7 +6,7 @@ import org.hibernate.CacheMode;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.SessionManager;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;

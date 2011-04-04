@@ -16,7 +16,7 @@ import java.util.Locale;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;

@@ -13,8 +13,8 @@ package com.bloatit.web.actions;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

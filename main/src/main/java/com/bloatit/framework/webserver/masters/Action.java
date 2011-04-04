@@ -15,7 +15,7 @@ package com.bloatit.framework.webserver.masters;
 import java.io.IOException;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;

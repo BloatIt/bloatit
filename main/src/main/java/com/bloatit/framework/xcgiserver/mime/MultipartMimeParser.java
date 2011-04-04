@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 import com.bloatit.framework.xcgiserver.mime.filenaming.FileNamingGenerator;
 
 /**

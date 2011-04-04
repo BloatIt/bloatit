@@ -1,6 +1,6 @@
 package com.bloatit.model;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.model.feature.FeatureManager;
 
 public class KudosableTest extends ModelTestUnit {

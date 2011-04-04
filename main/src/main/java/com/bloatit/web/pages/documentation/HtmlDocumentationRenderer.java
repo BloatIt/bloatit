@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.general.ExternalErrorException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.XmlText;
@@ -112,7 +113,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
             Log.web().warn("A user tries to access documentation file " + path + " but file is not available.");
             return false;
         } catch (final IOException e) {
-            throw new FatalErrorException("An error occured while parsing the documentation file " + path, e);
+            throw new ExternalErrorException("An error occured while parsing the documentation file " + path, e);
         }
 
     }

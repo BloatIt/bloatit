@@ -10,32 +10,40 @@
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.framework.exceptions;
+package com.bloatit.framework.exceptions.general;
 
 /**
- * Custom RuntimeException exception type.
+ * An exception sent when the programmer made a mistake
+ * <p>
+ * This exception should be thrown when the programmer sucked badly, for example
+ * when he doesn't respect a contract.
+ * </p>
+ * <p>
+ * When this exception is caught, server admin should be informed immediately,
+ * and an error page should be didslayed to the user
+ * </p>
  */
-public class FatalErrorException extends RuntimeException {
+public class BadProgrammerException extends RuntimeException {
     private static final long serialVersionUID = -8861022396347552403L;
 
     /**
      * @see RuntimeException#RuntimeException(String, Throwable)
      */
-    public FatalErrorException(final String string, final Throwable cause) {
+    public BadProgrammerException(final String string, final Throwable cause) {
         super(string, cause);
     }
 
     /**
      * @see RuntimeException#RuntimeException(String)
      */
-    public FatalErrorException(final String message) {
+    public BadProgrammerException(final String message) {
         super(message);
     }
 
     /**
      * @see RuntimeException#RuntimeException(Throwable)
      */
-    public FatalErrorException(final Throwable cause) {
+    public BadProgrammerException(final Throwable cause) {
         super(cause);
     }
 

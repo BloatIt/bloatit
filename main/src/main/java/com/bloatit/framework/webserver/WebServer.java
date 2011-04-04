@@ -14,7 +14,7 @@ package com.bloatit.framework.webserver;
 import java.io.IOException;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;

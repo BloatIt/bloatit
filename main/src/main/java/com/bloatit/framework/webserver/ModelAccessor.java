@@ -2,7 +2,7 @@ package com.bloatit.framework.webserver;
 
 import java.util.concurrent.Semaphore;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 import com.bloatit.model.AbstractModel;
 
 /**
@@ -25,7 +25,7 @@ public class ModelAccessor {
         if (model == null) {
             model = manager;
         } else {
-            throw new FatalErrorException("You can set the modelManager only once !");
+            throw new BadProgrammerException("You can set the modelManager only once !");
         }
     }
 
@@ -41,7 +41,7 @@ public class ModelAccessor {
             setModelManager(manager);
             model.initialize();
         } catch (final InterruptedException e) {
-            throw new FatalErrorException(e);
+            throw new BadProgrammerException(e);
         } finally {
             mutex.release();
         }
@@ -56,7 +56,7 @@ public class ModelAccessor {
                 mutex.acquire();
                 model.shutdown();
             } catch (final InterruptedException e) {
-                throw new FatalErrorException(e);
+                throw new BadProgrammerException(e);
             } finally {
                 mutex.release();
             }
@@ -71,7 +71,7 @@ public class ModelAccessor {
             mutex.acquire();
             model.setReadOnly();
         } catch (final InterruptedException e) {
-            throw new FatalErrorException(e);
+            throw new BadProgrammerException(e);
         } finally {
             mutex.release();
         }
@@ -85,7 +85,7 @@ public class ModelAccessor {
             mutex.acquire();
             model.open();
         } catch (final InterruptedException e) {
-            throw new FatalErrorException(e);
+            throw new BadProgrammerException(e);
         } finally {
             mutex.release();
         }
@@ -99,7 +99,7 @@ public class ModelAccessor {
             mutex.acquire();
             model.close();
         } catch (final InterruptedException e) {
-            throw new FatalErrorException(e);
+            throw new BadProgrammerException(e);
         } finally {
             mutex.release();
         }
@@ -113,7 +113,7 @@ public class ModelAccessor {
             mutex.acquire();
             model.rollback();
         } catch (final InterruptedException e) {
-            throw new FatalErrorException(e);
+            throw new BadProgrammerException(e);
         } finally {
             mutex.release();
         }

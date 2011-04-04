@@ -17,7 +17,7 @@ import static com.bloatit.framework.webserver.Context.trn;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.TimeRenderer;

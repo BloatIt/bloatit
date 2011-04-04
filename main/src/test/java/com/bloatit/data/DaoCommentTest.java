@@ -2,8 +2,8 @@ package com.bloatit.data;
 
 import java.util.Iterator;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 
 public class DaoCommentTest extends DataTestUnit {
 
@@ -44,7 +44,7 @@ public class DaoCommentTest extends DataTestUnit {
         try {
             comment.addChildComment(comment);
             fail();
-        } catch (final FatalErrorException e) {
+        } catch (final BadProgrammerException e) {
             assertTrue(true);
         }
 

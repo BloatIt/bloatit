@@ -38,8 +38,8 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -172,7 +172,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             throw new NonOptionalParameterException();
         }
         if (comment == this) {
-            throw new FatalErrorException("Cannot add ourself as child comment.");
+            throw new BadProgrammerException("Cannot add ourself as child comment.");
         }
         comment.father = this;
         this.children.add(comment);

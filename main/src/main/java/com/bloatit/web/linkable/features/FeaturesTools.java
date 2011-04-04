@@ -5,7 +5,7 @@ import static com.bloatit.framework.webserver.Context.trn;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;

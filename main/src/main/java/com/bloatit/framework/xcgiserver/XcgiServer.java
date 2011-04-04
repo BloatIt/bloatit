@@ -30,7 +30,7 @@ import java.util.Map;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
@@ -63,7 +63,7 @@ public final class XcgiServer {
         for (XcgiProcessor processor : processors) {
             Log.framework().info("--> initialization processor: " + processor.getClass().getSimpleName());
             if (!processor.initialize()) {
-                throw new FatalErrorException("Initialization of processor failed");
+                throw new BadProgrammerException("Initialization of processor failed");
             }
         }
 
@@ -109,7 +109,7 @@ public final class XcgiServer {
                 } catch (final IOException e) {
                     nbError++;
                     if (nbError > NB_MAX_SOCKET_ERROR) {
-                        throw new FatalErrorException("Too much errors on this socket.", e);
+                        throw new BadProgrammerException("Too much errors on this socket.", e);
                     }
                     Log.framework().fatal("soket error on port: " + provider.getLocalPort(), e);
                 }

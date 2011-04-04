@@ -7,9 +7,10 @@ import java.util.Iterator;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.utils.PageIterable;
@@ -126,7 +127,7 @@ public class TeamPage extends MasterPage {
         try {
             title = new HtmlTitleBlock(Context.tr("Team: ") + targetTeam.getLogin(), 1);
         } catch (final UnauthorizedOperationException e) {
-            throw new FatalErrorException("Not allowed to see team name in team page, should not happen", e);
+            throw new ShallNotPassException("Not allowed to see team name in team page, should not happen", e);
         }
         master.add(title);
         title.add(new HtmlParagraph().addText(Context.tr("({0} team)", targetTeam.isPublic() ? "Public" : "Private")));

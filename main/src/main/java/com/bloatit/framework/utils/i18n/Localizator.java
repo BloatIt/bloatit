@@ -17,7 +17,8 @@ import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PropertyLoader;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.general.ExternalErrorException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
@@ -74,7 +75,7 @@ public final class Localizator {
 
     /**
      * Returns the Locale for the localizator
-     *
+     * 
      * @return the locale
      */
     public Locale getLocale() {
@@ -83,7 +84,7 @@ public final class Localizator {
 
     /**
      * Shortcut for getLangyageCode()
-     *
+     * 
      * @see #getLanguageCode()
      */
     public String getCode() {
@@ -113,7 +114,7 @@ public final class Localizator {
      * language. Every user-visible string in the program must be wrapped into
      * this function
      * </p>
-     *
+     * 
      * @param toTranslate the string to translate
      * @return the translated string
      */
@@ -141,7 +142,7 @@ public final class Localizator {
      * </p>
      * For more examples see : {@link http
      * ://code.google.com/p/gettext-commons/wiki/Tutorial} </p>
-     *
+     * 
      * @param toTranslate the String to translate
      * @param parameters the list of parameters that will be inserted into the
      *            string
@@ -169,7 +170,7 @@ public final class Localizator {
      * print "Copied files."</code>
      * </p>
      * </p>
-     *
+     * 
      * @param singular The singular version of the displayed string
      * @param plural the plural version of the displayed string
      * @param amount the <i>amount</i> of elements, 0 or 1 will be singular, >1
@@ -199,7 +200,7 @@ public final class Localizator {
      * For more examples see : {@link http
      * ://code.google.com/p/gettext-commons/wiki/Tutorial}
      * </p>
-     *
+     * 
      * @param singular The singular string
      * @param plural the plural string
      * @param amount the <i>amount</i> of elements, 0 or 1 will be singular, >1
@@ -233,7 +234,7 @@ public final class Localizator {
      * For more examples see : {@link http
      * ://code.google.com/p/gettext-commons/wiki/Tutorial}
      * </p>
-     *
+     * 
      * @param context the context of the text to be translated
      * @param text the ambiguous key message in the source locale
      * @return <code>text</code> if the locale of the underlying resource bundle
@@ -254,7 +255,7 @@ public final class Localizator {
      * name><language ISO code>]] Example : [French:[Français,fr]] or
      * [English:[English,en]]
      * </p>
-     *
+     * 
      * @return a list with all the language descriptors
      */
     public static Map<String, LanguageDescriptor> getAvailableLanguages() {
@@ -267,32 +268,35 @@ public final class Localizator {
      */
     private static Map<String, LanguageDescriptor> initLanguageList() {
         final Map<String, LanguageDescriptor> languages = new HashMap<String, Localizator.LanguageDescriptor>();
+        final Properties properties;
+        
         try {
-            final Properties properties = PropertyLoader.loadProperties(LANGUAGES_PATH);
-            for (final Entry<?, ?> property : properties.entrySet()) {
-                final String key = (String) property.getKey();
-                final String value = (String) property.getValue();
-
-                // Remove the .code or .name
-                final String lang = key.substring(0, key.lastIndexOf('.'));
-
-                LanguageDescriptor ld;
-                if (!languages.containsKey(lang)) {
-                    ld = new LanguageDescriptor();
-                    languages.put(lang, ld);
-                } else {
-                    ld = languages.get(lang);
-                }
-
-                if (key.endsWith("." + LANGUAGE_CODE)) {
-                    ld.code = value;
-                } else {
-                    ld.name = value;
-                }
-            }
+            properties = PropertyLoader.loadProperties(LANGUAGES_PATH);
         } catch (final IOException e) {
-            throw new FatalErrorException("File describing available languages is not available at " + LANGUAGES_PATH, e);
+            throw new BadProgrammerException("File describing available languages is not available at " + LANGUAGES_PATH, e);
         }
+        for (final Entry<?, ?> property : properties.entrySet()) {
+            final String key = (String) property.getKey();
+            final String value = (String) property.getValue();
+
+            // Remove the .code or .name
+            final String lang = key.substring(0, key.lastIndexOf('.'));
+
+            LanguageDescriptor ld;
+            if (!languages.containsKey(lang)) {
+                ld = new LanguageDescriptor();
+                languages.put(lang, ld);
+            } else {
+                ld = languages.get(lang);
+            }
+
+            if (key.endsWith("." + LANGUAGE_CODE)) {
+                ld.code = value;
+            } else {
+                ld.name = value;
+            }
+        }
+
         return languages;
     }
 
@@ -325,7 +329,7 @@ public final class Localizator {
      * Gets the date pattern that matches the current user language in
      * <i>SHORT</i> format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy
      * if locale is english.
-     *
+     * 
      * @return a String representing the date pattern
      */
     public String getShortDatePattern() {
@@ -335,7 +339,7 @@ public final class Localizator {
     /**
      * Gets the date pattern that matches the current user language in any
      * format
-     *
+     * 
      * @param format the format
      * @return the date pattern
      */
@@ -365,10 +369,10 @@ public final class Localizator {
             return new CurrencyLocale(euroAmount, locale);
         } catch (final CurrencyNotAvailableException e) {
             try {
-                final Locale l = new Locale("en", "US");
-                return new CurrencyLocale(euroAmount, l);
+                return new CurrencyLocale(euroAmount, DEFAULT_LOCALE);
             } catch (final CurrencyNotAvailableException e1) {
-                throw new FatalErrorException("The currency for the locale US not available ...", e);
+                throw new BadProgrammerException("Fallback locale for currency " + DEFAULT_LOCALE.getLanguage() + "_" + DEFAULT_LOCALE.getCountry()
+                        + "not available", e);
             }
         }
     }
@@ -448,7 +452,7 @@ public final class Localizator {
      * preference will be used, and country will be set as US. If no language is
      * set, the locale will be set using DEFAULT_LOCALE (currently en_US).
      * </p>
-     *
+     * 
      * @return the favorite user locale
      */
     private Locale browserLocaleHeuristic() {

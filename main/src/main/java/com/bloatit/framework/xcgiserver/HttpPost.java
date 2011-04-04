@@ -23,7 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.general.MeanUserException;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.xcgiserver.postparsing.PostParameter;
 import com.bloatit.framework.xcgiserver.postparsing.PostParser;
@@ -95,7 +96,7 @@ public class HttpPost {
                 Log.web().error("Error in the post. We try to continue, but may have errors later in the page");
                 return null;
             } catch (final EOFException e) {
-                throw new FatalErrorException("Reached EOF in multipart/mine when not expected", e);
+                throw new MeanUserException("Reached EOF in multipart/mine when not expected", e);
             }
         }
     }

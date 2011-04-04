@@ -44,8 +44,8 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.queries.QueryCollection;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -274,7 +274,7 @@ public class DaoMember extends DaoActor {
     public void addToTeam(final DaoTeam aTeam) {
         final DaoTeamMembership daoTeamMembership = new DaoTeamMembership(this, aTeam);
         if (this.teamMembership.contains(daoTeamMembership)) {
-            throw new FatalErrorException("This member is already in the team: " + aTeam.getId());
+            throw new BadProgrammerException("This member is already in the team: " + aTeam.getId());
         }
         this.teamMembership.add(daoTeamMembership);
         addTeamRight(aTeam, UserTeamRight.CONSULT);

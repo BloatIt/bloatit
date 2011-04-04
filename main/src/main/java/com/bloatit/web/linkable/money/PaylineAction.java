@@ -2,7 +2,7 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;

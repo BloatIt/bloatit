@@ -13,7 +13,7 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlParagraph;

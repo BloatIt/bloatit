@@ -2,7 +2,7 @@ package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;

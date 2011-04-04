@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;

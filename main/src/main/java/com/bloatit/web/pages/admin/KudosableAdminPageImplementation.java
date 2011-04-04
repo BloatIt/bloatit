@@ -3,7 +3,7 @@ package com.bloatit.web.pages.admin;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoKudosable;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;

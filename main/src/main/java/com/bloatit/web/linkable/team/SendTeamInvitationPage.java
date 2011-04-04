@@ -2,9 +2,10 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -84,7 +85,7 @@ public class SendTeamInvitationPage extends LoggedPage {
                         receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
                     }
                 } catch (final UnauthorizedOperationException e) {
-                    throw new FatalErrorException(e);
+                    throw new ShallNotPassException(e);
                 }
             }
 
@@ -93,7 +94,7 @@ public class SendTeamInvitationPage extends LoggedPage {
             return master;
 
         } catch (final UnauthorizedOperationException e1) {
-            throw new FatalErrorException(e1);
+            throw new ShallNotPassException(e1);
         }
     }
 

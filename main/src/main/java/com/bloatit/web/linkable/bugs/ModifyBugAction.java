@@ -15,8 +15,9 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.general.ShallNotPassException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -121,7 +122,7 @@ public final class ModifyBugAction extends Action {
             }
         } catch (UnauthorizedOperationException e) {
             // If the user can change state it should be able to add a comment
-            throw new FatalErrorException("The user can change the bug state but not post comments on this bug");
+            throw new ShallNotPassException("The user can change the bug state but not post comments on this bug");
         }
 
         final BugPageUrl to = new BugPageUrl(bug);

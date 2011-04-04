@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;
@@ -124,7 +124,7 @@ public class UrlParameter<T, U> extends UrlNode {
                 if (value == null || getValueClass().isAssignableFrom(value.getClass())) {
                     setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
                 } else {
-                    throw new FatalErrorException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
+                    throw new BadProgrammerException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
                             + " You are trying to convert a parameter using the wrong loader class.");
                 }
             }

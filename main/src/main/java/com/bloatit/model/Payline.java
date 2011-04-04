@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RestrictedObject;
@@ -180,14 +180,13 @@ public final class Payline extends RestrictedObject {
         }
 
         if (amountToPay.scale() > 2) {
-            throw new FatalErrorException("The amount to pay cannot have more than 2 digit after the '.'.");
+            throw new BadProgrammerException("The amount to pay cannot have more than 2 digit after the '.'.");
         }
         if (amount.scale() > 2) {
-            throw new FatalErrorException("The amount cannot have more than 2 digit after the '.'.");
+            throw new BadProgrammerException("The amount cannot have more than 2 digit after the '.'.");
         }
-
         if (amount.compareTo(amountToPay) > 0) {
-            throw new FatalErrorException("The amount to pay must be superior to the amount '.'.");
+            throw new BadProgrammerException("The amount to pay must be superior to the amount '.'.");
         }
 
         final BigDecimal amountX100 = amountToPay.scaleByPowerOfTen(2);

@@ -10,7 +10,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 
 /**
  * An implementation of a parser that converts markdown to html
@@ -36,10 +36,14 @@ public class MarkdownParser implements Parser {
             showdownConverter = jsEngine.eval("new Showdown.converter()");
             engine = (Invocable) jsEngine;
         } catch (final ScriptException e) {
-            throw new FatalErrorException("Javascript is not available as a language on your system. Please do something ...", e);
+            throw new BadProgrammerException("Javascript is not available as a language on your system. Please do something ...", e);
         }
     }
 
+    /**
+     * @throws ParsingException when the parser couldn't initialize (note, this
+     *             is a system error, not an error linked to the user content)
+     */
     @Override
     public String parse(final String toParse) throws ParsingException {
         try {

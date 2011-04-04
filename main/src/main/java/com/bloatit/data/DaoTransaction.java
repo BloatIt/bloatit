@@ -29,7 +29,7 @@ import org.hibernate.Session;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 
 /**
  * A transaction is a transaction between an internal account and an other
@@ -69,13 +69,13 @@ public class DaoTransaction extends DaoIdentifiable {
      * @param amount is the quantity of money transfered.
      * @throws NotEnoughMoneyException if there is not enough money to make the
      *             transaction
-     * @throws FatalErrorException if to == from
+     * @throws BadProgrammerException if to == from
      * @throws NullPointerException if any of the parameters = null
      */
     private DaoTransaction(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
         super();
         if (from.equals(to)) {
-            throw new FatalErrorException("Cannot create a transaction on the same account.", null);
+            throw new BadProgrammerException("Cannot create a transaction on the same account.");
         }
         if (!from.hasEnoughMoney(amount) || !to.hasEnoughMoney(amount.negate())) {
             throw new NotEnoughMoneyException();

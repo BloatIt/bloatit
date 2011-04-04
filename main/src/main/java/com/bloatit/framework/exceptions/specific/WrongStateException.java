@@ -1,4 +1,4 @@
-package com.bloatit.framework.exceptions;
+package com.bloatit.framework.exceptions.specific;
 
 public class WrongStateException extends RuntimeException {
 

@@ -27,7 +27,7 @@ import javax.persistence.InheritanceType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 
 /**
  * An external Account is our vision of a "reel" bank account.

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.general.BadProgrammerException;
 import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.ErrorMessage.Level;
 import com.bloatit.framework.webserver.annotations.Message;
@@ -228,7 +228,7 @@ public final class Session {
         try {
             md = MessageDigest.getInstance("SHA-1");
         } catch (final NoSuchAlgorithmException ex) {
-            throw new FatalErrorException("Algorithm Sha1 not available", ex);
+            throw new BadProgrammerException("Algorithm Sha1 not available", ex);
         }
         md.update(digest.getBytes());
         final byte byteData[] = md.digest();

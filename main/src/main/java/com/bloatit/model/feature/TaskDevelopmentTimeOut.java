@@ -19,7 +19,7 @@ package com.bloatit.model.feature;
 import java.util.Date;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.WrongStateException;
+import com.bloatit.framework.exceptions.specific.WrongStateException;
 import com.bloatit.model.PlannedTask;
 
 /**

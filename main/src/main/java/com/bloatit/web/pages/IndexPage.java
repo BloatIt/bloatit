@@ -17,7 +17,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.specific.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.utils.PageIterable;

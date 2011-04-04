@@ -1,4 +1,4 @@
-package com.bloatit.framework.exceptions;
+package com.bloatit.framework.exceptions.specific;
 
 /**
  * Throw this exception when a method received a null or empty argument and was

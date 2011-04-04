@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
 import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 
 public class XmlText extends XmlNode {
