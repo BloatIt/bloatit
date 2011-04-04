@@ -2,9 +2,10 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -83,8 +84,9 @@ public class SendTeamInvitationPage extends LoggedPage {
                     if (!m.equals(me)) {
                         receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
                     }
-                } catch (final UnauthorizedOperationException e) {
-                    throw new FatalErrorException(e);
+                } catch (final UnauthorizedOperationException e) {*
+                    // TODO
+                    throw new ShallNotPassException(e);
                 }
             }
 
@@ -93,7 +95,8 @@ public class SendTeamInvitationPage extends LoggedPage {
             return master;
 
         } catch (final UnauthorizedOperationException e1) {
-            throw new FatalErrorException(e1);
+            // TODO
+            throw new ShallNotPassException(e1);
         }
     }
 
@@ -117,8 +120,8 @@ public class SendTeamInvitationPage extends LoggedPage {
         return SendTeamInvitationPage.generateBreadcrumb(team);
     }
 
-    public static Breadcrumb generateBreadcrumb(Team team) {
-        Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+    public static Breadcrumb generateBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
 
         breadcrumb.pushLink(new SendTeamInvitationPageUrl(team).getHtmlLink(tr("Send team invitation")));
 

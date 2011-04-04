@@ -3,8 +3,9 @@ package com.bloatit.web.linkable.messages;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoJoinTeamInvitation.State;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -75,7 +76,8 @@ public class MessageListPage extends LoggedPage {
                 p.add(empty);
 
             } catch (final UnauthorizedOperationException e) {
-                p.addText("You have been invited to a team, but you can't see its name");
+                session.notifyError("An error prevented us from displaying team name. Please notify us.");
+                throw new ShallNotPassException("User cannot access team name", e); 
             }
             teamInvites.add(p);
         }

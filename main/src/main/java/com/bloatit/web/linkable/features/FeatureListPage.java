@@ -20,7 +20,7 @@ import java.util.List;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.search.FeatureSearch;
 import com.bloatit.data.search.FeatureSearch.SortMethod;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

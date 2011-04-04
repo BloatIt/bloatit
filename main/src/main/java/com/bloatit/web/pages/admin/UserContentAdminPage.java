@@ -6,7 +6,8 @@ import java.util.EnumSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -142,8 +143,8 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
                 try {
                     return String.valueOf(element.isDeleted());
                 } catch (final UnauthorizedOperationException e) {
-                    Log.web().fatal("", e);
-                    return "";
+                    session.notifyBad("HAHAHA !");
+                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }
             }
         });
@@ -180,8 +181,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
                     }
                     return "null";
                 } catch (final UnauthorizedOperationException e) {
-                    Log.web().fatal("", e);
-                    return "";
+                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }
             }
         });
@@ -196,8 +196,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
                 try {
                     return element.getAuthor().getLogin();
                 } catch (final UnauthorizedOperationException e) {
-                    Log.web().fatal("", e);
-                    return "";
+                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }
             }
         });

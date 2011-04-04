@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.framework.exceptions;
+package com.bloatit.framework.exceptions.lowlevel;
 
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.IndexPageUrl;

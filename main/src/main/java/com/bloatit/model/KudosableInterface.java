@@ -20,8 +20,8 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 
 public interface KudosableInterface<T extends DaoKudosable> extends UserContentInterface<T> {
 

@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
@@ -43,13 +43,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     public FeatureContributorsComponent(final FeatureContributorsComponentUrl url, final Feature feature) {
         super();
         this.feature = feature;
-        try {
-            extractData();
-            add(produce(url));
-        } catch (final UnauthorizedOperationException e) {
-            // No right, no display
-        }
-
+        add(produce(url));
     }
 
     protected HtmlElement produce(final FeatureContributorsComponentUrl url) {
@@ -57,9 +51,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         {
 
             try {
-                int contributionCount;
-
-                contributionCount = feature.getContributions().size();
+                int contributionCount = feature.getContributions().size();
 
                 // Display contribution count
                 contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
@@ -70,7 +62,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                 if (contributionCount > 0) {
                     final String contributionMeanValue = Context.getLocalizator()
                                                                 .getCurrency(feature.getContribution().divide(new BigDecimal(contributionCount),
-                                                                                                             RoundingMode.HALF_EVEN))
+                                                                                                              RoundingMode.HALF_EVEN))
                                                                 .getDefaultString();
                     final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getDefaultString();
                     final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getDefaultString();
@@ -100,9 +92,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     private BigDecimal computeMedian(final PageIterable<Contribution> contributions) {
 
         try {
-
             final Iterator<Contribution> it = contributions.iterator();
-
             final List<BigDecimal> list = new ArrayList<BigDecimal>();
 
             while (it.hasNext()) {
@@ -111,7 +101,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             Collections.sort(list);
 
             final int middle = list.size() / 2;
-
             if (list.size() % 2 == 1) {
                 return list.get(middle);
             } else {
@@ -121,10 +110,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         } catch (final UnauthorizedOperationException e) {
             return new BigDecimal(-1);
         }
-
-    }
-
-    protected void extractData() throws UnauthorizedOperationException {
 
     }
 

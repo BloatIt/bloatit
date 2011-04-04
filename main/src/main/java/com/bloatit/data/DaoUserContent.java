@@ -36,7 +36,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**

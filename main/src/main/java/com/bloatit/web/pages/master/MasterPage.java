@@ -5,7 +5,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;

@@ -19,7 +19,7 @@ package com.bloatit.model.feature;
 import java.util.Date;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.WrongStateException;
+import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.model.PlannedTask;
 
 /**
@@ -63,7 +63,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
             if (feature != null) {
                 feature.developmentTimeOut();
             } else {
-                Log.framework().fatal("Cannot perform the developmentTimeOut. FeatureImplementation not found: " + featureId);
+                Log.model().fatal("Cannot perform the developmentTimeOut. FeatureImplementation not found: " + featureId);
             }
         } catch (final WrongStateException e) {
             Log.model().fatal("Wrong state when trying to perform the developmentTimeOut", e);

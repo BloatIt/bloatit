@@ -23,8 +23,8 @@ import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.right.AccountRight;
 import com.bloatit.model.right.Action;
 
@@ -76,7 +76,7 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         } else if (getDao().getTo().getClass() == DaoExternalAccount.class) {
             return ExternalAccount.create((DaoExternalAccount) getDao().getTo());
         }
-        throw new FatalErrorException("Cannot find the right Account child class.", null);
+        throw new BadProgrammerException("Cannot find the right Account child class.");
     }
 
     public Account<?> getTo() throws UnauthorizedOperationException {

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.framework.exceptions;
+package com.bloatit.framework.exceptions.lowlevel;
 
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.right.Action;

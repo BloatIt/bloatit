@@ -37,8 +37,8 @@ import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.queries.QueryCollection;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -157,11 +157,11 @@ public abstract class DaoActor extends DaoIdentifiable {
      * Set the external account for this actor.
      *
      * @param externalAccount the new external account for this actor
-     * @throws FatalErrorException if the externalAccount.getActor() != this
+     * @throws BadProgrammerException if the externalAccount.getActor() != this
      */
     public void setExternalAccount(final DaoExternalAccount externalAccount) {
         if (externalAccount.getActor() != this) {
-            throw new FatalErrorException("Add an external account to the wrong user.", null);
+            throw new BadProgrammerException("Add an external account to the wrong user.", null);
         }
         this.externalAccount = externalAccount;
     }

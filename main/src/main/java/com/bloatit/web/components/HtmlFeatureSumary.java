@@ -16,7 +16,8 @@ import java.util.Locale;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
@@ -80,8 +81,8 @@ public final class HtmlFeatureSumary extends HtmlDiv {
             }
 
         } catch (final UnauthorizedOperationException e) {
-            addText("");
-            return;
+            Context.getSession().notifyError(Context.tr("Unknown right error. Please notify us"));
+            throw new ShallNotPassException("Unknown right error", e);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.bloatit.framework.exceptions;
+package com.bloatit.framework.exceptions.lowlevel;
 
 public class MemberNotInTeamException extends Exception {
     private static final long serialVersionUID = -857528512589863370L;

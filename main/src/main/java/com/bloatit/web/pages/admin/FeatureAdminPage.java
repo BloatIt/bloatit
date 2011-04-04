@@ -6,8 +6,9 @@ import java.util.EnumSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoFeature;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
@@ -161,8 +162,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
                 try {
                     return String.valueOf(element.getContribution());
                 } catch (final UnauthorizedOperationException e) {
-                    Log.web().fatal("", e);
-                    return "";
+                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }
             }
         });
@@ -173,8 +173,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
                 try {
                     return element.getSoftware().getName();
                 } catch (final UnauthorizedOperationException e) {
-                    Log.web().fatal("", e);
-                    return "";
+                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }
             }
         });

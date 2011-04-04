@@ -15,8 +15,9 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -82,7 +83,6 @@ public final class MakeOfferPage extends LoggedPage {
         return Context.tr("You must be logged to make an offer");
     }
 
-
     @Override
     public void processErrors() throws RedirectException {
     }
@@ -106,8 +106,9 @@ public final class MakeOfferPage extends LoggedPage {
             if (offer != null) {
                 offerPageContainer.add(new FeatureOfferListComponent.OfferBlock(offer, true));
             }
-        } catch (final UnauthorizedOperationException e1) {
-            offerPageContainer.addText(Context.tr("For an unknown raison you have not the right to see the Offer you are constructing..."));
+        } catch (final UnauthorizedOperationException e) {
+            session.notifyBad("For an obscure reason you cannot see the offer you are constructing, please warn us of the bug");
+            throw new ShallNotPassException("Cannot see an offer when constructing it", e);
         }
 
         // Create offer form

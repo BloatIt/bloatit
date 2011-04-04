@@ -14,8 +14,9 @@ package com.bloatit.web.linkable.members;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
@@ -115,7 +116,8 @@ public final class MemberPage extends MasterPage {
             }
 
         } catch (final UnauthorizedOperationException e) {
-            add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this member.")));
+            session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
+            throw new ShallNotPassException("User cannot access user information", e); 
         }
     }
 
@@ -141,7 +143,8 @@ public final class MemberPage extends MasterPage {
             try {
                 return tr("Member - ") + member.getLogin();
             } catch (final UnauthorizedOperationException e) {
-                return tr("Member - John Doe");
+                session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
+                throw new ShallNotPassException("User cannot access user information", e); 
             }
         }
         return tr("Member - No member");
@@ -179,7 +182,8 @@ public final class MemberPage extends MasterPage {
         try {
             breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(member.getDisplayName()));
         } catch (UnauthorizedOperationException e) {
-            breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(tr("Unknown member")));
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
+            throw new ShallNotPassException("User cannot access user information", e); 
         }
 
         return breadcrumb;

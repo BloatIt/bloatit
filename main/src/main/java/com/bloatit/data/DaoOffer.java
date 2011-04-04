@@ -42,8 +42,8 @@ import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.data.queries.QueryCollection;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -108,7 +108,7 @@ public class DaoOffer extends DaoKudosable {
      * @param feature is the feature on which this offer is made. Must be non
      *            null.
      * @throws NonOptionalParameterException if a parameter is null.
-     * @throws FatalErrorException if the amount is < 0 or if the Date is in the
+     * @throws BadProgrammerException if the amount is < 0 or if the Date is in the
      *             future.
      */
     public DaoOffer(final DaoMember member,
@@ -138,7 +138,7 @@ public class DaoOffer extends DaoKudosable {
 
     public void addMilestone(final DaoMilestone milestone) {
         if (isDraft() == false) {
-            throw new FatalErrorException("You cannot add a milestone on a non draft offer.");
+            throw new BadProgrammerException("You cannot add a milestone on a non draft offer.");
         }
         this.amount = milestone.getAmount().add(this.amount);
         final Date expiration = milestone.getExpirationDate();
@@ -223,7 +223,7 @@ public class DaoOffer extends DaoKudosable {
             // Save how much has been sent.
             alreadyReturned += percent;
         }
-        throw new FatalErrorException("This offer has no milestone, or the 'current' milestone isn't found");
+        throw new BadProgrammerException("This offer has no milestone, or the 'current' milestone isn't found");
     }
 
     public boolean hasRelease() {

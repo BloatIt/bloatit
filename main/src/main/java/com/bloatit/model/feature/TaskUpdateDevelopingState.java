@@ -19,7 +19,7 @@ package com.bloatit.model.feature;
 import java.util.Date;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.WrongStateException;
+import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.model.PlannedTask;
 
 /**
@@ -62,7 +62,7 @@ public class TaskUpdateDevelopingState extends PlannedTask {
             if (feature != null) {
                 feature.updateDevelopmentState();
             } else {
-                Log.framework().fatal("Cannot perform the selectedOfferTimeOut. FeatureImplementation not found: " + id);
+                Log.model().fatal("Cannot perform the selectedOfferTimeOut. FeatureImplementation not found: " + id);
             }
 
         } catch (final WrongStateException e) {

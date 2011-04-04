@@ -20,7 +20,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.bloatit.common.PropertyLoader;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 
 /**
@@ -136,7 +137,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
                 countries.add(new Country(value, key));
             }
         } catch (final IOException e) {
-            throw new FatalErrorException("File describing available countries is not available at " + COUNTRIES_PATH, e);
+            throw new ExternalErrorException("File describing available countries is not available at " + COUNTRIES_PATH, e);
         }
         return countries;
     }

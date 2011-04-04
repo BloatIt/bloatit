@@ -30,7 +30,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.data.queries.QueryCollection;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.InternalAccount;

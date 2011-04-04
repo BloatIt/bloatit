@@ -15,7 +15,8 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.Iterator;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -43,6 +44,8 @@ public class FeatureBugListComponent extends HtmlDiv {
             reportBugBlock.add(reportBugLink);
             add(reportBugBlock);
         } catch (UnauthorizedOperationException e) {
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
+            throw new ShallNotPassException("User cannot access selected offer", e); 
         }
 
         // Open bugs

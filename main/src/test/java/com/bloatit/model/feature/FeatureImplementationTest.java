@@ -16,9 +16,9 @@ import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.model.Feature;
@@ -191,7 +191,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
             fail();
         } catch (final UnauthorizedOperationException e) {
             fail();
-        } catch (final FatalErrorException e) {
+        } catch (final BadProgrammerException e) {
             assertTrue(true);
         }
 
@@ -204,7 +204,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
             fail();
         } catch (final UnauthorizedOperationException e) {
             fail();
-        } catch (final FatalErrorException e) {
+        } catch (final BadProgrammerException e) {
             assertTrue(true);
         }
 

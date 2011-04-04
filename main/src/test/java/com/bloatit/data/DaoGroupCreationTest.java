@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 import org.hibernate.HibernateException;
 
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 public class DaoGroupCreationTest extends TestCase {
     @Override

@@ -51,8 +51,8 @@ import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -278,11 +278,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
-            throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
+            throw new BadProgrammerException("The amount of a contribution cannot be <= 0.", null);
         }
         if (comment != null && comment.length() > DaoContribution.COMMENT_MAX_LENGTH) {
             Log.data().fatal("The comment of a contribution must be <= 144 chars long.");
-            throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
+            throw new BadProgrammerException("Comments lenght of Contribution must be < 144.", null);
         }
 
         this.contributions.add(new DaoContribution(member, this, amount, comment));
@@ -324,7 +324,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     void validateContributions(final int percent) {
         if (this.selectedOffer == null) {
-            throw new FatalErrorException("The selectedOffer shouldn't be null here !");
+            throw new BadProgrammerException("The selectedOffer shouldn't be null here !");
         }
         if (percent == 0) {
             return;

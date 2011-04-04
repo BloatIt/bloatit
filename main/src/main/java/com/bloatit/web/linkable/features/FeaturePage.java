@@ -16,8 +16,10 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -65,7 +67,8 @@ public final class FeaturePage extends MasterPage {
             try {
                 return feature.getTitle();
             } catch (final UnauthorizedOperationException e) {
-                // Return the default one.
+                session.notifyError(Context.tr("An error prevented us from displaying feature name. Please notify us."));
+                throw new ShallNotPassException("User cannot access feature name", e); 
             }
         }
         return tr("Feature not found !");
@@ -114,7 +117,8 @@ public final class FeaturePage extends MasterPage {
         try {
             breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
         } catch (UnauthorizedOperationException e) {
-            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature {0}", feature.getId() )));
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
+            throw new ShallNotPassException("User cannot access feature information", e); 
         }
 
         return breadcrumb;

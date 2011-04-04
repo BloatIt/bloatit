@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;
@@ -76,6 +76,11 @@ public class UrlParameter<T, U> extends UrlNode {
         try {
             return toString(value);
         } catch (final ConversionErrorException e) {
+            if (value != null) {
+                Log.framework().warn("Error converting user input, from " + value.getClass().getSimpleName() + " to string.", e);
+            } else {
+                Log.framework().warn("Error converting user input, from null to string.", e);
+            }
             return "";
         }
     }
@@ -99,7 +104,11 @@ public class UrlParameter<T, U> extends UrlNode {
         try {
             strValue = toString(value);
         } catch (final ConversionErrorException e) {
-            Log.framework().warn("Conversion error", e);
+            if (value != null) {
+                Log.framework().warn("Error converting user input, from " + value.getClass().getSimpleName() + " to string.", e);
+            } else {
+                Log.framework().warn("Error converting user input, from null to string.", e);
+            }
             this.strValue = "";
         }
     }
@@ -124,7 +133,7 @@ public class UrlParameter<T, U> extends UrlNode {
                 if (value == null || getValueClass().isAssignableFrom(value.getClass())) {
                     setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
                 } else {
-                    throw new FatalErrorException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
+                    throw new BadProgrammerException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
                             + " You are trying to convert a parameter using the wrong loader class.");
                 }
             }
@@ -188,7 +197,7 @@ public class UrlParameter<T, U> extends UrlNode {
         if (strValue != null && !strValue.isEmpty()) {
             return strValue;
         }
-        String suggestedValue = description.getSuggestedValue();
+        final String suggestedValue = description.getSuggestedValue();
         if (suggestedValue == null) {
             return getDefaultValue();
         }
@@ -232,14 +241,14 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         *
+         * 
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
             super();
             name = parameter.getName();
 
-            UrlParameter<T, U> sessionParam = Context.getSession().pickParameter(parameter);
+            final UrlParameter<T, U> sessionParam = Context.getSession().pickParameter(parameter);
             if (sessionParam != null) {
                 suggestedValue = sessionParam.getSuggestedValue();
                 messages = sessionParam.getMessages();
