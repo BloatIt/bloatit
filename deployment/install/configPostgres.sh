@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Configure the postgresql db:
+# Only local person can connect on the db
+# The elveos user can connect on the elveos db with its password (md5).
+# The postgres user can connect 
+# Every other user are refused.
+
+# This script also create a elveos user and a elveos DB.
+# Make sure you choose a stroung enough password.
+
+
+
 configure_postgres(){
 USER=$1
 sudo sed -i -r '/all/ s/md5$/reject/g' /etc/postgresql/8.4/main/pg_hba.conf

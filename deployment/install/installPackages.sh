@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# install the needed packages.
+# Remove useless packages :
+#  - python (Less interpretor the better)
+#  - netcat-traditional (Obvously it is a very good tool for hakers)
+#  - xserver-xorg (not needed)
+#
+
 
 install_pkg(){
 sudo apt-get install vim less git-core bash-completion 
