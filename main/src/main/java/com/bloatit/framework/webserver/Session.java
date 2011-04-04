@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.ErrorMessage.Level;
 import com.bloatit.framework.webserver.annotations.Message;

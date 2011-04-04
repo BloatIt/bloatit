@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;

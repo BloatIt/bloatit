@@ -2,7 +2,7 @@ package com.bloatit.framework.webserver.masters;
 
 import java.io.IOException;
 
-import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 

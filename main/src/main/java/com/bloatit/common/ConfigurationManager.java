@@ -16,8 +16,8 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.properties.EncryptableProperties;
 
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
-import com.bloatit.framework.exceptions.general.ExternalErrorException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.url.Loaders;
 

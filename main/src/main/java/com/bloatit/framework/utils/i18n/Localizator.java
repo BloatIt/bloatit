@@ -17,8 +17,8 @@ import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PropertyLoader;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
-import com.bloatit.framework.exceptions.general.ExternalErrorException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.form.DropDownElement;

@@ -51,8 +51,8 @@ import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
-import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**

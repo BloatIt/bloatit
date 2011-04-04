@@ -19,7 +19,7 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoActor;
-import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
 import com.bloatit.model.right.Action;

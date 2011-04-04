@@ -1,6 +1,6 @@
 package com.bloatit.web.pages.master;
 
-import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.Session;

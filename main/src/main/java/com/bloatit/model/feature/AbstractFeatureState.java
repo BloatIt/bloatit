@@ -19,7 +19,7 @@ package com.bloatit.model.feature;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.specific.WrongStateException;
+import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.model.Offer;
 
 /**

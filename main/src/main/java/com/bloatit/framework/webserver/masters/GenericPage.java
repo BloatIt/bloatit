@@ -3,7 +3,7 @@ package com.bloatit.framework.webserver.masters;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.ErrorMessage;
 import com.bloatit.framework.webserver.ErrorMessage.Level;

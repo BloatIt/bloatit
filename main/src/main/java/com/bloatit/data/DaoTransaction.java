@@ -29,7 +29,7 @@ import org.hibernate.Session;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 /**
  * A transaction is a transaction between an internal account and an other

@@ -14,7 +14,9 @@ package com.bloatit.framework.webserver;
 import java.io.IOException;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
@@ -48,6 +50,16 @@ public abstract class WebServer implements XcgiProcessor {
                 ModelAccessor.open();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
+            } catch (ShallNotPassException e) {
+                Log.framework().fatal("Right management error", e);
+                // TODO create a page dedicated to handling this
+                Context.getSession().notifyError("TODO : This page is a placeholder used to handle right management errors.");
+                final Linkable linkable = constructLinkable(PageNotFoundUrl.getName(), parameters, session);
+                try {
+                    linkable.writeToHttp(response);
+                } catch (final RedirectException e1) {
+                    throw new ExternalErrorException("Cannot create error page after and error in right management.", e1);
+                }
             } catch (final PageNotFoundException e) {
                 Log.framework().info("Page not found", e);
                 final Linkable linkable = constructLinkable(PageNotFoundUrl.getName(), parameters, session);
@@ -76,7 +88,7 @@ public abstract class WebServer implements XcgiProcessor {
     /**
      * Return the session for the user. Either an existing session or a new
      * session.
-     *
+     * 
      * @param header
      * @return the session matching the user
      */

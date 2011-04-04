@@ -14,7 +14,7 @@ package com.bloatit.framework.webserver.masters;
 
 import java.io.IOException;
 
-import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 
 public interface Linkable {
     void writeToHttp(final HttpResponse response) throws RedirectException, IOException;

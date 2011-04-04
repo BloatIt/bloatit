@@ -35,8 +35,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
-import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
  * A contribution is a financial participation on a feature. Each contribution

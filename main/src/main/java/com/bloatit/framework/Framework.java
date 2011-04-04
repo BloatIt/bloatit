@@ -3,7 +3,7 @@ package com.bloatit.framework;
 import java.net.BindException;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.general.ExternalErrorException;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.framework.webserver.SessionManager;

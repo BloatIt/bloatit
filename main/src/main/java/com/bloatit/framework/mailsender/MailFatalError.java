@@ -1,6 +1,6 @@
 package com.bloatit.framework.mailsender;
 
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 public class MailFatalError extends BadProgrammerException {
     private static final long serialVersionUID = -1660347313919720091L;

@@ -1,8 +1,8 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.general.ShallNotPassException;
-import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

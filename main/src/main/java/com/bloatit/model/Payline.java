@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
-import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RestrictedObject;

@@ -29,7 +29,7 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 @Entity
 @Cacheable

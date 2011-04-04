@@ -32,7 +32,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
-import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
  * A translation store the data of a description in a for a locale.

@@ -19,7 +19,7 @@ package com.bloatit.model;
 import java.util.Locale;
 
 import com.bloatit.data.DaoTranslation;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 

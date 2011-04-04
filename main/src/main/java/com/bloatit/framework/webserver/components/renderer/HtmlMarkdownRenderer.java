@@ -1,6 +1,6 @@
 package com.bloatit.framework.webserver.components.renderer;
 
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;

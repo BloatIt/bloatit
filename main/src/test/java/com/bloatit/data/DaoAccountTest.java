@@ -1,8 +1,8 @@
 package com.bloatit.data;
 
 import com.bloatit.data.DaoExternalAccount.AccountType;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
-import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
  * The class <code>DaoAccountTest</code> contains tests for the class

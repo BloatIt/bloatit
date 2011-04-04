@@ -16,9 +16,9 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bloatit.framework.exceptions.general.ShallNotPassException;
-import com.bloatit.framework.exceptions.specific.RedirectException;
-import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Optional;

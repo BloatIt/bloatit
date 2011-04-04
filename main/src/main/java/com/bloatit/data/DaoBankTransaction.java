@@ -33,7 +33,7 @@ import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.specific.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
  * A DaoBankTransaction represent a transaction with a real bank. It keep some

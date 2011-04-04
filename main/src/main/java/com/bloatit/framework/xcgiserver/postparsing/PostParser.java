@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.general.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.xcgiserver.mime.InvalidMimeEncodingException;
 import com.bloatit.framework.xcgiserver.mime.MalformedMimeException;
 import com.bloatit.framework.xcgiserver.postparsing.exceptions.MalformedPostException;

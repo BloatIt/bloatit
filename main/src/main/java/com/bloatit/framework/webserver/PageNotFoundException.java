@@ -12,7 +12,7 @@
 
 package com.bloatit.framework.webserver;
 
-import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 
 public class PageNotFoundException extends RedirectException {

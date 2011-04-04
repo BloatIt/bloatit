@@ -42,7 +42,7 @@ public abstract class JavaGenerator {
         _import.append("import com.bloatit.framework.webserver.annotations.ParamConstraint;\n");
         _import.append("import com.bloatit.framework.webserver.annotations.ConversionErrorException;\n");
         _import.append("import com.bloatit.common.Log;\n");
-        _import.append("import com.bloatit.framework.exceptions.RedirectException;\n");
+        _import.append("import com.bloatit.framework.exceptions.lowlevel.RedirectException;\n");
         _import.append("import com.bloatit.framework.utils.*;\n");
         _import.append("import com.bloatit.framework.webserver.url.*;\n");
         _import.append("import com.bloatit.framework.webserver.url.Loaders.*;\n");

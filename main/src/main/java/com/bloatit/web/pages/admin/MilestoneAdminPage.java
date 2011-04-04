@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
-import com.bloatit.framework.exceptions.specific.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

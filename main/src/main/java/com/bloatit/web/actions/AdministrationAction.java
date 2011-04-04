@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember;
-import com.bloatit.framework.exceptions.specific.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
