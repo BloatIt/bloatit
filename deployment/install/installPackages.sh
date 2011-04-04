@@ -7,7 +7,7 @@ sudo apt-get install postgresql lighttpd openssh-server default-jre-headless rsy
 }
 
 purge_useless_pkg(){
-sudo apt-get remove --purge python laptop-detect 
+sudo apt-get remove --purge python laptop-detect netcat-traditional
 sudo apt-get remove --purge xserver-xorg virtualbox-ose-guest-x11 x11-common
 sudo apt-get autoremove --purge
 # We need perl for git.

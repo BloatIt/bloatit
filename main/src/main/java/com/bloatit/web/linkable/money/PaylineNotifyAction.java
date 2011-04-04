@@ -19,9 +19,15 @@ public final class PaylineNotifyAction extends Action {
     @Optional
     private final String token;
 
+
+    @RequestParam(name = "process")
+    @Optional
+    private final PaylineProcess process;
+
     public PaylineNotifyAction(final PaylineNotifyActionUrl url) {
         super(url);
         token = url.getToken();
+        process = url.getProcess();
     }
 
     @Override
@@ -39,6 +45,14 @@ public final class PaylineNotifyAction extends Action {
         } catch (final TokenNotfoundException e) {
             Log.web().error("Token not found ! ", e);
         }
+
+        if(process != null) {
+            Url target = process.getParentProcess().endSubProcess(process);
+            if(target != null) {
+                return target;
+            }
+        }
+
         return new IndexPageUrl();
     }
 

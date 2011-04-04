@@ -11,7 +11,11 @@
  */
 package com.bloatit.web.linkable.contribution;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.math.BigDecimal;
+
+import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -63,11 +67,21 @@ public final class CheckContributionAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
 
-            CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
-            process.setAmount(amount);
-            process.setComment(comment);
+        CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
+        try {
 
-            return checkContributionPageUrl;
+            if (!process.getAmount().equals(amount)) {
+                process.setAmount(amount);
+            }
+
+            if ( !(process.getComment() == comment || (process.getComment() != null && process.getComment().equals(comment)) )) {
+                process.setComment(comment);
+            }
+        } catch (IllegalWriteException e) {
+            session.notifyBad(tr("The contribution's amount is locked during the payment process."));
+        }
+
+        return checkContributionPageUrl;
     }
 
     @Override

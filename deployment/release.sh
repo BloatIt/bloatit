@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Context: make sure we are in the right directory and that the includes are done.
-cd "$(dirname $0)"
-. $PWD/commons/includes.sh
-
-
 usage()
 {
 cat << EOF
@@ -19,6 +14,15 @@ OPTIONS:
    -b      Bloatit root folder (git/mvn root).
 EOF
 }
+# Context: Where is this script.
+cd "$(dirname $0)"
+ROOT=$PWD
+cd -
+COMMONS=$ROOT/commons/
+PREFIX=elveos
+
+# Add the includes 
+. $COMMONS/includes.sh
 
 #
 # Parsing the arguments
@@ -27,7 +31,6 @@ FOLDER=deployment
 RELEASE_VERSION=
 NEXT_SNAPSHOT_VERSION=
 REPOS_DIR=
-
 while getopts "hr:b:" OPTION
 do
      case $OPTION in
@@ -48,7 +51,6 @@ do
              ;;
      esac
 done
-
 if [ -z "$RELEASE_VERSION" ] 
 then
 	echo -e "Arguments are missing !!! \n" 1>&2
@@ -56,57 +58,47 @@ then
 	exit 1
 fi
 
-. $PWD/commons/logger.sh
-. $PWD/$FOLDER/conf.sh
-. $PWD/$FOLDER/releaseUtils.sh
-
-calculateLogFilename # We can know use the LOG_FILE variable.
-PREFIX=elveos
 MVN="mvn -f $REPOS_DIR/pom.xml" 
 
 echo "RELEASE_VERSION=$RELEASE_VERSION
 NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
 REPOS_DIR=$REPOS_DIR"
-log_ok "You are about to create a new release and send it to a distant server" $LOG_FILE
+log_ok "You are about to create a new release and send it to a distant server" 
 abort_if_non_zero $?
-
 
 ##
 ## Perform the mvn release.
 ## Ordered parameters :
-##    LOG_FILE : the file where to append log output.
 ##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    NEXT_SNAPSHOT_VERSION : the version of the next snapshot.
 ##    MVN : the mvn command to launch (for example "mvn -f ../pom.xml") 
 performMvnRelease() {
-    local _log_file="$1"
-    local _prefix="$2"
-    local _release_version="$3"
-    local _next_snapshot_version="$4"
-    local _mvn="$5"
+    local _prefix="$1"
+    local _release_version="$2"
+    local _next_snapshot_version="$3"
+    local _mvn="$4"
 
     stty -echo
     read -p "I need the master password: " _password ; echo
     stty echo
-    log_date "Make a mvn release." $_log_file
-    (
-        $_mvn release:clean
-        $_mvn install -Dmaven.test.skip=true
-        $_mvn --batch-mode \
-                -Dtag=$_prefix-$_release_version release:prepare \
-                -DreleaseVersion=$_release_version \
-		-DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
-		-DautoVersionSubmodules=true \
-                -Darguments="-DargLine=-DmasterPassword=$_password" \
+
+    log_date "Make a mvn release." 
+    $_mvn install -Dmaven.test.skip=true
+    exit_on_failure $?
+
+    $_mvn --batch-mode \
+        -Dtag=$_prefix-$_release_version release:prepare \
+        -DreleaseVersion=$_release_version \
+        -DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
+        -DautoVersionSubmodules=true \
+        -Darguments="-DargLine=-DmasterPassword=$_password" \
         && $_mvn release:clean
-    # Do not do the perform.
-    # Just clean if there is no errors
-    
-       [ "$?" = "0" ] && success "done."
-    
-    ) | tee -a $_log_file
+
+    exit_on_failure $?
 }
 
-performMvnRelease "$LOG_FILE" "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$MVN"
+performMvnRelease "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$MVN"
+
+success "Release done."
 
