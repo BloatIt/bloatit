@@ -89,10 +89,10 @@ public class JsShowHide {
             @Override
             protected List<String> getCustomJs() {
                 ArrayList<String> customJsList = new ArrayList<String>();
-                //customJsList.add("jquery-1.4.4.min.js");
-                //customJsList.add("jquery-ui-1.8.10.custom.min.js");
-                customJsList.add("jquery-1.5.1.js");
-                customJsList.add("jquery-ui-1.8.11.custom.js");
+                customJsList.add("jquery-1.4.4.min.js");
+                customJsList.add("jquery-ui-1.8.10.custom.min.js");
+                //customJsList.add("jquery-1.5.1.js");
+                //customJsList.add("jquery-ui-1.8.11.custom.js");
                 // TODO: add in config file
                 return customJsList;
             }
