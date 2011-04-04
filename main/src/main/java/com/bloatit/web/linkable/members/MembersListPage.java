@@ -55,7 +55,7 @@ public final class MembersListPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
         final PageIterable<Member> memberList = MemberManager.getAll();
@@ -91,11 +91,11 @@ public final class MembersListPage extends MasterPage {
         public XmlNode generate(final Member member) {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);
             try {
-                HtmlDiv box = new HtmlDiv("member_box");
+                final HtmlDiv box = new HtmlDiv("member_box");
 
                 box.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
 
-                HtmlDiv textBox = new HtmlDiv("member_text");
+                final HtmlDiv textBox = new HtmlDiv("member_text");
                 HtmlLink htmlLink;
                 htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
                 final HtmlSpan karma = new HtmlSpan("karma");
@@ -116,7 +116,7 @@ public final class MembersListPage extends MasterPage {
 
     @Override
     protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
+        final ArrayList<String> custom = new ArrayList<String>();
         custom.add("members-list.css");
         return custom;
     }
@@ -128,7 +128,7 @@ public final class MembersListPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new MembersListPageUrl().getHtmlLink(tr("Members")));
 

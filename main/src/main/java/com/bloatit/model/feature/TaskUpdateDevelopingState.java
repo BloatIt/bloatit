@@ -62,7 +62,7 @@ public class TaskUpdateDevelopingState extends PlannedTask {
             if (feature != null) {
                 feature.updateDevelopmentState();
             } else {
-                Log.framework().fatal("Cannot perform the selectedOfferTimeOut. FeatureImplementation not found: " + id);
+                Log.model().fatal("Cannot perform the selectedOfferTimeOut. FeatureImplementation not found: " + id);
             }
 
         } catch (final WrongStateException e) {

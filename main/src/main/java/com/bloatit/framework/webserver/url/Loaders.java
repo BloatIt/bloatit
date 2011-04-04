@@ -7,7 +7,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
@@ -37,8 +36,7 @@ public final class Loaders {
         try {
             @SuppressWarnings("unchecked") final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
             return loader.toString(obj);
-        } catch (ConversionErrorException e) {
-            Log.framework().debug("Conversion error in toStr.", e);
+        } catch (final ConversionErrorException e) {
             throw e;
         }
     }
@@ -50,8 +48,7 @@ public final class Loaders {
         try {
             final Loader<T> loader = getLoader(toClass);
             return loader.fromString(value);
-        } catch (ConversionErrorException e) {
-            Log.framework().debug("Conversion error in fromStr.", e);
+        } catch (final ConversionErrorException e) {
             throw e;
         }
     }
@@ -272,7 +269,7 @@ public final class Loaders {
         @Override
         public Identifiable<?> fromString(final String data) throws ConversionErrorException {
             try {
-                DaoIdentifiableQuery daoIdentifiableQuery = new DaoIdentifiableQuery();
+                final DaoIdentifiableQuery daoIdentifiableQuery = new DaoIdentifiableQuery();
                 daoIdentifiableQuery.idEquals(Integer.valueOf(data));
                 return daoIdentifiableQuery.uniqueResult().accept(new DataVisitorConstructor());
             } catch (final NumberFormatException e) {
@@ -285,7 +282,7 @@ public final class Loaders {
 
         private final Class<T> theClass;
 
-        public ToIdentifiable(Class<T> theClass) {
+        public ToIdentifiable(final Class<T> theClass) {
             this.theClass = theClass;
         }
 
@@ -304,9 +301,9 @@ public final class Loaders {
                 return fromStr;
             } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
-            } catch (ClassCastException e) {
+            } catch (final ClassCastException e) {
                 throw new ConversionErrorException(e);
-            } catch (ClassNotFoundException e) {
+            } catch (final ClassNotFoundException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -316,7 +313,7 @@ public final class Loaders {
 
         private final Class<T> theClass;
 
-        public ToWebProcess(Class<T> theClass) {
+        public ToWebProcess(final Class<T> theClass) {
             this.theClass = theClass;
         }
 
@@ -328,7 +325,7 @@ public final class Loaders {
         @SuppressWarnings("unchecked")
         @Override
         public final T fromString(final String data) throws ConversionErrorException {
-            WebProcess webProcess = Context.getSession().getWebProcess(data);
+            final WebProcess webProcess = Context.getSession().getWebProcess(data);
             if(webProcess != null) {
                 webProcess.load();
             }
