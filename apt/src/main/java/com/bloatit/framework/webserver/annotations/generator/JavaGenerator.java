@@ -373,10 +373,30 @@ public abstract class JavaGenerator {
         // Overridden methods
 
         urlClass.append("    @Override\n");
-        urlClass.append("     protected void doConstructUrl(StringBuilder sb) {\n");
+        urlClass.append("    public bool isAction() {\n");
+        urlClass.append("        return false\n");
+        urlClass.append("    }\n");
+
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    protected String getCode() {\n");
+        urlClass.append("        return \"\";\n");
+        urlClass.append("    }\n");
+
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    protected void doConstructUrl(StringBuilder sb) {\n");
         urlClass.append("        component.constructUrl(sb);\n");
         if (urlSuperClass != null) {
             urlClass.append("        super.doConstructUrl(sb);\n");
+        }
+        urlClass.append("    }\n");
+
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    protected void doGetStringParameters(Parameters parameters) {\n");
+        if (urlSuperClass != null) {
+            urlClass.append("        doGetStringParameters(parameters);\n");
         }
         urlClass.append("    }\n");
 

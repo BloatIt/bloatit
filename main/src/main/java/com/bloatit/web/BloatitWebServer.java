@@ -1,7 +1,9 @@
 package com.bloatit.web;
 
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.Session;
+import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
@@ -148,7 +150,7 @@ public class BloatitWebServer extends WebServer {
 
     @SuppressWarnings("deprecation")
     @Override
-    protected Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
+    public Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
 
         // Pages
         if (pageCode.equals(IndexPageUrl.getName())) {
@@ -292,6 +294,13 @@ public class BloatitWebServer extends WebServer {
             return new PaylineAction(new PaylineActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylineNotifyActionUrl.getName())) {
+            if(params.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
+                String token = params.look(PaylineNotifyAction.TOKEN_CODE).getSimpleValue();
+                Session fakeSession = SessionManager.pickTemporarySession(token);
+                if(fakeSession != null) {
+                    Context.reInitializeContext(Context.getHeader(), fakeSession);
+                }
+            }
             return new PaylineNotifyAction(new PaylineNotifyActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(CommentCommentActionUrl.getName())) {
