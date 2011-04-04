@@ -2,7 +2,6 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -84,7 +83,7 @@ public class SendTeamInvitationPage extends LoggedPage {
                     if (!m.equals(me)) {
                         receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
                     }
-                } catch (final UnauthorizedOperationException e) {*
+                } catch (final UnauthorizedOperationException e) {
                     // TODO
                     throw new ShallNotPassException(e);
                 }

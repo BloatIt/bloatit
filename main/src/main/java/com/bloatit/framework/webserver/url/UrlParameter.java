@@ -176,6 +176,17 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
+    @Override
+    protected void getStringParameters(Parameters parameters) {
+        final String stringValue = getStringValue();
+        if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
+            if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
+                parameters.add(getName(), stringValue);
+            }
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
     private String toString(final T value) throws ConversionErrorException {
         // If it is a list then it's a list of parameters.
@@ -241,7 +252,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         * 
+         *
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
@@ -273,4 +284,6 @@ public class UrlParameter<T, U> extends UrlNode {
             return messages;
         }
     }
+
+
 }

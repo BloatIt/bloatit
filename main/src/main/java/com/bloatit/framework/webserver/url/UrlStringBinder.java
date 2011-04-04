@@ -1,5 +1,7 @@
 package com.bloatit.framework.webserver.url;
 
+import com.bloatit.framework.utils.Parameters;
+
 public class UrlStringBinder extends Url {
 
     private final String url;
@@ -32,6 +34,20 @@ public class UrlStringBinder extends Url {
     @Override
     public Messages getMessages() {
         return new Messages();
+    }
+
+    @Override
+    public boolean isAction() {
+        return false;
+    }
+
+    @Override
+    public String getCode() {
+        return "";
+    }
+
+    @Override
+    protected void doGetStringParameters(Parameters parameters) {
     }
 
 }

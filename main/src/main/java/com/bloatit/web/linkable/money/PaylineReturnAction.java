@@ -55,6 +55,7 @@ public class PaylineReturnAction extends Action {
 
         if(process != null) {
             Url target = process.getParentProcess().endSubProcess(process);
+            process.close();
             if(target != null) {
                 return target;
             }

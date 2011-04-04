@@ -25,6 +25,7 @@ public abstract class JavaGenerator {
 
     protected StringBuilder _urlClassConstructor = new StringBuilder();
     protected String urlSuperClass;
+    private boolean isAction;
 
     protected JavaGenerator(String name, final String pageName) {
         this.pageName = pageName;
@@ -373,14 +374,14 @@ public abstract class JavaGenerator {
         // Overridden methods
 
         urlClass.append("    @Override\n");
-        urlClass.append("    public bool isAction() {\n");
-        urlClass.append("        return false\n");
+        urlClass.append("    public boolean isAction() {\n");
+        urlClass.append("        return "+isAction+";\n");
         urlClass.append("    }\n");
 
 
         urlClass.append("    @Override\n");
-        urlClass.append("    protected String getCode() {\n");
-        urlClass.append("        return \"\";\n");
+        urlClass.append("    public String getCode() {\n");
+        urlClass.append("        return getName();\n");
         urlClass.append("    }\n");
 
 
@@ -395,6 +396,7 @@ public abstract class JavaGenerator {
 
         urlClass.append("    @Override\n");
         urlClass.append("    protected void doGetStringParameters(Parameters parameters) {\n");
+        urlClass.append("        component.getStringParameters(parameters);\n");
         if (urlSuperClass != null) {
             urlClass.append("        doGetStringParameters(parameters);\n");
         }
@@ -444,5 +446,10 @@ public abstract class JavaGenerator {
 
     public void setUrlSuperClass(final String urlSuperClass) {
         this.urlSuperClass = urlSuperClass;
+    }
+
+    public void setIsAction(boolean isAction) {
+        this.isAction = isAction;
+
     }
 }

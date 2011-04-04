@@ -13,8 +13,18 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ErrorType;
+import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.NoType;
+import javax.lang.model.type.NullType;
+import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.TypeVariable;
+import javax.lang.model.type.TypeVisitor;
+import javax.lang.model.type.WildcardType;
+import javax.lang.model.util.ElementScanner6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.TypeKindVisitor6;
 import javax.tools.Diagnostic;
@@ -57,6 +67,9 @@ public class ParamContainerProcessor extends AbstractProcessor {
             generator = new UrlComponentClassGenerator(urlClassName, paramContainer.value());
         }
 
+        generator.setIsAction(isAction(element));
+
+
         addParameterForSuperClass(element, generator);
 
         for (final Element enclosed : element.getEnclosedElements()) {
@@ -89,6 +102,95 @@ public class ParamContainerProcessor extends AbstractProcessor {
             }
         }
     }
+
+    private boolean isAction(Element element) {
+
+
+
+        if(element.getSimpleName().toString().equals("Action")) {
+            return true;
+        }
+
+        return element.accept(new ElementScanner6<Boolean, Object>() {
+
+            @Override
+            public Boolean visitType(TypeElement e, Object p) {
+                return isAction(e.getSuperclass());
+
+            }}, false);
+
+    }
+
+    private boolean isAction(TypeMirror type) {
+
+        return type.accept(new TypeVisitor<Boolean, Object>() {
+
+            @Override
+            public Boolean visit(TypeMirror t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visit(TypeMirror t) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitPrimitive(PrimitiveType t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitNull(NullType t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitArray(ArrayType t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitDeclared(DeclaredType t, Object p) {
+                return isAction(t.asElement());
+            }
+
+            @Override
+            public Boolean visitError(ErrorType t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitTypeVariable(TypeVariable t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitWildcard(WildcardType t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitExecutable(ExecutableType t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitNoType(NoType t, Object p) {
+                return false;
+            }
+
+            @Override
+            public Boolean visitUnknown(TypeMirror t, Object p) {
+                return false;
+            }}, null);
+
+
+
+
+    }
+
+
 
     private void addParameterForSuperClass(final Element element, final JavaGenerator generator) {
         final SimpleTypeVisitor6<Element, ProcessingEnvironment> vs = new SimpleTypeVisitor6<Element, ProcessingEnvironment>() {
