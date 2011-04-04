@@ -63,7 +63,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
             if (feature != null) {
                 feature.developmentTimeOut();
             } else {
-                Log.framework().fatal("Cannot perform the developmentTimeOut. FeatureImplementation not found: " + featureId);
+                Log.model().fatal("Cannot perform the developmentTimeOut. FeatureImplementation not found: " + featureId);
             }
         } catch (final WrongStateException e) {
             Log.model().fatal("Wrong state when trying to perform the developmentTimeOut", e);
