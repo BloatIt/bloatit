@@ -8,10 +8,10 @@ import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.DefineParagraph;
-import com.bloatit.web.pages.master.SideBarElementLayout;
+import com.bloatit.web.pages.master.TitleSideBarElementLayout;
 import com.bloatit.web.url.FeaturePageUrl;
 
-public class SideBarFeatureBlock extends SideBarElementLayout {
+public class SideBarFeatureBlock extends TitleSideBarElementLayout {
 
     public SideBarFeatureBlock(Feature feature) {
         setTitle(tr("Feature abstract"));

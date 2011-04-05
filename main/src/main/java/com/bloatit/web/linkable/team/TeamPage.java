@@ -5,8 +5,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.EnumSet;
 import java.util.Iterator;
 
-import org.hibernate.type.ImageType;
-
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
@@ -41,6 +39,7 @@ import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
+import com.bloatit.web.pages.master.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
@@ -88,7 +87,7 @@ public class TeamPage extends MasterPage {
     }
 
     private SideBarElementLayout generateContactBox() {
-        SideBarElementLayout contacts = new SideBarElementLayout();
+        TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
         try {
             contacts.setTitle(Context.tr("How to contact {0}", targetTeam.getLogin()));
         } catch (UnauthorizedOperationException e) {
