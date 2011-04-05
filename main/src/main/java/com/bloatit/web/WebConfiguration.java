@@ -111,6 +111,10 @@ public class WebConfiguration {
     public static boolean isHtmlIndent() {
         return configuration.htmlIndent.booleanValue();
     }
+    
+    public static String getCommonsDir(){
+        return configuration.resourcesDir + "/commons";
+    }
 
     // ----------------------------------------------------------
     // CSS
@@ -120,11 +124,11 @@ public class WebConfiguration {
      * @return the path to the css
      */
     public static String getCss() {
-        return configuration.resourcesDir + "/commons" + configuration.css;
+        return getCommonsDir() + configuration.css;
     }
 
     public static String getCssDatePicker() {
-        return configuration.resourcesDir + "/commons" + configuration.cssDatePicker;
+        return getCommonsDir() + configuration.cssDatePicker;
     }
     
     // ----------------------------------------------------------
@@ -135,63 +139,63 @@ public class WebConfiguration {
      * @return the path to the imgLogo
      */
     public static String getImgLogo() {
-        return configuration.resourcesDir + "/commons" + configuration.imgLogo;
+        return getCommonsDir() + configuration.imgLogo;
     }
 
     /**
      * @return the path to the imgPresentation
      */
     public static String getImgPresentation() {
-        return configuration.resourcesDir + "/commons" + configuration.imgPresentation;
+        return getCommonsDir() + configuration.imgPresentation;
     }
     
     /**
      * @return the imgMoneyDown
      */
     public static String getImgMoneyDown() {
-        return configuration.resourcesDir + "/commons" + configuration.imgMoneyDown;
+        return getCommonsDir() + configuration.imgMoneyDown;
     }
 
     /**
      * @return the imgMoneyDownSmall
      */
     public static String getImgMoneyDownSmall() {
-        return configuration.resourcesDir + "/commons" + configuration.imgMoneyDownSmall;
+        return getCommonsDir() + configuration.imgMoneyDownSmall;
     }
 
     /**
      * @return the imgMoneyUp
      */
     public static String getImgMoneyUp() {
-        return configuration.resourcesDir + "/commons" + configuration.imgMoneyUp;
+        return getCommonsDir() + configuration.imgMoneyUp;
     }
 
     /**
      * @return the imgMoneyUpSmall
      */
     public static String getImgMoneyUpSmall() {
-        return configuration.resourcesDir + "/commons" + configuration.imgMoneyUpSmall;
+        return getCommonsDir() + configuration.imgMoneyUpSmall;
     }
 
     /**
      * @return the imgNoAvatar
      */
     public static String getImgNoAvatar() {
-        return configuration.resourcesDir + "/commons" + configuration.imgNoAvatar;
+        return getCommonsDir() + configuration.imgNoAvatar;
     }
 
     /**
      * @return the imgValidIcon
      */
     public static String getImgValidIcon() {
-        return configuration.resourcesDir + "/commons" + configuration.imgValidIcon;
+        return getCommonsDir() + configuration.imgValidIcon;
     }
     
     /**
      * @return the imgValidIcon
      */
     public static String getImgSoftwareNoLogo() {
-        return configuration.resourcesDir + "/commons" + configuration.imgSoftwareNoLogo;
+        return getCommonsDir() + configuration.imgSoftwareNoLogo;
     }
 
     // ----------------------------------------------------------
@@ -202,28 +206,28 @@ public class WebConfiguration {
      * @return the path to the jsJquery
      */
     public static String getJsJquery() {
-        return configuration.resourcesDir + "/commons" + configuration.jsJquery;
+        return getCommonsDir() + configuration.jsJquery;
     }
 
     /**
      * @return the path to the jsJqueryUi
      */
     public static String getJsJqueryUi() {
-        return configuration.resourcesDir + "/commons" + configuration.jsJqueryUi;
+        return getCommonsDir() + configuration.jsJqueryUi;
     }
 
     /**
      * @return the path to the jsFlexie
      */
     public static String getJsFlexie() {
-        return configuration.resourcesDir + "/commons" + configuration.jsFlexie;
+        return getCommonsDir() + configuration.jsFlexie;
     }
 
     /**
      * @return the path to the jsSelectivizr
      */
     public static String getJsSelectivizr() {
-        return configuration.resourcesDir + "/commons" + configuration.jsSelectivizr;
+        return getCommonsDir() + configuration.jsSelectivizr;
     }
 
     /**
