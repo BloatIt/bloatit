@@ -4,8 +4,9 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.pages.LoggedPage;
@@ -24,7 +25,7 @@ public abstract class AdminPage extends LoggedPage {
                 return createAdminContent();
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(tr("Are you sure you are admin ? "));
-                Log.web().fatal("Admin content got a UnauthorizedOperationException", e);
+                throw new ShallNotPassException("Admin content got a UnauthorizedOperationException", e);
             }
         }
         throw new RedirectException(new LoginPageUrl());

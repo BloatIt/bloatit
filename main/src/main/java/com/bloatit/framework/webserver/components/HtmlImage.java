@@ -20,16 +20,10 @@ import com.bloatit.framework.webserver.url.Url;
  * Used to display an image
  */
 public class HtmlImage extends HtmlLeaf {
-    private static final String IMAGE_DIRECTORY = "/resources/img";
-
     public HtmlImage(final Image image, String alt) {
         super("img");
         String uri = "";
-        if (image.isLocal()) {
-            uri = HtmlImage.IMAGE_DIRECTORY + "/" + image.getIdentifier();
-        } else {
-            uri = image.getIdentifier();
-        }
+        uri = image.getIdentifier();
         addAttribute("src", uri);
         addAttribute("alt", alt);
     }
@@ -49,5 +43,4 @@ public class HtmlImage extends HtmlLeaf {
         this(imageUrl, alt);
         addAttribute("class", cssClass);
     }
-
 }

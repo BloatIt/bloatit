@@ -12,7 +12,7 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.pages.master.MasterPage;

@@ -1,6 +1,7 @@
 package com.bloatit.framework.webserver.url;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
@@ -29,7 +30,13 @@ public abstract class Url implements Cloneable {
         this.anchor = other.anchor;
     }
 
+    public abstract boolean isAction();
+
+    public abstract String getCode();
+
     protected abstract void doConstructUrl(StringBuilder sb);
+
+    protected abstract void doGetStringParameters(Parameters parameters);
 
     public abstract void addParameter(String key, String value);
 
@@ -59,6 +66,14 @@ public abstract class Url implements Cloneable {
         return sb.toString();
     }
 
+    public Parameters getStringParameters() {
+
+        Parameters parameters = new Parameters();
+        doGetStringParameters(parameters);
+        return parameters;
+    }
+
+
     public final String externalUrlString(final HttpHeader header) {
         if (header.getServerProtocol().startsWith("HTTPS")) {
             return "https://" + header.getHttpHost() + urlString();
@@ -81,5 +96,6 @@ public abstract class Url implements Cloneable {
     public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
+
 
 }

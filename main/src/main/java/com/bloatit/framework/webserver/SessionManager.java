@@ -37,6 +37,7 @@ import com.bloatit.model.right.AuthToken;
 public final class SessionManager {
 
     private static Map<UUID, Session> activeSessions = new HashMap<UUID, Session>();
+    private static Map<String, Session> temporarySessions = new HashMap<String, Session>();
 
     // TODO: configuration.
     private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = DateUtils.SECOND_PER_DAY * 2;
@@ -55,6 +56,7 @@ public final class SessionManager {
     public static synchronized void destroySession(final Session session) {
         if (activeSessions.containsKey(session.getKey())) {
             Log.framework().info("destroy session " + session.getKey());
+            cleanTemporarySession(session);
             activeSessions.remove(session.getKey());
         }
     }
@@ -198,9 +200,36 @@ public final class SessionManager {
         while (it.hasNext()) {
             final Session session = it.next();
             if (session.isExpired()) {
+                cleanTemporarySession(session);
                 it.remove();
             }
         }
+    }
+
+    public static synchronized void storeTemporarySession(String key, Session session) {
+        temporarySessions.put(key, session);
+    }
+
+    public static synchronized Session pickTemporarySession(String key) {
+        if(temporarySessions.containsKey(key)) {
+            Session session = temporarySessions.get(key);
+            temporarySessions.remove(key);
+            return session;
+        }
+
+        return null;
+    }
+
+    public static synchronized void cleanTemporarySession(Session sessionToClean) {
+        final Iterator<Entry<String, Session>> it = temporarySessions.entrySet().iterator();
+
+        while (it.hasNext()) {
+            final Session session = it.next().getValue();
+            if (session.equals(sessionToClean)) {
+                it.remove();
+            }
+        }
+
     }
 
 }

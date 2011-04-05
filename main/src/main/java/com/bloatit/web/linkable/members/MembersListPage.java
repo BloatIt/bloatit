@@ -13,20 +13,17 @@ package com.bloatit.web.linkable.members;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Member;
@@ -106,20 +103,11 @@ public final class MembersListPage extends MasterPage {
 
                 return box;
             } catch (final UnauthorizedOperationException e) {
-                // TODO
-                Log.web().warn("TODO", e);
+                session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
+                throw new ShallNotPassException("User cannot access user information", e);
             }
-            return new PlaceHolderElement();
         }
     }
-
-    @Override
-    protected List<String> getCustomCss() {
-        final ArrayList<String> custom = new ArrayList<String>();
-        custom.add("members-list.css");
-        return custom;
-    }
-
 
     @Override
     protected Breadcrumb getBreadcrumb() {

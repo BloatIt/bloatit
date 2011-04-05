@@ -11,7 +11,8 @@
  */
 package com.bloatit.web.linkable.features;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -34,8 +35,8 @@ public final class FeatureCommentListComponent extends HtmlPageComponent {
             this.comments = feature.getComments();
             add(produce());
         } catch (final UnauthorizedOperationException e) {
-            this.comments = null;
-            // No right, no comments
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature comments. Please notify us."));
+            throw new ShallNotPassException("User cannot access feature comments", e); 
         }
 
     }

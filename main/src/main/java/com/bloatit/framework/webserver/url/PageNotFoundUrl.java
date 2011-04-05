@@ -37,4 +37,18 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     public Messages getMessages() {
         return new Messages();
     }
+
+    @Override
+    public boolean isAction() {
+        return false;
+    }
+
+    @Override
+    public String getCode() {
+        return getName();
+    }
+
+    @Override
+    protected void doGetStringParameters(Parameters parameters) {
+    }
 }

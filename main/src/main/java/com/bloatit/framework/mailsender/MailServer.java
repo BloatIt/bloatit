@@ -75,7 +75,7 @@ public class MailServer extends Thread {
      * This method has to be called before you start application
      * </p>
      */
-    public void init() {
+    public void initialize() {
         mailsFileName = new LinkedBlockingQueue<String>();
         stopMutex = new Semaphore(1);
         stop = false;

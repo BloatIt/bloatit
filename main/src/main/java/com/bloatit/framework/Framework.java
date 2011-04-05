@@ -3,6 +3,7 @@ package com.bloatit.framework;
 import java.net.BindException;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.framework.webserver.SessionManager;
@@ -34,9 +35,12 @@ public class Framework {
     public boolean initialize() {
         FrameworkConfiguration.loadConfiguration();
         try {
-            mailServer.init();
+            mailServer.initialize();
             scgiServer.initialize();
             ModelAccessor.initialize(model);
+        }catch (final ExternalErrorException e){
+            Log.framework().fatal("Error loading configuration file", e);
+            return false;
         } catch (final BindException e) {
             Log.framework().fatal("Are you sure you have killed previous instance? ", e);
             return false;

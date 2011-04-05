@@ -19,7 +19,7 @@ package com.bloatit.model;
 import java.util.Locale;
 
 import com.bloatit.data.DaoTranslation;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 
@@ -72,7 +72,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
      */
     public String getShortText(final int sizeMax, final int variance) {
         if (variance < 0) {
-            throw new FatalErrorException("variance must be >= 0");
+            throw new BadProgrammerException("variance must be >= 0");
         }
         final String wholeText = getDao().getText();
         if (wholeText.length() <= sizeMax) {

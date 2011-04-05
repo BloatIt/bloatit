@@ -28,10 +28,10 @@ import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.MemberNotInTeamException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.lists.CommentList;
@@ -100,8 +100,8 @@ public final class Member extends Actor<DaoMember> {
      *            it, READ to list the invitations you have recieved.
      * @return true if you can invite/accept/refuse.
      */
-    public boolean canSendInvitation(final Team team, final Action action) {
-        return canAccess(new MemberRight.SendInvitation(), action);
+    public boolean canSendInvitation(final Team team) {
+        return canAccess(new MemberRight.SendInvitation(), Action.WRITE);
     }
 
     public boolean canGetKarma() {
@@ -304,7 +304,7 @@ public final class Member extends Actor<DaoMember> {
         try {
             md = MessageDigest.getInstance("SHA-1");
         } catch (final NoSuchAlgorithmException ex) {
-            throw new FatalErrorException("Algorithm Sha1 not available", ex);
+            throw new BadProgrammerException("Algorithm Sha1 not available", ex);
         }
         md.update(digest.getBytes());
         final byte byteData[] = md.digest();

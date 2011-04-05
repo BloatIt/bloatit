@@ -15,8 +15,9 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -120,8 +121,8 @@ public final class ModifyBugAction extends Action {
                 bug.addComment(changes + "\n" + tr("Reason:") + "\n" + reason);
             }
         } catch (UnauthorizedOperationException e) {
-            // If the user can change state it should be able to add a comment
-            throw new FatalErrorException("The user can change the bug state but not post comments on this bug");
+            session.notifyError(Context.tr("An error prevented us from accessing changing state on this bug. Please notify us."));
+            throw new ShallNotPassException("The user can change the bug state but not post comments on this bug");
         }
 
         final BugPageUrl to = new BugPageUrl(bug);

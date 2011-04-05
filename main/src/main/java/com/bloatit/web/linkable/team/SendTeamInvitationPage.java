@@ -2,9 +2,9 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -41,7 +41,6 @@ public class SendTeamInvitationPage extends LoggedPage {
         this.url = url;
         this.team = url.getTeam();
     }
-
 
     @Override
     public void processErrors() throws RedirectException {
@@ -85,7 +84,7 @@ public class SendTeamInvitationPage extends LoggedPage {
                     }
                 } catch (final UnauthorizedOperationException e) {
                     // TODO
-                    throw new FatalErrorException("TODO", e);
+                    throw new ShallNotPassException(e);
                 }
             }
 
@@ -95,7 +94,7 @@ public class SendTeamInvitationPage extends LoggedPage {
 
         } catch (final UnauthorizedOperationException e1) {
             // TODO
-            throw new FatalErrorException("TODO", e1);
+            throw new ShallNotPassException(e1);
         }
     }
 

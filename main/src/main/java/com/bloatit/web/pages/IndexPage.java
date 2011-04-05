@@ -14,24 +14,20 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.pages.master.SideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -47,30 +43,12 @@ public final class IndexPage extends MasterPage {
 
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-            // final HtmlParagraph globalConcept = new
-            // HtmlParagraph(Context.tr("Linkeos is a platform for free software funding."));
-            // globalDescription.add(globalConcept);
-            //
-            // final HtmlParagraph needText = new HtmlParagraph();
-            // needText.addText(Context.tr("If you have a need about a free software, you can "));
-            // needText.add(new
-            // CreateFeaturePageUrl().getHtmlLink(Context.tr("create a new feature")));
-            // needText.addText(Context.tr(" and contribute to it."));
-            // globalDescription.add(needText);
-            //
-            // final HtmlParagraph devText = new HtmlParagraph();
-            // devText.addText(Context.tr("If you are a developer, you can make an offer on existing features to develop it again money."));
-            // globalDescription.add(devText);
-            //
-            // final HtmlParagraph moreText = new HtmlParagraph();
-            // moreText.addText(Context.tr("You can find more informations about Linkeos's in the documentation."));
-            // globalDescription.add(moreText);
 
             HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
 
             globalDescription.add(title);
 
-            HtmlImage image = new HtmlImage(new Image("presentation.png", ImageType.LOCAL), tr("Elveos's presentation"));
+            HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation()), tr("Elveos's presentation"));
             globalDescription.add(image);
 
         }
@@ -123,36 +101,19 @@ public final class IndexPage extends MasterPage {
                         }
                     }
                     featureListRow.add(featureListRightCase);
-
                 }
                 featureList.add(featureListRow);
             }
         }
+
         twoColumnLayout.addLeft(featureList);
-
-        twoColumnLayout.addRight(new SideBarElementLayout() {
-            {
-                add(new HtmlParagraph("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec scelerisque, neque pellentesque sollicitudin ullamcorper, lorem nibh turpis duis."));
-                add(new HtmlParagraph("Nullam non quam dui, non ullamcorper libero. Duis justo nibh, tristique at turpis duis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer libero elit, facilisis in vehicula eu, porta quis quam. Aliquam cursus posuere."));
-                add(new HtmlParagraph("Fusce adipiscing nunc nisi. Nulla justo nibh, laoreet at adipiscing vel, lobortis ut ligula. In a purus nec elit ornare gravida. Fusce varius metus eu libero posuere pretium. Nam et feugiat tortor. Curabitur adipiscing tincidunt nibh ac lobortis. Aenean sed nulla ut lacus fringilla semper non ac nunc. Etiam iaculis vestibulum quam. Pellentesque id ipsum ac tortor porttitor cursus ac a lorem. Pellentesque imperdiet rutrum nibh, vel posuere."));
-            }
-        });
-
+        twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
         add(twoColumnLayout);
-
     }
 
     @Override
     protected String getPageTitle() {
         return "Finance free software";
-    }
-
-    @Override
-    protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
-
-        custom.add("index.css");
-        return custom;
     }
 
     @Override
@@ -162,12 +123,8 @@ public final class IndexPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb() {
         Breadcrumb breadcrumb = new Breadcrumb();
-
         IndexPageUrl pageUrl = new IndexPageUrl();
-
-            breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
-
-
+        breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
         return breadcrumb;
     }
 

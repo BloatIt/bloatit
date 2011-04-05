@@ -18,7 +18,7 @@ package com.bloatit.model.right;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 
 /**
  * The class Accessor is class that test if a member as the right to access a

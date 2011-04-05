@@ -5,7 +5,8 @@ import static com.bloatit.framework.webserver.Context.trn;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -67,7 +68,8 @@ public class FeaturesTools {
         try {
             currentOffer = feature.getSelectedOffer();
         } catch (final UnauthorizedOperationException e1) {
-            // Nothing.
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
+            throw new ShallNotPassException("User cannot access selected offer", e1); 
         }
         if (currentOffer == null) {
 
@@ -77,12 +79,12 @@ public class FeaturesTools {
             CurrencyLocale currency;
             try {
                 currency = Context.getLocalizator().getCurrency(feature.getContribution());
-
                 amount.addText(currency.getDefaultString());
-
             } catch (final UnauthorizedOperationException e) {
-                // No right, no display
+                Context.getSession().notifyError(Context.tr("An error prevented us from displaying contribution amount. Please notify us."));
+                throw new ShallNotPassException("User cannot access contribution amount", e); 
             }
+            
             final HtmlParagraph progressText = new HtmlParagraph();
             progressText.setCssClass("progress_text");
 
@@ -122,8 +124,8 @@ public class FeaturesTools {
 
             return progressText;
         } catch (final UnauthorizedOperationException e) {
-            // No right, no display
-            return new PlaceHolderElement();
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying contribution amount. Please notify us."));
+            throw new ShallNotPassException("User cannot access contibution amount", e); 
         }
     }
 

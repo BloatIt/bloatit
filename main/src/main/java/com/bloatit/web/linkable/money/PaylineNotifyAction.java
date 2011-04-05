@@ -15,7 +15,10 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 @ParamContainer("payline/donotify")
 public final class PaylineNotifyAction extends Action {
 
-    @RequestParam(name = "token")
+    public static final String TOKEN_CODE = "token";
+
+
+    @RequestParam(name = TOKEN_CODE)
     @Optional
     private final String token;
 
@@ -48,6 +51,7 @@ public final class PaylineNotifyAction extends Action {
 
         if(process != null) {
             Url target = process.getParentProcess().endSubProcess(process);
+            process.close();
             if(target != null) {
                 return target;
             }

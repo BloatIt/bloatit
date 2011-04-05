@@ -82,10 +82,18 @@ public class WebHeader {
         return pageName;
     }
 
+    /**
+     * Get parameters formated with syntax as: /plop-1/plip-2
+     * @return
+     */
     public final Parameters getParameters() {
         return parameters;
     }
 
+    /**
+     * Get get parameters formated with syntax as: ?plop=1&plip=2
+     * @return
+     */
     public final Parameters getGetParameters() {
         return getParameters;
     }

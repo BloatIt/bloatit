@@ -13,12 +13,9 @@ package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -26,7 +23,6 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Software;
@@ -55,15 +51,9 @@ public final class SoftwareListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-
         TwoColumnLayout layout = new TwoColumnLayout(true);
 
-
-
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
-
-
-
 
         final PageIterable<Software> softwareList = SoftwareManager.getAll();
         final HtmlRenderer<Software> softwareItemRenderer = new SoftwareRenderer();
@@ -75,8 +65,6 @@ public final class SoftwareListPage extends MasterPage {
         pageTitle.add(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
         pageTitle.add(pagedSoftwareList);
         pageTitle.add(new HtmlClearer());
-
-
 
         layout.addLeft(pageTitle);
 
@@ -113,18 +101,11 @@ public final class SoftwareListPage extends MasterPage {
 
                 return box;
             } catch (final UnauthorizedOperationException e) {
-                Log.web().warn(e);
+                session.notifyError("An error prevented us from displaying team information");
+                throw new ShallNotPassException("Cannot display software information", e);
             }
-            return new PlaceHolderElement();
         }
     };
-
-    @Override
-    protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
-        custom.add("software-list.css");
-        return custom;
-    }
 
     @Override
     protected Breadcrumb getBreadcrumb() {

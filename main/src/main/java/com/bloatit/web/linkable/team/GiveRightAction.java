@@ -20,7 +20,8 @@ package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -71,8 +72,8 @@ public class GiveRightAction extends LoggedAction {
             try {
                 session.notifyBad(Context.tr("You are not allowed to promote people in the team: " + targetTeam.getLogin()));
             } catch (UnauthorizedOperationException e) {
-                Log.web().warn("Couldn't display a team name", e);
-                session.notifyBad(Context.tr("You are not allowed to promote people in this team"));
+                session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug");
+                throw new ShallNotPassException("Cannot display a team name", e);
             }
             return new TeamPageUrl(targetTeam);
         }

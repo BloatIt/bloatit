@@ -18,7 +18,8 @@ import java.math.BigDecimal;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.queries.EmptyPageIterable;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.TimeRenderer;
@@ -172,6 +173,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         } catch (final UnauthorizedOperationException e) {
             // No right no current offer.
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
+            throw new ShallNotPassException("User cannot access selected offer", e); 
         }
     }
 

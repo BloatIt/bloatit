@@ -7,6 +7,7 @@ import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.XmlText;
+import com.bloatit.web.WebConfiguration;
 
 public class JsShowHide {
 
@@ -89,10 +90,8 @@ public class JsShowHide {
             @Override
             protected List<String> getCustomJs() {
                 ArrayList<String> customJsList = new ArrayList<String>();
-                //customJsList.add("jquery-1.4.4.min.js");
-                //customJsList.add("jquery-ui-1.8.10.custom.min.js");
-                customJsList.add("jquery-1.5.1.js");
-                customJsList.add("jquery-ui-1.8.11.custom.js");
+                customJsList.add(WebConfiguration.getJsJquery());
+                customJsList.add(WebConfiguration.getJsJqueryUi());
                 // TODO: add in config file
                 return customJsList;
             }

@@ -1,8 +1,10 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
@@ -48,27 +50,26 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
 
             try {
                 me.acceptInvitation(invite);
-            } catch (final UnauthorizedOperationException e1) {
+            } catch (final UnauthorizedOperationException e) {
                 // Should never happen
-                Log.web().fatal("User accepted a legitimate team invitation, but it failed", e1);
-                session.notifyBad(Context.tr("Oops looks like we had an issue with accepting this team invitation. Please try again later."));
-                return session.getLastVisitedPage();
+                session.notifyBad(Context.tr("Ooops, you tried to accept a legitimate team invitation, but it failed, please notify us."));
+                throw new ShallNotPassException("User accepted a legitimate team invitation, but it failed", e);
             }
 
             try {
                 session.notifyGood(Context.tr("You are now a member of team ''" + g.getLogin() + "''"));
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
-                Log.web().error("Couldn't display a team name, while user should be part of it", e);
+                session.notifyBad(Context.tr("Ooops, we couldn't display team name. It's a bug, please notify us."));
+                throw new ShallNotPassException("Couldn't display a team name, while user should be part of it", e);
             }
             return new TeamPageUrl(invite.getTeam());
         }
         try {
             me.refuseInvitation(invite);
         } catch (final UnauthorizedOperationException e) {
-            Log.web().fatal("User accepted a legitimate team invitation, but it failed", e);
-            session.notifyBad(Context.tr("Oops looks like we had an issue with refusing this team invitation. Please try again later."));
-            return session.getLastVisitedPage();
+            session.notifyBad(Context.tr("Ooops, you tried to accept a legitimate team invitation, but it failed. It's a bug please notify us."));
+            throw new ShallNotPassException("User accepted a legitimate team invitation, but it failed", e);
         }
         return session.getLastVisitedPage();
     }

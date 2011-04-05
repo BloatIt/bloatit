@@ -25,6 +25,7 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Team;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.FileResourceUrl;
 
 public class TeamTools {
@@ -33,7 +34,7 @@ public class TeamTools {
 
         HtmlDiv avatarDiv = new HtmlDiv("avatar_block");
         if (team.getAvatar() == null) {
-            avatarDiv.add(new HtmlImage(new Image("none.png", Image.ImageType.LOCAL), tr("Team avatar"), "avatar"));
+            avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Team avatar"), "avatar"));
         } else {
             final FileResourceUrl imageUrl = new FileResourceUrl(team.getAvatar());
             avatarDiv.add(new HtmlImage(imageUrl, tr("Team avatar"), "avatar"));

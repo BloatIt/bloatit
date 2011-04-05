@@ -16,7 +16,8 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.properties.EncryptableProperties;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.url.Loaders;
 
@@ -41,7 +42,7 @@ public class ConfigurationManager {
                 final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
                 password = in.readLine();
             } catch (final IOException e) {
-                throw new FatalErrorException(e);
+                throw new ExternalErrorException("Failed to read password from input", e);
             }
         }
         encryptor.setPassword(password);
@@ -81,7 +82,7 @@ public class ConfigurationManager {
         if (!f.exists()) {
             f = new File(FALLBACK_ETC_DIR + newName);
             if (!f.exists()) {
-                throw new FatalErrorException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or "
+                throw new BadProgrammerException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or "
                         + FALLBACK_ETC_DIR + newName);
             }
         }
@@ -94,9 +95,9 @@ public class ConfigurationManager {
             props.load(isr);
             return new PropertiesRetriever(props);
         } catch (final FileNotFoundException e) {
-            throw new FatalErrorException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
+            throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
         } catch (final IOException e) {
-            throw new FatalErrorException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
+            throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
         }
     }
 

@@ -2,8 +2,10 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
@@ -49,12 +51,14 @@ public final class PaylineAction extends LoggedAction {
             try {
 
                 reponse = payline.doPayment(process.getAmount(), cancelUrl, returnUrl, notificationUrl);
+                SessionManager.storeTemporarySession(reponse.getToken(), session);
+
                 if (reponse.isAccepted()) {
                     return new UrlStringBinder(reponse.getRedirectUrl());
                 }
                 session.notifyBad(reponse.getMessage());
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad(tr("Unauthorized !"));
+                throw new ShallNotPassException("Not authorized", e);
             }
             return Context.getSession().pickPreferredPage();
         }

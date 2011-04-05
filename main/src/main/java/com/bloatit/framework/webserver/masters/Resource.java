@@ -5,7 +5,8 @@ import java.io.IOException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 
 public abstract class Resource implements Linkable {
@@ -13,7 +14,7 @@ public abstract class Resource implements Linkable {
     private final static String FILE_STORAGE_DIRECTORY = FrameworkConfiguration.getRessourcesDirStorage();
 
     @Override
-    final public void writeToHttp(final HttpResponse response) throws RedirectException, IOException {
+    final public void writeToHttp(final HttpResponse response, WebServer server) throws RedirectException, IOException {
 
         final File file = new File(getFileUrl());
 

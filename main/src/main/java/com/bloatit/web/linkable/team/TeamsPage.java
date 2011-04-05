@@ -2,10 +2,7 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -73,13 +70,6 @@ public class TeamsPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
-    }
-
-    @Override
-    protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
-        custom.add("teams-list.css");
-        return custom;
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.bloatit.web.linkable.messages;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;

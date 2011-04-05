@@ -25,6 +25,7 @@ public abstract class JavaGenerator {
 
     protected StringBuilder _urlClassConstructor = new StringBuilder();
     protected String urlSuperClass;
+    private boolean isAction;
 
     protected JavaGenerator(String name, final String pageName) {
         this.pageName = pageName;
@@ -42,7 +43,7 @@ public abstract class JavaGenerator {
         _import.append("import com.bloatit.framework.webserver.annotations.ParamConstraint;\n");
         _import.append("import com.bloatit.framework.webserver.annotations.ConversionErrorException;\n");
         _import.append("import com.bloatit.common.Log;\n");
-        _import.append("import com.bloatit.framework.exceptions.RedirectException;\n");
+        _import.append("import com.bloatit.framework.exceptions.lowlevel.RedirectException;\n");
         _import.append("import com.bloatit.framework.utils.*;\n");
         _import.append("import com.bloatit.framework.webserver.url.*;\n");
         _import.append("import com.bloatit.framework.webserver.url.Loaders.*;\n");
@@ -373,10 +374,31 @@ public abstract class JavaGenerator {
         // Overridden methods
 
         urlClass.append("    @Override\n");
-        urlClass.append("     protected void doConstructUrl(StringBuilder sb) {\n");
+        urlClass.append("    public boolean isAction() {\n");
+        urlClass.append("        return "+isAction+";\n");
+        urlClass.append("    }\n");
+
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    public String getCode() {\n");
+        urlClass.append("        return getName();\n");
+        urlClass.append("    }\n");
+
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    protected void doConstructUrl(StringBuilder sb) {\n");
         urlClass.append("        component.constructUrl(sb);\n");
         if (urlSuperClass != null) {
             urlClass.append("        super.doConstructUrl(sb);\n");
+        }
+        urlClass.append("    }\n");
+
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    protected void doGetStringParameters(Parameters parameters) {\n");
+        urlClass.append("        component.getStringParameters(parameters);\n");
+        if (urlSuperClass != null) {
+            urlClass.append("        doGetStringParameters(parameters);\n");
         }
         urlClass.append("    }\n");
 
@@ -424,5 +446,10 @@ public abstract class JavaGenerator {
 
     public void setUrlSuperClass(final String urlSuperClass) {
         this.urlSuperClass = urlSuperClass;
+    }
+
+    public void setIsAction(boolean isAction) {
+        this.isAction = isAction;
+
     }
 }

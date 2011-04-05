@@ -17,7 +17,8 @@ import static com.bloatit.framework.webserver.Context.trn;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.TimeRenderer;
@@ -170,14 +171,13 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 }
                 featureSummary.add(feature_sumary_share);
-
             }
             add(featureSummary);
 
         } catch (final UnauthorizedOperationException e) {
-            // no right no description and no title
+            Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
+            throw new ShallNotPassException("User cannot access feature nformation", e); 
         }
-
     }
 
     public HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
@@ -211,7 +211,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                         actionsButtons.add(new HtmlDiv("report_bug_block").add(generateFinishedAction()));
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
                     case DISCARDED:
-                        //TODO
+                        // TODO
                         // actionsButtons.add(new
                         // HtmlDiv("contribute_block").add(generatePendingRightActions()));
                         // actionsButtons.add(new
@@ -322,7 +322,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-
     public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
 
@@ -334,10 +333,9 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         element.add(new HtmlParagraph(new HtmlMixedText(tr("The developement was done by <0>."), authorLink)));
 
-
         PageIterable<Bug> openBugs = feature.getOpenBugs();
 
-        if(openBugs.size() > 0) {
+        if (openBugs.size() > 0) {
             element.add(new HtmlParagraph(trn("There is {0} open bug.", "There is {0} open bug.", openBugs.size(), openBugs.size())));
         } else {
             element.add(new HtmlParagraph(tr("There is no open bug.")));

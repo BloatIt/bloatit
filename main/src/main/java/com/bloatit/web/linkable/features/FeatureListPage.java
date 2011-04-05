@@ -14,13 +14,10 @@ package com.bloatit.web.linkable.features;
 // import java.util.Random;
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.search.FeatureSearch;
 import com.bloatit.data.search.FeatureSearch.SortMethod;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -259,13 +256,6 @@ public final class FeatureListPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
-    }
-
-    @Override
-    protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
-        custom.add("features-list.css");
-        return custom;
     }
 
     static class FeaturesListItem implements HtmlRenderer<Feature> {

@@ -1,8 +1,8 @@
 package com.bloatit.data;
 
 import com.bloatit.data.DaoExternalAccount.AccountType;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
  * The class <code>DaoAccountTest</code> contains tests for the class
@@ -49,7 +49,7 @@ public class DaoAccountTest extends DataTestUnit {
         try {
             localTom.setExternalAccount(DaoExternalAccount.createAndPersist(localB219, AccountType.IBAN, "code"));
             fail();
-        } catch (final FatalErrorException e) {
+        } catch (final BadProgrammerException e) {
             assertTrue(true);
         }
     }

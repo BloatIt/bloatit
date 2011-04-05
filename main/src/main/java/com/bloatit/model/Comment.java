@@ -17,7 +17,7 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoComment;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.CommentList;

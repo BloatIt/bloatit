@@ -5,13 +5,14 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import org.hibernate.type.ImageType;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -35,6 +36,7 @@ import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -90,17 +92,16 @@ public class TeamPage extends MasterPage {
         try {
             contacts.setTitle(Context.tr("How to contact {0}", targetTeam.getLogin()));
         } catch (UnauthorizedOperationException e) {
-            Log.web().warn("Can't access a team display name", e);
-            contacts.setTitle(Context.tr("How to contact us"));
+            session.notifyBad(Context.tr("Oops, an error prevented us from showing you team name, please notify us."));
+            throw new ShallNotPassException("Couldn't display team name", e);
         }
 
         if (targetTeam.canAccessEmail(Action.READ)) {
             try {
                 contacts.add(new HtmlParagraph().addText(targetTeam.getEmail()));
             } catch (final UnauthorizedOperationException e) {
-                // Should not happen
-                Log.web().error("Cannot access to team email, I checked just before tho", e);
-                contacts.add(new HtmlParagraph().addText("No public contact information available"));
+                session.notifyBad("An error prevented us from showing you team contact information. Please notify us.");
+                throw new ShallNotPassException("User can't see team contact information while he should", e);
             }
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
@@ -126,7 +127,7 @@ public class TeamPage extends MasterPage {
         try {
             title = new HtmlTitleBlock(Context.tr("Team: ") + targetTeam.getLogin(), 1);
         } catch (final UnauthorizedOperationException e) {
-            throw new FatalErrorException("Not allowed to see team name in team page, should not happen", e);
+            throw new ShallNotPassException("Not allowed to see team name in team page, should not happen", e);
         }
         master.add(title);
         title.add(new HtmlParagraph().addText(Context.tr("({0} team)", targetTeam.isPublic() ? "Public" : "Private")));
@@ -208,7 +209,7 @@ public class TeamPage extends MasterPage {
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);
         title.add(memberTitle);
 
-        if (me != null && me.isInTeam(targetTeam) && me.canSendInvitation(targetTeam, Action.WRITE)) {
+        if (me != null && me.isInTeam(targetTeam) && me.canSendInvitation(targetTeam)) {
             final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(targetTeam);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
@@ -282,8 +283,8 @@ public class TeamPage extends MasterPage {
                     try {
                         return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
                     } catch (final UnauthorizedOperationException e) {
-                        Log.web().warn("Not allowed to see a display name", e);
-                        return new HtmlText("");
+                        session.notifyError("An error prevented us from showing you team name. Please notify us.");
+                        throw new ShallNotPassException("Cannot display a team name", e);
                     }
                 case CONSULT:
                     return getUserRightStatus(UserTeamRight.CONSULT);
@@ -306,11 +307,11 @@ public class TeamPage extends MasterPage {
             if (member.canInTeam(targetTeam, right)) {
                 if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
                     PlaceHolderElement ph = new PlaceHolderElement();
-                    ph.add(new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "team_can"));
+                    ph.add(new HtmlImage(new Image(WebConfiguration.getImgValidIcon()), Context.tr("OK"), "team_can"));
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
                     return ph;
                 }
-                return new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "team_can");
+                return new HtmlImage(new Image(WebConfiguration.getImgValidIcon()), Context.tr("OK"), "team_can");
             } else if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
                 return new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Promote"));
             }

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;
@@ -133,7 +133,7 @@ public class UrlParameter<T, U> extends UrlNode {
                 if (value == null || getValueClass().isAssignableFrom(value.getClass())) {
                     setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
                 } else {
-                    throw new FatalErrorException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
+                    throw new BadProgrammerException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
                             + " You are trying to convert a parameter using the wrong loader class.");
                 }
             }
@@ -174,6 +174,17 @@ public class UrlParameter<T, U> extends UrlNode {
                 sb.append("/").append(getName()).append("-").append(stringValue);
             }
         }
+    }
+
+    @Override
+    protected void getStringParameters(Parameters parameters) {
+        final String stringValue = getStringValue();
+        if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
+            if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
+                parameters.add(getName(), stringValue);
+            }
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -241,7 +252,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         * 
+         *
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
@@ -273,4 +284,6 @@ public class UrlParameter<T, U> extends UrlNode {
             return messages;
         }
     }
+
+
 }

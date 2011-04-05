@@ -5,7 +5,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -19,6 +19,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.masters.GenericPage;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
 
 public abstract class MasterPage extends GenericPage {
@@ -52,23 +53,16 @@ public abstract class MasterPage extends GenericPage {
 
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
-
-
-
         page.add(content);
-
         content.add(notificationBlock);
-
+        
         PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
-
         content.add(breacrumbPlaceHolder);
 
         body.add(new Footer());
-
         doCreate();
-
+        
         breacrumbPlaceHolder.add(generateBreadcrumb());
-
     }
 
     private XmlNode generateBreadcrumb() {
@@ -78,7 +72,7 @@ public abstract class MasterPage extends GenericPage {
 
     @Override
     protected final String getTitle() {
-        return "Linkeos – " + getPageTitle();
+        return "Elveos – " + getPageTitle();
     }
 
     protected abstract String getPageTitle();
@@ -117,8 +111,8 @@ public abstract class MasterPage extends GenericPage {
 
         final HtmlDiv logoDiv = new HtmlDiv("logo", "logo");
 
-        final HtmlImage logoImage = new HtmlImage(new Image("logo_linkeos.png", Image.ImageType.LOCAL), tr("elveos.org logo"));
-        logoImage.setCssClass("logo_linkeos");
+        final HtmlImage logoImage = new HtmlImage(new Image(WebConfiguration.getImgLogo()), tr("elveos.org logo"));
+        logoImage.setCssClass("logo_elveos");
 
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
 
@@ -126,22 +120,13 @@ public abstract class MasterPage extends GenericPage {
     }
 
     @Override
-    public boolean isStable() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     protected List<String> getCustomJs() {
-        List<String> list = new ArrayList<String>();
-        list.add("jquery-1.5.1.js");
-        list.add("selectivizr-development.js");
-        list.add("flexie.js");
+        List<String> customJsList = new ArrayList<String>();
+        customJsList.add(WebConfiguration.getJsJquery());
+        customJsList.add(WebConfiguration.getJsJquery());
+        customJsList.add(WebConfiguration.getJsSelectivizr());
+        customJsList.add(WebConfiguration.getJsFlexie());
 
-
-        return list;
+        return customJsList;
     }
-
-
-
 }

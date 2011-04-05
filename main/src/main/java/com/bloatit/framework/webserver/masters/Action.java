@@ -15,9 +15,11 @@ package com.bloatit.framework.webserver.masters;
 import java.io.IOException;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.Session;
+import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
 
@@ -35,11 +37,19 @@ public abstract class Action implements Linkable {
     }
 
     @Override
-    public final void writeToHttp(final HttpResponse response) throws RedirectException, IOException {
+    public final void writeToHttp(final HttpResponse response, WebServer server) throws RedirectException, IOException {
         Log.framework().trace("Processing action: " + actionUrl.urlString());
         final Url url = process();
         if (url != null) {
-            response.writeRedirect(url.urlString());
+            if(url.isAction()) {
+                final Parameters parameters = url.getStringParameters();
+
+                final Linkable linkable = server.constructLinkable(url.getCode(), parameters, session);
+                linkable.writeToHttp(response, server);
+            } else {
+                response.writeRedirect(url.urlString());
+            }
+
         } else {
             response.writeRedirect(new PageNotFoundUrl().urlString());
         }
