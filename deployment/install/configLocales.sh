@@ -9,6 +9,8 @@ Set the default to fr_FR.UTF8@euro
 
 EOF
 
+read -p "<type return>"
+
 configureLocales(){
     sudo dpkg-reconfigure locales
 }
