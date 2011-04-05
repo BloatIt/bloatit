@@ -14,9 +14,6 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.Image.ImageType;
@@ -120,25 +117,14 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
-
-        custom.add("index.css");
-        return custom;
-    }
-
-    @Override
     public boolean isStable() {
         return true;
     }
 
     public static Breadcrumb generateBreadcrumb() {
         Breadcrumb breadcrumb = new Breadcrumb();
-
         IndexPageUrl pageUrl = new IndexPageUrl();
-
         breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
-
         return breadcrumb;
     }
 

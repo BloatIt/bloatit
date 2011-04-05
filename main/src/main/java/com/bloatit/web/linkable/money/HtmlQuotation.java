@@ -2,9 +2,6 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
@@ -127,34 +124,19 @@ public class HtmlQuotation extends HtmlDiv {
 
         @Override
         public void visit(Quotation quotation) {
+            setCssClass("quotation_total_" + level);
 
-                setCssClass("quotation_total_" + level);
+            HtmlDiv line = new HtmlDiv("quotation_title_line_" + level);
+            add(line);
 
-                HtmlDiv line = new HtmlDiv("quotation_title_line_"+level);
-                add(line);
+            for (QuotationEntry childEntry : quotation.getChildren()) {
+                add(new QuotationRenderer(childEntry, level + 1));
+            }
 
-
-                for(QuotationEntry childEntry: quotation.getChildren()) {
-                    add(new QuotationRenderer(childEntry, level + 1));
-                }
-
-
-                HtmlDiv totalLine = new HtmlDiv("quotation_line_"+level);
-                totalLine.add(new HtmlDiv("quotation_total_label").addText(tr("Total to pay")));
-                totalLine.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(quotation.getValue()).getDecimalDefaultString()));
-                add(totalLine);
-
-
-
+            HtmlDiv totalLine = new HtmlDiv("quotation_line_" + level);
+            totalLine.add(new HtmlDiv("quotation_total_label").addText(tr("Total to pay")));
+            totalLine.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(quotation.getValue()).getDecimalDefaultString()));
+            add(totalLine);
         }
-
     }
-
-    @Override
-    protected List<String> getCustomCss() {
-        List<String> customCss = new ArrayList<String>();
-        customCss.add("quotation.css");
-        return customCss;
-    }
-
 }
