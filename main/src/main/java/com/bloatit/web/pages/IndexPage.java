@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
@@ -123,23 +124,14 @@ public final class IndexPage extends MasterPage {
                         }
                     }
                     featureListRow.add(featureListRightCase);
-
                 }
                 featureList.add(featureListRow);
             }
         }
+        
         twoColumnLayout.addLeft(featureList);
-
-        twoColumnLayout.addRight(new SideBarElementLayout() {
-            {
-                add(new HtmlParagraph("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec scelerisque, neque pellentesque sollicitudin ullamcorper, lorem nibh turpis duis."));
-                add(new HtmlParagraph("Nullam non quam dui, non ullamcorper libero. Duis justo nibh, tristique at turpis duis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer libero elit, facilisis in vehicula eu, porta quis quam. Aliquam cursus posuere."));
-                add(new HtmlParagraph("Fusce adipiscing nunc nisi. Nulla justo nibh, laoreet at adipiscing vel, lobortis ut ligula. In a purus nec elit ornare gravida. Fusce varius metus eu libero posuere pretium. Nam et feugiat tortor. Curabitur adipiscing tincidunt nibh ac lobortis. Aenean sed nulla ut lacus fringilla semper non ac nunc. Etiam iaculis vestibulum quam. Pellentesque id ipsum ac tortor porttitor cursus ac a lorem. Pellentesque imperdiet rutrum nibh, vel posuere."));
-            }
-        });
-
+        twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
         add(twoColumnLayout);
-
     }
 
     @Override
@@ -165,8 +157,7 @@ public final class IndexPage extends MasterPage {
 
         IndexPageUrl pageUrl = new IndexPageUrl();
 
-            breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
-
+        breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
 
         return breadcrumb;
     }
