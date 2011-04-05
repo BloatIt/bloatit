@@ -50,7 +50,7 @@ public class WebConfiguration {
 
         // CSS
         css = properties.getString("bloatit.css");
-        cssDatePicker = properties.getString("bloatit.js.datepicker");
+        cssDatePicker = properties.getString("bloatit.css.datepicker");
 
         // IMAGES
         imgLogo = properties.getString("bloatit.img.logo");

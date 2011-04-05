@@ -53,21 +53,16 @@ public abstract class MasterPage extends GenericPage {
 
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
-
         page.add(content);
-
         content.add(notificationBlock);
-
+        
         PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
-
         content.add(breacrumbPlaceHolder);
 
         body.add(new Footer());
-
         doCreate();
-
+        
         breacrumbPlaceHolder.add(generateBreadcrumb());
-
     }
 
     private XmlNode generateBreadcrumb() {

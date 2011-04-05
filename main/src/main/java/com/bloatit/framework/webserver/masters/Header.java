@@ -59,7 +59,7 @@ public final class Header extends HtmlElement {
             }
         }.addAttribute("rel", "stylesheet");
 
-        cssLink.addAttribute("href", "/resources/css/" + css);
+        cssLink.addAttribute("href", css);
         cssLink.addAttribute("type", "text/css");
         cssLink.addAttribute("media", "handheld, all");
         cssPh.add(cssLink);
