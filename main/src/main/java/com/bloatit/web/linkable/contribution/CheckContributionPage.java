@@ -14,12 +14,9 @@ package com.bloatit.web.linkable.contribution;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -65,7 +62,6 @@ import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 
 /**
@@ -569,11 +565,5 @@ public final class CheckContributionPage extends LoggedPage {
         return breadcrumb;
     }
 
-    @Override
-    protected List<String> getCustomCss() {
-        List<String> cssList = new ArrayList<String>();
-        cssList.add("check_contribution.css");
-        return cssList;
-    }
 
 }

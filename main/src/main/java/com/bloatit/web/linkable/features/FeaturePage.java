@@ -13,9 +13,6 @@ package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -69,17 +66,10 @@ public final class FeaturePage extends MasterPage {
                 return feature.getTitle();
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from displaying feature name. Please notify us."));
-                throw new ShallNotPassException("User cannot access feature name", e); 
+                throw new ShallNotPassException("User cannot access feature name", e);
             }
         }
         return tr("Feature not found !");
-    }
-
-    @Override
-    protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
-        custom.add("feature.css");
-        return custom;
     }
 
     public Feature getFeature() {
@@ -120,7 +110,7 @@ public final class FeaturePage extends MasterPage {
             breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
         } catch (UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
-            throw new ShallNotPassException("User cannot access feature information", e); 
+            throw new ShallNotPassException("User cannot access feature information", e);
         }
 
         return breadcrumb;
