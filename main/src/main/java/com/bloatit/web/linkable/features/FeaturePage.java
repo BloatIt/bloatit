@@ -26,6 +26,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.model.Feature;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -92,7 +93,7 @@ public final class FeaturePage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        // The feature page is composed by 3 parts:
+        // The feature page is composed of 3 parts:
         // - The sumary
         // - The tab panel
         // - The comments
@@ -104,6 +105,7 @@ public final class FeaturePage extends MasterPage {
         layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
         layout.addLeft(new FeatureCommentListComponent(feature));
 
+        layout.addRight(new SideBarDocumentationBlock("feature"));
         add(layout);
 
     }
