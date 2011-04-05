@@ -52,7 +52,6 @@ public final class HtmlFeatureSumary extends HtmlDiv {
         public String getCssClass() {
             return cssClass;
         }
-
     }
 
     // "feature_summary"
