@@ -92,7 +92,6 @@ public final class FeaturePage extends MasterPage {
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
         }
-
         // The feature page is composed of 3 parts:
         // - The sumary
         // - The tab panel
