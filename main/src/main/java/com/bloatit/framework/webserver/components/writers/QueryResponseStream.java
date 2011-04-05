@@ -78,4 +78,8 @@ public abstract class QueryResponseStream {
             throw new XcgiRequestAbordedException(ex);
         }
     }
+
+    public void close() throws IOException{
+        out.close();
+    }
 }

@@ -1,15 +1,24 @@
 package com.bloatit.framework.webserver.masters;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.zip.GZIPOutputStream;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.rest.RestResource;
 import com.bloatit.framework.rest.exception.RestException;
+import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
+import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.web.HtmlTools;
 
 public final class HttpResponse {
@@ -39,14 +48,26 @@ public final class HttpResponse {
         }
     }
 
+    private static final long TIME_360_DAYS = 360 * 24 * 3600 * 1000;
+
     private final OutputStream output;
-    private final IndentedHtmlStream htmlText;
     private StatusCode status = StatusCode.OK_200;
+    private final SimpleDateFormat httpDateformat;
+
+    private boolean useGzip = false;
 
     // TODO: use write line in all file
-    public HttpResponse(final OutputStream output) {
+    public HttpResponse(final OutputStream output, final HttpHeader header) throws IOException {
+
+        httpDateformat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+        httpDateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        if (header.getHttpAcceptEncoding().contains("gzip")) {
+            useGzip = true;
+        }
+
         this.output = output;
-        this.htmlText = new IndentedHtmlStream(output);
+
     }
 
     /**
@@ -92,30 +113,73 @@ public final class HttpResponse {
 
     public void writePage(final Page page) throws IOException {
         writeCookies();
-        output.write("Content-Type: text/html\r\n".getBytes());
 
-        closeHeaders();
+        writeLine("Vary: Accept-Encoding");
+        writeLine("Content-Type: text/html");
+        writeLine("Accept-Ranges: bytes");
 
-        page.write(htmlText);
+        if (useGzip) {
+            writeLine("Content-Encoding: gzip");
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            GZIPOutputStream gzipStream = new GZIPOutputStream(buffer);
+            IndentedHtmlStream htmlText = new IndentedHtmlStream(gzipStream);
+
+            page.write(htmlText);
+            gzipStream.flush();
+            gzipStream.close();
+
+            byte[] byteArray = buffer.toByteArray();
+
+            writeLine("Content-Length: " + byteArray.length);
+            closeHeaders();
+            output.write(byteArray);
+        } else {
+            IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
+
+            closeHeaders();
+            page.write(htmlText);
+        }
+
+
+
+
     }
 
     public void writeResource(final String path, final long size, final String fileName) throws IOException {
-        // writeLine("Vary: Accept-Encoding");
-        // writeLine("Content-Encoding: gzip");
-        // writeLine("ETag: \"3164227128\"");
-        // Content-Type: image/png
-        // writeLine("Content-Type: text/css");
-        // writeLine("Content-Type: image/png");
-        // writeLine("Accept-Ranges: bytes");
-        // writeLine("Last-Modified: Wed, 16 Feb 2011 22:29:37 GMT");
-
-        // TODO: add all meta info as date, etc...
 
         writeLine("Content-Disposition: inline; filename=" + fileName);
+        writeLine("Vary: Accept-Encoding");
+        //writeLine("Cache-Control: max-age=31104000");
+
+        // Allow to resume the download
+        writeLine("Accept-Ranges: bytes");
+
+        // Last-Modified
+        File file = new File(path);
+        long lastModified = file.lastModified();
+
+        writeLine("Last-Modified: " + httpDateformat.format(new Date(lastModified)));
+
+        // Expires (360 days)
+
+        long expires = new Date().getTime() + TIME_360_DAYS;
+        writeLine("Expires: " + httpDateformat.format(DateUtils.nowPlusSomeYears(1)));
+
+        // Content type
+        if (fileName.endsWith(".css")) {
+            writeLine("Content-Type: text/css");
+        } else if (fileName.endsWith(".png")) {
+            writeLine("Content-Type: image/png");
+        } else {
+            Log.framework().warn("FIXME: Unknown content type for file '" + fileName + "' in HttpResponse.writeResource");
+        }
+
+        // Send file
         writeLine("X-Sendfile2: " + path + " 0-" + (size - 1));
 
         closeHeaders();
     }
+
 
     /**
      * <p>
@@ -145,6 +209,7 @@ public final class HttpResponse {
             final String resourceXml = resource.getXmlString();
             output.write("Content-Type: text/xml\r\n".getBytes());
             closeHeaders();
+            IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
             htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
             htmlText.writeLine("<rest result=\"ok\" request=\"" + HtmlTools.escape(resource.getRequest()) + "\" >");
             htmlText.indent();
@@ -182,6 +247,7 @@ public final class HttpResponse {
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {
         output.write("Content-Type: text/xml\r\n".getBytes());
         closeHeaders();
+        IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
         htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
         htmlText.indent();
 
