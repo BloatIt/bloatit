@@ -11,11 +11,15 @@
 install_pkg(){
 sudo apt-get install vim less git-core bash-completion 
 sudo apt-get install postgresql lighttpd openssh-server default-jre-headless rsync
+
+# Utils
+sudo apt-get install zip unzip
 }
 
 purge_useless_pkg(){
 sudo apt-get remove --purge python laptop-detect netcat-traditional
 sudo apt-get remove --purge xserver-xorg virtualbox-ose-guest-x11 x11-common
+sudo apt-get remove --purge gcc
 sudo apt-get autoremove --purge
 # We need perl for git.
 }

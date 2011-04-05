@@ -33,6 +33,10 @@ fi
 
 ADMIN_NAME=$2
 
-remote_launch "root@$1" $INSTALL_ADMIN $ADMIN_NAME
+read -p "Do we have to install a '$ADMIN_NAME' user and remove the root login ? (y/N" _reponse
+if [ "$_reponse" = "Y" ] || [ "$_reponse" = "y" ] 
+then
+    remote_launch "root@$1" $INSTALL_ADMIN $ADMIN_NAME
+fi
 remote_launch "$ADMIN_NAME@$1" $DEPLOYMENT_INSTALL_SCRIPT 
 
