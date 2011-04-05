@@ -24,7 +24,6 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
@@ -32,7 +31,6 @@ import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.pages.master.SideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -48,24 +46,6 @@ public final class IndexPage extends MasterPage {
 
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-            // final HtmlParagraph globalConcept = new
-            // HtmlParagraph(Context.tr("Linkeos is a platform for free software funding."));
-            // globalDescription.add(globalConcept);
-            //
-            // final HtmlParagraph needText = new HtmlParagraph();
-            // needText.addText(Context.tr("If you have a need about a free software, you can "));
-            // needText.add(new
-            // CreateFeaturePageUrl().getHtmlLink(Context.tr("create a new feature")));
-            // needText.addText(Context.tr(" and contribute to it."));
-            // globalDescription.add(needText);
-            //
-            // final HtmlParagraph devText = new HtmlParagraph();
-            // devText.addText(Context.tr("If you are a developer, you can make an offer on existing features to develop it again money."));
-            // globalDescription.add(devText);
-            //
-            // final HtmlParagraph moreText = new HtmlParagraph();
-            // moreText.addText(Context.tr("You can find more informations about Linkeos's in the documentation."));
-            // globalDescription.add(moreText);
 
             HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
 
@@ -128,7 +108,7 @@ public final class IndexPage extends MasterPage {
                 featureList.add(featureListRow);
             }
         }
-        
+
         twoColumnLayout.addLeft(featureList);
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
         add(twoColumnLayout);
