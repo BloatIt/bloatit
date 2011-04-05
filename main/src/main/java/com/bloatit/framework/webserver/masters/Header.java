@@ -4,9 +4,9 @@ import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.web.WebConfiguration;
 
 public final class Header extends HtmlElement {
-    private static final String DESIGN = "/resources/css/core.css";
     private final PlaceHolderElement cssPh;
     private final PlaceHolderElement jsPh;
 
@@ -30,7 +30,7 @@ public final class Header extends HtmlElement {
 
         };
         link.addAttribute("rel", "stylesheet");
-        link.addAttribute("href", DESIGN);
+        link.addAttribute("href", WebConfiguration.getCss());
         link.addAttribute("type", "text/css");
         link.addAttribute("media", "handheld, all");
 
@@ -48,7 +48,7 @@ public final class Header extends HtmlElement {
 
     /**
      * Adds a new css link to the page
-     *
+     * 
      * @param css the string describing the name of the css
      */
     public void addCss(String css) {
@@ -74,18 +74,14 @@ public final class Header extends HtmlElement {
      * <li>Absolute URI (http://host.com/script.js), and will be left as is.
      * Absolute URI MUST start with http:// or https://</li>
      * </p>
-     *
+     * 
      * @param js a string describing the URI of the js link, either relative to
      *            the application or absolute (and starting with http://)
      */
     public void addJs(String js) {
         final HtmlElement jsLink = new HtmlGenericElement("script");
         jsLink.addAttribute("type", "text/javascript");
-        if (js.startsWith("http://") || js.startsWith("https://")) {
-            jsLink.addAttribute("src", js);
-        } else {
-            jsLink.addAttribute("src", "/resources/js/" + js);
-        }
+        jsLink.addAttribute("src", js);
 
         jsPh.add(jsLink);
     }

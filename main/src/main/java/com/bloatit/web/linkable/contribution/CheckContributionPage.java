@@ -21,7 +21,6 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -44,6 +43,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -364,7 +364,7 @@ public final class CheckContributionPage extends LoggedPage {
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
                                                                           .getCurrency(contribution.getFeature().getContribution())
                                                                           .getDefaultString()));
-            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_up_small.png", ImageType.LOCAL),
+            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
                                                                                                  "money up")));
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
                                                                           .getCurrency(contribution.getFeature()
@@ -403,7 +403,7 @@ public final class CheckContributionPage extends LoggedPage {
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
                                                                           .getCurrency(member.getInternalAccount().getAmount())
                                                                           .getDefaultString()));
-            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_down_small.png", ImageType.LOCAL),
+            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
                                                                                                  "money up")));
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
 
@@ -430,7 +430,7 @@ public final class CheckContributionPage extends LoggedPage {
             add(MembersTools.getMemberAvatarSmall(member));
 
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
-            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image("money_up_small.png", ImageType.LOCAL),
+            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
                                                                                                  "money up")));
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
                                                                           .getCurrency(process.getAmountToCharge())

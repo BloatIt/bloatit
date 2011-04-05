@@ -421,7 +421,7 @@ public class BloatitExampleDB {
     }
 
     private FileMetadata getImage(final Member author, final String name) {
-        final String path = WebConfiguration.getBloatitWwwDir() + "/resources/img/" + name;
+        final String path = WebConfiguration.getWwwDir() + "/resources/img/" + name;
 
         return FileMetadataManager.createFromLocalFile(author, path, name, "Projet's logo image");
     }

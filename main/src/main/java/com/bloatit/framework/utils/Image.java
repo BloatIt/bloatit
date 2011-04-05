@@ -16,36 +16,16 @@ package com.bloatit.framework.utils;
  * A container for images in the bloatit website
  */
 public class Image {
-
-    /**
-     * The storage place of the image LOCAL : if BloatIt server store the image
-     * DISTANT : if the image is stored on a distant webserver
-     */
-    public enum ImageType {
-        LOCAL, DISTANT
-    }
-
-    private final ImageType imageType;
-
-    /**
-     * @param identifier the identifier of the image. If image is local, the
-     *            unique name of the image If image is distant, the complete URI
-     *            to the image
-     * @param imageType LOCAL or DISTANT
-     */
     private final String identifier;
 
-    public Image(final String identifier, final ImageType imageType) {
-        this.imageType = imageType;
-        this.identifier = identifier;
-    }
-
     /**
-     * @return <i>true</i> if the image is locally stored on the BloatIt servers
-     *         <i>false</i> otherwise.
+     * Creates an image with a default image type local
+     * 
+     * @param identifier
      */
-    public final boolean isLocal() {
-        return this.imageType == ImageType.LOCAL;
+    public Image(final String identifier) {
+        this.identifier = identifier;
+
     }
 
     /**
@@ -55,7 +35,7 @@ public class Image {
      * <p>
      * Should <i>always</i> be used <i>after</i> a call to isLocal.
      * </p>
-     *
+     * 
      * @return the identifier of the image
      * @see Image#isLocal()
      */

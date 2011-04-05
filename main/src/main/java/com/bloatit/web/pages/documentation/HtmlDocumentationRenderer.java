@@ -46,7 +46,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 
     public HtmlDocumentationRenderer(DocumentationType type, String key) {
 
-        final String dir = WebConfiguration.getBloatitDocumentationDir();
+        final String dir = WebConfiguration.getDocumentationDir();
         final String language = Context.getLocalizator().getLanguageCode();
 
         String path = dir + "/" + type.getPath() + "/" + key + "_" + language;

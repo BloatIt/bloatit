@@ -5,14 +5,14 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+import org.hibernate.type.ImageType;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -36,6 +36,7 @@ import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -306,11 +307,11 @@ public class TeamPage extends MasterPage {
             if (member.canInTeam(targetTeam, right)) {
                 if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
                     PlaceHolderElement ph = new PlaceHolderElement();
-                    ph.add(new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "team_can"));
+                    ph.add(new HtmlImage(new Image(WebConfiguration.getImgValidIcon()), Context.tr("OK"), "team_can"));
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
                     return ph;
                 }
-                return new HtmlImage(new Image("valid.svg", ImageType.LOCAL), Context.tr("OK"), "team_can");
+                return new HtmlImage(new Image(WebConfiguration.getImgValidIcon()), Context.tr("OK"), "team_can");
             } else if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
                 return new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Promote"));
             }

@@ -9,6 +9,7 @@ import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Software;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
@@ -17,7 +18,7 @@ public class SoftwaresTools {
     public static HtmlElement getSoftwareLogo(Software software) throws UnauthorizedOperationException {
         HtmlDiv logoDiv = new HtmlDiv("software_logo_block");
         if (software.getImage() == null) {
-            logoDiv.add(new HtmlImage(new Image("idea.png", Image.ImageType.LOCAL), tr("Software logo"), "software_logo"));
+            logoDiv.add(new HtmlImage(new Image(WebConfiguration.getImgSoftwareNoLogo()), tr("Software logo"), "software_logo"));
         } else {
             final FileResourceUrl imageUrl = new FileResourceUrl(software.getImage());
             logoDiv.add(new HtmlImage(imageUrl, tr("Software logo"), "software_logo"));
@@ -29,7 +30,7 @@ public class SoftwaresTools {
     public static HtmlElement getSoftwareLogoSmall(Software software) throws UnauthorizedOperationException {
         HtmlDiv logoDiv = new HtmlDiv("software_logo_small_block");
         if (software.getImage() == null) {
-            logoDiv.add(new HtmlImage(new Image("idea.png", Image.ImageType.LOCAL), tr("Software logo"), "software_logo_small"));
+            logoDiv.add(new HtmlImage(new Image(WebConfiguration.getImgSoftwareNoLogo()), tr("Software logo"), "software_logo_small"));
         } else {
             final FileResourceUrl imageUrl = new FileResourceUrl(software.getImage());
             logoDiv.add(new HtmlImage(imageUrl, tr("Software logo"), "software_logo_small"));

@@ -16,7 +16,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.utils.Image.ImageType;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -24,6 +23,7 @@ import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -48,7 +48,7 @@ public final class IndexPage extends MasterPage {
 
             globalDescription.add(title);
 
-            HtmlImage image = new HtmlImage(new Image("presentation.png", ImageType.LOCAL), tr("Elveos's presentation"));
+            HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation()), tr("Elveos's presentation"));
             globalDescription.add(image);
 
         }
