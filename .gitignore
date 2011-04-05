@@ -13,7 +13,6 @@ locales/*
 target
 nbactions.xml
 .classpath
-bin/
 main/po/*~
 main/po/*.mo
 apt/.agitator
