@@ -78,7 +78,7 @@ public abstract class MasterPage extends GenericPage {
 
     @Override
     protected final String getTitle() {
-        return "Linkeos – " + getPageTitle();
+        return "Elveos – " + getPageTitle();
     }
 
     protected abstract String getPageTitle();
@@ -117,8 +117,8 @@ public abstract class MasterPage extends GenericPage {
 
         final HtmlDiv logoDiv = new HtmlDiv("logo", "logo");
 
-        final HtmlImage logoImage = new HtmlImage(new Image("logo_linkeos.png", Image.ImageType.LOCAL), tr("elveos.org logo"));
-        logoImage.setCssClass("logo_linkeos");
+        final HtmlImage logoImage = new HtmlImage(new Image("logo_elveos.png", Image.ImageType.LOCAL), tr("elveos.org logo"));
+        logoImage.setCssClass("logo_elveos");
 
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
 

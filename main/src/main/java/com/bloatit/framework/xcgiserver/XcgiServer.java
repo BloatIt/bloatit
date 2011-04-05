@@ -148,7 +148,7 @@ public final class XcgiServer {
 
             try {
                 for (final XcgiProcessor processor : getProcessors()) {
-                    if (processor.process(header, post, new HttpResponse(parser.getResponseStream()))) {
+                    if (processor.process(header, post, new HttpResponse(parser.getResponseStream(), header))) {
                         break;
                     }
                 }
