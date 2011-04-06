@@ -8,6 +8,7 @@ import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.documentation.HtmlDocumentationRenderer;
 import com.bloatit.web.pages.documentation.HtmlDocumentationRenderer.DocumentationType;
 import com.bloatit.web.pages.master.BoxLayout;
@@ -35,9 +36,11 @@ public class DocumentationPage extends MasterPage {
     @RequestParam(name = DOC_TARGET)
     @Optional(DEFAULT_DOC)
     private final String docTarget;
+    private final DocumentationPageUrl url;
 
     public DocumentationPage(final DocumentationPageUrl url) {
         super(url);
+        this.url = url;
         docTarget = url.getDocTarget();
     }
 
@@ -60,6 +63,7 @@ public class DocumentationPage extends MasterPage {
 
         box.add(docRenderer);
         layout.addLeft(box);
+        layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
     }
