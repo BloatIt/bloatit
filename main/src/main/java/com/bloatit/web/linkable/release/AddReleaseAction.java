@@ -13,6 +13,8 @@ package com.bloatit.web.linkable.release;
 
 import java.util.Locale;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -82,17 +84,21 @@ public final class AddReleaseAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
-        if (!milestone.getOffer().getAuthor().equals(authenticatedMember)) {
-            return session.pickPreferredPage();
-        }
+        //TODO: Verify user right
 
         final Locale langLocale = new Locale(lang);
         final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                               attachedfile,
                                                                               attachedfileFileName,
                                                                               null);
-        milestone.addRelease(description, version, langLocale, fileImage);
-        session.notifyGood(Context.tr("Release created successfuly !"));
+        try {
+            milestone.addRelease(description, version, langLocale, fileImage);
+            session.notifyGood(Context.tr("Release created successfuly !"));
+
+        } catch (UnauthorizedOperationException e) {
+            session.notifyError(Context.tr("Failed to create the release."));
+            new ShallNotPassException("Fail to create a release.", e);
+        }
         return session.pickPreferredPage();
     }
 

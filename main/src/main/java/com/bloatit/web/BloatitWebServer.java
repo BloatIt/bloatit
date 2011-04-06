@@ -8,6 +8,7 @@ import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
+import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
@@ -85,6 +86,7 @@ import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
+import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AddSoftwareActionUrl;
@@ -288,6 +290,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(AdminHomePageUrl.getName())) {
             return new AdminHomePage(new AdminHomePageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AddAttachementPageUrl.getName())) {
+            return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
         }
 
         // Actions

@@ -48,4 +48,11 @@ public class UserContentRight extends RightManager {
             return canRead(action) || (team.hasTeamPrivilege(UserTeamRight.TALK) && canWrite(action));
         }
     }
+
+    /**
+     * The Class File is a {@link Public} accessor for the File property.
+     */
+    public static class File extends Public {
+        // nothing this is just a rename.
+    }
 }

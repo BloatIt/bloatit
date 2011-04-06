@@ -22,6 +22,7 @@ import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
+import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DBRequests;
 
@@ -100,6 +101,11 @@ public class GenericConstructor {
         if (clazz.equals(Kudosable.class) || clazz.equals(KudosableInterface.class)) {
             return DaoKudosable.class;
         }
+        if (clazz.equals(UserContent.class) || clazz.equals(UserContentInterface.class)) {
+            return DaoUserContent.class;
+        }
+
+
         return null;
     }
 }

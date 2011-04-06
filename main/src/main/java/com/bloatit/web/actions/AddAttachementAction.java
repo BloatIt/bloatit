@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.exceptions.highlevel.MeanUserException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -30,7 +32,7 @@ import com.bloatit.web.url.LoginPageUrl;
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("usercontent/attachfile")
+@ParamContainer("usercontent/doattachfile")
 public final class AddAttachementAction extends Action {
 
     public static final String USER_CONTENT = "user_content";
@@ -88,9 +90,15 @@ public final class AddAttachementAction extends Action {
                                                                                             attachementFileName,
                                                                                             attachementDescription);
 
-        userContent.addFile(attachementFileMedatata);
+        try {
+            userContent.addFile(attachementFileMedatata);
+            session.notifyGood(Context.tr("Attachement add successfuly !"));
 
-        return Context.getSession().pickPreferredPage();
+        } catch (UnauthorizedOperationException e) {
+            session.notifyError(Context.tr("You're allowed to add an attachement only if you own the content. If you get this error without trying to hack the website, please make a bug report."));
+            throw new MeanUserException("The user try to add an attachement but he doesn't have the right",e);
+        }
+        return session.pickPreferredPage();
     }
 
     @Override
