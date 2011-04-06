@@ -157,7 +157,7 @@ public final class CheckContributionPage extends LoggedPage {
                                                                                                               .subtract(process.getAmount())));
                         changeLine.add(MembersTools.getMemberAvatar(member));
                         authorContributionSummary.add(changeLine);
-                        authorContributionSummary.add(new DefineParagraph(tr("Author:"), member.getDisplayName()));
+                        authorContributionSummary.add(new DefineParagraph(tr("Author: "), member.getDisplayName()));
                     }
                 } catch (UnauthorizedOperationException e) {
                     session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
@@ -165,9 +165,9 @@ public final class CheckContributionPage extends LoggedPage {
                 }
 
                 if (process.getComment() != null) {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment:"), process.getComment()));
+                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), process.getComment()));
                 } else {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment:"), tr("No comment")));
+                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), tr("No comment")));
                 }
 
             }
@@ -469,7 +469,7 @@ public final class CheckContributionPage extends LoggedPage {
                     changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
                 }
                 featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new DefineParagraph(tr("Target feature:"), FeaturesTools.getTitle(feature)));
+                featureContributionSummary.add(new DefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
             } catch (UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                 throw new ShallNotPassException("User cannot access user information", e);
