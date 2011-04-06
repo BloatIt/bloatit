@@ -2,10 +2,11 @@ package com.bloatit.web;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.MasterConfiguration;
 
 import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
 
-public class WebConfiguration {
+public class WebConfiguration extends MasterConfiguration {
     public static final WebConfiguration configuration = new WebConfiguration();
     private PropertiesRetriever properties;
 
@@ -40,6 +41,7 @@ public class WebConfiguration {
     private String jsDatePicker;
 
     private WebConfiguration() {
+        super();
         loadConfiguration();
     }
 
@@ -240,7 +242,13 @@ public class WebConfiguration {
         configuration.loadConfiguration();
     }
 
-    public static void reload() {
+    @Override
+    public String getName() {
+        return "Web";
+    }
+
+    @Override
+    protected void doReload() {
         configuration.loadConfiguration();
     }
 }

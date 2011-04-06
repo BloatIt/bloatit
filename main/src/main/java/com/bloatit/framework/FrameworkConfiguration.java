@@ -4,62 +4,37 @@ import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.MasterConfiguration;
 
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- *
+ * 
  * @author thomas
  */
-public class FrameworkConfiguration {
+public class FrameworkConfiguration extends MasterConfiguration {
 
     public static final FrameworkConfiguration configuration = new FrameworkConfiguration();
 
-    private final PropertiesRetriever properties;
-    private final String ressourcesDirStorage;
-    private final String mailDirTmp;
-    private final String mailDirSend;
-    private final String mailLogin;
-    private final String mailPassword;
-    private final String mailFrom;
-    private final String sessionDumpfile;
-    private final String mailSmtpHost;
-    private final int mailSmptSocketFactoryPort;
-    private final String mailSmtpSoketFactoryClass;
-    private final Boolean mailSmtpAuth;
-    private final int mailSmtpPort;
-    private final int xcgiListenport;
-    private final int xcgiThreadsNumber;
+    private PropertiesRetriever properties;
+    private String ressourcesDirStorage;
+    private String mailDirTmp;
+    private String mailDirSend;
+    private String mailLogin;
+    private String mailPassword;
+    private String mailFrom;
+    private String sessionDumpfile;
+    private String mailSmtpHost;
+    private int mailSmptSocketFactoryPort;
+    private String mailSmtpSoketFactoryClass;
+    private Boolean mailSmtpAuth;
+    private int mailSmtpPort;
+    private int xcgiListenport;
+    private int xcgiThreadsNumber;
 
     private FrameworkConfiguration() {
-        properties = ConfigurationManager.loadProperties("framework.properties");
-
-        // Server
-        xcgiThreadsNumber = properties.getInt("xcgi.threads.number");
-        xcgiListenport = properties.getInt("xcgi.listenport");
-        // Resources
-        ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
-        // Sessions.
-        sessionDumpfile = SHARE_DIR + properties.getString("session.dumpfile", "sessions.dump");
-
-        // Mail configuration
-        mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
-        mailDirSend = SHARE_DIR + properties.getString("mail.dir.send", "sent_mail");
-        mailSmtpHost = properties.getString("mail.smtp.host");
-        mailSmptSocketFactoryPort = properties.getInt("mail.smtp.socketFactory.port");
-        mailSmtpSoketFactoryClass = properties.getString("mail.smtp.socketFactory.class");
-        mailSmtpAuth = properties.getBoolean("mail.smtp.auth");
-        mailSmtpPort = properties.getInt("mail.smtp.port");
-        mailLogin = properties.getString("mail.login");
-        mailPassword = properties.getString("mail.password");
-        mailFrom = properties.getString("mail.from");
-    }
-
-    /**
-     * Make sure the configuration file is loaded.
-     */
-    public static void loadConfiguration() {
-        configuration.getClass();
+        super();
+        loadConfiguration();
     }
 
     public static String getRessourcesDirStorage() {
@@ -120,5 +95,43 @@ public class FrameworkConfiguration {
 
     public static int getXcgiThreadsNumber() {
         return configuration.xcgiThreadsNumber;
+    }
+
+    protected void loadConfiguration() {
+        properties = ConfigurationManager.loadProperties("framework.properties");
+
+        // Server
+        xcgiThreadsNumber = properties.getInt("xcgi.threads.number");
+        xcgiListenport = properties.getInt("xcgi.listenport");
+        // Resources
+        ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
+        // Sessions.
+        sessionDumpfile = SHARE_DIR + properties.getString("session.dumpfile", "sessions.dump");
+
+        // Mail configuration
+        mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
+        mailDirSend = SHARE_DIR + properties.getString("mail.dir.send", "sent_mail");
+        mailSmtpHost = properties.getString("mail.smtp.host");
+        mailSmptSocketFactoryPort = properties.getInt("mail.smtp.socketFactory.port");
+        mailSmtpSoketFactoryClass = properties.getString("mail.smtp.socketFactory.class");
+        mailSmtpAuth = properties.getBoolean("mail.smtp.auth");
+        mailSmtpPort = properties.getInt("mail.smtp.port");
+        mailLogin = properties.getString("mail.login");
+        mailPassword = properties.getString("mail.password");
+        mailFrom = properties.getString("mail.from");
+    }
+    
+    public static void load(){
+        configuration.loadConfiguration();
+    }
+
+    @Override
+    public String getName() {
+        return "Framework";
+    }
+
+    @Override
+    protected void doReload() {
+        configuration.loadConfiguration();
     }
 }

@@ -8,13 +8,14 @@ import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
-import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.UploadFileAction;
+import com.bloatit.web.linkable.admin.AdministrationAction;
+import com.bloatit.web.linkable.admin.ConfigurationAdminAction;
 import com.bloatit.web.linkable.admin.ConfigurationAdminPage;
 import com.bloatit.web.linkable.admin.FeatureAdminPage;
 import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
@@ -89,6 +90,7 @@ import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
+import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -355,6 +357,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(GiveRightActionUrl.getName())) {
             return new GiveRightAction(new GiveRightActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ConfigurationAdminActionUrl.getName())) {
+            return new ConfigurationAdminAction(new ConfigurationAdminActionUrl(params, session.getParameters()));
         }
 
         // Process

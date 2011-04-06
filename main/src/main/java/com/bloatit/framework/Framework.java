@@ -33,7 +33,7 @@ public class Framework {
     }
 
     public boolean initialize() {
-        FrameworkConfiguration.loadConfiguration();
+        FrameworkConfiguration.load();
         try {
             mailServer.initialize();
             scgiServer.initialize();
