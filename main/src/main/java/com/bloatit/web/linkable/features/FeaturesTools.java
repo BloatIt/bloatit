@@ -42,16 +42,26 @@ public class FeaturesTools {
     public static HtmlDiv generateProgress(Feature feature, boolean slim) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("summary_progress");
         {
-            float progressValue = 0;
             // Progress bar
 
-            progressValue = (float) Math.floor(feature.getProgression());
+            float progressValue = (float) Math.floor(feature.getProgression());
+            float myProgressValue = 0;
+
+            if (Context.getSession().isLogged()) {
+                myProgressValue = feature.getMemberProgression(Context.getSession().getAuthToken().getMember());
+                if (myProgressValue > 0.0f && myProgressValue < 5f) {
+                    myProgressValue = 5f;
+
+                }
+                myProgressValue = (float) Math.floor(myProgressValue);
+            }
+
             float cappedProgressValue = progressValue;
             if (cappedProgressValue > FeatureImplementation.PROGRESSION_PERCENT) {
                 cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT;
             }
 
-            final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue, slim);
+            final HtmlProgressBar progressBar = new HtmlProgressBar(slim, cappedProgressValue - myProgressValue, cappedProgressValue);
             featureSummaryProgress.add(progressBar);
 
             // Progress text
@@ -68,7 +78,7 @@ public class FeaturesTools {
             currentOffer = feature.getSelectedOffer();
         } catch (final UnauthorizedOperationException e1) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
-            throw new ShallNotPassException("User cannot access selected offer", e1); 
+            throw new ShallNotPassException("User cannot access selected offer", e1);
         }
         if (currentOffer == null) {
 
@@ -81,9 +91,9 @@ public class FeaturesTools {
                 amount.addText(currency.getDefaultString());
             } catch (final UnauthorizedOperationException e) {
                 Context.getSession().notifyError(Context.tr("An error prevented us from displaying contribution amount. Please notify us."));
-                throw new ShallNotPassException("User cannot access contribution amount", e); 
+                throw new ShallNotPassException("User cannot access contribution amount", e);
             }
-            
+
             final HtmlParagraph progressText = new HtmlParagraph();
             progressText.setCssClass("progress_text");
 
@@ -124,7 +134,7 @@ public class FeaturesTools {
             return progressText;
         } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying contribution amount. Please notify us."));
-            throw new ShallNotPassException("User cannot access contibution amount", e); 
+            throw new ShallNotPassException("User cannot access contibution amount", e);
         }
     }
 
@@ -149,16 +159,16 @@ public class FeaturesTools {
             contributionsFeatureUrl.setAnchor("feature_tab_pane");
 
             featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(Context.trn("{0} comment",
-                                                                               "{0} comments",
-                                                                               commentsCount,
-                                                                               new Integer(commentsCount))));
+                                                                                 "{0} comments",
+                                                                                 commentsCount,
+                                                                                 new Integer(commentsCount))));
             featureSummaryDetails.addText(" – ");
             featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
             featureSummaryDetails.addText(" – ");
             featureSummaryDetails.add(contributionsFeatureUrl.getHtmlLink(Context.trn("{0} contribution",
-                                                                                    "{0} contributions",
-                                                                                    contributionsCount,
-                                                                                    new Integer(contributionsCount))));
+                                                                                      "{0} contributions",
+                                                                                      contributionsCount,
+                                                                                      new Integer(contributionsCount))));
 
         }
         return featureSummaryDetails;
