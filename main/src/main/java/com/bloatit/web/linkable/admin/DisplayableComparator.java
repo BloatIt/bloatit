@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.admin;
+package com.bloatit.web.linkable.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
