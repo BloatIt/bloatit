@@ -13,23 +13,25 @@ package com.bloatit.web.linkable.metabugreport;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.List;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.meta.MetaBug;
 import com.bloatit.framework.meta.MetaBugManager;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
+import com.bloatit.framework.webserver.components.form.FieldData;
+import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlSubmit;
+import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.model.Member;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.members.MembersTools;
@@ -39,41 +41,59 @@ import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
-import com.bloatit.web.url.MetaBugsListPageUrl;
+import com.bloatit.web.url.MetaEditBugActionUrl;
 
-@ParamContainer("meta/bug/list")
-public final class MetaBugsListPage extends MasterPage {
-    private final MetaBugsListPageUrl url;
+@ParamContainer("meta/bug/edit")
+public final class MetaBugEditPage extends MasterPage {
 
-    public MetaBugsListPage(final MetaBugsListPageUrl url) {
+    private final MetaBugEditPageUrl url;
+
+    @RequestParam
+    private final String bugId;
+
+    public MetaBugEditPage(final MetaBugEditPageUrl url) {
         super(url);
         this.url = url;
+        this.bugId = url.getBugId();
     }
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Bugs list", 1);
-
-
-        List<MetaBug> bugList = MetaBugManager.getOpenBugs();
-
-
-        for(MetaBug bug: bugList) {
-            HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
-            HtmlDiv editBox = new HtmlDiv("float_right");
-            bugBox.add(editBox);
-            bugBox.add(new HtmlMarkdownRenderer(bug.getDescription()));
-            editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
-            editBox.addText(" - ");
-            editBox.add(new MetaBugDeleteActionUrl(bug.getId()).getHtmlLink(tr("delete")));
-            pageTitle.add(bugBox);
-
+        //TODO: why not add this message on all pages ?
+        addNotifications(url.getMessages());
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
         }
 
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Bug", 1);
+
+
+        MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(bugId);
+        HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
+
+
+
+        FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();
+        HtmlTextArea bugDescription = new HtmlTextArea(descriptionFieldData.getName(), 20, 100);
+
+        String suggestedValue = descriptionFieldData.getSuggestedValue();
+        if(suggestedValue != null) {
+            bugDescription.setDefaultValue(suggestedValue);
+        } else {
+            bugDescription.setDefaultValue(MetaBugManager.getById(bugId).getDescription());
+        }
+
+        bugDescription.setComment(tr("You can use markdown syntax in this field."));
+
+        HtmlSubmit submit = new HtmlSubmit(tr("Update the bug"));
+
+        form.add(bugDescription);
+        form.add(submit);
+        pageTitle.add(form);
 
 
         layout.addLeft(pageTitle);
@@ -126,7 +146,7 @@ public final class MetaBugsListPage extends MasterPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        return MetaBugsListPage.generateBreadcrumb();
+        return MetaBugEditPage.generateBreadcrumb();
     }
 
     public static Breadcrumb generateBreadcrumb() {

@@ -1,8 +1,6 @@
 package com.bloatit.framework.meta;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import java.util.UUID;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 
-
 public class MetaBugManager {
 
     public static boolean reportBug(String bugReport) {
@@ -24,7 +21,7 @@ public class MetaBugManager {
         File dirFile = new File(dir);
         dirFile.mkdirs();
 
-        File bugReportFile = new File(dir+"/"+UUID.randomUUID().toString());
+        File bugReportFile = new File(dir + "/" + UUID.randomUUID().toString());
 
         try {
             bugReportFile.createNewFile();
@@ -34,7 +31,7 @@ public class MetaBugManager {
             fileStream.close();
 
         } catch (IOException e) {
-            Log.framework().error("Fail to write a bugreport",e);
+            Log.framework().error("Fail to write a bugreport", e);
             return false;
         }
 
@@ -42,16 +39,14 @@ public class MetaBugManager {
 
     }
 
-    public static List<String> getOpenBugs() {
+    public static List<MetaBug> getOpenBugs() {
         String dir = FrameworkConfiguration.getMetaBugsDirStorage();
 
         File dirFile = new File(dir);
 
         File[] bugFiles = dirFile.listFiles();
 
-
         List<File> orderedFiles = Arrays.asList(bugFiles);
-
 
         Collections.sort(orderedFiles, new Comparator<File>() {
 
@@ -62,24 +57,31 @@ public class MetaBugManager {
 
         });
 
+        List<MetaBug> bugList = new ArrayList<MetaBug>();
 
-        List<String> bugList = new ArrayList<String>();
-
-        for(File bugFile: orderedFiles) {
+        for (File bugFile : orderedFiles) {
             try {
-                byte[] buffer = new byte[(int) bugFile.length()];
-                BufferedInputStream f = new BufferedInputStream(new FileInputStream(bugFile));
-                f.read(buffer);
-                bugList.add(new String(buffer));
-
+                if(!bugFile.getName().endsWith("-deleted")) {
+                    bugList.add(new MetaBug(bugFile));
+                }
             } catch (IOException e) {
-                Log.framework().error("Fail to read a bugreport",e);
+                Log.framework().error("Fail to read a bugreport", e);
             }
         }
 
         return bugList;
     }
 
+    public static MetaBug getById(String bugId) {
+        List<MetaBug> openBugs = getOpenBugs();
 
+        for(MetaBug bug: openBugs) {
+            if(bug.getId().equals(bugId)) {
+                return bug;
+            }
+        }
+
+        return null;
+    }
 
 }
