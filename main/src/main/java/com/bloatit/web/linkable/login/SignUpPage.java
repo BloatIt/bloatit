@@ -15,6 +15,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
+import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -101,7 +102,11 @@ public final class SignUpPage extends MasterPage {
         form.add(countryInput);
 
         final LanguageSelector langInput = new LanguageSelector(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
-        langInput.setDefaultValue(url.getLangParameter().getStringValue());
+        if (url.getLangParameter().getStringValue() != null && !url.getLangParameter().getStringValue().isEmpty()) {
+            langInput.setDefaultValue(url.getLangParameter().getStringValue());
+        } else {
+            langInput.setDefaultValue(Context.getLocalizator().getLanguageCode());
+        }
         form.add(langInput);
 
         final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
