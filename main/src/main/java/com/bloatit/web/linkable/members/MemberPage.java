@@ -19,7 +19,6 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -34,6 +33,7 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Member;
@@ -42,6 +42,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -75,15 +76,16 @@ public final class MemberPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        session.notifyList(url.getMessages());
-        if (url.getMessages().hasMessage()) {
-            throw new PageNotFoundException();
-        }
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addLeft(generateMemberPageMain());
 
-        final HtmlDiv master = new HtmlDiv("padding_box");
-        add(master);
+        add(layout);
+    }
 
+    private HtmlElement generateMemberPageMain() {
         try {
+            final HtmlDiv master = new HtmlDiv();
+
             final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
             master.add(memberTitle);
             // Display the avatar at the right size of the block
@@ -97,15 +99,21 @@ public final class MemberPage extends MasterPage {
                 memberInfo.add(new HtmlText(tr("Email: ") + member.getEmail()));
             }
             memberInfo.add(new HtmlText(tr("Karma: ") + member.getKarma()));
+            memberInfo.add(new HtmlText(tr("Country: ") + member.getLocale().getDisplayCountry(Context.getLocalizator().getLocale())));
+            memberInfo.add(new HtmlText(tr("Language: ") +member.getLocale().getDisplayLanguage(Context.getLocalizator().getLocale())));
 
             // A list of all users team
             final HtmlTitleBlock memberTeams = new HtmlTitleBlock(Context.tr("List of teams"), 2);
             memberTitle.add(memberTeams);
             final PageIterable<Team> teamList = member.getTeams();
-            final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
-            final MemberPageUrl clonedUrl = new MemberPageUrl(url);
-            pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
-            memberTeams.add(pagedTeamList);
+            if (teamList.size() > 0) {
+                final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
+                final MemberPageUrl clonedUrl = new MemberPageUrl(url);
+                pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
+                memberTeams.add(pagedTeamList);
+            }else {
+                memberTeams.addText(Context.tr("Not part of any team now"));
+            }
 
             // Change avatar (only is the member is the user)
             if (member.isOwner()) {
@@ -113,10 +121,10 @@ public final class MemberPage extends MasterPage {
                 changeAvatar.add(generateAvatarChangeForm());
                 master.add(changeAvatar);
             }
-
+            return master;
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-            throw new ShallNotPassException("User cannot access user information", e); 
+            throw new ShallNotPassException("User cannot access user information", e);
         }
     }
 
@@ -143,7 +151,7 @@ public final class MemberPage extends MasterPage {
                 return tr("Member - ") + member.getLogin();
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-                throw new ShallNotPassException("User cannot access user information", e); 
+                throw new ShallNotPassException("User cannot access user information", e);
             }
         }
         return tr("Member - No member");
@@ -182,7 +190,7 @@ public final class MemberPage extends MasterPage {
             breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(member.getDisplayName()));
         } catch (UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-            throw new ShallNotPassException("User cannot access user information", e); 
+            throw new ShallNotPassException("User cannot access user information", e);
         }
 
         return breadcrumb;

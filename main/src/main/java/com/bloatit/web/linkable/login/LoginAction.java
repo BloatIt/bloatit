@@ -69,9 +69,7 @@ public final class LoginAction extends Action {
     @Override
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
-
         session.addParameter(url.getLoginParameter());
-
         return new LoginPageUrl();
     }
 }

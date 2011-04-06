@@ -376,9 +376,7 @@ public final class Localizator {
     }
 
     /**
-     * <p>
      * Forces the current locale to the member user choice.
-     * </p>
      * <p>
      * Use whenever the user explicitely asks to change the locale setting back
      * to his favorite, or when he logs in
@@ -387,6 +385,10 @@ public final class Localizator {
     public void forceMemberChoice() {
         final Member member = Context.getSession().getAuthToken().getMember();
         locale = member.getLocaleUnprotected();
+    }
+    
+    public void forceLanguage(Locale language){
+        locale = new Locale(language.getLanguage(), locale.getCountry());
     }
 
     /**

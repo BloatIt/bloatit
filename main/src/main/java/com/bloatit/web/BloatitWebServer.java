@@ -37,6 +37,8 @@ import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.language.ChangeLanguageAction;
+import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
@@ -95,6 +97,8 @@ import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
+import com.bloatit.web.url.ChangeLanguageActionUrl;
+import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
@@ -294,6 +298,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(AddAttachementPageUrl.getName())) {
             return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ChangeLanguagePageUrl.getName())) {
+            return new ChangeLanguagePage(new ChangeLanguagePageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -395,6 +402,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(MetaBugDeleteActionUrl.getName())) {
             return new MetaBugDeleteAction(new MetaBugDeleteActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ChangeLanguageActionUrl.getName())) {
+            return new ChangeLanguageAction(new ChangeLanguageActionUrl(params, session.getParameters()));
         }
 
         // Process
