@@ -18,6 +18,9 @@ import java.util.Map;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 
+/**
+ * Class to create Html drop down ({@code<select>} tag)
+ */
 public class HtmlDropDown extends HtmlStringFormField {
 
     private final Map<String, HtmlGenericElement> elements = new HashMap<String, HtmlGenericElement>();
@@ -38,12 +41,28 @@ public class HtmlDropDown extends HtmlStringFormField {
         elements.put(value, opt);
     }
 
+    /**
+     * Adds elements based on an enum
+     * 
+     * @param <T> the type of the elements of the set
+     * @param elements the enum set
+     */
     public <T extends Enum<T> & Displayable> void addDropDownElements(final EnumSet<T> elements) {
         for (final T enumValue : elements) {
             addDropDownElement(enumValue.name(), enumValue.getDisplayName());
         }
     }
 
+    /**
+     * Sets the default value of the drop down menu
+     * <p>
+     * The default value is set based on the <i>value</i> field of the
+     * {@link #addDropDownElement(String, String)} method (the code which is not
+     * visible from the user).
+     * </p>
+     * 
+     * @param value the code of the default element
+     */
     @Override
     protected void doSetDefaultValue(final String value) {
         final HtmlGenericElement checkedElement = elements.get(value);

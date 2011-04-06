@@ -93,7 +93,11 @@ public final class SignUpPage extends MasterPage {
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
-        countryInput.setDefaultValue(url.getCountryParameter().getStringValue());
+        if (url.getCountryParameter().getStringValue() != null && !url.getCountryParameter().getStringValue().isEmpty()) {
+            countryInput.setDefaultValue(url.getCountryParameter().getStringValue());
+        } else {
+            countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
+        }
         form.add(countryInput);
 
         final LanguageSelector langInput = new LanguageSelector(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
