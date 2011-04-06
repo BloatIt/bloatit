@@ -40,6 +40,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -78,6 +79,7 @@ public final class MemberPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateMemberPageMain());
+        layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
     }

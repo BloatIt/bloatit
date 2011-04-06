@@ -29,10 +29,13 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
@@ -65,8 +68,18 @@ public final class SignUpPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final HtmlDiv master = new HtmlDiv("padding_box");
-        add(master);
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addLeft(generateSignUpPageMain());
+        layout.addRight(new SideBarBugReportBlock(url));
+
+        add(layout);
+    }
+
+    /**
+     * @return
+     */
+    private HtmlElement generateSignUpPageMain() {
+        final HtmlDiv master = new HtmlDiv();
 
         final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
         final RegisterActionUrl registerActionUrl = new RegisterActionUrl();
@@ -113,6 +126,7 @@ public final class SignUpPage extends MasterPage {
         form.add(button);
 
         master.add(container);
+        return master;
     }
 
     @Override

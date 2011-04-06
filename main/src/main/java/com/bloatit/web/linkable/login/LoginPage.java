@@ -24,25 +24,40 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
 @ParamContainer("login")
 public final class LoginPage extends MasterPage {
+    private final LoginPageUrl url;
 
-    public LoginPage(final LoginPageUrl loginPageUrl) {
-        super(loginPageUrl);
+    public LoginPage(final LoginPageUrl url) {
+        super(url);
+        this.url = url;
     }
 
     @Override
     protected void doCreate() throws RedirectException {
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addLeft(generateSignUpPageMain());
+        layout.addRight(new SideBarBugReportBlock(url));
 
-        final HtmlDiv box = new HtmlDiv("padding_box");
+        add(layout);
+    }
+
+    /**
+     * @return
+     */
+    private HtmlElement generateSignUpPageMain() {
+        final HtmlDiv master = new HtmlDiv();
         {
             final LoginActionUrl loginActionUrl = new LoginActionUrl();
             final HtmlForm loginForm = new HtmlForm(loginActionUrl.urlString());
@@ -64,15 +79,11 @@ public final class LoginPage extends MasterPage {
             final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
             loginTitle.add(loginForm);
 
-            box.add(loginTitle);
-
-            box.add(new HtmlParagraph().add(new SignUpPageUrl().getHtmlLink(Context.tr("No account ? Sign-up now."))));
-
-            box.add(new HtmlParagraph().add(new PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
-
+            master.add(loginTitle);
+            master.add(new HtmlParagraph().add(new SignUpPageUrl().getHtmlLink(Context.tr("No account ? Sign-up now."))));
+            master.add(new HtmlParagraph().add(new PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
         }
-        add(box);
-
+        return master;
     }
 
     @Override
