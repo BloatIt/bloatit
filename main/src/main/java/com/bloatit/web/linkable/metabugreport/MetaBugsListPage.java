@@ -56,10 +56,12 @@ public final class MetaBugsListPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Bugs list", 1);
-
-
         List<MetaBug> bugList = MetaBugManager.getOpenBugs();
+
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Bugs list ({0})",bugList.size()), 1);
+
+
+
 
 
         for(MetaBug bug: bugList) {
