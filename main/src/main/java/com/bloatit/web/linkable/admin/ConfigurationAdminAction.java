@@ -20,7 +20,7 @@ package com.bloatit.web.linkable.admin;
 
 import java.util.List;
 
-import com.bloatit.common.MasterConfiguration;
+import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -44,7 +44,7 @@ public class ConfigurationAdminAction extends AdminAction {
     @Override
     protected Url doProcessAdmin() {
         for (String conf : toReload) {
-            for (MasterConfiguration availableConf : MasterConfiguration.getConfigurations()) {
+            for (ReloadableConfiguration availableConf : ReloadableConfiguration.getConfigurations()) {
                 if (availableConf.getName().equals(conf)) {
                     availableConf.reload();
                     break;

@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.bloatit.common.MasterConfiguration;
+import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.TimeRenderer;
@@ -71,7 +71,7 @@ public class ConfigurationAdminPage extends AdminPage {
         HtmlTitleBlock master = new HtmlTitleBlock("Administrate configurations", 1);
         HtmlForm form = new HtmlForm(new ConfigurationAdminActionUrl().urlString());
         master.add(form);
-        form.add(new HtmlTable(new ConfigurationTableModel(MasterConfiguration.getConfigurations())));
+        form.add(new HtmlTable(new ConfigurationTableModel(ReloadableConfiguration.getConfigurations())));
         form.add(new HtmlSubmit(Context.tr("Submit")));
 
         return master;
@@ -101,15 +101,15 @@ public class ConfigurationAdminPage extends AdminPage {
     }
 
     private class ConfigurationTableModel extends HtmlTableModel {
-        private Iterator<MasterConfiguration> iterator;
-        private Set<MasterConfiguration> configurations;
-        private MasterConfiguration configuration;
+        private Iterator<ReloadableConfiguration> iterator;
+        private Set<ReloadableConfiguration> configurations;
+        private ReloadableConfiguration configuration;
 
         private static final int NAME = 0;
         private static final int DATE = 1;
         private static final int ACTION = 2;
 
-        public ConfigurationTableModel(final Set<MasterConfiguration> configurations) {
+        public ConfigurationTableModel(final Set<ReloadableConfiguration> configurations) {
             this.configurations = configurations;
             iterator = configurations.iterator();
         }

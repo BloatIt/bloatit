@@ -25,14 +25,14 @@ import java.util.Set;
 /**
  * Mother class for all configurations
  */
-public abstract class MasterConfiguration {
-    private static Set<MasterConfiguration> configurations = new HashSet<MasterConfiguration>();
+public abstract class ReloadableConfiguration {
+    private static Set<ReloadableConfiguration> configurations = new HashSet<ReloadableConfiguration>();
     private Date lastReloadDate;
 
     /**
      * Creates a new configuration
      */
-    public MasterConfiguration() {
+    public ReloadableConfiguration() {
         configurations.add(this);
         this.lastReloadDate = new Date();
     }
@@ -47,7 +47,7 @@ public abstract class MasterConfiguration {
     /**
      * @return a list of all configurations active on the system
      */
-    public static Set<MasterConfiguration> getConfigurations() {
+    public static Set<ReloadableConfiguration> getConfigurations() {
         return configurations;
     }
 

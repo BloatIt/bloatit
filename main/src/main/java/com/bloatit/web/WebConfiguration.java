@@ -2,11 +2,11 @@ package com.bloatit.web;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
-import com.bloatit.common.MasterConfiguration;
+import com.bloatit.common.ReloadableConfiguration;
 
 import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
 
-public class WebConfiguration extends MasterConfiguration {
+public class WebConfiguration extends ReloadableConfiguration {
     public static final WebConfiguration configuration = new WebConfiguration();
     private PropertiesRetriever properties;
 

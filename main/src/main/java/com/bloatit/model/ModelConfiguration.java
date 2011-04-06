@@ -2,9 +2,9 @@ package com.bloatit.model;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
-import com.bloatit.common.MasterConfiguration;
+import com.bloatit.common.ReloadableConfiguration;
 
-public class ModelConfiguration extends MasterConfiguration {
+public class ModelConfiguration extends ReloadableConfiguration {
     public static ModelConfiguration configuration = new ModelConfiguration();
 
     private PropertiesRetriever properties;

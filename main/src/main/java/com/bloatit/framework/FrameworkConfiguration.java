@@ -4,7 +4,7 @@ import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
-import com.bloatit.common.MasterConfiguration;
+import com.bloatit.common.ReloadableConfiguration;
 
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
@@ -12,7 +12,7 @@ import com.bloatit.common.MasterConfiguration;
  *
  * @author thomas
  */
-public class FrameworkConfiguration extends MasterConfiguration {
+public class FrameworkConfiguration extends ReloadableConfiguration {
 
     public static final FrameworkConfiguration configuration = new FrameworkConfiguration();
 
