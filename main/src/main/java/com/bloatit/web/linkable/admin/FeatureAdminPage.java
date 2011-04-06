@@ -19,7 +19,6 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.Feature;
 import com.bloatit.model.admin.FeatureAdminListFactory;
-import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.FeatureAdminPageUrl;

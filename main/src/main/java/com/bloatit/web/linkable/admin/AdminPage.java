@@ -2,7 +2,6 @@ package com.bloatit.web.linkable.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;

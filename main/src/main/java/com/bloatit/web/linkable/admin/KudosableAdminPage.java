@@ -21,7 +21,6 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.KudosableInterface;
 import com.bloatit.model.admin.KudosableAdminListFactory;
-import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 
 @ParamContainer("admin/kudosable")

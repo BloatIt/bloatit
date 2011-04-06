@@ -221,6 +221,23 @@ public class TeamPage extends MasterPage {
         return master;
     }
 
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return TeamPage.generateBreadcrumb(targetTeam);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Team team) {
+        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
+    
+        try {
+            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
+        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
+        }
+    
+        return breadcrumb;
+    }
+
     /**
      * Model used to display information about each team members.
      */
@@ -329,22 +346,5 @@ public class TeamPage extends MasterPage {
             }
             return false;
         }
-    }
-
-    @Override
-    protected Breadcrumb getBreadcrumb() {
-        return TeamPage.generateBreadcrumb(targetTeam);
-    }
-
-    public static Breadcrumb generateBreadcrumb(Team team) {
-        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
-
-        try {
-            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
-        } catch (UnauthorizedOperationException e) {
-            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
-        }
-
-        return breadcrumb;
     }
 }

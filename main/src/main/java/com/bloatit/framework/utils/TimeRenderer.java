@@ -4,6 +4,12 @@ import static com.bloatit.framework.webserver.Context.trn;
 
 import java.util.Date;
 
+import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.webserver.Context;
+
+/**
+ * A class used to render time
+ */
 public class TimeRenderer {
 
     public enum TimeBase {
@@ -36,7 +42,7 @@ public class TimeRenderer {
         base = computeBestResolution();
     }
 
-    private TimeRenderer(Date date) {
+    public TimeRenderer(Date date) {
         this(date.getTime());
     }
 
@@ -124,5 +130,20 @@ public class TimeRenderer {
                 break;
         }
         return null;
+    }
+
+    /**
+     * Renders as a time from now
+     * 
+     * @param limit the limit after which the date will be rendered as a date
+     * @param style the style applied to date rendering when limit is reached
+     * @return
+     */
+    public String renderRange(TimeBase limit, DateLocale.FormatStyle style) {
+        if (milliseconds > limit.coef) {
+            return new DateLocale(new Date(milliseconds), Context.getLocalizator().getLocale()).toDateTimeString(style, style);
+        }
+        // TODO improve rendering
+        return getTimeString();
     }
 }

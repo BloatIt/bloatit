@@ -68,7 +68,6 @@ public final class ContributePage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
-
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateContributeForm());
 
