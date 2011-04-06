@@ -11,7 +11,6 @@
  */
 package com.bloatit.framework.utils.i18n;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -20,10 +19,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.bloatit.common.ConfigurationManager;
-import com.bloatit.common.PropertyLoader;
-import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.LocalesConfiguration;
-import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 
 /**

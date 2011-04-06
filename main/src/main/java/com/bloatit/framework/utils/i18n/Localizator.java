@@ -1,6 +1,5 @@
 package com.bloatit.framework.utils.i18n;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
@@ -16,7 +15,6 @@ import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.Log;
-import com.bloatit.common.PropertyLoader;
 import com.bloatit.framework.LocalesConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
