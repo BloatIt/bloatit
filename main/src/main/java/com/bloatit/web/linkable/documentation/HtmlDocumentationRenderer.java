@@ -7,7 +7,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import net.sf.cglib.core.Local;
+
+import antlr.Lookahead;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
@@ -40,6 +45,10 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         public String getPath() {
             return path;
         }
+        
+        public String toString() {
+            return getPath();
+        }
     }
 
     public HtmlDocumentationRenderer(DocumentationType type, String key) {
@@ -54,13 +63,16 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 if (!load(path)) {
                     exist = false;
                     Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
+                    Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist");
                 } else {
+                    Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist in language " + language);
                     String notify = Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead", key, language);
                     Context.getSession().notifyBad(notify);
                     exist = true;
                 }
             } else {
                 exist = false;
+                Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist");
                 Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
             }
         } else {
