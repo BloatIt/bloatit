@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.documentation;
+package com.bloatit.web.linkable.documentation;
 
 import java.io.File;
 import java.io.FileInputStream;
