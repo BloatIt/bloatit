@@ -1,0 +1,6 @@
+Creating a language file:
+cd main/po/
+msginit -i keys.pot -o fr.po # where fr is the language you want to create
+
+cd ../..
+./updatepo
