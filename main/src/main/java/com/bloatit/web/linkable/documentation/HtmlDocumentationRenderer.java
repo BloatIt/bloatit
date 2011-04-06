@@ -18,6 +18,13 @@ import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.WebConfiguration;
 
 public class HtmlDocumentationRenderer extends PlaceHolderElement {
+    /**
+     * <p>
+     * Store the html documents (after they've been converted from markdown)
+     * </p>
+     */
+    private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections.synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
+    private final boolean exist;
 
     public enum DocumentationType {
         FRAME("frame"), MAIN_DOC("main");
@@ -31,20 +38,9 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         public String getPath() {
             return path;
         }
-
     }
 
-    /**
-     * <p>
-     * Store the html documents (after they've been converted from markdown)
-     * </p>
-     */
-    private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections.synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
-
-    private final boolean exist;
-
     public HtmlDocumentationRenderer(DocumentationType type, String key) {
-
         final String dir = WebConfiguration.getDocumentationDir();
         final String language = Context.getLocalizator().getLanguageCode();
 
@@ -58,9 +54,8 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                     Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
 
                 } else {
-                    Context.getSession().notifyBad(Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead",
-                                                              key,
-                                                              language));
+                    String notify = Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead", key, language);
+                    Context.getSession().notifyBad(notify);
                     exist = true;
                 }
             } else {
@@ -104,7 +99,6 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 Log.framework().trace("Using cache for documentation file " + path);
                 add(new XmlText(mdc.htmlString));
             }
-
             return true;
 
         } catch (final FileNotFoundException e) {
@@ -114,7 +108,6 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         } catch (final IOException e) {
             throw new ExternalErrorException("An error occured while parsing the documentation file " + path, e);
         }
-
     }
 
     /**
@@ -173,5 +166,4 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
             this.htmlString = htmlString;
         }
     }
-
 }
