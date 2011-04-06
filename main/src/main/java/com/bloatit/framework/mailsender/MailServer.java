@@ -1,10 +1,13 @@
 package com.bloatit.framework.mailsender;
 
+import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -18,6 +21,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.hibernate.SessionException;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 
@@ -29,7 +34,7 @@ import com.bloatit.framework.FrameworkConfiguration;
  * <b>Note:</b> a file in the user configuration directory (default /home/
  * {@code<user>} /.config/bloatit/) called mail.properties should exist with the
  * following values
- *
+ * 
  * <pre>
  * #mail.smtp.host=smtp.gmail.com (example value with gmail)
  * mail.smtp.host=
@@ -44,7 +49,7 @@ import com.bloatit.framework.FrameworkConfiguration;
  * mail.login=
  * mail.password=
  * </pre>
- *
+ * 
  * </p>
  */
 public class MailServer extends Thread {
@@ -85,7 +90,17 @@ public class MailServer extends Thread {
         createSentDirectory();
         createWipDirectory();
 
-        session = Session.getDefaultInstance(FrameworkConfiguration.getProperties().getProperties(), new javax.mail.Authenticator() {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", FrameworkConfiguration.getMailSmtpHost());
+        prop.put("mail.smtp.socketFactory.port", FrameworkConfiguration.getMailSmptSocketFactoryPort());
+        prop.put("mail.smtp.socketFactory.class", FrameworkConfiguration.getMailSmtpSoketFactoryClass());
+        prop.put("mail.smtp.auth", FrameworkConfiguration.getMailSmtpAuth());
+        prop.put("mail.smtp.port", FrameworkConfiguration.getMailSmtpPort());
+        prop.put("mail.from", FrameworkConfiguration.getMailFrom());
+        prop.put("mail.login", FrameworkConfiguration.getMailLogin());
+        prop.put("mail.password", FrameworkConfiguration.getMailPassword());
+
+        session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(FrameworkConfiguration.getMailLogin(), FrameworkConfiguration.getMailPassword());
@@ -101,7 +116,7 @@ public class MailServer extends Thread {
      * If no instance exists yet, this method will not create one, instead it
      * will throw an exception. Therefore, init should always be called before
      * </p>
-     *
+     * 
      * @return the MailServer instance
      * @throws MailFatalError when the mail server cannot be created (i.e. :
      *             directories to store mails can't be created)
@@ -128,7 +143,7 @@ public class MailServer extends Thread {
      * therefore be called before doing any other actions (such as informing the
      * user that the mail has been sent, or updating the database).
      * </p>
-     *
+     * 
      * @param mail the mail to send
      */
     public void send(final Mail mail) {
@@ -285,7 +300,7 @@ public class MailServer extends Thread {
 
     /**
      * Computes the time to wait before we do a retry.
-     *
+     * 
      * @return The time in milliseconds before a retry to send a mail
      */
     private final long timeToRetry() {

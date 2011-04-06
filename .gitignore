@@ -17,7 +17,7 @@ main/po/*~
 main/po/*.mo
 apt/.agitator
 main/css
-www/resources/css/*.css
+www/resources/commons/css/*.css
 main/src/main/java/com/bloatit/web/url/?*Url.java
 main/src/main/java/com/bloatit/web/url/?*UrlComponent.java
 paylineWebservice/src/main/java/*

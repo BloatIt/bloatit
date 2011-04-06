@@ -121,9 +121,10 @@ public class ConfigurationManager {
         }
 
         private <T> T getSome(final String key, final Class<T> clazz) {
-            final String property = prop.getProperty(key);
+            String property = prop.getProperty(key);
             Log.framework().info("Loading property: " + key + ", value: " + property);
-            if (prop.getProperty(key) != null) {
+            if (property != null) {
+                property = property.trim();
                 try {
                     return Loaders.fromStr(clazz, property);
                 } catch (final ConversionErrorException e) {
@@ -219,24 +220,6 @@ public class ConfigurationManager {
 
         public String getString(final String key) {
             return getSome(key, String.class);
-        }
-
-        /**
-         * @param key
-         * @param defaultValue
-         * @see java.util.Properties#getProperty(java.lang.String,
-         *      java.lang.String)
-         */
-        public String getProperty(final String key, final String defaultValue) {
-            return prop.getProperty(key, defaultValue);
-        }
-
-        /**
-         * @param key
-         * @see java.util.Properties#getProperty(java.lang.String)
-         */
-        public String getProperty(final String key) {
-            return prop.getProperty(key);
         }
     }
 }
