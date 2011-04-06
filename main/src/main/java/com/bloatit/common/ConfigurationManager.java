@@ -89,7 +89,7 @@ public class ConfigurationManager {
             final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
             final Properties props = new EncryptableProperties(encryptor);
             props.load(isr);
-            return new PropertiesRetriever(props);
+            return new PropertiesRetriever(props, new Date(f.lastModified()));
         } catch (final FileNotFoundException e) {
             throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
         } catch (final IOException e) {
@@ -119,14 +119,16 @@ public class ConfigurationManager {
     }
 
     public static class PropertiesRetriever {
-        private final Properties prop;
+        private final Properties properties;
+        private final Date lastModified;
 
-        public PropertiesRetriever(final Properties props) {
-            prop = props;
+        public PropertiesRetriever(final Properties properties, Date lastModified) {
+            this.properties = properties;
+            this.lastModified = lastModified;
         }
 
         public Properties getProperties() {
-            return prop;
+            return properties;
         }
 
         private <T> T getSome(final String key, final T defaultValue, final Class<T> clazz) {
@@ -138,7 +140,7 @@ public class ConfigurationManager {
         }
 
         private <T> T getSome(final String key, final Class<T> clazz) {
-            String property = prop.getProperty(key);
+            String property = properties.getProperty(key);
             if (property != null) {
                 property = property.trim();
                 try {
@@ -236,6 +238,10 @@ public class ConfigurationManager {
 
         public String getString(final String key) {
             return getSome(key, String.class);
+        }
+        
+        public Date getModificationDate(){
+            return lastModified;
         }
     }
 }
