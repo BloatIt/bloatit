@@ -3,11 +3,15 @@ Documentation home
 
 Welcome to the elveos documentation page.
 
-[an example](/en/documentation/doc-home "Title")
-
 Table of contents
 -----------------
 
-- 
- 
-![Presentation of elveos](/resources/img/doc/elveos-presentation.png)
+- General
+  - [Presentation of Elveos](/en/documentation/presentation)
+  - [FAQ](/en/documentation/FAQ)
+  - [Our sales agreement](/en/documentation/CGU)
+- Rest API
+  - [General presentation of the REST API](/en/documentation/rest/home)
+  - [A first example](/en/documentation/rest/first-example)
+  - [REST API documentation](/en/documentation/rest/api)
+  - [Available libraries](/en/documentation/rest/libraries)
