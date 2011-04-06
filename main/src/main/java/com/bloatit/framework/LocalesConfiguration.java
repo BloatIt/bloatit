@@ -22,10 +22,11 @@ import java.util.Properties;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.ConfigurationManager.PropertiesType;
 import com.bloatit.common.ReloadableConfiguration;
 
 /**
- * Class used to load properties related to 
+ * Class used to load properties related to locales management
  */
 public class LocalesConfiguration extends ReloadableConfiguration {
     public static final LocalesConfiguration configuration = new LocalesConfiguration();
@@ -37,17 +38,23 @@ public class LocalesConfiguration extends ReloadableConfiguration {
         loadConfiguration();
     }
     
+    /**
+     * @return the list of available countries on the system
+     */
     public static Properties getCountries(){
         return configuration.countryProperties.getProperties();
     }
-    
+
+    /**
+     * @return the list of available languages on the system
+     */
     public static Properties getLanguages(){
         return configuration.languagesProperties.getProperties();
     }
     
     protected void loadConfiguration() {
-        languagesProperties = ConfigurationManager.loadProperties("framework.properties");
-        countryProperties = ConfigurationManager.loadProperties("framework.properties");
+        languagesProperties = ConfigurationManager.loadProperties("locales/languages.properties", PropertiesType.SHARE);
+        countryProperties = ConfigurationManager.loadProperties("locales/countries.properties", PropertiesType.SHARE);
     }
     
     @Override
@@ -57,6 +64,10 @@ public class LocalesConfiguration extends ReloadableConfiguration {
 
     @Override
     protected void doReload() {
+        configuration.loadConfiguration();
+    }
+
+    public static void load() {
         configuration.loadConfiguration();
     }
 }

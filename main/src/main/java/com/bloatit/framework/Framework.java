@@ -34,6 +34,7 @@ public class Framework {
 
     public boolean initialize() {
         FrameworkConfiguration.load();
+        LocalesConfiguration.load();
         try {
             mailServer.initialize();
             scgiServer.initialize();

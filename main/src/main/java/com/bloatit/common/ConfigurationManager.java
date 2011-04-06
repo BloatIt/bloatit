@@ -32,25 +32,8 @@ public class ConfigurationManager {
 
     private static final StandardPBEStringEncryptor encryptor = createEncryptor();
 
-    private static StandardPBEStringEncryptor createEncryptor() {
-        final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        // Get the root password
-        String password = System.getProperty("masterPassword");
-        if (password == null || password.isEmpty()) {
-            try {
-                System.out.println("I need the master password!");
-                final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-                password = in.readLine();
-            } catch (final IOException e) {
-                throw new ExternalErrorException("Failed to read password from input", e);
-            }
-        }
-        encryptor.setPassword(password);
-        return encryptor;
-    }
-
-    public static PBEStringEncryptor getEncryptor() {
-        return encryptor;
+    public enum PropertiesType {
+        ETC, SHARE
     }
 
     /**
@@ -68,6 +51,10 @@ public class ConfigurationManager {
      * @return a map key -> value
      */
     public static PropertiesRetriever loadProperties(final String name) {
+        return loadProperties(name, PropertiesType.ETC);
+    }
+
+    public static PropertiesRetriever loadProperties(final String name, PropertiesType type) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("null input: name");
         }
@@ -78,8 +65,17 @@ public class ConfigurationManager {
         newName = newName.replace('.', '/');
         newName = newName + SUFFIX;
 
-        File f = new File(ETC_DIR + newName);
+        File f;
+        if (type == PropertiesType.ETC) {
+            f = new File(ETC_DIR + newName);
+        } else {
+            f = new File(SHARE_DIR + newName);
+        }
         if (!f.exists()) {
+            if (type == PropertiesType.ETC) {
+                throw new BadProgrammerException("Cannot locate a configuration file. Please create " + SHARE_DIR + newName);
+            }
+
             f = new File(FALLBACK_ETC_DIR + newName);
             if (!f.exists()) {
                 throw new BadProgrammerException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or "
@@ -99,6 +95,27 @@ public class ConfigurationManager {
         } catch (final IOException e) {
             throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
         }
+    }
+
+    public static PBEStringEncryptor getEncryptor() {
+        return encryptor;
+    }
+
+    private static StandardPBEStringEncryptor createEncryptor() {
+        final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        // Get the root password
+        String password = System.getProperty("masterPassword");
+        if (password == null || password.isEmpty()) {
+            try {
+                System.out.println("I need the master password!");
+                final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+                password = in.readLine();
+            } catch (final IOException e) {
+                throw new ExternalErrorException("Failed to read password from input", e);
+            }
+        }
+        encryptor.setPassword(password);
+        return encryptor;
     }
 
     public static class PropertiesRetriever {

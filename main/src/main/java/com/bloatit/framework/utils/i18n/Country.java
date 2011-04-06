@@ -19,7 +19,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.PropertyLoader;
+import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.LocalesConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 
@@ -36,14 +39,14 @@ import com.bloatit.framework.webserver.components.form.DropDownElement;
  * </p>
  */
 public final class Country implements Comparable<Country>, DropDownElement {
-    private static final String COUNTRIES_PATH = "i18n/countries";
+    private static final String COUNTRIES_PATH = ConfigurationManager.SHARE_DIR + "locales/countries.properties";
     private static final Set<Country> availableCountries = Collections.unmodifiableSet(createAvailableCountries());
     private final String name;
     private final String code;
 
     /**
      * Creates a new country
-     *
+     * 
      * @param name the long name of the country
      * @param code the ISO code of the country
      */
@@ -114,7 +117,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * <p>
      * Lists all available countries ordered on their fullname
      * </p>
-     *
+     * 
      * @return a list of the available countries
      */
     public static Set<Country> getAvailableCountries() {
@@ -123,20 +126,19 @@ public final class Country implements Comparable<Country>, DropDownElement {
 
     /**
      * Used to initialize the {@link Country#availableCountries} static field.
-     *
+     * 
      * @return the list of country loaded from a country ressources file.
      */
     private static Set<Country> createAvailableCountries() {
         final TreeSet<Country> countries = new TreeSet<Country>();
-        try {
-            final Properties properties = PropertyLoader.loadProperties(COUNTRIES_PATH);
-            for (final Entry<?, ?> property : properties.entrySet()) {
-                final String key = (String) property.getKey();
-                final String value = (String) property.getValue();
-                countries.add(new Country(value, key));
-            }
-        } catch (final IOException e) {
-            throw new ExternalErrorException("File describing available countries is not available at " + COUNTRIES_PATH, e);
+        System.out.println(COUNTRIES_PATH);
+        // final Properties properties =
+        // PropertyLoader.loadPropertiesAbsolute(COUNTRIES_PATH);
+        final Properties properties = LocalesConfiguration.getCountries();
+        for (final Entry<?, ?> property : properties.entrySet()) {
+            final String key = (String) property.getKey();
+            final String value = (String) property.getValue();
+            countries.add(new Country(value, key));
         }
         return countries;
     }

@@ -17,6 +17,7 @@ import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PropertyLoader;
+import com.bloatit.framework.LocalesConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
@@ -268,12 +269,8 @@ public final class Localizator {
     private static Map<String, LanguageDescriptor> initLanguageList() {
         final Map<String, LanguageDescriptor> languages = new HashMap<String, Localizator.LanguageDescriptor>();
         final Properties properties;
-        
-        try {
-            properties = PropertyLoader.loadProperties(LANGUAGES_PATH);
-        } catch (final IOException e) {
-            throw new BadProgrammerException("File describing available languages is not available at " + LANGUAGES_PATH, e);
-        }
+
+        properties = LocalesConfiguration.getLanguages();
         for (final Entry<?, ?> property : properties.entrySet()) {
             final String key = (String) property.getKey();
             final String value = (String) property.getValue();
