@@ -99,8 +99,10 @@ public final class MemberPage extends MasterPage {
                 memberInfo.add(new HtmlText(tr("Email: ") + member.getEmail()));
             }
             memberInfo.add(new HtmlText(tr("Karma: ") + member.getKarma()));
-            memberInfo.add(new HtmlText(tr("Country: ") + member.getLocale().getDisplayCountry(Context.getLocalizator().getLocale())));
-            memberInfo.add(new HtmlText(tr("Language: ") +member.getLocale().getDisplayLanguage(Context.getLocalizator().getLocale())));
+            if (member.canAccessLocale(Action.READ)) {
+                memberInfo.add(new HtmlText(tr("Country: ") + member.getLocale().getDisplayCountry(Context.getLocalizator().getLocale())));
+                memberInfo.add(new HtmlText(tr("Language: ") + member.getLocale().getDisplayLanguage(Context.getLocalizator().getLocale())));
+            }
 
             // A list of all users team
             final HtmlTitleBlock memberTeams = new HtmlTitleBlock(Context.tr("List of teams"), 2);
@@ -111,7 +113,7 @@ public final class MemberPage extends MasterPage {
                 final MemberPageUrl clonedUrl = new MemberPageUrl(url);
                 pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
                 memberTeams.add(pagedTeamList);
-            }else {
+            } else {
                 memberTeams.addText(Context.tr("Not part of any team now"));
             }
 

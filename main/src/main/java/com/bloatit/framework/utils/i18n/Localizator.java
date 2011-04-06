@@ -50,17 +50,13 @@ public final class Localizator {
     private static Date availableLanguagesReload;
 
     private Locale locale;
-    private final I18n i18n;
-    private final String urlLang;
-    private final List<String> browserLangs;
+    private I18n i18n;
 
     // translations cache
     private static final Map<Locale, I18n> localesCache = Collections.synchronizedMap(new HashMap<Locale, I18n>());
 
     public Localizator(final String urlLang, final List<String> browserLangs) {
-        this.urlLang = urlLang;
-        this.browserLangs = browserLangs;
-        this.locale = inferLocale();
+        this.locale = inferLocale(urlLang, browserLangs);
 
         if (localesCache.containsKey(locale)) {
             this.i18n = localesCache.get(locale);
@@ -385,27 +381,28 @@ public final class Localizator {
     public void forceMemberChoice() {
         final Member member = Context.getSession().getAuthToken().getMember();
         locale = member.getLocaleUnprotected();
+        this.i18n = localesCache.get(locale);
     }
     
     public void forceLanguage(Locale language){
         locale = new Locale(language.getLanguage(), locale.getCountry());
+        this.i18n = localesCache.get(locale);
     }
 
     /**
      * Infers the locale based on various parameters
      */
-    private Locale inferLocale() {
+    private Locale inferLocale(final String urlLang, final List<String> browserLangs) {
         Locale locale = null;
 
         if (urlLang != null && !urlLang.equals("default")) {
-
             // Default language
             String country;
             if (Context.getSession().getAuthToken() != null) {
                 final Member member = Context.getSession().getAuthToken().getMember();
                 country = member.getLocaleUnprotected().getCountry();
             } else {
-                country = browserLocaleHeuristic().getCountry();
+                country = browserLocaleHeuristic(browserLangs).getCountry();
             }
             locale = new Locale(urlLang, country);
 
@@ -427,7 +424,7 @@ public final class Localizator {
                 final Member member = Context.getSession().getAuthToken().getMember();
                 locale = member.getLocaleUnprotected();
             } else {
-                locale = browserLocaleHeuristic();
+                locale = browserLocaleHeuristic(browserLangs);
             }
         }
         return locale;
@@ -455,7 +452,7 @@ public final class Localizator {
      * 
      * @return the favorite user locale
      */
-    private Locale browserLocaleHeuristic() {
+    private Locale browserLocaleHeuristic(final List<String> browserLangs) {
         Locale currentLocale = null;
         float currentWeigth = 0;
         Locale favLanguage = null;
