@@ -45,6 +45,7 @@ import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -62,8 +63,11 @@ public final class MakeOfferPage extends LoggedPage {
     @Optional
     private final Offer offer;
 
+    private final MakeOfferPageUrl url;
+
     public MakeOfferPage(final MakeOfferPageUrl url) {
         super(url);
+        this.url = url;
         this.feature = url.getFeature();
         this.offer = url.getOffer();
     }
@@ -95,6 +99,7 @@ public final class MakeOfferPage extends LoggedPage {
 
         layout.addRight(new SideBarFeatureBlock(feature));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         return layout;
     }

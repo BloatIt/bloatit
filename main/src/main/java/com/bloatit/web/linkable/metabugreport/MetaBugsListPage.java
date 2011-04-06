@@ -9,14 +9,16 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.members;
+package com.bloatit.web.linkable.metabugreport;
 
 import static com.bloatit.framework.webserver.Context.tr;
+
+import java.util.List;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.meta.MetaBugManager;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -26,25 +28,23 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.model.Member;
-import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
+import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
+import com.bloatit.web.url.MetaBugsListPageUrl;
 
-@ParamContainer("member/list")
-public final class MembersListPage extends MasterPage {
-    // Keep me here ! I am needed for the Url generation !
-    private HtmlPagedList<Member> pagedMemberList;
-    private final MembersListPageUrl url;
+@ParamContainer("meta/bugreport/list")
+public final class MetaBugsListPage extends MasterPage {
+    private final MetaBugsListPageUrl url;
 
-    public MembersListPage(final MembersListPageUrl url) {
+    public MetaBugsListPage(final MetaBugsListPageUrl url) {
         super(url);
         this.url = url;
     }
@@ -53,18 +53,22 @@ public final class MembersListPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
-        final PageIterable<Member> memberList = MemberManager.getAll();
-        final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Bugs list", 1);
 
-        // TODO: avoid conflict
-        final MembersListPageUrl clonedUrl = url.clone();
-        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
-        pageTitle.add(pagedMemberList);
-        pageTitle.add(new HtmlClearer());
+        List<String> bugList = MetaBugManager.getOpenBugs();
+
+
+        for(String bug: bugList) {
+            HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
+            bugBox.add(new HtmlMarkdownRenderer(bug));
+            pageTitle.add(bugBox);
+        }
+
+
 
         layout.addLeft(pageTitle);
+
         layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
@@ -113,7 +117,7 @@ public final class MembersListPage extends MasterPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        return MembersListPage.generateBreadcrumb();
+        return MetaBugsListPage.generateBreadcrumb();
     }
 
     public static Breadcrumb generateBreadcrumb() {

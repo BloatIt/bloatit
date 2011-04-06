@@ -35,6 +35,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -72,6 +73,7 @@ public class TeamPage extends MasterPage {
         layout.addLeft(generateMain());
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
     }

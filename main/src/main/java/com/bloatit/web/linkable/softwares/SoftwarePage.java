@@ -30,6 +30,7 @@ import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -60,6 +61,7 @@ public final class SoftwarePage extends MasterPage {
             throw new PageNotFoundException();
         }
         TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addRight(new SideBarBugReportBlock(url));
 
         try {
             HtmlTitle softwareName;
@@ -81,7 +83,7 @@ public final class SoftwarePage extends MasterPage {
             layout.addLeft(description);
         } catch (final UnauthorizedOperationException e) {
             session.notifyError("An error prevented us from displaying software information. Please notify us.");
-            throw new ShallNotPassException("User cannot access software information", e); 
+            throw new ShallNotPassException("User cannot access software information", e);
         }
 
         add(layout);
@@ -94,7 +96,7 @@ public final class SoftwarePage extends MasterPage {
                 return tr("Software - ") + software.getName();
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError("An error prevented us from displaying software name. Please notify us.");
-                throw new ShallNotPassException("User cannot access software name", e); 
+                throw new ShallNotPassException("User cannot access software name", e);
             }
         }
         return tr("Member - software error");
@@ -116,7 +118,7 @@ public final class SoftwarePage extends MasterPage {
             breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
         } catch (UnauthorizedOperationException e) {
             Context.getSession().notifyError("An error prevented us from displaying software name. Please notify us.");
-            throw new ShallNotPassException("User cannot access software name", e); 
+            throw new ShallNotPassException("User cannot access software name", e);
         }
 
         return breadcrumb;

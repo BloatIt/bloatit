@@ -30,6 +30,7 @@ public class FrameworkConfiguration {
     private final int mailSmtpPort;
     private final int xcgiListenport;
     private final int xcgiThreadsNumber;
+    private final String metaBugsDirStorage;
 
     private FrameworkConfiguration() {
         properties = ConfigurationManager.loadProperties("framework.properties");
@@ -53,6 +54,8 @@ public class FrameworkConfiguration {
         mailLogin = properties.getString("mail.login");
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
+
+        metaBugsDirStorage = SHARE_DIR + properties.getString("meta.bugs.dir.storage", "bug_storage");
     }
 
     /**
@@ -120,5 +123,9 @@ public class FrameworkConfiguration {
 
     public static int getXcgiThreadsNumber() {
         return configuration.xcgiThreadsNumber;
+    }
+
+    public static String getMetaBugsDirStorage() {
+        return configuration.metaBugsDirStorage;
     }
 }

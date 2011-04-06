@@ -14,6 +14,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -43,6 +44,7 @@ public class TeamsPage extends MasterPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
     }
