@@ -31,6 +31,7 @@ import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 
@@ -67,6 +68,10 @@ public final class ReleasePage extends MasterPage {
             attachementPara.add(new FileResourceUrl(files).getHtmlLink(files.getFileName()));
             attachementPara.addText(tr(": ") + files.getShortDescription());
             fileBloc.add(attachementPara);
+        }
+
+        if(release.canAddFile()) {
+            fileBloc.add(new AddAttachementPageUrl(release).getHtmlLink(tr("Add an attachement")));
         }
     }
 

@@ -89,7 +89,7 @@ public abstract class GenericPage extends Page {
 
     protected final void addNotifications(final Messages messages) {
         for (final Message message : messages) {
-            addNotification(new HtmlNotification(Level.FATAL, message.getMessage()));
+            session.notifyError(message.getMessage());
         }
     }
 

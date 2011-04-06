@@ -70,5 +70,4 @@ public class Release extends UserContent<DaoRelease> {
     }
 
 
-
 }

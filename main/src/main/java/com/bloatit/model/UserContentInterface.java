@@ -75,8 +75,9 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
 
     /**
      * Associate a file with this user content.
+     * @throws UnauthorizedOperationException
      */
-    void addFile(FileMetadata file);
+    void addFile(FileMetadata file) throws UnauthorizedOperationException;
 
     boolean isDeleted() throws UnauthorizedOperationException;
 
