@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,9 +49,23 @@ public class MetaBugManager {
 
         File[] bugFiles = dirFile.listFiles();
 
+
+        List<File> orderedFiles = Arrays.asList(bugFiles);
+
+
+        Collections.sort(orderedFiles, new Comparator<File>() {
+
+            @Override
+            public int compare(File o1, File o2) {
+                return Long.valueOf(o1.lastModified()).compareTo(Long.valueOf(o2.lastModified()));
+            }
+
+        });
+
+
         List<String> bugList = new ArrayList<String>();
 
-        for(File bugFile: bugFiles) {
+        for(File bugFile: orderedFiles) {
             try {
                 byte[] buffer = new byte[(int) bugFile.length()];
                 BufferedInputStream f = new BufferedInputStream(new FileInputStream(bugFile));
