@@ -12,13 +12,14 @@
 package com.bloatit.framework.utils.i18n;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.bloatit.common.ConfigurationManager;
+import com.bloatit.common.Log;
 import com.bloatit.framework.LocalesConfiguration;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 
@@ -35,8 +36,8 @@ import com.bloatit.framework.webserver.components.form.DropDownElement;
  * </p>
  */
 public final class Country implements Comparable<Country>, DropDownElement {
-    private static final String COUNTRIES_PATH = ConfigurationManager.SHARE_DIR + "locales/countries.properties";
-    private static final Set<Country> availableCountries = Collections.unmodifiableSet(createAvailableCountries());
+    private static Set<Country> availableCountries = Collections.unmodifiableSet(createAvailableCountries());
+    private static Date availableCountriesReload;
     private final String name;
     private final String code;
 
@@ -117,6 +118,13 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * @return a list of the available countries
      */
     public static Set<Country> getAvailableCountries() {
+        // We handle a small local cache as we store countries in a special set
+        // format. Reloading countries list shouldn't happen often, but you
+        // never know.
+        if (LocalesConfiguration.configuration.getLastReload().after(availableCountriesReload)) {
+            Log.framework().trace("Loading available countries list");
+            availableCountries = createAvailableCountries();
+        }
         return availableCountries;
     }
 
@@ -127,15 +135,13 @@ public final class Country implements Comparable<Country>, DropDownElement {
      */
     private static Set<Country> createAvailableCountries() {
         final TreeSet<Country> countries = new TreeSet<Country>();
-        System.out.println(COUNTRIES_PATH);
-        // final Properties properties =
-        // PropertyLoader.loadPropertiesAbsolute(COUNTRIES_PATH);
         final Properties properties = LocalesConfiguration.getCountries();
         for (final Entry<?, ?> property : properties.entrySet()) {
             final String key = (String) property.getKey();
             final String value = (String) property.getValue();
             countries.add(new Country(value, key));
         }
+        availableCountriesReload = new Date();
         return countries;
     }
 }
