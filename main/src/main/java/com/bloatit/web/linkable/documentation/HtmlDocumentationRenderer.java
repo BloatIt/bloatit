@@ -18,6 +18,8 @@ import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.WebConfiguration;
 
 public class HtmlDocumentationRenderer extends PlaceHolderElement {
+    private static final String DEFAULT_LANGUAGE = "en";
+
     /**
      * <p>
      * Store the html documents (after they've been converted from markdown)
@@ -47,12 +49,11 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         String path = dir + "/" + type.getPath() + "/" + key + "_" + language;
 
         if (!load(path)) {
-            if (language.equals("en")) {
-                path = dir + "/" + type.getPath() + "/" + key + "_en";
+            if (!language.equals(DEFAULT_LANGUAGE)) {
+                path = dir + "/" + type.getPath() + "/" + key + "_" + DEFAULT_LANGUAGE;
                 if (!load(path)) {
                     exist = false;
                     Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
-
                 } else {
                     String notify = Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead", key, language);
                     Context.getSession().notifyBad(notify);
@@ -71,6 +72,12 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         return exist;
     }
 
+    /**
+     * Loads the markdown file at <code>path</code>
+     * 
+     * @param path the path of the file to load
+     * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
+     */
     private boolean load(String path) {
         FileInputStream fis;
         try {
