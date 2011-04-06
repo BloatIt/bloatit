@@ -14,6 +14,7 @@ import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.UploadFileAction;
+import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
 import com.bloatit.web.linkable.admin.ConfigurationAdminAction;
 import com.bloatit.web.linkable.admin.ConfigurationAdminPage;
@@ -88,6 +89,7 @@ import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AddSoftwareActionUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
@@ -283,6 +285,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ConfigurationAdminPageUrl.getName())) {
             return new ConfigurationAdminPage(new ConfigurationAdminPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AdminHomePageUrl.getName())) {
+            return new AdminHomePage(new AdminHomePageUrl(params, session.getParameters()));
         }
 
         // Actions
