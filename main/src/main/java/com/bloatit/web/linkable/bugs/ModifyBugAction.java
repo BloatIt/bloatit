@@ -15,7 +15,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;

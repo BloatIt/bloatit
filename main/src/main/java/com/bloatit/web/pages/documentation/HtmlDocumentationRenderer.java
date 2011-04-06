@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;

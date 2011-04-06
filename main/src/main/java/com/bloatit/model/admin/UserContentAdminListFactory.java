@@ -3,8 +3,8 @@ package com.bloatit.model.admin;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
 import com.bloatit.data.queries.DaoUserContentQuery;
-import com.bloatit.model.Team;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
 

@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.bloatit.common.PropertyLoader;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 

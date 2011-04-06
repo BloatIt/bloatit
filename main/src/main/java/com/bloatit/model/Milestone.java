@@ -22,11 +22,11 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Locale;
 
-import com.bloatit.data.DaoMilestone;
-import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
+import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.PageIterable;

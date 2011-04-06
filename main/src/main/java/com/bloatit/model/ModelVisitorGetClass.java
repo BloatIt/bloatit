@@ -17,7 +17,6 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoBankTransaction;
-import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
@@ -30,6 +29,7 @@ import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;

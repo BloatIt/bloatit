@@ -1,8 +1,8 @@
 package com.bloatit.model;
 
 import com.bloatit.common.ConfigurationManager;
-import com.bloatit.common.MasterConfiguration;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.MasterConfiguration;
 
 public class ModelConfiguration extends MasterConfiguration {
     public static ModelConfiguration configuration = new ModelConfiguration();

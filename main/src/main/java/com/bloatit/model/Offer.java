@@ -21,10 +21,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;

@@ -14,7 +14,6 @@ package com.bloatit.web.actions;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;

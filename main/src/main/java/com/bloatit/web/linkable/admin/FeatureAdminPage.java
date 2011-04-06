@@ -4,7 +4,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;

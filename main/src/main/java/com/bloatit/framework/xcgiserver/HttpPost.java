@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.xcgiserver.postparsing.PostParameter;
