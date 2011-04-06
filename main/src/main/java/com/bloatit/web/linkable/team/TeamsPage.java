@@ -9,6 +9,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
+import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
@@ -50,7 +51,7 @@ public class TeamsPage extends MasterPage {
     }
 
     private HtmlElement generateMain() {
-        final HtmlDiv master = new HtmlDiv();
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Teams list"), 1);
         master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 
         final PageIterable<Team> teamList = TeamManager.getAll();
