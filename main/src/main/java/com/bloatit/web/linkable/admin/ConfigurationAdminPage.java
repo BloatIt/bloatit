@@ -92,11 +92,8 @@ public class ConfigurationAdminPage extends AdminPage {
     @Override
     protected Breadcrumb getBreadcrumb() {
         Breadcrumb breadcrumb = new Breadcrumb();
-
-        // TODO Add admin home page
         breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink("Admin"));
         breadcrumb.pushLink(url.getHtmlLink("Configuration"));
-
         return breadcrumb;
     }
 
