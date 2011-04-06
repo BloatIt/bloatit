@@ -44,6 +44,7 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
@@ -93,7 +94,7 @@ public class ConfigurationAdminPage extends AdminPage {
         Breadcrumb breadcrumb = new Breadcrumb();
 
         // TODO Add admin home page
-        breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink("Admin"));
+        breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink("Admin"));
         breadcrumb.pushLink(url.getHtmlLink("Configuration"));
 
         return breadcrumb;
@@ -129,7 +130,7 @@ public class ConfigurationAdminPage extends AdminPage {
                 case NAME:
                     return new HtmlText(Context.tr("Configuration"));
                 case DATE:
-                    return new HtmlText(Context.tr("Last modified"));
+                    return new HtmlText(Context.tr("Last reload"));
                 case ACTION:
                     return new HtmlText(Context.tr("Reload"));
                 default:
