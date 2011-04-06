@@ -9,7 +9,7 @@ import com.bloatit.common.MasterConfiguration;
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- * 
+ *
  * @author thomas
  */
 public class FrameworkConfiguration extends MasterConfiguration {
@@ -25,10 +25,10 @@ public class FrameworkConfiguration extends MasterConfiguration {
     private String mailFrom;
     private String sessionDumpfile;
     private String mailSmtpHost;
-    private int mailSmptSocketFactoryPort;
+    private String mailSmptSocketFactoryPort;
     private String mailSmtpSoketFactoryClass;
-    private Boolean mailSmtpAuth;
-    private int mailSmtpPort;
+    private String mailSmtpAuth;
+    private String mailSmtpPort;
     private int xcgiListenport;
     private int xcgiThreadsNumber;
     private String metaBugsDirStorage;
@@ -74,7 +74,7 @@ public class FrameworkConfiguration extends MasterConfiguration {
         return configuration.mailSmtpHost;
     }
 
-    public static int getMailSmptSocketFactoryPort() {
+    public static String getMailSmptSocketFactoryPort() {
         return configuration.mailSmptSocketFactoryPort;
     }
 
@@ -82,11 +82,11 @@ public class FrameworkConfiguration extends MasterConfiguration {
         return configuration.mailSmtpSoketFactoryClass;
     }
 
-    public static Boolean getMailSmtpAuth() {
+    public static String getMailSmtpAuth() {
         return configuration.mailSmtpAuth;
     }
 
-    public static int getMailSmtpPort() {
+    public static String getMailSmtpPort() {
         return configuration.mailSmtpPort;
     }
 
@@ -119,10 +119,10 @@ public class FrameworkConfiguration extends MasterConfiguration {
         mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
         mailDirSend = SHARE_DIR + properties.getString("mail.dir.send", "sent_mail");
         mailSmtpHost = properties.getString("mail.smtp.host");
-        mailSmptSocketFactoryPort = properties.getInt("mail.smtp.socketFactory.port");
+        mailSmptSocketFactoryPort = properties.getString("mail.smtp.socketFactory.port");
         mailSmtpSoketFactoryClass = properties.getString("mail.smtp.socketFactory.class");
-        mailSmtpAuth = properties.getBoolean("mail.smtp.auth");
-        mailSmtpPort = properties.getInt("mail.smtp.port");
+        mailSmtpAuth = properties.getString("mail.smtp.auth");
+        mailSmtpPort = properties.getString("mail.smtp.port");
         mailLogin = properties.getString("mail.login");
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");

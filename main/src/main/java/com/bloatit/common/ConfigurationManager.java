@@ -122,7 +122,6 @@ public class ConfigurationManager {
 
         private <T> T getSome(final String key, final Class<T> clazz) {
             String property = prop.getProperty(key);
-            Log.framework().info("Loading property: " + key + ", value: " + property);
             if (property != null) {
                 property = property.trim();
                 try {
