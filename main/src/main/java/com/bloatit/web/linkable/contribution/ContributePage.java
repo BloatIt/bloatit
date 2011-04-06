@@ -30,6 +30,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Feature;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -73,6 +74,7 @@ public final class ContributePage extends LoggedPage {
 
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         return layout;
     }

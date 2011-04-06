@@ -8,6 +8,7 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
+import com.bloatit.web.url.MetaBugsListPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 
@@ -28,7 +29,7 @@ public class Footer extends HtmlDiv {
             // TeamsPageUrl().getHtmlLink(Context.tr("Teams"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new MembersListPageUrl().getHtmlLink(Context.tr("Members"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Software list"))));
-            linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Signal a bug"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new MetaBugsListPageUrl().getHtmlLink(Context.tr("Signal a bug"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Contacts"))));
 
         }

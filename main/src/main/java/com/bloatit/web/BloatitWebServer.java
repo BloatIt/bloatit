@@ -44,6 +44,8 @@ import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
 import com.bloatit.web.linkable.messages.MessageListPage;
+import com.bloatit.web.linkable.metabugreport.MetaBugsListPage;
+import com.bloatit.web.linkable.metabugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.PaylineAction;
@@ -120,6 +122,8 @@ import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MessageListPageUrl;
+import com.bloatit.web.url.MetaBugsListPageUrl;
+import com.bloatit.web.url.MetaReportBugActionUrl;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
@@ -265,6 +269,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(MilestoneAdminPageUrl.getName())) {
             return new MilestoneAdminPage(new MilestoneAdminPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(MetaBugsListPageUrl.getName())) {
+            return new MetaBugsListPage(new MetaBugsListPageUrl(params, session.getParameters()));
+        }
         if (pageCode.equals(ConfigurationAdminPageUrl.getName())) {
             return new ConfigurationAdminPage(new ConfigurationAdminPageUrl(params, session.getParameters()));
         }
@@ -360,6 +367,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ConfigurationAdminActionUrl.getName())) {
             return new ConfigurationAdminAction(new ConfigurationAdminActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MetaReportBugActionUrl.getName())) {
+            return new MetaReportBugAction(new MetaReportBugActionUrl(params, session.getParameters()));
         }
 
         // Process

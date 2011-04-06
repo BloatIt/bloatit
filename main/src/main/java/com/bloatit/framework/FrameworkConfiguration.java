@@ -31,6 +31,7 @@ public class FrameworkConfiguration extends MasterConfiguration {
     private int mailSmtpPort;
     private int xcgiListenport;
     private int xcgiThreadsNumber;
+    private String metaBugsDirStorage;
 
     private FrameworkConfiguration() {
         super();
@@ -97,6 +98,10 @@ public class FrameworkConfiguration extends MasterConfiguration {
         return configuration.xcgiThreadsNumber;
     }
 
+    public static String getMetaBugsDirStorage() {
+        return configuration.metaBugsDirStorage;
+    }
+
     protected void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("framework.properties");
 
@@ -107,6 +112,8 @@ public class FrameworkConfiguration extends MasterConfiguration {
         ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
         // Sessions.
         sessionDumpfile = SHARE_DIR + properties.getString("session.dumpfile", "sessions.dump");
+        // Bugs
+        metaBugsDirStorage = SHARE_DIR + properties.getString("meta.bugs.dir.storage", "bug_storage");
 
         // Mail configuration
         mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
@@ -120,8 +127,8 @@ public class FrameworkConfiguration extends MasterConfiguration {
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
     }
-    
-    public static void load(){
+
+    public static void load() {
         configuration.loadConfiguration();
     }
 

@@ -63,7 +63,7 @@ public class ConfigurationManager {
      * The <code>name</code> of the property file is the name of the file, or
      * the path from the root of the configuration directory.
      * </p>
-     * 
+     *
      * @param name the name of the property file
      * @return a map key -> value
      */

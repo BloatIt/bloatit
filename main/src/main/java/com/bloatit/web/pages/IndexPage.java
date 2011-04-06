@@ -25,6 +25,7 @@ import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -34,8 +35,11 @@ import com.bloatit.web.url.IndexPageUrl;
 @ParamContainer("index")
 public final class IndexPage extends MasterPage {
 
-    public IndexPage(final IndexPageUrl indexPageUrl) {
-        super(indexPageUrl);
+    private final IndexPageUrl url;
+
+    public IndexPage(final IndexPageUrl url) {
+        super(url);
+        this.url = url;
     }
 
     @Override
@@ -108,6 +112,7 @@ public final class IndexPage extends MasterPage {
 
         twoColumnLayout.addLeft(featureList);
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
+        twoColumnLayout.addRight(new SideBarBugReportBlock(url));
         add(twoColumnLayout);
     }
 
