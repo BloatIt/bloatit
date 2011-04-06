@@ -15,6 +15,11 @@ import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.UploadFileAction;
+import com.bloatit.web.linkable.admin.ConfigurationAdminPage;
+import com.bloatit.web.linkable.admin.FeatureAdminPage;
+import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
+import com.bloatit.web.linkable.admin.MilestoneAdminPage;
+import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -72,10 +77,6 @@ import com.bloatit.web.pages.MakeOfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
-import com.bloatit.web.pages.admin.FeatureAdminPage;
-import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
-import com.bloatit.web.pages.admin.MilestoneAdminPage;
-import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
@@ -90,6 +91,7 @@ import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
+import com.bloatit.web.url.ConfigurationAdminPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
@@ -268,8 +270,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(MetaBugsListPageUrl.getName())) {
             return new MetaBugsListPage(new MetaBugsListPageUrl(params, session.getParameters()));
         }
-
-
+        if (pageCode.equals(ConfigurationAdminPageUrl.getName())) {
+            return new ConfigurationAdminPage(new ConfigurationAdminPageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -386,7 +389,7 @@ public class BloatitWebServer extends WebServer {
 
     @Override
     public boolean initialize() {
-        WebConfiguration.loadConfiguration();
+        WebConfiguration.load();
         return true;
     }
 }

@@ -19,8 +19,8 @@ import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContent;
-import com.bloatit.web.pages.admin.AdminActionManager;
-import com.bloatit.web.pages.admin.DisplayableState;
+import com.bloatit.web.linkable.admin.AdminActionManager;
+import com.bloatit.web.linkable.admin.DisplayableState;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 

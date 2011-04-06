@@ -92,7 +92,6 @@ public class JsShowHide {
                 ArrayList<String> customJsList = new ArrayList<String>();
                 customJsList.add(WebConfiguration.getJsJquery());
                 customJsList.add(WebConfiguration.getJsJqueryUi());
-                // TODO: add in config file
                 return customJsList;
             }
 

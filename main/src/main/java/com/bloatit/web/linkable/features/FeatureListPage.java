@@ -85,7 +85,6 @@ public final class FeatureListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         // Search block
-
         TwoColumnLayout layout = new TwoColumnLayout(true);
         add(layout);
 
@@ -248,7 +247,6 @@ public final class FeatureListPage extends MasterPage {
             }
             layout.addLeft(noResultBlock);
         }
-
     }
 
     @Override

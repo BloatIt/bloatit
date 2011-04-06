@@ -18,8 +18,11 @@ import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
+import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
+import com.bloatit.framework.webserver.components.writers.SimpleHtmlStream;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.web.HtmlTools;
+import com.bloatit.web.WebConfiguration;
 
 public final class HttpResponse {
     /**
@@ -77,7 +80,7 @@ public final class HttpResponse {
      * this method when everything is OK. When an error occurs, call this method
      * to set the error status to its new value.
      * </p>
-     *
+     * 
      * @param status the new status
      */
     public void setStatus(final StatusCode status) {
@@ -111,6 +114,13 @@ public final class HttpResponse {
         closeHeaders();
     }
 
+    private QueryResponseStream buildHtmlStream(OutputStream outputStream) {
+        if (WebConfiguration.isHtmlMinified()) {
+            return new SimpleHtmlStream(outputStream);
+        }
+        return new IndentedHtmlStream(outputStream);
+    }
+
     public void writePage(final Page page) throws IOException {
         writeCookies();
 
@@ -122,7 +132,7 @@ public final class HttpResponse {
             writeLine("Content-Encoding: gzip");
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             GZIPOutputStream gzipStream = new GZIPOutputStream(buffer);
-            IndentedHtmlStream htmlText = new IndentedHtmlStream(gzipStream);
+            QueryResponseStream htmlText = buildHtmlStream(gzipStream);
 
             page.write(htmlText);
             gzipStream.flush();
@@ -134,14 +144,11 @@ public final class HttpResponse {
             closeHeaders();
             output.write(byteArray);
         } else {
-            IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
+            QueryResponseStream htmlText = buildHtmlStream(output);
 
             closeHeaders();
             page.write(htmlText);
         }
-
-
-
 
     }
 
@@ -149,7 +156,7 @@ public final class HttpResponse {
 
         writeLine("Content-Disposition: inline; filename=" + fileName);
         writeLine("Vary: Accept-Encoding");
-        //writeLine("Cache-Control: max-age=31104000");
+        // writeLine("Cache-Control: max-age=31104000");
 
         // Allow to resume the download
         writeLine("Accept-Ranges: bytes");
@@ -180,7 +187,6 @@ public final class HttpResponse {
         closeHeaders();
     }
 
-
     /**
      * <p>
      * Writes a rest resource into an HttpResponse
@@ -199,7 +205,7 @@ public final class HttpResponse {
      * goes haywire, think to set a correct status using the method
      * {@link #setStatus(StatusCode)}
      * </p>
-     *
+     * 
      * @param resource the resource to write
      * @throws IOException whenever an IO error occurs on the underlying stream
      * @see #setStatus(StatusCode)
@@ -224,7 +230,7 @@ public final class HttpResponse {
 
     /**
      * Writes a rest error based on the <code>exception</code>
-     *
+     * 
      * @param exception the exception describing the error
      * @throws IOException when an IO error occurs
      */
@@ -241,7 +247,7 @@ public final class HttpResponse {
      * <p>
      * Writes a rest error
      * </p>
-     *
+     * 
      * @see {@link #writeRestError(RestException)}
      */
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {

@@ -566,6 +566,4 @@ public final class CheckContributionPage extends LoggedPage {
 
         return breadcrumb;
     }
-
-
 }
