@@ -39,8 +39,6 @@ import com.bloatit.model.Member;
  * </p>
  */
 public final class Localizator {
-    /** Path of the files containing available languages */
-    private static final String LANGUAGES_PATH = "i18n/languages";
     /** For parsing of available languages file */
     private static final String LANGUAGE_CODE = "code";
     /** Default user locale */
@@ -49,6 +47,7 @@ public final class Localizator {
     private static final String SEPARATORS_REGEX = "[_-]";
 
     private static Map<String, LanguageDescriptor> availableLanguages = Collections.unmodifiableMap(initLanguageList());
+    private static Date availableLanguagesReload;
 
     private Locale locale;
     private final I18n i18n;
@@ -257,6 +256,10 @@ public final class Localizator {
      * @return a list with all the language descriptors
      */
     public static Map<String, LanguageDescriptor> getAvailableLanguages() {
+        if(LocalesConfiguration.configuration.getLastReload().after(availableLanguagesReload)) {
+            Log.framework().trace("Reloading languages configuration file");
+            availableLanguages = initLanguageList();
+        }
         return availableLanguages;
     }
 
@@ -290,7 +293,8 @@ public final class Localizator {
                 ld.name = value;
             }
         }
-
+        availableLanguagesReload = new Date();
+        
         return languages;
     }
 
