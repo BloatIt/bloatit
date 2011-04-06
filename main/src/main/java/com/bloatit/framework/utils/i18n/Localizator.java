@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import net.sf.cglib.core.Local;
+
 import org.slf4j.helpers.MessageFormatter;
 import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
@@ -54,6 +56,13 @@ public final class Localizator {
 
     // translations cache
     private static final Map<Locale, I18n> localesCache = Collections.synchronizedMap(new HashMap<Locale, I18n>());
+
+    static {
+        // Java default is used as a fallback for gettext.
+        // We use english as the default fallback language for when we don't
+        // have the current user language
+        Locale.setDefault(new Locale("en", "US"));
+    }
 
     public Localizator(final String urlLang, final List<String> browserLangs) {
         this.locale = inferLocale(urlLang, browserLangs);
@@ -252,7 +261,7 @@ public final class Localizator {
      * @return a list with all the language descriptors
      */
     public static Map<String, LanguageDescriptor> getAvailableLanguages() {
-        if(LocalesConfiguration.configuration.getLastReload().after(availableLanguagesReload)) {
+        if (LocalesConfiguration.configuration.getLastReload().after(availableLanguagesReload)) {
             Log.framework().trace("Reloading languages configuration file");
             availableLanguages = initLanguageList();
         }
@@ -290,7 +299,7 @@ public final class Localizator {
             }
         }
         availableLanguagesReload = new Date();
-        
+
         return languages;
     }
 
@@ -383,8 +392,8 @@ public final class Localizator {
         locale = member.getLocaleUnprotected();
         this.i18n = localesCache.get(locale);
     }
-    
-    public void forceLanguage(Locale language){
+
+    public void forceLanguage(Locale language) {
         locale = new Locale(language.getLanguage(), locale.getCountry());
         this.i18n = localesCache.get(locale);
     }
