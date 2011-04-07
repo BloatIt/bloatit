@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.trn;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -32,20 +33,25 @@ public class FeaturesTools {
     }
 
     public static HtmlDiv generateProgress(Feature feature) throws UnauthorizedOperationException {
-        return generateProgress(feature, false);
+        return generateProgress(feature, false,  BigDecimal.ZERO);
+    }
+
+    public static HtmlDiv generateProgress(Feature feature, boolean slim) throws UnauthorizedOperationException{
+            return generateProgress(feature, slim, BigDecimal.ZERO);
     }
 
     /**
      * @return
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(Feature feature, boolean slim) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(Feature feature, boolean slim, BigDecimal futureAmount) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("summary_progress");
         {
             // Progress bar
 
             float progressValue = (float) Math.floor(feature.getProgression());
             float myProgressValue = 0;
+            float futureProgressValue = 0;
 
             if (Context.getSession().isLogged()) {
                 myProgressValue = feature.getMemberProgression(Context.getSession().getAuthToken().getMember());
@@ -56,12 +62,25 @@ public class FeaturesTools {
                 myProgressValue = (float) Math.floor(myProgressValue);
             }
 
-            float cappedProgressValue = progressValue;
-            if (cappedProgressValue > FeatureImplementation.PROGRESSION_PERCENT) {
-                cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT;
+            if(!futureAmount.equals(BigDecimal.ZERO)) {
+                futureProgressValue = feature.getRelativeProgression(futureAmount);
+                if (futureProgressValue > 0.0f && futureProgressValue < 5f) {
+                    futureProgressValue = 5f;
+
+                }
+                futureProgressValue = (float) Math.floor(futureProgressValue);
+
             }
 
-            final HtmlProgressBar progressBar = new HtmlProgressBar(slim, cappedProgressValue - myProgressValue, cappedProgressValue);
+
+            float cappedProgressValue = progressValue;
+            if (cappedProgressValue + futureProgressValue > FeatureImplementation.PROGRESSION_PERCENT) {
+                cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT - futureProgressValue;
+            }
+
+
+
+            final HtmlProgressBar progressBar = new HtmlProgressBar(slim, cappedProgressValue - myProgressValue, cappedProgressValue, cappedProgressValue + futureProgressValue);
             featureSummaryProgress.add(progressBar);
 
             // Progress text
@@ -173,5 +192,4 @@ public class FeaturesTools {
         }
         return featureSummaryDetails;
     }
-
 }

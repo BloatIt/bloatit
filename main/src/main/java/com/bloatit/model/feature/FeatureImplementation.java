@@ -585,7 +585,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getProgression()
+     * @see com.bloatit.model.Feature#getMemberProgression()
      */
     @Override
     public float getMemberProgression(Member member) throws UnauthorizedOperationException {
@@ -609,6 +609,21 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
 
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.Feature#getRelativeProgression()
+     */
+    @Override
+    public float getRelativeProgression(BigDecimal amount) throws UnauthorizedOperationException {
+        tryAccess(new FeatureRight.Contribute(), Action.READ);
+
+
+        float memberAmountFloat = amount.floatValue();
+        float totalAmountFloat = getContribution().floatValue();
+        float progression = getProgression();
+
+        return progression*memberAmountFloat/totalAmountFloat;
+    }
 
 
     /*
