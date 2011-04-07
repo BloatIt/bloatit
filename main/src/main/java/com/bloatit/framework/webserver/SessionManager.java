@@ -28,6 +28,7 @@ import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.right.AuthToken;
 
 /**
@@ -36,6 +37,7 @@ import com.bloatit.model.right.AuthToken;
 public final class SessionManager {
     private static Map<UUID, Session> activeSessions = new HashMap<UUID, Session>();
     private static Map<String, Session> temporarySessions = new HashMap<String, Session>();
+    /** Time to next cleaning up in seconds **/
     private static long nextCleanExpiredSession = 0;
 
     private SessionManager() {
@@ -180,7 +182,7 @@ public final class SessionManager {
     public static synchronized void clearExpiredSessions() {
         if (nextCleanExpiredSession < Context.getResquestTime()) {
             performClearExpiredSessions();
-            nextCleanExpiredSession = Context.getResquestTime() + FrameworkConfiguration.getSessionCleanTime();
+            nextCleanExpiredSession = Context.getResquestTime() + FrameworkConfiguration.getSessionCleanTime() * DateUtils.SECOND_PER_DAY;
         }
     }
 

@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.ErrorMessage.Level;
 import com.bloatit.framework.webserver.annotations.Message;
@@ -62,7 +63,7 @@ public final class Session {
     private Url lastVisitedPage;
 
     private final SessionParameters parameters = new SessionParameters();
-    
+
     @SuppressWarnings("unchecked")
     private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
 
@@ -91,9 +92,9 @@ public final class Session {
 
     public synchronized void resetExpirationTime() {
         if (isLogged()) {
-            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration();
+            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration() * DateUtils.SECOND_PER_DAY;
         } else {
-            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionDefaultDuration();
+            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionDefaultDuration() * DateUtils.SECOND_PER_DAY;
         }
     }
 
