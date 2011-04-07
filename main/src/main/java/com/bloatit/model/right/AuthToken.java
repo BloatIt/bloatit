@@ -26,6 +26,7 @@ import org.hibernate.classic.Session;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.SessionManager;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 
@@ -34,7 +35,7 @@ import com.bloatit.model.managers.MemberManager;
  * tell a {@link RestrictedObject} class which user is using it.
  */
 public final class AuthToken {
-    private final Member member;
+    private final int memberId;
     private final UUID key;
 
     /**
@@ -46,7 +47,7 @@ public final class AuthToken {
     public AuthToken(final String login, final String password) throws NotFoundException {
         final Member tmp = MemberManager.getByLoginAndPassword(login, password);
         if (tmp == null) {
-            Log.model().warn("Authentication error with login " + login);
+            Log.model().info("Authentication error with login " + login);
             throw new NotFoundException("Identification or authentication failed");
         }
 
@@ -56,7 +57,7 @@ public final class AuthToken {
             throw new NotFoundException("Authentication with inactive or deleted account.");
         }
 
-        member = tmp;
+        memberId = tmp.getId();
         key = UUID.randomUUID();
     }
 
@@ -72,12 +73,12 @@ public final class AuthToken {
         if (tmp == null) {
             throw new NotFoundException("Identification failed");
         }
-        member = tmp;
+        this.memberId = memberId;
         key = UUID.randomUUID();
     }
 
     public AuthToken(final Member member) {
-        this.member = member;
+        this.memberId = member.getId();
         key = UUID.randomUUID();
     }
 
@@ -95,16 +96,7 @@ public final class AuthToken {
      * @return the member that is authenticated by this token.
      */
     public Member getMember() {
-        final Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        if (!currentSession.getTransaction().isActive() || currentSession.contains(member.getDao())) {
-            return member;
-        }
-        final Member memberById = MemberManager.getById(member.getId());
-        return memberById;
-    }
-
-    public Member getNonPersistantMember() {
-        return member;
+        return MemberManager.getById(memberId);
     }
 
 }
