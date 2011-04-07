@@ -42,7 +42,7 @@ import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
-import com.bloatit.web.linkable.login.RegisterAction;
+import com.bloatit.web.linkable.login.SignUpAction;
 import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
@@ -148,12 +148,12 @@ import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
+import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
@@ -321,8 +321,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(CreateFeatureActionUrl.getName())) {
             return new CreateFeatureAction(new CreateFeatureActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(RegisterActionUrl.getName())) {
-            return new RegisterAction(new RegisterActionUrl(params, session.getParameters()));
+        if (pageCode.equals(SignUpActionUrl.getName())) {
+            return new SignUpAction(new SignUpActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PopularityVoteActionUrl.getName())) {
             return new PopularityVoteAction(new PopularityVoteActionUrl(params, session.getParameters()));

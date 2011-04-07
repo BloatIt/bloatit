@@ -7,12 +7,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-
-import net.sf.cglib.core.Local;
-
-import antlr.Lookahead;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
@@ -23,166 +18,196 @@ import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.WebConfiguration;
 
 public class HtmlDocumentationRenderer extends PlaceHolderElement {
-    private static final String DEFAULT_LANGUAGE = "en";
+	private static final String DEFAULT_LANGUAGE = "en";
 
-    /**
-     * <p>
-     * Store the html documents (after they've been converted from markdown)
-     * </p>
-     */
-    private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections.synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
-    private final boolean exist;
+	/**
+	 * <p>
+	 * Store the html documents (after they've been converted from markdown)
+	 * </p>
+	 */
+	private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections
+			.synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
+	private final boolean exist;
 
-    public enum DocumentationType {
-        FRAME("frame"), MAIN_DOC("main");
+	public enum DocumentationType {
+		FRAME("frame"), MAIN_DOC("main");
 
-        private final String path;
+		private final String path;
 
-        DocumentationType(String path) {
-            this.path = path;
-        }
+		DocumentationType(String path) {
+			this.path = path;
+		}
 
-        public String getPath() {
-            return path;
-        }
-        
-        public String toString() {
-            return getPath();
-        }
-    }
+		public String getPath() {
+			return path;
+		}
 
-    public HtmlDocumentationRenderer(DocumentationType type, String key) {
-        final String dir = WebConfiguration.getDocumentationDir();
-        final String language = Context.getLocalizator().getLanguageCode();
+		public String toString() {
+			return getPath();
+		}
+	}
 
-        String path = dir + "/" + type.getPath() + "/" + key + "_" + language;
+	public HtmlDocumentationRenderer(DocumentationType type, String key) {
+		final String dir = WebConfiguration.getDocumentationDir();
+		final String language = Context.getLocalizator().getLanguageCode();
 
-        if (!load(path)) {
-            if (!language.equals(DEFAULT_LANGUAGE)) {
-                path = dir + "/" + type.getPath() + "/" + key + "_" + DEFAULT_LANGUAGE;
-                if (!load(path)) {
-                    exist = false;
-                    Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
-                    Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist");
-                } else {
-                    Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist in language " + language);
-                    String notify = Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead", key, language);
-                    Context.getSession().notifyBad(notify);
-                    exist = true;
-                }
-            } else {
-                exist = false;
-                Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist");
-                Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
-            }
-        } else {
-            exist = true;
-        }
-    }
+		String path = dir + "/" + type.getPath() + "/" + key + "_" + language;
 
-    public boolean isExists() {
-        return exist;
-    }
+		if (!load(path)) {
+			if (!language.equals(DEFAULT_LANGUAGE)) {
+				path = dir + "/" + type.getPath() + "/" + key + "_"
+						+ DEFAULT_LANGUAGE;
+				if (!load(path)) {
+					exist = false;
+					Context.getSession().notifyBad(
+							Context.tr(
+									"Documentation entry {0} doesn''t exist.",
+									key));
+					Log.web().warn(
+							"Documentation file " + type + "/" + key
+									+ " doesn't exist");
+				} else {
+					Log.web().warn(
+							"Documentation file " + type + "/" + key
+									+ " doesn't exist in language " + language);
+					String notify = Context
+							.tr("Documentation file {0} doesn''t exist in language {1}, using english instead",
+									key, language);
+					Context.getSession().notifyBad(notify);
+					exist = true;
+				}
+			} else {
+				exist = false;
+				Log.web().warn(
+						"Documentation file " + type + "/" + key
+								+ " doesn't exist");
+				Context.getSession().notifyBad(
+						Context.tr("Documentation entry {0} doesn''t exist.",
+								key));
+			}
+		} else {
+			exist = true;
+		}
+	}
 
-    /**
-     * Loads the markdown file at <code>path</code>
-     * 
-     * @param path the path of the file to load
-     * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
-     */
-    private boolean load(String path) {
-        FileInputStream fis;
-        try {
-            File targetFile = new File(path);
+	public boolean isExists() {
+		return exist;
+	}
 
-            if (!targetFile.exists()) {
-                Log.framework().warn("User tried to access doc file " + targetFile.getName() + " but it doesn't exist.");
-                return false;
-            }
-            fis = new FileInputStream(targetFile);
+	/**
+	 * Loads the markdown file at <code>path</code>
+	 * 
+	 * @param path
+	 *            the path of the file to load
+	 * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
+	 */
+	private boolean load(String path) {
+		FileInputStream fis;
+		try {
+			File targetFile = new File(path);
 
-            final MarkdownDocumentationMarker mdm = new MarkdownDocumentationMarker(path);
-            final MarkdownDocumentationContent mdc = cache.get(mdm);
+			if (!targetFile.exists()) {
+				Log.framework().warn(
+						"User tried to access doc file " + targetFile.getName()
+								+ " but it doesn't exist.");
+				return false;
+			}
+			fis = new FileInputStream(targetFile);
 
-            if (mdc == null || mdc.savedDate.before(new Date(targetFile.lastModified()))) {
-                // No content, or content has been saved before the file was
-                // last modified
-                Log.framework().trace("Reading from the markdown documentation file " + path);
-                final byte[] b = new byte[fis.available()];
-                fis.read(b);
-                final String markDownContent = new String(b);
-                final HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(markDownContent);
-                cache.put(mdm, new MarkdownDocumentationContent(new Date(), content.getRendereredContent()));
-                add(content);
-            } else {
-                Log.framework().trace("Using cache for documentation file " + path);
-                add(new XmlText(mdc.htmlString));
-            }
-            return true;
+			final MarkdownDocumentationMarker mdm = new MarkdownDocumentationMarker(
+					path);
+			final MarkdownDocumentationContent mdc = cache.get(mdm);
 
-        } catch (final FileNotFoundException e) {
-            // User asked a wrong documentation file
-            Log.web().warn("A user tries to access documentation file " + path + " but file is not available.");
-            return false;
-        } catch (final IOException e) {
-            throw new ExternalErrorException("An error occured while parsing the documentation file " + path, e);
-        }
-    }
+			if (mdc == null
+					|| mdc.savedDate
+							.before(new Date(targetFile.lastModified()))) {
+				// No content, or content has been saved before the file was
+				// last modified
+				Log.framework().trace(
+						"Reading from the markdown documentation file " + path);
+				final byte[] b = new byte[fis.available()];
+				fis.read(b);
+				final String markDownContent = new String(b);
+				final HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(
+						markDownContent);
+				cache.put(mdm, new MarkdownDocumentationContent(new Date(),
+						content.getRendereredContent()));
+				add(content);
+			} else {
+				Log.framework().trace(
+						"Using cache for documentation file " + path);
+				add(new XmlText(mdc.htmlString));
+			}
+			return true;
 
-    /**
-     * Nested class used as a key to cache parsed content
-     */
-    private class MarkdownDocumentationMarker {
-        public String path;
+		} catch (final FileNotFoundException e) {
+			// User asked a wrong documentation file
+			Log.web().warn(
+					"A user tries to access documentation file " + path
+							+ " but file is not available.");
+			return false;
+		} catch (final IOException e) {
+			throw new ExternalErrorException(
+					"An error occured while parsing the documentation file "
+							+ path, e);
+		}
+	}
 
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((path == null) ? 0 : path.hashCode());
-            return result;
-        }
+	/**
+	 * Nested class used as a key to cache parsed content
+	 */
+	private class MarkdownDocumentationMarker {
+		public String path;
 
-        @Override
-        public boolean equals(final Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final MarkdownDocumentationMarker other = (MarkdownDocumentationMarker) obj;
-            if (path == null) {
-                if (other.path != null) {
-                    return false;
-                }
-            } else if (!path.equals(other.path)) {
-                return false;
-            }
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((path == null) ? 0 : path.hashCode());
+			return result;
+		}
 
-            return true;
-        }
+		@Override
+		public boolean equals(final Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			final MarkdownDocumentationMarker other = (MarkdownDocumentationMarker) obj;
+			if (path == null) {
+				if (other.path != null) {
+					return false;
+				}
+			} else if (!path.equals(other.path)) {
+				return false;
+			}
 
-        public MarkdownDocumentationMarker(final String path) {
-            super();
-            this.path = path;
-        }
-    }
+			return true;
+		}
 
-    /**
-     * Nested class used as a MapEntry.value to cache parsed markdown content
-     */
-    private class MarkdownDocumentationContent {
-        public Date savedDate;
-        public String htmlString;
+		public MarkdownDocumentationMarker(final String path) {
+			super();
+			this.path = path;
+		}
+	}
 
-        public MarkdownDocumentationContent(final Date savedDate, final String htmlString) {
-            super();
-            this.savedDate = savedDate;
-            this.htmlString = htmlString;
-        }
-    }
+	/**
+	 * Nested class used as a MapEntry.value to cache parsed markdown content
+	 */
+	private class MarkdownDocumentationContent {
+		public Date savedDate;
+		public String htmlString;
+
+		public MarkdownDocumentationContent(final Date savedDate,
+				final String htmlString) {
+			super();
+			this.savedDate = savedDate;
+			this.htmlString = htmlString;
+		}
+	}
 }
