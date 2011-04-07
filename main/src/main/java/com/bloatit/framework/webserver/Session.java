@@ -65,7 +65,7 @@ public final class Session {
     /**
      * Construct a new session
      */
-    Session() {
+    protected Session() {
         this(UUID.randomUUID());
     }
 
@@ -74,7 +74,7 @@ public final class Session {
      * 
      * @param id the id of the session
      */
-    Session(final UUID id) {
+    protected Session(final UUID id) {
         this.key = id;
         authToken = null;
         notificationList = new ArrayDeque<ErrorMessage>();
