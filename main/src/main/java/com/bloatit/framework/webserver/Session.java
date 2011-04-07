@@ -55,9 +55,7 @@ public final class Session {
 
     private final Deque<ErrorMessage> notificationList;
 
-    // TODO: use string reference to avoid keeping reference on Member object
     private AuthToken authToken;
-
     private Url lastStablePage = null;
     private Url targetPage = null;
     private Url lastVisitedPage;
