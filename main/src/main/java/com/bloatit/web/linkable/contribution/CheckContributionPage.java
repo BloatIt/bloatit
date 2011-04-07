@@ -109,7 +109,7 @@ public final class CheckContributionPage extends LoggedPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateCheckContributeForm());
 
-        layout.addRight(new SideBarFeatureBlock(process.getFeature()));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(),process.getAmount()));
         layout.addRight(new SideBarBugReportBlock(url));
 
         return layout;
