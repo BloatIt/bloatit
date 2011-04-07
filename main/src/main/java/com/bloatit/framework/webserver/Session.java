@@ -15,6 +15,7 @@ package com.bloatit.framework.webserver;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,8 @@ import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlParameter;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.IndexPageUrl;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * A class to handle the user session on the web server
@@ -49,7 +52,7 @@ import com.bloatit.web.url.IndexPageUrl;
 public final class Session {
     private final UUID key;
     private long expirationTime;
-    
+
     private final Deque<ErrorMessage> notificationList;
 
     // TODO: use string reference to avoid keeping reference on Member object
@@ -60,7 +63,9 @@ public final class Session {
     private Url lastVisitedPage;
 
     private final SessionParameters parameters = new SessionParameters();
-    private final Map<String, WebProcess> processes = new HashMap<String, WebProcess>();
+    
+    @SuppressWarnings("unchecked")
+    private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
 
     /**
      * Construct a new session
@@ -81,11 +86,11 @@ public final class Session {
         resetExpirationTime();
     }
 
-    public UUID getKey() {
+    public synchronized UUID getKey() {
         return key;
     }
 
-    public void resetExpirationTime() {
+    public synchronized void resetExpirationTime() {
         if (isLogged()) {
             expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration();
         } else {
@@ -93,24 +98,24 @@ public final class Session {
         }
     }
 
-    public void setAuthToken(final AuthToken token) {
+    public synchronized void setAuthToken(final AuthToken token) {
         authToken = token;
         resetExpirationTime();
     }
 
-    public AuthToken getAuthToken() {
+    public synchronized AuthToken getAuthToken() {
         return authToken;
     }
 
-    public boolean isLogged() {
+    public synchronized boolean isLogged() {
         return authToken != null;
     }
 
-    public boolean isExpired() {
+    public synchronized boolean isExpired() {
         return Context.getResquestTime() > expirationTime;
     }
 
-    public void setLastStablePage(final Url p) {
+    public synchronized void setLastStablePage(final Url p) {
         lastStablePage = p;
     }
 
@@ -125,7 +130,7 @@ public final class Session {
      * 
      * @return the best page to redirect the user to
      */
-    public Url pickPreferredPage() {
+    public synchronized Url pickPreferredPage() {
         if (targetPage != null) {
             final Url tempStr = targetPage;
             targetPage = null;
@@ -148,44 +153,44 @@ public final class Session {
      * 
      * @return the last page the user visited
      */
-    public Url getLastVisitedPage() {
+    public synchronized Url getLastVisitedPage() {
         return lastVisitedPage;
     }
 
-    public void setLastVisitedPage(final Url lastVisitedPage) {
+    public synchronized void setLastVisitedPage(final Url lastVisitedPage) {
         this.lastVisitedPage = lastVisitedPage;
     }
 
-    public final void setTargetPage(final Url targetPage) {
+    public final synchronized void setTargetPage(final Url targetPage) {
         this.targetPage = targetPage;
     }
 
-    public final void notifyGood(final String message) {
+    public final synchronized void notifyGood(final String message) {
         notificationList.add(new ErrorMessage(Level.INFO, message));
     }
 
-    public final void notifyBad(final String message) {
+    public final synchronized void notifyBad(final String message) {
         notificationList.add(new ErrorMessage(Level.WARNING, message));
     }
 
-    public final void notifyError(final String message) {
+    public final synchronized void notifyError(final String message) {
         notificationList.add(new ErrorMessage(Level.FATAL, message));
     }
 
     /**
      * Notifies all elements in a list as warnings
      */
-    public final void notifyList(final List<Message> errors) {
+    public final synchronized void notifyList(final List<Message> errors) {
         for (final Message error : errors) {
             notifyError(error.getMessage());
         }
     }
 
-    public final void flushNotifications() {
+    public final synchronized void flushNotifications() {
         notificationList.clear();
     }
 
-    public final Deque<ErrorMessage> getNotifications() {
+    public final synchronized Deque<ErrorMessage> getNotifications() {
         return notificationList;
     }
 
@@ -196,24 +201,23 @@ public final class Session {
      * @deprecated use a RequestParam
      */
     @Deprecated
-    public final SessionParameters getParameters() {
+    public final synchronized SessionParameters getParameters() {
         return parameters;
     }
 
     @SuppressWarnings("unchecked")
-    public final <T, U> UrlParameter<T, U> pickParameter(final UrlParameter<T, U> param) {
+    public final synchronized <T, U> UrlParameter<T, U> pickParameter(final UrlParameter<T, U> param) {
         return (UrlParameter<T, U>) parameters.pick(param.getName());
     }
 
-    public final void addParameter(final UrlParameter<?, ?> param) {
+    public final synchronized void addParameter(final UrlParameter<?, ?> param) {
         if (!(param.getValue() == null && param.getStringValue() == null)) {
             parameters.add(param.getName(), param);
         }
         // Maybe auto notify here ?
     }
 
-    public final String createWebProcess(WebProcess process) {
-
+    public final synchronized String createWebProcess(WebProcess process) {
         int length = 5;
         String key = null;
         while (key == null) {
@@ -230,11 +234,11 @@ public final class Session {
         return key;
     }
 
-    public final WebProcess getWebProcess(String processId) {
+    public final synchronized WebProcess getWebProcess(String processId) {
         return processes.get(processId);
     }
 
-    public final void destroyWebProcess(WebProcess webProcess) {
+    public final synchronized void destroyWebProcess(WebProcess webProcess) {
         processes.remove(webProcess.getId());
     }
 
