@@ -1,4 +1,4 @@
-package com.bloatit.web.linkable.metabugreport;
+package com.bloatit.web.linkable.meta.bugreport;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
