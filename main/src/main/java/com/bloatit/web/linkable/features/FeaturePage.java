@@ -84,7 +84,7 @@ public final class FeaturePage extends MasterPage {
             throw new PageNotFoundException();
         }
         // The feature page is composed of 3 parts:
-        // - The sumary
+        // - The summary
         // - The tab panel
         // - The comments
 

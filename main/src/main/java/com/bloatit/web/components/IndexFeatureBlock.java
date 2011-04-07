@@ -40,7 +40,7 @@ public class IndexFeatureBlock extends HtmlDiv {
 
             indexBodyElement.add(new FeaturePageUrl(highlightFeature.getFeature()).getHtmlLink(tr("more details...")));
 
-            indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature()));
+            indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 
         } catch (UnauthorizedOperationException e) {
         }

@@ -49,6 +49,7 @@ import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.data.search.DaoFeatureSearchFilterFactory;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
@@ -58,8 +59,8 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * A DaoFeature is a kudosable content. It has a translatable description, and
  * can have a specification and some offers. The state of the feature is managed
- * by its super class DaoKudosable. On a feature we can add some comment and some
- * contriutions.
+ * by its super class DaoKudosable. On a feature we can add some comment and
+ * some contriutions.
  */
 @Entity
 @Cacheable
@@ -453,13 +454,17 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     public PageIterable<DaoBug> getOpenBugs() {
-        return new QueryCollection<DaoBug>("feature.getBugs.byNonState").setEntity("offer", this.selectedOffer).setParameter("state",
-                                                                                                                            DaoBug.BugState.RESOLVED);
+        if (this.selectedOffer == null) {
+            return  new EmptyPageIterable<DaoBug>();
+        } else {
+            return new QueryCollection<DaoBug>("feature.getBugs.byNonState").setEntity("offer", this.selectedOffer)
+                                                                            .setParameter("state", DaoBug.BugState.RESOLVED);
+        }
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
         return new QueryCollection<DaoBug>("feature.getBugs.byState").setEntity("offer", this.selectedOffer).setParameter("state",
-                                                                                                                         DaoBug.BugState.RESOLVED);
+                                                                                                                          DaoBug.BugState.RESOLVED);
     }
 
     // ======================================================================

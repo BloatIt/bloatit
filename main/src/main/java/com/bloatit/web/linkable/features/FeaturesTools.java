@@ -33,11 +33,11 @@ public class FeaturesTools {
     }
 
     public static HtmlDiv generateProgress(Feature feature) throws UnauthorizedOperationException {
-        return generateProgress(feature, false,  BigDecimal.ZERO);
+        return generateProgress(feature, false, BigDecimal.ZERO);
     }
 
-    public static HtmlDiv generateProgress(Feature feature, boolean slim) throws UnauthorizedOperationException{
-            return generateProgress(feature, slim, BigDecimal.ZERO);
+    public static HtmlDiv generateProgress(Feature feature, boolean slim) throws UnauthorizedOperationException {
+        return generateProgress(feature, slim, BigDecimal.ZERO);
     }
 
     /**
@@ -45,7 +45,7 @@ public class FeaturesTools {
      * @throws UnauthorizedOperationException
      */
     public static HtmlDiv generateProgress(Feature feature, boolean slim, BigDecimal futureAmount) throws UnauthorizedOperationException {
-        final HtmlDiv featureSummaryProgress = new HtmlDiv("summary_progress");
+        final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
             // Progress bar
 
@@ -62,7 +62,7 @@ public class FeaturesTools {
                 myProgressValue = (float) Math.floor(myProgressValue);
             }
 
-            if(!futureAmount.equals(BigDecimal.ZERO)) {
+            if (!futureAmount.equals(BigDecimal.ZERO)) {
                 futureProgressValue = feature.getRelativeProgression(futureAmount);
                 if (futureProgressValue > 0.0f && futureProgressValue < 5f) {
                     futureProgressValue = 5f;
@@ -72,15 +72,15 @@ public class FeaturesTools {
 
             }
 
-
             float cappedProgressValue = progressValue;
             if (cappedProgressValue + futureProgressValue > FeatureImplementation.PROGRESSION_PERCENT) {
                 cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT - futureProgressValue;
             }
 
-
-
-            final HtmlProgressBar progressBar = new HtmlProgressBar(slim, cappedProgressValue - myProgressValue, cappedProgressValue, cappedProgressValue + futureProgressValue);
+            final HtmlProgressBar progressBar = new HtmlProgressBar(slim,
+                                                                    cappedProgressValue - myProgressValue,
+                                                                    cappedProgressValue,
+                                                                    cappedProgressValue + futureProgressValue);
             featureSummaryProgress.add(progressBar);
 
             // Progress text
@@ -157,8 +157,8 @@ public class FeaturesTools {
         }
     }
 
-    public static HtmlDiv generateDetails(Feature feature) throws UnauthorizedOperationException {
-        final HtmlDiv featureSummaryDetails = new HtmlDiv("feature_sumary_details");
+    public static HtmlDiv generateDetails(Feature feature, boolean showBugs) throws UnauthorizedOperationException {
+        final HtmlDiv featureSummaryDetails = new HtmlDiv("feature_summary_details");
         {
 
             final int commentsCount = feature.getComments().size();
@@ -188,6 +188,21 @@ public class FeaturesTools {
                                                                                       "{0} contributions",
                                                                                       contributionsCount,
                                                                                       new Integer(contributionsCount))));
+            if (showBugs) {
+                int bugCount = feature.getOpenBugs().size();
+                if(bugCount > 0) {
+
+                    final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature);
+                    bugsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+                    bugsFeatureUrl.setAnchor("feature_tab_pane");
+
+                    featureSummaryDetails.addText(" – ");
+                    featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} bug",
+                                                                                              "{0} bugs",
+                                                                                              bugCount,
+                                                                                              new Integer(bugCount))));
+                }
+            }
 
         }
         return featureSummaryDetails;
