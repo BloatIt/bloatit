@@ -450,7 +450,7 @@ public final class Member extends Actor<DaoMember> {
     public boolean isInTeam(final Team team) {
         return isInTeamUnprotected(team);
     }
-
+    
     /**
      * Returns the status of the member in a given <code>team</code> <<<<<<<
      * Updated upstream

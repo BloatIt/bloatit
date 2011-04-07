@@ -2,80 +2,47 @@ package com.bloatit.web;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.ReloadableConfiguration;
 
-public class WebConfiguration {
+import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
+
+public class WebConfiguration extends ReloadableConfiguration {
     public static final WebConfiguration configuration = new WebConfiguration();
-    private final PropertiesRetriever properties;
+    private PropertiesRetriever properties;
 
     // DIRECTORIES
-    private final String documentationDir;
-    private final String wwwDir;
-    private final String resourcesDir;
+    private String documentationDir;
+    private String wwwDir;
+    private String resourcesDir;
 
     // OTHERS
-    private final Boolean htmlIndent;
+    private AtomicBoolean htmlIndent;
 
     // CSS
-    private final String css;
-    private final String cssDatePicker;
+    private String css;
+    private String cssDatePicker;
 
     // IMAGES
-    private final String imgLogo;
-    private final String imgPresentation;
-    private final String imgMoneyDown;
-    private final String imgMoneyDownSmall;
-    private final String imgMoneyUp;
-    private final String imgMoneyUpSmall;
-    private final String imgNoAvatar;
-    private final String imgValidIcon;
-    private final String imgSoftwareNoLogo;
+    private String imgLogo;
+    private String imgPresentation;
+    private String imgMoneyDown;
+    private String imgMoneyDownSmall;
+    private String imgMoneyUp;
+    private String imgMoneyUpSmall;
+    private String imgNoAvatar;
+    private String imgValidIcon;
+    private String imgSoftwareNoLogo;
 
     // JAVASCRIPT
-    private final String jsJquery;
-    private final String jsJqueryUi;
-    private final String jsFlexie;
-    private final String jsSelectivizr;
-    private final String jsDatePicker;
+    private String jsJquery;
+    private String jsJqueryUi;
+    private String jsFlexie;
+    private String jsSelectivizr;
+    private String jsDatePicker;
 
     private WebConfiguration() {
-        properties = ConfigurationManager.loadProperties("web.properties");
-
-        // DIRECTORIES
-        documentationDir = properties.getString("bloatit.documentation.dir");
-        wwwDir = properties.getString("bloatit.www.dir");
-        resourcesDir = properties.getString("bloatit.resources.dir");
-
-        // OTHERS
-        htmlIndent = properties.getBoolean("bloatit.html.indent");
-
-        // CSS
-        css = properties.getString("bloatit.css");
-        cssDatePicker = properties.getString("bloatit.css.datepicker");
-
-        // IMAGES
-        imgLogo = properties.getString("bloatit.img.logo");
-        imgPresentation = properties.getString("bloatit.img.presentation");
-        imgMoneyDown = properties.getString("bloatit.img.money.down");
-        imgMoneyDownSmall = properties.getString("bloatit.img.money.down.small");
-        imgMoneyUp = properties.getString("bloatit.img.money.up");
-        imgMoneyUpSmall = properties.getString("bloatit.img.money.up");
-        imgNoAvatar = properties.getString("bloatit.img.no.avatar");
-        imgValidIcon = properties.getString("bloatit.img.valid");
-        imgSoftwareNoLogo= properties.getString("bloatit.img.software.no.logo");
-
-        // JAVASCRIPT
-        jsJquery = properties.getString("bloatit.js.jquery");
-        jsJqueryUi = properties.getString("bloatit.js.jqueryui");
-        jsFlexie = properties.getString("bloatit.js.flexie");
-        jsSelectivizr = properties.getString("bloatit.js.selectivizr");
-        jsDatePicker = properties.getString("bloatit.js.datepicker");
-    }
-
-    /**
-     * Make sure the configuration file is loaded.
-     */
-    public static void loadConfiguration() {
-        configuration.getClass();
+        super();
+        loadConfiguration();
     }
 
     public static WebConfiguration getConfiguration() {
@@ -84,7 +51,7 @@ public class WebConfiguration {
 
     // ----------------------------------------------------------
     // DIRECTORIES
-    // ----------------------------------------------------------    
+    // ----------------------------------------------------------
     public static String getDocumentationDir() {
         return configuration.documentationDir;
     }
@@ -99,7 +66,7 @@ public class WebConfiguration {
     public static String getResourcesDir() {
         return configuration.resourcesDir;
     }
-    
+
     // ----------------------------------------------------------
     // OTHERS
     // ----------------------------------------------------------
@@ -108,18 +75,18 @@ public class WebConfiguration {
      * @return <code>true</code> if html should be indented, <code>false</code>
      *         otherwise.
      */
-    public static boolean isHtmlIndent() {
-        return configuration.htmlIndent.booleanValue();
+    public static boolean isHtmlMinified() {
+        return configuration.htmlIndent.get();
     }
-    
-    public static String getCommonsDir(){
+
+    public static String getCommonsDir() {
         return configuration.resourcesDir + "/commons";
     }
 
     // ----------------------------------------------------------
     // CSS
     // ----------------------------------------------------------
-    
+
     /**
      * @return the path to the css
      */
@@ -130,7 +97,7 @@ public class WebConfiguration {
     public static String getCssDatePicker() {
         return getCommonsDir() + configuration.cssDatePicker;
     }
-    
+
     // ----------------------------------------------------------
     // IMAGES
     // ----------------------------------------------------------
@@ -145,10 +112,10 @@ public class WebConfiguration {
     /**
      * @return the path to the imgPresentation
      */
-    public static String getImgPresentation() {
-        return getCommonsDir() + configuration.imgPresentation;
+    public static String getImgPresentation(String langCode) {
+        return getResourcesDir() + "/" + langCode + configuration.imgPresentation;
     }
-    
+
     /**
      * @return the imgMoneyDown
      */
@@ -190,7 +157,7 @@ public class WebConfiguration {
     public static String getImgValidIcon() {
         return getCommonsDir() + configuration.imgValidIcon;
     }
-    
+
     /**
      * @return the imgValidIcon
      */
@@ -236,5 +203,52 @@ public class WebConfiguration {
     public static String getJsDatePicker(String langCode) {
         return configuration.resourcesDir + "/" + langCode + configuration.jsDatePicker;
     }
-    
+
+    protected void loadConfiguration() {
+        properties = ConfigurationManager.loadProperties("web.properties");
+
+        // DIRECTORIES
+        documentationDir = properties.getString("bloatit.documentation.dir");
+        wwwDir = properties.getString("bloatit.www.dir");
+        resourcesDir = properties.getString("bloatit.resources.dir");
+
+        // OTHERS
+        htmlIndent = new AtomicBoolean(properties.getBoolean("bloatit.html.minify"));
+
+        // CSS
+        css = properties.getString("bloatit.css");
+        cssDatePicker = properties.getString("bloatit.css.datepicker");
+
+        // IMAGES
+        imgLogo = properties.getString("bloatit.img.logo");
+        imgPresentation = properties.getString("bloatit.img.presentation");
+        imgMoneyDown = properties.getString("bloatit.img.money.down");
+        imgMoneyDownSmall = properties.getString("bloatit.img.money.down.small");
+        imgMoneyUp = properties.getString("bloatit.img.money.up");
+        imgMoneyUpSmall = properties.getString("bloatit.img.money.up");
+        imgNoAvatar = properties.getString("bloatit.img.no.avatar");
+        imgValidIcon = properties.getString("bloatit.img.valid");
+        imgSoftwareNoLogo = properties.getString("bloatit.img.software.no.logo");
+
+        // JAVASCRIPT
+        jsJquery = properties.getString("bloatit.js.jquery");
+        jsJqueryUi = properties.getString("bloatit.js.jqueryui");
+        jsFlexie = properties.getString("bloatit.js.flexie");
+        jsSelectivizr = properties.getString("bloatit.js.selectivizr");
+        jsDatePicker = properties.getString("bloatit.js.datepicker");
+    }
+
+    public static void load() {
+        configuration.loadConfiguration();
+    }
+
+    @Override
+    public String getName() {
+        return "Web";
+    }
+
+    @Override
+    protected void doReload() {
+        configuration.loadConfiguration();
+    }
 }

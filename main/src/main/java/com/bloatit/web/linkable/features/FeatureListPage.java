@@ -35,6 +35,7 @@ import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.components.HtmlFeatureSumary;
 import com.bloatit.web.components.HtmlFeatureSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -84,9 +85,10 @@ public final class FeatureListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         // Search block
-
         TwoColumnLayout layout = new TwoColumnLayout(true);
         add(layout);
+
+        layout.addRight(new SideBarBugReportBlock(url));
 
         // ////////////////////
         // Div feature_search_block
@@ -245,7 +247,6 @@ public final class FeatureListPage extends MasterPage {
             }
             layout.addLeft(noResultBlock);
         }
-
     }
 
     @Override

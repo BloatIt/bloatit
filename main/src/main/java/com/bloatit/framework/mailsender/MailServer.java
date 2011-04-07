@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -85,7 +86,14 @@ public class MailServer extends Thread {
         createSentDirectory();
         createWipDirectory();
 
-        session = Session.getDefaultInstance(FrameworkConfiguration.getProperties().getProperties(), new javax.mail.Authenticator() {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", FrameworkConfiguration.getMailSmtpHost());
+        prop.put("mail.smtp.socketFactory.port", FrameworkConfiguration.getMailSmptSocketFactoryPort());
+        prop.put("mail.smtp.socketFactory.class", FrameworkConfiguration.getMailSmtpSoketFactoryClass());
+        prop.put("mail.smtp.auth", FrameworkConfiguration.getMailSmtpAuth());
+        prop.put("mail.smtp.port", FrameworkConfiguration.getMailSmtpPort());
+
+        session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(FrameworkConfiguration.getMailLogin(), FrameworkConfiguration.getMailPassword());

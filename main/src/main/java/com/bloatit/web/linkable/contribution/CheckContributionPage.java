@@ -48,6 +48,7 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.members.MembersTools;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
@@ -97,7 +98,7 @@ public final class CheckContributionPage extends LoggedPage {
         addNotifications(url.getMessages());
         if (url.getMessages().hasMessage()) {
             session.notifyList(url.getMessages());
-            throw new RedirectException(Context.getSession().getLastStablePage());
+            throw new RedirectException(Context.getSession().pickPreferredPage());
         }
 
     }
@@ -108,7 +109,8 @@ public final class CheckContributionPage extends LoggedPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateCheckContributeForm());
 
-        layout.addRight(new SideBarFeatureBlock(process.getFeature()));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(),process.getAmount()));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         return layout;
     }
@@ -155,7 +157,7 @@ public final class CheckContributionPage extends LoggedPage {
                                                                                                               .subtract(process.getAmount())));
                         changeLine.add(MembersTools.getMemberAvatar(member));
                         authorContributionSummary.add(changeLine);
-                        authorContributionSummary.add(new DefineParagraph(tr("Author:"), member.getDisplayName()));
+                        authorContributionSummary.add(new DefineParagraph(tr("Author: "), member.getDisplayName()));
                     }
                 } catch (UnauthorizedOperationException e) {
                     session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
@@ -163,9 +165,9 @@ public final class CheckContributionPage extends LoggedPage {
                 }
 
                 if (process.getComment() != null) {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment:"), process.getComment()));
+                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), process.getComment()));
                 } else {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment:"), tr("No comment")));
+                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), tr("No comment")));
                 }
 
             }
@@ -467,7 +469,7 @@ public final class CheckContributionPage extends LoggedPage {
                     changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
                 }
                 featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new DefineParagraph(tr("Target feature:"), FeaturesTools.getTitle(feature)));
+                featureContributionSummary.add(new DefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
             } catch (UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                 throw new ShallNotPassException("User cannot access user information", e);
@@ -564,6 +566,4 @@ public final class CheckContributionPage extends LoggedPage {
 
         return breadcrumb;
     }
-
-
 }

@@ -27,9 +27,11 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 
@@ -38,9 +40,11 @@ public final class ReleasePage extends MasterPage {
     @ParamConstraint(optionalErrorMsg = @tr("The id of the release is incorrect or missing"))
     @RequestParam
     private final Release release;
+    private final ReleasePageUrl url;
 
     public ReleasePage(final ReleasePageUrl url) {
         super(url);
+        this.url = url;
         this.release = url.getRelease();
     }
 
@@ -48,6 +52,7 @@ public final class ReleasePage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addRight(new SideBarFeatureBlock(release.getFeature()));
+        layout.addRight(new SideBarBugReportBlock(url));
         add(layout);
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
@@ -63,6 +68,10 @@ public final class ReleasePage extends MasterPage {
             attachementPara.add(new FileResourceUrl(files).getHtmlLink(files.getFileName()));
             attachementPara.addText(tr(": ") + files.getShortDescription());
             fileBloc.add(attachementPara);
+        }
+
+        if(release.canAddFile()) {
+            fileBloc.add(new AddAttachementPageUrl(release).getHtmlLink(tr("Add an attachement")));
         }
     }
 

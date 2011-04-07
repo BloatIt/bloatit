@@ -46,13 +46,12 @@ public final class LoginAction extends Action {
         this.url = url;
         this.login = url.getLogin();
         this.password = url.getPassword();
-
     }
 
     @Override
     public Url doProcess() {
         AuthToken token = null;
-        token = LoginManager.loginByPassword(login, password);
+        token = LoginManager.loginByPassword(login.trim(), password);
 
         if (token != null) {
             session.setAuthToken(token);
@@ -69,9 +68,7 @@ public final class LoginAction extends Action {
     @Override
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
-
         session.addParameter(url.getLoginParameter());
-
         return new LoginPageUrl();
     }
 }

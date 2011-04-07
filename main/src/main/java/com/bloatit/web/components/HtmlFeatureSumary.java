@@ -40,7 +40,7 @@ public final class HtmlFeatureSumary extends HtmlDiv {
     private Locale defaultLocale;
 
     public enum Compacity {
-        NORMAL("feature_summary"), COMPACT("compact_feature_summary"), LINE("line_feature_summary");
+        NORMAL("normal_feature_summary"), COMPACT("compact_feature_summary"), LINE("line_feature_summary");
 
         private final String cssClass;
 

@@ -11,10 +11,6 @@
  */
 package com.bloatit.framework.utils.i18n;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -24,12 +20,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 import com.bloatit.common.ConfigurationManager;
+import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.ConfigurationManager.PropertiesType;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.Context;
 
 /**
@@ -37,13 +35,11 @@ import com.bloatit.framework.webserver.Context;
  */
 public final class CurrencyLocale {
     private static final String DEFAULT_CURRENCY_SYMBOL = "€";
-    private static final String RATES_PATH = ConfigurationManager.SHARE_DIR + "locales/rates";
     private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
     private static final int DISPLAY_PRECISION = 0;
     private static final int DISPLAY_PRECISION_DECIMAL = 2;
 
-    private static Semaphore dateMutex = new Semaphore(1);
-    private static Date lastParse = null;
+    private static Date lastParse = new Date();
     private static Map<Currency, BigDecimal> currencies = Collections.synchronizedMap(new HashMap<Currency, BigDecimal>());
 
     private final Locale targetLocale;
@@ -212,48 +208,18 @@ public final class CurrencyLocale {
      * </p>
      */
     private static void parseRate() {
-        BufferedReader br = null;
-        try {
-            final File file = new File(RATES_PATH);
-            if (fileUpdated(file)) {
-                
-                // Only parse if the file has been updated in the meantime
-                br = new BufferedReader(new FileReader(file));
-                while (br.ready()) {
-                    final String line = br.readLine();
-                    if (line.charAt(0) != '#') {
-                        final String data = line.split("#", 1)[0];
-                        final String[] pair = data.split("\t");
-                        currencies.put(Currency.getInstance(pair[0]), new BigDecimal(pair[1]));
-                    }
-                }
-            }
-        } catch (final IOException ex) {
-            throw new ExternalErrorException("Error when reading the file containing rates : " + RATES_PATH, ex);
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (final Exception ex) {
-                Log.framework().warn("Error clothing file: " + RATES_PATH);
-            }
+        PropertiesRetriever retriever = ConfigurationManager.loadProperties("locales/rates.properties", PropertiesType.SHARE);
+        if (lastParse.before(retriever.getModificationDate())) {
+            return;
         }
+
+        Properties prop = retriever.getProperties();
+        for (Entry<Object, Object> entry : prop.entrySet()) {
+            String currencyCode = (String) entry.getKey();
+            BigDecimal rate = new BigDecimal((String) entry.getValue());
+            currencies.put(Currency.getInstance(currencyCode), rate);
+        }
+        lastParse = new Date();
     }
 
-    private static boolean fileUpdated(final File file) {
-        boolean returnValue = false;
-        try {
-            dateMutex.acquire();
-            if (lastParse == null || !file.exists() || lastParse.before(new Date(file.lastModified()))) {
-                returnValue = true;
-                lastParse = new Date();
-            }
-        } catch (final InterruptedException e) {
-            throw new ExternalErrorException("Cannot lock the CurrencyLocal date.", e);
-        } finally {
-            dateMutex.release();
-        }
-        return returnValue;
-    }
 }

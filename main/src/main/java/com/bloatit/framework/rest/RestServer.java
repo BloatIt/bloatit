@@ -11,7 +11,6 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;
-import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.SessionManager;

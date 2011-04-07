@@ -16,22 +16,34 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 
 public class HtmlProgressBar extends HtmlDiv {
 
-    public HtmlProgressBar(final float progress) {
-        this(progress, false);
+    public HtmlProgressBar(final float ... progressList) {
+        this(false, progressList);
     }
 
-    public HtmlProgressBar(final float progress, boolean slim) {
+    public HtmlProgressBar(boolean slim, final float ... progressList ) {
         super((slim ? "progress_bar_block_slim" : "progress_bar_block"));
 
         String prefix = (slim ? "_slim" : "");
 
         add(new HtmlDiv("progress_bar_background" + prefix));
 
-        final HtmlDiv progressBarState = new HtmlDiv("progress_bar_state" + prefix);
-        {
-            progressBarState.addAttribute("style", "width: " + progress + "%;");
+        int progressIndex = progressList.length;
+        float previousProgress = 0;
+        for(int i = progressList.length-1; i>=0; i--) {
+
+            float progress = progressList[i];
+
+            if(progress > previousProgress) {
+                final HtmlDiv progressBarState = new HtmlDiv("progress_bar_state" + prefix+ "_"+progressIndex);
+                {
+                    progressBarState.addAttribute("style", "width: " + progress + "%;");
+                }
+                add(progressBarState);
+            }
+
+            progressIndex--;
         }
-        add(progressBarState);
+
 
         add(new HtmlDiv("progress_bar_border" + prefix));
 

@@ -17,39 +17,46 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
-import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("index")
 public final class IndexPage extends MasterPage {
 
-    public IndexPage(final IndexPageUrl indexPageUrl) {
-        super(indexPageUrl);
+    private final IndexPageUrl url;
+
+    public IndexPage(final IndexPageUrl url) {
+        super(url);
+        this.url = url;
     }
 
     @Override
     protected void doCreate() throws RedirectException {
-
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-
             HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
-
             globalDescription.add(title);
-
-            HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation()), tr("Elveos's presentation"));
-            globalDescription.add(image);
+            HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())), tr("Elveos's presentation"));
+            DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
+            documentationPageUrl.setDocTarget("presentation");
+            HtmlLink presentationLink = documentationPageUrl.getHtmlLink();
+            presentationLink.add(image);
+            globalDescription.add(presentationLink);
 
         }
         add(globalDescription);
@@ -59,11 +66,8 @@ public final class IndexPage extends MasterPage {
 
         final HtmlDiv featureList = new HtmlDiv("feature_list");
         {
-
             final int featureCount = 6;
-
             final PageIterable<HighlightFeature> hightlightFeatureList = HighlightFeatureManager.getAll();
-
             final HighlightFeature[] hightlightFeatureArray = new HighlightFeature[featureCount];
 
             for (final HighlightFeature highlightFeature : hightlightFeatureList) {
@@ -80,12 +84,10 @@ public final class IndexPage extends MasterPage {
             }
 
             for (int i = 0; i < (featureCount + 1) / 2; i++) {
-
                 final HtmlDiv featureListRow = new HtmlDiv("feature_list_row");
                 {
                     final HtmlDiv featureListLeftCase = new HtmlDiv("feature_list_left_case");
                     {
-
                         HighlightFeature highlightFeature = hightlightFeatureArray[i * 2];
                         if (highlightFeature != null) {
                             featureListLeftCase.add(new IndexFeatureBlock(highlightFeature));
@@ -108,6 +110,7 @@ public final class IndexPage extends MasterPage {
 
         twoColumnLayout.addLeft(featureList);
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
+        twoColumnLayout.addRight(new SideBarBugReportBlock(url));
         add(twoColumnLayout);
     }
 
@@ -132,5 +135,4 @@ public final class IndexPage extends MasterPage {
     protected Breadcrumb getBreadcrumb() {
         return generateBreadcrumb();
     }
-
 }

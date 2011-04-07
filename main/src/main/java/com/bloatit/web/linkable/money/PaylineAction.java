@@ -1,7 +1,5 @@
 package com.bloatit.web.linkable.money;
 
-import static com.bloatit.framework.webserver.Context.tr;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;

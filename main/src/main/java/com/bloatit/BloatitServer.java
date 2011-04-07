@@ -1,5 +1,6 @@
 package com.bloatit;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.Framework;
 import com.bloatit.model.Model;
 import com.bloatit.rest.BloatitRestServer;
@@ -17,11 +18,13 @@ public class BloatitServer {
             if (framework.initialize()) {
                 framework.run();
             }
+        } catch(Throwable e) {
+            e.printStackTrace();
+            Log.framework().fatal("It's the lose... :(",e);
         } finally {
             // framework.shutdown(); done in the hook (ook OoOk oOk!!)
             System.exit(0);
         }
-
     }
 
 }

@@ -2,70 +2,39 @@ package com.bloatit.model;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.ReloadableConfiguration;
 
-public class ModelConfiguration {
-    public static final ModelConfiguration configuration = new ModelConfiguration();
+public class ModelConfiguration extends ReloadableConfiguration {
+    public static ModelConfiguration configuration = new ModelConfiguration();
 
-    private final PropertiesRetriever properties;
+    private PropertiesRetriever properties;
 
-    private final int kudosableDefaultTurnValid;
-    private final int kudosableDefaultTurnRejected;
-    private final int kudosableDefaultTurnHidden;
-    private final int kudosableDefaultTurnPending;
-    private final int kudosableCommentTurnValid;
-    private final int kudosableCommentTurnRejected;
-    private final int kudosableCommentTurnHidden;
-    private final int kudosableCommentTurnPending;
-    private final int kudosableFeatureTurnValid;
-    private final int kudosableFeatureTurnRejected;
-    private final int kudosableFeatureTurnHidden;
-    private final int kudosableFeatureTurnPending;
-    private final int kudosableOfferTurnValid;
-    private final int kudosableOfferTurnRejected;
-    private final int kudosableOfferTurnHidden;
-    private final int kudosableOfferTurnPending;
-    private final int kudosableTranslationTurnValid;
-    private final int kudosableTranslationTurnRejected;
-    private final int kudosableTranslationTurnHidden;
-    private final int kudosableTranslationTurnPending;
-    private final int kudosableMinInfluenceToUnkudos;
-    private final int kudosableMinInfluenceToKudos;
+    private int kudosableDefaultTurnValid;
+    private int kudosableDefaultTurnRejected;
+    private int kudosableDefaultTurnHidden;
+    private int kudosableDefaultTurnPending;
+    private int kudosableCommentTurnValid;
+    private int kudosableCommentTurnRejected;
+    private int kudosableCommentTurnHidden;
+    private int kudosableCommentTurnPending;
+    private int kudosableFeatureTurnValid;
+    private int kudosableFeatureTurnRejected;
+    private int kudosableFeatureTurnHidden;
+    private int kudosableFeatureTurnPending;
+    private int kudosableOfferTurnValid;
+    private int kudosableOfferTurnRejected;
+    private int kudosableOfferTurnHidden;
+    private int kudosableOfferTurnPending;
+    private int kudosableTranslationTurnValid;
+    private int kudosableTranslationTurnRejected;
+    private int kudosableTranslationTurnHidden;
+    private int kudosableTranslationTurnPending;
+    private int kudosableMinInfluenceToUnkudos;
+    private int kudosableMinInfluenceToKudos;
 
     private ModelConfiguration() {
-        properties = ConfigurationManager.loadProperties("model.properties");
-
-        //
-        // Kudosable configuration
-        //
-        kudosableDefaultTurnValid = properties.getInt("kudosable.default.turn_valid", 100);
-        kudosableDefaultTurnRejected = properties.getInt("kudosable.default.turn_rejected", -100);
-        kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -10);
-        kudosableDefaultTurnPending = properties.getInt("kudosable.default.turn_pending", 10);
-
-        // Comment feature offer translation
-        kudosableCommentTurnValid = properties.getInt("kudosable.comment.turn_valid", kudosableDefaultTurnValid);
-        kudosableCommentTurnRejected = properties.getInt("kudosable.comment.turn_rejected", kudosableDefaultTurnRejected);
-        kudosableCommentTurnHidden = properties.getInt("kudosable.comment.turn_hidden", kudosableDefaultTurnHidden);
-        kudosableCommentTurnPending = properties.getInt("kudosable.comment.turn_pending", kudosableDefaultTurnPending);
-
-        kudosableFeatureTurnValid = properties.getInt("kudosable.feature.turn_valid", kudosableDefaultTurnValid);
-        kudosableFeatureTurnRejected = properties.getInt("kudosable.feature.turn_rejected", kudosableDefaultTurnRejected);
-        kudosableFeatureTurnHidden = properties.getInt("kudosable.feature.turn_hidden", kudosableDefaultTurnHidden);
-        kudosableFeatureTurnPending = properties.getInt("kudosable.feature.turn_pending", kudosableDefaultTurnPending);
-
-        kudosableOfferTurnValid = properties.getInt("kudosable.offer.turn_valid", kudosableDefaultTurnValid);
-        kudosableOfferTurnRejected = properties.getInt("kudosable.offer.turn_rejected", kudosableDefaultTurnRejected);
-        kudosableOfferTurnHidden = properties.getInt("kudosable.offer.turn_hidden", kudosableDefaultTurnHidden);
-        kudosableOfferTurnPending = properties.getInt("kudosable.offer.turn_pending", kudosableDefaultTurnPending);
-
-        kudosableTranslationTurnValid = properties.getInt("kudosable.tranlation.turn_valid", kudosableDefaultTurnValid);
-        kudosableTranslationTurnRejected = properties.getInt("kudosable.tranlation.turn_rejected", kudosableDefaultTurnRejected);
-        kudosableTranslationTurnHidden = properties.getInt("kudosable.tranlation.turn_hidden", kudosableDefaultTurnHidden);
-        kudosableTranslationTurnPending = properties.getInt("kudosable.tranlation.turn_pending", kudosableDefaultTurnPending);
-
-        kudosableMinInfluenceToUnkudos = properties.getInt("kudosable.min_influence_unkudos", 1);
-        kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
-
+        super();
+        load();
     }
 
     /**
@@ -170,5 +139,50 @@ public class ModelConfiguration {
     public static int getKudosableMinInfluenceToKudos() {
         return configuration.kudosableMinInfluenceToKudos;
     }
+    
+    protected void load(){
+        properties = ConfigurationManager.loadProperties("model.properties");
 
+        //
+        // Kudosable configuration
+        //
+        kudosableDefaultTurnValid = properties.getInt("kudosable.default.turn_valid", 100);
+        kudosableDefaultTurnRejected = properties.getInt("kudosable.default.turn_rejected", -100);
+        kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -10);
+        kudosableDefaultTurnPending = properties.getInt("kudosable.default.turn_pending", 10);
+
+        // Comment feature offer translation
+        kudosableCommentTurnValid = properties.getInt("kudosable.comment.turn_valid", kudosableDefaultTurnValid);
+        kudosableCommentTurnRejected = properties.getInt("kudosable.comment.turn_rejected", kudosableDefaultTurnRejected);
+        kudosableCommentTurnHidden = properties.getInt("kudosable.comment.turn_hidden", kudosableDefaultTurnHidden);
+        kudosableCommentTurnPending = properties.getInt("kudosable.comment.turn_pending", kudosableDefaultTurnPending);
+
+        kudosableFeatureTurnValid = properties.getInt("kudosable.feature.turn_valid", kudosableDefaultTurnValid);
+        kudosableFeatureTurnRejected = properties.getInt("kudosable.feature.turn_rejected", kudosableDefaultTurnRejected);
+        kudosableFeatureTurnHidden = properties.getInt("kudosable.feature.turn_hidden", kudosableDefaultTurnHidden);
+        kudosableFeatureTurnPending = properties.getInt("kudosable.feature.turn_pending", kudosableDefaultTurnPending);
+
+        kudosableOfferTurnValid = properties.getInt("kudosable.offer.turn_valid", kudosableDefaultTurnValid);
+        kudosableOfferTurnRejected = properties.getInt("kudosable.offer.turn_rejected", kudosableDefaultTurnRejected);
+        kudosableOfferTurnHidden = properties.getInt("kudosable.offer.turn_hidden", kudosableDefaultTurnHidden);
+        kudosableOfferTurnPending = properties.getInt("kudosable.offer.turn_pending", kudosableDefaultTurnPending);
+
+        kudosableTranslationTurnValid = properties.getInt("kudosable.tranlation.turn_valid", kudosableDefaultTurnValid);
+        kudosableTranslationTurnRejected = properties.getInt("kudosable.tranlation.turn_rejected", kudosableDefaultTurnRejected);
+        kudosableTranslationTurnHidden = properties.getInt("kudosable.tranlation.turn_hidden", kudosableDefaultTurnHidden);
+        kudosableTranslationTurnPending = properties.getInt("kudosable.tranlation.turn_pending", kudosableDefaultTurnPending);
+
+        kudosableMinInfluenceToUnkudos = properties.getInt("kudosable.min_influence_unkudos", 1);
+        kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
+    }
+
+    @Override
+    public String getName() {
+        return "Model";
+    }
+
+    @Override
+    protected void doReload() {
+        configuration.load();
+    }
 }

@@ -86,7 +86,7 @@ public class SessionBar extends HtmlDiv {
 
         } else {
             final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.trc("Login (verb)", "Login"));
-            final HtmlLink signupLink = new SignUpPageUrl().getHtmlLink(Context.trc("Sign in (verb)", "Sign in"));
+            final HtmlLink signupLink = new SignUpPageUrl().getHtmlLink(Context.trc("Sign up (verb)", "Sign up"));
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(loginLink));
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(signupLink));
         }

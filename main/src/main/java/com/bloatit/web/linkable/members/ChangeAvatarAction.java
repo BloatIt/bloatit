@@ -64,7 +64,6 @@ public final class ChangeAvatarAction extends Action {
         this.avatar = url.getAvatar();
         this.avatarFileName = url.getAvatarFileName();
         this.avatarContentType = url.getAvatarContentType();
-
     }
 
     @Override
@@ -76,13 +75,11 @@ public final class ChangeAvatarAction extends Action {
             return new LoginPageUrl();
         }
 
-        final FileMetadata avatarFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
-                                                                                       avatar,
-                                                                                       avatarFileName,
-                                                                                       "avatar image");
-        member.setAvatar(avatarFileMedatata);
+        final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
 
-        session.notifyGood(tr("Avatar change to '{0}'", avatarFileName));
+        member.setAvatar(avatarfm);
+
+        session.notifyGood(tr("Avatar change to ''{0}''", avatarFileName));
         return Context.getSession().pickPreferredPage();
     }
 

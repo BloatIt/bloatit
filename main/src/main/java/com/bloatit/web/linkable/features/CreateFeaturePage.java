@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -33,8 +32,9 @@ import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -48,9 +48,11 @@ public final class CreateFeaturePage extends LoggedPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 20;
     private static final int SPECIF_INPUT_NB_COLUMNS = 100;
+    private final CreateFeaturePageUrl url;
 
-    public CreateFeaturePage(final CreateFeaturePageUrl createFeaturePageUrl) {
-        super(createFeaturePageUrl);
+    public CreateFeaturePage(final CreateFeaturePageUrl url) {
+        super(url);
+        this.url = url;
     }
 
     @Override
@@ -105,7 +107,7 @@ public final class CreateFeaturePage extends LoggedPage {
                 softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from displaying software information. Please notify us."));
-                throw new ShallNotPassException("User cannot access software information", e); 
+                throw new ShallNotPassException("User cannot access software information", e);
             }
         }
         // TODO: set the default value to "select a software"
@@ -159,6 +161,7 @@ public final class CreateFeaturePage extends LoggedPage {
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         return layout;
     }

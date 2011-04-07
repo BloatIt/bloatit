@@ -22,13 +22,14 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Locale;
 
-import com.bloatit.data.DaoMilestone;
-import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
+import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
@@ -123,8 +124,9 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * To finish the dev state of this milestone you have to validate this milestone
      * (done by {@link Offer#validateCurrentMilestone(boolean)}).
      * </p>
+     * @throws UnauthorizedOperationException
      */
-    public void addRelease(final String description, final String version, final Locale locale, FileMetadata file) {
+    public void addRelease(final String description, final String version, final Locale locale, FileMetadata file) throws UnauthorizedOperationException {
         Release release = new Release(getOffer().getAuthor(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);

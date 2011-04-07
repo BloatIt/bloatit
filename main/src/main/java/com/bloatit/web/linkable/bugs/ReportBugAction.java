@@ -13,6 +13,8 @@ package com.bloatit.web.linkable.bugs;
 
 import java.util.Locale;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -23,9 +25,9 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Milestone;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.BugPageUrl;
@@ -127,7 +129,12 @@ public final class ReportBugAction extends Action {
                                                                                                 attachementFileName,
                                                                                                 attachementDescription);
 
-            bug.addFile(attachementFileMedatata);
+            try {
+                bug.addFile(attachementFileMedatata);
+            } catch (UnauthorizedOperationException e) {
+                session.notifyError(Context.tr("Fail to add the attachement to the bug report."));
+                throw new ShallNotPassException("Fail to add an attachement to the new bug report.",e);
+            }
         }
 
         final BugPageUrl to = new BugPageUrl(bug);

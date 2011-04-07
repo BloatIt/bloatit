@@ -1,15 +1,13 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoBankTransaction;
-import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
-import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoInternalAccount;
@@ -17,11 +15,14 @@ import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
-import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoRelease;
+import com.bloatit.data.DaoSoftware;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
+import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DBRequests;
 
@@ -100,6 +101,11 @@ public class GenericConstructor {
         if (clazz.equals(Kudosable.class) || clazz.equals(KudosableInterface.class)) {
             return DaoKudosable.class;
         }
+        if (clazz.equals(UserContent.class) || clazz.equals(UserContentInterface.class)) {
+            return DaoUserContent.class;
+        }
+
+
         return null;
     }
 }

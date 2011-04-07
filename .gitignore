@@ -17,11 +17,13 @@ main/po/*~
 main/po/*.mo
 apt/.agitator
 main/css
-www/resources/css/*.css
+www/resources/commons/css/*.css
 main/src/main/java/com/bloatit/web/url/?*Url.java
 main/src/main/java/com/bloatit/web/url/?*UrlComponent.java
 paylineWebservice/src/main/java/*
 mvnst
+bin
+!less.js/bin
 #Liquidbase working file
 main/src/main/resources/liquibase/working.liquibase.xml
 

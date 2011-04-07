@@ -5,8 +5,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.EnumSet;
 import java.util.Iterator;
 
-import org.hibernate.type.ImageType;
-
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
@@ -37,10 +35,12 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.WebConfiguration;
-import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.SideBarElementLayout;
+import com.bloatit.web.pages.master.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
@@ -73,6 +73,7 @@ public class TeamPage extends MasterPage {
         layout.addLeft(generateMain());
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
     }
@@ -88,7 +89,7 @@ public class TeamPage extends MasterPage {
     }
 
     private SideBarElementLayout generateContactBox() {
-        SideBarElementLayout contacts = new SideBarElementLayout();
+        TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
         try {
             contacts.setTitle(Context.tr("How to contact {0}", targetTeam.getLogin()));
         } catch (UnauthorizedOperationException e) {
@@ -222,6 +223,23 @@ public class TeamPage extends MasterPage {
         return master;
     }
 
+    @Override
+    protected Breadcrumb getBreadcrumb() {
+        return TeamPage.generateBreadcrumb(targetTeam);
+    }
+
+    public static Breadcrumb generateBreadcrumb(Team team) {
+        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
+    
+        try {
+            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
+        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
+        }
+    
+        return breadcrumb;
+    }
+
     /**
      * Model used to display information about each team members.
      */
@@ -330,22 +348,5 @@ public class TeamPage extends MasterPage {
             }
             return false;
         }
-    }
-
-    @Override
-    protected Breadcrumb getBreadcrumb() {
-        return TeamPage.generateBreadcrumb(targetTeam);
-    }
-
-    public static Breadcrumb generateBreadcrumb(Team team) {
-        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
-
-        try {
-            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
-        } catch (UnauthorizedOperationException e) {
-            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
-        }
-
-        return breadcrumb;
     }
 }

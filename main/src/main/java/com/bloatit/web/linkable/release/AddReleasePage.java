@@ -29,6 +29,7 @@ import com.bloatit.model.Milestone;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -46,9 +47,11 @@ public final class AddReleasePage extends LoggedPage {
 
     @RequestParam
     Milestone milestone;
+    private final AddReleasePageUrl url;
 
     public AddReleasePage(final AddReleasePageUrl url) {
         super(url);
+        this.url = url;
         milestone = url.getMilestone();
     }
 
@@ -68,7 +71,9 @@ public final class AddReleasePage extends LoggedPage {
     public HtmlElement createRestrictedContent() {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
+        layout.addRight(new SideBarBugReportBlock(url));
         layout.addLeft(generateReleaseCreationForm());
+
         return layout;
     }
 

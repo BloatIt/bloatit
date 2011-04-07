@@ -8,13 +8,20 @@ import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
-import com.bloatit.web.actions.AdministrationAction;
+import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
-import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.UploadFileAction;
+import com.bloatit.web.linkable.admin.AdminHomePage;
+import com.bloatit.web.linkable.admin.AdministrationAction;
+import com.bloatit.web.linkable.admin.ConfigurationAdminAction;
+import com.bloatit.web.linkable.admin.ConfigurationAdminPage;
+import com.bloatit.web.linkable.admin.FeatureAdminPage;
+import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
+import com.bloatit.web.linkable.admin.MilestoneAdminPage;
+import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -29,15 +36,22 @@ import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.language.ChangeLanguageAction;
+import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
-import com.bloatit.web.linkable.login.RegisterAction;
+import com.bloatit.web.linkable.login.SignUpAction;
 import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
 import com.bloatit.web.linkable.messages.MessageListPage;
+import com.bloatit.web.linkable.meta.bugreport.MetaBugDeleteAction;
+import com.bloatit.web.linkable.meta.bugreport.MetaBugEditPage;
+import com.bloatit.web.linkable.meta.bugreport.MetaBugsListPage;
+import com.bloatit.web.linkable.meta.bugreport.MetaEditBugAction;
+import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.PaylineAction;
@@ -45,6 +59,8 @@ import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylinePage;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
+import com.bloatit.web.linkable.offer.MakeOfferPage;
+import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.AddReleaseAction;
 import com.bloatit.web.linkable.release.AddReleasePage;
 import com.bloatit.web.linkable.release.ReleasePage;
@@ -66,28 +82,29 @@ import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.MakeOfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
-import com.bloatit.web.pages.admin.FeatureAdminPage;
-import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
-import com.bloatit.web.pages.admin.MilestoneAdminPage;
-import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
+import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AddSoftwareActionUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
+import com.bloatit.web.url.ChangeLanguageActionUrl;
+import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
+import com.bloatit.web.url.ConfigurationAdminActionUrl;
+import com.bloatit.web.url.ConfigurationAdminPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
@@ -116,6 +133,11 @@ import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MessageListPageUrl;
+import com.bloatit.web.url.MetaBugDeleteActionUrl;
+import com.bloatit.web.url.MetaBugEditPageUrl;
+import com.bloatit.web.url.MetaBugsListPageUrl;
+import com.bloatit.web.url.MetaEditBugActionUrl;
+import com.bloatit.web.url.MetaReportBugActionUrl;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
@@ -126,12 +148,12 @@ import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
+import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
@@ -261,6 +283,24 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(MilestoneAdminPageUrl.getName())) {
             return new MilestoneAdminPage(new MilestoneAdminPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(MetaBugsListPageUrl.getName())) {
+            return new MetaBugsListPage(new MetaBugsListPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MetaBugEditPageUrl.getName())) {
+            return new MetaBugEditPage(new MetaBugEditPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ConfigurationAdminPageUrl.getName())) {
+            return new ConfigurationAdminPage(new ConfigurationAdminPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AdminHomePageUrl.getName())) {
+            return new AdminHomePage(new AdminHomePageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AddAttachementPageUrl.getName())) {
+            return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ChangeLanguagePageUrl.getName())) {
+            return new ChangeLanguagePage(new ChangeLanguagePageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -281,8 +321,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(CreateFeatureActionUrl.getName())) {
             return new CreateFeatureAction(new CreateFeatureActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(RegisterActionUrl.getName())) {
-            return new RegisterAction(new RegisterActionUrl(params, session.getParameters()));
+        if (pageCode.equals(SignUpActionUrl.getName())) {
+            return new SignUpAction(new SignUpActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PopularityVoteActionUrl.getName())) {
             return new PopularityVoteAction(new PopularityVoteActionUrl(params, session.getParameters()));
@@ -351,6 +391,21 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(GiveRightActionUrl.getName())) {
             return new GiveRightAction(new GiveRightActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ConfigurationAdminActionUrl.getName())) {
+            return new ConfigurationAdminAction(new ConfigurationAdminActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MetaReportBugActionUrl.getName())) {
+            return new MetaReportBugAction(new MetaReportBugActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MetaEditBugActionUrl.getName())) {
+            return new MetaEditBugAction(new MetaEditBugActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MetaBugDeleteActionUrl.getName())) {
+            return new MetaBugDeleteAction(new MetaBugDeleteActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ChangeLanguageActionUrl.getName())) {
+            return new ChangeLanguageAction(new ChangeLanguageActionUrl(params, session.getParameters()));
+        }
 
         // Process
         if (pageCode.equals(ContributionProcessUrl.getName())) {
@@ -374,7 +429,7 @@ public class BloatitWebServer extends WebServer {
 
     @Override
     public boolean initialize() {
-        WebConfiguration.loadConfiguration();
+        WebConfiguration.load();
         return true;
     }
 }

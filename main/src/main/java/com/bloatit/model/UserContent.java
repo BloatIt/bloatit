@@ -137,9 +137,13 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         return EnumSet.noneOf(UserTeamRight.class);
     }
 
+    public final boolean canAddFile() {
+        return canAccess(new UserContentRight.File(), Action.WRITE);
+    }
+
     @Override
-    public void addFile(FileMetadata file) {
-        // TODO right management: only the owner can add file
+    public void addFile(FileMetadata file) throws UnauthorizedOperationException {
+        tryAccess(new UserContentRight.File(), Action.WRITE);
         getDao().addFile(file.getDao());
     }
 

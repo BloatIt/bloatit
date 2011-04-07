@@ -129,6 +129,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     public void addFile(final DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
+        daoFileMetadata.setRelatedContent(this);
     }
 
     // ======================================================================

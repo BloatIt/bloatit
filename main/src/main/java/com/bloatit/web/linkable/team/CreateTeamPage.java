@@ -14,7 +14,8 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -43,6 +44,7 @@ public class CreateTeamPage extends MasterPage {
         layout.addRight(new SideBarDocumentationBlock("create_team"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
     }

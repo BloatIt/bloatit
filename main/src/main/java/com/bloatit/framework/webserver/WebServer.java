@@ -36,6 +36,8 @@ public abstract class WebServer implements XcgiProcessor {
 
         try {
             WebHeader header = new WebHeader(httpHeader);
+            
+            ModelAccessor.open();
             Context.reInitializeContext(header, session);
 
             final String pageCode = header.getPageName();
@@ -47,7 +49,6 @@ public abstract class WebServer implements XcgiProcessor {
             parameters.putAll(post.getParameters());
 
             try {
-                ModelAccessor.open();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response, this);
             } catch (ShallNotPassException e) {
@@ -77,7 +78,12 @@ public abstract class WebServer implements XcgiProcessor {
 
         } catch (final RuntimeException e) {
             response.writeException(e);
-            ModelAccessor.rollback();
+            try {
+                ModelAccessor.rollback();
+            } catch (RuntimeException e1) {
+                Log.framework().fatal(e);
+                throw e1;
+            }
             throw e;
         }
         return true;
@@ -88,7 +94,7 @@ public abstract class WebServer implements XcgiProcessor {
     /**
      * Return the session for the user. Either an existing session or a new
      * session.
-     *
+     * 
      * @param header
      * @return the session matching the user
      */

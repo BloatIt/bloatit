@@ -32,6 +32,75 @@ public class ConfigurationManager {
 
     private static final StandardPBEStringEncryptor encryptor = createEncryptor();
 
+    public enum PropertiesType {
+        ETC, SHARE
+    }
+
+    /**
+     * <p>
+     * Loads the content of a properties file in the default configuration file
+     * directory for bloatit. Returns it as a Properties list, aka a map
+     * containing the key->value pairs
+     * </p>
+     * <p>
+     * The <code>name</code> of the property file is the name of the file, or
+     * the path from the root of the configuration directory.
+     * </p>
+     *
+     * @param name the name of the property file
+     * @return a map key -> value
+     */
+    public static PropertiesRetriever loadProperties(final String name) {
+        return loadProperties(name, PropertiesType.ETC);
+    }
+
+    public static PropertiesRetriever loadProperties(final String name, PropertiesType type) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("null input: name");
+        }
+        String newName = name;
+        if (newName.endsWith(SUFFIX)) {
+            newName = newName.substring(0, newName.length() - SUFFIX.length());
+        }
+        newName = newName.replace('.', '/');
+        newName = newName + SUFFIX;
+
+        File f;
+        if (type == PropertiesType.ETC) {
+            f = new File(ETC_DIR + newName);
+        } else {
+            f = new File(SHARE_DIR + newName);
+        }
+        if (!f.exists()) {
+            if (type != PropertiesType.ETC) {
+                throw new BadProgrammerException("Cannot locate a configuration file. Please create " + SHARE_DIR + newName);
+            }
+
+            f = new File(FALLBACK_ETC_DIR + newName);
+            if (!f.exists()) {
+                throw new BadProgrammerException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or "
+                        + FALLBACK_ETC_DIR + newName);
+            }
+        }
+
+        FileInputStream fis;
+        try {
+            fis = new FileInputStream(f);
+            final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
+            final Properties props = new EncryptableProperties(encryptor);
+            props.load(isr);
+            return new PropertiesRetriever(props, new Date(f.lastModified()));
+        } catch (final FileNotFoundException e) {
+            throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
+        } catch (final IOException e) {
+            throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
+        }
+    }
+
+    public static PBEStringEncryptor getEncryptor() {
+        return encryptor;
+    }
+
     private static StandardPBEStringEncryptor createEncryptor() {
         final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         // Get the root password
@@ -49,67 +118,17 @@ public class ConfigurationManager {
         return encryptor;
     }
 
-    public static PBEStringEncryptor getEncryptor() {
-        return encryptor;
-    }
-
-    /**
-     * <p>
-     * Loads the content of a properties file in the default configuration file
-     * directory for bloatit. Returns it as a Properties list, aka a map
-     * containing the key->value pairs
-     * </p>
-     * <p>
-     * The <code>name</code> of the property file is the name of the file, or
-     * the path from the root of the configuration directory.
-     * </p>
-     * 
-     * @param name the name of the property file
-     * @return a map key -> value
-     */
-    public static PropertiesRetriever loadProperties(final String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("null input: name");
-        }
-        String newName = name;
-        if (newName.endsWith(SUFFIX)) {
-            newName = newName.substring(0, newName.length() - SUFFIX.length());
-        }
-        newName = newName.replace('.', '/');
-        newName = newName + SUFFIX;
-
-        File f = new File(ETC_DIR + newName);
-        if (!f.exists()) {
-            f = new File(FALLBACK_ETC_DIR + newName);
-            if (!f.exists()) {
-                throw new BadProgrammerException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or "
-                        + FALLBACK_ETC_DIR + newName);
-            }
-        }
-
-        FileInputStream fis;
-        try {
-            fis = new FileInputStream(f);
-            final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
-            final Properties props = new EncryptableProperties(encryptor);
-            props.load(isr);
-            return new PropertiesRetriever(props);
-        } catch (final FileNotFoundException e) {
-            throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
-        } catch (final IOException e) {
-            throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
-        }
-    }
-
     public static class PropertiesRetriever {
-        private final Properties prop;
+        private final Properties properties;
+        private final Date lastModified;
 
-        public PropertiesRetriever(final Properties props) {
-            prop = props;
+        public PropertiesRetriever(final Properties properties, Date lastModified) {
+            this.properties = properties;
+            this.lastModified = lastModified;
         }
 
         public Properties getProperties() {
-            return prop;
+            return properties;
         }
 
         private <T> T getSome(final String key, final T defaultValue, final Class<T> clazz) {
@@ -121,9 +140,9 @@ public class ConfigurationManager {
         }
 
         private <T> T getSome(final String key, final Class<T> clazz) {
-            final String property = prop.getProperty(key);
-            Log.framework().info("Loading property: " + key + ", value: " + property);
-            if (prop.getProperty(key) != null) {
+            String property = properties.getProperty(key);
+            if (property != null) {
+                property = property.trim();
                 try {
                     return Loaders.fromStr(clazz, property);
                 } catch (final ConversionErrorException e) {
@@ -221,22 +240,8 @@ public class ConfigurationManager {
             return getSome(key, String.class);
         }
 
-        /**
-         * @param key
-         * @param defaultValue
-         * @see java.util.Properties#getProperty(java.lang.String,
-         *      java.lang.String)
-         */
-        public String getProperty(final String key, final String defaultValue) {
-            return prop.getProperty(key, defaultValue);
-        }
-
-        /**
-         * @param key
-         * @see java.util.Properties#getProperty(java.lang.String)
-         */
-        public String getProperty(final String key) {
-            return prop.getProperty(key);
+        public Date getModificationDate(){
+            return lastModified;
         }
     }
 }

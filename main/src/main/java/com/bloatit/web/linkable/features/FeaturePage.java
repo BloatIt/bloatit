@@ -23,7 +23,8 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.model.Feature;
-import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -95,6 +96,8 @@ public final class FeaturePage extends MasterPage {
         layout.addLeft(new FeatureCommentListComponent(feature));
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
+        layout.addRight(new SideBarBugReportBlock(url));
+
         add(layout);
 
     }

@@ -2,8 +2,8 @@ package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.IdentifiableInterface;
-import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
+import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.PageIterable;
 
 public abstract class IdentifiableAdminListFactory<T extends DaoIdentifiable, U extends IdentifiableInterface> {

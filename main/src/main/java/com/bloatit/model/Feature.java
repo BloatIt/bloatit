@@ -167,6 +167,35 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     float getProgression() throws UnauthorizedOperationException;
 
     /**
+     * Return the progression due by the member in percent. It compare the amount of contribution
+     * to the amount of the current offer.
+     *
+     * @return a percentage. It can be > 100 if the amount of contributions is
+     *         greater than the amount for the current offer. If the offer
+     *         amount is 0 then it return Float.POSITIVE_INFINITY.
+     * @throws UnauthorizedOperationException if the user does not has the
+     *             {@link Action#READ} right on the <code>Contribution</code>
+     *             property.
+     * @see #authenticate(AuthToken)
+     */
+    float getMemberProgression(Member member) throws UnauthorizedOperationException;
+
+
+    /**
+     * Return the progression due by the amount in percent. It compare the amount of contribution
+     * to the amount of the current offer.
+     *
+     * @return a percentage. It can be > 100 if the amount of contributions is
+     *         greater than the amount for the current offer. If the offer
+     *         amount is 0 then it return Float.POSITIVE_INFINITY.
+     * @throws UnauthorizedOperationException if the user does not has the
+     *             {@link Action#READ} right on the <code>Contribution</code>
+     *             property.
+     * @see #authenticate(AuthToken)
+     */
+    float getRelativeProgression(BigDecimal amount) throws UnauthorizedOperationException;
+
+    /**
      * @return return the sum of the values of all the contributions on this
      *         feature.
      * @throws UnauthorizedOperationException if the user does not has the
@@ -262,5 +291,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     void computeSelectedOffer() throws UnauthorizedOperationException;
 
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
+
+
 
 }

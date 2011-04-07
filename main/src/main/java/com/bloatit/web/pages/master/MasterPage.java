@@ -35,11 +35,14 @@ public abstract class MasterPage extends GenericPage {
         notificationBlock = new HtmlDiv("notifications");
     }
 
+    /**
+     * TODO Documenter
+     * @throws RedirectException
+     */
     protected abstract void doCreate() throws RedirectException;
 
     @Override
     protected final void generateBody(final HtmlGenericElement body) throws RedirectException {
-
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);
         final HtmlBranch headerContent = new HtmlDiv("header_content").setId("header_content");
@@ -54,10 +57,10 @@ public abstract class MasterPage extends GenericPage {
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
         page.add(content);
-        content.add(notificationBlock);
         
         PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
         content.add(breacrumbPlaceHolder);
+        content.add(notificationBlock);
 
         body.add(new Footer());
         doCreate();

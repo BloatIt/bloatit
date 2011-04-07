@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.ErrorMessage.Level;
 import com.bloatit.framework.webserver.annotations.Message;
@@ -30,10 +32,10 @@ import com.bloatit.framework.webserver.url.UrlParameter;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.IndexPageUrl;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
- * <p>
  * A class to handle the user session on the web server
- * </p>
  * <p>
  * A session starts when the user arrives on the server (first GET request).
  * When the user login, his sessions continues (he'll therefore keep all his
@@ -48,82 +50,85 @@ import com.bloatit.web.url.IndexPageUrl;
  * </p>
  */
 public final class Session {
-
-    public static final long LOGGED_SESSION_DURATION = 1296000; // 15 days in
-                                                                // seconds
-    public static final long DEFAULT_SESSION_DURATION = 86400; // 1 days in
-                                                               // seconds
-
     private final UUID key;
-    private final Deque<ErrorMessage> notificationList;
-
-    // TODO: use string reference to avoid to keep reference on Member object
-    private AuthToken authToken;
-
-    private Url lastStablePage = null;
-    private Url targetPage = null;
-
     private long expirationTime;
 
-    /**
-     * The place to store session data
-     */
-    private final SessionParameters parameters = new SessionParameters();
-    private Url lastVisitedPage;
-    private final Map<String, WebProcess> processes = new HashMap<String, WebProcess>();
+    private final Deque<ErrorMessage> notificationList;
 
-    Session() {
+    private AuthToken authToken;
+    private Url lastStablePage = null;
+    private Url targetPage = null;
+    private Url lastVisitedPage;
+
+    private final SessionParameters parameters = new SessionParameters();
+
+    @SuppressWarnings("unchecked")
+    private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
+
+    /**
+     * Construct a new session
+     */
+    protected Session() {
         this(UUID.randomUUID());
     }
 
-    Session(final UUID id) {
+    /**
+     * Construct a session based on the information from <code>id</code>
+     * 
+     * @param id the id of the session
+     */
+    protected Session(final UUID id) {
         this.key = id;
         authToken = null;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
 
-    public UUID getKey() {
+    public synchronized UUID getKey() {
         return key;
     }
 
-    public void resetExpirationTime() {
+    public synchronized void resetExpirationTime() {
         if (isLogged()) {
-            expirationTime = Context.getResquestTime() + LOGGED_SESSION_DURATION;
+            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration() * DateUtils.SECOND_PER_DAY;
         } else {
-            expirationTime = Context.getResquestTime() + DEFAULT_SESSION_DURATION;
+            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionDefaultDuration() * DateUtils.SECOND_PER_DAY;
         }
     }
 
-    public void setAuthToken(final AuthToken token) {
+    public synchronized void setAuthToken(final AuthToken token) {
         authToken = token;
         resetExpirationTime();
     }
 
-    public AuthToken getAuthToken() {
+    public synchronized AuthToken getAuthToken() {
         return authToken;
     }
 
-    public boolean isLogged() {
+    public synchronized boolean isLogged() {
         return authToken != null;
     }
 
-    public boolean isExpired() {
+    public synchronized boolean isExpired() {
         return Context.getResquestTime() > expirationTime;
     }
 
-    public void setLastStablePage(final Url p) {
+    public synchronized void setLastStablePage(final Url p) {
         lastStablePage = p;
     }
 
-    public Url getLastStablePage() {
-        if (lastStablePage == null) {
-            return new IndexPageUrl();
-        }
-        return lastStablePage;
-    }
-
-    public Url pickPreferredPage() {
+    /**
+     * Finds the <i>supposedly</i> best page to redirect the user to
+     * <p>
+     * Actions are ignored. <br />
+     * <b>NOTE</b>: If the user has two active tabs, it will return the last
+     * page visited in any tab, and can lead to <i>very</i> confusing result.
+     * Avoid relying on this.
+     * </p>
+     * 
+     * @return the best page to redirect the user to
+     */
+    public synchronized Url pickPreferredPage() {
         if (targetPage != null) {
             final Url tempStr = targetPage;
             targetPage = null;
@@ -135,79 +140,88 @@ public final class Session {
         }
     }
 
-    public Url getLastVisitedPage() {
-        // TODO
+    /**
+     * Finds the last page the user visited on the website.
+     * <p>
+     * Actions are ignored. <br />
+     * <b>NOTE</b>: If the user has two active tabs, it will return the last
+     * page visited in any tab, and can lead to <i>very</i> confusing result.
+     * Avoid relying on this.
+     * </p>
+     * 
+     * @return the last page the user visited
+     */
+    public synchronized Url getLastVisitedPage() {
         return lastVisitedPage;
     }
 
-    public void setLastVisitedPage(final Url lastVisitedPage) {
+    public synchronized void setLastVisitedPage(final Url lastVisitedPage) {
         this.lastVisitedPage = lastVisitedPage;
     }
 
-    public final void setTargetPage(final Url targetPage) {
+    public final synchronized void setTargetPage(final Url targetPage) {
         this.targetPage = targetPage;
     }
 
-    public final void notifyGood(final String message) {
+    public final synchronized void notifyGood(final String message) {
         notificationList.add(new ErrorMessage(Level.INFO, message));
     }
 
-    public final void notifyBad(final String message) {
+    public final synchronized void notifyBad(final String message) {
         notificationList.add(new ErrorMessage(Level.WARNING, message));
     }
 
-    public final void notifyError(final String message) {
+    public final synchronized void notifyError(final String message) {
         notificationList.add(new ErrorMessage(Level.FATAL, message));
     }
 
     /**
      * Notifies all elements in a list as warnings
      */
-    public final void notifyList(final List<Message> errors) {
+    public final synchronized void notifyList(final List<Message> errors) {
         for (final Message error : errors) {
             notifyError(error.getMessage());
         }
     }
 
-    public void flushNotifications() {
+    public final synchronized void flushNotifications() {
         notificationList.clear();
     }
 
-    public Deque<ErrorMessage> getNotifications() {
+    public final synchronized Deque<ErrorMessage> getNotifications() {
         return notificationList;
     }
 
     /**
      * Finds all the session parameters
-     *
+     * 
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */
     @Deprecated
-    public SessionParameters getParameters() {
+    public final synchronized SessionParameters getParameters() {
         return parameters;
     }
 
     @SuppressWarnings("unchecked")
-    public <T, U> UrlParameter<T, U> pickParameter(final UrlParameter<T, U> param) {
+    public final synchronized <T, U> UrlParameter<T, U> pickParameter(final UrlParameter<T, U> param) {
         return (UrlParameter<T, U>) parameters.pick(param.getName());
     }
 
-    public void addParameter(final UrlParameter<?, ?> param) {
+    public final synchronized void addParameter(final UrlParameter<?, ?> param) {
         if (!(param.getValue() == null && param.getStringValue() == null)) {
             parameters.add(param.getName(), param);
         }
         // Maybe auto notify here ?
     }
 
-    public final String createWebProcess(WebProcess process) {
-
+    public final synchronized String createWebProcess(WebProcess process) {
         int length = 5;
         String key = null;
-        while(key == null) {
-            String tempKey = sha1(UUID.randomUUID().toString()).substring(0,length);
+        while (key == null) {
+            String tempKey = sha1(UUID.randomUUID().toString()).substring(0, length);
 
-            if(processes.containsKey(tempKey)) {
+            if (processes.containsKey(tempKey)) {
                 length++;
             } else {
                 key = tempKey;
@@ -218,19 +232,28 @@ public final class Session {
         return key;
     }
 
-    public final WebProcess getWebProcess(String processId) {
+    public final synchronized WebProcess getWebProcess(String processId) {
         return processes.get(processId);
     }
 
+    public final synchronized void destroyWebProcess(WebProcess webProcess) {
+        processes.remove(webProcess.getId());
+    }
 
-    public static String sha1(final String digest) {
+    /**
+     * Finds the sha1 hash of an <code>input</code> string
+     * 
+     * @param input the string to hash
+     * @return the hashed string
+     */
+    private static String sha1(final String input) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-1");
         } catch (final NoSuchAlgorithmException ex) {
             throw new BadProgrammerException("Algorithm Sha1 not available", ex);
         }
-        md.update(digest.getBytes());
+        md.update(input.getBytes());
         final byte byteData[] = md.digest();
 
         final StringBuilder sb = new StringBuilder();
@@ -239,9 +262,4 @@ public final class Session {
         }
         return sb.toString();
     }
-
-    public void destroyWebProcess(WebProcess webProcess) {
-        processes.remove(webProcess.getId());
-    }
-
 }

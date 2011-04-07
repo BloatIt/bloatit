@@ -40,8 +40,8 @@ import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Offer;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.rest.adapters.DateAdapter;
-import com.bloatit.rest.list.RestMilestoneList;
 import com.bloatit.rest.list.RestFileMetadataList;
+import com.bloatit.rest.list.RestMilestoneList;
 import com.bloatit.rest.list.RestOfferList;
 
 /**

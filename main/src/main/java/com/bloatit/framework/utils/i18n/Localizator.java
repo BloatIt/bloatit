@@ -1,6 +1,5 @@
 package com.bloatit.framework.utils.i18n;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
@@ -11,14 +10,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import net.sf.cglib.core.Local;
+
 import org.slf4j.helpers.MessageFormatter;
 import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.Log;
-import com.bloatit.common.PropertyLoader;
+import com.bloatit.framework.LocalesConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
@@ -41,8 +41,6 @@ import com.bloatit.model.Member;
  * </p>
  */
 public final class Localizator {
-    /** Path of the files containing available languages */
-    private static final String LANGUAGES_PATH = "i18n/languages";
     /** For parsing of available languages file */
     private static final String LANGUAGE_CODE = "code";
     /** Default user locale */
@@ -51,19 +49,23 @@ public final class Localizator {
     private static final String SEPARATORS_REGEX = "[_-]";
 
     private static Map<String, LanguageDescriptor> availableLanguages = Collections.unmodifiableMap(initLanguageList());
+    private static Date availableLanguagesReload;
 
     private Locale locale;
-    private final I18n i18n;
-    private final String urlLang;
-    private final List<String> browserLangs;
+    private I18n i18n;
 
     // translations cache
     private static final Map<Locale, I18n> localesCache = Collections.synchronizedMap(new HashMap<Locale, I18n>());
 
+    static {
+        // Java default is used as a fallback for gettext.
+        // We use english as the default fallback language for when we don't
+        // have the current user language
+        Locale.setDefault(new Locale("en", "US"));
+    }
+
     public Localizator(final String urlLang, final List<String> browserLangs) {
-        this.urlLang = urlLang;
-        this.browserLangs = browserLangs;
-        this.locale = inferLocale();
+        this.locale = inferLocale(urlLang, browserLangs);
 
         if (localesCache.containsKey(locale)) {
             this.i18n = localesCache.get(locale);
@@ -259,6 +261,10 @@ public final class Localizator {
      * @return a list with all the language descriptors
      */
     public static Map<String, LanguageDescriptor> getAvailableLanguages() {
+        if (LocalesConfiguration.configuration.getLastReload().after(availableLanguagesReload)) {
+            Log.framework().trace("Reloading languages configuration file");
+            availableLanguages = initLanguageList();
+        }
         return availableLanguages;
     }
 
@@ -269,12 +275,8 @@ public final class Localizator {
     private static Map<String, LanguageDescriptor> initLanguageList() {
         final Map<String, LanguageDescriptor> languages = new HashMap<String, Localizator.LanguageDescriptor>();
         final Properties properties;
-        
-        try {
-            properties = PropertyLoader.loadProperties(LANGUAGES_PATH);
-        } catch (final IOException e) {
-            throw new BadProgrammerException("File describing available languages is not available at " + LANGUAGES_PATH, e);
-        }
+
+        properties = LocalesConfiguration.getLanguages();
         for (final Entry<?, ?> property : properties.entrySet()) {
             final String key = (String) property.getKey();
             final String value = (String) property.getValue();
@@ -296,6 +298,7 @@ public final class Localizator {
                 ld.name = value;
             }
         }
+        availableLanguagesReload = new Date();
 
         return languages;
     }
@@ -378,9 +381,7 @@ public final class Localizator {
     }
 
     /**
-     * <p>
      * Forces the current locale to the member user choice.
-     * </p>
      * <p>
      * Use whenever the user explicitely asks to change the locale setting back
      * to his favorite, or when he logs in
@@ -389,23 +390,28 @@ public final class Localizator {
     public void forceMemberChoice() {
         final Member member = Context.getSession().getAuthToken().getMember();
         locale = member.getLocaleUnprotected();
+        this.i18n = localesCache.get(locale);
+    }
+
+    public void forceLanguage(Locale language) {
+        locale = new Locale(language.getLanguage(), locale.getCountry());
+        this.i18n = localesCache.get(locale);
     }
 
     /**
      * Infers the locale based on various parameters
      */
-    private Locale inferLocale() {
+    private Locale inferLocale(final String urlLang, final List<String> browserLangs) {
         Locale locale = null;
 
         if (urlLang != null && !urlLang.equals("default")) {
-
             // Default language
             String country;
             if (Context.getSession().getAuthToken() != null) {
                 final Member member = Context.getSession().getAuthToken().getMember();
                 country = member.getLocaleUnprotected().getCountry();
             } else {
-                country = browserLocaleHeuristic().getCountry();
+                country = browserLocaleHeuristic(browserLangs).getCountry();
             }
             locale = new Locale(urlLang, country);
 
@@ -427,7 +433,7 @@ public final class Localizator {
                 final Member member = Context.getSession().getAuthToken().getMember();
                 locale = member.getLocaleUnprotected();
             } else {
-                locale = browserLocaleHeuristic();
+                locale = browserLocaleHeuristic(browserLangs);
             }
         }
         return locale;
@@ -455,7 +461,7 @@ public final class Localizator {
      * 
      * @return the favorite user locale
      */
-    private Locale browserLocaleHeuristic() {
+    private Locale browserLocaleHeuristic(final List<String> browserLangs) {
         Locale currentLocale = null;
         float currentWeigth = 0;
         Locale favLanguage = null;

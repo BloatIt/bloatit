@@ -6,16 +6,17 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
+import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -43,12 +44,13 @@ public class TeamsPage extends MasterPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         add(layout);
     }
 
     private HtmlElement generateMain() {
-        final HtmlDiv master = new HtmlDiv();
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Teams list"), 1);
         master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 
         final PageIterable<Team> teamList = TeamManager.getAll();
