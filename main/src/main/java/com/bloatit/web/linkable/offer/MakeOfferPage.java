@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.linkable.offer;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -47,6 +47,7 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
+import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.MakeOfferPageUrl;
