@@ -11,7 +11,9 @@
  */
 package com.bloatit.web.linkable.meta.bugreport;
 
+import com.bloatit.framework.meta.MetaBug;
 import com.bloatit.framework.meta.MetaBugManager;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.masters.Action;
@@ -38,21 +40,19 @@ public final class MetaBugDeleteAction extends Action {
 
     @Override
     protected Url doProcess() {
-
-
-
-        MetaBugManager.getById(bugId).delete();
-        session.notifyGood("Bug deleted");
-
-
+        MetaBug bug = MetaBugManager.getById(bugId);
+        if (bug != null) {
+            bug.delete();
+            session.notifyGood("Bug deleted");
+            return new MetaBugsListPageUrl();
+        }
+        session.notifyError(Context.tr("Bug id ''{0}'' doesn't exist. Maybe it has already been deleted", bugId));
         return new MetaBugsListPageUrl();
     }
 
     @Override
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
-
-
         return session.getLastVisitedPage();
     }
 }

@@ -28,7 +28,7 @@ import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.MetaReportBugActionUrl;
 
 /**
- * A response to a form used to create a new feature
+ * An action used to create a bug
  */
 @ParamContainer("meta/bugreport/doreport")
 public final class MetaReportBugAction extends Action {
@@ -55,41 +55,33 @@ public final class MetaReportBugAction extends Action {
 
     @Override
     protected Url doProcess() {
-
         // TODO: define if you have to be logged to report a bug
         String bugReport = "";
-        bugReport += "* **Url:** "+bugUrl+"\n";
+        bugReport += "* **Url:** " + bugUrl + "\n";
         try {
-            bugReport += "* **Author:** "+(session.isLogged()?session.getAuthToken().getMember().getDisplayName():"not logged")+"\n";
+            bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getDisplayName() : "not logged") + "\n";
         } catch (UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
-        bugReport += "* **Date:** "+new SimpleDateFormat().format(new Date())+"\n";
+        bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;
 
-        if(MetaBugManager.reportBug(bugReport)) {
+        if (MetaBugManager.reportBug(bugReport)) {
             session.notifyGood("Bug reported, Thanks!");
         } else {
             session.notifyError("A problem occur during the bug report process! Please report this bug! :)");
         }
-
-
-
-
-
-        //TODO: add link system in documentation
-
+        
+        // TODO: add link system in documentation
         return session.getLastVisitedPage();
     }
 
     @Override
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
-
         session.addParameter(url.getDescriptionParameter());
-
         return session.getLastVisitedPage();
     }
 }
