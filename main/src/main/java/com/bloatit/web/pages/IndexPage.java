@@ -21,6 +21,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
@@ -31,6 +32,7 @@ import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("index")
@@ -50,7 +52,11 @@ public final class IndexPage extends MasterPage {
             HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
             globalDescription.add(title);
             HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())), tr("Elveos's presentation"));
-            globalDescription.add(image);
+            DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
+            documentationPageUrl.setDocTarget("presentation");
+            HtmlLink presentationLink = documentationPageUrl.getHtmlLink();
+            presentationLink.add(image);
+            globalDescription.add(presentationLink);
 
         }
         add(globalDescription);
