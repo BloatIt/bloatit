@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.ErrorMessage.Level;
@@ -31,9 +32,7 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.IndexPageUrl;
 
 /**
- * <p>
  * A class to handle the user session on the web server
- * </p>
  * <p>
  * A session starts when the user arrives on the server (first GET request).
  * When the user login, his sessions continues (he'll therefore keep all his
@@ -48,33 +47,33 @@ import com.bloatit.web.url.IndexPageUrl;
  * </p>
  */
 public final class Session {
-    private static final long HOUR = 3600;
-    private static final long DAY = 24 * HOUR;
-    private static final long LOGGED_SESSION_DURATION = 15 * DAY;
-    private static final long DEFAULT_SESSION_DURATION = 1 * DAY;
-
     private final UUID key;
+    private long expirationTime;
+    
     private final Deque<ErrorMessage> notificationList;
 
-    // TODO: use string reference to avoid to keep reference on Member object
+    // TODO: use string reference to avoid keeping reference on Member object
     private AuthToken authToken;
 
     private Url lastStablePage = null;
     private Url targetPage = null;
-
-    private long expirationTime;
-
-    /**
-     * The place to store session data
-     */
-    private final SessionParameters parameters = new SessionParameters();
     private Url lastVisitedPage;
+
+    private final SessionParameters parameters = new SessionParameters();
     private final Map<String, WebProcess> processes = new HashMap<String, WebProcess>();
 
+    /**
+     * Construct a new session
+     */
     Session() {
         this(UUID.randomUUID());
     }
 
+    /**
+     * Construct a session based on the information from <code>id</code>
+     * 
+     * @param id the id of the session
+     */
     Session(final UUID id) {
         this.key = id;
         authToken = null;
@@ -88,9 +87,9 @@ public final class Session {
 
     public void resetExpirationTime() {
         if (isLogged()) {
-            expirationTime = Context.getResquestTime() + LOGGED_SESSION_DURATION;
+            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration();
         } else {
-            expirationTime = Context.getResquestTime() + DEFAULT_SESSION_DURATION;
+            expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionDefaultDuration();
         }
     }
 
@@ -182,11 +181,11 @@ public final class Session {
         }
     }
 
-    public void flushNotifications() {
+    public final void flushNotifications() {
         notificationList.clear();
     }
 
-    public Deque<ErrorMessage> getNotifications() {
+    public final Deque<ErrorMessage> getNotifications() {
         return notificationList;
     }
 
@@ -197,16 +196,16 @@ public final class Session {
      * @deprecated use a RequestParam
      */
     @Deprecated
-    public SessionParameters getParameters() {
+    public final SessionParameters getParameters() {
         return parameters;
     }
 
     @SuppressWarnings("unchecked")
-    public <T, U> UrlParameter<T, U> pickParameter(final UrlParameter<T, U> param) {
+    public final <T, U> UrlParameter<T, U> pickParameter(final UrlParameter<T, U> param) {
         return (UrlParameter<T, U>) parameters.pick(param.getName());
     }
 
-    public void addParameter(final UrlParameter<?, ?> param) {
+    public final void addParameter(final UrlParameter<?, ?> param) {
         if (!(param.getValue() == null && param.getStringValue() == null)) {
             parameters.add(param.getName(), param);
         }
@@ -235,14 +234,24 @@ public final class Session {
         return processes.get(processId);
     }
 
-    public static String sha1(final String digest) {
+    public final void destroyWebProcess(WebProcess webProcess) {
+        processes.remove(webProcess.getId());
+    }
+
+    /**
+     * Finds the sha1 hash of an <code>input</code> string
+     * 
+     * @param input the string to hash
+     * @return the hashed string
+     */
+    private static String sha1(final String input) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-1");
         } catch (final NoSuchAlgorithmException ex) {
             throw new BadProgrammerException("Algorithm Sha1 not available", ex);
         }
-        md.update(digest.getBytes());
+        md.update(input.getBytes());
         final byte byteData[] = md.digest();
 
         final StringBuilder sb = new StringBuilder();
@@ -251,9 +260,4 @@ public final class Session {
         }
         return sb.toString();
     }
-
-    public void destroyWebProcess(WebProcess webProcess) {
-        processes.remove(webProcess.getId());
-    }
-
 }
