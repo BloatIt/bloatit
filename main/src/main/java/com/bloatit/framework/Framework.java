@@ -13,8 +13,7 @@ import com.bloatit.model.AbstractModel;
 
 /**
  * This class represent the whole framework.
- * 
- * @author Thomas Guyard
+ *
  */
 public class Framework {
 
@@ -33,13 +32,13 @@ public class Framework {
     }
 
     public boolean initialize() {
-        FrameworkConfiguration.load();
-        LocalesConfiguration.load();
         try {
+            FrameworkConfiguration.load();
+            LocalesConfiguration.load();
             mailServer.initialize();
             scgiServer.initialize();
             ModelAccessor.initialize(model);
-        }catch (final ExternalErrorException e){
+        } catch (final ExternalErrorException e) {
             Log.framework().fatal("Error loading configuration file", e);
             return false;
         } catch (final BindException e) {
