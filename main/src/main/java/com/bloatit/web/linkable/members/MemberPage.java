@@ -96,7 +96,7 @@ public final class MemberPage extends MasterPage {
             memberTitle.add(memberInfo);
 
             memberInfo.add((tr("Full name: ") + member.getFullname()));
-            memberInfo.add(tr("Login: ") + member.getLogin());
+            memberInfo.add(Context.trc("Login (noun) ", "Login: ") + member.getLogin());
             if (member.canAccessEmail(Action.READ)) {
                 memberInfo.add(new HtmlText(tr("Email: ") + member.getEmail()));
             }
