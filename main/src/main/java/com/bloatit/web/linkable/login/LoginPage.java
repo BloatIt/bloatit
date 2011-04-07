@@ -67,9 +67,10 @@ public final class LoginPage extends MasterPage {
             final HtmlTextField loginInput = new HtmlTextField(loginData.getName(), Context.trc("Login (noun)", "Login"));
             loginInput.setDefaultValue(loginData.getSuggestedValue());
             loginInput.addErrorMessages(loginData.getErrorMessages());
+            loginInput.setComment(Context.tr("Note: This field is not case sensitive"));
             // passwordField
             final HtmlPasswordField passwordInput = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
-            // sublit.
+            // Submit
             final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
 
             loginForm.add(loginInput);
@@ -103,9 +104,7 @@ public final class LoginPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb() {
         Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
-
         breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(trc("Login (verb)", "Login")));
-
         return breadcrumb;
     }
 }
