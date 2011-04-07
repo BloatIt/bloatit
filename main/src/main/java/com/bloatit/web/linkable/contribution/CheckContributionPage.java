@@ -98,7 +98,7 @@ public final class CheckContributionPage extends LoggedPage {
         addNotifications(url.getMessages());
         if (url.getMessages().hasMessage()) {
             session.notifyList(url.getMessages());
-            throw new RedirectException(Context.getSession().getLastStablePage());
+            throw new RedirectException(Context.getSession().pickPreferredPage());
         }
 
     }

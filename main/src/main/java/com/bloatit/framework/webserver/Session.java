@@ -48,11 +48,10 @@ import com.bloatit.web.url.IndexPageUrl;
  * </p>
  */
 public final class Session {
-
-    public static final long LOGGED_SESSION_DURATION = 1296000; // 15 days in
-                                                                // seconds
-    public static final long DEFAULT_SESSION_DURATION = 86400; // 1 days in
-                                                               // seconds
+    private static final long HOUR = 3600;
+    private static final long DAY = 24 * HOUR;
+    private static final long LOGGED_SESSION_DURATION = 15 * DAY;
+    private static final long DEFAULT_SESSION_DURATION = 1 * DAY;
 
     private final UUID key;
     private final Deque<ErrorMessage> notificationList;
@@ -116,13 +115,17 @@ public final class Session {
         lastStablePage = p;
     }
 
-    public Url getLastStablePage() {
-        if (lastStablePage == null) {
-            return new IndexPageUrl();
-        }
-        return lastStablePage;
-    }
-
+    /**
+     * Finds the <i>supposedly</i> best page to redirect the user to
+     * <p>
+     * Actions are ignored. <br />
+     * <b>NOTE</b>: If the user has two active tabs, it will return the last
+     * page visited in any tab, and can lead to <i>very</i> confusing result.
+     * Avoid relying on this.
+     * </p>
+     * 
+     * @return the best page to redirect the user to
+     */
     public Url pickPreferredPage() {
         if (targetPage != null) {
             final Url tempStr = targetPage;
@@ -135,8 +138,18 @@ public final class Session {
         }
     }
 
+    /**
+     * Finds the last page the user visited on the website.
+     * <p>
+     * Actions are ignored. <br />
+     * <b>NOTE</b>: If the user has two active tabs, it will return the last
+     * page visited in any tab, and can lead to <i>very</i> confusing result.
+     * Avoid relying on this.
+     * </p>
+     * 
+     * @return the last page the user visited
+     */
     public Url getLastVisitedPage() {
-        // TODO
         return lastVisitedPage;
     }
 
@@ -179,7 +192,7 @@ public final class Session {
 
     /**
      * Finds all the session parameters
-     *
+     * 
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */
@@ -204,10 +217,10 @@ public final class Session {
 
         int length = 5;
         String key = null;
-        while(key == null) {
-            String tempKey = sha1(UUID.randomUUID().toString()).substring(0,length);
+        while (key == null) {
+            String tempKey = sha1(UUID.randomUUID().toString()).substring(0, length);
 
-            if(processes.containsKey(tempKey)) {
+            if (processes.containsKey(tempKey)) {
                 length++;
             } else {
                 key = tempKey;
@@ -221,7 +234,6 @@ public final class Session {
     public final WebProcess getWebProcess(String processId) {
         return processes.get(processId);
     }
-
 
     public static String sha1(final String digest) {
         MessageDigest md;

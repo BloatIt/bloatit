@@ -37,6 +37,7 @@ public class AdministrationAction extends AdminAction {
 
     private final AdministrationActionUrl url;
 
+    @SuppressWarnings("unchecked")
     public AdministrationAction(final AdministrationActionUrl url) {
         super(url);
         this.url = url;
@@ -99,14 +100,14 @@ public class AdministrationAction extends AdminAction {
             session.notifyError(getRefusalReason());
             return new LoginPageUrl();
         }
-        return session.getLastStablePage();
+        return session.pickPreferredPage();
     }
 
     @Override
     protected Url doProcessErrors() {
         session.notifyError("Ça marche pas");
         session.notifyList(url.getMessages());
-        return session.getLastStablePage();
+        return session.pickPreferredPage();
     }
 
     @Override
