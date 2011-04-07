@@ -52,8 +52,7 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
     public void setDefaultValue(final String value) {
         final HtmlRadioButton checkedElement = buttons.get(value);
         if (checkedElement != null) {
-            checkedElement.addAttribute("selected", "selected");
+            checkedElement.addAttribute("checked", "selected");
         }
     }
-
 }
