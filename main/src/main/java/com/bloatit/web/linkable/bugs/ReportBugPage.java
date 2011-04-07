@@ -37,6 +37,7 @@ import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -56,9 +57,12 @@ public final class ReportBugPage extends LoggedPage {
     @RequestParam(name = BUG_BATCH, role = Role.GET)
     private final Offer offer;
 
-    public ReportBugPage(final ReportBugPageUrl reportBugPageUrl) {
-        super(reportBugPageUrl);
-        offer = reportBugPageUrl.getOffer();
+    private final ReportBugPageUrl url;
+
+    public ReportBugPage(final ReportBugPageUrl url) {
+        super(url);
+        this.url = url;
+        offer = url.getOffer();
     }
 
     @Override
@@ -87,6 +91,7 @@ public final class ReportBugPage extends LoggedPage {
 
         layout.addRight(new SideBarFeatureBlock(offer.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SideBarBugReportBlock(url));
 
         return layout;
     }

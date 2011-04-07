@@ -44,6 +44,7 @@ public class LanguageSelector extends HtmlDropDown {
         for (String lang : langs) {
             if (lang != null && !lang.isEmpty()) {
                 setDefaultStringValue(lang);
+                return;
             }
         }
     }
