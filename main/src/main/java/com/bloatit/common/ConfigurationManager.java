@@ -46,7 +46,7 @@ public class ConfigurationManager {
      * The <code>name</code> of the property file is the name of the file, or
      * the path from the root of the configuration directory.
      * </p>
-     * 
+     *
      * @param name the name of the property file
      * @return a map key -> value
      */
@@ -72,7 +72,7 @@ public class ConfigurationManager {
             f = new File(SHARE_DIR + newName);
         }
         if (!f.exists()) {
-            if (type == PropertiesType.ETC) {
+            if (type != PropertiesType.ETC) {
                 throw new BadProgrammerException("Cannot locate a configuration file. Please create " + SHARE_DIR + newName);
             }
 
@@ -239,7 +239,7 @@ public class ConfigurationManager {
         public String getString(final String key) {
             return getSome(key, String.class);
         }
-        
+
         public Date getModificationDate(){
             return lastModified;
         }
