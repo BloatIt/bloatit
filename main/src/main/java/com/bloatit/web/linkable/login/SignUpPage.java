@@ -35,7 +35,6 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
