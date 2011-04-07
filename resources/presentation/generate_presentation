@@ -1,0 +1,15 @@
+#!/bin/sh
+
+OUTPUT_DIR_PREFIX=../../www/resources/
+OUTPUT_DIR_SUFFIX=/img/presentation.png
+OUTPUT_WIDTH=1024
+
+LANG_LIST="en fr"
+
+for LANG in $LANG_LIST ; do
+    OUTPUT_FILE=$OUTPUT_DIR_PREFIX$LANG$OUTPUT_DIR_SUFFIX
+
+    mkdir -p $(dirname $OUTPUT_FILE)
+    inkscape -e $OUTPUT_FILE -C -w $OUTPUT_WIDTH presentation_$LANG.svg
+    optipng $OUTPUT_FILE
+done

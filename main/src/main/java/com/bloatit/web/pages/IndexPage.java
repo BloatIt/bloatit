@@ -17,6 +17,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlImage;
@@ -48,7 +49,7 @@ public final class IndexPage extends MasterPage {
         {
             HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
             globalDescription.add(title);
-            HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation()), tr("Elveos's presentation"));
+            HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())), tr("Elveos's presentation"));
             globalDescription.add(image);
 
         }

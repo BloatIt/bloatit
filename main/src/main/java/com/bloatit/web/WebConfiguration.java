@@ -112,8 +112,8 @@ public class WebConfiguration extends ReloadableConfiguration {
     /**
      * @return the path to the imgPresentation
      */
-    public static String getImgPresentation() {
-        return getCommonsDir() + configuration.imgPresentation;
+    public static String getImgPresentation(String langCode) {
+        return getResourcesDir() + "/" + langCode + configuration.imgPresentation;
     }
 
     /**
