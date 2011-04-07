@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.linkable.offer;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -46,7 +46,8 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
+import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.MakeOfferPageUrl;
@@ -143,8 +144,8 @@ public final class MakeOfferPage extends LoggedPage {
                     offerForm.add(teamInput);
                 }
             } catch (final UnauthorizedOperationException e) {
-                // Shouldn't happen
-                Log.web().error("Can't access current user teams (I check before tho)", e);
+                session.notifyError(Context.tr("An error prevented us from displaying you some information. Please notify us"));
+                throw new ShallNotPassException("Can't access current user teams (I checked before tho)", e);
             }
         }
 
@@ -212,11 +213,11 @@ public final class MakeOfferPage extends LoggedPage {
         // Is finished
         final FieldData isFinishedData = offerActionUrl.getIsFinishedParameter().pickFieldData();
         final HtmlRadioButtonGroup isFinishedInput = new HtmlRadioButtonGroup(isFinishedData.getName());
-        isFinishedInput.setDefaultValue(isFinishedData.getSuggestedValue());
         // isFinishedInput.addErrorMessages(isFinishedData.getErrorMessages());
         isFinishedInput.addRadioButton("true", Context.tr("Finish your Offer"));
         isFinishedInput.addRadioButton("false", Context.tr("Add an other lot"));
         offerForm.add(isFinishedInput);
+        isFinishedInput.setDefaultValue(isFinishedData.getSuggestedValue());
 
         final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Validate !"));
         offerForm.add(offerButton);

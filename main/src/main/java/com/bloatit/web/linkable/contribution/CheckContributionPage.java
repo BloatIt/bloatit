@@ -48,7 +48,7 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.members.MembersTools;
-import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
@@ -98,7 +98,7 @@ public final class CheckContributionPage extends LoggedPage {
         addNotifications(url.getMessages());
         if (url.getMessages().hasMessage()) {
             session.notifyList(url.getMessages());
-            throw new RedirectException(Context.getSession().getLastStablePage());
+            throw new RedirectException(Context.getSession().pickPreferredPage());
         }
 
     }

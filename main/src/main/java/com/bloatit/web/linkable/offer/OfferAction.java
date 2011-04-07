@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.actions;
+package com.bloatit.web.linkable.offer;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -32,6 +32,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Team;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;

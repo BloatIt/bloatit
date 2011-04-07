@@ -13,6 +13,8 @@
 package com.bloatit.web.linkable.login;
 
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.Session;
+import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Member;
@@ -34,9 +36,13 @@ public final class LogoutAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
-        session.setAuthToken(null);
-        session.notifyGood(Context.tr("Logout success."));
-        return session.pickPreferredPage();
+        Url prefUrl = session.pickPreferredPage();
+        SessionManager.destroySession(session);
+        Session newSess = SessionManager.createSession();
+        Context.reInitializeContext(Context.getHeader(), newSess);
+        newSess.notifyGood(Context.tr("Logout success."));
+        
+        return prefUrl;
     }
 
     @Override

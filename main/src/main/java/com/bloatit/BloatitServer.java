@@ -25,7 +25,6 @@ public class BloatitServer {
             // framework.shutdown(); done in the hook (ook OoOk oOk!!)
             System.exit(0);
         }
-
     }
 
 }

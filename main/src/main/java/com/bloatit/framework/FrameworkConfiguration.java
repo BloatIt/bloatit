@@ -33,13 +33,69 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private int xcgiThreadsNumber;
     private String metaBugsDirStorage;
 
+    private long sessionCleanTime;
+    private long sessionDefaultDuration;
+    private long sessionLoggedDuration;
+
     private FrameworkConfiguration() {
         super();
         loadConfiguration();
     }
 
+    public static PropertiesRetriever getProperties() {
+        return configuration.properties;
+    }
+
+    // -------------------------------------------
+    // RESOURCES
+    // -------------------------------------------
+    
     public static String getRessourcesDirStorage() {
         return configuration.ressourcesDirStorage;
+    }
+
+    // -------------------------------------------
+    // SESSIONS
+    // -------------------------------------------
+    
+    public static String getSessionDumpfile() {
+        return configuration.sessionDumpfile;
+    }
+    
+    public static long getSessionCleanTime() {
+        return configuration.sessionCleanTime;
+    }
+    
+    public static long getSessionDefaultDuration() {
+        return configuration.sessionDefaultDuration;
+    }
+    
+    public static long getSessionLoggedDuration() {
+        return configuration.sessionLoggedDuration;
+    }
+
+    // -------------------------------------------
+    // MAIL
+    // -------------------------------------------
+
+    public static String getMailSmtpHost() {
+        return configuration.mailSmtpHost;
+    }
+
+    public static String getMailSmptSocketFactoryPort() {
+        return configuration.mailSmptSocketFactoryPort;
+    }
+
+    public static String getMailSmtpSoketFactoryClass() {
+        return configuration.mailSmtpSoketFactoryClass;
+    }
+
+    public static String getMailSmtpAuth() {
+        return configuration.mailSmtpAuth;
+    }
+
+    public static String getMailSmtpPort() {
+        return configuration.mailSmtpPort;
     }
 
     public static String getMailDirTmp() {
@@ -62,34 +118,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.mailFrom;
     }
 
-    public static String getSessionDumpfile() {
-        return configuration.sessionDumpfile;
-    }
-
-    public static PropertiesRetriever getProperties() {
-        return configuration.properties;
-    }
-
-    public static String getMailSmtpHost() {
-        return configuration.mailSmtpHost;
-    }
-
-    public static String getMailSmptSocketFactoryPort() {
-        return configuration.mailSmptSocketFactoryPort;
-    }
-
-    public static String getMailSmtpSoketFactoryClass() {
-        return configuration.mailSmtpSoketFactoryClass;
-    }
-
-    public static String getMailSmtpAuth() {
-        return configuration.mailSmtpAuth;
-    }
-
-    public static String getMailSmtpPort() {
-        return configuration.mailSmtpPort;
-    }
-
+    // -------------------------------------------
+    // SERVER
+    // -------------------------------------------
+    
     public static int getXcgiListenport() {
         return configuration.xcgiListenport;
     }
@@ -97,6 +129,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static int getXcgiThreadsNumber() {
         return configuration.xcgiThreadsNumber;
     }
+    
+    // -------------------------------------------
+    // BUGS
+    // -------------------------------------------
 
     public static String getMetaBugsDirStorage() {
         return configuration.metaBugsDirStorage;
@@ -108,10 +144,16 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         // Server
         xcgiThreadsNumber = properties.getInt("xcgi.threads.number");
         xcgiListenport = properties.getInt("xcgi.listenport");
+        
         // Resources
         ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
+        
         // Sessions.
         sessionDumpfile = SHARE_DIR + properties.getString("session.dumpfile", "sessions.dump");
+        sessionCleanTime =  properties.getLong("session.clean.time");
+        sessionDefaultDuration =  properties.getLong("session.default.duration");
+        sessionLoggedDuration =  properties.getLong("session.logged.duration");
+        
         // Bugs
         metaBugsDirStorage = SHARE_DIR + properties.getString("meta.bugs.dir.storage", "bug_storage");
 

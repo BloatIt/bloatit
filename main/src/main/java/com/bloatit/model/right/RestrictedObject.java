@@ -96,12 +96,12 @@ public abstract class RestrictedObject implements RestrictedInterface {
             owningState = OwningState.NOBODY;
             return;
         }
-        if (token.getNonPersistantMember() == null) {
+        if (token.getMember() == null) {
             Log.model().fatal("Null member on an AuthToken");
             return;
         }
 
-        final Member member = token.getNonPersistantMember();
+        final Member member = token.getMember();
         if (isMine(member)) {
             owningState = OwningState.OWNER;
         } else {
@@ -134,7 +134,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
         automaticAuthentication();
         // We have to test if we are authenticated
         // to make sure the token is != null
-        return isAuthenticated() && token.getNonPersistantMember().getRole() == role;
+        return isAuthenticated() && token.getMember().getRole() == role;
     }
 
     /*

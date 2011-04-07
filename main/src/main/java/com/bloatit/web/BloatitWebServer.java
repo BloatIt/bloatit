@@ -12,7 +12,6 @@ import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
-import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.linkable.admin.AdminHomePage;
@@ -42,17 +41,17 @@ import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
-import com.bloatit.web.linkable.login.RegisterAction;
+import com.bloatit.web.linkable.login.SignUpAction;
 import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
 import com.bloatit.web.linkable.messages.MessageListPage;
-import com.bloatit.web.linkable.metabugreport.MetaBugDeleteAction;
-import com.bloatit.web.linkable.metabugreport.MetaBugEditPage;
-import com.bloatit.web.linkable.metabugreport.MetaBugsListPage;
-import com.bloatit.web.linkable.metabugreport.MetaEditBugAction;
-import com.bloatit.web.linkable.metabugreport.MetaReportBugAction;
+import com.bloatit.web.linkable.meta.bugreport.MetaBugDeleteAction;
+import com.bloatit.web.linkable.meta.bugreport.MetaBugEditPage;
+import com.bloatit.web.linkable.meta.bugreport.MetaBugsListPage;
+import com.bloatit.web.linkable.meta.bugreport.MetaEditBugAction;
+import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.PaylineAction;
@@ -60,6 +59,8 @@ import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylinePage;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
+import com.bloatit.web.linkable.offer.MakeOfferPage;
+import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.AddReleaseAction;
 import com.bloatit.web.linkable.release.AddReleasePage;
 import com.bloatit.web.linkable.release.ReleasePage;
@@ -81,7 +82,6 @@ import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.MakeOfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
@@ -148,12 +148,12 @@ import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
+import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
@@ -321,8 +321,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(CreateFeatureActionUrl.getName())) {
             return new CreateFeatureAction(new CreateFeatureActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(RegisterActionUrl.getName())) {
-            return new RegisterAction(new RegisterActionUrl(params, session.getParameters()));
+        if (pageCode.equals(SignUpActionUrl.getName())) {
+            return new SignUpAction(new SignUpActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PopularityVoteActionUrl.getName())) {
             return new PopularityVoteAction(new PopularityVoteActionUrl(params, session.getParameters()));

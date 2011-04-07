@@ -31,7 +31,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.metabugreport.SideBarBugReportBlock;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.TwoColumnLayout;
@@ -44,8 +44,7 @@ import com.bloatit.web.url.ContributePageUrl;
 @ParamContainer("contribute")
 public final class ContributePage extends LoggedPage {
 
-
-    @ParamConstraint(optionalErrorMsg=@tr("The process is closed, expired, missing or invalid."))
+    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
 
@@ -62,7 +61,7 @@ public final class ContributePage extends LoggedPage {
         addNotifications(url.getMessages());
         if (url.getMessages().hasMessage()) {
             session.notifyList(url.getMessages());
-            throw new RedirectException(Context.getSession().getLastStablePage());
+            throw new RedirectException(Context.getSession().pickPreferredPage());
         }
 
     }
@@ -88,9 +87,9 @@ public final class ContributePage extends LoggedPage {
         final FieldData amountData = formActionUrl.getAmountParameter().pickFieldData();
         final HtmlMoneyField contribInput = new HtmlMoneyField(amountData.getName(), tr("Choose amount: "));
         String suggestedAmountValue = amountData.getSuggestedValue();
-        if(suggestedAmountValue != null) {
+        if (suggestedAmountValue != null) {
             contribInput.setDefaultValue(suggestedAmountValue);
-        } else if (process.getAmount() != null){
+        } else if (process.getAmount() != null) {
             contribInput.setDefaultValue(process.getAmount().toPlainString());
         }
         contribInput.addErrorMessages(amountData.getErrorMessages());
@@ -100,9 +99,9 @@ public final class ContributePage extends LoggedPage {
         final FieldData commentData = formActionUrl.getCommentParameter().pickFieldData();
         final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), tr("Comment: "), 3, 60);
         String suggestedCommentValue = commentData.getSuggestedValue();
-        if(suggestedCommentValue != null) {
+        if (suggestedCommentValue != null) {
             commentInput.setDefaultValue(suggestedCommentValue);
-        } else if (process.getComment() != null){
+        } else if (process.getComment() != null) {
             commentInput.setDefaultValue(process.getComment());
         }
         commentInput.addErrorMessages(commentData.getErrorMessages());
