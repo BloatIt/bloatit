@@ -31,6 +31,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.components.LanguageSelector;
@@ -81,7 +82,7 @@ public final class ReportBugPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() {
+    public HtmlElement createRestrictedContent(Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         if (FeatureManager.canCreate(session.getAuthToken())) {

@@ -13,7 +13,6 @@ import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.PopularityVoteAction;
-import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
 import com.bloatit.web.linkable.admin.ConfigurationAdminAction;
@@ -161,7 +160,6 @@ import com.bloatit.web.url.SpecialsPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
-import com.bloatit.web.url.UploadFileActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 public class BloatitWebServer extends WebProcessor {
@@ -335,8 +333,8 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(PaylineNotifyActionUrl.getName())) {
             if(params.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
-                String token = params.look(PaylineNotifyAction.TOKEN_CODE).getSimpleValue();
-                Session fakeSession = SessionManager.pickTemporarySession(token);
+                final String token = params.look(PaylineNotifyAction.TOKEN_CODE).getSimpleValue();
+                final Session fakeSession = SessionManager.pickTemporarySession(token);
                 if(fakeSession != null) {
                     Context.reInitializeContext(Context.getHeader(), fakeSession);
                 }
@@ -348,9 +346,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(AddSoftwareActionUrl.getName())) {
             return new AddSoftwareAction(new AddSoftwareActionUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(UploadFileActionUrl.getName())) {
-            return new UploadFileAction(new UploadFileActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MemberActivationActionUrl.getName())) {
             return new MemberActivationAction(new MemberActivationActionUrl(params, session.getParameters()));

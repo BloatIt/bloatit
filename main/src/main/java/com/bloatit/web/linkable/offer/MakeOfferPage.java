@@ -93,7 +93,7 @@ public final class MakeOfferPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() {
+    public HtmlElement createRestrictedContent(Member loggedUser) {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateOfferForm());

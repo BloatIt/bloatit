@@ -10,6 +10,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -34,7 +35,7 @@ public class JoinTeamPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws RedirectException {
+    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 
         final HtmlForm form = new HtmlForm(new JoinTeamActionUrl(targetTeam).urlString());

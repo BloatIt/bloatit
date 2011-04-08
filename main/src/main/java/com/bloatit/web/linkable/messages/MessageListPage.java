@@ -43,7 +43,7 @@ public class MessageListPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws RedirectException {
+    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 
         final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Bloatit private messages"), 1);

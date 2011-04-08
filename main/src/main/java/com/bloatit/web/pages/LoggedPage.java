@@ -15,6 +15,7 @@ package com.bloatit.web.pages;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Member;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -24,7 +25,7 @@ import com.bloatit.web.url.LoginPageUrl;
  * </p>
  * <p>
  * Any page that require login should extend this class and implement the
- * <code>{@link #createRestrictedContent()}</code> and
+ * <code>{@link #createRestrictedContent(Member)}</code> and
  * <code>{@link #getRefusalReason()}</code>
  * </p>
  */
@@ -50,7 +51,7 @@ public abstract class LoggedPage extends MasterPage {
      * Override the doCreate methods and makes sure the user is logged. If the
      * user is logged, createRestrictedContent is called, otherwise redirects to
      * the <code>LoginPage</code> and use
-     * <code>{@link #createRestrictedContent()}</code> to display a warning to
+     * <code>{@link #createRestrictedContent(Member)}</code> to display a warning to
      * the user
      */
     @Override
@@ -59,7 +60,7 @@ public abstract class LoggedPage extends MasterPage {
         processErrors();
 
         if (session.isLogged()) {
-            add(createRestrictedContent());
+            add(createRestrictedContent(session.getAuthToken().getMember()));
         } else {
             session.notifyBad(getRefusalReason());
             session.setTargetPage(meUrl);
@@ -76,12 +77,13 @@ public abstract class LoggedPage extends MasterPage {
      * is not logged, a redirection to <code>LoginPage</code> will happen, and
      * user will be warned with <code>{@link #getRefusalReason()}</code>
      * </p>
+     * @param loggedUser TODO
      *
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
      *             content generation and redirect to another page
      */
-    public abstract HtmlElement createRestrictedContent() throws RedirectException;
+    public abstract HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException;
 
     /**
      * <p>

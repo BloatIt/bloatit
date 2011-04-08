@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
@@ -70,7 +71,7 @@ public final class CreateFeaturePage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() {
+    public HtmlElement createRestrictedContent(Member loggedUser) {
         if (FeatureManager.canCreate(session.getAuthToken())) {
 
             add(generateFeatureCreationForm());
