@@ -1,8 +1,8 @@
-package com.bloatit.framework.webserver.annotations.generator;
+package com.bloatit.framework.webprocessor.annotations.generator;
 
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
 public abstract class JavaGenerator {
 
@@ -38,15 +38,16 @@ public abstract class JavaGenerator {
             componentClassName = className + "Component";
         }
 
-        _import.append("import com.bloatit.framework.webserver.annotations.RequestParam.Role;\n");
-        _import.append("import com.bloatit.framework.webserver.annotations.RequestParam;\n");
-        _import.append("import com.bloatit.framework.webserver.annotations.ParamConstraint;\n");
-        _import.append("import com.bloatit.framework.webserver.annotations.ConversionErrorException;\n");
+        _import.append("import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;\n");
+        _import.append("import com.bloatit.framework.webprocessor.annotations.RequestParam;\n");
+        _import.append("import com.bloatit.framework.webprocessor.annotations.ParamConstraint;\n");
+        _import.append("import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;\n");
         _import.append("import com.bloatit.common.Log;\n");
         _import.append("import com.bloatit.framework.exceptions.lowlevel.RedirectException;\n");
         _import.append("import com.bloatit.framework.utils.*;\n");
-        _import.append("import com.bloatit.framework.webserver.url.*;\n");
-        _import.append("import com.bloatit.framework.webserver.url.Loaders.*;\n");
+        _import.append("import com.bloatit.framework.utils.parameters.*;\n");
+        _import.append("import com.bloatit.framework.webprocessor.url.*;\n");
+        _import.append("import com.bloatit.framework.webprocessor.url.Loaders.*;\n");
     }
 
     protected abstract void generateConstructor();
@@ -64,7 +65,7 @@ public abstract class JavaGenerator {
                                    final Role role,
                                    final String malFormedMsg,
                                    final ParamConstraint constraints,
-                                   boolean optional) {
+                                   final boolean optional) {
         name = toCamelAttributeName(name);
 
         final String createParameter = createParameter("\"" + nameString + "\"",
@@ -327,12 +328,11 @@ public abstract class JavaGenerator {
     public final String generateUrlClass() {
         final StringBuilder urlClass = new StringBuilder();
         urlClass.append("package com.bloatit.web.url;\n");
-        urlClass.append("import com.bloatit.framework.utils.Parameters;\n");
-        urlClass.append("import com.bloatit.framework.utils.SessionParameters;\n");
-        urlClass.append("import com.bloatit.framework.webserver.url.Url;\n");
-        urlClass.append("import com.bloatit.framework.webserver.url.UrlComponent;\n");
-        urlClass.append("import com.bloatit.framework.webserver.url.UrlParameter;\n");
-        urlClass.append("import com.bloatit.framework.webserver.url.Messages;\n");
+        urlClass.append("import com.bloatit.framework.utils.parameters.*;\n");
+        urlClass.append("import com.bloatit.framework.webprocessor.url.Url;\n");
+        urlClass.append("import com.bloatit.framework.webprocessor.url.UrlComponent;\n");
+        urlClass.append("import com.bloatit.framework.webprocessor.url.UrlParameter;\n");
+        urlClass.append("import com.bloatit.framework.webprocessor.url.Messages;\n");
 
         if (urlSuperClass != null) {
             urlClass.append("public class ").append(className).append(" extends ").append(urlSuperClass).append(" implements Cloneable {\n");
@@ -448,7 +448,7 @@ public abstract class JavaGenerator {
         this.urlSuperClass = urlSuperClass;
     }
 
-    public void setIsAction(boolean isAction) {
+    public void setIsAction(final boolean isAction) {
         this.isAction = isAction;
 
     }

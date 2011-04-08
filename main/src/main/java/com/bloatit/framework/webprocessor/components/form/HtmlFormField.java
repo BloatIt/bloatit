@@ -12,6 +12,7 @@
 package com.bloatit.framework.webprocessor.components.form;
 
 import com.bloatit.framework.utils.RandomString;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlNamedNode;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -19,7 +20,6 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 import com.bloatit.framework.webprocessor.url.Messages;
-import com.bloatit.framework.webserver.annotations.Message;
 
 /**
  * <p>

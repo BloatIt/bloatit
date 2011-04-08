@@ -8,10 +8,10 @@ import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.WebProcess.PaymentProcess;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.money.PaylineProcess;

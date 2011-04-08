@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.annotations;
+package com.bloatit.framework.webprocessor.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

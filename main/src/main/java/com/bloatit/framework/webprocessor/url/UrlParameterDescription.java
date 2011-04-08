@@ -1,6 +1,6 @@
 package com.bloatit.framework.webprocessor.url;
 
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
 public final class UrlParameterDescription<U> {
 

@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.annotations;
+package com.bloatit.framework.webprocessor.annotations;
 
 /**
  * This exception is thrown when a parameter is found, but cannot be converted

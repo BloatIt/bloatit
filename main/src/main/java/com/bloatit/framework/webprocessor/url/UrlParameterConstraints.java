@@ -3,9 +3,9 @@ package com.bloatit.framework.webprocessor.url;
 import java.math.BigDecimal;
 import java.util.EnumSet;
 
-import com.bloatit.framework.webserver.annotations.Message;
-import com.bloatit.framework.webserver.annotations.Message.What;
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.Message;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.Message.What;
 
 public class UrlParameterConstraints<U> {
 

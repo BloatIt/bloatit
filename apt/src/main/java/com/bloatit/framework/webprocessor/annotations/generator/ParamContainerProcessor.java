@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.annotations.generator;
+package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -30,13 +30,13 @@ import javax.lang.model.util.TypeKindVisitor6;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-import com.bloatit.framework.webserver.annotations.Optional;
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.Optional;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
-@SupportedAnnotationTypes("com.bloatit.framework.webserver.annotations.ParamContainer")
+@SupportedAnnotationTypes("com.bloatit.framework.webprocessor.annotations.ParamContainer")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class ParamContainerProcessor extends AbstractProcessor {
 

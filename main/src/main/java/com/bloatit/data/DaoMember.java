@@ -49,6 +49,7 @@ import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.User.ActivationState;
 
 /**
  * Ok if you need a comment to understand what is a member, then I cannot do
@@ -137,10 +138,6 @@ public class DaoMember extends DaoActor {
         NORMAL, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
     }
 
-    public enum ActivationState {
-        VALIDATING, ACTIVE, DELETED
-    }
-
     private String fullname;
 
     @Basic(optional = false)
@@ -203,7 +200,7 @@ public class DaoMember extends DaoActor {
     public static DaoMember getByLoginAndPassword(final String login, final String password) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
 
-        Criteria q = session.createCriteria(DaoMember.class)
+        final Criteria q = session.createCriteria(DaoMember.class)
                             .add(Restrictions.like("login", login).ignoreCase())
                             .add(Restrictions.like("password", password));
 
@@ -491,8 +488,8 @@ public class DaoMember extends DaoActor {
      */
     private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
-        Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author");
-        Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName() + " as x where x.member = :author");
+        final Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author");
+        final Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName() + " as x where x.member = :author");
         final QueryCollection<T> q = new QueryCollection<T>(query, size);
         q.setEntity("author", this);
         return q;

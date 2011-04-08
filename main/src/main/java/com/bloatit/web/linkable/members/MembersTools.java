@@ -12,9 +12,9 @@ import com.bloatit.web.url.FileResourceUrl;
 
 public class MembersTools {
 
-    public static HtmlElement getMemberAvatar(Member member) {
+    public static HtmlElement getMemberAvatar(final Member member) {
 
-        HtmlDiv avatarDiv = new HtmlDiv("avatar_block");
+        final HtmlDiv avatarDiv = new HtmlDiv("avatar_block");
         if (member.getAvatar() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar"));
         } else {
@@ -25,9 +25,9 @@ public class MembersTools {
         return avatarDiv;
     }
 
-    public static HtmlElement getMemberAvatarSmall(Member member) {
+    public static HtmlElement getMemberAvatarSmall(final Member member) {
 
-        HtmlDiv avatarDiv = new HtmlDiv("avatar_small_block");
+        final HtmlDiv avatarDiv = new HtmlDiv("avatar_small_block");
         if (member.getAvatar() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar_small"));
         } else {

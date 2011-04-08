@@ -28,9 +28,9 @@ import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
-import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.IndexPageUrl;
 

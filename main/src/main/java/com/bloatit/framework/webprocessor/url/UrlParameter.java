@@ -10,12 +10,12 @@ import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.parameters.HttpParameter;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.utils.parameters.SessionParameters;
+import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
+import com.bloatit.framework.webprocessor.annotations.Message;
+import com.bloatit.framework.webprocessor.annotations.Message.What;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webserver.annotations.ConversionErrorException;
-import com.bloatit.framework.webserver.annotations.Message;
-import com.bloatit.framework.webserver.annotations.Message.What;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 
 public class UrlParameter<T, U> extends UrlNode {
     private final UrlParameterDescription<U> description;

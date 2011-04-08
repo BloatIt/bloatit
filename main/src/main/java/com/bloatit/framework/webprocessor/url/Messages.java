@@ -2,7 +2,7 @@ package com.bloatit.framework.webprocessor.url;
 
 import java.util.ArrayList;
 
-import com.bloatit.framework.webserver.annotations.Message;
+import com.bloatit.framework.webprocessor.annotations.Message;
 
 /**
  * Store some error messages that could append during the reflexive procedure

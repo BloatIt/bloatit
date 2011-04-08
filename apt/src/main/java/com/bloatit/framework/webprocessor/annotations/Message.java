@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.annotations;
+package com.bloatit.framework.webprocessor.annotations;
 
 public class Message {
     public enum What {

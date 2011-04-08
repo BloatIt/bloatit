@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.annotations.generator;
+package com.bloatit.framework.webprocessor.annotations.generator;
 
 public class UrlComponentClassGenerator extends JavaGenerator {
 

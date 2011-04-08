@@ -18,8 +18,8 @@ import org.jasypt.properties.EncryptableProperties;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
+import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.url.Loaders;
-import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 
 /**
  * A class to handle configuration files

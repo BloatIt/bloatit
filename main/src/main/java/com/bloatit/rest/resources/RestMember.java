@@ -34,6 +34,7 @@ import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
+import com.bloatit.model.User;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.rest.list.RestFeatureList;
 import com.bloatit.rest.list.RestMemberList;
@@ -182,7 +183,7 @@ public class RestMember extends RestElement<Member> {
     /**
      * Package method to find the model
      */
-    Member getModel() {
+    User getModel() {
         return model;
     }
 
