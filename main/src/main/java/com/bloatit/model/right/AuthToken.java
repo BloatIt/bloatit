@@ -22,9 +22,9 @@ import java.util.UUID;
 import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.webprocessor.context.User;
+import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.Member;
-import com.bloatit.model.User;
-import com.bloatit.model.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 
 /**

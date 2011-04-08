@@ -19,19 +19,18 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.BugPageUrl;
-import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
@@ -39,7 +38,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/bug/doreport")
-public final class ReportBugAction extends Action {
+public final class ReportBugAction extends LoggedAction {
 
     public static final String BUG_TITLE = "bug_title";
     public static final String BUG_DESCRIPTION = "bug_description";
@@ -52,8 +51,10 @@ public final class ReportBugAction extends Action {
     public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
 
     @RequestParam(name = BUG_TITLE, role = Role.POST)
-    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
+    @ParamConstraint(max = "120",
+                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
+                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
+                     optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String title;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"))
@@ -107,25 +108,16 @@ public final class ReportBugAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        session.notifyList(url.getMessages());
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use BugManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to report a bug."));
-            return new LoginPageUrl();
-        }
-
+    public Url doProcessRestricted(final Member authenticatedMember) {
         if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
             session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
-            return redirectWithError();
+            return doProcessErrors();
         }
-
+        
         final Locale langLocale = new Locale(lang);
-
-        final Bug bug = milestone.addBug(session.getAuthToken().getMember(), title, description, langLocale, level.getLevel());
-
+        final Bug bug = milestone.addBug(authenticatedMember, title, description, langLocale, level.getLevel());
         if (attachement != null) {
-            final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
+            final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
                                                                                                 attachement,
                                                                                                 attachementFileName,
                                                                                                 attachementDescription);
@@ -134,33 +126,32 @@ public final class ReportBugAction extends Action {
                 bug.addFile(attachementFileMedatata);
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("Fail to add the attachement to the bug report."));
-                throw new ShallNotPassException("Fail to add an attachement to the new bug report.",e);
+                throw new ShallNotPassException("Fail to add an attachement to the new bug report.", e);
             }
         }
-
-        final BugPageUrl to = new BugPageUrl(bug);
-
-        return to;
+        return new BugPageUrl(bug);
     }
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-
         if (milestone != null) {
-            return redirectWithError();
+            return new ReportBugPageUrl(milestone.getOffer());
         }
         return new PageNotFoundUrl();
     }
+    
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You must be logged in to report a bug.");
+    }
 
-    public Url redirectWithError() {
+    @Override
+    protected void transmitParameters() {
         session.addParameter(url.getTitleParameter());
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getMilestoneParameter());
         session.addParameter(url.getLevelParameter());
         session.addParameter(url.getLangParameter());
         session.addParameter(url.getAttachementDescriptionParameter());
-        return new ReportBugPageUrl(milestone.getOffer());
     }
-
 }

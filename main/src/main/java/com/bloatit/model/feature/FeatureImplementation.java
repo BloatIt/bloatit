@@ -32,6 +32,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
@@ -45,7 +46,6 @@ import com.bloatit.model.ModelConfiguration;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
 import com.bloatit.model.Software;
-import com.bloatit.model.User;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;

@@ -45,7 +45,6 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -93,10 +92,10 @@ public final class MakeOfferPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) {
+    public HtmlElement createRestrictedContent(final Member loggedUser) {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateOfferForm());
+        layout.addLeft(generateOfferForm(loggedUser));
 
         layout.addRight(new SideBarFeatureBlock(feature));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
@@ -105,7 +104,7 @@ public final class MakeOfferPage extends LoggedPage {
         return layout;
     }
 
-    public HtmlTitleBlock generateOfferForm() {
+    public HtmlTitleBlock generateOfferForm(final Member me) {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
         try {
@@ -123,7 +122,6 @@ public final class MakeOfferPage extends LoggedPage {
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 
         // Offering on the behalf of
-        final Member me = session.getAuthToken().getMember();
         if (me.canAccessTeams(Action.READ)) {
             try {
                 final PageIterable<Team> teams = me.getTeams();

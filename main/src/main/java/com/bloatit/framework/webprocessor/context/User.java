@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.framework.webprocessor.context;
 
 import java.util.Locale;
 
@@ -13,4 +13,6 @@ public interface User {
     public abstract Locale getUserLocale();
 
     public abstract ActivationState getActivationState();
+    
+    public abstract Integer getId();
 }

@@ -19,7 +19,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.Member;
+import com.bloatit.framework.webprocessor.context.User;
 
 // TODO break dependency to Member.
 
@@ -386,8 +386,8 @@ public final class Localizator {
      * </p>
      */
     public void forceMemberChoice() {
-        final Member member = Context.getSession().getAuthToken().getMember();
-        locale = member.getLocaleUnprotected();
+        final User user = Context.getSession().getAuthToken().getMember();
+        locale = user.getUserLocale();
         this.i18n = localesCache.get(locale);
     }
 
@@ -406,8 +406,8 @@ public final class Localizator {
             // Default language
             String country;
             if (Context.getSession().getAuthToken() != null) {
-                final Member member = Context.getSession().getAuthToken().getMember();
-                country = member.getLocaleUnprotected().getCountry();
+                final User user = Context.getSession().getAuthToken().getMember();
+                country = user.getUserLocale().getCountry();
             } else {
                 country = browserLocaleHeuristic(browserLangs).getCountry();
             }
@@ -428,8 +428,8 @@ public final class Localizator {
         } else {
             // Other cases
             if (Context.getSession().getAuthToken() != null) {
-                final Member member = Context.getSession().getAuthToken().getMember();
-                locale = member.getLocaleUnprotected();
+                final User user = Context.getSession().getAuthToken().getMember();
+                locale = user.getUserLocale();
             } else {
                 locale = browserLocaleHeuristic(browserLangs);
             }

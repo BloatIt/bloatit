@@ -3,6 +3,7 @@ package com.bloatit.model;
 import javassist.NotFoundException;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;

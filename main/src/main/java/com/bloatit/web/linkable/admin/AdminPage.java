@@ -19,8 +19,8 @@ public abstract class AdminPage extends LoggedPage {
     }
 
     @Override
-    public final HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
-        if (session.getAuthToken().getMember().getRole() == Role.ADMIN) {
+    public final HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+        if (loggedUser.getRole() == Role.ADMIN) {
             try {
                 return createAdminContent();
             } catch (final UnauthorizedOperationException e) {
