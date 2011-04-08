@@ -50,7 +50,7 @@ public final class FileMetadataManager {
 
     /**
      * Gets the file metadata by id.
-     *
+     * 
      * @param id the id
      * @return the file metadata or null if not found.
      */
@@ -61,7 +61,7 @@ public final class FileMetadataManager {
     /**
      * Creates a new {@link FileMetadata} using a temporary file. This file will
      * move the temporary file to the definitive storage folder.
-     *
+     * 
      * @param author the author of the new {@link FileMetadata}
      * @param tempFileUrl the url to the temporary file.
      * @param filename the filename the file name to display in the web site
@@ -71,16 +71,13 @@ public final class FileMetadataManager {
      * @return the newly created {@link FileMetadata}
      */
     public static FileMetadata createFromTempFile(final Member author, final String tempFileUrl, final String filename, final String description) {
-
         createWipDirectory();
 
         final File tempFile = new File(tempFileUrl);
-
         final File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
         tempFile.renameTo(storedFile);
 
         return createFileMetadata(author, filename, description, storedFile);
-
     }
 
     /**
@@ -97,7 +94,7 @@ public final class FileMetadataManager {
     /**
      * Same as {@link #createFromTempFile(Member, String, String, String)} but
      * with a copy.
-     *
+     * 
      * @param author the author of the new {@link FileMetadata}
      * @param path the url to the local file.
      * @param name the filename the file name to display in the web site (may be
@@ -126,7 +123,7 @@ public final class FileMetadataManager {
 
     /**
      * Create a new fileMetadata.
-     *
+     * 
      * @param author
      * @param name
      * @param description
@@ -165,7 +162,7 @@ public final class FileMetadataManager {
 
     /**
      * Copy a file.
-     *
+     * 
      * @param in the original file.
      * @param out the file to where to copy <code>in</code>.
      * @throws IOException Signals that an I/O exception has occurred.

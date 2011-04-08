@@ -15,6 +15,8 @@ import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -112,6 +114,13 @@ public final class ReportBugAction extends LoggedAction {
         final Locale langLocale = new Locale(lang);
         final Bug bug = milestone.addBug(authenticatedMember, title, description, langLocale, level.getLevel());
         if (attachement != null) {
+            FileConstraintChecker fcc = new FileConstraintChecker(attachement);
+            if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
+                for (String message : fcc.isImageAvatar()) {
+                    session.notifyBad(message);
+                }
+                return Context.getSession().pickPreferredPage();
+            }
             final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
                                                                                                 attachement,
                                                                                                 attachementFileName,

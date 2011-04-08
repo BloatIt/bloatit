@@ -43,7 +43,6 @@ import com.bloatit.web.url.ContributePageUrl;
  */
 @ParamContainer("contribute")
 public final class ContributePage extends LoggedPage {
-
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
@@ -69,7 +68,6 @@ public final class ContributePage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateContributeForm());
-
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
@@ -78,7 +76,6 @@ public final class ContributePage extends LoggedPage {
 
     public HtmlElement generateContributeForm() {
         final CheckContributionActionUrl formActionUrl = new CheckContributionActionUrl(process);
-
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : choose amount

@@ -1,8 +1,7 @@
 package com.bloatit.framework.restprocessor;
 
-import java.lang.reflect.Method;
-
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
 import java.util.Set;

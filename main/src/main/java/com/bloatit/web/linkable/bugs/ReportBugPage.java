@@ -149,7 +149,7 @@ public final class ReportBugPage extends LoggedPage {
         reportBugForm.add(attachementBlock);
 
         final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
-        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
+        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 3MB.");
         attachementBlock.add(attachementInput);
 
         final FieldData attachementDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().pickFieldData();

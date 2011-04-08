@@ -106,7 +106,7 @@ public final class AddAttachementPage extends LoggedPage {
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
         attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
         attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
-        attachedFileInput.setComment("You must attache a file. This is your release, it can take be a patch, a tar.gz etc.");
+        attachedFileInput.setComment("You must attach a file. Maximum size is 3MB");
         form.add(attachedFileInput);
 
         form.add(new HtmlSubmit(tr("Submit")));

@@ -79,7 +79,6 @@ import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.DocumentationPage;
-import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
@@ -117,7 +116,6 @@ import com.bloatit.web.url.FeatureAdminPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
-import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
@@ -220,9 +218,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(CommentReplyPageUrl.getName())) {
             return new CommentReplyPage(new CommentReplyPageUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(FileUploadPageUrl.getName())) {
-            return new FileUploadPage(new FileUploadPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(SoftwarePageUrl.getName())) {
             return new SoftwarePage(new SoftwarePageUrl(params, session.getParameters()));

@@ -137,7 +137,7 @@ public final class MemberPage extends MasterPage {
 
         // File
         final HtmlFileInput avatarInput = new HtmlFileInput(ChangeAvatarAction.AVATAR_CODE, Context.tr("Avatar image file"));
-        avatarInput.setComment(tr("64px x 64px. 2Go max. Accecpted formats: png, jpg"));
+        avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
         changeAvatarForm.add(avatarInput);
 
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));

@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.members;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -27,7 +28,7 @@ import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 
 /**
- * A response to a form used to create a new feature
+ * A response to a form used to change user avatar
  */
 @ParamContainer("member/changeavatar")
 public final class ChangeAvatarAction extends LoggedAction {
@@ -49,10 +50,6 @@ public final class ChangeAvatarAction extends LoggedAction {
     @RequestParam(name = AVATAR_NAME_CODE, role = Role.POST)
     private final String avatarFileName;
 
-    @SuppressWarnings("unused")
-    @ParamConstraint
-    @RequestParam(name = AVATAR_CONTENT_TYPE_CODE, role = Role.POST)
-    private final String avatarContentType;
     private final ChangeAvatarActionUrl url;
 
     public ChangeAvatarAction(final ChangeAvatarActionUrl url) {
@@ -62,13 +59,20 @@ public final class ChangeAvatarAction extends LoggedAction {
         this.member = url.getMember();
         this.avatar = url.getAvatar();
         this.avatarFileName = url.getAvatarFileName();
-        this.avatarContentType = url.getAvatarContentType();
     }
 
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
-        final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
+        // TODO create a member.canAccessAvatar.
+        final FileConstraintChecker fcc = new FileConstraintChecker(avatar);
+        if (fcc.isImageAvatar() != null) {
+            for (final String message : fcc.isImageAvatar()) {
+                session.notifyBad(message);
+            }
+            return Context.getSession().pickPreferredPage();
+        }
 
+        final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
         member.setAvatar(avatarfm);
 
         session.notifyGood(tr("Avatar change to ''{0}''", avatarFileName));
@@ -97,5 +101,4 @@ public final class ChangeAvatarAction extends LoggedAction {
     protected void transmitParameters() {
         session.addParameter(url.getMemberParameter());
     }
-
 }

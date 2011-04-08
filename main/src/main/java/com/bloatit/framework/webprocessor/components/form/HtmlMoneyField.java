@@ -17,7 +17,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * <p>
      * Creates a money field with a given <code>name</code>
      * </p>
-     *
+     * 
      * @param name the value of the html attribute <code>name</code>
      */
     public HtmlMoneyField(final String name) {
@@ -33,6 +33,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
         public InputField() {
             content = new HtmlDiv("money_input");
             input = new HtmlSimpleInput("text");
+            input.addAttribute("autocomplete", "off");
             content.add(input);
             content.add(new HtmlText("€"));
         }
@@ -54,7 +55,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * Creates a money field with a given <code>name</code> and some text used
      * to explain the usage of the field
      * </p>
-     *
+     * 
      * @param name the value of the html attribute <code>name</code>
      * @param label some text displayed to explain how to use the field
      */

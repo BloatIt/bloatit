@@ -2,8 +2,8 @@ package com.bloatit.data.queries;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DataTestUnit;
 
