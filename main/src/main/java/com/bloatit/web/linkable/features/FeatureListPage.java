@@ -32,8 +32,8 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureList;
-import com.bloatit.web.components.HtmlFeatureSumary;
-import com.bloatit.web.components.HtmlFeatureSumary.Compacity;
+import com.bloatit.web.components.HtmlFeatureSummary;
+import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
@@ -269,7 +269,7 @@ public final class FeatureListPage extends MasterPage {
         }
 
         private XmlNode generateContent() {
-            return new HtmlFeatureSumary(feature, Compacity.NORMAL);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
         }
     };
 

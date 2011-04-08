@@ -3,11 +3,11 @@ package com.bloatit.framework.webserver.components.javascript;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.XmlText;
-import com.bloatit.web.WebConfiguration;
 
 public class JsShowHide {
 
@@ -16,17 +16,17 @@ public class JsShowHide {
     private final RandomString rng = new RandomString(10);
     private final boolean state;
 
-    public JsShowHide(boolean state) {
+    public JsShowHide(final boolean state) {
         this.state = state;
     }
 
-    public void addActuator(HtmlBranch actuator) {
+    public void addActuator(final HtmlBranch actuator) {
         actuators.add(actuator);
 
         injectJQueryInclusion(actuator);
     }
 
-    public void addListener(HtmlBranch listener) {
+    public void addListener(final HtmlBranch listener) {
         listeners.add(listener);
 
     }
@@ -34,21 +34,21 @@ public class JsShowHide {
     public void apply() {
 
         if (!state) {
-            for (HtmlBranch listener : listeners) {
+            for (final HtmlBranch listener : listeners) {
                  listener.addAttribute("style", "display: none;");
             }
         }
 
         prepareIds();
 
-        for (HtmlBranch actuator : actuators) {
-            HtmlGenericElement scriptElement = new HtmlGenericElement("script");
+        for (final HtmlBranch actuator : actuators) {
+            final HtmlGenericElement scriptElement = new HtmlGenericElement("script");
 
-            String effectCall = "toggle( \"blind\")";
+            final String effectCall = "toggle( \"blind\")";
 
             String script = "$(function() {\n" + "        function runEffect() {\n";
 
-            for (HtmlBranch listener : listeners) {
+            for (final HtmlBranch listener : listeners) {
                 script += "          $( \"#" + listener.getId() + "\" )." + effectCall + ";\n";
             }
             script += "        }\n";
@@ -56,7 +56,7 @@ public class JsShowHide {
             script += "        $( \"#" + actuator.getId() + "\" ).click(function() {\n" + "            runEffect();\n"
                     + "            return false;\n" + "        });\n";
 
-            for (HtmlBranch listener : listeners) {
+            for (final HtmlBranch listener : listeners) {
                 script += "$( \"#" + listener.getId() + "\" ).hide();\n";
             }
 
@@ -70,13 +70,13 @@ public class JsShowHide {
     }
 
     private void prepareIds() {
-        for (HtmlBranch listener : listeners) {
+        for (final HtmlBranch listener : listeners) {
             if (listener.getId() == null) {
                 listener.setId(rng.nextString());
             }
         }
 
-        for (HtmlBranch actuator : actuators) {
+        for (final HtmlBranch actuator : actuators) {
             if (actuator.getId() == null) {
                 actuator.setId(rng.nextString());
             }
@@ -84,14 +84,14 @@ public class JsShowHide {
 
     }
 
-    private void injectJQueryInclusion(HtmlBranch actuator) {
+    private void injectJQueryInclusion(final HtmlBranch actuator) {
         actuator.add(new HtmlGenericElement() {
 
             @Override
             protected List<String> getCustomJs() {
-                ArrayList<String> customJsList = new ArrayList<String>();
-                customJsList.add(WebConfiguration.getJsJquery());
-                customJsList.add(WebConfiguration.getJsJqueryUi());
+                final ArrayList<String> customJsList = new ArrayList<String>();
+                customJsList.add(FrameworkConfiguration.getJsJquery());
+                customJsList.add(FrameworkConfiguration.getJsJqueryUi());
                 return customJsList;
             }
 

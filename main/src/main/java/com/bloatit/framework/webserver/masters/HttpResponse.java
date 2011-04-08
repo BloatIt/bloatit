@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import java.util.zip.GZIPOutputStream;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.rest.RestResource;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.utils.DateUtils;
@@ -22,7 +23,6 @@ import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 import com.bloatit.framework.webserver.components.writers.SimpleHtmlStream;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.WebConfiguration;
 
 public final class HttpResponse {
     /**
@@ -114,8 +114,8 @@ public final class HttpResponse {
         closeHeaders();
     }
 
-    private QueryResponseStream buildHtmlStream(OutputStream outputStream) {
-        if (WebConfiguration.isHtmlMinified()) {
+    private QueryResponseStream buildHtmlStream(final OutputStream outputStream) {
+        if (FrameworkConfiguration.isHtmlMinified()) {
             return new SimpleHtmlStream(outputStream);
         }
         return new IndentedHtmlStream(outputStream);
@@ -130,21 +130,21 @@ public final class HttpResponse {
 
         if (useGzip) {
             writeLine("Content-Encoding: gzip");
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            GZIPOutputStream gzipStream = new GZIPOutputStream(buffer);
-            QueryResponseStream htmlText = buildHtmlStream(gzipStream);
+            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            final GZIPOutputStream gzipStream = new GZIPOutputStream(buffer);
+            final QueryResponseStream htmlText = buildHtmlStream(gzipStream);
 
             page.write(htmlText);
             gzipStream.flush();
             gzipStream.close();
 
-            byte[] byteArray = buffer.toByteArray();
+            final byte[] byteArray = buffer.toByteArray();
 
             writeLine("Content-Length: " + byteArray.length);
             closeHeaders();
             output.write(byteArray);
         } else {
-            QueryResponseStream htmlText = buildHtmlStream(output);
+            final QueryResponseStream htmlText = buildHtmlStream(output);
 
             closeHeaders();
             page.write(htmlText);
@@ -162,14 +162,14 @@ public final class HttpResponse {
         writeLine("Accept-Ranges: bytes");
 
         // Last-Modified
-        File file = new File(path);
-        long lastModified = file.lastModified();
+        final File file = new File(path);
+        final long lastModified = file.lastModified();
 
         writeLine("Last-Modified: " + httpDateformat.format(new Date(lastModified)));
 
         // Expires (360 days)
 
-        long expires = new Date().getTime() + TIME_360_DAYS;
+        final long expires = new Date().getTime() + TIME_360_DAYS;
         writeLine("Expires: " + httpDateformat.format(DateUtils.nowPlusSomeYears(1)));
 
         // Content type
@@ -215,7 +215,7 @@ public final class HttpResponse {
             final String resourceXml = resource.getXmlString();
             output.write("Content-Type: text/xml\r\n".getBytes());
             closeHeaders();
-            IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
+            final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
             htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
             htmlText.writeLine("<rest result=\"ok\" request=\"" + HtmlTools.escape(resource.getRequest()) + "\" >");
             htmlText.indent();
@@ -253,7 +253,7 @@ public final class HttpResponse {
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {
         output.write("Content-Type: text/xml\r\n".getBytes());
         closeHeaders();
-        IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
+        final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
         htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
         htmlText.indent();
 

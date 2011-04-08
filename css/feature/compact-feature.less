@@ -1,9 +1,7 @@
 
 .normal_feature_summary {
     .box;
-    
     padding : 10px;
-
 
     .feature_summary_top{
         margin-bottom:5px;
@@ -21,6 +19,7 @@
         width: 100%;
         
         h1{
+           font-family: @default_fonts; 
         .no_insets;
             
             a {
@@ -33,6 +32,8 @@
         }
     }
 
+    
+
     .software_image {
         padding-right: 15px;
         border-right: 2px solid @border_color;
@@ -44,18 +45,45 @@
     }
 
 
-    .feature_summary_popularity {
-        display:table-cell;
-        vertical-align : bottom;
-        width:50px;
-    }
-
-
-    .feature_summary_progress {
-        display:table-cell;
+    .feature_summary_bottom {
+        .display-box;
         width:100%;
 
+        .feature_summary_popularity {
+            
+            vertical-align : bottom;
+            width:64px;
+            .display-box;
+            .box-orient(vertical);
+            .box-align(center);
+            .box-pack(end);
+            
+            .feature_popularity_text {
+                .no_insets;
+                text-align: center;
+                font-size: 0.7em;
+            }
+
+            .feature_popularity_score {
+                .no_insets;
+                width:100%;
+                vertical-align: middle;
+                text-align: center;
+                font-size: 1.1em;
+                color: @title_color;
+            }
+            
+            
+        }
+
+
+        .feature_summary_progress {
+            .box-flex;
+            
+        }
+    
     }
+
 
     .feature_summary_share_button {
         display:table-cell;
@@ -70,54 +98,7 @@
         width:80%;
     }
 
-    .progress_bar_background{
-        margin: 0px;
-        display:block;
-        .rounded_corners(7px);
 
-        height:16px;
-        border: 1px solid @default_background_color;
-        background: @default_background_color;
-        padding:0;
-        margin-bottom:0px;
-        width:100%;
-       
-
-    }
-
-    .progress_bar_border{
-        margin: 0px;
-        display:block;
-        .rounded_corners(7px);
-
-        height:16px;
-        border: 1px solid @progress_border_color;
-        background: transparent;
-        padding:0;
-        margin-bottom:0px;
-        margin-left:-1px;
-
-        margin-top: -18px;
-
-        width:100%;
-    }
-
-
-    .progress_bar_state{
-        display:block;
-        
-        background: @progress_color;
-        
-        .horizontal-gradient(@progress_color_dark, @progress_color_light);
-        
-        .rounded_corners(7px);
-        height:18px;
-        margin: 0px;
-
-        
-        margin-top: -18px;
-        
-    }
 
     .feature_progress_text {
          color: @light_text_color;
@@ -138,24 +119,9 @@
     }
 
 
-    .feature_popularity_text {
-        .no_insets;
-        text-align: center;
-        font-size: 0.7em;
-    }
+    
 
-
-
-    .feature_popularity_score {
-        .no_insets;
-        width:100%;
-        vertical-align: middle;
-        text-align: center;
-        font-size: 1.1em;
-        color: @title_color;
-    }
-
-    .feature_sumary_details {
+    .feature_summary_details {
         text-align: right;
         font-size: 0.8em;
         color: @light_text_color;
@@ -196,7 +162,7 @@
             width:100%;
         }
         
-        .feature_sumary_details {
+        .feature_summary_details {
             margin-top:20px;
             text-align: right;
             font-size: 0.7em;

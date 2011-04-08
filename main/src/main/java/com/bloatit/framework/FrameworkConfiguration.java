@@ -6,10 +6,12 @@ import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
 
+import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- *
+ * 
  * @author thomas
  */
 public class FrameworkConfiguration extends ReloadableConfiguration {
@@ -17,7 +19,20 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static final FrameworkConfiguration configuration = new FrameworkConfiguration();
 
     private PropertiesRetriever properties;
+
     private String ressourcesDirStorage;
+
+    // XCGI
+    private int xcgiListenport;
+    private int xcgiThreadsNumber;
+
+    // DIRECTORIES
+    private String documentationDir;
+    private String wwwDir;
+    private String resourcesDir;
+    private String metaBugsDirStorage;
+
+    // MAIL
     private String mailDirTmp;
     private String mailDirSend;
     private String mailLogin;
@@ -29,13 +44,21 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String mailSmtpSoketFactoryClass;
     private String mailSmtpAuth;
     private String mailSmtpPort;
-    private int xcgiListenport;
-    private int xcgiThreadsNumber;
-    private String metaBugsDirStorage;
 
+    // SESSIONS
     private long sessionCleanTime;
     private long sessionDefaultDuration;
     private long sessionLoggedDuration;
+
+    // JAVASCRIPT
+    private String jsJquery;
+    private String jsJqueryUi;
+    private String jsFlexie;
+    private String jsSelectivizr;
+    private String jsDatePicker;
+
+    // OTHERS
+    private AtomicBoolean htmlIndent;
 
     private FrameworkConfiguration() {
         super();
@@ -49,7 +72,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     // -------------------------------------------
     // RESOURCES
     // -------------------------------------------
-    
+
     public static String getRessourcesDirStorage() {
         return configuration.ressourcesDirStorage;
     }
@@ -57,19 +80,19 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     // -------------------------------------------
     // SESSIONS
     // -------------------------------------------
-    
+
     public static String getSessionDumpfile() {
         return configuration.sessionDumpfile;
     }
-    
+
     public static long getSessionCleanTime() {
         return configuration.sessionCleanTime;
     }
-    
+
     public static long getSessionDefaultDuration() {
         return configuration.sessionDefaultDuration;
     }
-    
+
     public static long getSessionLoggedDuration() {
         return configuration.sessionLoggedDuration;
     }
@@ -121,7 +144,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     // -------------------------------------------
     // SERVER
     // -------------------------------------------
-    
+
     public static int getXcgiListenport() {
         return configuration.xcgiListenport;
     }
@@ -129,13 +152,82 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static int getXcgiThreadsNumber() {
         return configuration.xcgiThreadsNumber;
     }
-    
-    // -------------------------------------------
-    // BUGS
-    // -------------------------------------------
+
+    // ----------------------------------------------------------
+    // DIRECTORIES
+    // ----------------------------------------------------------
+    public static String getDocumentationDir() {
+        return configuration.documentationDir;
+    }
+
+    public static String getWwwDir() {
+        return configuration.wwwDir;
+    }
+
+    /**
+     * @return the path to the bloatitResourcesDir
+     */
+    public static String getResourcesDir() {
+        return configuration.resourcesDir;
+    }
 
     public static String getMetaBugsDirStorage() {
         return configuration.metaBugsDirStorage;
+    }
+
+    // ----------------------------------------------------------
+    // JAVASCRIPT
+    // ----------------------------------------------------------
+
+    /**
+     * @return the path to the jsJquery
+     */
+    public static String getJsJquery() {
+        return getCommonsDir() + configuration.jsJquery;
+    }
+
+    /**
+     * @return the path to the jsJqueryUi
+     */
+    public static String getJsJqueryUi() {
+        return getCommonsDir() + configuration.jsJqueryUi;
+    }
+
+    /**
+     * @return the path to the jsFlexie
+     */
+    public static String getJsFlexie() {
+        return getCommonsDir() + configuration.jsFlexie;
+    }
+
+    /**
+     * @return the path to the jsSelectivizr
+     */
+    public static String getJsSelectivizr() {
+        return getCommonsDir() + configuration.jsSelectivizr;
+    }
+
+    /**
+     * @return the path to the jsDatePicker
+     */
+    public static String getJsDatePicker(final String langCode) {
+        return configuration.resourcesDir + "/" + langCode + configuration.jsDatePicker;
+    }
+
+    // ----------------------------------------------------------
+    // OTHERS
+    // ----------------------------------------------------------
+
+    /**
+     * @return <code>true</code> if html should be indented, <code>false</code>
+     *         otherwise.
+     */
+    public static boolean isHtmlMinified() {
+        return configuration.htmlIndent.get();
+    }
+
+    public static String getCommonsDir() {
+        return configuration.resourcesDir + "/commons";
     }
 
     protected void loadConfiguration() {
@@ -144,16 +236,16 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         // Server
         xcgiThreadsNumber = properties.getInt("xcgi.threads.number");
         xcgiListenport = properties.getInt("xcgi.listenport");
-        
+
         // Resources
         ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
-        
+
         // Sessions.
         sessionDumpfile = SHARE_DIR + properties.getString("session.dumpfile", "sessions.dump");
-        sessionCleanTime =  properties.getLong("session.clean.time");
-        sessionDefaultDuration =  properties.getLong("session.default.duration");
-        sessionLoggedDuration =  properties.getLong("session.logged.duration");
-        
+        sessionCleanTime = properties.getLong("session.clean.time");
+        sessionDefaultDuration = properties.getLong("session.default.duration");
+        sessionLoggedDuration = properties.getLong("session.logged.duration");
+
         // Bugs
         metaBugsDirStorage = SHARE_DIR + properties.getString("meta.bugs.dir.storage", "bug_storage");
 
@@ -168,6 +260,22 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         mailLogin = properties.getString("mail.login");
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
+
+        // JAVASCRIPT
+        jsJquery = properties.getString("bloatit.js.jquery");
+        jsJqueryUi = properties.getString("bloatit.js.jqueryui");
+        jsFlexie = properties.getString("bloatit.js.flexie");
+        jsSelectivizr = properties.getString("bloatit.js.selectivizr");
+        jsDatePicker = properties.getString("bloatit.js.datepicker");
+
+        // DIRECTORIES
+        documentationDir = properties.getString("bloatit.documentation.dir");
+        wwwDir = properties.getString("bloatit.www.dir");
+        resourcesDir = properties.getString("bloatit.resources.dir");
+
+        // OTHERS
+        htmlIndent = new AtomicBoolean(properties.getBoolean("bloatit.html.minify"));
+
     }
 
     public static void load() {
