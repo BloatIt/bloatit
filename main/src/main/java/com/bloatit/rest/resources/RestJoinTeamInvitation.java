@@ -86,9 +86,10 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
      */
     @SuppressWarnings("unused")
     private RestJoinTeamInvitation() {
+        super();
     }
 
-    protected RestJoinTeamInvitation(JoinTeamInvitation model) {
+    protected RestJoinTeamInvitation(final JoinTeamInvitation model) {
         this.model = model;
     }
 
@@ -104,8 +105,8 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
      * @param id the id of the RestJoinTeamInvitation
      */
     @REST(name = "jointeaminvitations", method = RequestMethod.GET)
-    public static RestJoinTeamInvitation getById(int id) {
-        RestJoinTeamInvitation restJoinTeamInvitation = new RestJoinTeamInvitation(JoinTeamInvitationManager.getById(id));
+    public static RestJoinTeamInvitation getById(final int id) {
+        final RestJoinTeamInvitation restJoinTeamInvitation = new RestJoinTeamInvitation(JoinTeamInvitationManager.getById(id));
         if (restJoinTeamInvitation.isNull()) {
             return null;
         }
@@ -163,7 +164,7 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
     /**
      * Provided for JAXB
      */
-    void setModel(JoinTeamInvitation model) {
+    void setModel(final JoinTeamInvitation model) {
         this.model = model;
     }
 

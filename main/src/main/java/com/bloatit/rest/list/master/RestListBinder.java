@@ -28,12 +28,13 @@ public class RestListBinder<T extends RestElement<M>, M extends IdentifiableInte
     private PageIterable<M> collection;
 
     protected RestListBinder() {
+        super();
     }
 
     /**
      * Instantiates a new list binder for model to rest elements
      *
-     * @param daoCollection the dao collection
+     * @param collection the dao collection
      */
     public RestListBinder(final PageIterable<M> collection) {
         super();

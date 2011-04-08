@@ -94,9 +94,10 @@ public class RestTransaction extends RestElement<Transaction> {
      */
     @SuppressWarnings("unused")
     private RestTransaction() {
+        super();
     }
 
-    protected RestTransaction(Transaction model) {
+    protected RestTransaction(final Transaction model) {
         this.model = model;
     }
 
@@ -112,8 +113,8 @@ public class RestTransaction extends RestElement<Transaction> {
      * @param id the id of the RestTransaction
      */
     @REST(name = "transactions", method = RequestMethod.GET)
-    public static RestTransaction getById(int id) {
-        RestTransaction restTransaction = new RestTransaction(TransactionManager.getById(id));
+    public static RestTransaction getById(final int id) {
+        final RestTransaction restTransaction = new RestTransaction(TransactionManager.getById(id));
         if (restTransaction.isNull()) {
             return null;
         }
@@ -148,7 +149,7 @@ public class RestTransaction extends RestElement<Transaction> {
     public Date getCreationDate() throws RestException {
         try {
             return model.getCreationDate();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getCreationDate on Transaction", e);
@@ -162,7 +163,7 @@ public class RestTransaction extends RestElement<Transaction> {
     public BigDecimal getAmount() throws RestException {
         try {
             return model.getAmount();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getAmount on Transaction", e);
@@ -177,7 +178,7 @@ public class RestTransaction extends RestElement<Transaction> {
     public RestInternalAccount getFrom() throws RestException {
         try {
             return new RestInternalAccount(model.getFrom());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getFrom on Transaction", e);
@@ -191,7 +192,7 @@ public class RestTransaction extends RestElement<Transaction> {
     /**
      * Provided for JAXB
      */
-    void setModel(Transaction model) {
+    void setModel(final Transaction model) {
         this.model = model;
     }
 

@@ -92,9 +92,10 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      */
     @SuppressWarnings("unused")
     private RestFileMetadata() {
+        super();
     }
 
-    protected RestFileMetadata(FileMetadata model) {
+    protected RestFileMetadata(final FileMetadata model) {
         this.model = model;
     }
 
@@ -110,8 +111,8 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      * @param id the id of the RestFileMetadata
      */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
-    public static RestFileMetadata getById(int id) {
-        RestFileMetadata restFileMetadata = new RestFileMetadata(FileMetadataManager.getById(id));
+    public static RestFileMetadata getById(final int id) {
+        final RestFileMetadata restFileMetadata = new RestFileMetadata(FileMetadataManager.getById(id));
         if (restFileMetadata.isNull()) {
             return null;
         }
@@ -201,7 +202,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      */
     // @XmlElement
     public RestTeam getAsTeam() {
-        RestTeam asTeam = new RestTeam(model.getAsTeam());
+        final RestTeam asTeam = new RestTeam(model.getAsTeam());
         if (asTeam.isNull()) {
             return null;
         }
@@ -223,7 +224,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
     /**
      * Provided for JAXB
      */
-    void setModel(FileMetadata model) {
+    void setModel(final FileMetadata model) {
         this.model = model;
     }
 

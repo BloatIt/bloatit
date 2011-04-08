@@ -92,9 +92,10 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @SuppressWarnings("unused")
     private RestBankTransaction() {
+        super();
     }
 
-    protected RestBankTransaction(BankTransaction model) {
+    protected RestBankTransaction(final BankTransaction model) {
         this.model = model;
     }
 
@@ -110,8 +111,8 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      * @param id the id of the RestBankTransaction
      */
     @REST(name = "banktransactions", method = RequestMethod.GET)
-    public static RestBankTransaction getById(int id) {
-        RestBankTransaction restBankTransaction = new RestBankTransaction(BankTransactionManager.getById(id));
+    public static RestBankTransaction getById(final int id) {
+        final RestBankTransaction restBankTransaction = new RestBankTransaction(BankTransactionManager.getById(id));
         if (restBankTransaction.isNull()) {
             return null;
         }
@@ -139,7 +140,7 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     }
 
     /**
-     * @see com.bloatit.model.BankTransaction#getValuePayed()
+     * @see com.bloatit.model.BankTransaction#getValuePaid()
      */
     @XmlAttribute
     public BigDecimal getValuePaid() {
@@ -220,7 +221,7 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     /**
      * Provided for JAXB
      */
-    void setModel(BankTransaction model) {
+    void setModel(final BankTransaction model) {
         this.model = model;
     }
 

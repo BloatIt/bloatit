@@ -35,16 +35,17 @@ public class RestAuthenticate {
     /**
      * Provided for JAXB
      */
-    @SuppressWarnings("unused")
     private RestAuthenticate() {
+        super();
     }
 
     // ---------------------------------------------------------------------------------------
     // -- Static methods
     // ---------------------------------------------------------------------------------------
 
+    @SuppressWarnings("unused")
     @REST(name = "authenticate", method = RequestMethod.GET, params = { "login", "password" })
-    public static RestAuthenticate authenticate(String login, String password) {
+    public static RestAuthenticate authenticate(final String login, final String password) {
         return new RestAuthenticate();
     }
 

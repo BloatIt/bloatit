@@ -94,9 +94,10 @@ public class RestMilestone extends RestElement<Milestone> {
      */
     @SuppressWarnings("unused")
     private RestMilestone() {
+        super();
     }
 
-    protected RestMilestone(Milestone model) {
+    protected RestMilestone(final Milestone model) {
         this.model = model;
     }
 
@@ -112,8 +113,8 @@ public class RestMilestone extends RestElement<Milestone> {
      * @param id the id of the RestMilestone
      */
     @REST(name = "milestones", method = RequestMethod.GET)
-    public static RestMilestone getById(int id) {
-        RestMilestone restMilestone = new RestMilestone(MilestoneManager.getById(id));
+    public static RestMilestone getById(final int id) {
+        final RestMilestone restMilestone = new RestMilestone(MilestoneManager.getById(id));
         if (restMilestone.isNull()) {
             return null;
         }
@@ -146,7 +147,7 @@ public class RestMilestone extends RestElement<Milestone> {
     @XmlElement
     @XmlIDREF
     public RestOffer getOffer() {
-        RestOffer offer = new RestOffer(model.getOffer());
+        final RestOffer offer = new RestOffer(model.getOffer());
         if (offer.isNull()) {
             return null;
         }
@@ -250,7 +251,7 @@ public class RestMilestone extends RestElement<Milestone> {
     /**
      * Provided for JAXB
      */
-    void setModel(Milestone model) {
+    void setModel(final Milestone model) {
         this.model = model;
     }
 

@@ -93,9 +93,10 @@ public class RestRelease extends RestElement<Release> {
      */
     @SuppressWarnings("unused")
     private RestRelease() {
+        super();
     }
 
-    protected RestRelease(Release model) {
+    protected RestRelease(final Release model) {
         this.model = model;
     }
 
@@ -111,8 +112,8 @@ public class RestRelease extends RestElement<Release> {
      * @param id the id of the RestRelease
      */
     @REST(name = "releases", method = RequestMethod.GET)
-    public static RestRelease getById(int id) {
-        RestRelease restRelease = new RestRelease(ReleaseManager.getById(id));
+    public static RestRelease getById(final int id) {
+        final RestRelease restRelease = new RestRelease(ReleaseManager.getById(id));
         if (restRelease.isNull()) {
             return null;
         }
@@ -194,7 +195,7 @@ public class RestRelease extends RestElement<Release> {
      */
     @XmlElement
     public RestTeam getAsTeam() {
-        RestTeam asTeam = new RestTeam(model.getAsTeam());
+        final RestTeam asTeam = new RestTeam(model.getAsTeam());
         if (asTeam.isNull()) {
             return null;
         }
@@ -216,7 +217,7 @@ public class RestRelease extends RestElement<Release> {
     /**
      * Provided for JAXB
      */
-    void setModel(Release model) {
+    void setModel(final Release model) {
         this.model = model;
     }
 

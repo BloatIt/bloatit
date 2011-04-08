@@ -92,9 +92,10 @@ public class RestDescription extends RestElement<Description> {
      */
     @SuppressWarnings("unused")
     private RestDescription() {
+        super();
     }
 
-    protected RestDescription(Description model) {
+    protected RestDescription(final Description model) {
         this.model = model;
     }
 
@@ -110,8 +111,8 @@ public class RestDescription extends RestElement<Description> {
      * @param id the id of the RestDescription
      */
     @REST(name = "descriptions", method = RequestMethod.GET)
-    public static RestDescription getById(int id) {
-        RestDescription restDescription = new RestDescription(DescriptionManager.getById(id));
+    public static RestDescription getById(final int id) {
+        final RestDescription restDescription = new RestDescription(DescriptionManager.getById(id));
         if (restDescription.isNull()) {
             return null;
         }
@@ -143,7 +144,7 @@ public class RestDescription extends RestElement<Description> {
      */
     @XmlElement
     public RestTranslation getDefaultTranslation() {
-        RestTranslation restTranslation = new RestTranslation(model.getDefaultTranslation());
+        final RestTranslation restTranslation = new RestTranslation(model.getDefaultTranslation());
         if (restTranslation.isNull()) {
             return null;
         }
@@ -174,7 +175,7 @@ public class RestDescription extends RestElement<Description> {
     /**
      * Provided for JAXB
      */
-    void setModel(Description model) {
+    void setModel(final Description model) {
         this.model = model;
     }
 

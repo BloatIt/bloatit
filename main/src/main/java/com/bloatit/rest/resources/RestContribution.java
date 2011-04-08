@@ -96,9 +96,10 @@ public class RestContribution extends RestElement<Contribution> {
      */
     @SuppressWarnings("unused")
     private RestContribution() {
+        super();
     }
 
-    protected RestContribution(Contribution model) {
+    protected RestContribution(final Contribution model) {
         this.model = model;
     }
 
@@ -114,8 +115,8 @@ public class RestContribution extends RestElement<Contribution> {
      * @param id the id of the RestContribution
      */
     @REST(name = "contributions", method = RequestMethod.GET)
-    public static RestContribution getById(int id) {
-        RestContribution restContribution = new RestContribution(ContributionManager.getById(id));
+    public static RestContribution getById(final int id) {
+        final RestContribution restContribution = new RestContribution(ContributionManager.getById(id));
         if (restContribution.isNull()) {
             return null;
         }
@@ -149,7 +150,7 @@ public class RestContribution extends RestElement<Contribution> {
     public String getComment() throws RestException {
         try {
             return model.getComment();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getComment on Contribution", e);
         }
     }
@@ -161,7 +162,7 @@ public class RestContribution extends RestElement<Contribution> {
     public BigDecimal getAmount() throws RestException {
         try {
             return model.getAmount();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Contribution", e);
         }
     }
@@ -190,7 +191,7 @@ public class RestContribution extends RestElement<Contribution> {
     @XmlElement
     @XmlIDREF
     public RestTeam getAsTeam() {
-        RestTeam restTeam = new RestTeam(model.getAsTeam());
+        final RestTeam restTeam = new RestTeam(model.getAsTeam());
         if (restTeam.isNull()) {
             return null;
         }
@@ -204,7 +205,7 @@ public class RestContribution extends RestElement<Contribution> {
     /**
      * Provided for JAXB
      */
-    void setModel(Contribution model) {
+    void setModel(final Contribution model) {
         this.model = model;
     }
 
