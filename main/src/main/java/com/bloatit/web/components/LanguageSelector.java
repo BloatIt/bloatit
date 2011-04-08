@@ -25,7 +25,7 @@ public class LanguageSelector extends HtmlDropDown {
     }
 
     @Override
-    protected void doSetDefaultValue(String value) {
+    protected void doSetDefaultValue(final String value) {
         if (codes.contains(value)) {
             super.doSetDefaultValue(value);
         } else {
@@ -37,15 +37,16 @@ public class LanguageSelector extends HtmlDropDown {
      * Sets the default value with the first non null string value from
      * <code>langs</code>
      */
-    public void setDefaultValue(String... langs) {
+    public void setDefaultValue(final String... langs) {
         if (langs == null) {
             throw new NullPointerException("Noob programmer !");
         }
-        for (String lang : langs) {
+        for (final String lang : langs) {
             if (lang != null && !lang.isEmpty()) {
                 setDefaultStringValue(lang);
                 return;
             }
         }
+        setDefaultStringValue("en");
     }
 }
