@@ -30,6 +30,8 @@ public class SendTeamInvitationAction extends LoggedAction {
     @RequestParam(name = RECEIVER_CODE, role = Role.POST)
     private final Member receiver;
 
+    // keep it for consistency
+    @SuppressWarnings("unused")
     private final SendTeamInvitationActionUrl url;
 
     public SendTeamInvitationAction(final SendTeamInvitationActionUrl url) {
@@ -54,6 +56,11 @@ public class SendTeamInvitationAction extends LoggedAction {
             throw new ShallNotPassException("User couldn't send a team invitation, while he should be able to", e);
         }
         return session.getLastVisitedPage();
+    }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        return NO_ERROR;
     }
 
     @Override

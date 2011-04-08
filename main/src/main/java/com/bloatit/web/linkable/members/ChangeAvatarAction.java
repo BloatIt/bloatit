@@ -67,13 +67,17 @@ public final class ChangeAvatarAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
-        // TODO create a member.canAccessAvatar.
         final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
 
         member.setAvatar(avatarfm);
 
         session.notifyGood(tr("Avatar change to ''{0}''", avatarFileName));
         return Context.getSession().pickPreferredPage();
+    }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+        return NO_ERROR;
     }
 
     @Override

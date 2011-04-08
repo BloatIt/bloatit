@@ -30,6 +30,8 @@ public final class MetaBugDeleteAction extends Action {
     @RequestParam
     private final String bugId;
 
+    // Keep it for consistency.
+    @SuppressWarnings("unused")
     private final MetaBugDeleteActionUrl url;
 
     public MetaBugDeleteAction(final MetaBugDeleteActionUrl url) {
@@ -53,5 +55,15 @@ public final class MetaBugDeleteAction extends Action {
     @Override
     protected Url doProcessErrors() {
         return session.getLastVisitedPage();
+    }
+
+    @Override
+    protected Url checkRightsAndEverything() {
+        return NO_ERROR; // Nothing else to check
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // Nothing to transmit. only get parameters.
     }
 }

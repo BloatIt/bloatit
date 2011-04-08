@@ -71,4 +71,14 @@ public final class MetaEditBugAction extends Action {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
+
+    @Override
+    protected Url checkRightsAndEverything() {
+        return NO_ERROR; // Nothing else to check
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // nothing
+    }
 }

@@ -25,6 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Member;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
@@ -60,5 +61,10 @@ public class ConfigurationAdminAction extends AdminAction {
     @Override
     protected void transmitParameters() {
         // TODO
+    }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        return NO_ERROR;
     }
 }

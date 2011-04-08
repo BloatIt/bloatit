@@ -29,16 +29,16 @@ public final class PaylineAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
+    public Url doProcessRestricted(final Member authenticatedMember) {
         // Constructing the urls.
         final HttpHeader header = Context.getHeader().getHttpHeader();
-        PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok");
+        final PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok");
         paylineReturnActionUrl.setProcess(process);
         final String returnUrl = paylineReturnActionUrl.externalUrlString(header);
-        PaylineReturnActionUrl paylineReturnActionUrlCancel = new PaylineReturnActionUrl("cancel");
+        final PaylineReturnActionUrl paylineReturnActionUrlCancel = new PaylineReturnActionUrl("cancel");
         paylineReturnActionUrlCancel.setProcess(process);
         final String cancelUrl = paylineReturnActionUrlCancel.externalUrlString(header);
-        PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl();
+        final PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl();
         paylineNotifyActionUrl.setProcess(process);
         final String notificationUrl = paylineNotifyActionUrl.externalUrlString(header);
 
@@ -61,6 +61,11 @@ public final class PaylineAction extends LoggedAction {
             return Context.getSession().pickPreferredPage();
         }
         return Context.getSession().pickPreferredPage();
+    }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        return NO_ERROR;
     }
 
     @Override

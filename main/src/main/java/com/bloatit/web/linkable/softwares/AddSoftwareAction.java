@@ -29,7 +29,6 @@ import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AddSoftwareActionUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
-import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
 /**
@@ -97,12 +96,17 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use SoftwareManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to add a software."));
-            return new LoginPageUrl();
+            return new AddSoftwarePageUrl();
         }
+        return NO_ERROR;
+    }
+
+    @Override
+    public Url doProcessRestricted(final Member authenticatedMember) {
         final Locale langLocale = new Locale(lang);
 
         final Software p = new Software(softwareName, session.getAuthToken().getMember(), langLocale, shortDescription, description);

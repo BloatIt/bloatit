@@ -39,6 +39,8 @@ public final class MemberActivationAction extends Action {
     @RequestParam(name = KEY_CODE, role = Role.GET)
     private final String key;
 
+    // Keep it for consistency 
+    @SuppressWarnings("unused")
     private final MemberActivationActionUrl url;
 
     public MemberActivationAction(final MemberActivationActionUrl url) {
@@ -52,8 +54,6 @@ public final class MemberActivationAction extends Action {
 
     @Override
     protected Url doProcess() {
-        session.notifyList(url.getMessages());
-
         final Member member = MemberManager.getMemberByLogin(login);
 
         final Url to = new IndexPageUrl();
@@ -84,5 +84,15 @@ public final class MemberActivationAction extends Action {
     @Override
     protected Url doProcessErrors() {
         return new IndexPageUrl();
+    }
+
+    @Override
+    protected Url checkRightsAndEverything() {
+        return NO_ERROR; // Nothing else to check
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // No post parameter to transmit.
     }
 }

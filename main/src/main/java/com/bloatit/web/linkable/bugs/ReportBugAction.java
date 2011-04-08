@@ -109,11 +109,6 @@ public final class ReportBugAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
-        if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
-            session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
-            return doProcessErrors();
-        }
-        
         final Locale langLocale = new Locale(lang);
         final Bug bug = milestone.addBug(authenticatedMember, title, description, langLocale, level.getLevel());
         if (attachement != null) {
@@ -130,6 +125,15 @@ public final class ReportBugAction extends LoggedAction {
             }
         }
         return new BugPageUrl(bug);
+    }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
+            session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
+            return doProcessErrors();
+        }
+        return NO_ERROR;
     }
 
     @Override
@@ -154,4 +158,5 @@ public final class ReportBugAction extends LoggedAction {
         session.addParameter(url.getLangParameter());
         session.addParameter(url.getAttachementDescriptionParameter());
     }
+
 }

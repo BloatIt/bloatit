@@ -50,6 +50,11 @@ public class JoinTeamAction extends LoggedAction {
         }
         return new TeamPageUrl(targetTeam);
     }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        return NO_ERROR;
+    }
 
     @Override
     protected Url doProcessErrors() {

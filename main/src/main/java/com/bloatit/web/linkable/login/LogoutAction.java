@@ -27,6 +27,8 @@ import com.bloatit.web.url.LogoutActionUrl;
  */
 @ParamContainer("action/logout")
 public final class LogoutAction extends LoggedAction {
+    // Keep it for consistency
+    @SuppressWarnings("unused")
     private final LogoutActionUrl url;
 
     public LogoutAction(final LogoutActionUrl url) {
@@ -42,6 +44,11 @@ public final class LogoutAction extends LoggedAction {
         Context.reInitializeContext(Context.getHeader(), newSess);
         newSess.notifyGood(Context.tr("Logout success."));
         return prefUrl;
+    }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        return NO_ERROR;
     }
 
     @Override

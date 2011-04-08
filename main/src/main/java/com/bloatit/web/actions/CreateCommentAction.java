@@ -44,7 +44,7 @@ public final class CreateCommentAction extends LoggedAction {
     @RequestParam(name = COMMENT_TARGET)
     private final Commentable commentable;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must type a comment") )
+    @ParamConstraint(optionalErrorMsg = @tr("You must type a comment"))
     @RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST)
     private final String comment;
 
@@ -60,6 +60,7 @@ public final class CreateCommentAction extends LoggedAction {
     @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
     private final String attachementDescription;
 
+    @SuppressWarnings("unused")
     @Optional
     @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
     private final String attachementContentType;
@@ -75,6 +76,12 @@ public final class CreateCommentAction extends LoggedAction {
         this.attachementFileName = url.getAttachementFileName();
         this.attachementContentType = url.getAttachementContentType();
         this.attachementDescription = url.getAttachementDescription();
+    }
+
+    @Override
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+        // add a can access comment.
+        return NO_ERROR;
     }
 
     @Override

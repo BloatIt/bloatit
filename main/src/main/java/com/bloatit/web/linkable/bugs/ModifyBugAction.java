@@ -27,10 +27,9 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.url.BugPageUrl;
-import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
+import com.bloatit.web.url.ModifyBugPageUrl;
 
 /**
  * A response to a form used to create a new feature
@@ -76,24 +75,17 @@ public final class ModifyBugAction extends Action {
 
     @Override
     protected Url doProcess() {
-        session.notifyList(url.getMessages());
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use BugManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to report a bug."));
-            return new LoginPageUrl();
-        }
-
         final Level currentLevel = bug.getErrorLevel();
         final BugState currentState = bug.getState();
 
         if (currentLevel == level.getLevel() && currentState == state.getState()) {
             session.notifyBad(Context.tr("You must change at least a small thing on the bug to modify it."));
-            return redirectWithError();
+            return doProcessErrors();
         }
 
         if (state.getState() == BugState.PENDING) {
             session.notifyBad(Context.tr("You can set a bug to the pending state."));
-            return redirectWithError();
+            return doProcessErrors();
         }
 
         String changes = "";
@@ -130,15 +122,24 @@ public final class ModifyBugAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        return redirectWithError();
+        return Context.getSession().getLastVisitedPage();
     }
 
-    public Url redirectWithError() {
+    @Override
+    protected Url checkRightsAndEverything() {
+        if (session.getAuthToken() == null) {
+            session.notifyError(Context.tr("You must be logged in to modify a bug report."));
+            return new ModifyBugPageUrl(bug);
+        }
+        return NO_ERROR;
+    }
+
+    @Override
+    protected void transmitParameters() {
         session.addParameter(url.getReasonParameter());
         session.addParameter(url.getBugParameter());
         session.addParameter(url.getLevelParameter());
         session.addParameter(url.getStateParameter());
-        return Context.getSession().getLastVisitedPage();
     }
 
 }

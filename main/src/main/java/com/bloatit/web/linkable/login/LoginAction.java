@@ -62,13 +62,22 @@ public final class LoginAction extends Action {
         session.setAuthToken(null);
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
+        transmitParameters();
         return new LoginPageUrl();
     }
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-        session.addParameter(url.getLoginParameter());
         return new LoginPageUrl();
+    }
+    
+    @Override
+    protected Url checkRightsAndEverything() {
+        return NO_ERROR; // Nothing else to check
+    }
+
+    @Override
+    protected void transmitParameters() {
+        session.addParameter(url.getLoginParameter());
     }
 }

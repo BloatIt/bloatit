@@ -43,6 +43,8 @@ public final class PopularityVoteAction extends LoggedAction {
     @RequestParam(name = VOTE_UP)
     private final Boolean voteUp;
 
+    // Keep it for consistency
+    @SuppressWarnings("unused")
     private final PopularityVoteActionUrl url;
 
     public PopularityVoteAction(final PopularityVoteActionUrl url) {
@@ -83,6 +85,12 @@ public final class PopularityVoteAction extends LoggedAction {
         return session.pickPreferredPage();
     }
 
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     public void analyseErrors(final EnumSet<SpecialCode> canVote) {
         if (canVote.contains(SpecialCode.ALREADY_VOTED)) {
             session.notifyBad(Context.tr("You already voted on that."));
@@ -112,4 +120,5 @@ public final class PopularityVoteAction extends LoggedAction {
     protected void transmitParameters() {
         // Nothing to save
     }
+
 }

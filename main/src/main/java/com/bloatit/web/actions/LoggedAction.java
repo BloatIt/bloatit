@@ -25,16 +25,22 @@ import com.bloatit.web.url.LoginPageUrl;
  */
 public abstract class LoggedAction extends Action {
     private final Url meUrl;
+    private final Member member;
 
     public LoggedAction(final Url url) {
         super(url);
         this.meUrl = url;
+        if (session.isLogged()) {
+            this.member = session.getAuthToken().getMember();
+        } else {
+            this.member = null;
+        }
     }
 
     @Override
     protected final Url doProcess() {
         if (session.isLogged()) {
-            return doProcessRestricted(session.getAuthToken().getMember());
+            return doProcessRestricted(member);
         }
         session.notifyBad(getRefusalReason());
         session.setTargetPage(meUrl);
@@ -42,12 +48,23 @@ public abstract class LoggedAction extends Action {
         return new LoginPageUrl();
     }
 
+    @Override
+    protected final Url checkRightsAndEverything() {
+        if (member != null) {
+            return doCheckRightsAndEverything(member);
+        }
+        return new LoginPageUrl();
+    }
+    
+    protected abstract Url doCheckRightsAndEverything(Member authenticatedMember);
+    
+
     /**
      * Called when user is correctly authentified
-     *
+     * 
      * @param authenticatedMember TODO
      */
-    public abstract Url doProcessRestricted(Member authenticatedMember);
+    protected abstract Url doProcessRestricted(Member authenticatedMember);
 
     /**
      * Called when some RequestParams contain erroneous parameters.
@@ -57,14 +74,10 @@ public abstract class LoggedAction extends Action {
 
     /**
      * <b>Do not forget to localize</p>
-     *
+     * 
      * @return the error message to dislay to the user, informing him while he
      *         couldn't access the page
      */
     protected abstract String getRefusalReason();
 
-    /**
-     * Override and save all your parameters into session
-     */
-    protected abstract void transmitParameters();
 }

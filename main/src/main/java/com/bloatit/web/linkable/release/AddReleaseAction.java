@@ -82,11 +82,15 @@ public final class AddReleaseAction extends LoggedAction {
         this.milestone = url.getMilestone();
         this.version = url.getVersion();
     }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+        //TODO: Verify user right
+        return NO_ERROR;
+    }
 
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
-        //TODO: Verify user right
-
         final Locale langLocale = new Locale(lang);
         final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                               attachedfile,

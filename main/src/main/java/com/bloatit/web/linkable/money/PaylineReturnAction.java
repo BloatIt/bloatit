@@ -3,7 +3,6 @@ package com.bloatit.web.linkable.money;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -17,16 +16,13 @@ import com.bloatit.web.url.PaylineReturnActionUrl;
 public class PaylineReturnAction extends Action {
 
     @RequestParam(name = "token")
-    @Optional
     private final String token;
 
     @RequestParam(name = "ack")
     private final String ack;
 
     @RequestParam(name = "process")
-    @Optional
     private final PaylineProcess process;
-
 
     public PaylineReturnAction(final PaylineReturnActionUrl url) {
         super(url);
@@ -53,12 +49,10 @@ public class PaylineReturnAction extends Action {
             }
         }
 
-        if(process != null) {
-            final Url target = process.getParentProcess().endSubProcess(process);
-            process.close();
-            if(target != null) {
-                return target;
-            }
+        final Url target = process.getParentProcess().endSubProcess(process);
+        process.close();
+        if (target != null) {
+            return target;
         }
 
         return Context.getSession().pickPreferredPage();
@@ -67,6 +61,16 @@ public class PaylineReturnAction extends Action {
     @Override
     protected Url doProcessErrors() {
         return Context.getSession().pickPreferredPage();
+    }
+
+    @Override
+    protected Url checkRightsAndEverything() {
+        return NO_ERROR; // Nothing else to check
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // No post parameters.
     }
 
 }

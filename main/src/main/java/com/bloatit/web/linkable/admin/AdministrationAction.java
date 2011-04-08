@@ -13,6 +13,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
+import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.UserContent;
 import com.bloatit.web.url.AdministrationActionUrl;
@@ -111,6 +112,11 @@ public class AdministrationAction extends AdminAction {
 
     @Override
     protected void transmitParameters() {
-        // TODO Auto-generated method stub
+        // TODO redo this page
+    }
+
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        return NO_ERROR;
     }
 }

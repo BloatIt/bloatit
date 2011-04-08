@@ -49,5 +49,4 @@ public class AccountChargingProcess extends WebProcess {
     public void load() {
         // TODO Do nothing ?
     }
-
 }

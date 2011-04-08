@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -43,15 +44,21 @@ public class CommentCommentAction extends LoggedAction {
         this.targetComment = url.getTargetComment();
         this.comment = url.getComment();
     }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+        //TODO: Verify addComment right
+        return NO_ERROR;
+    }
 
     @Override
     public final Url doProcessRestricted(final Member authenticatedMember) {
-        session.notifyGood(Context.tr("Your comment has been added."));
 
         try {
             targetComment.addComment(comment);
+            session.notifyGood(Context.tr("Your comment has been added."));
         } catch (final UnauthorizedOperationException e) {
-            // TODO do some stuff here.
+            throw new ShallNotPassException(e);
         }
 
         return session.pickPreferredPage();
@@ -71,4 +78,6 @@ public class CommentCommentAction extends LoggedAction {
     protected final void transmitParameters() {
         session.addParameter(url.getCommentParameter());
     }
+
+
 }

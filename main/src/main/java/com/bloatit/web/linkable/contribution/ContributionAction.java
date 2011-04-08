@@ -33,11 +33,12 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("action/contribute")
 public final class ContributionAction extends LoggedAction {
 
-
-    @ParamConstraint(optionalErrorMsg=@tr("The process is closed, expired, missing or invalid."))
+    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
 
+    // Keep it for consistency
+    @SuppressWarnings("unused")
     private final ContributionActionUrl url;
 
     public ContributionAction(final ContributionActionUrl url) {
@@ -47,11 +48,19 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+        // Add a can access contribution..
+        return NO_ERROR;
+    }
+
+    @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
         try {
             process.getFeature().addContribution(process.getAmount(), process.getComment());
 
-            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator().getCurrency(process.getAmount()).getLocaleString()));
+            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator()
+                                                                                                 .getCurrency(process.getAmount())
+                                                                                                 .getLocaleString()));
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());
             featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             process.close();

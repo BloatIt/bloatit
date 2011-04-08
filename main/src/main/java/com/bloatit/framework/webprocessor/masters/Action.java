@@ -28,6 +28,8 @@ import com.bloatit.framework.webprocessor.url.Url;
  */
 public abstract class Action implements Linkable {
 
+    protected static final Url NO_ERROR = null;
+
     protected final Session session;
     private final Url actionUrl;
 
@@ -41,7 +43,7 @@ public abstract class Action implements Linkable {
         Log.framework().trace("Processing action: " + actionUrl.urlString());
         final Url url = process();
         if (url != null) {
-            if(url.isAction()) {
+            if (url.isAction()) {
                 final Parameters parameters = url.getStringParameters();
 
                 final Linkable linkable = server.constructLinkable(url.getCode(), parameters, session);
@@ -58,13 +60,55 @@ public abstract class Action implements Linkable {
     public final Url process() {
         if (!actionUrl.getMessages().isEmpty()) {
             session.notifyList(actionUrl.getMessages());
+            transmitParameters();
             return doProcessErrors();
+        }
+        final Url checkParameters = checkRightsAndEverything();
+        if (checkParameters != null) {
+            transmitParameters();
+            return checkParameters;
         }
         return doProcess();
     }
 
+    /**
+     * <p>
+     * The url system perform some checks on constraints. You may want to add
+     * more specific constraint checking by overriding this method.
+     * </p>
+     * 
+     * @return null if there is no error, the url where you want to be
+     *         redirected otherwise.
+     */
+    protected abstract Url checkRightsAndEverything();
+
+    /**
+     * <p>
+     * Called when there is no errors (See {@link Url#getMessages()} and
+     * {@link #checkRightsAndEverything()}).
+     * </p>
+     * <p>
+     * This is the normal case. The {@link #transmitParameters()} method is not
+     * called whene there is no error. So if your action fail during the
+     * doProcess(), you may want to call the {@link #transmitParameters()}
+     * method by yourself.
+     * </p>
+     * 
+     * @return the redirect url of this action.
+     */
     protected abstract Url doProcess();
 
+    /**
+     * Called when there is at least one error (See {@link Url#getMessages()}
+     * and {@link #checkRightsAndEverything()}).
+     * 
+     * @return the redirect url of this action.
+     */
     protected abstract Url doProcessErrors();
+
+    /**
+     * Override and save all your parameters into session
+     */
+    protected abstract void transmitParameters();
 
 }

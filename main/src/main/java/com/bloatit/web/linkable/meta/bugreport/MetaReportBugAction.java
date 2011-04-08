@@ -56,7 +56,6 @@ public final class MetaReportBugAction extends Action {
 
     @Override
     protected Url doProcess() {
-        // TODO: define if you have to be logged to report a bug
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
         try {
@@ -83,5 +82,15 @@ public final class MetaReportBugAction extends Action {
     protected Url doProcessErrors() {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
+    }
+    
+    @Override
+    protected Url checkRightsAndEverything() {
+        return NO_ERROR; // Nothing else to check
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // nothing
     }
 }

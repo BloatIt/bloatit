@@ -27,7 +27,7 @@ import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.AddAttachementActionUrl;
-import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.web.url.AddAttachementPageUrl;
 
 /**
  * A response to a form used to create a new feature
@@ -79,25 +79,29 @@ public final class AddAttachementAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use UserContentManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to report a bug."));
-            return new LoginPageUrl();
+            return new AddAttachementPageUrl(userContent);
         }
+        return NO_ERROR;
+    }
 
-        final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
-                                                                                            attachement,
-                                                                                            attachementFileName,
-                                                                                            attachementDescription);
+    @Override
+    public Url doProcessRestricted(final Member authenticatedMember) {
+        final FileMetadata file = FileMetadataManager.createFromTempFile(authenticatedMember,
+                                                                         attachement,
+                                                                         attachementFileName,
+                                                                         attachementDescription);
 
         try {
-            userContent.addFile(attachementFileMedatata);
+            userContent.addFile(file);
             session.notifyGood(Context.tr("Attachement add successfuly !"));
 
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("You're allowed to add an attachement only if you own the content. If you get this error without trying to hack the website, please make a bug report."));
-            throw new MeanUserException("The user try to add an attachement but he doesn't have the right",e);
+            throw new MeanUserException("The user try to add an attachement but he doesn't have the right", e);
         }
         return session.pickPreferredPage();
     }
@@ -118,5 +122,4 @@ public final class AddAttachementAction extends LoggedAction {
         session.addParameter(url.getUserContentParameter());
         session.addParameter(url.getAttachementDescriptionParameter());
     }
-
 }

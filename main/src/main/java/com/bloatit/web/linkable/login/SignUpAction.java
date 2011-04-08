@@ -36,17 +36,17 @@ public class SignUpAction extends Action {
 
     @RequestParam(name = SignUpAction.LOGIN_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
+                     max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
     private final String login;
 
     @RequestParam(name = SignUpAction.PASSWORD_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
+                     max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
     private final String password;
 
     @RequestParam(name = SignUpAction.EMAIL_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
-    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
+                     max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
     private final String email;
 
     @RequestParam(name = SignUpAction.COUNTRY_CODE, role = Role.POST)
@@ -68,25 +68,7 @@ public class SignUpAction extends Action {
 
     @Override
     protected final Url doProcess() {
-
-        if (MemberManager.loginExists(login)) {
-            session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
-            return doProcessErrors();
-        }
-
-        if (MemberManager.emailExists(email)) {
-            session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
-            return doProcessErrors();
-        }
-
-        final String userEmail = email.trim();
-        if (!MailUtils.isValidEmail(userEmail)) {
-            session.notifyError(Context.tr("Invalid email address : " + userEmail));
-            return doProcessErrors();
-        }
-
         final Locale locale = new Locale(lang, country);
-        // TODO verify duplicate to avoid crashes
         final Member m = new Member(login, password, email, locale);
         final String activationKey = m.getActivationKey();
         final MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
@@ -106,11 +88,35 @@ public class SignUpAction extends Action {
 
     @Override
     protected final Url doProcessErrors() {
+        return new SignUpPageUrl();
+    }
+
+    @Override
+    protected Url checkRightsAndEverything() {
+        if (MemberManager.loginExists(login)) {
+            session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
+            return doProcessErrors();
+        }
+
+        if (MemberManager.emailExists(email)) {
+            session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
+            return doProcessErrors();
+        }
+
+        final String userEmail = email.trim();
+        if (!MailUtils.isValidEmail(userEmail)) {
+            session.notifyError(Context.tr("Invalid email address : " + userEmail));
+            return doProcessErrors();
+        }
+        return NO_ERROR;
+    }
+
+    @Override
+    protected void transmitParameters() {
         session.addParameter(url.getEmailParameter());
         session.addParameter(url.getLoginParameter());
         session.addParameter(url.getPasswordParameter());
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        return new SignUpPageUrl();
     }
 }

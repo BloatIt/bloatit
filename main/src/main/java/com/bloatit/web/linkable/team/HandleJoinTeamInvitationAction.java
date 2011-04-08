@@ -26,6 +26,8 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
     @RequestParam()
     private final Boolean accept;
 
+    // Keep it for consistency
+    @SuppressWarnings("unused")
     private final HandleJoinTeamInvitationActionUrl url;
 
     public HandleJoinTeamInvitationAction(final HandleJoinTeamInvitationActionUrl url) {
@@ -65,10 +67,15 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
         try {
             me.refuseInvitation(invite);
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("Ooops, you tried to accept a legitimate team invitation, but it failed. It's a bug please notify us."));
-            throw new ShallNotPassException("User accepted a legitimate team invitation, but it failed", e);
+            session.notifyBad(Context.tr("Ooops, you tried to refuse a legitimate team invitation, but it failed. It's a bug please notify us."));
+            throw new ShallNotPassException("User refuse a legitimate team invitation, but it failed", e);
         }
         return session.getLastVisitedPage();
+    }
+    
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        return NO_ERROR;
     }
 
     @Override
@@ -85,4 +92,6 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
     protected void transmitParameters() {
         // Nothing to transmit
     }
+
+
 }

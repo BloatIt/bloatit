@@ -1,7 +1,6 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.masters.Action;
@@ -17,14 +16,10 @@ public final class PaylineNotifyAction extends Action {
 
     public static final String TOKEN_CODE = "token";
 
-
     @RequestParam(name = TOKEN_CODE)
-    @Optional
     private final String token;
 
-
     @RequestParam(name = "process")
-    @Optional
     private final PaylineProcess process;
 
     public PaylineNotifyAction(final PaylineNotifyActionUrl url) {
@@ -42,19 +37,19 @@ public final class PaylineNotifyAction extends Action {
             if (paymentDetails.isAccepted()) {
                 payline.validatePayment(token);
             } else {
+                // TODO send mail
                 payline.cancelPayement(token);
+                session.notifyBad("Your payment is refused.");
                 Log.web().error("Payment is not accepted: " + token);
             }
         } catch (final TokenNotfoundException e) {
             Log.web().error("Token not found ! ", e);
         }
 
-        if(process != null) {
-            Url target = process.getParentProcess().endSubProcess(process);
-            process.close();
-            if(target != null) {
-                return target;
-            }
+        final Url target = process.getParentProcess().endSubProcess(process);
+        process.close();
+        if (target != null) {
+            return target;
         }
 
         return new IndexPageUrl();
@@ -64,5 +59,15 @@ public final class PaylineNotifyAction extends Action {
     public Url doProcessErrors() {
         Log.web().error("Payline notification with parameter errors ! ");
         return new IndexPageUrl();
+    }
+
+    @Override
+    protected Url checkRightsAndEverything() {
+        return NO_ERROR; // Nothing else to check
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // Nothing
     }
 }

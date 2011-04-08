@@ -61,9 +61,9 @@ public class GiveRightAction extends LoggedAction {
         this.right = url.getRight();
         this.give = url.getGive();
     }
-
+    
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
         if (!authenticatedMember.equals(targetMember) && !authenticatedMember.canPromote(targetTeam)) {
             try {
                 session.notifyBad(Context.tr("You are not allowed to promote people in the team: " + targetTeam.getLogin()));
@@ -73,7 +73,11 @@ public class GiveRightAction extends LoggedAction {
             }
             return new TeamPageUrl(targetTeam);
         }
+        return NO_ERROR;
+    }
 
+    @Override
+    public Url doProcessRestricted(final Member authenticatedMember) {
         if (give) {
             targetMember.addTeamRight(targetTeam, right);
         } else {
@@ -96,5 +100,4 @@ public class GiveRightAction extends LoggedAction {
     protected void transmitParameters() {
         // Nothing
     }
-
 }

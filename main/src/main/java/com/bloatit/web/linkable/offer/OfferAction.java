@@ -69,13 +69,13 @@ public final class OfferAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
-    max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST)
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
-    max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentMajor;
 
     @RequestParam(role = Role.POST, suggestedValue = "true")
@@ -105,41 +105,29 @@ public final class OfferAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
-        if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
-            session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
-            return session.pickPreferredPage();
-        }
-        if (percentFatal != null && percentFatal + percentMajor > 100) {
-            session.notifyBad(Context.tr("Major + Fatal percent cannot be > 100 !!"));
-            return session.pickPreferredPage();
-        }
-        if (draftOffer != null && !draftOffer.isDraft()) {
-            session.notifyBad(Context.tr("The specified offer is not editable. You cannot add a lot in it."));
-            return session.pickPreferredPage();
-        }
-        if (team != null && !team.getUserTeamRight(authenticatedMember).contains(UserTeamRight.TALK)) {
-            session.notifyBad(Context.tr("You cannot talk on the behalf of this team."));
-            return session.pickPreferredPage();
-        }
+
         Offer constructingOffer;
         try {
             Milestone constructingMilestone;
             if (draftOffer == null) {
                 System.err.println(expiryDate);
                 constructingOffer = feature.addOffer(session.getAuthToken().getMember(),
-                                                    price,
-                                                    description,
-                                                    new Locale(locale),
-                                                    expiryDate.getJavaDate(),
-                                                    daysBeforeValidation * DateUtils.SECOND_PER_DAY);
+                                                     price,
+                                                     description,
+                                                     new Locale(locale),
+                                                     expiryDate.getJavaDate(),
+                                                     daysBeforeValidation * DateUtils.SECOND_PER_DAY);
                 if (team != null) {
                     constructingOffer.setAsTeam(team);
                 }
                 constructingMilestone = constructingOffer.getMilestonees().iterator().next();
             } else {
                 constructingOffer = draftOffer;
-                constructingMilestone = draftOffer.addMilestone(price, description, new Locale(locale), expiryDate.getJavaDate(), daysBeforeValidation
-                        * DateUtils.SECOND_PER_DAY);
+                constructingMilestone = draftOffer.addMilestone(price,
+                                                                description,
+                                                                new Locale(locale),
+                                                                expiryDate.getJavaDate(),
+                                                                daysBeforeValidation * DateUtils.SECOND_PER_DAY);
             }
             if (percentFatal != null && percentMajor != null) {
                 constructingMilestone.updateMajorFatalPercent(percentFatal, percentMajor);
@@ -160,6 +148,27 @@ public final class OfferAction extends LoggedAction {
         final MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);
         returnUrl.setOffer(constructingOffer);
         return returnUrl;
+    }
+
+    @Override
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
+            session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
+            return session.pickPreferredPage();
+        }
+        if (percentFatal != null && percentFatal + percentMajor > 100) {
+            session.notifyBad(Context.tr("Major + Fatal percent cannot be > 100 !!"));
+            return session.pickPreferredPage();
+        }
+        if (draftOffer != null && !draftOffer.isDraft()) {
+            session.notifyBad(Context.tr("The specified offer is not editable. You cannot add a lot in it."));
+            return session.pickPreferredPage();
+        }
+        if (team != null && !team.getUserTeamRight(authenticatedMember).contains(UserTeamRight.TALK)) {
+            session.notifyBad(Context.tr("You cannot talk on the behalf of this team."));
+            return session.pickPreferredPage();
+        }
+        return NO_ERROR;
     }
 
     @Override
