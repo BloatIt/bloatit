@@ -21,12 +21,8 @@ import java.util.UUID;
 
 import javassist.NotFoundException;
 
-import org.hibernate.classic.Session;
-
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.ActivationState;
-import com.bloatit.data.SessionManager;
-import com.bloatit.framework.webserver.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 

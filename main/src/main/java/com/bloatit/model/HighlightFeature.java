@@ -14,12 +14,14 @@ public class HighlightFeature extends Identifiable<DaoHighlightFeature> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoHighlightFeature, HighlightFeature> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public HighlightFeature doCreate(final DaoHighlightFeature dao) {
             return new HighlightFeature(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static HighlightFeature create(final DaoHighlightFeature dao) {
         return new MyCreator().create(dao);
     }

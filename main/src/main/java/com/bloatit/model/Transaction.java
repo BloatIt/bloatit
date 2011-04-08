@@ -35,12 +35,14 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoTransaction, Transaction> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Transaction doCreate(final DaoTransaction dao) {
             return new Transaction(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Transaction create(final DaoTransaction dao) {
         return new MyCreator().create(dao);
     }

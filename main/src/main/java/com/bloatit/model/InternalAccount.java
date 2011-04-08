@@ -40,12 +40,14 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoInternalAccount, InternalAccount> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public InternalAccount doCreate(final DaoInternalAccount dao) {
             return new InternalAccount(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static InternalAccount create(final DaoInternalAccount dao) {
         return new MyCreator().create(dao);
     }

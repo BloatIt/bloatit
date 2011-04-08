@@ -19,7 +19,6 @@ package com.bloatit.model;
 import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.feature.FeatureList;
@@ -35,12 +34,14 @@ public class Software extends Identifiable<DaoSoftware> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoSoftware, Software> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Software doCreate(final DaoSoftware dao) {
             return new Software(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Software create(final DaoSoftware dao) {
         return new MyCreator().create(dao);
     }
@@ -54,8 +55,6 @@ public class Software extends Identifiable<DaoSoftware> {
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link FeatureManager#canCreate(AuthToken)} to make sure
      * you can create a new feature.
-     *
-     * @see DaoFeature#DaoFeature(Member,Locale,String, String)
      */
     public Software(final String name, final Member author, final Locale locale, final String title, final String description) {
         this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
@@ -66,7 +65,6 @@ public class Software extends Identifiable<DaoSoftware> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @return
      * @see com.bloatit.data.DaoSoftware#getName()
      */
     public String getName() throws UnauthorizedOperationException {
@@ -75,7 +73,6 @@ public class Software extends Identifiable<DaoSoftware> {
     }
 
     /**
-     * @return
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoSoftware#getDescription()
      */
@@ -85,7 +82,6 @@ public class Software extends Identifiable<DaoSoftware> {
     }
 
     /**
-     * @return
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoSoftware#getImage()
      */
@@ -95,7 +91,6 @@ public class Software extends Identifiable<DaoSoftware> {
     }
 
     /**
-     * @return
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoSoftware#getFeatures()
      */
@@ -105,7 +100,7 @@ public class Software extends Identifiable<DaoSoftware> {
 
     }
 
-    public void setImage(FileMetadata fileImage) {
+    public void setImage(final FileMetadata fileImage) {
         // TODO: right management
         getDao().setImage(fileImage.getDao());
     }

@@ -50,6 +50,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
          * @see
          * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
+        @SuppressWarnings("synthetic-access")
         @Override
         public Bug doCreate(final DaoBug dao) {
             return new Bug(dao);
@@ -62,6 +63,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @param dao the dao
      * @return null if dao is null. Else return the new Bug.
      */
+    @SuppressWarnings("synthetic-access")
     public static Bug create(final DaoBug dao) {
         return new MyCreator().create(dao);
     }
@@ -217,7 +219,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
      */
     @Override
-    public Comment addComment(String text) throws UnauthorizedOperationException {
+    public Comment addComment(final String text) throws UnauthorizedOperationException {
         // TODO: access right
         // tryAccess(new BugRight.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(), getAuthToken().getMember().getDao(), text);

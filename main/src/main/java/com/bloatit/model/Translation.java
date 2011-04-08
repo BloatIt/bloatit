@@ -28,21 +28,16 @@ public final class Translation extends Kudosable<DaoTranslation> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoTranslation, Translation> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Translation doCreate(final DaoTranslation dao) {
             return new Translation(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Translation create(final DaoTranslation dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked") final Identifiable<DaoTranslation> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Translation(dao);
-            }
-            return (Translation) created;
-        }
-        return null;
+        return new MyCreator().doCreate(dao);
     }
 
     private Translation(final DaoTranslation dao) {

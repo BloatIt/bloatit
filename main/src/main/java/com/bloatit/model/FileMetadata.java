@@ -29,12 +29,14 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoFileMetadata, FileMetadata> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public FileMetadata doCreate(final DaoFileMetadata dao) {
             return new FileMetadata(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static FileMetadata create(final DaoFileMetadata dao) {
         return new MyCreator().create(dao);
     }
@@ -62,7 +64,6 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     }
 
     /**
-     * @return
      * @see com.bloatit.data.DaoFileMetadata#getShortDescription()
      */
     public final String getShortDescription() {
@@ -70,7 +71,6 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     }
 
     /**
-     * @return
      * @see com.bloatit.data.DaoFileMetadata#getFilename()
      */
     public final File getFile() {
@@ -78,7 +78,6 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     }
 
     /**
-     * @return
      * @see com.bloatit.data.DaoFileMetadata#getUrl()
      */
     public final String getUrl() {
@@ -86,7 +85,6 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     }
 
     /**
-     * @return
      * @see com.bloatit.data.DaoFileMetadata#getSize()
      */
     public final int getSize() {
@@ -94,7 +92,6 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     }
 
     /**
-     * @return
      * @see com.bloatit.data.DaoFileMetadata#getType()
      */
     public FileType getType() {
@@ -102,8 +99,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     }
 
     /**
-     * @return
-     * @see com.bloatit.data.DaoFileMetadata#getFileName()
+     * @see com.bloatit.data.DaoFileMetadata#getFilename()
      */
     public String getFileName() {
         return getDao().getFilename();

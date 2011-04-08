@@ -44,9 +44,6 @@ public final class MilestoneManager {
         return Milestone.create(DBRequests.getById(DaoMilestone.class, id));
     }
 
-    /**
-     * @return
-     */
     public static MilestoneList getAll() {
         return new MilestoneList(DBRequests.getAll(DaoMilestone.class));
     }

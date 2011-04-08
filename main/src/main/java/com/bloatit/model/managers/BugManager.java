@@ -45,9 +45,6 @@ public final class BugManager {
         return Bug.create(DBRequests.getById(DaoBug.class, id));
     }
 
-    /**
-     * @return
-     */
     public static PageIterable<Bug> getAll() {
         return new BugList(DBRequests.getAll(DaoBug.class));
     }

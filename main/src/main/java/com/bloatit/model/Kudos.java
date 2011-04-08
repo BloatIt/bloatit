@@ -25,12 +25,14 @@ public final class Kudos extends UserContent<DaoKudos> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoKudos, Kudos> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Kudos doCreate(final DaoKudos dao) {
             return new Kudos(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Kudos create(final DaoKudos dao) {
         return new MyCreator().create(dao);
     }

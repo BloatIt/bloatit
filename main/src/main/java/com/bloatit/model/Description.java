@@ -37,12 +37,14 @@ public final class Description extends Identifiable<DaoDescription> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoDescription, Description> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Description doCreate(final DaoDescription dao) {
             return new Description(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Description create(final DaoDescription dao) {
         return new MyCreator().create(dao);
     }

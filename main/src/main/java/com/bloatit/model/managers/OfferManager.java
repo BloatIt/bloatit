@@ -44,9 +44,6 @@ public final class OfferManager {
         return Offer.create(DBRequests.getById(DaoOffer.class, id));
     }
 
-    /**
-     * @return
-     */
     public static PageIterable<Offer> getAll() {
         return new OfferList(DBRequests.getAll(DaoOffer.class));
     }

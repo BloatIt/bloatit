@@ -46,6 +46,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
          * @see
          * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
+        @SuppressWarnings("synthetic-access")
         @Override
         public BankTransaction doCreate(final DaoBankTransaction dao) {
             return new BankTransaction(dao);
@@ -60,6 +61,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @param dao the dao
      * @return the bank transaction
      */
+    @SuppressWarnings("synthetic-access")
     public static BankTransaction create(final DaoBankTransaction dao) {
         return new MyCreator().create(dao);
     }

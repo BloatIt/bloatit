@@ -42,32 +42,18 @@ public final class Offer extends Kudosable<DaoOffer> {
     // ////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoOffer, Offer> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Offer doCreate(final DaoOffer dao) {
             return new Offer(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Offer create(final DaoOffer dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked") final Identifiable<DaoOffer> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Offer(dao);
-            }
-            return (Offer) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
-    /**
-     * @param amount must be positive (can be ZERO) non null.
-     * @param locale must be non null. Is the locale in which the title and the
-     *            text are written.
-     * @param title is the title of the offer. Must be non null.
-     * @param text is the description of the offer. Must be non null.
-     * @param dateExpir is the date when this offer should be finished. Must be
-     *            non null. Must be in the future.
-     */
     public Offer(final Member member,
                  final Feature feature,
                  final BigDecimal amount,
@@ -92,7 +78,7 @@ public final class Offer extends Kudosable<DaoOffer> {
                           final Locale local,
                           final Date dateExpire,
                           final int secondBeforeValidation) {
-        DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
+        final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                          amount,
                                          DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
                                          getDao(),
@@ -112,7 +98,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     public boolean validateCurrentMilestone(final boolean force) {
         // If the validation is not complete, there is nothing to do in the
         // feature
-        DaoMilestone currentMilestone = findCurrentDaoMilestone();
+        final DaoMilestone currentMilestone = findCurrentDaoMilestone();
         if (currentMilestone == null) {
             Log.framework().error("You tried to validate a milestone, but no milestone to validate found.");
             return false;
@@ -128,8 +114,8 @@ public final class Offer extends Kudosable<DaoOffer> {
         return isAllValidated;
     }
 
-    public boolean shouldValidateCurrentMilestonePart(Level level) {
-        DaoMilestone currentMilestone = findCurrentDaoMilestone();
+    public boolean shouldValidateCurrentMilestonePart(final Level level) {
+        final DaoMilestone currentMilestone = findCurrentDaoMilestone();
         if (currentMilestone == null) {
             return false;
         }
@@ -204,7 +190,6 @@ public final class Offer extends Kudosable<DaoOffer> {
      * Return the progression of the funding of this offer with the amount
      * available on the feature
      *
-     * @return
      * @throws UnauthorizedOperationException
      */
     public float getProgression() throws UnauthorizedOperationException {

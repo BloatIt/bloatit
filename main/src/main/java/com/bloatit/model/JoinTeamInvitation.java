@@ -31,6 +31,7 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoJoinTeamInvitation, JoinTeamInvitation> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public JoinTeamInvitation doCreate(final DaoJoinTeamInvitation dao) {
             return new JoinTeamInvitation(dao);
@@ -41,6 +42,7 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         super(dao);
     }
 
+    @SuppressWarnings("synthetic-access")
     public static JoinTeamInvitation create(final DaoJoinTeamInvitation dao) {
         return new MyCreator().create(dao);
     }

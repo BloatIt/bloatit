@@ -187,9 +187,6 @@ public final class FileMetadataManager {
         }
     }
 
-    /**
-     * @return
-     */
     public static PageIterable<FileMetadata> getAll() {
         return new FileMetadataList(DBRequests.getAll(DaoFileMetadata.class));
     }

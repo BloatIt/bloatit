@@ -52,6 +52,7 @@ public final class Member extends Actor<DaoMember> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoMember, Member> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Member doCreate(final DaoMember dao) {
             return new Member(dao);
@@ -64,6 +65,7 @@ public final class Member extends Actor<DaoMember> {
      * @param dao a DaoMember
      * @return the new member or null if dao is null.
      */
+    @SuppressWarnings("synthetic-access")
     public static Member create(final DaoMember dao) {
         return new MyCreator().create(dao);
     }
@@ -96,8 +98,6 @@ public final class Member extends Actor<DaoMember> {
      * Tells if a user can access the property "invite".
      *
      * @param team the team in which you want to invite somebody
-     * @param action WRITE for create a new invitation, DELETED to accept/refuse
-     *            it, READ to list the invitations you have recieved.
      * @return true if you can invite/accept/refuse.
      */
     public boolean canSendInvitation(final Team team) {
@@ -150,46 +150,46 @@ public final class Member extends Actor<DaoMember> {
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public Set<UserTeamRight> getTeamRights(Team g) {
+    public Set<UserTeamRight> getTeamRights(final Team g) {
         return getDao().getTeamRights(g.getDao());
     }
 
-    public void addTeamRight(Team aTeam, UserTeamRight aRight) {
+    public void addTeamRight(final Team aTeam, final UserTeamRight aRight) {
         getDao().addTeamRight(aTeam.getDao(), aRight);
     }
 
-    public void removeTeamRight(Team aTeam, UserTeamRight removeRight) {
+    public void removeTeamRight(final Team aTeam, final UserTeamRight removeRight) {
         getDao().removeTeamRight(aTeam.getDao(), removeRight);
     }
 
-    public boolean canInTeam(Team aTeam, UserTeamRight aRight) {
+    public boolean canInTeam(final Team aTeam, final UserTeamRight aRight) {
         if (getTeamRights(aTeam) == null) {
             return false;
         }
         return getTeamRights(aTeam).contains(aRight);
     }
 
-    public boolean canConsult(Team aTeam) {
+    public boolean canConsult(final Team aTeam) {
         return canInTeam(aTeam, UserTeamRight.CONSULT);
     }
 
-    public boolean canTalk(Team aTeam) {
+    public boolean canTalk(final Team aTeam) {
         return canInTeam(aTeam, UserTeamRight.TALK);
     }
 
-    public boolean canInvite(Team aTeam) {
+    public boolean canInvite(final Team aTeam) {
         return canInTeam(aTeam, UserTeamRight.INVITE);
     }
 
-    public boolean canModify(Team aTeam) {
+    public boolean canModify(final Team aTeam) {
         return canInTeam(aTeam, UserTeamRight.MODIFY);
     }
 
-    public boolean canPromote(Team aTeam) {
+    public boolean canPromote(final Team aTeam) {
         return canInTeam(aTeam, UserTeamRight.PROMOTE);
     }
 
-    public boolean canBank(Team aTeam) {
+    public boolean canBank(final Team aTeam) {
         return canInTeam(aTeam, UserTeamRight.BANK);
     }
 
@@ -503,7 +503,7 @@ public final class Member extends Actor<DaoMember> {
         return FileMetadata.create(getDao().getAvatar());
     }
 
-    public void setAvatar(FileMetadata fileImage) {
+    public void setAvatar(final FileMetadata fileImage) {
         // TODO: right management
         getDao().setAvatar(fileImage.getDao());
     }

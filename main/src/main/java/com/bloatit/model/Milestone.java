@@ -56,6 +56,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
          * @see
          * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
+        @SuppressWarnings("synthetic-access")
         @Override
         public Milestone doCreate(final DaoMilestone dao) {
             return new Milestone(dao);
@@ -71,6 +72,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * @return the milestone or null if the dao == null
      * @see Creator
      */
+    @SuppressWarnings("synthetic-access")
     public static Milestone create(final DaoMilestone dao) {
         return new MyCreator().create(dao);
     }
@@ -126,8 +128,8 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * </p>
      * @throws UnauthorizedOperationException
      */
-    public void addRelease(final String description, final String version, final Locale locale, FileMetadata file) throws UnauthorizedOperationException {
-        Release release = new Release(getOffer().getAuthor(), this, description, version, locale);
+    public void addRelease(final String description, final String version, final Locale locale, final FileMetadata file) throws UnauthorizedOperationException {
+        final Release release = new Release(getOffer().getAuthor(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
         }

@@ -69,6 +69,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoFeature, FeatureImplementation> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public FeatureImplementation doCreate(final DaoFeature dao) {
             return new FeatureImplementation(dao);
@@ -82,6 +83,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @param dao the dao
      * @return null if the <code>dao</code> is null.
      */
+    @SuppressWarnings("synthetic-access")
     public static FeatureImplementation create(final DaoFeature dao) {
         return new MyCreator().create(dao);
     }
@@ -588,22 +590,22 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @see com.bloatit.model.Feature#getMemberProgression()
      */
     @Override
-    public float getMemberProgression(Member member) throws UnauthorizedOperationException {
+    public float getMemberProgression(final Member member) throws UnauthorizedOperationException {
         tryAccess(new FeatureRight.Contribute(), Action.READ);
 
-        PageIterable<Contribution> contributions = getContributions();
+        final PageIterable<Contribution> contributions = getContributions();
 
         BigDecimal memberAmount = BigDecimal.ZERO;
         //TODO: optimize to avoid to kill the server
-        for(Contribution contribution:contributions) {
+        for(final Contribution contribution:contributions) {
             if(contribution.getAuthor().equals(member)){
                 memberAmount = memberAmount.add(contribution.getAmount());
             }
         }
 
-        float memberAmountFloat = memberAmount.floatValue();
-        float totalAmountFloat = getContribution().floatValue();
-        float progression = getProgression();
+        final float memberAmountFloat = memberAmount.floatValue();
+        final float totalAmountFloat = getContribution().floatValue();
+        final float progression = getProgression();
 
         return progression*memberAmountFloat/totalAmountFloat;
     }
@@ -614,13 +616,13 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @see com.bloatit.model.Feature#getRelativeProgression()
      */
     @Override
-    public float getRelativeProgression(BigDecimal amount) throws UnauthorizedOperationException {
+    public float getRelativeProgression(final BigDecimal amount) throws UnauthorizedOperationException {
         tryAccess(new FeatureRight.Contribute(), Action.READ);
 
 
-        float memberAmountFloat = amount.floatValue();
-        float totalAmountFloat = getContribution().floatValue();
-        float progression = getProgression();
+        final float memberAmountFloat = amount.floatValue();
+        final float totalAmountFloat = getContribution().floatValue();
+        final float progression = getProgression();
 
         return progression*memberAmountFloat/totalAmountFloat;
     }

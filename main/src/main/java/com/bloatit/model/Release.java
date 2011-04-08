@@ -14,17 +14,19 @@ public class Release extends UserContent<DaoRelease> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoRelease, Release> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Release doCreate(final DaoRelease dao) {
             return new Release(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Release create(final DaoRelease dao) {
         return new MyCreator().create(dao);
     }
 
-    private Release(DaoRelease dao) {
+    private Release(final DaoRelease dao) {
         super(dao);
     }
 

@@ -44,6 +44,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
          * @see
          * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
+        @SuppressWarnings("synthetic-access")
         @Override
         public Comment doCreate(final DaoComment dao) {
             return new Comment(dao);
@@ -57,6 +58,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
      * @param dao the dao
      * @return the comment or null.
      */
+    @SuppressWarnings("synthetic-access")
     public static Comment create(final DaoComment dao) {
         return new MyCreator().create(dao);
     }
@@ -139,7 +141,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
      */
     @Override
-    public Comment addComment(String text) throws UnauthorizedOperationException {
+    public Comment addComment(final String text) throws UnauthorizedOperationException {
         // TODO: access right
         // tryAccess(new BugRight.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(), getAuthToken().getMember().getDao(), text);

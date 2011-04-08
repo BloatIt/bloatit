@@ -42,6 +42,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static ExternalAccount create(final DaoExternalAccount dao) {
         return new MyCreator().create(dao);
     }

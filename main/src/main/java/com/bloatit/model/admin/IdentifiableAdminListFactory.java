@@ -10,14 +10,13 @@ public abstract class IdentifiableAdminListFactory<T extends DaoIdentifiable, U 
 
     private final DaoIdentifiableQuery<T> factory;
 
-    protected IdentifiableAdminListFactory(DaoIdentifiableQuery<T> factory) {
+    protected IdentifiableAdminListFactory(final DaoIdentifiableQuery<T> factory) {
         super();
         this.factory = factory;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public PageIterable<U> list() {
-        return (PageIterable) new AdminList<T, U>((PageIterable<T>) factory.createCollection());
+        return new AdminList<T, U>(factory.createCollection());
     }
 
     protected DaoIdentifiableQuery<T> getfactory() {

@@ -36,12 +36,14 @@ public final class Team extends Actor<DaoTeam> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final class MyCreator extends Creator<DaoTeam, Team> {
+        @SuppressWarnings("synthetic-access")
         @Override
         public Team doCreate(final DaoTeam dao) {
             return new Team(dao);
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     public static Team create(final DaoTeam dao) {
         return new MyCreator().create(dao);
     }
@@ -120,7 +122,7 @@ public final class Team extends Actor<DaoTeam> {
         return FileMetadata.create(getDao().getAvatar());
     }
 
-    public void setAvatar(FileMetadata fileImage) {
+    public void setAvatar(final FileMetadata fileImage) {
         // TODO: right management
         getDao().setAvatar(fileImage.getDao());
     }
