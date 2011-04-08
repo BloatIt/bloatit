@@ -39,7 +39,7 @@ public class UserContentAdminPageImplementation extends
 
     @Override
     protected void addColumns(final HtmlGenericTableModel<UserContent<DaoUserContent>> tableModel) {
-        UserContentAdminPageUrl clonedUrl = url.clone();
+        final UserContentAdminPageUrl clonedUrl = url.clone();
 
         addAsTeamColumn(tableModel, clonedUrl);
         addCreationDateColumn(tableModel, clonedUrl);
@@ -61,7 +61,7 @@ public class UserContentAdminPageImplementation extends
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new UserContentAdminPageUrl().getHtmlLink(tr("User content administration")));
 

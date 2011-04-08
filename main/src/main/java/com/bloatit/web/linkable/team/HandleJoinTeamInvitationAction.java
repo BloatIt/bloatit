@@ -72,7 +72,7 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
         }
         return session.getLastVisitedPage();
     }
-    
+
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         return NO_ERROR;
@@ -92,6 +92,5 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
     protected void transmitParameters() {
         // Nothing to transmit
     }
-
 
 }

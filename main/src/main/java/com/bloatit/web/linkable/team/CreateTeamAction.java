@@ -61,7 +61,7 @@ public class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         return NO_ERROR;
     }
 

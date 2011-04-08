@@ -30,7 +30,6 @@ import com.bloatit.model.Milestone;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -65,15 +64,17 @@ public final class AddReleasePage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
+
     @Override
     public void processErrors() throws RedirectException {
         // TODO we should process the errors here.
     }
+
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) {
+    public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
-        
+
         layout.addLeft(generateReleaseCreationForm());
 
         return layout;

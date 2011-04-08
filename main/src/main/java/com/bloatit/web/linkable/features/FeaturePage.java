@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -88,29 +87,27 @@ public final class FeaturePage extends MasterPage {
         // - The tab panel
         // - The comments
 
-        TwoColumnLayout layout = new TwoColumnLayout(false, url);;
-
+        final TwoColumnLayout layout = new TwoColumnLayout(false, url);
+        ;
 
         layout.addLeft(new FeatureSummaryComponent(feature));
         layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
         layout.addLeft(new FeatureCommentListComponent(feature));
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
-        
 
         add(layout);
 
     }
 
+    public static Breadcrumb generateBreadcrumb(final Feature feature) {
+        final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
 
-    public static Breadcrumb generateBreadcrumb(Feature feature) {
-        Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-
-        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
 
         try {
             breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
             throw new ShallNotPassException("User cannot access feature information", e);
         }
@@ -118,10 +115,10 @@ public final class FeaturePage extends MasterPage {
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumbBugs(Feature feature) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
+    public static Breadcrumb generateBreadcrumbBugs(final Feature feature) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
         featurePageUrl.setAnchor(FeatureTabPane.BUGS_TAB);
 
@@ -130,11 +127,10 @@ public final class FeaturePage extends MasterPage {
         return breadcrumb;
     }
 
+    public static Breadcrumb generateBreadcrumbOffers(final Feature feature) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-    public static Breadcrumb generateBreadcrumbOffers(Feature feature) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
-
-        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
         featurePageUrl.setAnchor(FeatureTabPane.OFFERS_TAB);
 
@@ -143,10 +139,10 @@ public final class FeaturePage extends MasterPage {
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumbContributions(Feature feature) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
+    public static Breadcrumb generateBreadcrumbContributions(final Feature feature) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
         featurePageUrl.setAnchor(FeatureTabPane.CONTRIBUTIONS_TAB);
 
@@ -155,10 +151,10 @@ public final class FeaturePage extends MasterPage {
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumbDetails(Feature feature) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
+    public static Breadcrumb generateBreadcrumbDetails(final Feature feature) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.DETAILS_TAB);
         featurePageUrl.setAnchor(FeatureTabPane.DETAILS_TAB);
 
@@ -167,19 +163,18 @@ public final class FeaturePage extends MasterPage {
         return breadcrumb;
     }
 
-
     @Override
     protected Breadcrumb getBreadcrumb() {
-        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }
-        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.CONTRIBUTIONS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.CONTRIBUTIONS_TAB)) {
             return FeaturePage.generateBreadcrumbContributions(feature);
         }
-        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.DETAILS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.DETAILS_TAB)) {
             return FeaturePage.generateBreadcrumbDetails(feature);
         }
-        if(url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.OFFERS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.OFFERS_TAB)) {
             return FeaturePage.generateBreadcrumbOffers(feature);
         }
 

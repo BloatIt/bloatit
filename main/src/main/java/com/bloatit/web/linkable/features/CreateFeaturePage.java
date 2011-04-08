@@ -71,7 +71,7 @@ public final class CreateFeaturePage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) {
+    public HtmlElement createRestrictedContent(final Member loggedUser) {
         if (FeatureManager.canCreate(session.getAuthToken())) {
 
             add(generateFeatureCreationForm());
@@ -82,7 +82,6 @@ public final class CreateFeaturePage extends LoggedPage {
     private HtmlElement generateFeatureCreationForm() {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
         final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl();
@@ -122,28 +121,11 @@ public final class CreateFeaturePage extends LoggedPage {
                                                                  tr("Describe the feature"),
                                                                  SPECIF_INPUT_NB_LINES,
                                                                  SPECIF_INPUT_NB_COLUMNS);
-        final String suggestedValue = tr("What is the expected work ?\n" +
-        		"\n" +
-        		"What is the requested date ?\n" +
-        		"\n" +
-        		"What is the expected compatibility ?\n" +
-        		"\n" +
-        		"  * Linux 2.6.x\n" +
-        		"  * Windows 7\n" +
-        		"  * Mac Os X\n" +
-        		"  * ...\n" +
-        		"\n" +
-        		"What is the expected output ?\n" +
-        		"\n" +
-        		" * Source tarball\n" +
-        		" * Diff patch\n" +
-        		" * Public repository\n" +
-        		" * Push in the project's official  repository\n" +
-        		" * Windows install\n" +
-        		" * Install shell script\n" +
-        		" * Deb package\n" +
-        		" * Rpm package\n" +
-        		" * ...");
+        final String suggestedValue = tr("What is the expected work ?\n" + "\n" + "What is the requested date ?\n" + "\n"
+                + "What is the expected compatibility ?\n" + "\n" + "  * Linux 2.6.x\n" + "  * Windows 7\n" + "  * Mac Os X\n" + "  * ...\n" + "\n"
+                + "What is the expected output ?\n" + "\n" + " * Source tarball\n" + " * Diff patch\n" + " * Public repository\n"
+                + " * Push in the project's official  repository\n" + " * Windows install\n" + " * Install shell script\n" + " * Deb package\n"
+                + " * Rpm package\n" + " * ...");
 
         specificationInput.setDefaultValue(suggestedValue);
         specificationInput.addErrorMessages(specificationFieldData.getErrorMessages());
@@ -164,7 +146,6 @@ public final class CreateFeaturePage extends LoggedPage {
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        
 
         return layout;
     }

@@ -15,7 +15,6 @@ import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -44,7 +43,6 @@ public class TeamsPage extends MasterPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
-        
 
         add(layout);
     }
@@ -80,7 +78,7 @@ public class TeamsPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new TeamsPageUrl().getHtmlLink(tr("Teams")));
 

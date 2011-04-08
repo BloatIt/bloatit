@@ -51,8 +51,8 @@ public abstract class LoggedPage extends MasterPage {
      * Override the doCreate methods and makes sure the user is logged. If the
      * user is logged, createRestrictedContent is called, otherwise redirects to
      * the <code>LoginPage</code> and use
-     * <code>{@link #createRestrictedContent(Member)}</code> to display a warning to
-     * the user
+     * <code>{@link #createRestrictedContent(Member)}</code> to display a
+     * warning to the user
      */
     @Override
     protected final void doCreate() throws RedirectException {
@@ -77,8 +77,8 @@ public abstract class LoggedPage extends MasterPage {
      * is not logged, a redirection to <code>LoginPage</code> will happen, and
      * user will be warned with <code>{@link #getRefusalReason()}</code>
      * </p>
+     * 
      * @param loggedUser TODO
-     *
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
      *             content generation and redirect to another page
@@ -91,21 +91,22 @@ public abstract class LoggedPage extends MasterPage {
      * </p>
      * <p>
      * Standard example :
-     *
+     * 
      * <pre>
      * public String getRefusalReason() {
      *     return tr(&quot;You need to be logged to access %pagename%&quot;);
      * }
      * </pre>
-     *
+     * 
      * </p>
-     *
+     * 
      * @return a String indicating to the user why he cannot access this page
      */
     public abstract String getRefusalReason();
 
     /**
      * Call first to verify the there is url errors.
+     * 
      * @throws RedirectException
      */
     public abstract void processErrors() throws RedirectException;

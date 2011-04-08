@@ -96,7 +96,7 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use SoftwareManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to add a software."));

@@ -43,7 +43,8 @@ public class FeaturesTools {
     /**
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
+    public static HtmlDiv
+            generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
             // Progress bar
@@ -189,17 +190,14 @@ public class FeaturesTools {
                                                                                       new Integer(contributionsCount))));
             if (showBugs) {
                 final int bugCount = feature.getOpenBugs().size();
-                if(bugCount > 0) {
+                if (bugCount > 0) {
 
                     final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature);
                     bugsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
                     bugsFeatureUrl.setAnchor("feature_tab_pane");
 
                     featureSummaryDetails.addText(" – ");
-                    featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} bug",
-                                                                                              "{0} bugs",
-                                                                                              bugCount,
-                                                                                              new Integer(bugCount))));
+                    featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} bug", "{0} bugs", bugCount, new Integer(bugCount))));
                 }
             }
 

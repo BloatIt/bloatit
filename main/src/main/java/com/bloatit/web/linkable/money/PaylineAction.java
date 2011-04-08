@@ -62,7 +62,7 @@ public final class PaylineAction extends LoggedAction {
         }
         return Context.getSession().pickPreferredPage();
     }
-    
+
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         return NO_ERROR;

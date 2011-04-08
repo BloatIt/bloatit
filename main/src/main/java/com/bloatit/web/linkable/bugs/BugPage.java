@@ -138,8 +138,8 @@ public final class BugPage extends MasterPage {
         return BugPage.generateBreadcrumb(bug);
     }
 
-    public static Breadcrumb generateBreadcrumb(Bug bug) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(bug.getFeature());
+    public static Breadcrumb generateBreadcrumb(final Bug bug) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(bug.getFeature());
 
         breadcrumb.pushLink(new BugPageUrl(bug).getHtmlLink(tr("Bug #") + bug.getId()));
 

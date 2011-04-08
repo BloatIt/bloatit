@@ -32,11 +32,11 @@ import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
 @ParamContainer("admin/home")
 public class AdminHomePage extends AdminPage {
-    private final AdminHomePageUrl url; 
-    
+    private final AdminHomePageUrl url;
+
     public AdminHomePage(final AdminHomePageUrl url) {
         super(url);
-        this.url = url; 
+        this.url = url;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class AdminHomePage extends AdminPage {
         // layout.addRight(new SideBarDocumentationBlock("markdown"));
         return layout;
     }
-    
+
     private HtmlElement generateAdminHome() {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Administration home page"), 1);
         master.add(new ConfigurationAdminPageUrl().getHtmlLink("Manage configuration files"));

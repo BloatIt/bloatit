@@ -52,12 +52,11 @@ public class FileUploadPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new FileUploadPageUrl().getHtmlLink(tr("File upload")));
 
         return breadcrumb;
     }
-
 
 }

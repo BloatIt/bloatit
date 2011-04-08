@@ -10,7 +10,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer.DocumentationType;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.BoxLayout;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -52,18 +51,17 @@ public class DocumentationPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-        TwoColumnLayout layout = new TwoColumnLayout(url);
+        final TwoColumnLayout layout = new TwoColumnLayout(url);
 
-        BoxLayout box = new BoxLayout();
+        final BoxLayout box = new BoxLayout();
 
-        HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
+        final HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
         if (!docRenderer.isExists()) {
             throw new PageNotFoundException();
         }
 
         box.add(docRenderer);
         layout.addLeft(box);
-        
 
         add(layout);
     }
@@ -75,7 +73,7 @@ public class DocumentationPage extends MasterPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        if(docTarget.equals(DEFAULT_DOC)) {
+        if (docTarget.equals(DEFAULT_DOC)) {
             return DocumentationPage.generateBreadcrumb();
         }
 
@@ -83,17 +81,17 @@ public class DocumentationPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new DocumentationPageUrl().getHtmlLink(tr("Documentation")));
 
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumbPage(String docTarget) {
-        Breadcrumb breadcrumb = DocumentationPage.generateBreadcrumb();
+    public static Breadcrumb generateBreadcrumbPage(final String docTarget) {
+        final Breadcrumb breadcrumb = DocumentationPage.generateBreadcrumb();
 
-        DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
+        final DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
         documentationPageUrl.setDocTarget(docTarget);
         breadcrumb.pushLink(documentationPageUrl.getHtmlLink(docTarget));
 

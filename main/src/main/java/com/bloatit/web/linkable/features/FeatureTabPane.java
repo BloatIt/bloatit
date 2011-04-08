@@ -88,7 +88,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
             });
         } catch (final UnauthorizedOperationException e1) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying cotnribution informations. Please notify us."));
-            throw new ShallNotPassException("User cannot access contributions informations", e1); 
+            throw new ShallNotPassException("User cannot access contributions informations", e1);
         }
 
         // Create Comments tab

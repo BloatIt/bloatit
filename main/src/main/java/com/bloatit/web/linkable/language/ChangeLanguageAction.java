@@ -32,10 +32,10 @@ import com.bloatit.web.url.ChangeLanguagePageUrl;
 
 @ParamContainer("language/dochange")
 public class ChangeLanguageAction extends Action {
-    private ChangeLanguageActionUrl url;
+    private final ChangeLanguageActionUrl url;
 
     @RequestParam(role = Role.POST)
-    private String language;
+    private final String language;
 
     public ChangeLanguageAction(final ChangeLanguageActionUrl url) {
         super(url);

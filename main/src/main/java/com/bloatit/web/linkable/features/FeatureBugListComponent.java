@@ -38,14 +38,14 @@ public class FeatureBugListComponent extends HtmlDiv {
         super("padding");
 
         try {
-            HtmlDiv reportBugBlock = new HtmlDiv("float_right");
-            HtmlLink reportBugLink = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(tr("Report a new bug"));
+            final HtmlDiv reportBugBlock = new HtmlDiv("float_right");
+            final HtmlLink reportBugLink = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(tr("Report a new bug"));
             reportBugLink.setCssClass("button");
             reportBugBlock.add(reportBugLink);
             add(reportBugBlock);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
-            throw new ShallNotPassException("User cannot access selected offer", e); 
+            throw new ShallNotPassException("User cannot access selected offer", e);
         }
 
         // Open bugs

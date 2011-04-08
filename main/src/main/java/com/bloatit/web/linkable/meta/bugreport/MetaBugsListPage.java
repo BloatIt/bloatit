@@ -42,13 +42,13 @@ public final class MetaBugsListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        List<MetaBug> bugList = MetaBugManager.getOpenBugs();
+        final List<MetaBug> bugList = MetaBugManager.getOpenBugs();
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Bugs list ({0})", bugList.size()), 1);
 
-        for (MetaBug bug : bugList) {
-            HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
-            HtmlDiv editBox = new HtmlDiv("float_right");
+        for (final MetaBug bug : bugList) {
+            final HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
+            final HtmlDiv editBox = new HtmlDiv("float_right");
             bugBox.add(editBox);
             bugBox.add(new HtmlMarkdownRenderer(bug.getDescription()));
             editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
@@ -58,7 +58,7 @@ public final class MetaBugsListPage extends MasterPage {
         }
 
         layout.addLeft(pageTitle);
-        
+
         add(layout);
     }
 

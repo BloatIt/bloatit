@@ -48,7 +48,7 @@ public final class MetaBugEditPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-        //TODO: why not add this message on all pages ?
+        // TODO: why not add this message on all pages ?
         addNotifications(url.getMessages());
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
@@ -58,17 +58,14 @@ public final class MetaBugEditPage extends MasterPage {
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Bug", 1);
 
-
         final MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(bugId);
         final HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
-
-
 
         final FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea bugDescription = new HtmlTextArea(descriptionFieldData.getName(), 20, 100);
 
         final String suggestedValue = descriptionFieldData.getSuggestedValue();
-        if(suggestedValue != null) {
+        if (suggestedValue != null) {
             bugDescription.setDefaultValue(suggestedValue);
         } else {
             bugDescription.setDefaultValue(MetaBugManager.getById(bugId).getDescription());
@@ -82,10 +79,7 @@ public final class MetaBugEditPage extends MasterPage {
         form.add(submit);
         pageTitle.add(form);
 
-
         layout.addLeft(pageTitle);
-
-        
 
         add(layout);
     }

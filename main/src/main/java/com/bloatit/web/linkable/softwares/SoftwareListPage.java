@@ -28,7 +28,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -52,7 +51,7 @@ public final class SoftwareListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
 
@@ -68,7 +67,6 @@ public final class SoftwareListPage extends MasterPage {
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
-        
 
         add(layout);
 
@@ -90,11 +88,11 @@ public final class SoftwareListPage extends MasterPage {
         public XmlNode generate(final Software software) {
             final SoftwarePageUrl softwareUrl = new SoftwarePageUrl(software);
             try {
-                HtmlDiv box = new HtmlDiv("software_box");
+                final HtmlDiv box = new HtmlDiv("software_box");
 
                 box.add(new HtmlDiv("float_right").add(SoftwaresTools.getSoftwareLogo(software)));
 
-                HtmlDiv textBox = new HtmlDiv("software_text");
+                final HtmlDiv textBox = new HtmlDiv("software_text");
                 HtmlLink htmlLink;
                 htmlLink = softwareUrl.getHtmlLink(software.getName());
                 textBox.add(htmlLink);
@@ -115,7 +113,7 @@ public final class SoftwareListPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new SoftwareListPageUrl().getHtmlLink(tr("Softwares")));
 

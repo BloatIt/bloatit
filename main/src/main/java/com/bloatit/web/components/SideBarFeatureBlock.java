@@ -15,7 +15,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 
 public class SideBarFeatureBlock extends TitleSideBarElementLayout {
 
-    public SideBarFeatureBlock(Feature feature, BigDecimal amount) {
+    public SideBarFeatureBlock(final Feature feature, final BigDecimal amount) {
         setTitle(tr("Feature abstract"));
 
         try {
@@ -31,11 +31,11 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
 
             add(new HtmlParagraph(new FeaturePageUrl(feature).getHtmlLink(tr("more details..."))));
 
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
         }
     }
 
-    public SideBarFeatureBlock(Feature feature) {
+    public SideBarFeatureBlock(final Feature feature) {
         this(feature, BigDecimal.ZERO);
     }
 }

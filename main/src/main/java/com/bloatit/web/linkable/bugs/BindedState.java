@@ -11,12 +11,12 @@ public enum BindedState implements Displayable {
     private final String label;
     private final BugState state;
 
-    private BindedState(BugState state, String label) {
+    private BindedState(final BugState state, final String label) {
         this.state = state;
         this.label = label;
     }
 
-    public static BindedState getBindedState(BugState state) {
+    public static BindedState getBindedState(final BugState state) {
         return Enum.valueOf(BindedState.class, state.name());
     }
 

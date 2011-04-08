@@ -74,9 +74,9 @@ public final class ChangeAvatarAction extends LoggedAction {
         session.notifyGood(tr("Avatar change to ''{0}''", avatarFileName));
         return Context.getSession().pickPreferredPage();
     }
-    
+
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         return NO_ERROR;
     }
 

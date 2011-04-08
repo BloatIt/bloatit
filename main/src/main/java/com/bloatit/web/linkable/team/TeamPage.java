@@ -36,7 +36,6 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
@@ -73,7 +72,6 @@ public class TeamPage extends MasterPage {
         layout.addLeft(generateMain());
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
-        
 
         add(layout);
     }
@@ -89,10 +87,10 @@ public class TeamPage extends MasterPage {
     }
 
     private SideBarElementLayout generateContactBox() {
-        TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
+        final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
         try {
             contacts.setTitle(Context.tr("How to contact {0}", targetTeam.getLogin()));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("Oops, an error prevented us from showing you team name, please notify us."));
             throw new ShallNotPassException("Couldn't display team name", e);
         }
@@ -228,15 +226,15 @@ public class TeamPage extends MasterPage {
         return TeamPage.generateBreadcrumb(targetTeam);
     }
 
-    public static Breadcrumb generateBreadcrumb(Team team) {
-        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
-    
+    public static Breadcrumb generateBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
+
         try {
             breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
         }
-    
+
         return breadcrumb;
     }
 
@@ -270,7 +268,7 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public XmlNode getHeader(int column) {
+        public XmlNode getHeader(final int column) {
             if (column == 0) {
                 return new HtmlText(Context.tr("Member name"));
             }
@@ -295,7 +293,7 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public XmlNode getBody(int column) {
+        public XmlNode getBody(final int column) {
             switch (column) {
                 case 0: // Name
                     try {
@@ -321,10 +319,10 @@ public class TeamPage extends MasterPage {
             }
         }
 
-        private XmlNode getUserRightStatus(UserTeamRight right) {
+        private XmlNode getUserRightStatus(final UserTeamRight right) {
             if (member.canInTeam(targetTeam, right)) {
                 if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
-                    PlaceHolderElement ph = new PlaceHolderElement();
+                    final PlaceHolderElement ph = new PlaceHolderElement();
                     ph.add(new HtmlImage(new Image(WebConfiguration.getImgValidIcon()), Context.tr("OK"), "team_can"));
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
                     return ph;

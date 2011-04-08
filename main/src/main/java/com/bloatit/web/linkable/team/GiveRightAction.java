@@ -61,9 +61,9 @@ public class GiveRightAction extends LoggedAction {
         this.right = url.getRight();
         this.give = url.getGive();
     }
-    
+
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         if (!authenticatedMember.equals(targetMember) && !authenticatedMember.canPromote(targetTeam)) {
             try {
                 session.notifyBad(Context.tr("You are not allowed to promote people in the team: " + targetTeam.getLogin()));

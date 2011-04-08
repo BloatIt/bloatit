@@ -14,7 +14,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
  */
 public class LanguageSelector extends HtmlDropDown {
     private static final String DEFAULT_LANG = "en";
-    private Set<String> codes = new HashSet<String>();
+    private final Set<String> codes = new HashSet<String>();
 
     public LanguageSelector(final String name, final String label) {
         super(name, label);

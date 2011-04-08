@@ -27,12 +27,12 @@ import com.bloatit.framework.webprocessor.components.form.HtmlButton;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormBlock;
+import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -154,7 +154,7 @@ public final class TestPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new TestPageUrl().getHtmlLink(tr("Test")));
 

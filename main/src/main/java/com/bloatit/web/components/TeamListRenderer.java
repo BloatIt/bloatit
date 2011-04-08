@@ -21,11 +21,11 @@ public class TeamListRenderer implements HtmlRenderer<Team> {
     public XmlNode generate(final Team team) {
         final TeamPageUrl teamUrl = new TeamPageUrl(team);
         try {
-            HtmlDiv box = new HtmlDiv("team_box");
+            final HtmlDiv box = new HtmlDiv("team_box");
 
             box.add(new HtmlDiv("float_right").add(TeamTools.getTeamAvatar(team)));
 
-            HtmlDiv textBox = new HtmlDiv("team_text");
+            final HtmlDiv textBox = new HtmlDiv("team_text");
             HtmlLink htmlLink;
             htmlLink = teamUrl.getHtmlLink(team.getLogin());
 

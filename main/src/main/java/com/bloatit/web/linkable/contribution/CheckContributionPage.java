@@ -108,8 +108,7 @@ public final class CheckContributionPage extends LoggedPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
 
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(),process.getAmount()));
-        
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
 
         return layout;
     }
@@ -178,9 +177,9 @@ public final class CheckContributionPage extends LoggedPage {
         {
             final ContributionActionUrl contributionActionUrl = new ContributionActionUrl(process);
             final HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Contribute {0}",
-                                                                                    Context.getLocalizator()
-                                                                                           .getCurrency(process.getAmount())
-                                                                                           .getDefaultString()));
+                                                                                          Context.getLocalizator()
+                                                                                                 .getCurrency(process.getAmount())
+                                                                                                 .getDefaultString()));
             confirmContributionLink.setCssClass("button");
 
             buttonDiv.add(confirmContributionLink);
@@ -341,9 +340,9 @@ public final class CheckContributionPage extends LoggedPage {
             final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process);
 
             final HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
-                                                                            Context.getLocalizator()
-                                                                                   .getCurrency(quotation.totalTTC.getValue())
-                                                                                   .getDecimalDefaultString()));
+                                                                                  Context.getLocalizator()
+                                                                                         .getCurrency(quotation.totalTTC.getValue())
+                                                                                         .getDecimalDefaultString()));
             payContributionLink.setCssClass("button");
             payBlock.add(payContributionLink);
 
@@ -523,9 +522,9 @@ public final class CheckContributionPage extends LoggedPage {
             final QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
 
             final QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee",
-                                                                              "" + Float.valueOf(variableBank) * 100 + "%",
-                                                                              quotation,
-                                                                              new BigDecimal(variableBank));
+                                                                                    "" + Float.valueOf(variableBank) * 100 + "%",
+                                                                                    quotation,
+                                                                                    new BigDecimal(variableBank));
             bank.addEntry(variableBankFee);
             bank.addEntry(fixBankFee);
 

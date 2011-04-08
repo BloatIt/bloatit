@@ -23,7 +23,7 @@ public class MessageConsultPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         return null;
     }
 
@@ -46,7 +46,5 @@ public class MessageConsultPage extends LoggedPage {
     protected Breadcrumb getBreadcrumb() {
         throw new NotImplementedException();
     }
-
-
 
 }

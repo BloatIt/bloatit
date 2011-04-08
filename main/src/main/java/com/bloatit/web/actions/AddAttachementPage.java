@@ -69,7 +69,7 @@ public final class AddAttachementPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws PageNotFoundException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws PageNotFoundException {
         addNotifications(url.getMessages());
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();

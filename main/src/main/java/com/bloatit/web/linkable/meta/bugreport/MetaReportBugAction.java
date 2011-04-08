@@ -38,8 +38,8 @@ public final class MetaReportBugAction extends Action {
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
     @ParamConstraint(max = "800", maxErrorMsg = @tr("The title must be 800 chars length max."), //
-    min = "1", minErrorMsg = @tr("The title must have at least 10 chars."), //
-    optionalErrorMsg = @tr("Error you forgot to write a title"))
+                     min = "1", minErrorMsg = @tr("The title must have at least 10 chars."), //
+                     optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
 
     @RequestParam(name = BUG_URL, role = Role.POST)
@@ -73,7 +73,7 @@ public final class MetaReportBugAction extends Action {
         } else {
             session.notifyError("A problem occur during the bug report process! Please report this bug! :)");
         }
-        
+
         // TODO: add link system in documentation
         return session.getLastVisitedPage();
     }
@@ -83,7 +83,7 @@ public final class MetaReportBugAction extends Action {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
-    
+
     @Override
     protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check

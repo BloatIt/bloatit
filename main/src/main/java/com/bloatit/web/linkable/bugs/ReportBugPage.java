@@ -38,7 +38,6 @@ import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -82,7 +81,7 @@ public final class ReportBugPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) {
+    public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         if (FeatureManager.canCreate(session.getAuthToken())) {
@@ -93,7 +92,6 @@ public final class ReportBugPage extends LoggedPage {
 
         layout.addRight(new SideBarFeatureBlock(offer.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        
 
         return layout;
     }

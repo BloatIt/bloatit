@@ -79,7 +79,7 @@ public final class CreateCommentAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         // add a can access comment.
         return NO_ERROR;
     }

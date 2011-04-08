@@ -57,7 +57,7 @@ public class SendTeamInvitationAction extends LoggedAction {
         }
         return session.getLastVisitedPage();
     }
-    
+
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         return NO_ERROR;

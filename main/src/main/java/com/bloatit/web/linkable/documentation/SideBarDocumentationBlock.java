@@ -4,7 +4,7 @@ import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer.Document
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 
 public class SideBarDocumentationBlock extends SideBarElementLayout {
-    public SideBarDocumentationBlock(String key) {
+    public SideBarDocumentationBlock(final String key) {
         add(new HtmlDocumentationRenderer(DocumentationType.FRAME, key));
     }
 }

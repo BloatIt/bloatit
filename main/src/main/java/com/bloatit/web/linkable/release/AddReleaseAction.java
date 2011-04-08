@@ -38,7 +38,7 @@ public final class AddReleaseAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."), //
-    optionalErrorMsg = @tr("You forgot to write a description"))
+                     optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
     @ParamConstraint(optionalErrorMsg = @tr("You forgot the attachment file."))
@@ -56,13 +56,13 @@ public final class AddReleaseAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(min = "2", minErrorMsg = @tr("Are you sure this is a ISO language code"), //
-    max = "2", maxErrorMsg = @tr("Are you sure this is a ISO language code"), //
-    optionalErrorMsg = @tr("Language code is not optional. You are messing up with our web site..."))
+                     max = "2", maxErrorMsg = @tr("Are you sure this is a ISO language code"), //
+                     optionalErrorMsg = @tr("Language code is not optional. You are messing up with our web site..."))
     private final String lang;
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(min = "1", minErrorMsg = @tr("The version should be something like ''1.2.3''."), //
-    optionalErrorMsg = @tr("You forgot to write a version."))
+                     optionalErrorMsg = @tr("You forgot to write a version."))
     private final String version;
 
     @RequestParam
@@ -82,10 +82,10 @@ public final class AddReleaseAction extends LoggedAction {
         this.milestone = url.getMilestone();
         this.version = url.getVersion();
     }
-    
+
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
-        //TODO: Verify user right
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        // TODO: Verify user right
         return NO_ERROR;
     }
 

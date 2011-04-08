@@ -18,11 +18,11 @@ public class IndexFeatureBlock extends HtmlDiv {
 
     private final PlaceHolderElement floatRight;
 
-    public IndexFeatureBlock(HighlightFeature highlightFeature) {
+    public IndexFeatureBlock(final HighlightFeature highlightFeature) {
         super("index_element");
 
         add(new HtmlTitle(highlightFeature.getReason(), 2));
-        HtmlDiv indexBodyElement = new HtmlDiv("index_body_element");
+        final HtmlDiv indexBodyElement = new HtmlDiv("index_body_element");
         add(indexBodyElement);
         floatRight = new PlaceHolderElement();
         indexBodyElement.add(floatRight);
@@ -42,11 +42,11 @@ public class IndexFeatureBlock extends HtmlDiv {
 
             indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
         }
     }
 
-    public HtmlBranch setFloatRight(HtmlElement element) {
+    public HtmlBranch setFloatRight(final HtmlElement element) {
         floatRight.add(new HtmlDiv("float_right").add(element));
         return this;
     }

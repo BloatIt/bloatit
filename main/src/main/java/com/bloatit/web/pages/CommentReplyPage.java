@@ -61,8 +61,7 @@ public final class CommentReplyPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
-
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
 
         final HtmlDiv box = new HtmlDiv("padding_box");
 
@@ -106,11 +105,11 @@ public final class CommentReplyPage extends LoggedPage {
         return CommentReplyPage.generateBreadcrumb(targetComment);
     }
 
-    public static Breadcrumb generateBreadcrumb(Comment comment) {
+    public static Breadcrumb generateBreadcrumb(final Comment comment) {
 
         Breadcrumb breadcrumb;
 
-        switch(comment.getRootParentType()) {
+        switch (comment.getRootParentType()) {
             case BUG:
                 breadcrumb = BugPage.generateBreadcrumb(comment.getRootComment().getParentBug());
                 break;
@@ -125,14 +124,13 @@ public final class CommentReplyPage extends LoggedPage {
         }
 
         try {
-            breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to {0}''s comment",comment.getAuthor().getDisplayName())));
-        } catch (UnauthorizedOperationException e) {
+            breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to {0}''s comment", comment.getAuthor().getDisplayName())));
+        } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyBad("For an obscure reason you cannot see a user name, please warn us of the bug");
-            throw new ShallNotPassException("Error displaying a user name",e);
+            throw new ShallNotPassException("Error displaying a user name", e);
         }
 
         return breadcrumb;
     }
-
 
 }

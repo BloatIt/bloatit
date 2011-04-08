@@ -58,7 +58,7 @@ public final class SpecialsPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new SpecialsPageUrl().getHtmlLink(tr("Special pages")));
 

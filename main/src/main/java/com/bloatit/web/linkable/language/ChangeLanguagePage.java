@@ -28,7 +28,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -38,9 +37,9 @@ import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("language/change")
 public class ChangeLanguagePage extends MasterPage {
-    private ChangeLanguagePageUrl url;
+    private final ChangeLanguagePageUrl url;
 
-    public ChangeLanguagePage(ChangeLanguagePageUrl url) {
+    public ChangeLanguagePage(final ChangeLanguagePageUrl url) {
         super(url);
         this.url = url;
     }
@@ -50,17 +49,17 @@ public class ChangeLanguagePage extends MasterPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateChangeLanguagePageMain());
         layout.addRight(new SideBarDocumentationBlock("change_language"));
-        
+
         add(layout);
     }
 
     private HtmlElement generateChangeLanguagePageMain() {
-        HtmlTitleBlock master = new HtmlTitleBlock("Change language", 1);
-        ChangeLanguageActionUrl targetAction = new ChangeLanguageActionUrl();
-        HtmlForm form = new HtmlForm(targetAction.urlString());
+        final HtmlTitleBlock master = new HtmlTitleBlock("Change language", 1);
+        final ChangeLanguageActionUrl targetAction = new ChangeLanguageActionUrl();
+        final HtmlForm form = new HtmlForm(targetAction.urlString());
         master.add(form);
-        UrlParameter<String, String> languageParameter = targetAction.getLanguageParameter();
-        LanguageSelector language = new LanguageSelector(languageParameter.getName(), Context.tr("Choose your temporary language"));
+        final UrlParameter<String, String> languageParameter = targetAction.getLanguageParameter();
+        final LanguageSelector language = new LanguageSelector(languageParameter.getName(), Context.tr("Choose your temporary language"));
         if (languageParameter.getDefaultValue() != null && !languageParameter.getDefaultValue().isEmpty()) {
             language.setDefaultValue(languageParameter.getDefaultValue());
         } else {
@@ -79,7 +78,7 @@ public class ChangeLanguagePage extends MasterPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        Breadcrumb br = new Breadcrumb();
+        final Breadcrumb br = new Breadcrumb();
         br.pushLink(new IndexPageUrl().getHtmlLink(Context.tr("Index")));
         br.pushLink(url.getHtmlLink(Context.tr("Change language")));
         return br;

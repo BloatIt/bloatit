@@ -64,7 +64,6 @@ public final class MembersListPage extends MasterPage {
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
-        
 
         add(layout);
     }

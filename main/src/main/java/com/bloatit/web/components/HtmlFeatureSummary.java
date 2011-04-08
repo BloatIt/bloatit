@@ -175,7 +175,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     private XmlNode generateSoftwareImage() throws UnauthorizedOperationException {
         // TODO: set a fixed size block to not depend of the image
         // size
-        FileMetadata image = feature.getSoftware().getImage();
+        final FileMetadata image = feature.getSoftware().getImage();
         if (image != null) {
             final FileResourceUrl imageUrl = new FileResourceUrl(image);
             return new HtmlImage(imageUrl, image.getShortDescription(), "software_image");

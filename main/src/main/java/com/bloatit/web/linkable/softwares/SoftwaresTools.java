@@ -15,8 +15,8 @@ import com.bloatit.web.url.SoftwarePageUrl;
 
 public class SoftwaresTools {
 
-    public static HtmlElement getSoftwareLogo(Software software) throws UnauthorizedOperationException {
-        HtmlDiv logoDiv = new HtmlDiv("software_logo_block");
+    public static HtmlElement getSoftwareLogo(final Software software) throws UnauthorizedOperationException {
+        final HtmlDiv logoDiv = new HtmlDiv("software_logo_block");
         if (software.getImage() == null) {
             logoDiv.add(new HtmlImage(new Image(WebConfiguration.getImgSoftwareNoLogo()), tr("Software logo"), "software_logo"));
         } else {
@@ -27,8 +27,8 @@ public class SoftwaresTools {
         return logoDiv;
     }
 
-    public static HtmlElement getSoftwareLogoSmall(Software software) throws UnauthorizedOperationException {
-        HtmlDiv logoDiv = new HtmlDiv("software_logo_small_block");
+    public static HtmlElement getSoftwareLogoSmall(final Software software) throws UnauthorizedOperationException {
+        final HtmlDiv logoDiv = new HtmlDiv("software_logo_small_block");
         if (software.getImage() == null) {
             logoDiv.add(new HtmlImage(new Image(WebConfiguration.getImgSoftwareNoLogo()), tr("Software logo"), "software_logo_small"));
         } else {
@@ -39,8 +39,7 @@ public class SoftwaresTools {
         return logoDiv;
     }
 
-
-    public static HtmlElement getSoftwareLink(Software software) throws UnauthorizedOperationException {
+    public static HtmlElement getSoftwareLink(final Software software) throws UnauthorizedOperationException {
         final HtmlSpan softwareSpan = new HtmlSpan("software_link");
         softwareSpan.add(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
 

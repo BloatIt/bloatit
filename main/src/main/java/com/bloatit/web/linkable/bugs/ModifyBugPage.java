@@ -136,7 +136,6 @@ public final class ModifyBugPage extends LoggedPage {
         return Context.tr("You must be logged to modify a bug.");
     }
 
-
     @Override
     protected Breadcrumb getBreadcrumb() {
         return ModifyBugPage.generateBreadcrumb(bug);

@@ -44,10 +44,10 @@ public class CommentCommentAction extends LoggedAction {
         this.targetComment = url.getTargetComment();
         this.comment = url.getComment();
     }
-    
+
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
-        //TODO: Verify addComment right
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+        // TODO: Verify addComment right
         return NO_ERROR;
     }
 
@@ -78,6 +78,5 @@ public class CommentCommentAction extends LoggedAction {
     protected final void transmitParameters() {
         session.addParameter(url.getCommentParameter());
     }
-
 
 }

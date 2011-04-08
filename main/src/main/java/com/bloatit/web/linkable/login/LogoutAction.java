@@ -45,7 +45,7 @@ public final class LogoutAction extends LoggedAction {
         newSess.notifyGood(Context.tr("Logout success."));
         return prefUrl;
     }
-    
+
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         return NO_ERROR;

@@ -39,7 +39,7 @@ public final class MemberActivationAction extends Action {
     @RequestParam(name = KEY_CODE, role = Role.GET)
     private final String key;
 
-    // Keep it for consistency 
+    // Keep it for consistency
     @SuppressWarnings("unused")
     private final MemberActivationActionUrl url;
 

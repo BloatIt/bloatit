@@ -32,7 +32,6 @@ import com.bloatit.model.Member;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -67,13 +66,12 @@ public final class ContributePage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateContributeForm());
 
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        
 
         return layout;
     }
@@ -86,7 +84,7 @@ public final class ContributePage extends LoggedPage {
         // Input field : choose amount
         final FieldData amountData = formActionUrl.getAmountParameter().pickFieldData();
         final HtmlMoneyField contribInput = new HtmlMoneyField(amountData.getName(), tr("Choose amount: "));
-        String suggestedAmountValue = amountData.getSuggestedValue();
+        final String suggestedAmountValue = amountData.getSuggestedValue();
         if (suggestedAmountValue != null) {
             contribInput.setDefaultValue(suggestedAmountValue);
         } else if (process.getAmount() != null) {
@@ -98,7 +96,7 @@ public final class ContributePage extends LoggedPage {
         // Input field : comment
         final FieldData commentData = formActionUrl.getCommentParameter().pickFieldData();
         final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), tr("Comment: "), 3, 60);
-        String suggestedCommentValue = commentData.getSuggestedValue();
+        final String suggestedCommentValue = commentData.getSuggestedValue();
         if (suggestedCommentValue != null) {
             commentInput.setDefaultValue(suggestedCommentValue);
         } else if (process.getComment() != null) {
@@ -143,8 +141,8 @@ public final class ContributePage extends LoggedPage {
         return ContributePage.generateBreadcrumb(process.getFeature(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(Feature feature, ContributionProcess process) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
+    public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
 
         breadcrumb.pushLink(new ContributePageUrl(process).getHtmlLink(tr("Contribute")));
 

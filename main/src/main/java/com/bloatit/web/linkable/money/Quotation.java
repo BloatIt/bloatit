@@ -6,7 +6,7 @@ public class Quotation extends QuotationEntry {
 
     private final BigDecimal total;
 
-    public Quotation(BigDecimal total) {
+    public Quotation(final BigDecimal total) {
         super(null, null);
         this.total = total;
 
@@ -16,7 +16,7 @@ public class Quotation extends QuotationEntry {
 
         private final String totalLabel;
 
-        public QuotationTotalEntry(String label, String comment, String totalLabel) {
+        public QuotationTotalEntry(final String label, final String comment, final String totalLabel) {
             super(label, comment);
             this.totalLabel = totalLabel;
         }
@@ -24,7 +24,7 @@ public class Quotation extends QuotationEntry {
         @Override
         public BigDecimal getValue() {
             BigDecimal value = BigDecimal.ZERO;
-            for (QuotationEntry entry : entries) {
+            for (final QuotationEntry entry : entries) {
                 value = value.add(entry.getValue());
             }
 
@@ -32,7 +32,7 @@ public class Quotation extends QuotationEntry {
         }
 
         @Override
-        public void accept(QuotationVisitor visitor) {
+        public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
         }
 
@@ -46,7 +46,7 @@ public class Quotation extends QuotationEntry {
 
         private final BigDecimal amount;
 
-        public QuotationAmountEntry(String label, String comment, BigDecimal amount) {
+        public QuotationAmountEntry(final String label, final String comment, final BigDecimal amount) {
             super(label, comment);
             this.amount = amount;
         }
@@ -57,7 +57,7 @@ public class Quotation extends QuotationEntry {
         }
 
         @Override
-        public void accept(QuotationVisitor visitor) {
+        public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
         }
 
@@ -67,7 +67,7 @@ public class Quotation extends QuotationEntry {
 
         private final QuotationEntry reference;
 
-        public QuotationProxyEntry(String label, String comment, QuotationEntry reference) {
+        public QuotationProxyEntry(final String label, final String comment, final QuotationEntry reference) {
             super(label, comment);
             this.reference = reference;
         }
@@ -78,7 +78,7 @@ public class Quotation extends QuotationEntry {
         }
 
         @Override
-        public void accept(QuotationVisitor visitor) {
+        public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
         }
     }
@@ -88,7 +88,7 @@ public class Quotation extends QuotationEntry {
         private final BigDecimal percent;
         private final QuotationEntry reference;
 
-        public QuotationPercentEntry(String label, String comment, QuotationEntry reference, BigDecimal percent) {
+        public QuotationPercentEntry(final String label, final String comment, final QuotationEntry reference, final BigDecimal percent) {
             super(label, comment);
             this.reference = reference;
             this.percent = percent;
@@ -100,7 +100,7 @@ public class Quotation extends QuotationEntry {
         }
 
         @Override
-        public void accept(QuotationVisitor visitor) {
+        public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
         }
     }
@@ -110,7 +110,7 @@ public class Quotation extends QuotationEntry {
         private final QuotationEntry reference1;
         private final QuotationEntry reference2;
 
-        public QuotationDifferenceEntry(String label, String comment, QuotationEntry reference1, QuotationEntry reference2) {
+        public QuotationDifferenceEntry(final String label, final String comment, final QuotationEntry reference1, final QuotationEntry reference2) {
             super(label, comment);
             this.reference1 = reference1;
             this.reference2 = reference2;
@@ -123,7 +123,7 @@ public class Quotation extends QuotationEntry {
         }
 
         @Override
-        public void accept(QuotationVisitor visitor) {
+        public void accept(final QuotationVisitor visitor) {
             visitor.visit(this);
         }
 
@@ -156,7 +156,7 @@ public class Quotation extends QuotationEntry {
     }
 
     @Override
-    public void accept(QuotationVisitor visitor) {
+    public void accept(final QuotationVisitor visitor) {
         visitor.visit(this);
 
     }

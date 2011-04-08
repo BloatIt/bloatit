@@ -28,7 +28,6 @@ import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -49,19 +48,20 @@ public final class IndexPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-            HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
+            final HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
             globalDescription.add(title);
-            HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())), tr("Elveos's presentation"));
-            DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
+            final HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())),
+                                                  tr("Elveos's presentation"));
+            final DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
             documentationPageUrl.setDocTarget("presentation");
-            HtmlLink presentationLink = documentationPageUrl.getHtmlLink();
+            final HtmlLink presentationLink = documentationPageUrl.getHtmlLink();
             presentationLink.add(image);
             globalDescription.add(presentationLink);
 
         }
         add(globalDescription);
 
-        TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
+        final TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
         twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"), 1));
 
         final HtmlDiv featureList = new HtmlDiv("feature_list");
@@ -88,7 +88,7 @@ public final class IndexPage extends MasterPage {
                 {
                     final HtmlDiv featureListLeftCase = new HtmlDiv("feature_list_left_case");
                     {
-                        HighlightFeature highlightFeature = hightlightFeatureArray[i * 2];
+                        final HighlightFeature highlightFeature = hightlightFeatureArray[i * 2];
                         if (highlightFeature != null) {
                             featureListLeftCase.add(new IndexFeatureBlock(highlightFeature));
                         }
@@ -97,7 +97,7 @@ public final class IndexPage extends MasterPage {
 
                     final HtmlDiv featureListRightCase = new HtmlDiv("feature_list_right_case");
                     {
-                        HighlightFeature highlightFeature = hightlightFeatureArray[i * 2 + 1];
+                        final HighlightFeature highlightFeature = hightlightFeatureArray[i * 2 + 1];
                         if (highlightFeature != null) {
                             featureListRightCase.add(new IndexFeatureBlock(highlightFeature));
                         }
@@ -124,8 +124,8 @@ public final class IndexPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = new Breadcrumb();
-        IndexPageUrl pageUrl = new IndexPageUrl();
+        final Breadcrumb breadcrumb = new Breadcrumb();
+        final IndexPageUrl pageUrl = new IndexPageUrl();
         breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
         return breadcrumb;
     }

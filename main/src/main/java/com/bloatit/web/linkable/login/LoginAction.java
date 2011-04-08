@@ -70,7 +70,7 @@ public final class LoginAction extends Action {
     protected Url doProcessErrors() {
         return new LoginPageUrl();
     }
-    
+
     @Override
     protected Url checkRightsAndEverything() {
         return NO_ERROR; // Nothing else to check

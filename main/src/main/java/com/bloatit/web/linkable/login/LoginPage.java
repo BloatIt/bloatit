@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -48,7 +47,6 @@ public final class LoginPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
-        
 
         add(layout);
     }
@@ -103,7 +101,7 @@ public final class LoginPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(trc("Login (verb)", "Login")));
         return breadcrumb;
     }

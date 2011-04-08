@@ -11,12 +11,12 @@ public enum BindedLevel implements Displayable {
     private final String label;
     private final Level level;
 
-    private BindedLevel(Level level, String label) {
+    private BindedLevel(final Level level, final String label) {
         this.level = level;
         this.label = label;
     }
 
-    public static BindedLevel getBindedLevel(Level level) {
+    public static BindedLevel getBindedLevel(final Level level) {
         return Enum.valueOf(BindedLevel.class, level.name());
     }
 

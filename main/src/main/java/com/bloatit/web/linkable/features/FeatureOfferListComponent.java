@@ -167,8 +167,9 @@ public class FeatureOfferListComponent extends HtmlDiv {
         }
     }
 
-    public void generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
-            throws UnauthorizedOperationException {
+    public void
+            generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
+                                                                                                                                                 throws UnauthorizedOperationException {
         // UnSelected
         offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
         final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);

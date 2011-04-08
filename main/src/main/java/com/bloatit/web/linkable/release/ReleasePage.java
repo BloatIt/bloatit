@@ -27,7 +27,6 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -52,7 +51,7 @@ public final class ReleasePage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarFeatureBlock(release.getFeature()));
-        
+
         add(layout);
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
@@ -61,16 +60,16 @@ public final class ReleasePage extends MasterPage {
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("version: " + release.getVersion()))));
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("description: ")).add(new HtmlParagraph(release.getDescription()))));
 
-        HtmlDiv fileBloc = new HtmlDiv();
+        final HtmlDiv fileBloc = new HtmlDiv();
         layout.addLeft(fileBloc);
-        for (FileMetadata files : release.getFiles()) {
+        for (final FileMetadata files : release.getFiles()) {
             final HtmlParagraph attachementPara = new HtmlParagraph();
             attachementPara.add(new FileResourceUrl(files).getHtmlLink(files.getFileName()));
             attachementPara.addText(tr(": ") + files.getShortDescription());
             fileBloc.add(attachementPara);
         }
 
-        if(release.canAddFile()) {
+        if (release.canAddFile()) {
             fileBloc.add(new AddAttachementPageUrl(release).getHtmlLink(tr("Add an attachement")));
         }
     }
@@ -90,8 +89,8 @@ public final class ReleasePage extends MasterPage {
         return ReleasePage.generateBreadcrumb(release);
     }
 
-    public static Breadcrumb generateBreadcrumb(Release release) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(release.getFeature());
+    public static Breadcrumb generateBreadcrumb(final Release release) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(release.getFeature());
 
         breadcrumb.pushLink(new ReleasePageUrl(release).getHtmlLink(tr("Release ") + release.getVersion()));
 

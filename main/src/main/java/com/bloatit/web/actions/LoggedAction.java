@@ -55,9 +55,8 @@ public abstract class LoggedAction extends Action {
         }
         return new LoginPageUrl();
     }
-    
+
     protected abstract Url doCheckRightsAndEverything(Member authenticatedMember);
-    
 
     /**
      * Called when user is correctly authentified

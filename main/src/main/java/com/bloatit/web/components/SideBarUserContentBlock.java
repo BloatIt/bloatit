@@ -7,9 +7,8 @@ import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 
 public class SideBarUserContentBlock extends TitleSideBarElementLayout {
 
-    public SideBarUserContentBlock(UserContentInterface userContent) {
+    public SideBarUserContentBlock(final UserContentInterface userContent) {
         setTitle(tr("User content abstract"));
-
 
     }
 

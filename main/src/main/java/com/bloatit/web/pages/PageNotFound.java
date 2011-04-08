@@ -54,7 +54,7 @@ public class PageNotFound extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink(tr("Page not found")));
 

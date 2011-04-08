@@ -188,7 +188,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new FeatureAdminPageUrl().getHtmlLink(tr("Feature administration")));
 

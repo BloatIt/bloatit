@@ -55,30 +55,25 @@ public final class AccountChargingPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) {
+    public HtmlElement createRestrictedContent(final Member loggedUser) {
 
         final HtmlTitleBlock title = new HtmlTitleBlock(tr("Charge your account"), 1);
 
         title.add(new HtmlParagraph("utiliser la carte de test n° 4970100000325734 avec une date d’expiration valide et le cryptogramme visuel 123."));
 
-        /*final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
-        final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
-        {
-            final FieldData amountData = chargeActionUrl.getAmountParameter().pickFieldData();
-            final HtmlMoneyField amountInput = new HtmlMoneyField(amountData.getName(), "Amount");
-            if(process.getAmount() == null) {
-                amountInput.setDefaultValue(amountData.getSuggestedValue());
-            } else {
-                amountInput.setDefaultValue(process.getAmount().toPlainString());
-
-            }
-            amountInput.addErrorMessages(amountData.getErrorMessages());
-            final HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
-
-            form.add(amountInput);
-            form.add(submit);
-        }
-        title.add(form);*/
+        /*
+         * final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
+         * final HtmlForm form = new HtmlForm(chargeActionUrl.urlString()); {
+         * final FieldData amountData =
+         * chargeActionUrl.getAmountParameter().pickFieldData(); final
+         * HtmlMoneyField amountInput = new HtmlMoneyField(amountData.getName(),
+         * "Amount"); if(process.getAmount() == null) {
+         * amountInput.setDefaultValue(amountData.getSuggestedValue()); } else {
+         * amountInput.setDefaultValue(process.getAmount().toPlainString()); }
+         * amountInput.addErrorMessages(amountData.getErrorMessages()); final
+         * HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
+         * form.add(amountInput); form.add(submit); } title.add(form);
+         */
 
         return title;
     }

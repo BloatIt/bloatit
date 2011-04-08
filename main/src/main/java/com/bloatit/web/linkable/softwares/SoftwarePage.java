@@ -30,7 +30,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -60,15 +59,14 @@ public final class SoftwarePage extends MasterPage {
         if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         try {
             HtmlTitle softwareName;
             softwareName = new HtmlTitle(software.getName(), 1);
             layout.addLeft(softwareName);
 
-            FileMetadata image = software.getImage();
+            final FileMetadata image = software.getImage();
             if (image != null) {
                 layout.addLeft(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
             }
@@ -112,11 +110,11 @@ public final class SoftwarePage extends MasterPage {
         return SoftwarePage.generateBreadcrumb(software);
     }
 
-    public static Breadcrumb generateBreadcrumb(Software software) {
-        Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
+    public static Breadcrumb generateBreadcrumb(final Software software) {
+        final Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
         try {
             breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError("An error prevented us from displaying software name. Please notify us.");
             throw new ShallNotPassException("User cannot access software name", e);
         }

@@ -99,7 +99,6 @@ public final class MakeOfferPage extends LoggedPage {
 
         layout.addRight(new SideBarFeatureBlock(feature));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        
 
         return layout;
     }

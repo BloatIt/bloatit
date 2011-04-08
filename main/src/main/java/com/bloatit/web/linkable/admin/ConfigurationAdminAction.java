@@ -32,7 +32,7 @@ import com.bloatit.web.url.ConfigurationAdminPageUrl;
 @ParamContainer("admin/doConfigure")
 public class ConfigurationAdminAction extends AdminAction {
     @RequestParam(role = Role.POST)
-    private List<String> toReload;
+    private final List<String> toReload;
 
     @SuppressWarnings("unchecked")
     public ConfigurationAdminAction(final ConfigurationAdminActionUrl url) {
@@ -62,7 +62,7 @@ public class ConfigurationAdminAction extends AdminAction {
     protected void transmitParameters() {
         // TODO
     }
-    
+
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         return NO_ERROR;

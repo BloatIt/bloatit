@@ -36,7 +36,7 @@ public final class FeatureCommentListComponent extends HtmlPageComponent {
             add(produce());
         } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature comments. Please notify us."));
-            throw new ShallNotPassException("User cannot access feature comments", e); 
+            throw new ShallNotPassException("User cannot access feature comments", e);
         }
 
     }

@@ -78,7 +78,6 @@ public final class MemberPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
-        
 
         add(layout);
     }

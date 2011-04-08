@@ -30,9 +30,9 @@ import com.bloatit.web.url.FileResourceUrl;
 
 public class TeamTools {
 
-    public static HtmlElement getTeamAvatar(Team team) {
+    public static HtmlElement getTeamAvatar(final Team team) {
 
-        HtmlDiv avatarDiv = new HtmlDiv("avatar_block");
+        final HtmlDiv avatarDiv = new HtmlDiv("avatar_block");
         if (team.getAvatar() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Team avatar"), "avatar"));
         } else {

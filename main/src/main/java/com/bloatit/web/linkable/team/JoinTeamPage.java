@@ -35,7 +35,7 @@ public class JoinTeamPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 
         final HtmlForm form = new HtmlForm(new JoinTeamActionUrl(targetTeam).urlString());
@@ -66,14 +66,13 @@ public class JoinTeamPage extends LoggedPage {
         return false;
     }
 
-
     @Override
     protected Breadcrumb getBreadcrumb() {
         return JoinTeamPage.generateBreadcrumb(targetTeam);
     }
 
-    public static Breadcrumb generateBreadcrumb(Team team) {
-        Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+    public static Breadcrumb generateBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
 
         breadcrumb.pushLink(new JoinTeamPageUrl(team).getHtmlLink(tr("Join team")));
 

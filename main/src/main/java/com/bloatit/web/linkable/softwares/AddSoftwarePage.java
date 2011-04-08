@@ -64,7 +64,7 @@ public final class AddSoftwarePage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) {
+    public HtmlElement createRestrictedContent(final Member loggedUser) {
         return new HtmlDiv("padding_box").add(generateFeatureCreationForm());
     }
 

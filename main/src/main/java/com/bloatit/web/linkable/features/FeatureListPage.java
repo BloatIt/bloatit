@@ -25,9 +25,9 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -35,7 +35,6 @@ import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -85,7 +84,7 @@ public final class FeatureListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         // Search block
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         add(layout);
 
         // ////////////////////
@@ -303,12 +302,11 @@ public final class FeatureListPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
+        final FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
 
-            breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));
-
+        breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));
 
         return breadcrumb;
     }

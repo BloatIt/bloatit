@@ -15,7 +15,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -44,7 +43,6 @@ public class CreateTeamPage extends MasterPage {
         layout.addRight(new SideBarDocumentationBlock("create_team"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        
 
         add(layout);
     }
@@ -112,7 +110,7 @@ public class CreateTeamPage extends MasterPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new CreateTeamPageUrl().getHtmlLink(tr("Create a team")));
 

@@ -126,7 +126,7 @@ public final class ReportBugAction extends LoggedAction {
         }
         return new BugPageUrl(bug);
     }
-    
+
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
@@ -143,7 +143,7 @@ public final class ReportBugAction extends LoggedAction {
         }
         return new PageNotFoundUrl();
     }
-    
+
     @Override
     protected String getRefusalReason() {
         return Context.tr("You must be logged in to report a bug.");

@@ -34,8 +34,8 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
@@ -102,7 +102,7 @@ public class ConfigurationAdminPage extends AdminPage {
 
     private class ConfigurationTableModel extends HtmlTableModel {
         private Iterator<ReloadableConfiguration> iterator;
-        private Set<ReloadableConfiguration> configurations;
+        private final Set<ReloadableConfiguration> configurations;
         private ReloadableConfiguration configuration;
 
         private static final int NAME = 0;

@@ -41,7 +41,7 @@ public final class KudosableAdminPageImplementation extends
 
     @Override
     protected void addColumns(final HtmlGenericTableModel<Kudosable<DaoKudosable>> tableModel) {
-        KudosableAdminPageUrl clonedUrl = url.clone();
+        final KudosableAdminPageUrl clonedUrl = url.clone();
 
         addAsTeamColumn(tableModel, clonedUrl);
         addCreationDateColumn(tableModel, clonedUrl);
@@ -73,7 +73,7 @@ public final class KudosableAdminPageImplementation extends
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new KudosableAdminPageUrl().getHtmlLink(tr("Votable administration")));
 

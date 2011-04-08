@@ -76,7 +76,7 @@ public class MessageListPage extends LoggedPage {
 
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError("An error prevented us from displaying team name. Please notify us.");
-                throw new ShallNotPassException("User cannot access team name", e); 
+                throw new ShallNotPassException("User cannot access team name", e);
             }
             teamInvites.add(p);
         }

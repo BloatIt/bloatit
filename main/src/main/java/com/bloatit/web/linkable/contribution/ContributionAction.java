@@ -48,7 +48,7 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         // Add a can access contribution..
         return NO_ERROR;
     }
