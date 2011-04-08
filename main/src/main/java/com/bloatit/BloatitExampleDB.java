@@ -174,10 +174,10 @@ public class BloatitExampleDB {
         final String twoSubtitlesInVlcFeatureTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
         final Feature twoSubtitlesInVlcFeature = FeatureFactory.createFeature(chogall,
-                                                                          chogall.getLocale(),
-                                                                          twoSubtitlesInVlcFeatureTitle,
-                                                                          twoSubtitlesInVlcFeatureDescription,
-                                                                          vlc);
+                                                                              chogall.getLocale(),
+                                                                              twoSubtitlesInVlcFeatureTitle,
+                                                                              twoSubtitlesInVlcFeatureDescription,
+                                                                              vlc);
 
         twoSubtitlesInVlcFeature.authenticate(new AuthToken(cerbere));
         final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
@@ -199,11 +199,11 @@ public class BloatitExampleDB {
         final String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
         twoSubtitlesInVlcFeature.authenticate(new AuthToken(rataxes));
         final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(rataxes,
-                                                                    new BigDecimal(2300),
-                                                                    rataxesOfferDescription,
-                                                                    rataxes.getLocale(),
-                                                                    DateUtils.tomorrow(),
-                                                                    0);
+                                                                     new BigDecimal(2300),
+                                                                     rataxesOfferDescription,
+                                                                     rataxes.getLocale(),
+                                                                     DateUtils.tomorrow(),
+                                                                     0);
 
         rataxesOffer.authenticate(new AuthToken(chogall));
         rataxesOffer.voteUp();
@@ -214,11 +214,11 @@ public class BloatitExampleDB {
         final String celesteMilestone1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
         final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(celeste,
-                                                                    new BigDecimal(2500),
-                                                                    celesteMilestone1Description,
-                                                                    celeste.getLocale(),
-                                                                    DateUtils.nowPlusSomeDays(2),
-                                                                    0);
+                                                                     new BigDecimal(2500),
+                                                                     celesteMilestone1Description,
+                                                                     celeste.getLocale(),
+                                                                     DateUtils.nowPlusSomeDays(2),
+                                                                     0);
 
         final String celesteMilestone2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
         celesteOffer.addMilestone(new BigDecimal(1000), celesteMilestone2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
@@ -255,19 +255,14 @@ public class BloatitExampleDB {
         final String addPerroquetInMageiaFeaturetitle = "Make a packet for Mageia for the Perroquet software";
 
         final Feature addPerroquetInMageiaFeature = FeatureFactory.createFeature(fred,
-                                                                             fred.getLocale(),
-                                                                             addPerroquetInMageiaFeaturetitle,
-                                                                             addPerroquetInMageiaFeatureDescription,
-                                                                             mageia);
+                                                                                 fred.getLocale(),
+                                                                                 addPerroquetInMageiaFeaturetitle,
+                                                                                 addPerroquetInMageiaFeatureDescription,
+                                                                                 mageia);
 
         final String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
         addPerroquetInMageiaFeature.authenticate(new AuthToken(hydre));
-        final Offer hydrePerroquetOffer = addPerroquetInMageiaFeature.addOffer(hydre,
-                                                                              new BigDecimal(200),
-                                                                              hydrePerroquetOfferDescription,
-                                                                              hydre.getLocale(),
-                                                                              DateUtils.tomorrow(),
-                                                                              0);
+        addPerroquetInMageiaFeature.addOffer(hydre, new BigDecimal(200), hydrePerroquetOfferDescription, hydre.getLocale(), DateUtils.tomorrow(), 0);
         // Contributions
         addPerroquetInMageiaFeature.authenticate(new AuthToken(hydre));
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("10"), "");
@@ -281,15 +276,15 @@ public class BloatitExampleDB {
         final Milestone firstMilestone = addPerroquetInMageiaFeature.getSelectedOffer().getMilestonees().iterator().next();
         firstMilestone.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
         firstMilestone.addBug(elephantman,
-                          "Faible qualité graphique pour les éléphants",
-                          "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
-                          elephantman.getLocale(),
-                          Level.MINOR);
+                              "Faible qualité graphique pour les éléphants",
+                              "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
+                              elephantman.getLocale(),
+                              Level.MINOR);
         firstMilestone.addBug(yoann,
-                          "Fichier de conf système manquant",
-                          "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
-                          yoann.getLocale(),
-                          Level.MAJOR);
+                              "Fichier de conf système manquant",
+                              "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
+                              yoann.getLocale(),
+                              Level.MAJOR);
 
         return addPerroquetInMageiaFeature;
     }
@@ -304,10 +299,10 @@ public class BloatitExampleDB {
         final String colorPickerFeatureTitle = "Permettre de choisir facilement n'importe quelle couleur";
 
         final Feature colorPickerFeature = FeatureFactory.createFeature(yoann,
-                                                                    yoann.getLocale(),
-                                                                    colorPickerFeatureTitle,
-                                                                    colorPickerFeatureDescription,
-                                                                    libreOffice);
+                                                                        yoann.getLocale(),
+                                                                        colorPickerFeatureTitle,
+                                                                        colorPickerFeatureDescription,
+                                                                        libreOffice);
         return colorPickerFeature;
     }
 
@@ -323,7 +318,7 @@ public class BloatitExampleDB {
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         feature.authenticate(new AuthToken(celeste));
-        final Offer offer = feature.addOffer(celeste, new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
+        feature.addOffer(celeste, new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
@@ -347,7 +342,7 @@ public class BloatitExampleDB {
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         feature.authenticate(new AuthToken(fred));
-        final Offer offer = feature.addOffer(fred, new BigDecimal(750), offerDescription, fred.getLocale(), DateUtils.tomorrow(), 0);
+        feature.addOffer(fred, new BigDecimal(750), offerDescription, fred.getLocale(), DateUtils.tomorrow(), 0);
 
         // Contributions
         feature.authenticate(new AuthToken(yoann));
@@ -368,7 +363,7 @@ public class BloatitExampleDB {
 
         final String offerDescription = "Oui, vive vim !";
         feature.authenticate(new AuthToken(cerbere));
-        final Offer offer = feature.addOffer(cerbere, new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
+        feature.addOffer(cerbere, new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
@@ -384,6 +379,7 @@ public class BloatitExampleDB {
 
     /**
      * Work only if the money is available
+     * 
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {
@@ -396,10 +392,11 @@ public class BloatitExampleDB {
         featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
-    private void setFeatureInDiscardedState(final Feature feature) {
-        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
-        featureImpl.getDao().setFeatureState(FeatureState.DISCARDED);
-    }
+    // private void setFeatureInDiscardedState(final Feature feature) {
+    // final FeatureImplementation featureImpl = (FeatureImplementation)
+    // feature;
+    // featureImpl.getDao().setFeatureState(FeatureState.DISCARDED);
+    // }
 
     public void giveMoney(final Member member, final int amount) {
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
