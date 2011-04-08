@@ -64,39 +64,4 @@ public class MappedList<T> implements PageIterable<T> {
         return this.currentPage;
     }
 
-    private class BoundedIterator<E> implements Iterator<E> {
-
-        private Iterator<E> it;
-        int i;
-
-        public BoundedIterator(final Iterator<E> it) {
-            this(0, it);
-        }
-
-        private BoundedIterator(final int i, final Iterator<E> it) {
-            super();
-            this.i = i;
-            this.it = it;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return (this.i < getPageSize() || getPageSize() == 0) && this.it.hasNext();
-        }
-
-        @Override
-        public E next() {
-            if (hasNext()) {
-                this.i++;
-                return this.it.next();
-            }
-            return null;
-        }
-
-        @Override
-        public void remove() {
-            this.it.remove();
-        }
-    }
-
 }
