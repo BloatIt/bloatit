@@ -1,7 +1,7 @@
 package com.bloatit.framework.webprocessor.url;
 
-import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.utils.parameters.SessionParameters;
 
 @SuppressWarnings("unused")
 public final class PageNotFoundUrl extends Url implements Cloneable {

@@ -23,8 +23,8 @@ import java.util.UUID;
 
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;

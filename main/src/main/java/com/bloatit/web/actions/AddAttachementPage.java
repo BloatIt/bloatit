@@ -28,7 +28,6 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.components.SideBarUserContentBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -42,8 +41,7 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 @ParamContainer("usercontent/attachfile")
 public final class AddAttachementPage extends LoggedPage {
 
-
-    @RequestParam(name="user_content")
+    @RequestParam(name = "user_content")
     UserContentInterface userContent;
 
     private final AddAttachementPageUrl url;
@@ -63,10 +61,12 @@ public final class AddAttachementPage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
+
     @Override
     public void processErrors() throws RedirectException {
-     // TODO we should process the errors here.
+        // TODO we should process the errors here.
     }
+
     @Override
     public HtmlElement createRestrictedContent() throws PageNotFoundException {
         addNotifications(url.getMessages());
@@ -75,7 +75,7 @@ public final class AddAttachementPage extends LoggedPage {
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarUserContentBlock(userContent));
-        
+
         layout.addLeft(generateReleaseCreationForm());
 
         return layout;
@@ -92,9 +92,7 @@ public final class AddAttachementPage extends LoggedPage {
 
         title.add(form);
 
-
         // attachement
-
         final FieldData attachementDescriptiondData = formUrl.getAttachementDescriptionParameter().pickFieldData();
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(),
                                                                             Context.tr("Attachment description"));
@@ -124,9 +122,7 @@ public final class AddAttachementPage extends LoggedPage {
 
     public static Breadcrumb generateBreadcrumb(final UserContentInterface userContent) {
         final Breadcrumb breadcrumb = BreadcrumbTools.generateBreadcrumb(userContent);
-
         breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachement")));
-
         return breadcrumb;
     }
 

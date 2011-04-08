@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.utils.parameters.SessionParameters;
 
 public abstract class UrlComponent extends UrlNode {
     private static final EmptyComponent EMPTY_COMPONENT = new EmptyComponent();
