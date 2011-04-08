@@ -30,7 +30,7 @@ public class UrlParameter<T, U> extends UrlNode {
         this.description = description;
         this.constraints = constraints;
         this.conversionError = false;
-        if (description.getDefaultValue() != null) {
+        if (description.getDefaultValue() != null && value == null) {
             setValueFromString(description.getDefaultValue());
         }
     }

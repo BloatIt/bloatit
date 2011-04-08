@@ -34,7 +34,7 @@ import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 
-public final class HtmlFeatureSumary extends HtmlDiv {
+public final class HtmlFeatureSummary extends HtmlDiv {
 
     private final Feature feature;
     private Locale defaultLocale;
@@ -55,7 +55,7 @@ public final class HtmlFeatureSumary extends HtmlDiv {
     }
 
     // "feature_summary"
-    public HtmlFeatureSumary(final Feature feature, final Compacity compacity) {
+    public HtmlFeatureSummary(final Feature feature, final Compacity compacity) {
         super(compacity.getCssClass());
         this.feature = feature;
         if (feature == null) {
@@ -95,7 +95,7 @@ public final class HtmlFeatureSumary extends HtmlDiv {
         }
         add(featureSummaryTop);
 
-        final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_sumary_bottom");
+        final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_summary_bottom");
         {
 
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
@@ -109,7 +109,7 @@ public final class HtmlFeatureSumary extends HtmlDiv {
             {
 
                 final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature, true);
-                featureummaryProgress.add(FeaturesTools.generateDetails(feature));
+                featureummaryProgress.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryCenter.add(featureummaryProgress);
 
             }
@@ -142,12 +142,12 @@ public final class HtmlFeatureSumary extends HtmlDiv {
         }
         add(featureSummaryTop);
 
-        final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_sumary_bottom");
+        final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_summary_bottom");
         {
             featureSummaryBottom.add(generatePopularityBlock());
 
-            final HtmlDiv featureSummaryProgress = FeaturesTools.generateProgress(feature);
-            featureSummaryProgress.add(FeaturesTools.generateDetails(feature));
+            final HtmlDiv featureSummaryProgress = FeaturesTools.generateProgress(feature, true);
+            featureSummaryProgress.add(FeaturesTools.generateDetails(feature, true));
             featureSummaryBottom.add(featureSummaryProgress);
         }
         add(featureSummaryBottom);

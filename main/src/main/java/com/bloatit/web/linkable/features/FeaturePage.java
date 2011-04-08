@@ -27,7 +27,7 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.FeaturePageUrl;
 
 @ParamContainer("feature")
@@ -84,7 +84,7 @@ public final class FeaturePage extends MasterPage {
             throw new PageNotFoundException();
         }
         // The feature page is composed of 3 parts:
-        // - The sumary
+        // - The summary
         // - The tab panel
         // - The comments
 

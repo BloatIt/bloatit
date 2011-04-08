@@ -366,7 +366,7 @@ public abstract class JavaGenerator {
 
         urlClass.append("    public ").append(className).append("(").append(className).append(" other){\n");
         urlClass.append("        super(other);\n");
-        urlClass.append("        component = other.component;\n");
+        urlClass.append("        component = other.component.clone();\n");
         urlClass.append("    }\n");
 
         urlClass.append(_urlClassConstructor);

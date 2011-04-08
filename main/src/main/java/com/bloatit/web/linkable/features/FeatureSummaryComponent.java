@@ -93,7 +93,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 // ////////////////////
                 // Div feature_summary_bottom
-                final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_sumary_bottom");
+                final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_summary_bottom");
                 {
 
                     // ////////////////////
@@ -166,17 +166,17 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 // ////////////////////
                 // Div feature_summary_share
-                final HtmlDiv feature_sumary_share = new HtmlDiv("feature_sumary_share", "feature_sumary_share");
+                final HtmlDiv feature_summary_share = new HtmlDiv("feature_summary_share", "feature_summary_share");
                 {
 
                 }
-                featureSummary.add(feature_sumary_share);
+                featureSummary.add(feature_summary_share);
             }
             add(featureSummary);
 
         } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
-            throw new ShallNotPassException("User cannot access feature nformation", e); 
+            throw new ShallNotPassException("User cannot access feature nformation", e);
         }
     }
 

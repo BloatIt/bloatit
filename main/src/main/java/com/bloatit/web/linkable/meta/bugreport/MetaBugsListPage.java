@@ -25,8 +25,7 @@ import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.MembersListPageUrl;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
@@ -80,7 +79,7 @@ public final class MetaBugsListPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
-        breadcrumb.pushLink(new MembersListPageUrl().getHtmlLink(tr("Members")));
+        breadcrumb.pushLink(new MetaBugsListPageUrl().getHtmlLink(tr("Bugs")));
         return breadcrumb;
     }
 }

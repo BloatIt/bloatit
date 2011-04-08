@@ -59,7 +59,7 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.DefineParagraph;
-import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;

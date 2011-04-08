@@ -26,7 +26,7 @@ import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 

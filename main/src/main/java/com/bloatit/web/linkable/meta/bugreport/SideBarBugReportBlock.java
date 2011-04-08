@@ -10,7 +10,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.web.pages.master.TitleSideBarElementLayout;
+import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 import com.bloatit.web.url.MetaReportBugActionUrl;
 

@@ -3,7 +3,7 @@ package com.bloatit.web.components;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.web.pages.master.TitleSideBarElementLayout;
+import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 
 public class SideBarUserContentBlock extends TitleSideBarElementLayout {
 
