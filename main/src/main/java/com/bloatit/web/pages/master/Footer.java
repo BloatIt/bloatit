@@ -1,8 +1,8 @@
 package com.bloatit.web.pages.master;
 
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;

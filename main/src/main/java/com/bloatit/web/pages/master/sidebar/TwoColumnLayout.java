@@ -1,9 +1,9 @@
 package com.bloatit.web.pages.master.sidebar;
 
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.url.Url;
 
 public class TwoColumnLayout extends HtmlDiv {
 

@@ -28,7 +28,7 @@ import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ConfigurationManager.PropertiesType;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webprocessor.Context;
 
 /**
  * Class to handle localization of money amounts.

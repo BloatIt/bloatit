@@ -24,8 +24,8 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.Session;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.Session;
 import com.bloatit.model.Member;
 
 /**

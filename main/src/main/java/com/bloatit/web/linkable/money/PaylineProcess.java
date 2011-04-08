@@ -2,10 +2,10 @@ package com.bloatit.web.linkable.money;
 
 import java.math.BigDecimal;
 
-import com.bloatit.framework.webserver.WebProcess;
+import com.bloatit.framework.webprocessor.WebProcess;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 

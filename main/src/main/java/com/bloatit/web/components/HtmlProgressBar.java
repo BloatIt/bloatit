@@ -12,7 +12,7 @@
 
 package com.bloatit.web.components;
 
-import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 
 public class HtmlProgressBar extends HtmlDiv {
 

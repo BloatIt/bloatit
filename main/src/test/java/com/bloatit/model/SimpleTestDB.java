@@ -22,7 +22,7 @@ import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.utils.DateUtils;
+import com.bloatit.framework.utils.datetime.DateUtils;
 
 public class SimpleTestDB {
 

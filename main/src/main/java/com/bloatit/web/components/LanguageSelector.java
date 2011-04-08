@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
-import com.bloatit.framework.webserver.components.form.HtmlDropDown;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 
 /**
  * A simple component that proposes the users a drop down menu allowing him to

@@ -22,8 +22,8 @@ import java.util.Locale;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
+import com.bloatit.framework.restprocessor.exception.RestException;
+import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 
 public class LocaleAdapter extends XmlAdapter<String, Locale> {
 

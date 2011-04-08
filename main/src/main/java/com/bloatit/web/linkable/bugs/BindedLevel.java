@@ -1,9 +1,9 @@
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.Context.tr;
 
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.webserver.components.form.Displayable;
+import com.bloatit.framework.webprocessor.components.form.Displayable;
 
 public enum BindedLevel implements Displayable {
     FATAL(Level.FATAL, tr("FATAL")), MAJOR(Level.MAJOR, tr("MAJOR")), MINOR(Level.MINOR, tr("MINOR"));

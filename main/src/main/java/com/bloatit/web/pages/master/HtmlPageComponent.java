@@ -12,7 +12,7 @@
 
 package com.bloatit.web.pages.master;
 
-import com.bloatit.framework.webserver.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 
 /**
  * Beautiful useless layer.

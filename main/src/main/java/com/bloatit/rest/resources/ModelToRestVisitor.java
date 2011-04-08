@@ -18,7 +18,7 @@
  */
 package com.bloatit.rest.resources;
 
-import com.bloatit.framework.rest.RestElement;
+import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;

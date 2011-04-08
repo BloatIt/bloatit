@@ -1,7 +1,7 @@
 package com.bloatit.web.pages.master;
 
-import com.bloatit.framework.webserver.ErrorMessage.Level;
-import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.ErrorMessage.Level;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 
 public final class HtmlNotification extends HtmlDiv {
 

@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.data.search.FeatureSearch;
-import com.bloatit.framework.utils.DateUtils;
+import com.bloatit.framework.utils.datetime.DateUtils;
 
 /**
  * I assume the DaoGroupMemberTest is run without error.

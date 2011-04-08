@@ -2,9 +2,9 @@ package com.bloatit.web.pages.master.sidebar;
 
 import java.util.ArrayList;
 
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 
 public class PluginBox extends PlaceHolderElement {

@@ -1,11 +1,11 @@
 package com.bloatit.web.components;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.Context.tr;
 
 import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;

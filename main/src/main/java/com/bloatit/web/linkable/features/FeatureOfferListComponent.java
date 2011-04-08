@@ -11,7 +11,7 @@
  */
 package com.bloatit.web.linkable.features;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.Context.tr;
 
 import java.math.BigDecimal;
 
@@ -20,24 +20,24 @@ import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.TimeRenderer;
+import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.datetime.TimeRenderer;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlList;
-import com.bloatit.framework.webserver.components.HtmlListItem;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.HtmlSpan;
-import com.bloatit.framework.webserver.components.HtmlTitle;
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.framework.webserver.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlListItem;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;

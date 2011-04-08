@@ -1,17 +1,17 @@
 package com.bloatit.web.linkable.contribution;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.Context.tr;
 
 import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.WebProcess;
-import com.bloatit.framework.webserver.WebProcess.PaymentProcess;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.WebProcess;
+import com.bloatit.framework.webprocessor.WebProcess.PaymentProcess;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.money.PaylineProcess;

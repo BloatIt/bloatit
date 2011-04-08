@@ -11,7 +11,7 @@
  */
 package com.bloatit.framework.exceptions.lowlevel;
 
-import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.url.IndexPageUrl;
 
 /**

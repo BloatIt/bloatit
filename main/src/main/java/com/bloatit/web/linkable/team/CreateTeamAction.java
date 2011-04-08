@@ -1,14 +1,14 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.data.DaoTeam.Right;
-import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.actions.LoggedAction;

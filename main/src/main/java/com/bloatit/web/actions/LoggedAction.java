@@ -1,7 +1,7 @@
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.webserver.masters.Action;
-import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.framework.webprocessor.masters.Action;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.url.LoginPageUrl;
 

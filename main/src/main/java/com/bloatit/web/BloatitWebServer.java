@@ -1,12 +1,12 @@
 package com.bloatit.web;
 
-import com.bloatit.framework.utils.Parameters;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.Session;
-import com.bloatit.framework.webserver.SessionManager;
-import com.bloatit.framework.webserver.WebServer;
-import com.bloatit.framework.webserver.masters.Linkable;
-import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.Session;
+import com.bloatit.framework.webprocessor.SessionManager;
+import com.bloatit.framework.webprocessor.WebServer;
+import com.bloatit.framework.webprocessor.masters.Linkable;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CommentCommentAction;

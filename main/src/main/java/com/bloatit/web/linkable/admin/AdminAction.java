@@ -20,8 +20,8 @@ package com.bloatit.web.linkable.admin;
 
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.LoginPageUrl;

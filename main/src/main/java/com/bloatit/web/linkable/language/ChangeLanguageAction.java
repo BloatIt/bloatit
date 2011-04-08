@@ -21,12 +21,12 @@ package com.bloatit.web.linkable.language;
 import java.util.Arrays;
 import java.util.Locale;
 
-import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.masters.Action;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.framework.webserver.masters.Action;
-import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 

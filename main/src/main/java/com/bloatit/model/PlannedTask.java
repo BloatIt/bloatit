@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.webserver.ModelAccessor;
+import com.bloatit.framework.webprocessor.ModelAccessor;
 
 /**
  * <p>

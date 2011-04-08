@@ -33,9 +33,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.rest.RestElement;
-import com.bloatit.framework.rest.RestServer.RequestMethod;
-import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.framework.restprocessor.RestElement;
+import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
+import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.Bug;
 import com.bloatit.model.managers.BugManager;
 import com.bloatit.rest.adapters.DateAdapter;

@@ -12,10 +12,10 @@ import java.util.Map;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.XmlText;
-import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 
 public class HtmlDocumentationRenderer extends PlaceHolderElement {
 	private static final String DEFAULT_LANGUAGE = "en";

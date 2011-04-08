@@ -1,9 +1,9 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.Context.tr;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
-import com.bloatit.framework.webserver.components.form.Displayable;
+import com.bloatit.framework.webprocessor.components.form.Displayable;
 
 public enum DisplayableState implements Displayable {
     NO_FILTER(tr("No filter")), //

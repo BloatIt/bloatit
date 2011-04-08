@@ -11,13 +11,13 @@
  */
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.masters.Action;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.masters.Action;
-import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.managers.LoginManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.LoginActionUrl;

@@ -1,16 +1,16 @@
 package com.bloatit.web.linkable.money;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.Context.tr;
 
 import org.hibernate.CacheMode;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.web.pages.IndexPage;

@@ -1,6 +1,6 @@
 package com.bloatit.web.linkable.features;
 
-import static com.bloatit.framework.webserver.Context.trn;
+import static com.bloatit.framework.webprocessor.Context.trn;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -9,12 +9,12 @@ import java.util.Locale;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.HtmlSpan;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;

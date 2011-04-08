@@ -15,73 +15,55 @@ import com.bloatit.framework.FrameworkConfiguration;
 
 public class MetaBugManager {
 
-    public static boolean reportBug(String bugReport) {
-        String dir = FrameworkConfiguration.getMetaBugsDirStorage();
-
-        File dirFile = new File(dir);
+    public static boolean reportBug(final String bugReport) {
+        final String dir = FrameworkConfiguration.getMetaBugsDirStorage();
+        final File dirFile = new File(dir);
         dirFile.mkdirs();
-
-        File bugReportFile = new File(dir + "/" + UUID.randomUUID().toString());
-
+        final File bugReportFile = new File(dir + "/" + UUID.randomUUID().toString());
         try {
             bugReportFile.createNewFile();
-
-            FileOutputStream fileStream = new FileOutputStream(bugReportFile);
+            final FileOutputStream fileStream = new FileOutputStream(bugReportFile);
             fileStream.write(bugReport.getBytes());
             fileStream.close();
-
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.framework().error("Fail to write a bugreport", e);
             return false;
         }
-
         return true;
-
     }
 
     public static List<MetaBug> getOpenBugs() {
-        String dir = FrameworkConfiguration.getMetaBugsDirStorage();
-
-        File dirFile = new File(dir);
-
-        File[] bugFiles = dirFile.listFiles();
-
-        List<File> orderedFiles = Arrays.asList(bugFiles);
-
+        final String dir = FrameworkConfiguration.getMetaBugsDirStorage();
+        final File dirFile = new File(dir);
+        final File[] bugFiles = dirFile.listFiles();
+        final List<File> orderedFiles = Arrays.asList(bugFiles);
         Collections.sort(orderedFiles, new Comparator<File>() {
-
             @Override
-            public int compare(File o1, File o2) {
+            public int compare(final File o1, final File o2) {
                 return Long.valueOf(o1.lastModified()).compareTo(Long.valueOf(o2.lastModified()));
             }
-
         });
 
-        List<MetaBug> bugList = new ArrayList<MetaBug>();
-
-        for (File bugFile : orderedFiles) {
+        final List<MetaBug> bugList = new ArrayList<MetaBug>();
+        for (final File bugFile : orderedFiles) {
             try {
                 if(!bugFile.getName().endsWith("-deleted")) {
                     bugList.add(new MetaBug(bugFile));
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.framework().error("Fail to read a bugreport", e);
             }
         }
-
         return bugList;
     }
 
-    public static MetaBug getById(String bugId) {
-        List<MetaBug> openBugs = getOpenBugs();
-
-        for(MetaBug bug: openBugs) {
+    public static MetaBug getById(final String bugId) {
+        final List<MetaBug> openBugs = getOpenBugs();
+        for(final MetaBug bug: openBugs) {
             if(bug.getId().equals(bugId)) {
                 return bug;
             }
         }
-
         return null;
     }
-
 }

@@ -3,9 +3,9 @@ package com.bloatit.web.linkable.contribution;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.web.WebConfiguration;
 
 public class MoneyVariationBlock extends HtmlDiv {

@@ -1,6 +1,7 @@
 package com.bloatit.framework.utils;
 
-import com.bloatit.framework.webserver.url.UrlParameter;
+import com.bloatit.framework.utils.parameters.GenericParameters;
+import com.bloatit.framework.webprocessor.url.UrlParameter;
 
 public class SessionParameters extends GenericParameters<UrlParameter<?, ?>, UrlParameter<?, ?>> {
 
