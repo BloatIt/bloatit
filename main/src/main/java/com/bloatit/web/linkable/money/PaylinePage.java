@@ -58,6 +58,7 @@ public final class PaylinePage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
+        // TODO maybe we should create the page here.
     }
 
     @Override
@@ -75,8 +76,8 @@ public final class PaylinePage extends MasterPage {
         return PaylinePage.generateBreadcrumb(ack);
     }
 
-    public static Breadcrumb generateBreadcrumb(String ack) {
-        Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
+    public static Breadcrumb generateBreadcrumb(final String ack) {
+        final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new PaylinePageUrl(ack).getHtmlLink(tr("Transaction result")));
 

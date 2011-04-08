@@ -77,6 +77,7 @@ public final class ReportBugPage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO you should process the errors.
     }
 
     @Override
@@ -183,8 +184,8 @@ public final class ReportBugPage extends LoggedPage {
         return ReportBugPage.generateBreadcrumb(offer);
     }
 
-    public static Breadcrumb generateBreadcrumb(Offer offer) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(offer.getFeature());
+    public static Breadcrumb generateBreadcrumb(final Offer offer) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(offer.getFeature());
 
         breadcrumb.pushLink(new ReportBugPageUrl(offer).getHtmlLink(tr("Report a bug")));
 

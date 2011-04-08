@@ -137,6 +137,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     protected void addIsDeletedColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
         clonedUrl.setOrderByStr("isDeleted");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Deleted")), new StringColumnGenerator<V>() {
+            @SuppressWarnings("synthetic-access")
             @Override
             public String getStringBody(final V element) {
                 try {

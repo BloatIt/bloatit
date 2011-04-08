@@ -82,8 +82,10 @@ public final class MembersListPage extends MasterPage {
 
     private final class MemberRenderer implements HtmlRenderer<Member> {
         public MemberRenderer() {
+            super();
         }
 
+        @SuppressWarnings("synthetic-access")
         @Override
         public XmlNode generate(final Member member) {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);

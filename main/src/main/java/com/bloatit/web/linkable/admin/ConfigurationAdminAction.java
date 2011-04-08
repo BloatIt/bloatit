@@ -30,21 +30,19 @@ import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
 @ParamContainer("admin/doConfigure")
 public class ConfigurationAdminAction extends AdminAction {
-    private ConfigurationAdminActionUrl url;
-
     @RequestParam(role = Role.POST)
     private List<String> toReload;
 
-    public ConfigurationAdminAction(ConfigurationAdminActionUrl url) {
+    @SuppressWarnings("unchecked")
+    public ConfigurationAdminAction(final ConfigurationAdminActionUrl url) {
         super(url);
-        this.url = url;
         this.toReload = url.getToReload();
     }
 
     @Override
     protected Url doProcessAdmin() {
-        for (String conf : toReload) {
-            for (ReloadableConfiguration availableConf : ReloadableConfiguration.getConfigurations()) {
+        for (final String conf : toReload) {
+            for (final ReloadableConfiguration availableConf : ReloadableConfiguration.getConfigurations()) {
                 if (availableConf.getName().equals(conf)) {
                     availableConf.reload();
                     break;

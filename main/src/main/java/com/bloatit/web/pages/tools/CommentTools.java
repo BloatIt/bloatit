@@ -172,7 +172,7 @@ public class CommentTools {
         return commentBlock;
     }
 
-    private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url, final UserContentInterface userContent) {
+    private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url, final UserContentInterface<?> userContent) {
 
         final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
 

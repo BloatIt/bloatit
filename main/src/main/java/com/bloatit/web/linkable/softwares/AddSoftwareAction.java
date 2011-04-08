@@ -68,6 +68,7 @@ public final class AddSoftwareAction extends Action {
     @RequestParam(name = IMAGE_NAME_CODE, role = Role.POST)
     private final String imageFileName;
 
+    @SuppressWarnings("unused")
     @Optional
     @RequestParam(name = IMAGE_CONTENT_TYPE_CODE, role = Role.POST)
     private final String imageContentType;

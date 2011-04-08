@@ -19,26 +19,21 @@ public class AccountChargingProcess extends WebProcess {
     @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.GET)
     private BigDecimal amount;
 
-
     private final AccountChargingProcessUrl url;
 
-    public AccountChargingProcess(AccountChargingProcessUrl url) {
+    public AccountChargingProcess(final AccountChargingProcessUrl url) {
         super(url);
         this.url = url;
         amount = url.getAmount();
     }
 
-
-
     public BigDecimal getAmount() {
         return amount;
     }
 
-
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
-
 
     @Override
     protected Url doProcess() {
@@ -53,7 +48,7 @@ public class AccountChargingProcess extends WebProcess {
 
     @Override
     public void load() {
+        // TODO Do nothing ?
     }
-
 
 }

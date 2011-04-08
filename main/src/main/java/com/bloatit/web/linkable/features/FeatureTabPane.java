@@ -71,6 +71,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
         // Create description tab
         tabPane.addTab(new HtmlTab(Context.tr("Description"), DESCRIPTION_TAB) {
+            @SuppressWarnings("synthetic-access")
             @Override
             public XmlNode generateBody() {
                 return generateDescriptionTabContent(feature);

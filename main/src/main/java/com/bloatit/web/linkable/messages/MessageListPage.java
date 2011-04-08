@@ -30,8 +30,7 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
  */
 @ParamContainer("messages/list")
 public class MessageListPage extends LoggedPage {
-    @SuppressWarnings("unused")
-    private final MessageListPageUrl url; // kept for the sake of consistency
+    private final MessageListPageUrl url;
 
     public MessageListPage(final MessageListPageUrl url) {
         super(url);
@@ -104,8 +103,8 @@ public class MessageListPage extends LoggedPage {
         return MessageListPage.generateBreadcrumb(session.getAuthToken().getMember());
     }
 
-    public static Breadcrumb generateBreadcrumb(Member member) {
-        Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
+    public static Breadcrumb generateBreadcrumb(final Member member) {
+        final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
 
         breadcrumb.pushLink(new MessageListPageUrl().getHtmlLink(tr("Message list")));
 

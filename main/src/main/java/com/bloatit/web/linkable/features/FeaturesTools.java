@@ -26,30 +26,29 @@ public class FeaturesTools {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public static String getTitle(Feature feature) throws UnauthorizedOperationException {
+    public static String getTitle(final Feature feature) throws UnauthorizedOperationException {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
         return translatedDescription.getTitle();
     }
 
-    public static HtmlDiv generateProgress(Feature feature) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature) throws UnauthorizedOperationException {
         return generateProgress(feature, false, BigDecimal.ZERO);
     }
 
-    public static HtmlDiv generateProgress(Feature feature, boolean slim) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final boolean slim) throws UnauthorizedOperationException {
         return generateProgress(feature, slim, BigDecimal.ZERO);
     }
 
     /**
-     * @return
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(Feature feature, boolean slim, BigDecimal futureAmount) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
             // Progress bar
 
-            float progressValue = (float) Math.floor(feature.getProgression());
+            final float progressValue = (float) Math.floor(feature.getProgression());
             float myProgressValue = 0;
             float futureProgressValue = 0;
 
@@ -157,7 +156,7 @@ public class FeaturesTools {
         }
     }
 
-    public static HtmlDiv generateDetails(Feature feature, boolean showBugs) throws UnauthorizedOperationException {
+    public static HtmlDiv generateDetails(final Feature feature, final boolean showBugs) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryDetails = new HtmlDiv("feature_summary_details");
         {
 
@@ -189,7 +188,7 @@ public class FeaturesTools {
                                                                                       contributionsCount,
                                                                                       new Integer(contributionsCount))));
             if (showBugs) {
-                int bugCount = feature.getOpenBugs().size();
+                final int bugCount = feature.getOpenBugs().size();
                 if(bugCount > 0) {
 
                     final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature);

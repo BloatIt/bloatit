@@ -48,7 +48,6 @@ import com.bloatit.web.url.ReportBugPageUrl;
 
 public final class FeatureSummaryComponent extends HtmlPageComponent {
 
-    private static final String IMPORTANT_CSS_CLASS = "important";
     private final Feature feature;
 
     public FeatureSummaryComponent(final Feature feature) {
@@ -167,9 +166,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 // ////////////////////
                 // Div feature_summary_share
                 final HtmlDiv feature_summary_share = new HtmlDiv("feature_summary_share", "feature_summary_share");
-                {
-
-                }
                 featureSummary.add(feature_summary_share);
             }
             add(featureSummary);
@@ -228,7 +224,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     public PlaceHolderElement generateContributeAction() {
-        PlaceHolderElement element = new PlaceHolderElement();
+        final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
         element.add(contributeText);
 
@@ -239,7 +235,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     private PlaceHolderElement generateMakeAnOfferAction() {
-        PlaceHolderElement element = new PlaceHolderElement();
+        final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlParagraph makeOfferText = new HtmlParagraph(Context.tr("You are a developer and want to be paid to achieve this request?"));
         element.add(makeOfferText);
 
@@ -250,17 +246,17 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
-        PlaceHolderElement element = new PlaceHolderElement();
+        final PlaceHolderElement element = new PlaceHolderElement();
 
-        BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
+        final BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
 
         if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
 
-            CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+            final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
 
             element.add(new HtmlParagraph(tr(" {0} are missing before the developement start.", currency.toString())));
         } else {
-            TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
+            final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
             element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
         }
@@ -274,23 +270,23 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     public PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
-        PlaceHolderElement element = new PlaceHolderElement();
+        final PlaceHolderElement element = new PlaceHolderElement();
 
         if (!feature.getSelectedOffer().hasRelease()) {
-            Date releaseDate = feature.getSelectedOffer().getCurrentMilestone().getExpirationDate();
+            final Date releaseDate = feature.getSelectedOffer().getCurrentMilestone().getExpirationDate();
 
-            String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.SHORT);
+            final String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.SHORT);
 
             element.add(new HtmlParagraph(tr("There is no release yet.")));
             element.add(new HtmlParagraph(tr("Next release is scheduled for {0}.", date)));
 
         } else {
-            int releaseCount = feature.getSelectedOffer().getCurrentMilestone().getReleases().size();
+            final int releaseCount = feature.getSelectedOffer().getCurrentMilestone().getReleases().size();
 
-            Release lastRelease = feature.getSelectedOffer().getLastRelease();
+            final Release lastRelease = feature.getSelectedOffer().getLastRelease();
 
-            HtmlLink lastReleaseLink = new ReleasePageUrl(lastRelease).getHtmlLink();
-            String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.SHORT);
+            final HtmlLink lastReleaseLink = new ReleasePageUrl(lastRelease).getHtmlLink();
+            final String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.SHORT);
 
             element.add(new HtmlParagraph(trn("There is {0} release.", "There is {0} releases.", releaseCount, releaseCount)));
 
@@ -307,10 +303,10 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
-        PlaceHolderElement element = new PlaceHolderElement();
+        final PlaceHolderElement element = new PlaceHolderElement();
 
-        Member author = feature.getSelectedOffer().getAuthor();
-        HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
+        final Member author = feature.getSelectedOffer().getAuthor();
+        final HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 
         element.add(new HtmlParagraph(tr("This feature is currently in development.")));
@@ -323,17 +319,17 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     }
 
     public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
-        PlaceHolderElement element = new PlaceHolderElement();
+        final PlaceHolderElement element = new PlaceHolderElement();
 
-        Member author = feature.getSelectedOffer().getAuthor();
-        HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
+        final Member author = feature.getSelectedOffer().getAuthor();
+        final HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 
         element.add(new HtmlParagraph(tr("This feature is finished.")));
 
         element.add(new HtmlParagraph(new HtmlMixedText(tr("The developement was done by <0>."), authorLink)));
 
-        PageIterable<Bug> openBugs = feature.getOpenBugs();
+        final PageIterable<Bug> openBugs = feature.getOpenBugs();
 
         if (openBugs.size() > 0) {
             element.add(new HtmlParagraph(trn("There is {0} open bug.", "There is {0} open bug.", openBugs.size(), openBugs.size())));

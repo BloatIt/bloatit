@@ -40,12 +40,12 @@ public abstract class AdminAction extends LoggedAction {
     /**
      * @param url
      */
-    public AdminAction(Url url) {
+    public AdminAction(final Url url) {
         super(url);
     }
 
     @Override
-    public final Url doProcessRestricted(Member authenticatedMember) {
+    public final Url doProcessRestricted(final Member authenticatedMember) {
         if (!authenticatedMember.hasUserPrivilege(DaoMember.Role.ADMIN)) {
             session.notifyError(getRefusalReason());
             return new LoginPageUrl();
@@ -57,9 +57,8 @@ public abstract class AdminAction extends LoggedAction {
     protected final String getRefusalReason() {
         if (session.isLogged()) {
             return Context.tr("You must be logged as an admin to access this page");
-        } else {
-            return Context.tr("You must be logged to access an admin page");
         }
+        return Context.tr("You must be logged to access an admin page");
     }
 
     /**

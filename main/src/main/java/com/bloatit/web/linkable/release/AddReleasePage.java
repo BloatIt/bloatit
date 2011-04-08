@@ -66,6 +66,7 @@ public final class AddReleasePage extends LoggedPage {
     }
     @Override
     public void processErrors() throws RedirectException {
+        // TODO we should process the errors here.
     }
     @Override
     public HtmlElement createRestrictedContent() {
@@ -135,8 +136,8 @@ public final class AddReleasePage extends LoggedPage {
         return AddReleasePage.generateBreadcrumb(milestone);
     }
 
-    public static Breadcrumb generateBreadcrumb(Milestone milestone) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(milestone.getOffer().getFeature());
+    public static Breadcrumb generateBreadcrumb(final Milestone milestone) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(milestone.getOffer().getFeature());
 
         breadcrumb.pushLink(new AddReleasePageUrl(milestone).getHtmlLink(tr("Add a release")));
 

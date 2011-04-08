@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.offer;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
@@ -90,6 +89,7 @@ public final class MakeOfferPage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO we should process the errors.
     }
 
     @Override
@@ -231,8 +231,8 @@ public final class MakeOfferPage extends LoggedPage {
         return MakeOfferPage.generateBreadcrumb(feature);
     }
 
-    public static Breadcrumb generateBreadcrumb(Feature feature) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
+    public static Breadcrumb generateBreadcrumb(final Feature feature) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
 
         breadcrumb.pushLink(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make an offer")));
 

@@ -37,7 +37,7 @@ public class ChangeLanguageAction extends Action {
     @RequestParam(role = Role.POST)
     private String language;
 
-    public ChangeLanguageAction(ChangeLanguageActionUrl url) {
+    public ChangeLanguageAction(final ChangeLanguageActionUrl url) {
         super(url);
         this.url = url;
         this.language = url.getLanguage();
@@ -46,13 +46,12 @@ public class ChangeLanguageAction extends Action {
     @Override
     protected Url doProcess() {
         if (Arrays.asList(Locale.getISOLanguages()).contains(language)) {
-            Locale l = new Locale(language);
+            final Locale l = new Locale(language);
             Context.getLocalizator().forceLanguage(l);
             return session.pickPreferredPage();
-        } else {
-            session.notifyBad(Context.tr("Incorrect language, same player play again !"));
-            return new ChangeLanguagePageUrl();
         }
+        session.notifyBad(Context.tr("Incorrect language, same player play again !"));
+        return new ChangeLanguagePageUrl();
     }
 
     @Override

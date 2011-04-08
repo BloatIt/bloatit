@@ -111,6 +111,7 @@ public final class MemberPage extends MasterPage {
             memberTitle.add(memberTeams);
             final PageIterable<Team> teamList = member.getTeams();
             if (teamList.size() > 0) {
+                @SuppressWarnings("synthetic-access")
                 final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
                 final MemberPageUrl clonedUrl = new MemberPageUrl(url);
                 pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
@@ -187,12 +188,12 @@ public final class MemberPage extends MasterPage {
         return MemberPage.generateBreadcrumb(member);
     }
 
-    public static Breadcrumb generateBreadcrumb(Member member) {
-        Breadcrumb breadcrumb = MembersListPage.generateBreadcrumb();
+    public static Breadcrumb generateBreadcrumb(final Member member) {
+        final Breadcrumb breadcrumb = MembersListPage.generateBreadcrumb();
 
         try {
             breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(member.getDisplayName()));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }

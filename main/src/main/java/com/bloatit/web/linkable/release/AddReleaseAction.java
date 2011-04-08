@@ -49,6 +49,7 @@ public final class AddReleaseAction extends LoggedAction {
     @RequestParam(name = "attachedfile/filename", role = Role.POST)
     private final String attachedfileFileName;
 
+    @SuppressWarnings("unused")
     @Optional
     @RequestParam(name = "attachedfile/contenttype", role = Role.POST)
     private final String attachedfileContentType;
@@ -83,7 +84,7 @@ public final class AddReleaseAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
+    public Url doProcessRestricted(final Member authenticatedMember) {
         //TODO: Verify user right
 
         final Locale langLocale = new Locale(lang);
@@ -95,7 +96,7 @@ public final class AddReleaseAction extends LoggedAction {
             milestone.addRelease(description, version, langLocale, fileImage);
             session.notifyGood(Context.tr("Release created successfuly !"));
 
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("Failed to create the release."));
             new ShallNotPassException("Fail to create a release.", e);
         }

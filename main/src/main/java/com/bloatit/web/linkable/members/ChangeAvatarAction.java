@@ -51,6 +51,7 @@ public final class ChangeAvatarAction extends Action {
     @RequestParam(name = AVATAR_NAME_CODE, role = Role.POST)
     private final String avatarFileName;
 
+    @SuppressWarnings("unused")
     @ParamConstraint
     @RequestParam(name = AVATAR_CONTENT_TYPE_CODE, role = Role.POST)
     private final String avatarContentType;
