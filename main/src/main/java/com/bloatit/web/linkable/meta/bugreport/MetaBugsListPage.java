@@ -26,7 +26,6 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.TwoColumnLayout;
-import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
@@ -75,7 +74,6 @@ public final class MetaBugsListPage extends MasterPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        
         return MetaBugsListPage.generateBreadcrumb();
     }
 
