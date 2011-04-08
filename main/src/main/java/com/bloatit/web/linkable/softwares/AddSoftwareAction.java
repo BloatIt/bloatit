@@ -14,29 +14,20 @@ package com.bloatit.web.linkable.softwares;
 import java.util.Locale;
 
 import com.bloatit.framework.utils.FileConstraintChecker;
-import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Optional;
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.masters.Action;
-import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AddSoftwareActionUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -46,7 +37,7 @@ import com.bloatit.web.url.SoftwarePageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("software/doadd")
-public final class AddSoftwareAction extends Action {
+public final class AddSoftwareAction extends LoggedAction {
 
     public static final String SHORT_DESCRIPTION_CODE = "bloatit_software_short_description";
     public static final String DESCRIPTION_CODE = "feature_software_description";
@@ -57,8 +48,10 @@ public final class AddSoftwareAction extends Action {
     public static final String LANGUAGE_CODE = "feature_lang";
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
+    @ParamConstraint(max = "120",
+                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
+                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
+                     optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String shortDescription;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
@@ -67,8 +60,10 @@ public final class AddSoftwareAction extends Action {
     private final String description;
 
     @RequestParam(name = SOFTWARE_NAME_CODE, role = Role.POST)
-    @ParamConstraint(max = "100", maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
-    min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."), optionalErrorMsg = @tr("The software name is requiered."))
+    @ParamConstraint(max = "100",
+                     maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
+                     min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."),
+                     optionalErrorMsg = @tr("The software name is requiered."))
     private final String softwareName;
 
     @Optional
@@ -103,8 +98,7 @@ public final class AddSoftwareAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        session.notifyList(url.getMessages());
+    public Url doProcessRestricted(final Member authenticatedMember) {
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use SoftwareManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to add a software."));
@@ -136,13 +130,20 @@ public final class AddSoftwareAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
+        return new AddSoftwarePageUrl();
+    }
 
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You have to be logged to add a software.");
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // TODO make sure all the parameters are transmitted
         session.addParameter(url.getShortDescriptionParameter());
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSoftwareNameParameter());
         session.addParameter(url.getLangParameter());
-
-        return new AddSoftwarePageUrl();
     }
 }

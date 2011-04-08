@@ -37,7 +37,7 @@ public abstract class Action implements Linkable {
     }
 
     @Override
-    public final void writeToHttp(final HttpResponse response, WebProcessor server) throws RedirectException, IOException {
+    public final void writeToHttp(final HttpResponse response, final WebProcessor server) throws RedirectException, IOException {
         Log.framework().trace("Processing action: " + actionUrl.urlString());
         final Url url = process();
         if (url != null) {
@@ -57,6 +57,7 @@ public abstract class Action implements Linkable {
 
     public final Url process() {
         if (!actionUrl.getMessages().isEmpty()) {
+            session.notifyList(actionUrl.getMessages());
             return doProcessErrors();
         }
         return doProcess();

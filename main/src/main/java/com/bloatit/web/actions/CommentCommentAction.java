@@ -45,8 +45,7 @@ public class CommentCommentAction extends LoggedAction {
     }
 
     @Override
-    public final Url doProcessRestricted(Member authenticatedMember) {
-        session.notifyList(url.getMessages());
+    public final Url doProcessRestricted(final Member authenticatedMember) {
         session.notifyGood(Context.tr("Your comment has been added."));
 
         try {
@@ -60,7 +59,6 @@ public class CommentCommentAction extends LoggedAction {
 
     @Override
     protected final Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return new LoginPageUrl();
     }
 

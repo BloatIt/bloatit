@@ -17,8 +17,8 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Comment;
@@ -78,10 +78,9 @@ public final class CreateCommentAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
-        session.notifyList(url.getMessages());
+    public Url doProcessRestricted(final Member authenticatedMember) {
         try {
-            Comment newComment = commentable.addComment(comment);
+            final Comment newComment = commentable.addComment(comment);
 
             if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
                 session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
@@ -89,7 +88,7 @@ public final class CreateCommentAction extends LoggedAction {
             }
 
             if (attachement != null) {
-                final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
+                final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
                                                                                                     attachement,
                                                                                                     attachementFileName,
                                                                                                     attachementDescription);
@@ -115,7 +114,6 @@ public final class CreateCommentAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return redirectWithError();
     }
 

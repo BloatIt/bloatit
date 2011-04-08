@@ -40,9 +40,7 @@ public class SendTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
-        final Member me = session.getAuthToken().getMember();
-
+    public Url doProcessRestricted(final Member me) {
         if (!me.canSendInvitation(team)) {
             session.notifyBad(Context.tr("You are not allowed to send invitations for this team"));
             return session.getLastVisitedPage();
@@ -60,7 +58,6 @@ public class SendTeamInvitationAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }
 

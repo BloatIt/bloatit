@@ -8,6 +8,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Member;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -18,8 +19,8 @@ public abstract class AdminPage extends LoggedPage {
     }
 
     @Override
-    public final HtmlElement createRestrictedContent() throws RedirectException {
-        if (session.getAuthToken().getMember().getRole() == Role.ADMIN) {
+    public final HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+        if (loggedUser.getRole() == Role.ADMIN) {
             try {
                 return createAdminContent();
             } catch (final UnauthorizedOperationException e) {

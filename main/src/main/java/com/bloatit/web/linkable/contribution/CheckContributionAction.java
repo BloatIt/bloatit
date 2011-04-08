@@ -21,8 +21,8 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -65,9 +65,9 @@ public final class CheckContributionAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
+    public Url doProcessRestricted(final Member authenticatedMember) {
 
-        CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
+        final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
         try {
 
             if (!process.getAmount().equals(amount)) {
@@ -77,7 +77,7 @@ public final class CheckContributionAction extends LoggedAction {
             if ( !(process.getComment() == comment || (process.getComment() != null && process.getComment().equals(comment)) )) {
                 process.setComment(comment);
             }
-        } catch (IllegalWriteException e) {
+        } catch (final IllegalWriteException e) {
             session.notifyBad(tr("The contribution's amount is locked during the payment process."));
         }
 
@@ -86,10 +86,6 @@ public final class CheckContributionAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-        session.addParameter(url.getCommentParameter());
-        session.addParameter(url.getAmountParameter());
-
         return new ContributePageUrl(process);
     }
 

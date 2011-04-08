@@ -27,6 +27,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 

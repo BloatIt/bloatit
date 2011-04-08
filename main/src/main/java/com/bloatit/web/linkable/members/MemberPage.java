@@ -110,8 +110,7 @@ public final class MemberPage extends MasterPage {
             memberTitle.add(memberTeams);
             final PageIterable<Team> teamList = member.getTeams();
             if (teamList.size() > 0) {
-                @SuppressWarnings("synthetic-access")
-                final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
+                @SuppressWarnings("synthetic-access") final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
                 final MemberPageUrl clonedUrl = new MemberPageUrl(url);
                 pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
                 memberTeams.add(pagedTeamList);

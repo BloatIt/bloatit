@@ -31,13 +31,13 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -81,7 +81,7 @@ public final class ReportBugPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() {
+    public HtmlElement createRestrictedContent(Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         if (FeatureManager.canCreate(session.getAuthToken())) {

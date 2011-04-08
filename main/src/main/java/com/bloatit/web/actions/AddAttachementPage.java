@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.components.SideBarUserContentBlock;
 import com.bloatit.web.pages.LoggedPage;
@@ -68,7 +69,7 @@ public final class AddAttachementPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws PageNotFoundException {
+    public HtmlElement createRestrictedContent(Member loggedUser) throws PageNotFoundException {
         addNotifications(url.getMessages());
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();

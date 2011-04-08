@@ -16,25 +16,23 @@ import java.util.Locale;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
+import com.bloatit.model.Member;
 import com.bloatit.model.Software;
-import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/docreate")
-public final class CreateFeatureAction extends Action {
+public final class CreateFeatureAction extends LoggedAction {
 
     public static final String DESCRIPTION_CODE = "description";
     public static final String SPECIFICATION_CODE = "specification";
@@ -68,14 +66,9 @@ public final class CreateFeatureAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        session.notifyList(url.getMessages());
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            session.notifyError(Context.tr("You must be logged in to create a feature."));
-            return new LoginPageUrl();
-        }
+    public Url doProcessRestricted(final Member authenticatedMember) {
         final Locale langLocale = new Locale(lang);
-        final Feature d = FeatureFactory.createFeature(session.getAuthToken().getMember(), langLocale, description, specification, software);
+        final Feature d = FeatureFactory.createFeature(authenticatedMember, langLocale, description, specification, software);
 
         final FeaturePageUrl to = new FeaturePageUrl(d);
 
@@ -84,13 +77,21 @@ public final class CreateFeatureAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
+        return new CreateFeaturePageUrl();
+    }
 
+
+
+    @Override
+    protected String getRefusalReason() {
+        return "You have to be logged to create a new feature request.";
+    }
+
+    @Override
+    protected void transmitParameters() {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSpecificationParameter());
         session.addParameter(url.getSoftwareParameter());
-        session.addParameter(url.getLangParameter());
-
-        return new CreateFeaturePageUrl();
+        session.addParameter(url.getLangParameter());        
     }
 }

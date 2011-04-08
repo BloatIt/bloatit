@@ -103,10 +103,10 @@ public final class CheckContributionPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateCheckContributeForm());
+        layout.addLeft(generateCheckContributeForm(loggedUser));
 
         layout.addRight(new SideBarFeatureBlock(process.getFeature(),process.getAmount()));
         
@@ -114,11 +114,10 @@ public final class CheckContributionPage extends LoggedPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm() throws RedirectException {
+    public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
         final HtmlTitleBlock group = new HtmlTitleBlock("Check contribution", 1);
 
         final Feature feature = process.getFeature();
-        final Member member = session.getAuthToken().getMember();
 
         BigDecimal account;
         try {

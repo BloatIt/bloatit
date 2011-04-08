@@ -15,10 +15,10 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.model.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.IndexPageUrl;
@@ -83,8 +83,6 @@ public final class MemberActivationAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-
         return new IndexPageUrl();
     }
 }

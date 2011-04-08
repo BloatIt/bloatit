@@ -41,7 +41,7 @@ public class GiveRightAction extends LoggedAction {
     // Kept for consistency
     private final GiveRightActionUrl url;
 
-    @RequestParam()
+    @RequestParam
     private final Team targetTeam;
 
     @RequestParam
@@ -53,7 +53,7 @@ public class GiveRightAction extends LoggedAction {
     @RequestParam
     private final Boolean give;
 
-    public GiveRightAction(GiveRightActionUrl url) {
+    public GiveRightAction(final GiveRightActionUrl url) {
         super(url);
         this.url = url;
         this.targetTeam = url.getTargetTeam();
@@ -63,14 +63,11 @@ public class GiveRightAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
-        Member connected = session.getAuthToken().getMember();
-        connected.authenticate(session.getAuthToken());
-
-        if (!connected.equals(targetMember) && !connected.canPromote(targetTeam)) {
+    public Url doProcessRestricted(final Member authenticatedMember) {
+        if (!authenticatedMember.equals(targetMember) && !authenticatedMember.canPromote(targetTeam)) {
             try {
                 session.notifyBad(Context.tr("You are not allowed to promote people in the team: " + targetTeam.getLogin()));
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug");
                 throw new ShallNotPassException("Cannot display a team name", e);
             }

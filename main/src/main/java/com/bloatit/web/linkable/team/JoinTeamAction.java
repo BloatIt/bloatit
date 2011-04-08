@@ -31,9 +31,7 @@ public class JoinTeamAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
-        final Member me = session.getAuthToken().getMember();
-
+    public Url doProcessRestricted(final Member me) {
         if (targetTeam.isPublic()) {
             try {
                 me.addToPublicTeam(targetTeam);

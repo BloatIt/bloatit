@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
+import com.bloatit.model.Member;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.features.FeaturePage;
@@ -60,7 +61,7 @@ public final class CommentReplyPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws RedirectException {
+    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
 
 
         final HtmlDiv box = new HtmlDiv("padding_box");

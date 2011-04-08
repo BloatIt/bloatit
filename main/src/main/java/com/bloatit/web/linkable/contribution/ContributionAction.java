@@ -67,7 +67,6 @@ public final class ContributionAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return new CheckContributionPageUrl(process);
     }
 

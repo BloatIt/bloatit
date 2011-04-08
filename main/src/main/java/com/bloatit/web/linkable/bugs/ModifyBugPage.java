@@ -29,6 +29,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
+import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -70,7 +71,7 @@ public final class ModifyBugPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() {
+    public HtmlElement createRestrictedContent(final Member loggedUser) {
         if (FeatureManager.canCreate(session.getAuthToken())) {
             return new HtmlDiv("padding_box").add(generateModifyBugForm());
         }
@@ -125,8 +126,8 @@ public final class ModifyBugPage extends LoggedPage {
     }
 
     private HtmlElement generateBadRightError() {
+        // TODO do something here.
         final HtmlDiv group = new HtmlDiv();
-
         return group;
     }
 

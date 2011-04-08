@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webprocessor.context.Context;
 
 /**
  * A class that can check various constraints on files

@@ -55,7 +55,7 @@ public final class AccountChargingPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() {
+    public HtmlElement createRestrictedContent(Member loggedUser) {
 
         final HtmlTitleBlock title = new HtmlTitleBlock(tr("Charge your account"), 1);
 

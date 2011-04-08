@@ -47,7 +47,7 @@ public class SendTeamInvitationPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent() throws RedirectException {
+    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 
         final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl();

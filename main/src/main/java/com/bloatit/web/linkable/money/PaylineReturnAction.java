@@ -54,7 +54,7 @@ public class PaylineReturnAction extends Action {
         }
 
         if(process != null) {
-            Url target = process.getParentProcess().endSubProcess(process);
+            final Url target = process.getParentProcess().endSubProcess(process);
             process.close();
             if(target != null) {
                 return target;
@@ -66,7 +66,6 @@ public class PaylineReturnAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        Context.getSession().notifyError(tr("Error in filling up your account."));
         return Context.getSession().pickPreferredPage();
     }
 

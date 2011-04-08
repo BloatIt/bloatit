@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.EnumSet;
 
 import com.bloatit.framework.webprocessor.annotations.Message;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.Message.What;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 
 public class UrlParameterConstraints<U> {
 

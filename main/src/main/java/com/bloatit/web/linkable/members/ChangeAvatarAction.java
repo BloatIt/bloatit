@@ -11,39 +11,27 @@
  */
 package com.bloatit.web.linkable.members;
 
-import static com.bloatit.framework.webserver.Context.tr;
-
-import com.bloatit.framework.utils.FileConstraintChecker;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.masters.Action;
-import com.bloatit.framework.webserver.url.Url;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
-import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * A response to a form used to change user avatar
  */
 @ParamContainer("member/changeavatar")
-public final class ChangeAvatarAction extends Action {
+public final class ChangeAvatarAction extends LoggedAction {
 
     public static final String MEMBER = "member";
     public static final String AVATAR_CODE = "avatar";
@@ -74,22 +62,16 @@ public final class ChangeAvatarAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        session.notifyList(url.getMessages());
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use UserContentManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to change your avatar."));
-            return new LoginPageUrl();
-        }
-
-        FileConstraintChecker fcc = new FileConstraintChecker(avatar);
+    public Url doProcessRestricted(final Member authenticatedMember) {
+        // TODO create a member.canAccessAvatar.
+                FileConstraintChecker fcc = new FileConstraintChecker(avatar);
         if (fcc.isImageAvatar() != null) {
             for (String message : fcc.isImageAvatar()) {
                 session.notifyBad(message);
             }
             return Context.getSession().pickPreferredPage();
         }
-
+        
         final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
         member.setAvatar(avatarfm);
 
@@ -99,15 +81,19 @@ public final class ChangeAvatarAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         if (member != null) {
-            return redirectWithError();
+            return Context.getSession().getLastVisitedPage();
         }
         return Context.getSession().getLastVisitedPage();
     }
 
-    public Url redirectWithError() {
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You have to be logged to change your avatar");
+    }
+
+    @Override
+    protected void transmitParameters() {
         session.addParameter(url.getMemberParameter());
-        return Context.getSession().getLastVisitedPage();
     }
 }

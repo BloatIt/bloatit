@@ -88,7 +88,7 @@ public final class SessionManager {
 
                     sessionDump.append(session.getValue().getKey().toString());
                     sessionDump.append(" ");
-                    sessionDump.append(session.getValue().getAuthToken().getMember().getDao().getId());
+                    sessionDump.append(session.getValue().getAuthToken().getMember().getId());
                     sessionDump.append("\n");
 
                     fileOutputStream.write(sessionDump.toString().getBytes());
@@ -199,20 +199,20 @@ public final class SessionManager {
         }
     }
 
-    public static synchronized void storeTemporarySession(String key, Session session) {
+    public static synchronized void storeTemporarySession(final String key, final Session session) {
         temporarySessions.put(key, session);
     }
 
-    public static synchronized Session pickTemporarySession(String key) {
+    public static synchronized Session pickTemporarySession(final String key) {
         if(temporarySessions.containsKey(key)) {
-            Session session = temporarySessions.get(key);
+            final Session session = temporarySessions.get(key);
             temporarySessions.remove(key);
             return session;
         }
         return null;
     }
 
-    public static synchronized void cleanTemporarySession(Session sessionToClean) {
+    public static synchronized void cleanTemporarySession(final Session sessionToClean) {
         final Iterator<Entry<String, Session>> it = temporarySessions.entrySet().iterator();
 
         while (it.hasNext()) {

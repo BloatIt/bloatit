@@ -40,7 +40,7 @@ public final class MetaBugDeleteAction extends Action {
 
     @Override
     protected Url doProcess() {
-        MetaBug bug = MetaBugManager.getById(bugId);
+        final MetaBug bug = MetaBugManager.getById(bugId);
         if (bug != null) {
             bug.delete();
             session.notifyGood("Bug deleted");
@@ -52,7 +52,6 @@ public final class MetaBugDeleteAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }
 }
