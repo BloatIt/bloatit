@@ -60,7 +60,7 @@ public class ConfigurationAdminPage extends AdminPage {
 
     @Override
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateConfAdmin());
 
         // layout.addRight(new SideBarDocumentationBlock("markdown"));

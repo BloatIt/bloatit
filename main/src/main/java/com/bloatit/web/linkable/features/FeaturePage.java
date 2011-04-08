@@ -88,7 +88,7 @@ public final class FeaturePage extends MasterPage {
         // - The tab panel
         // - The comments
 
-        TwoColumnLayout layout = new TwoColumnLayout(false);
+        TwoColumnLayout layout = new TwoColumnLayout(false, url);;
 
 
         layout.addLeft(new FeatureSummaryComponent(feature));
@@ -96,7 +96,7 @@ public final class FeaturePage extends MasterPage {
         layout.addLeft(new FeatureCommentListComponent(feature));
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
 

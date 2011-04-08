@@ -106,11 +106,11 @@ public final class CheckContributionPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
 
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm());
 
         layout.addRight(new SideBarFeatureBlock(process.getFeature(),process.getAmount()));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         return layout;
     }

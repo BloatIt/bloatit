@@ -69,11 +69,11 @@ public class TeamPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
     }

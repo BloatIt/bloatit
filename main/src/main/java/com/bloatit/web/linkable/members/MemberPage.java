@@ -77,9 +77,9 @@ public final class MemberPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
     }

@@ -39,12 +39,12 @@ public class CreateTeamPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("create_team"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
     }

@@ -52,7 +52,7 @@ public final class SoftwareListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-        TwoColumnLayout layout = new TwoColumnLayout(true);
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
 
@@ -68,7 +68,7 @@ public final class SoftwareListPage extends MasterPage {
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
 

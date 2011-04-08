@@ -69,9 +69,9 @@ public final class AddReleasePage extends LoggedPage {
     }
     @Override
     public HtmlElement createRestrictedContent() {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
         layout.addLeft(generateReleaseCreationForm());
 
         return layout;

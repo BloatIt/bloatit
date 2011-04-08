@@ -80,7 +80,7 @@ public final class CreateFeaturePage extends LoggedPage {
 
     private HtmlElement generateFeatureCreationForm() {
 
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
@@ -161,7 +161,7 @@ public final class CreateFeaturePage extends LoggedPage {
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         return layout;
     }

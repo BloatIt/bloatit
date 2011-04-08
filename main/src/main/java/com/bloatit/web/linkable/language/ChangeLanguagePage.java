@@ -47,10 +47,10 @@ public class ChangeLanguagePage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateChangeLanguagePageMain());
         layout.addRight(new SideBarDocumentationBlock("change_language"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
         add(layout);
     }
 

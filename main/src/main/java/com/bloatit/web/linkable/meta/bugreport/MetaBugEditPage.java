@@ -67,7 +67,7 @@ public final class MetaBugEditPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Bug", 1);
 
@@ -98,7 +98,7 @@ public final class MetaBugEditPage extends MasterPage {
 
         layout.addLeft(pageTitle);
 
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
     }

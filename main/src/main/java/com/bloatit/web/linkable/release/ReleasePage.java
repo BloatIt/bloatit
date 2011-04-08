@@ -50,9 +50,9 @@ public final class ReleasePage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarFeatureBlock(release.getFeature()));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
         add(layout);
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));

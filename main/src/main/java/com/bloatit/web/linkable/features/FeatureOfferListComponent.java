@@ -55,11 +55,8 @@ import com.bloatit.web.url.TeamPageUrl;
 
 public class FeatureOfferListComponent extends HtmlDiv {
 
-    private final Feature feature;
-
     public FeatureOfferListComponent(final Feature feature) {
         super();
-        this.feature = feature;
         try {
 
             PageIterable<Offer> offers = new EmptyPageIterable<Offer>();
@@ -83,12 +80,10 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
                     link.setCssClass("button");
 
-
                     final HtmlDiv noOffer = new HtmlDiv("no_offer_block");
                     {
                         noOffer.add(link);
                     }
-
                     block.addInRightColumn(noOffer);
 
                 }
@@ -96,12 +91,11 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 case PREPARING:
                     offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
 
-                    //
                     // Selected
                     BicolumnOfferBlock block = new BicolumnOfferBlock(true);
                     offersBlock.add(block);
-                    // Generating the left column
 
+                    // Generating the left column
                     block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
                     if (feature.getValidationDate() != null && DateUtils.isInTheFuture(feature.getValidationDate())) {
                         TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
@@ -118,18 +112,14 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                     + "."));
                         }
                     } else {
-
                         BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
-
                         CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
-
                         block.addInLeftColumn(new HtmlParagraph(tr("This offer is validated and will go into development as soon as the resquested amount is available ({0} left).",
                                                                    currency.toString())));
                     }
                     // Generating the right column
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
 
-                    //
                     // UnSelected
                     offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
                     BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
@@ -174,13 +164,12 @@ public class FeatureOfferListComponent extends HtmlDiv {
         } catch (final UnauthorizedOperationException e) {
             // No right no current offer.
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
-            throw new ShallNotPassException("User cannot access selected offer", e); 
+            throw new ShallNotPassException("User cannot access selected offer", e);
         }
     }
 
     public void generateOldOffersList(PageIterable<Offer> offers, int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
             throws UnauthorizedOperationException {
-        //
         // UnSelected
         offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
         BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
@@ -284,20 +273,16 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         }
 
                         final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-
                         progressPara.add(progressBar);
 
                     }
                     offerRightTopColumn.add(progressPara);
-
                 }
                 offerTopBlock.add(offerRightTopColumn);
-
             }
             add(offerTopBlock);
 
             // TODO: choose to display the title or not
-
             final HtmlDiv offerBottomBlock = new HtmlDiv("offer_bottom_block");
             {
                 final HtmlDiv offerLeftBottomColumn = new HtmlDiv("offer_left_bottom_column");
@@ -312,7 +297,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     final PageIterable<Milestone> lots = offer.getMilestonees();
                     if (lots.size() == 1) {
                         final Milestone lot = lots.iterator().next();
-
 
                         final HtmlParagraph datePara = new HtmlParagraph();
                         datePara.setCssClass("offer_block_para");
@@ -362,7 +346,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                 final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0} - ", i) + getLotState(lot), 2);
                                 lotBlock.add(lotTitle);
 
-
                                 final HtmlParagraph datePara = new HtmlParagraph();
                                 datePara.setCssClass("offer_block_para");
                                 {
@@ -384,7 +367,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                 generateAddReleaseLink(lot, lotBlock);
 
                                 generateReleaseList(lot, lotBlock);
-
                             }
                             offerRightBottomColumn.add(lotBlock);
                         }
@@ -397,21 +379,15 @@ public class FeatureOfferListComponent extends HtmlDiv {
         }
 
         public void generateReleaseList(final Milestone lot, final HtmlDiv lotBlock) {
-
             PageIterable<Release> releases = lot.getReleases();
-
+            
             if (releases.size() > 0) {
-
                 lotBlock.add(new HtmlParagraph(tr("Releases:")));
-
                 HtmlList list = new HtmlList();
-
+                
                 for (Release release : releases) {
-
                     String date = Context.getLocalizator().getDate(release.getCreationDate()).toString(FormatStyle.MEDIUM);
-
                     HtmlLink releaseLink = new ReleasePageUrl(release).getHtmlLink(release.getVersion());
-
                     list.add(new HtmlListItem(new HtmlMixedText("<0::> (<1::>)", releaseLink, new HtmlSpan().addText(date))));
                 }
                 lotBlock.add(list);
@@ -451,7 +427,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
         }
 
         private XmlNode generatePopularityBlock() {
-
             final HtmlDiv offerSummaryPopularity = new HtmlDiv("offer_popularity");
             {
                 final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "offer_popularity_text");
@@ -465,8 +440,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     if (vote == 0) {
                         final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");
                         {
-
-                            // Usefull
+                            // Useful
                             final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(offer, true);
                             final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
                             usefullLink.setCssClass("usefull");
@@ -497,10 +471,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
                     offerSummaryPopularity.add(offerPopularityNone);
                 }
-
             }
             return offerSummaryPopularity;
         }
-
     }
 }

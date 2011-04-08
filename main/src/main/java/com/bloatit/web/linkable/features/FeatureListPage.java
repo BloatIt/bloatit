@@ -85,10 +85,8 @@ public final class FeatureListPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         // Search block
-        TwoColumnLayout layout = new TwoColumnLayout(true);
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
         add(layout);
-
-        layout.addRight(new SideBarBugReportBlock(url));
 
         // ////////////////////
         // Div feature_search_block

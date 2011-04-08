@@ -95,12 +95,12 @@ public final class MakeOfferPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
 
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateOfferForm());
 
         layout.addRight(new SideBarFeatureBlock(feature));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         return layout;
     }

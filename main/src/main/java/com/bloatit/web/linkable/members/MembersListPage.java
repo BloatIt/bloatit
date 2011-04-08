@@ -51,7 +51,7 @@ public final class MembersListPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
         final PageIterable<Member> memberList = MemberManager.getAll();
@@ -65,7 +65,7 @@ public final class MembersListPage extends MasterPage {
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
     }

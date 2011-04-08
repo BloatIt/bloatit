@@ -41,7 +41,7 @@ public final class MetaBugsListPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         List<MetaBug> bugList = MetaBugManager.getOpenBugs();
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Bugs list ({0})", bugList.size()), 1);
@@ -58,7 +58,7 @@ public final class MetaBugsListPage extends MasterPage {
         }
 
         layout.addLeft(pageTitle);
-        layout.addRight(new SideBarBugReportBlock(url));
+        
         add(layout);
     }
 

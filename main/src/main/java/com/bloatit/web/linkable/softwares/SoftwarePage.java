@@ -60,8 +60,8 @@ public final class SoftwarePage extends MasterPage {
         if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }
-        TwoColumnLayout layout = new TwoColumnLayout(true);
-        layout.addRight(new SideBarBugReportBlock(url));
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        
 
         try {
             HtmlTitle softwareName;

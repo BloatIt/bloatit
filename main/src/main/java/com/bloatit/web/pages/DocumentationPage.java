@@ -52,7 +52,7 @@ public class DocumentationPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-        TwoColumnLayout layout = new TwoColumnLayout();
+        TwoColumnLayout layout = new TwoColumnLayout(url);
 
         BoxLayout box = new BoxLayout();
 
@@ -63,7 +63,7 @@ public class DocumentationPage extends MasterPage {
 
         box.add(docRenderer);
         layout.addLeft(box);
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         add(layout);
     }

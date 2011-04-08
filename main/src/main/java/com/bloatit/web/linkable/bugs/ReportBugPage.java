@@ -81,7 +81,7 @@ public final class ReportBugPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         if (FeatureManager.canCreate(session.getAuthToken())) {
             layout.addLeft(generateReportBugForm());
@@ -91,7 +91,7 @@ public final class ReportBugPage extends LoggedPage {
 
         layout.addRight(new SideBarFeatureBlock(offer.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         return layout;
     }

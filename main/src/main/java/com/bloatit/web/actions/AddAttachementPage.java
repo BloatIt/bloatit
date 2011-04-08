@@ -72,9 +72,9 @@ public final class AddAttachementPage extends LoggedPage {
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
         }
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarUserContentBlock(userContent));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
         layout.addLeft(generateReleaseCreationForm());
 
         return layout;

@@ -41,7 +41,7 @@ public class AdminHomePage extends AdminPage {
 
     @Override
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateAdminHome());
 
         // layout.addRight(new SideBarDocumentationBlock("markdown"));

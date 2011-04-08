@@ -61,7 +61,7 @@ public final class IndexPage extends MasterPage {
         }
         add(globalDescription);
 
-        TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true);
+        TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
         twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"), 1));
 
         final HtmlDiv featureList = new HtmlDiv("feature_list");
@@ -110,7 +110,6 @@ public final class IndexPage extends MasterPage {
 
         twoColumnLayout.addLeft(featureList);
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-        twoColumnLayout.addRight(new SideBarBugReportBlock(url));
         add(twoColumnLayout);
     }
 

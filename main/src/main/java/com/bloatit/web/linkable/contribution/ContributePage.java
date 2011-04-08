@@ -67,12 +67,12 @@ public final class ContributePage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateContributeForm());
 
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        layout.addRight(new SideBarBugReportBlock(url));
+        
 
         return layout;
     }
