@@ -54,6 +54,7 @@ public final class HttpResponse {
     private static final long TIME_360_DAYS = 360 * 24 * 3600 * 1000;
 
     private final OutputStream output;
+    // TODO use me ;)
     private StatusCode status = StatusCode.OK_200;
     private final SimpleDateFormat httpDateformat;
 

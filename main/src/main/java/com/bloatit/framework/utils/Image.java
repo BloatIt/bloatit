@@ -37,7 +37,6 @@ public class Image {
      * </p>
      * 
      * @return the identifier of the image
-     * @see Image#isLocal()
      */
     public final String getIdentifier() {
         return this.identifier;

@@ -28,6 +28,7 @@ import com.bloatit.framework.xcgiserver.XcgiProcessor;
 public abstract class WebServer implements XcgiProcessor {
 
     public WebServer() {
+        super();
     }
 
     @Override
@@ -35,7 +36,7 @@ public abstract class WebServer implements XcgiProcessor {
         final Session session = findSession(httpHeader);
 
         try {
-            WebHeader header = new WebHeader(httpHeader);
+            final WebHeader header = new WebHeader(httpHeader);
             
             ModelAccessor.open();
             Context.reInitializeContext(header, session);
@@ -51,7 +52,7 @@ public abstract class WebServer implements XcgiProcessor {
             try {
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response, this);
-            } catch (ShallNotPassException e) {
+            } catch (final ShallNotPassException e) {
                 Log.framework().fatal("Right management error", e);
                 // TODO create a page dedicated to handling this
                 Context.getSession().notifyError("TODO : This page is a placeholder used to handle right management errors.");
@@ -80,7 +81,7 @@ public abstract class WebServer implements XcgiProcessor {
             response.writeException(e);
             try {
                 ModelAccessor.rollback();
-            } catch (RuntimeException e1) {
+            } catch (final RuntimeException e1) {
                 Log.framework().fatal(e);
                 throw e1;
             }

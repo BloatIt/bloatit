@@ -333,15 +333,11 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
         /**
          * Return the input tag element
-         *
-         * @return
          */
         public abstract HtmlElement getInputElement();
 
         /**
          * return the element to add in the tree
-         *
-         * @return
          */
         public abstract HtmlElement getContentElement();
 

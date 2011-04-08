@@ -35,8 +35,8 @@ import com.bloatit.framework.xcgiserver.XcgiParser;
  * Parse a fastcgi input stream to extract http params and post stream.
  * </p>
  * <p>
- * The fastcgi protocol specification can be found here: {@link http
- * ://www.fastcgi.com/devkit/doc/fcgi-spec.html}
+ * The fastcgi protocol specification can be found here:
+ * {@link "http://www.fastcgi.com/devkit/doc/fcgi-spec.html"}
  * </p>
  * <p>
  * The fastcgi protocol use 2 stream, 1 input stream and 1 output stream,
@@ -49,26 +49,6 @@ import com.bloatit.framework.xcgiserver.XcgiParser;
  * </p>
  */
 public class FCGIParser implements XcgiParser {
-
-    /**
-     * <p>
-     * The response is encapsuled in FCGI_STDOUT record. The size of the content
-     * of a record is coded with 2 bytes so the size can not exceed 65536 bytes.
-     * The {@link FCGIOutputStream} charged to generete the output records is
-     * not protected so a buffedOutputStream is use to cut the response in small
-     * blocks.
-     * </p>
-     * The output record size mustn't be more than 65000 (max size of a record).
-     * <p>
-     * If the output record size is too small, the overhead weigth due to FCGI
-     * record's header will be heavy.
-     * </p>
-     * <p>
-     * If the output record size is too big, the global latency of the response
-     * will increase.
-     * </p>
-     */
-    private static final int DEFAULT_OUTPUT_RECORD_SIZE = 8192;
 
     /**
      * The FCGI version is always 1.
@@ -138,7 +118,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Create a fcgi parser with the 2 stream of the web server's socket.
-     *
+     * 
      * @param input stream containing data from the web server
      * @param output stream where to write the response to the web server
      * @throws IOException
@@ -353,7 +333,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Converts a 4 byte array of unsigned bytes to an long
-     *
+     * 
      * @param b an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */

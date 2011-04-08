@@ -22,7 +22,7 @@ public final class HtmlSubmit extends HtmlLeaf {
     /**
      * Creates a HtmlButton
      *
-     * @param label the text that will be shown on the button
+     * @param value the text that will be shown on the button
      */
     public HtmlSubmit(final String value) {
         super();

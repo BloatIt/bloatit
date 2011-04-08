@@ -16,7 +16,6 @@ public class SessionParameters extends GenericParameters<UrlParameter<?, ?>, Url
      *
      * @param name the name of the parameter to add
      * @param value the value of the paramter to add
-     * @return itself
      */
     @Override
     public final void add(final String name, final UrlParameter<?, ?> value) {

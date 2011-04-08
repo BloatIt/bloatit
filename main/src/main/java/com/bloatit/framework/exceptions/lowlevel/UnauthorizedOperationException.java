@@ -46,7 +46,7 @@ public class UnauthorizedOperationException extends Exception {
          * You try to access a method that require authentication without
          * authenticating the object.
          *
-         * @see RestrictedObject#authenticate(com.bloatit.model.AuthToken)
+         * @see RestrictedObject#authenticate(com.bloatit.model.right.AuthToken)
          */
         AUTHENTICATION_NEEDED,
 

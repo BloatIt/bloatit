@@ -23,7 +23,7 @@ public class TimeRenderer {
 
         private final long coef;
 
-        private TimeBase(long coef) {
+        private TimeBase(final long coef) {
             this.coef = coef;
         }
 
@@ -36,22 +36,22 @@ public class TimeRenderer {
     private final long milliseconds;
     private final TimeRenderer.TimeBase base;
 
-    public TimeRenderer(long miliseconds) {
+    public TimeRenderer(final long miliseconds) {
         super();
         this.milliseconds = miliseconds;
         base = computeBestResolution();
     }
 
-    public TimeRenderer(Date date) {
+    public TimeRenderer(final Date date) {
         this(date.getTime());
     }
 
     private TimeRenderer.TimeBase computeBestResolution() {
-        long positiveMillisecond = Math.abs(milliseconds);
+        final long positiveMillisecond = Math.abs(milliseconds);
         if (positiveMillisecond < 1000) {
             return TimeBase.MILLI;
         }
-        long second = positiveMillisecond / 1000;
+        final long second = positiveMillisecond / 1000;
         if (second > DateUtils.SECOND_PER_WEEK) {
             return TimeBase.WEEK;
         }
@@ -74,7 +74,7 @@ public class TimeRenderer {
         return printTime(getTime(), getBase());
     }
 
-    private String printTime(long time, TimeBase theBase) {
+    private String printTime(final long time, final TimeBase theBase) {
         switch (theBase) {
             case WEEK:
                 return trn("{0} week", "{0} weeks", time, time);
@@ -137,9 +137,9 @@ public class TimeRenderer {
      * 
      * @param limit the limit after which the date will be rendered as a date
      * @param style the style applied to date rendering when limit is reached
-     * @return
      */
-    public String renderRange(TimeBase limit, DateLocale.FormatStyle style) {
+    @SuppressWarnings("synthetic-access")
+    public String renderRange(final TimeBase limit, final DateLocale.FormatStyle style) {
         if (milliseconds > limit.coef) {
             return new DateLocale(new Date(milliseconds), Context.getLocalizator().getLocale()).toDateTimeString(style, style);
         }

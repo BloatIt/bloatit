@@ -101,7 +101,7 @@ public final class Loaders {
             return (Loader<T>) new ToIdentifiable(theClass);
         }
         if (WebProcess.class.isAssignableFrom(theClass)) {
-            return (Loader<T>) new ToWebProcess(theClass);
+            return (Loader<T>) new ToWebProcess();
         }
         throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
     }
@@ -269,7 +269,8 @@ public final class Loaders {
         @Override
         public Identifiable<?> fromString(final String data) throws ConversionErrorException {
             try {
-                final DaoIdentifiableQuery daoIdentifiableQuery = new DaoIdentifiableQuery();
+                @SuppressWarnings("rawtypes")
+                final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
                 daoIdentifiableQuery.idEquals(Integer.valueOf(data));
                 return daoIdentifiableQuery.uniqueResult().accept(new DataVisitorConstructor());
             } catch (final NumberFormatException e) {
@@ -310,12 +311,6 @@ public final class Loaders {
     }
 
     private static class ToWebProcess<T extends WebProcess> extends Loader<T> {
-
-        private final Class<T> theClass;
-
-        public ToWebProcess(final Class<T> theClass) {
-            this.theClass = theClass;
-        }
 
         @Override
         public final String toString(final T id) {

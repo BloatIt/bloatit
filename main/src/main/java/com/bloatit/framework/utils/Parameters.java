@@ -29,7 +29,6 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
      *
      * @param name the name of the parameter to add
      * @param value the value of the parameter to add
-     * @return itself
      */
     @Override
     public final void add(final String name, final String value) {
@@ -42,6 +41,7 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
         }
     }
 
+    @Override
     public Set<Entry<String, HttpParameter>> entrySet() {
         return super.entrySet();
     }

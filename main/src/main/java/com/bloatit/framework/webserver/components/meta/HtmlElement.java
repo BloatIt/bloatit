@@ -20,7 +20,7 @@ public abstract class HtmlElement extends XmlElement {
         super();
     }
 
-    public HtmlElement(HtmlElement element) {
+    public HtmlElement(final HtmlElement element) {
         super(element);
     }
 
@@ -68,7 +68,6 @@ public abstract class HtmlElement extends XmlElement {
      * </p>
      *
      * @param cssClass
-     * @return
      */
     public HtmlElement setCssClass(final String cssClass) {
         addAttribute("class", cssClass);

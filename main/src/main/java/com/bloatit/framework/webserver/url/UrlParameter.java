@@ -177,7 +177,7 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     @Override
-    protected void getStringParameters(Parameters parameters) {
+    protected void getStringParameters(final Parameters parameters) {
         final String stringValue = getStringValue();
         if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
@@ -193,7 +193,7 @@ public class UrlParameter<T, U> extends UrlNode {
         if (value instanceof List) {
             final StringBuilder sb = new StringBuilder();
             for (final U elem : ((List<U>) value)) {
-                sb.append("&").append(getName()).append("=").append(Loaders.toStr(value));
+                sb.append("&").append(getName()).append("=").append(Loaders.toStr(elem));
             }
             return sb.toString();
         }

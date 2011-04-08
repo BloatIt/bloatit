@@ -14,9 +14,6 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface REST {
-    /**
-     * @return
-     */
     String name();
 
     RequestMethod method();

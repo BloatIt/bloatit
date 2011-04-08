@@ -1,7 +1,8 @@
 package com.bloatit.framework.rest;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
+
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -12,8 +13,6 @@ import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.ModelAccessor;
-import com.bloatit.framework.webserver.Session;
-import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpHeader;
@@ -47,6 +46,7 @@ public abstract class RestServer implements XcgiProcessor {
      * </p>
      */
     public RestServer() {
+        super();
     }
 
     /**
@@ -54,20 +54,20 @@ public abstract class RestServer implements XcgiProcessor {
      * Processes requests. If requests is a request to a <code>ReST</code>
      * resource, writes this resource to the <code>response</code>
      * </p>
-     *
+     * 
      * @return <code>true</code> if the request was a ReST request,
      *         <code>false</code> otherwise
-     * @throws
+     * @throws IOException if there is an error while writing to the socket.
      */
     @Override
-    public final boolean process(HttpHeader httpHeader, HttpPost post, HttpResponse response) throws IOException {
+    public final boolean process(final HttpHeader httpHeader, final HttpPost post, final HttpResponse response) throws IOException {
         String scriptName = "";
         if (httpHeader.getScriptName().startsWith("/") && httpHeader.getScriptName().length() > 1) {
             scriptName = URLDecoder.decode(httpHeader.getScriptName().substring(1), UTF_8);
         }
 
         boolean found = false;
-        for (String directory : getResourcesDirectories()) {
+        for (final String directory : getResourcesDirectories()) {
             if (scriptName.equals(directory)) {
                 found = true;
             }
@@ -76,18 +76,14 @@ public abstract class RestServer implements XcgiProcessor {
             return false;
         }
 
-        RestHeader header = new RestHeader(httpHeader);
-        final Session session = findSession(header);
-        // Context.reInitializeContext(header, session);
-        // Context.re
-
-        String restResource = header.getResourceName();
+        final RestHeader header = new RestHeader(httpHeader);
+        final String restResource = header.getResourceName();
         Log.rest().trace("Received a rest request for resource: " + restResource);
 
         try {
             ModelAccessor.open();
             RequestMethod requestMethod;
-            String requestMethodString = httpHeader.getRequestMethod();
+            final String requestMethodString = httpHeader.getRequestMethod();
             if (requestMethodString == null) {
                 Log.web().warn("Received a rest request with no method. Should be either GET, POST, PUT or DELETE");
                 return true;
@@ -95,7 +91,7 @@ public abstract class RestServer implements XcgiProcessor {
 
             try {
                 requestMethod = RequestMethod.valueOf(requestMethodString);
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 Log.web().warn("Received a rest request with an invalid method: " + requestMethodString
                         + ". Should be either GET, POST, PUT or DELETE");
                 return true;
@@ -104,10 +100,10 @@ public abstract class RestServer implements XcgiProcessor {
             final Parameters parameters = header.getParameters();
 
             try {
-                Object result = doProcess(restResource, requestMethod, parameters);
-                RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
+                final Object result = doProcess(restResource, requestMethod, parameters);
+                final RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
                 response.writeRestResource(rr);
-            } catch (RestException e) {
+            } catch (final RestException e) {
                 response.writeRestError(e);
             }
             return true;
@@ -127,7 +123,7 @@ public abstract class RestServer implements XcgiProcessor {
      * <code>http://example.com/ws/{@code <resource>}</code> then this method
      * will return a set containing {"rest", "ws"}.
      * </p>
-     *
+     * 
      * @return a list of directories that can contain ReST resources
      */
     protected abstract Set<String> getResourcesDirectories();
@@ -136,7 +132,7 @@ public abstract class RestServer implements XcgiProcessor {
      * <p>
      * Determines the class to used for a given resource
      * </p>
-     *
+     * 
      * @param forResource the resource
      * @return the <code>Class</code> that holds results for
      *         <code>forResource</code> request
@@ -153,7 +149,7 @@ public abstract class RestServer implements XcgiProcessor {
      * Indicates whether the <code>string description</code> of the resource is
      * a valid descriptor.
      * </p>
-     *
+     * 
      * @param resource the string descriptor of the resource we want to access
      * @return <code>true</code> if the resource descriptor is valid,
      *         <code>false</code> otherwise
@@ -165,7 +161,7 @@ public abstract class RestServer implements XcgiProcessor {
      * Process a rest request and return the <code>Object</code> resulting of
      * the invocation
      * </p>
-     *
+     * 
      * @param restResource the resource (eg: members/1/messages)
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
@@ -178,8 +174,8 @@ public abstract class RestServer implements XcgiProcessor {
      * @see RestException
      * @see RestException#getStatus()
      */
-    private Object doProcess(String restResource, RequestMethod requestMethod, Parameters parameters) throws RestException {
-        String[] pathInfo = restResource.split("/");
+    private Object doProcess(final String restResource, final RequestMethod requestMethod, final Parameters parameters) throws RestException {
+        final String[] pathInfo = restResource.split("/");
         if (pathInfo.length == 0) {
             throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Please specify the resource you want to access");
         }
@@ -200,7 +196,7 @@ public abstract class RestServer implements XcgiProcessor {
         int id;
         try {
             id = Integer.valueOf(pathInfo[1]);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Expected " + pathInfo[0] + "/" + "[id]/" + pathInfo[1] + "; received "
                     + restResource);
         }
@@ -211,7 +207,7 @@ public abstract class RestServer implements XcgiProcessor {
         }
 
         for (int i = 2; i < pathInfo.length; i++) {
-            String pathString = pathInfo[i];
+            final String pathString = pathInfo[i];
             if (i < pathInfo.length - 1) {
                 result = invokeMethod(requestMethod, result, pathString);
 
@@ -220,7 +216,7 @@ public abstract class RestServer implements XcgiProcessor {
                     String request = "";
                     String ignored = "";
                     int j = 0;
-                    for (String s : pathInfo) {
+                    for (final String s : pathInfo) {
                         if (j <= i) {
                             request += s + '/';
                         } else {
@@ -247,7 +243,7 @@ public abstract class RestServer implements XcgiProcessor {
      * <p>
      * This method has to be used when the ReST request doesn't specify an id
      * </p>
-     *
+     * 
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
      * @param path the path of the RestResource
@@ -256,8 +252,8 @@ public abstract class RestServer implements XcgiProcessor {
      *         method
      * @throws RestException whenever an error occurs
      */
-    private Object invokeStatic(RequestMethod requestMethod, String path, Parameters params) throws RestException {
-        Class<?> clazz = getClass(path);
+    private Object invokeStatic(final RequestMethod requestMethod, final String path, final Parameters params) throws RestException {
+        final Class<?> clazz = getClass(path);
         return invoke(requestMethod, clazz, null, path, params);
     }
 
@@ -270,15 +266,15 @@ public abstract class RestServer implements XcgiProcessor {
      * This method has to be used on the <b>root</b> of ReST request that
      * specifies an id. <br />
      * Example of usage:
-     *
+     * 
      * <pre>
      * Request: GET http://elveos.org/rest/members/1/messages
      * Use: invokeStatic(RequestMethod.GET, members, 1);
      * Return: Members.getById(1);
      * </pre>
-     *
+     * 
      * </p>
-     *
+     * 
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
      * @param path the <b>root</b> of the ReST request
@@ -286,16 +282,16 @@ public abstract class RestServer implements XcgiProcessor {
      * @return the object resulting of the <code>path</code> method call
      * @throws RestException whenever an error occurs
      */
-    private Object invokeStatic(RequestMethod requestMethod, String path, int id) throws RestException {
-        Class<?> clazz = getClass(path);
-        for (Method m : clazz.getMethods()) {
+    private Object invokeStatic(final RequestMethod requestMethod, final String path, final int id) throws RestException {
+        final Class<?> clazz = getClass(path);
+        for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class) && m.getParameterTypes().length == 1 && m.getParameterTypes()[0] == int.class) {
-                REST annotation = m.getAnnotation(REST.class);
+                final REST annotation = m.getAnnotation(REST.class);
                 if (annotation.name().equalsIgnoreCase(path) && annotation.method().equals(requestMethod)) {
                     try {
                         Log.rest().trace("Invoking " + m);
                         return m.invoke(null, id);
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         Log.rest().fatal("Encountered an error when invoking [" + path + "/" + id + "]", e);
                         throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/" + id + "]", e);
                     }
@@ -310,7 +306,7 @@ public abstract class RestServer implements XcgiProcessor {
      * Invoke the method specified by <code>path</code> on the
      * <code>lookup</code> object
      * </p>
-     *
+     * 
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
      * @param lookup the object on which the method will be used
@@ -319,16 +315,16 @@ public abstract class RestServer implements XcgiProcessor {
      *         on <code>lookup</code>
      * @throws RestException whenever an error occurs
      */
-    private Object invokeMethod(RequestMethod requestMethod, Object lookup, String path) throws RestException {
-        Class<?> clazz = lookup.getClass();
-        for (Method m : clazz.getMethods()) {
+    private Object invokeMethod(final RequestMethod requestMethod, final Object lookup, final String path) throws RestException {
+        final Class<?> clazz = lookup.getClass();
+        for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class) && m.getParameterTypes().length == 0) {
-                REST annotation = m.getAnnotation(REST.class);
+                final REST annotation = m.getAnnotation(REST.class);
                 if (annotation.name().equalsIgnoreCase(path) && annotation.method().equals(requestMethod)) {
                     try {
                         Log.rest().trace("Invoking " + m);
                         return m.invoke(lookup, (Object[]) null);
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
                         throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                     }
@@ -339,7 +335,8 @@ public abstract class RestServer implements XcgiProcessor {
                 + "] does not exist");
     }
 
-    private Object invokeMethod(RequestMethod requestMethod, Object result, String path, Parameters params) throws RestException {
+    private Object
+            invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params) throws RestException {
         return invoke(requestMethod, result.getClass(), result, path, params);
     }
 
@@ -347,20 +344,22 @@ public abstract class RestServer implements XcgiProcessor {
      * <p>
      * Factorization of code
      * </p>
-     *
+     * 
      * @see #invokeStatic(RequestMethod, String, Parameters)
      * @see #invokeMethod(RequestMethod, Object, String, Parameters)
      */
-    private Object invoke(RequestMethod requestMethod, Class<?> clazz, Object lookup, String path, Parameters params) throws RestException {
-        for (Method m : clazz.getMethods()) {
+    private Object
+            invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
+                                                                                                                                            throws RestException {
+        for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class)) {
-                REST annotation = m.getAnnotation(REST.class);
+                final REST annotation = m.getAnnotation(REST.class);
                 if (annotation.name().equals(path) && annotation.method().equals(requestMethod) && m.getParameterTypes().length == params.size()
                         && annotation.params().length == params.size()) {
                     boolean correct = true;
-                    String[] paramsInOrder = new String[annotation.params().length];
+                    final String[] paramsInOrder = new String[annotation.params().length];
                     int i = 0;
-                    for (String param : annotation.params()) {
+                    for (final String param : annotation.params()) {
                         if (!params.containsKey(param)) {
                             correct = false;
                         } else {
@@ -371,7 +370,7 @@ public abstract class RestServer implements XcgiProcessor {
                         try {
                             Log.rest().trace("Invoking " + m);
                             return (m.invoke(lookup, (Object[]) paramsInOrder));
-                        } catch (Exception e) {
+                        } catch (final Exception e) {
                             Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
                             throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
                         }
@@ -384,11 +383,10 @@ public abstract class RestServer implements XcgiProcessor {
                     + " does not exist");
             throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
                     + "] on " + lookup.getClass().toString() + " does not exist");
-        } else {
-            Log.rest().warn("Method [" + requestMethod + " " + path + generateParametersString(params) + "] does not exist");
-            throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
-                    + "] does not exist");
         }
+        Log.rest().warn("Method [" + requestMethod + " " + path + generateParametersString(params) + "] does not exist");
+        throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
+                + "] does not exist");
     }
 
     /**
@@ -396,29 +394,15 @@ public abstract class RestServer implements XcgiProcessor {
      * Creates a string that represents a map as a list of parameters
      * </p>
      */
-    private String generateParametersString(Parameters params) {
+    private String generateParametersString(final Parameters params) {
         if (params.size() == 0) {
             return "()";
         }
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("(");
-        for (Entry<String, HttpParameter> param : params.entrySet()) {
+        for (final Entry<String, HttpParameter> param : params.entrySet()) {
             sb.append("String " + param.getKey() + ", ");
         }
         return sb.substring(0, sb.length() - 2) + ")";
-    }
-
-    /**
-     * @param httpHeader
-     * @return
-     */
-    private Session findSession(RestHeader header) {
-        if (header.getParameters().containsKey("session")) {
-            Session s = SessionManager.getByKey(header.getParameters().pick("session").getSimpleValue());
-            if (s != null) {
-                return s;
-            }
-        }
-        return null;
     }
 }

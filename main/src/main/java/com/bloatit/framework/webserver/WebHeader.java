@@ -10,25 +10,22 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 public class WebHeader {
 
     private static final String UTF_8 = "UTF-8";
-    private static final String PARAMETERS = "param";
-    private static final String PAGE_NAME = "page";
-    private static final String LANGUAGE = "lang";
-
+    
     private String language = "en";
     private String pageName = "";
     private final Parameters parameters = new Parameters();
     private final Parameters getParameters = new Parameters();
     private final HttpHeader httpHeader;
 
-    public WebHeader(HttpHeader httpHeader) {
+    public WebHeader(final HttpHeader httpHeader) {
 
         this.httpHeader = httpHeader;
         try {
 
             boolean languageFound = false;
             // Extract params and page name
-            String[] splitPath = httpHeader.getPathInfo().split("/");
-            for (String part : splitPath) {
+            final String[] splitPath = httpHeader.getPathInfo().split("/");
+            for (final String part : splitPath) {
 
                 if (!part.isEmpty()) {
                     if (!languageFound) {
@@ -84,7 +81,6 @@ public class WebHeader {
 
     /**
      * Get parameters formated with syntax as: /plop-1/plip-2
-     * @return
      */
     public final Parameters getParameters() {
         return parameters;
@@ -92,7 +88,6 @@ public class WebHeader {
 
     /**
      * Get get parameters formated with syntax as: ?plop=1&plip=2
-     * @return
      */
     public final Parameters getGetParameters() {
         return getParameters;

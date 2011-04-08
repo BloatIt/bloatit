@@ -47,7 +47,8 @@ public class UrlStringBinder extends Url {
     }
 
     @Override
-    protected void doGetStringParameters(Parameters parameters) {
+    protected void doGetStringParameters(final Parameters parameters) {
+        // nothing to do. There are no parameters.
     }
 
 }

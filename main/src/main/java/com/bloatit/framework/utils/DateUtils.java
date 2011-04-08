@@ -59,13 +59,12 @@ public class DateUtils {
      *
      * @param from
      * @param to
-     * @return
      */
-    public static long elapsed(Date from, Date to) {
+    public static long elapsed(final Date from, final Date to) {
         return to.getTime() - from.getTime();
     }
 
-    public static boolean isInTheFuture(Date date) {
+    public static boolean isInTheFuture(final Date date) {
         return date.after(now());
     }
 }

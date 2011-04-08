@@ -174,7 +174,7 @@ public final class CurrencyLocale {
     /**
      * Checks if a currency is handled
      * 
-     * @param currency the currency to check
+     * @param locale the currency to check
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
     public static boolean availableCurrency(final Locale locale) {
@@ -208,15 +208,15 @@ public final class CurrencyLocale {
      * </p>
      */
     private static void parseRate() {
-        PropertiesRetriever retriever = ConfigurationManager.loadProperties("locales/rates.properties", PropertiesType.SHARE);
+        final PropertiesRetriever retriever = ConfigurationManager.loadProperties("locales/rates.properties", PropertiesType.SHARE);
         if (lastParse.before(retriever.getModificationDate())) {
             return;
         }
 
-        Properties prop = retriever.getProperties();
-        for (Entry<Object, Object> entry : prop.entrySet()) {
-            String currencyCode = (String) entry.getKey();
-            BigDecimal rate = new BigDecimal((String) entry.getValue());
+        final Properties prop = retriever.getProperties();
+        for (final Entry<Object, Object> entry : prop.entrySet()) {
+            final String currencyCode = (String) entry.getKey();
+            final BigDecimal rate = new BigDecimal((String) entry.getValue());
             currencies.put(Currency.getInstance(currencyCode), rate);
         }
         lastParse = new Date();

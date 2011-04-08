@@ -9,7 +9,7 @@ public abstract class WebProcess extends Action {
 
     private final String processId;
 
-    public WebProcess(Url url) {
+    public WebProcess(final Url url) {
         super(url);
         processId = Context.getSession().createWebProcess(this);
 
@@ -29,17 +29,17 @@ public abstract class WebProcess extends Action {
         Context.getSession().destroyWebProcess(this);
     }
 
-    public void beginSubProcess(WebProcess subProcess) {
-
+    public void beginSubProcess(@SuppressWarnings("unused") final WebProcess subProcess) {
+        // Implement me in subclass if you wish.
     }
 
-    public Url endSubProcess(WebProcess subProcess) {
+    public Url endSubProcess(@SuppressWarnings("unused") final WebProcess subProcess) {
         return null;
     }
 
     public static abstract class PaymentProcess extends WebProcess {
 
-        public PaymentProcess(Url url) {
+        public PaymentProcess(final Url url) {
             super(url);
             // TODO Auto-generated constructor stub
         }

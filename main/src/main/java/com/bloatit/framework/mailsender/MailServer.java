@@ -66,6 +66,7 @@ public class MailServer extends Thread {
     private static MailServer instance;
 
     private MailServer() {
+        // disactivating CTOR
     }
 
     /**
@@ -86,7 +87,7 @@ public class MailServer extends Thread {
         createSentDirectory();
         createWipDirectory();
 
-        Properties prop = new Properties();
+        final Properties prop = new Properties();
         prop.put("mail.smtp.host", FrameworkConfiguration.getMailSmtpHost());
         prop.put("mail.smtp.socketFactory.port", FrameworkConfiguration.getMailSmptSocketFactoryPort());
         prop.put("mail.smtp.socketFactory.class", FrameworkConfiguration.getMailSmtpSoketFactoryClass());

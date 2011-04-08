@@ -62,8 +62,6 @@ public class HtmlForm extends HtmlBranch {
      *
      * @param target the target of the form (used in the <code>action</code>
      *            attribute)
-     * @param method the method used to send data, either <code>GET</code> or
-     *            <code>POST</code> (<code>POST</code> advised)
      * @see HtmlForm#HtmlForm(String, Method)
      */
     public HtmlForm(final String target) {

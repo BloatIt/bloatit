@@ -10,9 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import net.sf.cglib.core.Local;
-
-import org.slf4j.helpers.MessageFormatter;
 import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
@@ -142,8 +139,8 @@ public final class Localizator {
      * <code>i18n.tr("foo {0} bar", new Integer(1024)));<br> //Will print
      * "foo 1024 bar"</code>
      * </p>
-     * For more examples see : {@link http
-     * ://code.google.com/p/gettext-commons/wiki/Tutorial} </p>
+     * For more examples see :
+     * {@link "http://code.google.com/p/gettext-commons/wiki/Tutorial"} </p>
      * 
      * @param toTranslate the String to translate
      * @param parameters the list of parameters that will be inserted into the
@@ -151,7 +148,7 @@ public final class Localizator {
      * @return the translated String
      * @see #tr(String)
      * @see #trn(String, String, long, Object...)
-     * @see MessageFormatter
+     * @see org.slf4j.helpers.MessageFormatter
      */
     public String tr(final String toTranslate, final Object... parameters) {
         return i18n.tr(toTranslate, parameters);
@@ -190,7 +187,9 @@ public final class Localizator {
      * Translates a parametered-constant string, and handles plural
      * </p>
      * <p>
-     * Uses {@link MessageFormatter#format(String, Object, Object)} to format
+     * Uses
+     * {@link org.slf4j.helpers.MessageFormatter#format(String, Object, Object)}
+     * to format
      * </p>
      * <p>
      * Example <br>
@@ -199,8 +198,8 @@ public final class Localizator {
      * "More than 1001 nights! 1024 already!"</code>
      * </p>
      * <p>
-     * For more examples see : {@link http
-     * ://code.google.com/p/gettext-commons/wiki/Tutorial}
+     * For more examples see :
+     * {@link "http://code.google.com/p/gettext-commons/wiki/Tutorial"}
      * </p>
      * 
      * @param singular The singular string
@@ -213,7 +212,7 @@ public final class Localizator {
      *         on value of <code>amount</code>, with the <code>parameters</code>
      *         inserted.
      * @see #trn(String, String, long)
-     * @see MessageFormatter
+     * @see org.slf4j.helpers.MessageFormatter
      */
     public String trn(final String singular, final String plural, final long amount, final Object... parameters) {
         return i18n.trn(singular, plural, amount, parameters);
@@ -233,8 +232,8 @@ public final class Localizator {
      * System.out.println(i18n.trc("chat (noun)", "chat"));</code>
      * </p>
      * <p>
-     * For more examples see : {@link http
-     * ://code.google.com/p/gettext-commons/wiki/Tutorial}
+     * For more examples see :
+     * {@link "http://code.google.com/p/gettext-commons/wiki/Tutorial"}
      * </p>
      * 
      * @param context the context of the text to be translated
@@ -242,7 +241,6 @@ public final class Localizator {
      * @return <code>text</code> if the locale of the underlying resource bundle
      *         equals the source code locale, the disambiguated translation of
      *         <code>text</code> otherwise
-     * @see #setSourceCodeLocale(Locale)
      */
     public String trc(final String context, final String text) {
         return i18n.trc(context, text);
@@ -393,7 +391,7 @@ public final class Localizator {
         this.i18n = localesCache.get(locale);
     }
 
-    public void forceLanguage(Locale language) {
+    public void forceLanguage(final Locale language) {
         locale = new Locale(language.getLanguage(), locale.getCountry());
         this.i18n = localesCache.get(locale);
     }

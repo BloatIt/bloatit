@@ -44,7 +44,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * </p>
  * <p>
  * Session is used for various purposes :
- * <li>Store some parameters {@link Session#addParameter(String, String)}</li>
+ * <li>Store some parameters {@link Session#addParameter(UrlParameter)}</li>
  * <li>Store pages that the user wishes to consult, but he couldn't because he
  * didn't meet the requirements</li>
  * </p>
@@ -215,11 +215,11 @@ public final class Session {
         // Maybe auto notify here ?
     }
 
-    public final synchronized String createWebProcess(WebProcess process) {
+    public final synchronized String createWebProcess(final WebProcess process) {
         int length = 5;
         String key = null;
         while (key == null) {
-            String tempKey = sha1(UUID.randomUUID().toString()).substring(0, length);
+            final String tempKey = sha1(UUID.randomUUID().toString()).substring(0, length);
 
             if (processes.containsKey(tempKey)) {
                 length++;
@@ -232,11 +232,11 @@ public final class Session {
         return key;
     }
 
-    public final synchronized WebProcess getWebProcess(String processId) {
+    public final synchronized WebProcess getWebProcess(final String processId) {
         return processes.get(processId);
     }
 
-    public final synchronized void destroyWebProcess(WebProcess webProcess) {
+    public final synchronized void destroyWebProcess(final WebProcess webProcess) {
         processes.remove(webProcess.getId());
     }
 
