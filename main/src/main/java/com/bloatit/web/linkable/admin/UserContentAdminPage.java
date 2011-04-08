@@ -1,6 +1,6 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.EnumSet;
 
@@ -8,7 +8,6 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
@@ -16,6 +15,7 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;

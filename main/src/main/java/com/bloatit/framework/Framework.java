@@ -6,7 +6,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webprocessor.ModelAccessor;
-import com.bloatit.framework.webprocessor.SessionManager;
+import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.framework.xcgiserver.XcgiServer;
 import com.bloatit.model.AbstractModel;

@@ -11,13 +11,13 @@
  */
 package com.bloatit.web.linkable.contribution;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;

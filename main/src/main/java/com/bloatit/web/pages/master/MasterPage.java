@@ -1,6 +1,6 @@
 package com.bloatit.web.pages.master;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import java.util.List;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -18,6 +17,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.GenericPage;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.WebConfiguration;

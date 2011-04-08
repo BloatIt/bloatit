@@ -4,13 +4,13 @@ import java.util.Locale;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.ErrorMessage;
-import com.bloatit.framework.webprocessor.Session;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.Messages;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.Message;

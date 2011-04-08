@@ -18,7 +18,7 @@
  */
 package com.bloatit.web.linkable.team;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;

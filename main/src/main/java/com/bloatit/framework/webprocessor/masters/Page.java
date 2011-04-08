@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.ModelAccessor;
-import com.bloatit.framework.webprocessor.WebServer;
+import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 
 public abstract class Page extends HtmlElement implements Linkable {
@@ -15,7 +15,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     @Override
-    public final void writeToHttp(final HttpResponse response, WebServer server) throws RedirectException, IOException {
+    public final void writeToHttp(final HttpResponse response, WebProcessor server) throws RedirectException, IOException {
         create();
         generateDependencies();
         response.writePage(this);

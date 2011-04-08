@@ -11,7 +11,7 @@
  */
 package com.bloatit.web.linkable.money;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;

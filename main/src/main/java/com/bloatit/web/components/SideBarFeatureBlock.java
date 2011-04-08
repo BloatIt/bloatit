@@ -1,6 +1,6 @@
 package com.bloatit.web.components;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 

@@ -12,9 +12,9 @@
 
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.webprocessor.Context;
-import com.bloatit.framework.webprocessor.Session;
-import com.bloatit.framework.webprocessor.SessionManager;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.model.Member;

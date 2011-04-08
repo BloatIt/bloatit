@@ -2,6 +2,7 @@ package com.bloatit.framework.webprocessor;
 
 import java.math.BigDecimal;
 
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 
@@ -12,7 +13,6 @@ public abstract class WebProcess extends Action {
     public WebProcess(final Url url) {
         super(url);
         processId = Context.getSession().createWebProcess(this);
-
     }
 
     public String getId() {
@@ -41,11 +41,8 @@ public abstract class WebProcess extends Action {
 
         public PaymentProcess(final Url url) {
             super(url);
-            // TODO Auto-generated constructor stub
         }
 
         public abstract BigDecimal getAmountToPay();
-
     }
-
 }

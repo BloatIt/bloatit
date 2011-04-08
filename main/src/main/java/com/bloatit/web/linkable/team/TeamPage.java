@@ -1,6 +1,6 @@
 package com.bloatit.web.linkable.team;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -12,7 +12,6 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -27,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.model.ExternalAccount;

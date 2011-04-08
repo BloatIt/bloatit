@@ -11,7 +11,7 @@
  */
 package com.bloatit.web.linkable.meta.bugreport;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.List;
 

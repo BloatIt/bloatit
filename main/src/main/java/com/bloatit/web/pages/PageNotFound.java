@@ -11,12 +11,12 @@
  */
 package com.bloatit.web.pages;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;

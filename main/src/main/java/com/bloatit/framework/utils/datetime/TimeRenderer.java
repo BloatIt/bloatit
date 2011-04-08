@@ -1,11 +1,11 @@
 package com.bloatit.framework.utils.datetime;
 
-import static com.bloatit.framework.webprocessor.Context.trn;
+import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.util.Date;
 
 import com.bloatit.framework.utils.i18n.DateLocale;
-import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.context.Context;
 
 /**
  * A class used to render time

@@ -2,10 +2,10 @@ package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.parameters.Parameters;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**

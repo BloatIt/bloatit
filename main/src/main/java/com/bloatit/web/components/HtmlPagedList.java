@@ -11,7 +11,7 @@
  */
 package com.bloatit.web.components;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.HtmlList;

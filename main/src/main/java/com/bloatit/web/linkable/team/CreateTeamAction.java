@@ -1,7 +1,7 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.data.DaoTeam.Right;
-import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;

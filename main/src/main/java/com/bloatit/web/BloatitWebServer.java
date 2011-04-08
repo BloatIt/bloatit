@@ -1,10 +1,10 @@
 package com.bloatit.web;
 
 import com.bloatit.framework.utils.parameters.Parameters;
-import com.bloatit.framework.webprocessor.Context;
-import com.bloatit.framework.webprocessor.Session;
-import com.bloatit.framework.webprocessor.SessionManager;
-import com.bloatit.framework.webprocessor.WebServer;
+import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.masters.Linkable;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
@@ -164,7 +164,7 @@ import com.bloatit.web.url.TestPageUrl;
 import com.bloatit.web.url.UploadFileActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
-public class BloatitWebServer extends WebServer {
+public class BloatitWebServer extends WebProcessor {
 
     public BloatitWebServer() {
         super();

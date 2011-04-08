@@ -1,6 +1,6 @@
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.framework.webprocessor.components.form.Displayable;

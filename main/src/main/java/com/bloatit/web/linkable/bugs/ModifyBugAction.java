@@ -11,13 +11,13 @@
  */
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webprocessor.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.Optional;

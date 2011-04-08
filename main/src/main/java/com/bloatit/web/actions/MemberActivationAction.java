@@ -12,7 +12,7 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.data.DaoMember.ActivationState;
-import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

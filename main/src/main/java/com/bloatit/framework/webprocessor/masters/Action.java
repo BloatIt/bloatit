@@ -17,9 +17,9 @@ import java.io.IOException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.parameters.Parameters;
-import com.bloatit.framework.webprocessor.Context;
-import com.bloatit.framework.webprocessor.Session;
-import com.bloatit.framework.webprocessor.WebServer;
+import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 
@@ -37,7 +37,7 @@ public abstract class Action implements Linkable {
     }
 
     @Override
-    public final void writeToHttp(final HttpResponse response, WebServer server) throws RedirectException, IOException {
+    public final void writeToHttp(final HttpResponse response, WebProcessor server) throws RedirectException, IOException {
         Log.framework().trace("Processing action: " + actionUrl.urlString());
         final Url url = process();
         if (url != null) {

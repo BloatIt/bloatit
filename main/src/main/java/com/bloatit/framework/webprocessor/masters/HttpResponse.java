@@ -17,10 +17,10 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.restprocessor.RestResource;
 import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.writers.IndentedHtmlStream;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 import com.bloatit.framework.webprocessor.components.writers.SimpleHtmlStream;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.web.HtmlTools;
 

@@ -15,8 +15,8 @@ package com.bloatit.framework.webprocessor.masters;
 import java.io.IOException;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.WebServer;
+import com.bloatit.framework.webprocessor.WebProcessor;
 
 public interface Linkable {
-    void writeToHttp(final HttpResponse response, WebServer webServer) throws RedirectException, IOException;
+    void writeToHttp(final HttpResponse response, WebProcessor webServer) throws RedirectException, IOException;
 }

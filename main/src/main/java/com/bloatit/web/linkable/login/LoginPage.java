@@ -11,10 +11,9 @@
  */
 package com.bloatit.web.linkable.login;
 
-import static com.bloatit.framework.webprocessor.Context.trc;
+import static com.bloatit.framework.webprocessor.context.Context.trc;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -24,6 +23,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;

@@ -13,7 +13,7 @@ package com.bloatit.web.linkable.features;
 
 import java.util.Locale;
 
-import com.bloatit.framework.webprocessor.Context;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;

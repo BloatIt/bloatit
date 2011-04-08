@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.framework.webprocessor;
+package com.bloatit.framework.webprocessor.context;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.webprocessor.SessionManager;
+import com.bloatit.framework.webprocessor.context.SessionManager;
 
 @XmlRootElement
 public class RestAuthenticate {

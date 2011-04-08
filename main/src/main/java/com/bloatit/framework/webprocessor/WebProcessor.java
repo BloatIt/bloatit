@@ -18,6 +18,10 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.context.SessionManager;
+import com.bloatit.framework.webprocessor.context.WebHeader;
 import com.bloatit.framework.webprocessor.masters.HttpResponse;
 import com.bloatit.framework.webprocessor.masters.Linkable;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
@@ -25,9 +29,9 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
-public abstract class WebServer implements XcgiProcessor {
+public abstract class WebProcessor implements XcgiProcessor {
 
-    public WebServer() {
+    public WebProcessor() {
         super();
     }
 

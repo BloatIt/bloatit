@@ -17,9 +17,9 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webprocessor.Context;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.context.Context;
 
 /**
  * Provides various tools to generate HtmlPages
