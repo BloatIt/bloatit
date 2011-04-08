@@ -116,7 +116,7 @@ public final class AddSoftwarePage extends LoggedPage {
         addSoftwareForm.add(languageInput);
 
         final HtmlFileInput softwareImageInput = new HtmlFileInput(AddSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
-        softwareImageInput.setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be 50px × 50px.");
+        softwareImageInput.setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be inferior to 64px x 64px.");
         addSoftwareForm.add(softwareImageInput);
 
         addSoftwareForm.add(new HtmlSubmit(Context.tr("submit")));

@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.members;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -29,7 +30,7 @@ import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
- * A response to a form used to create a new feature
+ * A response to a form used to change user avatar
  */
 @ParamContainer("member/changeavatar")
 public final class ChangeAvatarAction extends Action {
@@ -51,10 +52,6 @@ public final class ChangeAvatarAction extends Action {
     @RequestParam(name = AVATAR_NAME_CODE, role = Role.POST)
     private final String avatarFileName;
 
-    @SuppressWarnings("unused")
-    @ParamConstraint
-    @RequestParam(name = AVATAR_CONTENT_TYPE_CODE, role = Role.POST)
-    private final String avatarContentType;
     private final ChangeAvatarActionUrl url;
 
     public ChangeAvatarAction(final ChangeAvatarActionUrl url) {
@@ -64,7 +61,6 @@ public final class ChangeAvatarAction extends Action {
         this.member = url.getMember();
         this.avatar = url.getAvatar();
         this.avatarFileName = url.getAvatarFileName();
-        this.avatarContentType = url.getAvatarContentType();
     }
 
     @Override
@@ -72,12 +68,19 @@ public final class ChangeAvatarAction extends Action {
         session.notifyList(url.getMessages());
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use UserContentManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to report a bug."));
+            session.notifyError(Context.tr("You must be logged in to change your avatar."));
             return new LoginPageUrl();
         }
 
-        final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
+        FileConstraintChecker fcc = new FileConstraintChecker(avatar);
+        if (fcc.isImageAvatar() != null) {
+            for (String message : fcc.isImageAvatar()) {
+                session.notifyBad(message);
+            }
+            return Context.getSession().pickPreferredPage();
+        }
 
+        final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
         member.setAvatar(avatarfm);
 
         session.notifyGood(tr("Avatar change to ''{0}''", avatarFileName));
@@ -87,7 +90,6 @@ public final class ChangeAvatarAction extends Action {
     @Override
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
-
         if (member != null) {
             return redirectWithError();
         }
@@ -98,5 +100,4 @@ public final class ChangeAvatarAction extends Action {
         session.addParameter(url.getMemberParameter());
         return Context.getSession().getLastVisitedPage();
     }
-
 }

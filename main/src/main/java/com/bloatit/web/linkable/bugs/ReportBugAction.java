@@ -15,6 +15,8 @@ import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -125,6 +127,13 @@ public final class ReportBugAction extends Action {
         final Bug bug = milestone.addBug(session.getAuthToken().getMember(), title, description, langLocale, level.getLevel());
 
         if (attachement != null) {
+            FileConstraintChecker fcc = new FileConstraintChecker(attachement);
+            if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
+                for (String message : fcc.isImageAvatar()) {
+                    session.notifyBad(message);
+                }
+                return Context.getSession().pickPreferredPage();
+            }
             final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                                                 attachement,
                                                                                                 attachementFileName,
@@ -134,7 +143,7 @@ public final class ReportBugAction extends Action {
                 bug.addFile(attachementFileMedatata);
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("Fail to add the attachement to the bug report."));
-                throw new ShallNotPassException("Fail to add an attachement to the new bug report.",e);
+                throw new ShallNotPassException("Fail to add an attachement to the new bug report.", e);
             }
         }
 

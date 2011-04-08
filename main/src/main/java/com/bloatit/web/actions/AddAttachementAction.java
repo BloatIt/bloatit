@@ -13,6 +13,8 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -85,6 +87,14 @@ public final class AddAttachementAction extends Action {
             return new LoginPageUrl();
         }
 
+        FileConstraintChecker fcc = new FileConstraintChecker(attachement);
+        if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
+            for (String message : fcc.isImageAvatar()) {
+                session.notifyBad(message);
+            }
+            return Context.getSession().pickPreferredPage();
+        }
+
         final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                                             attachement,
                                                                                             attachementFileName,
@@ -96,7 +106,7 @@ public final class AddAttachementAction extends Action {
 
         } catch (UnauthorizedOperationException e) {
             session.notifyError(Context.tr("You're allowed to add an attachement only if you own the content. If you get this error without trying to hack the website, please make a bug report."));
-            throw new MeanUserException("The user try to add an attachement but he doesn't have the right",e);
+            throw new MeanUserException("The user try to add an attachement but he doesn't have the right", e);
         }
         return session.pickPreferredPage();
     }

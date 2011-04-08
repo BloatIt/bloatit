@@ -15,6 +15,8 @@ import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -85,9 +87,16 @@ public final class AddReleaseAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
-        //TODO: Verify user right
-
         final Locale langLocale = new Locale(lang);
+
+        FileConstraintChecker fcc = new FileConstraintChecker(attachedfile);
+        if (!fcc.exists() || !fcc.isFileSmaller(1, SizeUnit.GBYTE)) {
+            for (String message : fcc.isImageAvatar()) {
+                session.notifyBad(message);
+            }
+            return Context.getSession().pickPreferredPage();
+        }
+
         final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                               attachedfile,
                                                                               attachedfileFileName,

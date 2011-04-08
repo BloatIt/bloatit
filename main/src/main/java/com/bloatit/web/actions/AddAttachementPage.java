@@ -42,8 +42,7 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 @ParamContainer("usercontent/attachfile")
 public final class AddAttachementPage extends LoggedPage {
 
-
-    @RequestParam(name="user_content")
+    @RequestParam(name = "user_content")
     UserContentInterface userContent;
 
     private final AddAttachementPageUrl url;
@@ -63,9 +62,11 @@ public final class AddAttachementPage extends LoggedPage {
     public boolean isStable() {
         return false;
     }
+
     @Override
     public void processErrors() throws RedirectException {
     }
+
     @Override
     public HtmlElement createRestrictedContent() throws PageNotFoundException {
         addNotifications(url.getMessages());
@@ -74,7 +75,7 @@ public final class AddAttachementPage extends LoggedPage {
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarUserContentBlock(userContent));
-        
+
         layout.addLeft(generateReleaseCreationForm());
 
         return layout;
@@ -91,7 +92,6 @@ public final class AddAttachementPage extends LoggedPage {
 
         title.add(form);
 
-
         // attachement
 
         final FieldData attachementDescriptiondData = formUrl.getAttachementDescriptionParameter().pickFieldData();
@@ -106,7 +106,7 @@ public final class AddAttachementPage extends LoggedPage {
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
         attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
         attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
-        attachedFileInput.setComment("You must attache a file. This is your release, it can take be a patch, a tar.gz etc.");
+        attachedFileInput.setComment("You must attach a file. Maximum size is 3MB");
         form.add(attachedFileInput);
 
         form.add(new HtmlSubmit(tr("Submit")));

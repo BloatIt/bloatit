@@ -13,6 +13,8 @@ package com.bloatit.web.linkable.softwares;
 
 import java.util.Locale;
 
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -104,6 +106,13 @@ public final class AddSoftwareAction extends Action {
         final Software p = new Software(softwareName, session.getAuthToken().getMember(), langLocale, shortDescription, description);
 
         if (image != null) {
+            FileConstraintChecker fcc = new FileConstraintChecker(image);
+            if (fcc.isImageAvatar() != null) {
+                for (String message : fcc.isImageAvatar()) {
+                    session.notifyBad(message);
+                }
+                return Context.getSession().pickPreferredPage();
+            }
             final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                                   image,
                                                                                   imageFileName,
