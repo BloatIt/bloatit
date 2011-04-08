@@ -1,6 +1,7 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.masters.Action;
@@ -17,6 +18,7 @@ public final class PaylineNotifyAction extends Action {
     public static final String TOKEN_CODE = "token";
 
     @RequestParam(name = TOKEN_CODE)
+    @Optional
     private final String token;
 
     @RequestParam(name = "process")

@@ -32,13 +32,13 @@ public final class PaylineAction extends LoggedAction {
     public Url doProcessRestricted(final Member authenticatedMember) {
         // Constructing the urls.
         final HttpHeader header = Context.getHeader().getHttpHeader();
-        final PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok");
+        final PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok", process);
         paylineReturnActionUrl.setProcess(process);
         final String returnUrl = paylineReturnActionUrl.externalUrlString(header);
-        final PaylineReturnActionUrl paylineReturnActionUrlCancel = new PaylineReturnActionUrl("cancel");
+        final PaylineReturnActionUrl paylineReturnActionUrlCancel = new PaylineReturnActionUrl("cancel", process);
         paylineReturnActionUrlCancel.setProcess(process);
         final String cancelUrl = paylineReturnActionUrlCancel.externalUrlString(header);
-        final PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl();
+        final PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl(process);
         paylineNotifyActionUrl.setProcess(process);
         final String notificationUrl = paylineNotifyActionUrl.externalUrlString(header);
 

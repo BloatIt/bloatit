@@ -3,6 +3,7 @@ package com.bloatit.web.linkable.money;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -16,6 +17,7 @@ import com.bloatit.web.url.PaylineReturnActionUrl;
 public class PaylineReturnAction extends Action {
 
     @RequestParam(name = "token")
+    @Optional
     private final String token;
 
     @RequestParam(name = "ack")
