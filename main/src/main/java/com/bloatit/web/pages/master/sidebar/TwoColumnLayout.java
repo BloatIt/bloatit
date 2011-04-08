@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.master;
+package com.bloatit.web.pages.master.sidebar;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
@@ -13,6 +13,12 @@ public class TwoColumnLayout extends HtmlDiv {
         this(false);
     }
 
+    /**
+     * Creates a two column layout with, or without a box around it
+     * 
+     * @param box <i>true</i> if a box should surround the whole layout,
+     *            <i>false</i> otherwise
+     */
     public TwoColumnLayout(boolean box) {
         super("two_column");
         HtmlDiv leftColumnBlock = new HtmlDiv((box ? "left_column_block" : "left_column_block_without_box"));
@@ -26,12 +32,21 @@ public class TwoColumnLayout extends HtmlDiv {
         add(new HtmlClearer());
     }
 
+    /**
+     * Adds an element to the core of the page
+     * 
+     * @param element the element to add
+     */
     public void addLeft(HtmlElement element) {
         leftColumn.add(element);
     }
 
+    /**
+     * Adds an element to the right bar of the page
+     * 
+     * @param element
+     */
     public void addRight(SideBarElementLayout element) {
         rightColumn.add(element);
     }
-
 }

@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.master;
+package com.bloatit.web.pages.master.sidebar;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitle;

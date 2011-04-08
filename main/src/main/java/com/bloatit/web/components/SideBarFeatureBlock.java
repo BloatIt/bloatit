@@ -10,7 +10,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.DefineParagraph;
-import com.bloatit.web.pages.master.TitleSideBarElementLayout;
+import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class SideBarFeatureBlock extends TitleSideBarElementLayout {

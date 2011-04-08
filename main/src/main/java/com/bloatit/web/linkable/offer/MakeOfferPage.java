@@ -49,7 +49,7 @@ import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 

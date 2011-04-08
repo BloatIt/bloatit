@@ -41,7 +41,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.TwoColumnLayout;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
