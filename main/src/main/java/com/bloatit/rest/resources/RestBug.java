@@ -98,9 +98,10 @@ public class RestBug extends RestElement<Bug> {
      */
     @SuppressWarnings("unused")
     private RestBug() {
+        super();
     }
 
-    protected RestBug(Bug model) {
+    protected RestBug(final Bug model) {
         this.model = model;
     }
 
@@ -116,8 +117,8 @@ public class RestBug extends RestElement<Bug> {
      * @param id the id of the RestBug
      */
     @REST(name = "bugs", method = RequestMethod.GET)
-    public static RestBug getById(int id) {
-        RestBug restBug = new RestBug(BugManager.getById(id));
+    public static RestBug getById(final int id) {
+        final RestBug restBug = new RestBug(BugManager.getById(id));
         if (restBug.isNull()) {
             return null;
         }
@@ -191,7 +192,7 @@ public class RestBug extends RestElement<Bug> {
     @XmlElement
     @XmlIDREF
     public RestMember getAssignedTo() {
-        RestMember assignedTo = new RestMember(model.getAssignedTo());
+        final RestMember assignedTo = new RestMember(model.getAssignedTo());
         if (assignedTo.isNull()) {
             return null;
         }
@@ -211,7 +212,7 @@ public class RestBug extends RestElement<Bug> {
      */
     @XmlElement
     public RestMilestone getMilestone() {
-        RestMilestone milestone = new RestMilestone(model.getMilestone());
+        final RestMilestone milestone = new RestMilestone(model.getMilestone());
         if (milestone.isNull()) {
             return null;
         }
@@ -242,7 +243,7 @@ public class RestBug extends RestElement<Bug> {
     @XmlAttribute
     @XmlIDREF
     public RestMember getAuthor() {
-        RestMember author = new RestMember(model.getAuthor());
+        final RestMember author = new RestMember(model.getAuthor());
         if (author.isNull()) {
             return null;
         }
@@ -255,7 +256,7 @@ public class RestBug extends RestElement<Bug> {
     @XmlElement
     @XmlIDREF
     public RestTeam getAsTeam() {
-        RestTeam asTeam = new RestTeam(model.getAsTeam());
+        final RestTeam asTeam = new RestTeam(model.getAsTeam());
         if (asTeam.isNull()) {
             return null;
         }
@@ -277,7 +278,7 @@ public class RestBug extends RestElement<Bug> {
     /**
      * Provided for JAXB
      */
-    void setModel(Bug model) {
+    void setModel(final Bug model) {
         this.model = model;
     }
 

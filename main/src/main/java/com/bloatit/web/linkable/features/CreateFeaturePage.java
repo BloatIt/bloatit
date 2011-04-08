@@ -67,6 +67,7 @@ public final class CreateFeaturePage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO maybe we should process the errors.
     }
 
     @Override
@@ -121,7 +122,7 @@ public final class CreateFeaturePage extends LoggedPage {
                                                                  tr("Describe the feature"),
                                                                  SPECIF_INPUT_NB_LINES,
                                                                  SPECIF_INPUT_NB_COLUMNS);
-        String suggestedValue = tr("What is the expected work ?\n" +
+        final String suggestedValue = tr("What is the expected work ?\n" +
         		"\n" +
         		"What is the requested date ?\n" +
         		"\n" +
@@ -208,7 +209,7 @@ public final class CreateFeaturePage extends LoggedPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new CreateFeaturePageUrl().getHtmlLink(tr("Create a feature")));
 

@@ -59,6 +59,7 @@ public final class AddSoftwarePage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO we should process the errors here.
     }
 
     @Override
@@ -136,7 +137,7 @@ public final class AddSoftwarePage extends LoggedPage {
     }
 
     public static Breadcrumb generateBreadcrumb() {
-        Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
+        final Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
 

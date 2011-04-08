@@ -66,6 +66,7 @@ public final class ModifyBugPage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO maybe we should process the errors...
     }
 
     @Override
@@ -140,8 +141,8 @@ public final class ModifyBugPage extends LoggedPage {
         return ModifyBugPage.generateBreadcrumb(bug);
     }
 
-    public static Breadcrumb generateBreadcrumb(Bug bug) {
-        Breadcrumb breadcrumb = BugPage.generateBreadcrumb(bug);
+    public static Breadcrumb generateBreadcrumb(final Bug bug) {
+        final Breadcrumb breadcrumb = BugPage.generateBreadcrumb(bug);
 
         breadcrumb.pushLink(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify")));
 

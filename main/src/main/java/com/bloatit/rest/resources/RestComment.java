@@ -94,9 +94,10 @@ public class RestComment extends RestElement<Comment> {
      */
     @SuppressWarnings("unused")
     private RestComment() {
+        super();
     }
 
-    protected RestComment(Comment model) {
+    protected RestComment(final Comment model) {
         this.model = model;
     }
 
@@ -112,8 +113,8 @@ public class RestComment extends RestElement<Comment> {
      * @param id the id of the RestComment
      */
     @REST(name = "comments", method = RequestMethod.GET)
-    public static RestComment getById(int id) {
-        RestComment restComment = new RestComment(CommentManager.getById(id));
+    public static RestComment getById(final int id) {
+        final RestComment restComment = new RestComment(CommentManager.getById(id));
         if (restComment.isNull()) {
             return null;
         }
@@ -196,7 +197,7 @@ public class RestComment extends RestElement<Comment> {
     @XmlElement
     @XmlIDREF
     public RestTeam getAsTeam() {
-        RestTeam asTeam = new RestTeam(model.getAsTeam());
+        final RestTeam asTeam = new RestTeam(model.getAsTeam());
         if (asTeam.isNull()) {
             return null;
         }
@@ -218,7 +219,7 @@ public class RestComment extends RestElement<Comment> {
     /**
      * Provided for JAXB
      */
-    void setModel(Comment model) {
+    void setModel(final Comment model) {
         this.model = model;
     }
 

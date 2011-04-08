@@ -13,33 +13,20 @@ package com.bloatit.web.linkable.meta.bugreport;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.meta.MetaBugManager;
-import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlRenderer;
-import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.Member;
-import com.bloatit.web.HtmlTools;
-import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
 import com.bloatit.web.url.MetaEditBugActionUrl;
@@ -72,15 +59,15 @@ public final class MetaBugEditPage extends MasterPage {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Bug", 1);
 
 
-        MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(bugId);
-        HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
+        final MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(bugId);
+        final HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
 
 
 
-        FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();
-        HtmlTextArea bugDescription = new HtmlTextArea(descriptionFieldData.getName(), 20, 100);
+        final FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();
+        final HtmlTextArea bugDescription = new HtmlTextArea(descriptionFieldData.getName(), 20, 100);
 
-        String suggestedValue = descriptionFieldData.getSuggestedValue();
+        final String suggestedValue = descriptionFieldData.getSuggestedValue();
         if(suggestedValue != null) {
             bugDescription.setDefaultValue(suggestedValue);
         } else {
@@ -89,7 +76,7 @@ public final class MetaBugEditPage extends MasterPage {
 
         bugDescription.setComment(tr("You can use markdown syntax in this field."));
 
-        HtmlSubmit submit = new HtmlSubmit(tr("Update the bug"));
+        final HtmlSubmit submit = new HtmlSubmit(tr("Update the bug"));
 
         form.add(bugDescription);
         form.add(submit);
@@ -111,37 +98,6 @@ public final class MetaBugEditPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
-    }
-
-    private final class MemberRenderer implements HtmlRenderer<Member> {
-        public MemberRenderer() {
-        }
-
-        @Override
-        public XmlNode generate(final Member member) {
-            final MemberPageUrl memberUrl = new MemberPageUrl(member);
-            try {
-                final HtmlDiv box = new HtmlDiv("member_box");
-
-                box.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
-
-                final HtmlDiv textBox = new HtmlDiv("member_text");
-                HtmlLink htmlLink;
-                htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-                final HtmlSpan karma = new HtmlSpan("karma");
-                karma.addText(HtmlTools.compressKarma(member.getKarma()));
-
-                textBox.add(htmlLink);
-                textBox.add(karma);
-                box.add(textBox);
-                box.add(new HtmlClearer());
-
-                return box;
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-                throw new ShallNotPassException("User cannot access user information", e);
-            }
-        }
     }
 
     @Override

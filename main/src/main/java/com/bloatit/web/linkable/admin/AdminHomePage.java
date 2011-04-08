@@ -32,32 +32,30 @@ import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
 @ParamContainer("admin/home")
 public class AdminHomePage extends AdminPage {
-    private AdminHomePageUrl url;
-
-    public AdminHomePage(AdminHomePageUrl url) {
+    private final AdminHomePageUrl url; 
+    
+    public AdminHomePage(final AdminHomePageUrl url) {
         super(url);
-        this.url = url;
+        this.url = url; 
     }
 
     @Override
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateAdminHome());
-
         // layout.addRight(new SideBarDocumentationBlock("markdown"));
         return layout;
     }
     
     private HtmlElement generateAdminHome() {
-        HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Administration home page"), 1);
-        
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Administration home page"), 1);
         master.add(new ConfigurationAdminPageUrl().getHtmlLink("Manage configuration files"));
-        
         return master;
     }
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO do something here.
     }
 
     @Override
@@ -67,7 +65,7 @@ public class AdminHomePage extends AdminPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        Breadcrumb breadcrumb = new Breadcrumb();
+        final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink("Admin"));
 
         return breadcrumb;

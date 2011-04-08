@@ -90,9 +90,10 @@ public class RestHighlightFeature extends RestElement<HighlightFeature> {
      */
     @SuppressWarnings("unused")
     private RestHighlightFeature() {
+        super();
     }
 
-    protected RestHighlightFeature(HighlightFeature model) {
+    protected RestHighlightFeature(final HighlightFeature model) {
         this.model = model;
     }
 
@@ -108,8 +109,8 @@ public class RestHighlightFeature extends RestElement<HighlightFeature> {
      * @param id the id of the RestHighlightFeature
      */
     @REST(name = "highlightfeatures", method = RequestMethod.GET)
-    public static RestHighlightFeature getById(int id) {
-        RestHighlightFeature restHighlightFeature = new RestHighlightFeature(HighlightFeatureManager.getById(id));
+    public static RestHighlightFeature getById(final int id) {
+        final RestHighlightFeature restHighlightFeature = new RestHighlightFeature(HighlightFeatureManager.getById(id));
         if (restHighlightFeature.isNull()) {
             return null;
         }
@@ -168,7 +169,7 @@ public class RestHighlightFeature extends RestElement<HighlightFeature> {
     /**
      * Provided for JAXB
      */
-    void setModel(HighlightFeature model) {
+    void setModel(final HighlightFeature model) {
         this.model = model;
     }
 

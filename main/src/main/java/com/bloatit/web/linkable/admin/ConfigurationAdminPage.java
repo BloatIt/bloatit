@@ -53,7 +53,7 @@ public class ConfigurationAdminPage extends AdminPage {
     /**
      * @param url
      */
-    public ConfigurationAdminPage(ConfigurationAdminPageUrl url) {
+    public ConfigurationAdminPage(final ConfigurationAdminPageUrl url) {
         super(url);
         this.url = url;
     }
@@ -68,8 +68,8 @@ public class ConfigurationAdminPage extends AdminPage {
     }
 
     private HtmlElement generateConfAdmin() {
-        HtmlTitleBlock master = new HtmlTitleBlock("Administrate configurations", 1);
-        HtmlForm form = new HtmlForm(new ConfigurationAdminActionUrl().urlString());
+        final HtmlTitleBlock master = new HtmlTitleBlock("Administrate configurations", 1);
+        final HtmlForm form = new HtmlForm(new ConfigurationAdminActionUrl().urlString());
         master.add(form);
         form.add(new HtmlTable(new ConfigurationTableModel(ReloadableConfiguration.getConfigurations())));
         form.add(new HtmlSubmit(Context.tr("Submit")));
@@ -79,7 +79,7 @@ public class ConfigurationAdminPage extends AdminPage {
 
     @Override
     public void processErrors() throws RedirectException {
-
+        // TODO do something here.
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ConfigurationAdminPage extends AdminPage {
 
     @Override
     protected Breadcrumb getBreadcrumb() {
-        Breadcrumb breadcrumb = new Breadcrumb();
+        final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink("Admin"));
         breadcrumb.pushLink(url.getHtmlLink("Configuration"));
         return breadcrumb;
@@ -120,7 +120,7 @@ public class ConfigurationAdminPage extends AdminPage {
         }
 
         @Override
-        public XmlNode getHeader(int column) {
+        public XmlNode getHeader(final int column) {
             switch (column) {
                 case NAME:
                     return new HtmlText(Context.tr("Configuration"));
@@ -134,15 +134,15 @@ public class ConfigurationAdminPage extends AdminPage {
         }
 
         @Override
-        public XmlNode getBody(int column) {
+        public XmlNode getBody(final int column) {
             switch (column) {
                 case NAME:
                     return new HtmlText(configuration.getName());
                 case DATE:
-                    long millis = new Date().getTime() - configuration.getLastReload().getTime();
+                    final long millis = new Date().getTime() - configuration.getLastReload().getTime();
                     return new HtmlText(new TimeRenderer(millis).renderRange(TimeBase.DAY, FormatStyle.MEDIUM));
                 case ACTION:
-                    HtmlCheckbox box = new HtmlCheckbox("toReload", LabelPosition.AFTER);
+                    final HtmlCheckbox box = new HtmlCheckbox("toReload", LabelPosition.AFTER);
                     box.addAttribute("value", configuration.getName());
                     return box;
                 default:

@@ -94,9 +94,10 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      */
     @SuppressWarnings("unused")
     private RestInternalAccount() {
+        super();
     }
 
-    protected RestInternalAccount(InternalAccount model) {
+    protected RestInternalAccount(final InternalAccount model) {
         this.model = model;
     }
 
@@ -112,8 +113,8 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * @param id the id of the RestInternalAccount
      */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
-    public static RestInternalAccount getById(int id) {
-        RestInternalAccount restInternalAccount = new RestInternalAccount(InternalAccountManager.getById(id));
+    public static RestInternalAccount getById(final int id) {
+        final RestInternalAccount restInternalAccount = new RestInternalAccount(InternalAccountManager.getById(id));
         if (restInternalAccount.isNull()) {
             return null;
         }
@@ -147,7 +148,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     public BigDecimal getBlocked() throws RestException {
         try {
             return model.getBlocked();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getBlocked on InternalAccount", e);
@@ -162,7 +163,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     public Date getCreationDate() throws RestException {
         try {
             return model.getCreationDate();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getCreationDate on InternalAccount", e);
@@ -176,7 +177,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     public BigDecimal getAmount() throws RestException {
         try {
             return model.getAmount();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getAmount on InternalAccount", e);
@@ -190,7 +191,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     public RestTransactionList getTransactions() throws RestException {
         try {
             return new RestTransactionList(model.getTransactions());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getTransactions on InternalAccount", e);
@@ -205,7 +206,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     public Date getLastModificationDate() throws RestException {
         try {
             return model.getLastModificationDate();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
             // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getLastModificationDate on InternalAccount",
@@ -220,7 +221,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     /**
      * Provided for JAXB
      */
-    void setModel(InternalAccount model) {
+    void setModel(final InternalAccount model) {
         this.model = model;
     }
 

@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
@@ -40,18 +41,19 @@ public final class FeatureContributorsComponent extends HtmlDiv {
 
     private final Feature feature;
 
-    public FeatureContributorsComponent(final FeatureContributorsComponentUrl url, final Feature feature) {
+    public FeatureContributorsComponent(@SuppressWarnings("unused") final FeatureContributorsComponentUrl url, final Feature feature) {
         super();
         this.feature = feature;
-        add(produce(url));
+        add(produce());
     }
 
-    protected HtmlElement produce(final FeatureContributorsComponentUrl url) {
+    @SuppressWarnings("synthetic-access")
+    protected HtmlElement produce() {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
 
             try {
-                int contributionCount = feature.getContributions().size();
+                final int contributionCount = feature.getContributions().size();
 
                 // Display contribution count
                 contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
@@ -83,6 +85,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                 contributorsBlock.add(new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute")));
 
             } catch (final UnauthorizedOperationException e) {
+                throw new ShallNotPassException(e);
             }
 
         }
@@ -103,9 +106,8 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             final int middle = list.size() / 2;
             if (list.size() % 2 == 1) {
                 return list.get(middle);
-            } else {
-                return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
             }
+            return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
 
         } catch (final UnauthorizedOperationException e) {
             return new BigDecimal(-1);

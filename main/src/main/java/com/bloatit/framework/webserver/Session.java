@@ -50,6 +50,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * </p>
  */
 public final class Session {
+    private static final int SHA1_SIZE = 20;
     private final UUID key;
     private long expirationTime;
 
@@ -222,7 +223,9 @@ public final class Session {
             final String tempKey = sha1(UUID.randomUUID().toString()).substring(0, length);
 
             if (processes.containsKey(tempKey)) {
-                length++;
+                if (length < SHA1_SIZE) {
+                    length++;
+                }
             } else {
                 key = tempKey;
             }

@@ -85,6 +85,7 @@ public final class ReportBugAction extends Action {
     @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
     private final String attachementDescription;
 
+    @SuppressWarnings("unused")
     @Optional
     @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
     private final String attachementContentType;
@@ -131,7 +132,7 @@ public final class ReportBugAction extends Action {
 
             try {
                 bug.addFile(attachementFileMedatata);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("Fail to add the attachement to the bug report."));
                 throw new ShallNotPassException("Fail to add an attachement to the new bug report.",e);
             }

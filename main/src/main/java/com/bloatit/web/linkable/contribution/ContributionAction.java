@@ -47,7 +47,7 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
+    public Url doProcessRestricted(final Member authenticatedMember) {
         try {
             process.getFeature().addContribution(process.getAmount(), process.getComment());
 
@@ -78,5 +78,6 @@ public final class ContributionAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
+        // No parameters to transmit.
     }
 }

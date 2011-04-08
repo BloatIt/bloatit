@@ -18,6 +18,7 @@ public class MessageConsultPage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO maybe we should process the errors here..
     }
 
     @Override

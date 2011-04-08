@@ -98,9 +98,10 @@ public class RestOffer extends RestElement<Offer> {
      */
     @SuppressWarnings("unused")
     private RestOffer() {
+        super();
     }
 
-    protected RestOffer(Offer model) {
+    protected RestOffer(final Offer model) {
         this.model = model;
     }
 
@@ -116,8 +117,8 @@ public class RestOffer extends RestElement<Offer> {
      * @param id the id of the RestOffer
      */
     @REST(name = "offers", method = RequestMethod.GET)
-    public static RestOffer getById(int id) {
-        RestOffer restOffer = new RestOffer(OfferManager.getById(id));
+    public static RestOffer getById(final int id) {
+        final RestOffer restOffer = new RestOffer(OfferManager.getById(id));
         if (restOffer.isNull()) {
             return null;
         }
@@ -192,7 +193,7 @@ public class RestOffer extends RestElement<Offer> {
     public float getProgression() throws RestException {
         try {
             return model.getProgression();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getProgression on Offer", e);
         }
     }
@@ -236,7 +237,7 @@ public class RestOffer extends RestElement<Offer> {
      */
     @XmlElement(name = "asteam")
     public RestTeam getAsTeam() {
-        RestTeam restTeam = new RestTeam(model.getAsTeam());
+        final RestTeam restTeam = new RestTeam(model.getAsTeam());
         if (restTeam.isNull()) {
             return null;
         }
@@ -258,7 +259,7 @@ public class RestOffer extends RestElement<Offer> {
     /**
      * Provided for JAXB
      */
-    void setModel(Offer model) {
+    void setModel(final Offer model) {
         this.model = model;
     }
 

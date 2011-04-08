@@ -90,9 +90,10 @@ public class RestKudos extends RestElement<Kudos> {
      */
     @SuppressWarnings("unused")
     private RestKudos() {
+        super();
     }
 
-    protected RestKudos(Kudos model) {
+    protected RestKudos(final Kudos model) {
         this.model = model;
     }
 
@@ -108,8 +109,8 @@ public class RestKudos extends RestElement<Kudos> {
      * @param id the id of the RestKudos
      */
     @REST(name = "kudos", method = RequestMethod.GET)
-    public static RestKudos getById(int id) {
-        RestKudos restKudos = new RestKudos(KudosManager.getById(id));
+    public static RestKudos getById(final int id) {
+        final RestKudos restKudos = new RestKudos(KudosManager.getById(id));
         if (restKudos.isNull()) {
             return null;
         }
@@ -169,7 +170,7 @@ public class RestKudos extends RestElement<Kudos> {
     /**
      * Provided for JAXB
      */
-    void setModel(Kudos model) {
+    void setModel(final Kudos model) {
         this.model = model;
     }
 

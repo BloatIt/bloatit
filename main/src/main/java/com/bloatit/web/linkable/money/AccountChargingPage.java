@@ -51,6 +51,7 @@ public final class AccountChargingPage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        // TODO we must process the errors.
     }
 
     @Override
@@ -92,8 +93,8 @@ public final class AccountChargingPage extends LoggedPage {
         return AccountChargingPage.generateBreadcrumb(session.getAuthToken().getMember(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(Member member, AccountChargingProcess process) {
-        Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
+    public static Breadcrumb generateBreadcrumb(final Member member, final AccountChargingProcess process) {
+        final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
 
         breadcrumb.pushLink(new AccountChargingPageUrl(process).getHtmlLink(tr("Charge account")));
 

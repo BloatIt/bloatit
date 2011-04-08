@@ -100,9 +100,10 @@ public class RestFeature extends RestElement<Feature> {
      */
     @SuppressWarnings("unused")
     private RestFeature() {
+        super();
     }
 
-    protected RestFeature(Feature model) {
+    protected RestFeature(final Feature model) {
         this.model = model;
     }
 
@@ -118,8 +119,8 @@ public class RestFeature extends RestElement<Feature> {
      * @param id the id of the RestFeature
      */
     @REST(name = "features", method = RequestMethod.GET)
-    public static RestFeature getById(int id) {
-        RestFeature restFeature = new RestFeature(FeatureManager.getFeatureById(id));
+    public static RestFeature getById(final int id) {
+        final RestFeature restFeature = new RestFeature(FeatureManager.getFeatureById(id));
         if (restFeature.isNull()) {
             return null;
         }
@@ -167,7 +168,7 @@ public class RestFeature extends RestElement<Feature> {
     public String getTitle() throws RestException {
         try {
             return model.getTitle();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getTitle()");
         }
     }
@@ -181,7 +182,7 @@ public class RestFeature extends RestElement<Feature> {
     public RestCommentList getComments() throws RestException {
         try {
             return new RestCommentList(model.getComments());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getComments()");
         }
     }
@@ -190,7 +191,7 @@ public class RestFeature extends RestElement<Feature> {
     public RestContributionList getContributions() throws RestException {
         try {
             return new RestContributionList(model.getContributions());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getContributions()");
         }
     }
@@ -199,7 +200,7 @@ public class RestFeature extends RestElement<Feature> {
     public float getProgression() throws RestException {
         try {
             return model.getProgression();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getProgression()");
         }
     }
@@ -208,7 +209,7 @@ public class RestFeature extends RestElement<Feature> {
     public BigDecimal getContribution() throws RestException {
         try {
             return model.getContribution();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getContribution()");
         }
     }
@@ -217,7 +218,7 @@ public class RestFeature extends RestElement<Feature> {
     public RestDescription getDescription() throws RestException {
         try {
             return new RestDescription(model.getDescription());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getDescription()");
         }
     }
@@ -227,7 +228,7 @@ public class RestFeature extends RestElement<Feature> {
     public RestSoftware getSoftware() throws RestException {
         try {
             return new RestSoftware(model.getSoftware());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getSoftware()");
         }
     }
@@ -236,7 +237,7 @@ public class RestFeature extends RestElement<Feature> {
     public RestOfferList getOffers() throws RestException {
         try {
             return new RestOfferList(model.getOffers());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getOffers()");
         }
     }
@@ -244,7 +245,7 @@ public class RestFeature extends RestElement<Feature> {
     /**
      * Provided for JAXB
      */
-    void setModel(Feature model) {
+    void setModel(final Feature model) {
         this.model = model;
     }
 

@@ -24,6 +24,7 @@ public class AdministrationAction extends AdminAction {
     public static final String POPULARITY_STATE_CODE = "popularitystate";
     public static final String FEATURE_STATE_CODE = "featurestate";
 
+    @SuppressWarnings("rawtypes")
     @RequestParam(name = "id", role = Role.POST)
     private final List<Identifiable> contents;
 
@@ -79,7 +80,7 @@ public class AdministrationAction extends AdminAction {
                         ((Feature) content).computeSelectedOffer();
                         break;
                     case SET_FEATURE_IN_DEVELOPMENT:
-                        Feature feature = (Feature) content;
+                        final Feature feature = (Feature) content;
                         if (feature.getSelectedOffer() == null || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
                             session.notifyBad("There is no offer or not enough money. So no developement state for id: " + feature.getId());
                         } else {
@@ -96,7 +97,7 @@ public class AdministrationAction extends AdminAction {
                         break;
                 }
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyError(getRefusalReason());
             return new LoginPageUrl();
         }

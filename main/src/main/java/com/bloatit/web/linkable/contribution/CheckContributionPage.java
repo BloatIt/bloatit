@@ -118,13 +118,13 @@ public final class CheckContributionPage extends LoggedPage {
     public HtmlElement generateCheckContributeForm() throws RedirectException {
         final HtmlTitleBlock group = new HtmlTitleBlock("Check contribution", 1);
 
-        Feature feature = process.getFeature();
-        Member member = session.getAuthToken().getMember();
+        final Feature feature = process.getFeature();
+        final Member member = session.getAuthToken().getMember();
 
         BigDecimal account;
         try {
             account = member.getInternalAccount().getAmount();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
@@ -132,24 +132,24 @@ public final class CheckContributionPage extends LoggedPage {
         if (process.getAmount().compareTo(account) <= 0) {
             generateWithMoneyContent(group, feature, member);
         } else {
-            generateNoMoneyContent(group, feature, member, account);
+            generateNoMoneyContent(group, member, account);
         }
 
         return group;
     }
 
-    public void generateWithMoneyContent(final HtmlTitleBlock group, Feature feature, Member member) {
-        HtmlDiv contributionSummaryDiv = new HtmlDiv("contribution_summary");
+    public void generateWithMoneyContent(final HtmlTitleBlock group, final Feature feature, final Member member) {
+        final HtmlDiv contributionSummaryDiv = new HtmlDiv("contribution_summary");
         {
             contributionSummaryDiv.add(generateFeatureSummary(feature));
 
-            HtmlDiv authorContributionSummary = new HtmlDiv("author_contribution_summary");
+            final HtmlDiv authorContributionSummary = new HtmlDiv("author_contribution_summary");
             {
 
                 authorContributionSummary.add(new HtmlTitle(tr("Your account"), 2));
 
                 try {
-                    HtmlDiv changeLine = new HtmlDiv("change_line");
+                    final HtmlDiv changeLine = new HtmlDiv("change_line");
                     {
 
                         changeLine.add(new MoneyVariationBlock(member.getInternalAccount().getAmount(), member.getInternalAccount()
@@ -159,7 +159,7 @@ public final class CheckContributionPage extends LoggedPage {
                         authorContributionSummary.add(changeLine);
                         authorContributionSummary.add(new DefineParagraph(tr("Author: "), member.getDisplayName()));
                     }
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                     throw new ShallNotPassException("User cannot access user information", e);
                 }
@@ -176,10 +176,10 @@ public final class CheckContributionPage extends LoggedPage {
         }
         group.add(contributionSummaryDiv);
 
-        HtmlDiv buttonDiv = new HtmlDiv("contribution_actions");
+        final HtmlDiv buttonDiv = new HtmlDiv("contribution_actions");
         {
-            ContributionActionUrl contributionActionUrl = new ContributionActionUrl(process);
-            HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Contribute {0}",
+            final ContributionActionUrl contributionActionUrl = new ContributionActionUrl(process);
+            final HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Contribute {0}",
                                                                                     Context.getLocalizator()
                                                                                            .getCurrency(process.getAmount())
                                                                                            .getDefaultString()));
@@ -188,8 +188,8 @@ public final class CheckContributionPage extends LoggedPage {
             buttonDiv.add(confirmContributionLink);
 
             // Modify contribution button
-            ContributePageUrl contributePageUrl = new ContributePageUrl(process);
-            HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("or modify contribution"));
+            final ContributePageUrl contributePageUrl = new ContributePageUrl(process);
+            final HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("or modify contribution"));
 
             buttonDiv.add(modifyContributionLink);
 
@@ -197,7 +197,7 @@ public final class CheckContributionPage extends LoggedPage {
         group.add(buttonDiv);
     }
 
-    private void generateNoMoneyContent(final HtmlTitleBlock group, Feature feature, Member member, BigDecimal account) {
+    private void generateNoMoneyContent(final HtmlTitleBlock group, final Member member, final BigDecimal account) {
 
         if (process.isLocked()) {
             session.notifyBad(tr("You have a payment in progress. The contribution is locked."));
@@ -207,25 +207,25 @@ public final class CheckContributionPage extends LoggedPage {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
             }
-        } catch (IllegalWriteException e) {
+        } catch (final IllegalWriteException e) {
             session.notifyBad(tr("The preload amount is locked during the payment process."));
         }
 
         // Total
-        BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
-        StandardQuotation quotation = new StandardQuotation(missingAmount);
+        final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
+        final StandardQuotation quotation = new StandardQuotation(missingAmount);
 
         try {
             if (!process.getAmountToPay().equals(quotation.subTotalTTCEntry.getValue())) {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
-        } catch (IllegalWriteException e) {
+        } catch (final IllegalWriteException e) {
             session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
-        CheckContributionPageUrl recalculateUrl = url.clone();
+        final CheckContributionPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
 
-        HtmlForm detailsLines = new HtmlForm(recalculateUrl.urlString(), Method.GET);
+        final HtmlForm detailsLines = new HtmlForm(recalculateUrl.urlString(), Method.GET);
 
         detailsLines.setCssClass("quotation_details_lines");
 
@@ -241,15 +241,15 @@ public final class CheckContributionPage extends LoggedPage {
             }
 
             detailsLines.add(new HtmlChargeAccountLine(member));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
 
-        HtmlDiv totalsLines = new HtmlDiv("quotation_totals_lines");
+        final HtmlDiv totalsLines = new HtmlDiv("quotation_totals_lines");
         {
 
-            HtmlDiv subtotal = new HtmlDiv("quotation_total_line");
+            final HtmlDiv subtotal = new HtmlDiv("quotation_total_line");
             {
                 subtotal.add(new HtmlDiv("label").addText(tr("Subtotal TTC")));
                 subtotal.add(new HtmlDiv("money").addText(Context.getLocalizator()
@@ -258,14 +258,14 @@ public final class CheckContributionPage extends LoggedPage {
             }
             totalsLines.add(subtotal);
 
-            CheckContributionPageUrl showDetailUrl = url.clone();
+            final CheckContributionPageUrl showDetailUrl = url.clone();
             showDetailUrl.setShowFeesDetails(!showFeesDetails);
-            HtmlLink showDetailLink = showDetailUrl.getHtmlLink(tr("fees details"));
+            final HtmlLink showDetailLink = showDetailUrl.getHtmlLink(tr("fees details"));
 
-            HtmlDiv feesHT = new HtmlDiv("quotation_total_line_ht");
+            final HtmlDiv feesHT = new HtmlDiv("quotation_total_line_ht");
             {
 
-                HtmlSpan detailSpan = new HtmlSpan("details");
+                final HtmlSpan detailSpan = new HtmlSpan("details");
                 detailSpan.add(showDetailLink);
 
                 feesHT.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees HT <0::>"), detailSpan)));
@@ -274,15 +274,15 @@ public final class CheckContributionPage extends LoggedPage {
             }
             totalsLines.add(feesHT);
             // Fee details
-            HtmlDiv feesDetail = new HtmlDiv("quotation_total_line_details_block");
-            HtmlDiv feesBank = new HtmlDiv("quotation_total_line_details");
+            final HtmlDiv feesDetail = new HtmlDiv("quotation_total_line_details_block");
+            final HtmlDiv feesBank = new HtmlDiv("quotation_total_line_details");
             {
                 feesBank.add(new HtmlDiv("label").addText(tr("Bank fees")));
                 feesBank.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getDecimalDefaultString()));
             }
             feesDetail.add(feesBank);
 
-            HtmlDiv elveosCommission = new HtmlDiv("quotation_total_line_details");
+            final HtmlDiv elveosCommission = new HtmlDiv("quotation_total_line_details");
             {
                 elveosCommission.add(new HtmlDiv("label").addText(tr("Elveos's commission")));
                 elveosCommission.add(new HtmlDiv("money").addText(Context.getLocalizator()
@@ -294,15 +294,15 @@ public final class CheckContributionPage extends LoggedPage {
             totalsLines.add(feesDetail);
 
             // Add show/hide template
-            JsShowHide showHideFees = new JsShowHide(showFeesDetails);
+            final JsShowHide showHideFees = new JsShowHide(showFeesDetails);
             showHideFees.addActuator(showDetailLink);
             showHideFees.addListener(feesDetail);
             showHideFees.apply();
 
-            HtmlDiv feesTTC = new HtmlDiv("quotation_total_line");
+            final HtmlDiv feesTTC = new HtmlDiv("quotation_total_line");
             {
 
-                HtmlSpan detailSpan = new HtmlSpan("details");
+                final HtmlSpan detailSpan = new HtmlSpan("details");
                 detailSpan.addText(tr("({0}% + {1})",
                                       Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
                                       Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getDecimalDefaultString()));
@@ -312,14 +312,14 @@ public final class CheckContributionPage extends LoggedPage {
             }
             totalsLines.add(feesTTC);
 
-            HtmlDiv totalHT = new HtmlDiv("quotation_total_line_ht");
+            final HtmlDiv totalHT = new HtmlDiv("quotation_total_line_ht");
             {
                 totalHT.add(new HtmlDiv("label").addText(tr("Total HT")));
                 totalHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getDecimalDefaultString()));
             }
             totalsLines.add(totalHT);
 
-            HtmlDiv totalTTC = new HtmlDiv("quotation_total_line_total");
+            final HtmlDiv totalTTC = new HtmlDiv("quotation_total_line_total");
             {
                 totalTTC.add(new HtmlDiv("label").addText(tr("Total TTC")));
                 totalTTC.add(new HtmlDiv("money").addText(Context.getLocalizator()
@@ -332,7 +332,7 @@ public final class CheckContributionPage extends LoggedPage {
 
         // Pay block
 
-        HtmlDiv payBlock = new HtmlDiv("pay_actions");
+        final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
 
             // Pay later button
@@ -342,7 +342,7 @@ public final class CheckContributionPage extends LoggedPage {
 
             final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process);
 
-            HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
+            final HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
                                                                             Context.getLocalizator()
                                                                                    .getCurrency(quotation.totalTTC.getValue())
                                                                                    .getDecimalDefaultString()));
@@ -358,7 +358,7 @@ public final class CheckContributionPage extends LoggedPage {
 
     public static class HtmlContributionLine extends HtmlDiv {
 
-        public HtmlContributionLine(ContributionProcess contribution) throws UnauthorizedOperationException {
+        public HtmlContributionLine(final ContributionProcess contribution) throws UnauthorizedOperationException {
             super("quotation_detail_line");
 
             add(SoftwaresTools.getSoftwareLogoSmall(contribution.getFeature().getSoftware()));
@@ -377,16 +377,16 @@ public final class CheckContributionPage extends LoggedPage {
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Contribution")));
             add(new HtmlDiv("quotation_detail_line_description").addText(FeaturesTools.getTitle(contribution.getFeature())));
 
-            HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
+            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
                                                                                              .getCurrency(contribution.getAmount())
                                                                                              .getDecimalDefaultString()));
 
             // Modify contribution button
-            ContributePageUrl contributePageUrl = new ContributePageUrl(contribution);
-            HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("modify"));
-            HtmlLink deleteContributionLink = contributePageUrl.getHtmlLink(tr("delete"));
+            final ContributePageUrl contributePageUrl = new ContributePageUrl(contribution);
+            final HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("modify"));
+            final HtmlLink deleteContributionLink = contributePageUrl.getHtmlLink(tr("delete"));
             // TODO: real delete button
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_modify").add(modifyContributionLink).addText(" - ").add(deleteContributionLink));
 
@@ -397,7 +397,7 @@ public final class CheckContributionPage extends LoggedPage {
 
     public static class HtmlPrepaidLine extends HtmlDiv {
 
-        public HtmlPrepaidLine(Member member) throws UnauthorizedOperationException {
+        public HtmlPrepaidLine(final Member member) throws UnauthorizedOperationException {
             super("quotation_detail_line");
 
             add(MembersTools.getMemberAvatarSmall(member));
@@ -411,7 +411,7 @@ public final class CheckContributionPage extends LoggedPage {
 
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Prepaid from internal account")));
 
-            HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
+            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
                                                                                              .getCurrency(member.getInternalAccount()
@@ -426,7 +426,8 @@ public final class CheckContributionPage extends LoggedPage {
 
     public class HtmlChargeAccountLine extends HtmlDiv {
 
-        public HtmlChargeAccountLine(Member member) throws UnauthorizedOperationException {
+        @SuppressWarnings("synthetic-access")
+        public HtmlChargeAccountLine(final Member member) throws UnauthorizedOperationException {
             super("quotation_detail_line");
 
             add(MembersTools.getMemberAvatarSmall(member));
@@ -441,12 +442,12 @@ public final class CheckContributionPage extends LoggedPage {
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
             add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
 
-            HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_field");
+            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_field");
 
-            HtmlMoneyField moneyField = new HtmlMoneyField("preload");
+            final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
             moneyField.setDefaultValue(process.getAmountToCharge().toPlainString());
 
-            HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
+            final HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
 
             amountBlock.add(moneyField);
             amountBlock.add(recalculate);
@@ -456,13 +457,13 @@ public final class CheckContributionPage extends LoggedPage {
         }
     }
 
-    public HtmlDiv generateFeatureSummary(Feature feature) {
-        HtmlDiv featureContributionSummary = new HtmlDiv("feature_contribution_summary");
+    public HtmlDiv generateFeatureSummary(final Feature feature) {
+        final HtmlDiv featureContributionSummary = new HtmlDiv("feature_contribution_summary");
         {
             featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
 
             try {
-                HtmlDiv changeLine = new HtmlDiv("change_line");
+                final HtmlDiv changeLine = new HtmlDiv("change_line");
                 {
 
                     changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
@@ -470,7 +471,7 @@ public final class CheckContributionPage extends LoggedPage {
                 }
                 featureContributionSummary.add(changeLine);
                 featureContributionSummary.add(new DefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                 throw new ShallNotPassException("User cannot access user information", e);
             }
@@ -488,20 +489,20 @@ public final class CheckContributionPage extends LoggedPage {
         final public QuotationEntry bank;
         final public QuotationEntry commission;
 
-        public StandardQuotation(BigDecimal amount) {
+        public StandardQuotation(final BigDecimal amount) {
 
-            String fixBank = "0.30";
-            String variableBank = "0.03";
-            String TVAInvertedRate = "0.836120401";
+            final String fixBank = "0.30";
+            final String variableBank = "0.03";
+            final String TVAInvertedRate = "0.836120401";
 
-            Quotation quotation = new Quotation(Payline.computateAmountToPay(amount));
+            final Quotation quotation = new Quotation(Payline.computateAmountToPay(amount));
 
             subTotalTTCEntry = new QuotationAmountEntry("Subtotal TTC", null, amount);
 
             // Fees TTC
-            QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
-            QuotationPercentEntry feesVariable = new QuotationPercentEntry("Fees", null, subTotalTTCEntry, Payline.COMMISSION_VARIABLE_RATE);
-            QuotationAmountEntry feesFix = new QuotationAmountEntry("Fees", null, Payline.COMMISSION_FIX_RATE);
+            final QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
+            final QuotationPercentEntry feesVariable = new QuotationPercentEntry("Fees", null, subTotalTTCEntry, Payline.COMMISSION_VARIABLE_RATE);
+            final QuotationAmountEntry feesFix = new QuotationAmountEntry("Fees", null, Payline.COMMISSION_FIX_RATE);
             feesTotal.addEntry(feesVariable);
             feesTotal.addEntry(feesFix);
 
@@ -521,9 +522,9 @@ public final class CheckContributionPage extends LoggedPage {
             // Bank fees
             bank = new QuotationTotalEntry("Bank fees", null, "Total bank fees");
 
-            QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
+            final QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
 
-            QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee",
+            final QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee",
                                                                               "" + Float.valueOf(variableBank) * 100 + "%",
                                                                               quotation,
                                                                               new BigDecimal(variableBank));
@@ -559,8 +560,8 @@ public final class CheckContributionPage extends LoggedPage {
         return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(Feature feature, ContributionProcess process) {
-        Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
+    public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
 
         breadcrumb.pushLink(new CheckContributionPageUrl(process).getHtmlLink(tr("Contribute - Check")));
 

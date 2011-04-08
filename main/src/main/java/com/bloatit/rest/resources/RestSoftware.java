@@ -90,9 +90,10 @@ public class RestSoftware extends RestElement<Software> {
      */
     @SuppressWarnings("unused")
     private RestSoftware() {
+        super();
     }
 
-    protected RestSoftware(Software model) {
+    protected RestSoftware(final Software model) {
         this.model = model;
     }
 
@@ -108,8 +109,8 @@ public class RestSoftware extends RestElement<Software> {
      * @param id the id of the RestSoftware
      */
     @REST(name = "softwares", method = RequestMethod.GET)
-    public static RestSoftware getById(int id) {
-        RestSoftware restSoftware = new RestSoftware(SoftwareManager.getById(id));
+    public static RestSoftware getById(final int id) {
+        final RestSoftware restSoftware = new RestSoftware(SoftwareManager.getById(id));
         if (restSoftware.isNull()) {
             return null;
         }
@@ -143,7 +144,7 @@ public class RestSoftware extends RestElement<Software> {
     public String getName() throws RestException {
         try {
             return model.getName();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getName on Software", e);
         }
     }
@@ -155,7 +156,7 @@ public class RestSoftware extends RestElement<Software> {
     public RestDescription getDescription() throws RestException {
         try {
             return new RestDescription(model.getDescription());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDescription on Software", e);
         }
     }
@@ -167,7 +168,7 @@ public class RestSoftware extends RestElement<Software> {
     public RestFeatureList getFeatures() throws RestException {
         try {
             return new RestFeatureList(model.getFeatures());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getFeatures on Software", e);
         }
     }
@@ -179,7 +180,7 @@ public class RestSoftware extends RestElement<Software> {
     public RestFileMetadata getImage() throws RestException {
         try {
             return new RestFileMetadata(model.getImage());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getImage on Software", e);
         }
     }
@@ -191,7 +192,7 @@ public class RestSoftware extends RestElement<Software> {
     /**
      * Provided for JAXB
      */
-    void setModel(Software model) {
+    void setModel(final Software model) {
         this.model = model;
     }
 

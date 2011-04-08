@@ -89,6 +89,7 @@ public class RestMember extends RestElement<Member> {
 
     @SuppressWarnings("unused")
     private RestMember() {
+        super();
     }
 
     protected RestMember(final Member model) {
@@ -103,7 +104,6 @@ public class RestMember extends RestElement<Member> {
      * Finds the RestMember matching the <code>id</code>
      *
      * @param id the id of the RestMember
-     * @throws RestException
      */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMember getById(final int id) {
@@ -162,7 +162,7 @@ public class RestMember extends RestElement<Member> {
 
     @XmlIDREF
     public RestFileMetadata getAvatar() {
-        FileMetadata avatar = model.getAvatar();
+        final FileMetadata avatar = model.getAvatar();
         if (avatar == null) {
             return null;
         }

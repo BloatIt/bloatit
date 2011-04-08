@@ -95,9 +95,10 @@ public class RestTranslation extends RestElement<Translation> {
      */
     @SuppressWarnings("unused")
     private RestTranslation() {
+        super();
     }
 
-    protected RestTranslation(Translation model) {
+    protected RestTranslation(final Translation model) {
         this.model = model;
     }
 
@@ -113,8 +114,8 @@ public class RestTranslation extends RestElement<Translation> {
      * @param id the id of the RestTranslation
      */
     @REST(name = "translations", method = RequestMethod.GET)
-    public static RestTranslation getById(int id) {
-        RestTranslation restTranslation = new RestTranslation(TranslationManager.getById(id));
+    public static RestTranslation getById(final int id) {
+        final RestTranslation restTranslation = new RestTranslation(TranslationManager.getById(id));
         if (restTranslation.isNull()) {
             return null;
         }
@@ -205,7 +206,7 @@ public class RestTranslation extends RestElement<Translation> {
      */
     @XmlElement
     public RestTeam getAsTeam() {
-        RestTeam restTeam = new RestTeam(model.getAsTeam());
+        final RestTeam restTeam = new RestTeam(model.getAsTeam());
         if (restTeam.isNull()) {
             return null;
         }
@@ -227,7 +228,7 @@ public class RestTranslation extends RestElement<Translation> {
     /**
      * Provided for JAXB
      */
-    void setModel(Translation model) {
+    void setModel(final Translation model) {
         this.model = model;
     }
 
