@@ -31,7 +31,6 @@ import com.bloatit.model.Feature;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -43,7 +42,6 @@ import com.bloatit.web.url.ContributePageUrl;
  */
 @ParamContainer("contribute")
 public final class ContributePage extends LoggedPage {
-
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
@@ -69,17 +67,14 @@ public final class ContributePage extends LoggedPage {
     public HtmlElement createRestrictedContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateContributeForm());
-
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-        
 
         return layout;
     }
 
     public HtmlElement generateContributeForm() {
         final CheckContributionActionUrl formActionUrl = new CheckContributionActionUrl(process);
-
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : choose amount
