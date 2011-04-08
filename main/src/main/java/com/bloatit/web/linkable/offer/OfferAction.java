@@ -23,8 +23,8 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -104,7 +104,7 @@ public final class OfferAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
+    public Url doProcessRestricted(final Member authenticatedMember) {
         if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
             session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
             return session.pickPreferredPage();
@@ -157,15 +157,13 @@ public final class OfferAction extends LoggedAction {
             throw new ShallNotPassException("Error creating an offer", e);
         }
 
-        MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);
+        final MakeOfferPageUrl returnUrl = new MakeOfferPageUrl(feature);
         returnUrl.setOffer(constructingOffer);
         return returnUrl;
     }
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-
         if (feature != null) {
             transmitParameters();
             final MakeOfferPageUrl redirectUrl = new MakeOfferPageUrl(feature);

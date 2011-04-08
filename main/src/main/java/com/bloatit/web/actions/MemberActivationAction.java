@@ -83,8 +83,6 @@ public final class MemberActivationAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-
         return new IndexPageUrl();
     }
 }

@@ -19,8 +19,8 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
@@ -110,7 +110,6 @@ public final class AddReleaseAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }
 

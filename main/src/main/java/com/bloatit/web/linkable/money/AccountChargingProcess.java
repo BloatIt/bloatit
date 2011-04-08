@@ -42,7 +42,6 @@ public class AccountChargingProcess extends WebProcess {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }
 

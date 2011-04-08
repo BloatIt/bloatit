@@ -25,15 +25,15 @@ public class ContributionProcess extends PaymentProcess {
     @RequestParam
     private Feature feature;
 
-    private BigDecimal amount  = new BigDecimal("0");
+    private BigDecimal amount = new BigDecimal("0");
     private BigDecimal amountToPay = new BigDecimal("0");
     private BigDecimal amountToCharge = new BigDecimal("0");
-    private String comment  = "";
+    private String comment = "";
     private final ContributionProcessUrl url;
 
     private boolean locked = false;
 
-    public ContributionProcess(ContributionProcessUrl url) {
+    public ContributionProcess(final ContributionProcessUrl url) {
         super(url);
         this.url = url;
         feature = url.getFeature();
@@ -56,40 +56,31 @@ public class ContributionProcess extends PaymentProcess {
         return feature;
     }
 
-    public void setAmount(BigDecimal amount) throws IllegalWriteException {
+    public void setAmount(final BigDecimal amount) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
-
         this.amount = amount;
     }
 
-    public void setAmountToPay(BigDecimal amount) throws IllegalWriteException {
+    public void setAmountToPay(final BigDecimal amount) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
-
         this.amountToPay = amount;
     }
 
-
-    public void setAmountToCharge(BigDecimal amount) throws IllegalWriteException {
+    public void setAmountToCharge(final BigDecimal amount) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
-
         this.amountToCharge = amount;
     }
 
-
-
-
-
-    public void setComment(String comment) throws IllegalWriteException {
+    public void setComment(final String comment) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
-
         this.comment = comment;
     }
 
@@ -110,24 +101,20 @@ public class ContributionProcess extends PaymentProcess {
     }
 
     @Override
-    public void beginSubProcess(WebProcess subProcess) {
-
+    public void beginSubProcess(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
             locked = true;
         }
-
     }
 
     @Override
-    public Url endSubProcess(WebProcess subProcess) {
-
+    public Url endSubProcess(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
-            if(amountToCharge.compareTo(BigDecimal.ZERO) > 0) {
+            if (amountToCharge.compareTo(BigDecimal.ZERO) > 0) {
                 Context.getSession().notifyGood(tr("Your account has been credited."));
             }
             return new ContributionActionUrl(this);
         }
-
         return null;
     }
 

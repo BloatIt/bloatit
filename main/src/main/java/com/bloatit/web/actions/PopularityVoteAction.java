@@ -54,7 +54,7 @@ public final class PopularityVoteAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
+    public Url doProcessRestricted(final Member authenticatedMember) {
         try {
             if (voteUp) {
                 final EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
@@ -100,7 +100,6 @@ public final class PopularityVoteAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return session.pickPreferredPage();
     }
 

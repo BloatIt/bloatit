@@ -71,18 +71,18 @@ public class SignUpAction extends Action {
 
         if (MemberManager.loginExists(login)) {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
-            return sendError();
+            return doProcessErrors();
         }
 
         if (MemberManager.emailExists(email)) {
             session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
-            return sendError();
+            return doProcessErrors();
         }
 
         final String userEmail = email.trim();
         if (!MailUtils.isValidEmail(userEmail)) {
             session.notifyError(Context.tr("Invalid email address : " + userEmail));
-            return sendError();
+            return doProcessErrors();
         }
 
         final Locale locale = new Locale(lang, country);
@@ -104,18 +104,8 @@ public class SignUpAction extends Action {
         return session.pickPreferredPage();
     }
 
-    public SignUpPageUrl sendError() {
-        session.addParameter(url.getEmailParameter());
-        session.addParameter(url.getLoginParameter());
-        session.addParameter(url.getPasswordParameter());
-        session.addParameter(url.getCountryParameter());
-        session.addParameter(url.getLangParameter());
-        return new SignUpPageUrl();
-    }
-
     @Override
     protected final Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         session.addParameter(url.getEmailParameter());
         session.addParameter(url.getLoginParameter());
         session.addParameter(url.getPasswordParameter());

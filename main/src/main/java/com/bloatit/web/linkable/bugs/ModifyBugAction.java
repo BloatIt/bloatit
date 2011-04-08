@@ -21,8 +21,8 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -83,8 +83,8 @@ public final class ModifyBugAction extends Action {
             return new LoginPageUrl();
         }
 
-        Level currentLevel = bug.getErrorLevel();
-        BugState currentState = bug.getState();
+        final Level currentLevel = bug.getErrorLevel();
+        final BugState currentState = bug.getState();
 
         if (currentLevel == level.getLevel() && currentState == state.getState()) {
             session.notifyBad(Context.tr("You must change at least a small thing on the bug to modify it."));
@@ -97,7 +97,6 @@ public final class ModifyBugAction extends Action {
         }
 
         String changes = "";
-
         if (currentLevel != level.getLevel()) {
             changes += tr("\nLevel: {0} => {1}", BindedLevel.getBindedLevel(currentLevel), level);
         }
@@ -119,7 +118,7 @@ public final class ModifyBugAction extends Action {
             } else {
                 bug.addComment(changes + "\n" + tr("Reason:") + "\n" + reason);
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from accessing changing state on this bug. Please notify us."));
             throw new ShallNotPassException("The user can change the bug state but not post comments on this bug");
         }
@@ -131,13 +130,10 @@ public final class ModifyBugAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-
         return redirectWithError();
     }
 
     public Url redirectWithError() {
-
         session.addParameter(url.getReasonParameter());
         session.addParameter(url.getBugParameter());
         session.addParameter(url.getLevelParameter());

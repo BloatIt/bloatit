@@ -17,7 +17,7 @@ public class PaylineProcess extends WebProcess {
 
     private final PaylineProcessUrl url;
 
-    public PaylineProcess(PaylineProcessUrl url) {
+    public PaylineProcess(final PaylineProcessUrl url) {
         super(url);
         this.url = url;
         parentProcess = url.getParentProcess();
@@ -39,7 +39,6 @@ public class PaylineProcess extends WebProcess {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }
 
@@ -47,5 +46,4 @@ public class PaylineProcess extends WebProcess {
     public void load() {
         parentProcess.load();
     }
-
 }

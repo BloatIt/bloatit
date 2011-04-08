@@ -106,8 +106,6 @@ public class AdministrationAction extends AdminAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyError("Ça marche pas");
-        session.notifyList(url.getMessages());
         return session.pickPreferredPage();
     }
 

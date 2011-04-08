@@ -77,13 +77,6 @@ public final class CreateFeatureAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
-
-        session.addParameter(url.getDescriptionParameter());
-        session.addParameter(url.getSpecificationParameter());
-        session.addParameter(url.getSoftwareParameter());
-        session.addParameter(url.getLangParameter());
-
         return new CreateFeaturePageUrl();
     }
 
@@ -91,13 +84,14 @@ public final class CreateFeatureAction extends LoggedAction {
 
     @Override
     protected String getRefusalReason() {
-        // TODO Auto-generated method stub
-        return null;
+        return "You have to be logged to create a new feature request.";
     }
 
     @Override
     protected void transmitParameters() {
-        // TODO Auto-generated method stub
-        
+        session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getSpecificationParameter());
+        session.addParameter(url.getSoftwareParameter());
+        session.addParameter(url.getLangParameter());        
     }
 }

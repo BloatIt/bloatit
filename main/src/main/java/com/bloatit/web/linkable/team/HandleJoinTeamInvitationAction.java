@@ -36,8 +36,7 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
-        final Member me = session.getAuthToken().getMember();
+    public Url doProcessRestricted(final Member me) {
         if (accept) {
             final Team g = invite.getTeam();
 
@@ -74,7 +73,6 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }
 

@@ -35,26 +35,26 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(Member authenticatedMember) {
-        Url prefUrl = session.pickPreferredPage();
+    public Url doProcessRestricted(final Member authenticatedMember) {
+        final Url prefUrl = session.pickPreferredPage();
         SessionManager.destroySession(session);
-        Session newSess = SessionManager.createSession();
+        final Session newSess = SessionManager.createSession();
         Context.reInitializeContext(Context.getHeader(), newSess);
         newSess.notifyGood(Context.tr("Logout success."));
-        
         return prefUrl;
     }
 
     @Override
     public Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return new IndexPageUrl();
     }
 
     @Override
     protected String getRefusalReason() {
-        return Context.tr("You should log in before you log out ..." + "Note : if you log in using the form below, you'll be immediatly"
-                + "logged out (yes this is a stupid behavior, but we try to use generic code" + "... sometimes generic meands stupid ;)");
+        return Context.tr("You should log in before you log out ..." + //
+                "Note : if you log in using the form below, you'll be immediatly" + //
+                "logged out (yes this is a stupid behavior, but we try to use generic code" + //
+                "... sometimes generic meands stupid ;)");
     }
 
     @Override

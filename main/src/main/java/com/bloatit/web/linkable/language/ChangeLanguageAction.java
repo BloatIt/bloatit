@@ -56,7 +56,6 @@ public class ChangeLanguageAction extends Action {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         session.addParameter(url.getLanguageParameter());
         return new ChangeLanguagePageUrl();
     }

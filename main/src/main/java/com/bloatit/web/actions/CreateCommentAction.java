@@ -79,7 +79,6 @@ public final class CreateCommentAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
-        session.notifyList(url.getMessages());
         try {
             final Comment newComment = commentable.addComment(comment);
 
@@ -115,7 +114,6 @@ public final class CreateCommentAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors() {
-        session.notifyList(url.getMessages());
         return redirectWithError();
     }
 
