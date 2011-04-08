@@ -10,6 +10,7 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.BankTransaction;
@@ -26,7 +27,6 @@ import com.bloatit.model.Team;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.web.WebConfiguration;
 
 public class BloatitExampleDB {
 
@@ -100,9 +100,9 @@ public class BloatitExampleDB {
         final Feature twoSubtitlesInVlcFeature = generateVlcFeatureTwoSubtitles();
         final Feature addPerroquetInMageiaFeature = generateMageiaFeaturePerroquetPackage();
         final Feature colorPickerFeature = generateLibreOfficeFeatureColorPicker();
-        Feature libreOfficeFeatureDefaultTemplate = generateLibreOfficeFeatureDefaultTemplate();
-        Feature perroquetFeatureArabicSupport = generatePerroquetFeatureArabicSupport();
-        Feature mageiaFeatureRemoveEmacs = generateMageiaFeatureRemoveEmacs();
+        final Feature libreOfficeFeatureDefaultTemplate = generateLibreOfficeFeatureDefaultTemplate();
+        final Feature perroquetFeatureArabicSupport = generatePerroquetFeatureArabicSupport();
+        final Feature mageiaFeatureRemoveEmacs = generateMageiaFeatureRemoveEmacs();
 
         // Highlight features
         new HighlightFeature(twoSubtitlesInVlcFeature, 1, "Popular", DateUtils.now(), DateUtils.flyingPigDate());
@@ -325,7 +325,7 @@ public class BloatitExampleDB {
         feature.authenticate(new AuthToken(celeste));
         final Offer offer = feature.addOffer(celeste, new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
 
-        FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
@@ -370,7 +370,7 @@ public class BloatitExampleDB {
         feature.authenticate(new AuthToken(cerbere));
         final Offer offer = feature.addOffer(cerbere, new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
-        FeatureImplementation featureImpl = (FeatureImplementation) feature;
+        final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
@@ -421,7 +421,7 @@ public class BloatitExampleDB {
     }
 
     private FileMetadata getImage(final Member author, final String name) {
-        final String path = WebConfiguration.getWwwDir() + WebConfiguration.getCommonsDir() + "/img/" + name;
+        final String path = FrameworkConfiguration.getWwwDir() + FrameworkConfiguration.getCommonsDir() + "/img/" + name;
         return FileMetadataManager.createFromLocalFile(author, path, name, "Projet's logo image");
     }
 

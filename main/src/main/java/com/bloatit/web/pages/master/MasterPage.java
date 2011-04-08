@@ -5,6 +5,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.Context;
@@ -58,7 +59,7 @@ public abstract class MasterPage extends GenericPage {
         body.add(page);
         page.add(content);
         
-        PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
+        final PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
         content.add(breacrumbPlaceHolder);
         content.add(notificationBlock);
 
@@ -124,11 +125,11 @@ public abstract class MasterPage extends GenericPage {
 
     @Override
     protected List<String> getCustomJs() {
-        List<String> customJsList = new ArrayList<String>();
-        customJsList.add(WebConfiguration.getJsJquery());
-        customJsList.add(WebConfiguration.getJsJquery());
-        customJsList.add(WebConfiguration.getJsSelectivizr());
-        customJsList.add(WebConfiguration.getJsFlexie());
+        final List<String> customJsList = new ArrayList<String>();
+        customJsList.add(FrameworkConfiguration.getJsJquery());
+        customJsList.add(FrameworkConfiguration.getJsJquery());
+        customJsList.add(FrameworkConfiguration.getJsSelectivizr());
+        customJsList.add(FrameworkConfiguration.getJsFlexie());
 
         return customJsList;
     }

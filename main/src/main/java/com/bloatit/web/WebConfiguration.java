@@ -3,20 +3,11 @@ package com.bloatit.web;
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
-
-import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
+import com.bloatit.framework.FrameworkConfiguration;
 
 public class WebConfiguration extends ReloadableConfiguration {
     public static final WebConfiguration configuration = new WebConfiguration();
     private PropertiesRetriever properties;
-
-    // DIRECTORIES
-    private String documentationDir;
-    private String wwwDir;
-    private String resourcesDir;
-
-    // OTHERS
-    private AtomicBoolean htmlIndent;
 
     // CSS
     private String css;
@@ -33,13 +24,6 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgValidIcon;
     private String imgSoftwareNoLogo;
 
-    // JAVASCRIPT
-    private String jsJquery;
-    private String jsJqueryUi;
-    private String jsFlexie;
-    private String jsSelectivizr;
-    private String jsDatePicker;
-
     private WebConfiguration() {
         super();
         loadConfiguration();
@@ -50,40 +34,6 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     // ----------------------------------------------------------
-    // DIRECTORIES
-    // ----------------------------------------------------------
-    public static String getDocumentationDir() {
-        return configuration.documentationDir;
-    }
-
-    public static String getWwwDir() {
-        return configuration.wwwDir;
-    }
-
-    /**
-     * @return the path to the bloatitResourcesDir
-     */
-    public static String getResourcesDir() {
-        return configuration.resourcesDir;
-    }
-
-    // ----------------------------------------------------------
-    // OTHERS
-    // ----------------------------------------------------------
-
-    /**
-     * @return <code>true</code> if html should be indented, <code>false</code>
-     *         otherwise.
-     */
-    public static boolean isHtmlMinified() {
-        return configuration.htmlIndent.get();
-    }
-
-    public static String getCommonsDir() {
-        return configuration.resourcesDir + "/commons";
-    }
-
-    // ----------------------------------------------------------
     // CSS
     // ----------------------------------------------------------
 
@@ -91,11 +41,11 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the path to the css
      */
     public static String getCss() {
-        return getCommonsDir() + configuration.css;
+        return FrameworkConfiguration.getCommonsDir() + configuration.css;
     }
 
     public static String getCssDatePicker() {
-        return getCommonsDir() + configuration.cssDatePicker;
+        return FrameworkConfiguration.getCommonsDir() + configuration.cssDatePicker;
     }
 
     // ----------------------------------------------------------
@@ -106,114 +56,67 @@ public class WebConfiguration extends ReloadableConfiguration {
      * @return the path to the imgLogo
      */
     public static String getImgLogo() {
-        return getCommonsDir() + configuration.imgLogo;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgLogo;
     }
 
     /**
      * @return the path to the imgPresentation
      */
-    public static String getImgPresentation(String langCode) {
-        return getResourcesDir() + "/" + langCode + configuration.imgPresentation;
+    public static String getImgPresentation(final String langCode) {
+        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgPresentation;
     }
 
     /**
      * @return the imgMoneyDown
      */
     public static String getImgMoneyDown() {
-        return getCommonsDir() + configuration.imgMoneyDown;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyDown;
     }
 
     /**
      * @return the imgMoneyDownSmall
      */
     public static String getImgMoneyDownSmall() {
-        return getCommonsDir() + configuration.imgMoneyDownSmall;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyDownSmall;
     }
 
     /**
      * @return the imgMoneyUp
      */
     public static String getImgMoneyUp() {
-        return getCommonsDir() + configuration.imgMoneyUp;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyUp;
     }
 
     /**
      * @return the imgMoneyUpSmall
      */
     public static String getImgMoneyUpSmall() {
-        return getCommonsDir() + configuration.imgMoneyUpSmall;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgMoneyUpSmall;
     }
 
     /**
      * @return the imgNoAvatar
      */
     public static String getImgNoAvatar() {
-        return getCommonsDir() + configuration.imgNoAvatar;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgNoAvatar;
     }
 
     /**
      * @return the imgValidIcon
      */
     public static String getImgValidIcon() {
-        return getCommonsDir() + configuration.imgValidIcon;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgValidIcon;
     }
 
     /**
      * @return the imgValidIcon
      */
     public static String getImgSoftwareNoLogo() {
-        return getCommonsDir() + configuration.imgSoftwareNoLogo;
-    }
-
-    // ----------------------------------------------------------
-    // JAVASCRIPT
-    // ----------------------------------------------------------
-
-    /**
-     * @return the path to the jsJquery
-     */
-    public static String getJsJquery() {
-        return getCommonsDir() + configuration.jsJquery;
-    }
-
-    /**
-     * @return the path to the jsJqueryUi
-     */
-    public static String getJsJqueryUi() {
-        return getCommonsDir() + configuration.jsJqueryUi;
-    }
-
-    /**
-     * @return the path to the jsFlexie
-     */
-    public static String getJsFlexie() {
-        return getCommonsDir() + configuration.jsFlexie;
-    }
-
-    /**
-     * @return the path to the jsSelectivizr
-     */
-    public static String getJsSelectivizr() {
-        return getCommonsDir() + configuration.jsSelectivizr;
-    }
-
-    /**
-     * @return the path to the jsDatePicker
-     */
-    public static String getJsDatePicker(String langCode) {
-        return configuration.resourcesDir + "/" + langCode + configuration.jsDatePicker;
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgSoftwareNoLogo;
     }
 
     protected void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("web.properties");
-
-        // DIRECTORIES
-        documentationDir = properties.getString("bloatit.documentation.dir");
-        wwwDir = properties.getString("bloatit.www.dir");
-        resourcesDir = properties.getString("bloatit.resources.dir");
-
-        // OTHERS
-        htmlIndent = new AtomicBoolean(properties.getBoolean("bloatit.html.minify"));
 
         // CSS
         css = properties.getString("bloatit.css");
@@ -229,13 +132,6 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgNoAvatar = properties.getString("bloatit.img.no.avatar");
         imgValidIcon = properties.getString("bloatit.img.valid");
         imgSoftwareNoLogo = properties.getString("bloatit.img.software.no.logo");
-
-        // JAVASCRIPT
-        jsJquery = properties.getString("bloatit.js.jquery");
-        jsJqueryUi = properties.getString("bloatit.js.jqueryui");
-        jsFlexie = properties.getString("bloatit.js.flexie");
-        jsSelectivizr = properties.getString("bloatit.js.selectivizr");
-        jsDatePicker = properties.getString("bloatit.js.datepicker");
     }
 
     public static void load() {

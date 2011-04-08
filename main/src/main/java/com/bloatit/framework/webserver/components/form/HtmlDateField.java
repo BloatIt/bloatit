@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
@@ -32,12 +33,12 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
     private static final String DEFAULT_LOCALE = "en";
     private final String locale;
 
-    public HtmlDateField(final String name, Locale userLocale) {
+    public HtmlDateField(final String name, final Locale userLocale) {
         super(new DateInputBlock(userLocale.getLanguage()), name);
         locale = userLocale.getLanguage();
     }
 
-    public HtmlDateField(final String name, final String label, Locale userLocale) {
+    public HtmlDateField(final String name, final String label, final Locale userLocale) {
         super(new DateInputBlock(userLocale.getLanguage()), name, label);
         locale = userLocale.getLanguage();
     }
@@ -72,24 +73,24 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
      * @param name the name of the option
      * @param value the value of the option
      */
-    public void addDatePickerOption(String name, String value) {
+    public void addDatePickerOption(final String name, final String value) {
         ((DateInputBlock) getInputBlock()).addDatePickerOption(name, value);
     }
 
     @Override
     protected List<String> getCustomCss() {
-        ArrayList<String> custom = new ArrayList<String>();
+        final ArrayList<String> custom = new ArrayList<String>();
         custom.add(WebConfiguration.getCssDatePicker());
         return custom;
     }
 
     @Override
     protected List<String> getCustomJs() {
-        ArrayList<String> customJsList = new ArrayList<String>();
-        customJsList.add(WebConfiguration.getJsJquery());
-        customJsList.add(WebConfiguration.getJsJqueryUi());
+        final ArrayList<String> customJsList = new ArrayList<String>();
+        customJsList.add(FrameworkConfiguration.getJsJquery());
+        customJsList.add(FrameworkConfiguration.getJsJqueryUi());
         if (!locale.equals(DEFAULT_LOCALE)) {
-            customJsList.add(WebConfiguration.getJsDatePicker(locale));
+            customJsList.add(FrameworkConfiguration.getJsDatePicker(locale));
         }
         return customJsList;
     }
@@ -102,7 +103,7 @@ class DateInputBlock extends InputBlock {
     private PlaceHolderElement options;
     private boolean firstOption = true;
 
-    public DateInputBlock(String languageCode) {
+    public DateInputBlock(final String languageCode) {
         container = new PlaceHolderElement();
         input = new HtmlSimpleInput("text");
         input.addAttribute("autocomplete", "off");
@@ -133,7 +134,7 @@ class DateInputBlock extends InputBlock {
         return container;
     }
 
-    public void addDatePickerOption(String optionName, String optionValue) {
+    public void addDatePickerOption(final String optionName, final String optionValue) {
         String option = "";
         if (!firstOption) {
             option += ", ";
