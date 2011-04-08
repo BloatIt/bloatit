@@ -88,6 +88,7 @@ public final class SignUpPage extends MasterPage {
         final FieldData loginFieldData = signUpActionUrl.getLoginParameter().pickFieldData();
         final HtmlTextField loginInput = new HtmlTextField(loginFieldData.getName(), Context.trc("Login (noun)", "Login"));
         loginInput.setDefaultValue(loginFieldData.getSuggestedValue());
+        loginInput.setComment(Context.tr("When you login, case of login field be will be ignored"));
         loginInput.addErrorMessages(loginFieldData.getErrorMessages());
         form.add(loginInput);
 

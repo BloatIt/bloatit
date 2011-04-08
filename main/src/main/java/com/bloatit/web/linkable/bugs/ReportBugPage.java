@@ -34,9 +34,13 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Offer;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.components.SideBarFeatureBlock;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
@@ -45,7 +49,6 @@ import com.bloatit.web.url.ReportBugPageUrl;
  */
 @ParamContainer("feature/bug/report")
 public final class ReportBugPage extends LoggedPage {
-
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
@@ -54,9 +57,12 @@ public final class ReportBugPage extends LoggedPage {
     @RequestParam(name = BUG_BATCH, role = Role.GET)
     private final Offer offer;
 
-    public ReportBugPage(final ReportBugPageUrl reportBugPageUrl) {
-        super(reportBugPageUrl);
-        offer = reportBugPageUrl.getOffer();
+    private final ReportBugPageUrl url;
+
+    public ReportBugPage(final ReportBugPageUrl url) {
+        super(url);
+        this.url = url;
+        offer = url.getOffer();
     }
 
     @Override
@@ -73,13 +79,21 @@ public final class ReportBugPage extends LoggedPage {
     public void processErrors() throws RedirectException {
     }
 
-
     @Override
     public HtmlElement createRestrictedContent() {
+        final TwoColumnLayout layout = new TwoColumnLayout(true);
+
         if (FeatureManager.canCreate(session.getAuthToken())) {
-            return new HtmlDiv("padding_box").add(generateReportBugForm());
+            layout.addLeft(generateReportBugForm());
+        } else {
+            layout.addLeft(generateBadRightError());
         }
-        return generateBadRightError();
+
+        layout.addRight(new SideBarFeatureBlock(offer.getFeature()));
+        layout.addRight(new SideBarDocumentationBlock("markdown"));
+        layout.addRight(new SideBarBugReportBlock(url));
+
+        return layout;
     }
 
     private HtmlElement generateReportBugForm() {
@@ -118,6 +132,7 @@ public final class ReportBugPage extends LoggedPage {
         languageInput.setDefaultValue(languageFieldData.getSuggestedValue());
         languageInput.addErrorMessages(languageFieldData.getErrorMessages());
         languageInput.setComment(Context.tr("Language of the description."));
+        languageInput.setDefaultValue(languageFieldData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
         reportBugForm.add(languageInput);
 
         // Level
@@ -162,7 +177,6 @@ public final class ReportBugPage extends LoggedPage {
     public String getRefusalReason() {
         return Context.tr("You must be logged to report a new bug.");
     }
-
 
     @Override
     protected Breadcrumb getBreadcrumb() {

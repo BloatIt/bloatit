@@ -32,4 +32,20 @@ public class LanguageSelector extends HtmlDropDown {
             super.doSetDefaultValue(DEFAULT_LANG);
         }
     }
+
+    /**
+     * Sets the default value with the first non null string value from
+     * <code>langs</code>
+     */
+    public void setDefaultValue(String... langs) {
+        if (langs == null) {
+            throw new NullPointerException("Noob programmer !");
+        }
+        for (String lang : langs) {
+            if (lang != null && !lang.isEmpty()) {
+                setDefaultStringValue(lang);
+                return;
+            }
+        }
+    }
 }

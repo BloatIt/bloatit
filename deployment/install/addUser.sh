@@ -2,6 +2,15 @@
 
 USER=elveos
 
+# Add a elveos user with the following configurations
+# - Every folder are rxwr-x---
+# - Every files are  r--r-----
+# 
+# The install admin can connected by ssh using elveos account (~/.ssh/authorized_keys)
+# The home is versioned by git.
+
+
+
 add_user(){
     sudo adduser $USER 
 }

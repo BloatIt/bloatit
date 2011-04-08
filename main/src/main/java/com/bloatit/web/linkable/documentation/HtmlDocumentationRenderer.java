@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.XmlText;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
-import com.bloatit.web.WebConfiguration;
 
 public class HtmlDocumentationRenderer extends PlaceHolderElement {
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -34,7 +34,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 
 		private final String path;
 
-		DocumentationType(String path) {
+		DocumentationType(final String path) {
 			this.path = path;
 		}
 
@@ -42,13 +42,14 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 			return path;
 		}
 
-		public String toString() {
+		@Override
+        public String toString() {
 			return getPath();
 		}
 	}
 
-	public HtmlDocumentationRenderer(DocumentationType type, String key) {
-		final String dir = WebConfiguration.getDocumentationDir();
+	public HtmlDocumentationRenderer(final DocumentationType type, final String key) {
+		final String dir = FrameworkConfiguration.getDocumentationDir();
 		final String language = Context.getLocalizator().getLanguageCode();
 
 		String path = dir + "/" + type.getPath() + "/" + key + "_" + language;
@@ -70,7 +71,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 					Log.web().warn(
 							"Documentation file " + type + "/" + key
 									+ " doesn't exist in language " + language);
-					String notify = Context
+					final String notify = Context
 							.tr("Documentation file {0} doesn''t exist in language {1}, using english instead",
 									key, language);
 					Context.getSession().notifyBad(notify);
@@ -101,10 +102,10 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 	 *            the path of the file to load
 	 * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
 	 */
-	private boolean load(String path) {
+	private boolean load(final String path) {
 		FileInputStream fis;
 		try {
-			File targetFile = new File(path);
+			final File targetFile = new File(path);
 
 			if (!targetFile.exists()) {
 				Log.framework().warn(

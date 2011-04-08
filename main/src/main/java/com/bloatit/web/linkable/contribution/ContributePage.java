@@ -63,7 +63,6 @@ public final class ContributePage extends LoggedPage {
             session.notifyList(url.getMessages());
             throw new RedirectException(Context.getSession().pickPreferredPage());
         }
-
     }
 
     @Override
