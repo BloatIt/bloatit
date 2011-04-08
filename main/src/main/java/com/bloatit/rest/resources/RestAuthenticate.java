@@ -21,9 +21,9 @@ package com.bloatit.rest.resources;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.bloatit.framework.rest.RestServer.RequestMethod;
-import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.framework.webserver.SessionManager;
+import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
+import com.bloatit.framework.restprocessor.annotations.REST;
+import com.bloatit.framework.webprocessor.context.SessionManager;
 
 @XmlRootElement
 public class RestAuthenticate {

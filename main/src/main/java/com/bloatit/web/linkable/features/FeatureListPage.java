@@ -12,24 +12,24 @@
 package com.bloatit.web.linkable.features;
 
 // import java.util.Random;
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.search.FeatureSearch;
 import com.bloatit.data.search.FeatureSearch.SortMethod;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Optional;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlRenderer;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
-import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.annotations.Optional;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.HtmlRenderer;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.components.HtmlFeatureSummary;

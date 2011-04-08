@@ -11,30 +11,30 @@
  */
 package com.bloatit.web.linkable.offer;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Optional;
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FieldData;
-import com.bloatit.framework.webserver.components.form.HtmlDateField;
-import com.bloatit.framework.webserver.components.form.HtmlDropDown;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
-import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
-import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.HtmlTextArea;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.annotations.Optional;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
+import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;

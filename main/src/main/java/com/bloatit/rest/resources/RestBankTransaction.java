@@ -30,9 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoBankTransaction.State;
-import com.bloatit.framework.rest.RestElement;
-import com.bloatit.framework.rest.RestServer.RequestMethod;
-import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.framework.restprocessor.RestElement;
+import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
+import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.rest.adapters.DateAdapter;

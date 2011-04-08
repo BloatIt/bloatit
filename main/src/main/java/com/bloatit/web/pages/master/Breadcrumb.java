@@ -3,9 +3,9 @@ package com.bloatit.web.pages.master;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 /**
  * Breadcrumbs are a "guide" displayed at the top of each page indicating where

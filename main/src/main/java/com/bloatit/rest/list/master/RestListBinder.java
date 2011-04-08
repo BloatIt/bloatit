@@ -21,7 +21,7 @@ package com.bloatit.rest.list.master;
 import java.util.Iterator;
 
 import com.bloatit.data.IdentifiableInterface;
-import com.bloatit.framework.rest.RestElement;
+import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.utils.PageIterable;
 
 public class RestListBinder<T extends RestElement<M>, M extends IdentifiableInterface> implements Iterable<T> {

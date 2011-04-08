@@ -142,7 +142,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     }
 
     @Override
-    public void addFile(FileMetadata file) throws UnauthorizedOperationException {
+    public void addFile(final FileMetadata file) throws UnauthorizedOperationException {
         tryAccess(new UserContentRight.File(), Action.WRITE);
         getDao().addFile(file.getDao());
     }

@@ -1,9 +1,9 @@
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
-import com.bloatit.framework.webserver.components.form.Displayable;
+import com.bloatit.framework.webprocessor.components.form.Displayable;
 
 public enum BindedState implements Displayable {
     PENDING(BugState.PENDING, tr("PENDING")), DEVELOPING(BugState.DEVELOPING, tr("DEVELOPING")), RESOLVED(BugState.RESOLVED, tr("RESOLVED"));

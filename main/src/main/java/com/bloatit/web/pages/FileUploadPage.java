@@ -1,13 +1,13 @@
 package com.bloatit.web.pages;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.form.HtmlFileInput;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.FileUploadPageUrl;

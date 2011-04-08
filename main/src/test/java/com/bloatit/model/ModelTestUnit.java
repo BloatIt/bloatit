@@ -3,7 +3,7 @@ package com.bloatit.model;
 import junit.framework.TestCase;
 
 import com.bloatit.data.SessionManager;
-import com.bloatit.framework.webserver.ModelAccessor;
+import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.model.right.AuthToken;
 
 public class ModelTestUnit extends TestCase {

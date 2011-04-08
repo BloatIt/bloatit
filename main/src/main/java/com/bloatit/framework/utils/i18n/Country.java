@@ -21,7 +21,7 @@ import java.util.TreeSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.LocalesConfiguration;
-import com.bloatit.framework.webserver.components.form.DropDownElement;
+import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 
 /**
  * <p>

@@ -1,11 +1,11 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.webserver.annotations.Optional;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.masters.Action;
-import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.framework.webprocessor.annotations.Optional;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.masters.Action;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
 import com.bloatit.model.Payline.TokenNotfoundException;

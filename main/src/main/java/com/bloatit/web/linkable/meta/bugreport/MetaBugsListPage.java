@@ -11,17 +11,17 @@
  */
 package com.bloatit.web.linkable.meta.bugreport;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.List;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.meta.MetaBug;
 import com.bloatit.framework.meta.MetaBugManager;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;

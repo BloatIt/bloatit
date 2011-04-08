@@ -28,9 +28,9 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.bloatit.framework.rest.RestElement;
-import com.bloatit.framework.rest.RestServer.RequestMethod;
-import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.framework.restprocessor.RestElement;
+import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
+import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.managers.KudosManager;
 import com.bloatit.rest.adapters.DateAdapter;

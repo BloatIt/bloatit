@@ -1,6 +1,6 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.EnumSet;
 
@@ -8,19 +8,19 @@ import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
-import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.ColumnGenerator;
-import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
-import com.bloatit.framework.webserver.components.form.FieldData;
-import com.bloatit.framework.webserver.components.form.HtmlDropDown;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel.ColumnGenerator;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Release;
 import com.bloatit.model.admin.MilestoneAdminListFactory;

@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.bloatit.framework.rest.RestServer;
+import com.bloatit.framework.restprocessor.RestServer;
 import com.bloatit.rest.list.RestBankTransactionList;
 import com.bloatit.rest.list.RestBugList;
 import com.bloatit.rest.list.RestCommentList;

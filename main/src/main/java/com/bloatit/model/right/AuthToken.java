@@ -22,8 +22,9 @@ import java.util.UUID;
 import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.model.Member;
+import com.bloatit.model.User;
+import com.bloatit.model.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 
 /**
@@ -65,7 +66,7 @@ public final class AuthToken {
      * @throws NotFoundException
      */
     public AuthToken(final int memberId) throws NotFoundException {
-        final Member tmp = MemberManager.getById(memberId);
+        final User tmp = MemberManager.getById(memberId);
         if (tmp == null) {
             throw new NotFoundException("Identification failed");
         }

@@ -31,8 +31,8 @@ import java.util.Map;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.webserver.SessionManager;
-import com.bloatit.framework.webserver.masters.HttpResponse;
+import com.bloatit.framework.webprocessor.context.SessionManager;
+import com.bloatit.framework.webprocessor.masters.HttpResponse;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
 public final class XcgiServer {

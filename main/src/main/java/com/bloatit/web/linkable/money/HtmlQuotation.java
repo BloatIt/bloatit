@@ -1,10 +1,10 @@
 package com.bloatit.web.linkable.money;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationPercentEntry;

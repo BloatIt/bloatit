@@ -1,12 +1,12 @@
 package com.bloatit.web;
 
-import com.bloatit.framework.utils.Parameters;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.Session;
-import com.bloatit.framework.webserver.SessionManager;
-import com.bloatit.framework.webserver.WebServer;
-import com.bloatit.framework.webserver.masters.Linkable;
-import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.context.SessionManager;
+import com.bloatit.framework.webprocessor.masters.Linkable;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CommentCommentAction;
@@ -162,7 +162,7 @@ import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
-public class BloatitWebServer extends WebServer {
+public class BloatitWebServer extends WebProcessor {
 
     public BloatitWebServer() {
         super();

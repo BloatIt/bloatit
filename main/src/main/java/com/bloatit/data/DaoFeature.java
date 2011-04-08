@@ -232,7 +232,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Create a DaoFeature and set its state to the state PENDING.
-     *
+     * 
      * @param member is the author of the feature
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -267,7 +267,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Add a contribution to a feature.
-     *
+     * 
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -300,7 +300,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * delete offer from this feature AND FROM DB !
-     *
+     * 
      * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -343,7 +343,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Called by contribution when canceled.
-     *
+     * 
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -365,7 +365,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     *
+     * 
      * @return the current offer for this feature, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -455,11 +455,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     public PageIterable<DaoBug> getOpenBugs() {
         if (this.selectedOffer == null) {
-            return  new EmptyPageIterable<DaoBug>();
-        } else {
-            return new QueryCollection<DaoBug>("feature.getBugs.byNonState").setEntity("offer", this.selectedOffer)
-                                                                            .setParameter("state", DaoBug.BugState.RESOLVED);
+            return new EmptyPageIterable<DaoBug>();
         }
+        return new QueryCollection<DaoBug>("feature.getBugs.byNonState").setEntity("offer", this.selectedOffer)
+                                                                        .setParameter("state", DaoBug.BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {

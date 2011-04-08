@@ -103,13 +103,13 @@ public class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     *
+     * 
      * @param member is the author of the offer. Must be non null.
      * @param feature is the feature on which this offer is made. Must be non
      *            null.
      * @throws NonOptionalParameterException if a parameter is null.
-     * @throws BadProgrammerException if the amount is < 0 or if the Date is in the
-     *             future.
+     * @throws BadProgrammerException if the amount is < 0 or if the Date is in
+     *             the future.
      */
     public DaoOffer(final DaoMember member,
                     final DaoFeature feature,
@@ -202,7 +202,14 @@ public class DaoOffer extends DaoKudosable {
         return this.amount;
     }
 
-    // TODO comment; it make sure the sum returned is 100.
+    /**
+     * Get the percent of this offer amount to give to the developer for this
+     * milestone. This method make sure that the sum of all the milestone
+     * percent is 100.
+     * 
+     * @param current the milestone on which we want to know the percent.
+     * @return an int between [0;100]
+     */
     int getMilestonePercent(final DaoMilestone current) {
         if (this.milestonees.size() == 1) {
             return 100;
@@ -214,7 +221,7 @@ public class DaoOffer extends DaoKudosable {
             final DaoMilestone milestone = this.milestonees.get(i);
             final int percent = milestone.getAmount().divide(this.amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
             if (current.equals(milestone)) {
-                // is the current is the last one
+                // if the current is the last one
                 if (i == (this.milestonees.size() - 1)) {
                     return 100 - alreadyReturned;
                 }
@@ -232,12 +239,11 @@ public class DaoOffer extends DaoKudosable {
     }
 
     public DaoRelease getLastRelease() {
-        String q = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
+        final String q = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
                 "FROM DaoOffer as o " + //
                 "INNER JOIN o.milestonees as b " + //
                 "INNER JOIN b.releases as r " + //
                 "WHERE o=:this)";
-
 
         final Query query = SessionManager.createQuery(q).setEntity("this", this);
 

@@ -1,11 +1,11 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.pages.IndexPage;

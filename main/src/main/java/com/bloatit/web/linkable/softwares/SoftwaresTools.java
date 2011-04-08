@@ -1,13 +1,13 @@
 package com.bloatit.web.linkable.softwares;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlImage;
-import com.bloatit.framework.webserver.components.HtmlSpan;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Software;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.FileResourceUrl;

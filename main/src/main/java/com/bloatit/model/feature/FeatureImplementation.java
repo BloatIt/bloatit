@@ -30,8 +30,8 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
-import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
@@ -45,6 +45,7 @@ import com.bloatit.model.ModelConfiguration;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
 import com.bloatit.model.Software;
+import com.bloatit.model.User;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
@@ -590,7 +591,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @see com.bloatit.model.Feature#getMemberProgression()
      */
     @Override
-    public float getMemberProgression(final Member member) throws UnauthorizedOperationException {
+    public float getMemberProgression(final User member) throws UnauthorizedOperationException {
         tryAccess(new FeatureRight.Contribute(), Action.READ);
 
         final PageIterable<Contribution> contributions = getContributions();

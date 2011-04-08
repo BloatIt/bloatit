@@ -1,11 +1,11 @@
 package com.bloatit.web.pages.master.sidebar;
 
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlTitle;
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 public class TitleSideBarElementLayout extends SideBarElementLayout {
 

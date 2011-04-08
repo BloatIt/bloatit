@@ -178,7 +178,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *             property.
      * @see #authenticate(AuthToken)
      */
-    float getMemberProgression(Member member) throws UnauthorizedOperationException;
+    float getMemberProgression(User member) throws UnauthorizedOperationException;
 
 
     /**

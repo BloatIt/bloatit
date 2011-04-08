@@ -11,29 +11,28 @@
  */
 package com.bloatit.web.linkable.features;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.DropDownElement;
-import com.bloatit.framework.webserver.components.form.FieldData;
-import com.bloatit.framework.webserver.components.form.HtmlDropDown;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.HtmlTextArea;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.form.DropDownElement;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.meta.bugreport.SideBarBugReportBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -151,7 +150,9 @@ public final class CreateFeaturePage extends LoggedPage {
                 + "... Try to leave as little room for ambiguity as possible."));
         createFeatureForm.add(specificationInput);
 
+        final FieldData languageFieldData = doCreateUrl.getLangParameter().pickFieldData();
         final LanguageSelector languageInput = new LanguageSelector(CreateFeatureAction.LANGUAGE_CODE, tr("Language"));
+        languageInput.setDefaultValue(languageFieldData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
         createFeatureForm.add(languageInput);
 
         // Submit button
@@ -200,7 +201,6 @@ public final class CreateFeaturePage extends LoggedPage {
         public String getCode() {
             return code;
         }
-
     }
 
     @Override

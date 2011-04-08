@@ -1,6 +1,6 @@
 package com.bloatit.web.components;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;

@@ -2,12 +2,12 @@ package com.bloatit.web.components;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlRenderer;
-import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.HtmlRenderer;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.team.TeamTools;
 import com.bloatit.web.url.TeamPageUrl;

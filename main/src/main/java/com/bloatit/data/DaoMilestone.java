@@ -54,7 +54,7 @@ import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A DaoMilestone is a part of a DaoOffer.
- *
+ * 
  * @author Thomas Guyard
  */
 @Entity
@@ -160,20 +160,21 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Create a DaoMilestone.
-     *
+     * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param dateExpire is the date when this offer should be finish. Must be
      *            non null, and in the future.
-     * @param secondBeforeValidation TODO
+     * @param secondBeforeValidation number of seconds to wait until we watch
+     *            for bugs and validate the milestone.
      * @throws NonOptionalParameterException if a parameter is null.
-     * @throws BadProgrammerException if the amount is < 0 or if the Date is in the
-     *             future.
+     * @throws BadProgrammerException if the amount is < 0 or if the Date is in
+     *             the future.
      */
     public DaoMilestone(final Date dateExpire,
-                    final BigDecimal amount,
-                    final DaoDescription description,
-                    final DaoOffer offer,
-                    final int secondBeforeValidation) {
+                        final BigDecimal amount,
+                        final DaoDescription description,
+                        final DaoOffer offer,
+                        final int secondBeforeValidation) {
         super();
         if (dateExpire == null || amount == null || description == null || offer == null) {
             throw new NonOptionalParameterException();
@@ -200,7 +201,7 @@ public class DaoMilestone extends DaoIdentifiable {
      * level are closed. This method take parameters for the Fatal and Major
      * level. The Minor level is calculated from it (see
      * {@link #getMinorBugsPercent()}).
-     *
+     * 
      * @param fatalPercent is the percent of the money the developer will get
      *            when all the {@link Level#FATAL} bugs are closed. It must be
      *            >= 0 and <= 100.
@@ -236,21 +237,22 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
-     * Tells that the Income state of this milestone is finished, and everything is
-     * OK. The validation can be partial (when some major or minor bugs are
+     * Tells that the Income state of this milestone is finished, and everything
+     * is OK. The validation can be partial (when some major or minor bugs are
      * open). The validate method may also validate nothing if some FATAL bugs
      * are open, or if the validation period is not open. You can change this
      * behavior using the <code>force</code> parameter. The force parameter
-     * allows to validate the milestone without taking into account these previous
-     * restrictions.
-     *
-     * @param force force the validation of this milestone. Do not take care of the
-     *            bugs and the timeOuts.
+     * allows to validate the milestone without taking into account these
+     * previous restrictions.
+     * 
+     * @param force force the validation of this milestone. Do not take care of
+     *            the bugs and the timeOuts.
      * @return true if all parts of this milestone is validated.
      */
     public boolean validate(final boolean force) {
         //
-        // Calculate the real percent (= percent of this milestone * percent of this
+        // Calculate the real percent (= percent of this milestone * percent of
+        // this
         // level).
         final int milestonePercent = this.offer.getMilestonePercent(this);
         final int fatalPercent = (milestonePercent * this.fatalBugsPercent) / 100;
@@ -285,9 +287,9 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
-     * You can validate a milestone after its release and when the bugs requirement
-     * are done.
-     *
+     * You can validate a milestone after its release and when the bugs
+     * requirement are done.
+     * 
      * @return true if an admin should validate this Milestone part. False
      *         otherwise.
      */
@@ -320,8 +322,8 @@ public class DaoMilestone extends DaoIdentifiable {
 
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
         return new QueryCollection<DaoBug>("milestone.getBugs.byNonStateLevel").setEntity("this", this)
-                                                                           .setParameter("level", level)
-                                                                           .setParameter("state", BugState.RESOLVED);
+                                                                               .setParameter("level", level)
+                                                                               .setParameter("state", BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level) {
@@ -334,8 +336,8 @@ public class DaoMilestone extends DaoIdentifiable {
 
     public PageIterable<DaoBug> getBugs(final Level level, final BugState state) {
         return new QueryCollection<DaoBug>("milestone.getBugs.byStateLevel").setEntity("this", this)
-                                                                        .setParameter("level", level)
-                                                                        .setParameter("state", state);
+                                                                            .setParameter("level", level)
+                                                                            .setParameter("state", state);
     }
 
     public PageIterable<DaoRelease> getReleases() {

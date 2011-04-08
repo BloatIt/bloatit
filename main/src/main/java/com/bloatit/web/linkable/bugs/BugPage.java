@@ -11,25 +11,25 @@
  */
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.PageNotFoundException;
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.HtmlTitle;
-import com.bloatit.framework.webserver.components.form.FieldData;
-import com.bloatit.framework.webserver.components.form.HtmlFileInput;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.web.linkable.features.FeaturePage;

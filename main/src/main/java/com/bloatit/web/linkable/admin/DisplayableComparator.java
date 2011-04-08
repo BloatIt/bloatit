@@ -1,9 +1,9 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webserver.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.queries.DaoAbstractQuery.Comparator;
-import com.bloatit.framework.webserver.components.form.Displayable;
+import com.bloatit.framework.webprocessor.components.form.Displayable;
 
 public enum DisplayableComparator implements Displayable {
     EQUAL(tr("Equal")), //
