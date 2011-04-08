@@ -12,7 +12,6 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember;
-import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -25,6 +24,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.ModelTestUnit;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
+import com.bloatit.model.User.ActivationState;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 

@@ -5,24 +5,24 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
+import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
-import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember;
-import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoSoftware;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.model.User.ActivationState;
 
 public class SimpleTestDB {
 
@@ -49,7 +49,7 @@ public class SimpleTestDB {
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
 
-        DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin@gmail.com", Locale.FRANCE);
+        final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin@gmail.com", Locale.FRANCE);
         admin.setFullname("Administrator");
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
