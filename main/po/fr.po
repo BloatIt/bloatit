@@ -1350,8 +1350,8 @@ msgstr "aucune offre"
 #: com/bloatit/web/linkable/features/FeaturesTools.java:149
 msgid "<0:1600€:> i.e <1:69%:> of <2:2300€:> requested"
 msgid_plural "<0:1600€:> i.e <1:69%:> of <2:2300€:> requested"
-msgstr[0] "<0:1600€:> soit <1:69%:> de <2:2300€:> demandés"
-msgstr[1] ""
+msgstr[0] "<0:1600€:> soit <1:69%:> de <2:2300€:> demandé"
+msgstr[1] "<0:1600€:> soit <1:69%:> de <2:2300€:> demandés"
 
 #: com/bloatit/web/linkable/features/FeaturesTools.java:180
 #, java-format
