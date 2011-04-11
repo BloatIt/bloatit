@@ -24,6 +24,9 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgValidIcon;
     private String imgSoftwareNoLogo;
     private String imgFeatureStateSuccess;
+    private String imgFeatureStateFailed;
+    private String imgFeatureStateDeveloping;
+    private String imgFeatureStateFunding;
 
     private WebConfiguration() {
         super();
@@ -110,11 +113,31 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     /**
-     *
-     * @return the
+     * @return the imgFeatureStateSuccess
      */
     public static String getImgFeatureStateSuccess(final String langCode) {
         return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateSuccess;
+    }
+
+    /**
+     * @return the imgFeatureStateSuccess
+     */
+    public static String getImgFeatureStateFailed(final String langCode) {
+        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateFailed;
+    }
+
+    /**
+     * @return the imgFeatureStateSuccess
+     */
+    public static String getImgFeatureStateDeveloping(final String langCode) {
+        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateDeveloping;
+    }
+
+    /**
+     * @return the imgFeatureStateSuccess
+     */
+    public static String getImgFeatureStateFunding(final String langCode) {
+        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateFunding;
     }
 
     /**
@@ -142,6 +165,9 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgValidIcon = properties.getString("bloatit.img.valid");
         imgSoftwareNoLogo = properties.getString("bloatit.img.software.no.logo");
         imgFeatureStateSuccess = properties.getString("bloatit.img.feature.state.success");
+        imgFeatureStateFailed = properties.getString("bloatit.img.feature.state.failed");
+        imgFeatureStateDeveloping = properties.getString("bloatit.img.feature.state.developing");
+        imgFeatureStateFunding = properties.getString("bloatit.img.feature.state.funding");
     }
 
     public static void load() {
@@ -157,6 +183,5 @@ public class WebConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
-
 
 }

@@ -213,7 +213,30 @@ public class FeaturesTools {
         //Progress state
         HtmlDiv progressState = new HtmlDiv("feature_summary_state");
         {
-            progressState.add(new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator().getLanguageCode())), "success"));
+            String imageName = "";
+            String imageLabel = "";
+            String languageCode = Context.getLocalizator().getLanguageCode();
+            switch(feature.getFeatureState()) {
+                case FINISHED:
+                    imageName = WebConfiguration.getImgFeatureStateSuccess(languageCode);
+                    imageLabel = "success";
+                    break;
+                case DISCARDED:
+                    imageName = WebConfiguration.getImgFeatureStateFailed(languageCode);
+                    imageLabel = "failed";
+                    break;
+                case DEVELOPPING:
+                    imageName = WebConfiguration.getImgFeatureStateDeveloping(languageCode);
+                    imageLabel = "success";
+                    break;
+                case PENDING:
+                case PREPARING:
+                    imageName = WebConfiguration.getImgFeatureStateFunding(languageCode);
+                    imageLabel = "success";
+                    break;
+            }
+
+            progressState.add(new HtmlImage(new Image(imageName), imageLabel));
         }
         return progressState;
     }

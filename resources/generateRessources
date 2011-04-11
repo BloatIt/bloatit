@@ -5,7 +5,7 @@ OUTPUT_DIR_SUFFIX=/img/
 STAMP_OUTPUT_WIDTH=100
 
 LANG_LIST="en fr"
-STAMP_LIST="stamp_success stamp_failed"
+STAMP_LIST="stamp_success stamp_failed stamp_in_progress stamp_piggy_bank"
 
 for STAMP in $STAMP_LIST ; do
 

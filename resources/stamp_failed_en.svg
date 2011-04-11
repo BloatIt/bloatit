@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="173.37904"
-   height="136.3343"
+   width="174.31299"
+   height="136.11325"
    id="svg15925"
    version="1.1"
    inkscape:version="0.48.0 r9654"
-   sodipodi:docname="stamp_failed.svg">
+   sodipodi:docname="stamp_failed_en.svg">
   <defs
      id="defs15927">
     <linearGradient
@@ -112,8 +112,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="179.43087"
-     inkscape:cy="38.5484"
+     inkscape:cx="179.94945"
+     inkscape:cy="38.428181"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -142,10 +142,11 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-148.02337,-155.27357)">
+     transform="translate(-147.50479,-155.37441)">
     <g
        id="g3991"
-       style="fill:url(#linearGradient4003);fill-opacity:1">
+       style="fill:url(#linearGradient4003);fill-opacity:1"
+       transform="matrix(0.96592583,0.25881905,-0.25881905,0.96592583,65.828362,-53.134608)">
       <path
          inkscape:connector-curvature="0"
          id="path15950"
