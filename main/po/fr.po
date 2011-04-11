@@ -85,8 +85,8 @@ msgstr "Vote négatif appliqué : {0}"
 #: com/bloatit/web/actions/PopularityVoteAction.java:81
 msgid "Error voting on a component. Please notify us"
 msgstr ""
-"Une erreur s'est produite en votant sur un élément. S'il vous plait "
-"informez nous du problème"
+"Une erreur s'est produite en votant sur un élément. S'il vous plait informez "
+"nous du problème"
 
 #: com/bloatit/web/actions/PopularityVoteAction.java:96
 msgid "You already voted on that."
@@ -700,8 +700,8 @@ msgstr "Moi même"
 msgid ""
 "An error prevented us from displaying you some information. Please notify us"
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème"
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème"
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:151
 msgid "Offer price"
@@ -1012,8 +1012,8 @@ msgstr "Error vous avez oublié d'écrire un titre"
 msgid ""
 "An error prevented us from displaying user information. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:47
 #, java-format
@@ -1221,8 +1221,8 @@ msgstr "Logiciel"
 msgid ""
 "An error prevented us from displaying software information. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:121
 msgid "Describe the feature"
@@ -1301,8 +1301,8 @@ msgstr "Rapporter un bug"
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:165
 msgid "An error prevented us from displaying selected offer. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/features/FeatureBugListComponent.java:53
 #, java-format
@@ -1340,8 +1340,8 @@ msgstr "Dernière miste à jout"
 msgid ""
 "An error prevented us from displaying contribution amount. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/features/FeaturesTools.java:120
 msgid " no offer"
@@ -1465,8 +1465,8 @@ msgstr "+ Partager"
 msgid ""
 "An error prevented us from displaying feature information. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:228
 msgid "You share this need and you want participate financially?"
@@ -1601,8 +1601,8 @@ msgid ""
 "There is not yet offer to develop this feature. The fisrt offer is selected "
 "by default."
 msgstr ""
-"Il n'y a pas encore d'offre pour développer cette demande. La première "
-"offre est sélectionnée par défaut."
+"Il n'y a pas encore d'offre pour développer cette demande. La première offre "
+"est sélectionnée par défaut."
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:91
 msgid "Selected offer"
@@ -1756,8 +1756,8 @@ msgstr "Vous n'êtes pas autorisé à créer une idée."
 msgid ""
 "An error prevented us from displaying feature comments. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/features/FeatureCommentListComponent.java:51
 #, java-format
@@ -1767,8 +1767,8 @@ msgstr "Commentaires ({0})"
 #: com/bloatit/web/linkable/features/FeaturePage.java:68
 msgid "An error prevented us from displaying feature name. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/features/FeaturePage.java:72
 msgid "Feature not found !"
@@ -1802,8 +1802,8 @@ msgid ""
 "An error prevented us from displaying cotnribution informations. Please "
 "notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:96
 #, java-format
@@ -1865,8 +1865,8 @@ msgstr "Vous êtes désormais membre de l'équipe \""
 #: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:62
 msgid "Ooops, we couldn't display team name. It's a bug, please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/team/HandleJoinTeamInvitationAction.java:70
 msgid ""
@@ -1986,8 +1986,7 @@ msgstr "Vous devez être connecté pour rejoindre une équipe."
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:35
 msgid "Number of characters team name has to be superior to 4"
-msgstr ""
-"Le nombre de caractère pour le nom de l'équipe doit être supérieur à 4"
+msgstr "Le nombre de caractère pour le nom de l'équipe doit être supérieur à 4"
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:36
 msgid "Number of characters for team name has to be inferior to 50"
@@ -2003,8 +2002,8 @@ msgstr ""
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:45
 msgid "Number of characters for description has to be superior to 5"
 msgstr ""
-"Le nombre de caractère pour la description de l'équipe doit être supérieur "
-"à 5"
+"Le nombre de caractère pour la description de l'équipe doit être supérieur à "
+"5"
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:46
 msgid "Number of characters for description has to be inferior to 5000"
@@ -2056,8 +2055,8 @@ msgstr "Comment contacter {0}"
 msgid ""
 "Oops, an error prevented us from showing you team name, please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/team/TeamPage.java:127
 msgid "Team: "
@@ -2229,8 +2228,8 @@ msgid ""
 "An error prevented us from displaying getting your account balance. Please "
 "notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/contribution/CheckContributionPage.java:146
 msgid "Your account"
@@ -2241,8 +2240,8 @@ msgstr "Votre compte"
 #: com/bloatit/web/linkable/contribution/CheckContributionPage.java:472
 msgid "An error prevented us from accessing user's info. Please notify us."
 msgstr ""
-"Une erreur nous empèchent de vous afficher certaines informations. S'il "
-"vous plait informez nous du problème."
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/contribution/CheckContributionPage.java:167
 msgid "No comment"
@@ -2636,7 +2635,7 @@ msgstr "Configuration"
 
 #: com/bloatit/web/linkable/admin/ConfigurationAdminPage.java:128
 msgid "Last reload"
-msgstr "Dernire rechargement"
+msgstr "Dernier rechargement"
 
 #: com/bloatit/web/linkable/admin/ConfigurationAdminPage.java:130
 msgid "Reload"

@@ -68,7 +68,7 @@ public class ConfigurationAdminPage extends AdminPage {
     }
 
     private HtmlElement generateConfAdmin() {
-        final HtmlTitleBlock master = new HtmlTitleBlock("Administrate configurations", 1);
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Administrate configurations"), 1);
         final HtmlForm form = new HtmlForm(new ConfigurationAdminActionUrl().urlString());
         master.add(form);
         form.add(new HtmlTable(new ConfigurationTableModel(ReloadableConfiguration.getConfigurations())));
@@ -84,14 +84,14 @@ public class ConfigurationAdminPage extends AdminPage {
 
     @Override
     protected String getPageTitle() {
-        return null;
+        return Context.tr("Administrate configurations");
     }
 
     @Override
     protected Breadcrumb getBreadcrumb() {
         final Breadcrumb breadcrumb = new Breadcrumb();
-        breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink("Admin"));
-        breadcrumb.pushLink(url.getHtmlLink("Configuration"));
+        breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink(Context.tr("Admin")));
+        breadcrumb.pushLink(url.getHtmlLink(Context.tr("Configuration")));
         return breadcrumb;
     }
 
