@@ -176,7 +176,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     * 
+     *
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
@@ -190,7 +190,7 @@ public class DaoMember extends DaoActor {
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     * 
+     *
      * @param login the member login.
      * @param password the password of the member "login". It is a string
      *            corresponding to the string in the database. This method does
@@ -198,11 +198,13 @@ public class DaoMember extends DaoActor {
      * @return null if not found. (or if login == null or password == null)
      */
     public static DaoMember getByLoginAndPassword(final String login, final String password) {
+        if (login == null || password == null) {
+            return null;
+        }
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-
         final Criteria q = session.createCriteria(DaoMember.class)
-                            .add(Restrictions.like("login", login).ignoreCase())
-                            .add(Restrictions.like("password", password));
+                                  .add(Restrictions.like("login", login).ignoreCase())
+                                  .add(Restrictions.like("password", password));
 
         return (DaoMember) q.uniqueResult();
     }
@@ -214,7 +216,7 @@ public class DaoMember extends DaoActor {
     /**
      * Create a member. The member login must be unique, and you cannot change
      * it.
-     * 
+     *
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param locale the locale of the user.
@@ -238,7 +240,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     * 
+     *
      * @param locale is the locale in which this user is. (The country and
      *            language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
@@ -357,7 +359,7 @@ public class DaoMember extends DaoActor {
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
      * PROTECTED teams. ]
-     * 
+     *
      * @return All the teams this member is in. (Use a HQL query)
      */
     public PageIterable<DaoTeam> getTeams() {
