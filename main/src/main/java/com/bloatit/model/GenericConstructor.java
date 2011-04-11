@@ -34,7 +34,11 @@ public class GenericConstructor {
         if (daoClass == null) {
             throw new ClassNotFoundException("Cannot find a dao class for the class " + clazz);
         }
-        return ((DaoIdentifiable) DBRequests.getById(daoClass, id)).accept(new DataVisitorConstructor());
+        DaoIdentifiable byId = (DaoIdentifiable) DBRequests.getById(daoClass, id);
+        if (byId != null) {
+            return byId.accept(new DataVisitorConstructor());
+        }
+        return null;
     }
 
     public static Class<?> getDaoClass(Class<? extends IdentifiableInterface> clazz) {
@@ -104,7 +108,6 @@ public class GenericConstructor {
         if (clazz.equals(UserContent.class) || clazz.equals(UserContentInterface.class)) {
             return DaoUserContent.class;
         }
-
 
         return null;
     }
