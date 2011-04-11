@@ -34,6 +34,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
+import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.members.MembersTools;
@@ -248,23 +249,30 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
-        final BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
+        Offer selectedOffer = feature.getSelectedOffer();
+        if (selectedOffer != null) {
+            final BigDecimal amountLeft = selectedOffer.getAmount().subtract(feature.getContribution());
 
-        if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
+            if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
 
-            final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+                final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
 
-            element.add(new HtmlParagraph(tr(" {0} are missing before the developement start.", currency.toString())));
+                element.add(new HtmlParagraph(tr(" {0} are missing before the developement start.", currency.toString())));
+            } else {
+                final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
+
+                element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
+            }
+
         } else {
-            final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
-            element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
         }
 
-        final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink();
-        final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
-                                                                                link));
-        element.add(makeOfferText);
+            final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink();
+            final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
+                                                                                    link));
+            element.add(makeOfferText);
+
 
         return element;
     }

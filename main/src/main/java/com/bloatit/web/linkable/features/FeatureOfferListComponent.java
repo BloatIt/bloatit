@@ -96,10 +96,11 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
                     // Generating the left column
                     block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
+                    if(selectedOffer != null) {
                     if (feature.getValidationDate() != null && DateUtils.isInTheFuture(feature.getValidationDate())) {
                         final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
-                        final BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
+                        final BigDecimal amountLeft = selectedOffer.getAmount().subtract(feature.getContribution());
 
                         if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
                             final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
@@ -118,6 +119,9 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     }
                     // Generating the right column
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
+                    } else {
+                        block.addInRightColumn(new HtmlParagraph(tr("No selected offer. The last selected offer has been voted down and is no more selected."),"no_selected_offer_para"));
+                    }
 
                     // UnSelected
                     offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
@@ -402,7 +406,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         private boolean isDeveloper() throws UnauthorizedOperationException {
             return Context.getSession().isLogged()
-                    && Context.getSession().getAuthToken().getMember().equals(offer.getFeature().getSelectedOffer().getAuthor());
+                    && offer.getFeature().getSelectedOffer() != null && Context.getSession().getAuthToken().getMember().equals(offer.getFeature().getSelectedOffer().getAuthor());
         }
 
         private String getLotState(final Milestone lot) {
