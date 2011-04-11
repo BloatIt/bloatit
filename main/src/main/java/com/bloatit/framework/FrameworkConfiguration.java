@@ -50,6 +50,9 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private long sessionDefaultDuration;
     private long sessionLoggedDuration;
 
+    // CSS
+    private String cssShowdown;
+
     // JAVASCRIPT
     private String jsJquery;
     private String jsJqueryUi;
@@ -57,6 +60,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String jsSelectivizr;
     private String jsDatePicker;
     private String jsShowdown;
+    private String jsShowdownUi;
 
     // OTHERS
     private AtomicBoolean htmlIndent;
@@ -177,6 +181,14 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     }
 
     // ----------------------------------------------------------
+    // CSS
+    // ----------------------------------------------------------
+
+    public static String getCssShowdown() {
+        return getCommonsDir() + configuration.cssShowdown;
+    }
+
+    // ----------------------------------------------------------
     // JAVASCRIPT
     // ----------------------------------------------------------
 
@@ -213,6 +225,13 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
      */
     public static String getJsShowdown() {
         return getCommonsDir() + configuration.jsShowdown;
+    }
+
+    /**
+     * @return the path to the jsShowdown
+     */
+    public static String getJsShowdownUi() {
+        return getCommonsDir() + configuration.jsShowdownUi;
     }
 
     /**
@@ -269,6 +288,9 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
 
+        // CSS
+        cssShowdown = properties.getString("bloatit.css.showdown");
+
         // JAVASCRIPT
         jsJquery = properties.getString("bloatit.js.jquery");
         jsJqueryUi = properties.getString("bloatit.js.jqueryui");
@@ -276,6 +298,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         jsSelectivizr = properties.getString("bloatit.js.selectivizr");
         jsDatePicker = properties.getString("bloatit.js.datepicker");
         jsShowdown = properties.getString("bloatit.js.showdown");
+        jsShowdownUi = properties.getString("bloatit.js.showdown.ui");
 
         // DIRECTORIES
         documentationDir = properties.getString("bloatit.documentation.dir");
@@ -284,7 +307,6 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
         // OTHERS
         htmlIndent = new AtomicBoolean(properties.getBoolean("bloatit.html.minify"));
-
     }
 
     public static void load() {

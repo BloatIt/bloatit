@@ -19,6 +19,8 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
+import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
@@ -114,10 +116,17 @@ public final class CreateFeaturePage extends LoggedPage {
         // TODO: add form to create a new software
 
         createFeatureForm.add(softwareInput);
+        
+        // Language
+        final FieldData languageFieldData = doCreateUrl.getLangParameter().pickFieldData();
+        final LanguageSelector languageInput = new LanguageSelector(CreateFeatureAction.LANGUAGE_CODE, tr("Language"));
+        languageInput.setDefaultValue(languageFieldData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
+        createFeatureForm.add(languageInput);
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
-        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData.getName(),
+//        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData.getName(),
+        final MarkdownEditor specificationInput = new MarkdownEditor(specificationFieldData.getName(),
                                                                  tr("Describe the feature"),
                                                                  SPECIF_INPUT_NB_LINES,
                                                                  SPECIF_INPUT_NB_COLUMNS);
@@ -133,14 +142,17 @@ public final class CreateFeaturePage extends LoggedPage {
                 + "... Try to leave as little room for ambiguity as possible."));
         createFeatureForm.add(specificationInput);
 
-        final FieldData languageFieldData = doCreateUrl.getLangParameter().pickFieldData();
-        final LanguageSelector languageInput = new LanguageSelector(CreateFeatureAction.LANGUAGE_CODE, tr("Language"));
-        languageInput.setDefaultValue(languageFieldData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        createFeatureForm.add(languageInput);
+        // Markdown editor
+//        MarkdownEditor mdEditor = new MarkdownEditor("plop");
+//        createFeatureForm.add(mdEditor);
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
-
+        
+        // Markdown previewer
+        MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
+        createFeatureTitle.add(mdPreview);
+        
         layout.addLeft(createFeatureTitle);
 
         // RightColunm
