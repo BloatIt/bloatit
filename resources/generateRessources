@@ -1,0 +1,21 @@
+#!/bin/sh
+
+OUTPUT_DIR_PREFIX=../www/resources/
+OUTPUT_DIR_SUFFIX=/img/
+STAMP_OUTPUT_WIDTH=100
+
+LANG_LIST="en fr"
+STAMP_LIST="stamp_success stamp_failed"
+
+for STAMP in $STAMP_LIST ; do
+
+
+
+    for LANG in $LANG_LIST ; do
+        OUTPUT_FILE=$OUTPUT_DIR_PREFIX$LANG$OUTPUT_DIR_SUFFIX$STAMP.png
+
+        mkdir -p $(dirname $OUTPUT_FILE)
+        inkscape -e $OUTPUT_FILE -C -w $STAMP_OUTPUT_WIDTH $STAMP"_"$LANG.svg
+        optipng $OUTPUT_FILE
+    done
+done
