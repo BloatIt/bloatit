@@ -76,11 +76,36 @@
             
         }
 
+        .feature_summary_bottom_center {
+           .box-flex;
 
-        .feature_summary_progress {
-            .box-flex;
-            
+           .feature_summary_progress_and_state {
+                .display-box;
+                width:100%;
+                .box-align(center);
+
+                
+                .feature_summary_progress {
+                    .box-flex;  
+                }
+                
+                .feature_summary_state {
+                    margin-top: -35px;
+                    width: 100px;
+
+                    .transform(5deg);
+                    //TODO: remove transition for less fun
+                    .transition;
+                }
+                
+                .feature_summary_state:hover {
+                    //TODO: remove transition for less fun
+                    .transform(20deg,1.1);
+                }
+           }
         }
+
+
     
     }
 

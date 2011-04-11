@@ -8,8 +8,10 @@ import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -19,6 +21,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.feature.FeatureImplementation;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.url.FeaturePageUrl;
 
@@ -43,10 +46,11 @@ public class FeaturesTools {
     /**
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv
-            generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount)
+            throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
+
             // Progress bar
 
             final float progressValue = (float) Math.floor(feature.getProgression());
@@ -203,5 +207,14 @@ public class FeaturesTools {
 
         }
         return featureSummaryDetails;
+    }
+
+    public static HtmlDiv generateState(Feature feature) {
+        //Progress state
+        HtmlDiv progressState = new HtmlDiv("feature_summary_state");
+        {
+            progressState.add(new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator().getLanguageCode())), "success"));
+        }
+        return progressState;
     }
 }
