@@ -23,6 +23,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgNoAvatar;
     private String imgValidIcon;
     private String imgSoftwareNoLogo;
+    private String imgFeatureStateSuccess;
 
     private WebConfiguration() {
         super();
@@ -109,6 +110,14 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     /**
+     *
+     * @return the
+     */
+    public static String getImgFeatureStateSuccess(final String langCode) {
+        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateSuccess;
+    }
+
+    /**
      * @return the imgValidIcon
      */
     public static String getImgSoftwareNoLogo() {
@@ -132,6 +141,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgNoAvatar = properties.getString("bloatit.img.no.avatar");
         imgValidIcon = properties.getString("bloatit.img.valid");
         imgSoftwareNoLogo = properties.getString("bloatit.img.software.no.logo");
+        imgFeatureStateSuccess = properties.getString("bloatit.img.feature.state.success");
     }
 
     public static void load() {
@@ -147,4 +157,6 @@ public class WebConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
+
+
 }

@@ -146,9 +146,19 @@ public final class HtmlFeatureSummary extends HtmlDiv {
         {
             featureSummaryBottom.add(generatePopularityBlock());
 
-            final HtmlDiv featureSummaryProgress = FeaturesTools.generateProgress(feature, true);
-            featureSummaryProgress.add(FeaturesTools.generateDetails(feature, true));
-            featureSummaryBottom.add(featureSummaryProgress);
+            final HtmlDiv featureSummaryBottomCenter = new HtmlDiv("feature_summary_bottom_center");
+            {
+
+                final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
+                {
+                    featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, true));
+                    featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
+                }
+
+                featureSummaryBottomCenter.add(featureSummaryProgressAndState);
+                featureSummaryBottomCenter.add(FeaturesTools.generateDetails(feature, false));
+            }
+            featureSummaryBottom.add(featureSummaryBottomCenter);
         }
         add(featureSummaryBottom);
     }

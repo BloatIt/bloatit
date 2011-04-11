@@ -135,4 +135,11 @@
 	box-flex : @flex;
 }
 
+.transform(@angle,@scale:1) {
+    -moz-transform:rotate(@angle) scale(@scale);
+}
+
+.transition {
+    -moz-transition: all 1s ease-in-out;
+}
     

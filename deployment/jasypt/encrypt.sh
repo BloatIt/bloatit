@@ -34,7 +34,7 @@ DIST_DIR=$BIN_DIR/..
 LIB_DIR=$HOME/.m2/
 EXEC_CLASSPATH="."
 
-EXEC_CLASSPATH=$EXEC_CLASSPATH:/home/thomas/.m2/repository/org/jasypt/jasypt/1.7/jasypt-1.7.jar
+EXEC_CLASSPATH=$EXEC_CLASSPATH:~/.m2/repository/org/jasypt/jasypt/1.7/jasypt-1.7.jar
 
 JAVA_EXECUTABLE=java
 if [ -n "$JAVA_HOME" ]
