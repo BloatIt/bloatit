@@ -89,15 +89,12 @@ public final class SoftwarePage extends MasterPage {
 
     @Override
     protected String getPageTitle() {
-        if (software != null) {
-            try {
-                return tr("Software - ") + software.getName();
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError("An error prevented us from displaying software name. Please notify us.");
-                throw new ShallNotPassException("User cannot access software name", e);
-            }
+        try {
+            return tr("Software - ") + software.getName();
+        } catch (final UnauthorizedOperationException e) {
+            session.notifyError("An error prevented us from displaying software name. Please notify us.");
+            throw new ShallNotPassException("User cannot access software name", e);
         }
-        return tr("Member - software error");
     }
 
     @Override
