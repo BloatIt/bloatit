@@ -90,11 +90,11 @@ public final class ModifyBugAction extends Action {
 
         String changes = "";
         if (currentLevel != level.getLevel()) {
-            changes += tr("\nLevel: {0} => {1}", BindedLevel.getBindedLevel(currentLevel), level);
+            changes += tr("Level: {0} => {1}", BindedLevel.getBindedLevel(currentLevel), level);
         }
 
         if (currentState != state.getState()) {
-            changes += tr("\nState: {0} => {1}", BindedState.getBindedState(currentState), state);
+            changes += tr("State: {0} => {1}", BindedState.getBindedState(currentState), state);
         }
 
         bug.setErrorLevel(level.getLevel());

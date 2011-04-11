@@ -102,7 +102,7 @@ public final class PopularityVoteAction extends LoggedAction {
             session.notifyBad(Context.tr("You have a too low reputation to vote down that."));
         }
         if (canVote.contains(SpecialCode.OWNED_BY_ME)) {
-            session.notifyBad(Context.tr("You can't vote for yourself!."));
+            session.notifyBad(Context.tr("You can't vote for yourself!"));
         }
     }
 

@@ -45,7 +45,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         public String toString() {
             return getPath();
         }
-    }
+    } 
 
     public HtmlDocumentationRenderer(final DocumentationType type, final String key) {
         final String dir = FrameworkConfiguration.getDocumentationDir();

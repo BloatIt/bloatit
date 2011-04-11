@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-11 10:42+0200\n"
+"POT-Creation-Date: 2011-04-11 12:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,7 +96,7 @@ msgid "You have a too low reputation to vote down that."
 msgstr ""
 
 #: com/bloatit/web/actions/PopularityVoteAction.java:105
-msgid "You can't vote for yourself!."
+msgid "You can't vote for yourself!"
 msgstr ""
 
 #: com/bloatit/web/actions/MemberActivationAction.java:69
@@ -491,16 +491,12 @@ msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ModifyBugAction.java:93
 #, java-format
-msgid ""
-"\n"
-"Level: {0} => {1}"
+msgid "Level: {0} => {1}"
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ModifyBugAction.java:97
 #, java-format
-msgid ""
-"\n"
-"State: {0} => {1}"
+msgid "State: {0} => {1}"
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ModifyBugAction.java:111
@@ -599,12 +595,8 @@ msgstr ""
 msgid "The id of the software is incorrect or missing"
 msgstr ""
 
-#: com/bloatit/web/linkable/softwares/SoftwarePage.java:94
+#: com/bloatit/web/linkable/softwares/SoftwarePage.java:93
 msgid "Software - "
-msgstr ""
-
-#: com/bloatit/web/linkable/softwares/SoftwarePage.java:100
-msgid "Member - software error"
 msgstr ""
 
 #: com/bloatit/web/linkable/softwares/SoftwareListPage.java:65
@@ -2690,10 +2682,6 @@ msgstr ""
 
 #: com/bloatit/web/pages/TestPage.java:159
 msgid "Test"
-msgstr ""
-
-#: com/bloatit/web/pages/FileUploadPage.java:57
-msgid "File upload"
 msgstr ""
 
 #: com/bloatit/web/pages/IndexPage.java:54
