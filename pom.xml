@@ -6,8 +6,8 @@
 	<packaging>pom</packaging>
 
 	<scm>
-		<url>https://github.com/BloatIt/bloatit</url>
-		<connection>scm:git:git://github.com/BloatIt/bloatit.git</connection>
+        <url>https://gitorious.org/bloatit</url>
+		<connection>scm:git:git://gitorious.org/bloatit/bloatit.git</connection>
 	</scm>
 
 	<build>
