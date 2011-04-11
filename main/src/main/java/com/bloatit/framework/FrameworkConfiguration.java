@@ -56,6 +56,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String jsFlexie;
     private String jsSelectivizr;
     private String jsDatePicker;
+    private String jsShowdown;
 
     // OTHERS
     private AtomicBoolean htmlIndent;
@@ -208,6 +209,13 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     }
 
     /**
+     * @return the path to the jsShowdown
+     */
+    public static String getJsShowdown() {
+        return getCommonsDir() + configuration.jsShowdown;
+    }
+
+    /**
      * @return the path to the jsDatePicker
      */
     public static String getJsDatePicker(final String langCode) {
@@ -267,6 +275,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         jsFlexie = properties.getString("bloatit.js.flexie");
         jsSelectivizr = properties.getString("bloatit.js.selectivizr");
         jsDatePicker = properties.getString("bloatit.js.datepicker");
+        jsShowdown = properties.getString("bloatit.js.showdown");
 
         // DIRECTORIES
         documentationDir = properties.getString("bloatit.documentation.dir");
