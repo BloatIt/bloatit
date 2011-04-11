@@ -2008,7 +2008,7 @@ msgstr[1] "{0} bugs"
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:83
 #, java-format
 msgid "Contributions ({0})"
-msgstr "Contributions ({0})"
+msgstr "Contributions ({0})"
 
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:90
 msgid ""
