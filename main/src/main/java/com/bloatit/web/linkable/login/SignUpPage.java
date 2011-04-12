@@ -56,9 +56,6 @@ public final class SignUpPage extends MasterPage {
         return layout;
     }
 
-    /**
-     * @return
-     */
     private HtmlElement generateSignUpPageMain() {
         final HtmlDiv master = new HtmlDiv();
 
@@ -93,14 +90,6 @@ public final class SignUpPage extends MasterPage {
         emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
         emailInput.addErrorMessages(emailFieldData.getErrorMessages());
         form.add(emailInput);
-
-        // Fullname
-        final FieldData fullnameFieldData = targetUrl.getFullnameParameter().pickFieldData();
-        final HtmlTextField fullnameInput = new HtmlTextField(fullnameFieldData.getName(), tr("Fullname"));
-        fullnameInput.setDefaultValue(fullnameFieldData.getSuggestedValue());
-        fullnameInput.addErrorMessages(fullnameFieldData.getErrorMessages());
-        fullnameInput.setComment(tr("Your real name"));
-        form.add(fullnameInput);
 
         // Country
         final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName(), tr("Country"));

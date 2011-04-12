@@ -63,11 +63,8 @@ public class FCGIPostStream extends InputStream {
                 return -1;
             }
         }
-        final int plop = pipeIn.read(b, off, len);
-        if (plop == -1) {
-            System.out.println("PLOP");
-        }
-        return plop;
+        final int outInt = pipeIn.read(b, off, len);
+        return outInt;
     }
 
     @Override

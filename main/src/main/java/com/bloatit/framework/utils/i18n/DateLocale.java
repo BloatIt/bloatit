@@ -179,6 +179,11 @@ public final class DateLocale {
         return df.format(javaDate);
     }
 
+    public String getIsoDateString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(javaDate);
+    }
+
     /**
      * Parses the String into a java Date object
      * 
@@ -189,7 +194,6 @@ public final class DateLocale {
         this.parser.setLenient(false);
         try {
             this.javaDate = parser.parse(this.dateString);
-            System.err.println(javaDate);
         } catch (final ParseException e) {
             throw new DateParsingException(e);
         }

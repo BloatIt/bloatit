@@ -59,7 +59,7 @@ public final class ReportBugAction extends LoggedAction {
                      optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String title;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"))
+    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"), min = "10", minErrorMsg = @tr("The description must have at least 10 chars."))
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
     private final String description;
 

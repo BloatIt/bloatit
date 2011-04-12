@@ -27,13 +27,12 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.release.ReleasePage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
+import com.bloatit.web.url.CreateCommentActionUrl;
 
 /**
  * Page that hosts the form used to reply to an existing comment
@@ -46,7 +45,7 @@ public final class CommentReplyPage extends LoggedPage {
 
     private final CommentReplyPageUrl url;
 
-    @RequestParam(name = CommentCommentAction.COMMENT_TARGET)
+    @RequestParam(name = "target")
     private final Comment targetComment;
 
     public CommentReplyPage(final CommentReplyPageUrl url) {
@@ -67,7 +66,7 @@ public final class CommentReplyPage extends LoggedPage {
 
         final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
 
-        final CommentCommentActionUrl commentCommentActionUrl = new CommentCommentActionUrl(targetComment);
+        final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(targetComment);
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
         final FieldData commentData = commentCommentActionUrl.getCommentParameter().pickFieldData();

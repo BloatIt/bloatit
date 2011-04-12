@@ -58,10 +58,7 @@ public final class LogoutAction extends LoggedAction {
 
     @Override
     protected String getRefusalReason() {
-        return Context.tr("You should log in before you log out ..." + //
-                "Note : if you log in using the form below, you'll be immediatly" + //
-                "logged out (yes this is a stupid behavior, but we try to use generic code" + //
-                "... sometimes generic meands stupid ;)");
+        return Context.tr("You should log in before you log out ... Note : if you log in using the form below, you'll be immediatly logged out (yes this is a stupid behavior, but we try to use generic code... sometimes generic means stupid ;)");
     }
 
     @Override

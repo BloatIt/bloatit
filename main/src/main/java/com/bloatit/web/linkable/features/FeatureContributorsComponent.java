@@ -41,7 +41,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
 
     private final Feature feature;
 
-    public FeatureContributorsComponent(@SuppressWarnings("unused") final FeatureContributorsComponentUrl url, final Feature feature) {
+    public FeatureContributorsComponent(final FeatureContributorsComponentUrl url, final Feature feature) {
         super();
         this.feature = feature;
         add(produce());

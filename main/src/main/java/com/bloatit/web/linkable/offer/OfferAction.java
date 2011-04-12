@@ -110,7 +110,6 @@ public final class OfferAction extends LoggedAction {
         try {
             Milestone constructingMilestone;
             if (draftOffer == null) {
-                System.err.println(expiryDate);
                 constructingOffer = feature.addOffer(session.getAuthToken().getMember(),
                                                      price,
                                                      description,

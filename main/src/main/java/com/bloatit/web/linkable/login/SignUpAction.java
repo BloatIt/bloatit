@@ -8,7 +8,6 @@ import java.util.Locale;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -29,29 +28,27 @@ import com.bloatit.web.url.SignUpPageUrl;
 @ParamContainer("member/dosignup")
 public class SignUpAction extends Action {
     @RequestParam(name = "bloatit_login", role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
+    @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
+    min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
+    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15."))
     private final String login;
 
     @RequestParam(name = "bloatit_password", role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
+    @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
+    min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
+    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
     private final String password;
 
     @RequestParam(name = "bloatit_password_check", role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
+    @ParamConstraint(optionalErrorMsg = @tr("Password confirmation cannot be blank."),//
+    min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
+    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
     private final String passwordCheck;
 
-    @RequestParam(name = "bloatit_fullname", role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for fullname has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
-    @Optional
-    private final String fullname;
-
     @RequestParam(name = "bloatit_email", role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
-    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
+    @ParamConstraint(optionalErrorMsg = @tr("Email cannot be blank."),//
+    min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5."),//
+    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30."))
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
@@ -68,7 +65,6 @@ public class SignUpAction extends Action {
         this.login = url.getLogin();
         this.password = url.getPassword();
         this.passwordCheck = url.getPasswordCheck();
-        this.fullname = url.getFullname();
         this.email = url.getEmail();
         this.lang = url.getLang();
         this.country = url.getCountry();
@@ -83,7 +79,7 @@ public class SignUpAction extends Action {
         }
 
         final Locale locale = new Locale(lang, country);
-        final Member m = new Member(login, password, email, fullname, locale);
+        final Member m = new Member(login, password, email, locale);
         final String activationKey = m.getActivationKey();
         final MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
@@ -132,7 +128,6 @@ public class SignUpAction extends Action {
         session.addParameter(url.getPasswordParameter());
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        session.addParameter(url.getFullnameParameter());
         session.addParameter(url.getPasswordCheckParameter());
     }
 }

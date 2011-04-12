@@ -17,7 +17,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -75,10 +74,11 @@ public final class CreateFeaturePage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         if (FeatureManager.canCreate(session.getAuthToken())) {
-
-            add(generateFeatureCreationForm());
+            return generateFeatureCreationForm();
         }
-        return generateBadRightError();
+        // TODO
+        session.notifyBad("//TODO");
+        return new HtmlParagraph(Context.tr("You are not allowed to create a new feature"));
     }
 
     private HtmlElement generateFeatureCreationForm() {
@@ -116,7 +116,7 @@ public final class CreateFeaturePage extends LoggedPage {
         // TODO: add form to create a new software
 
         createFeatureForm.add(softwareInput);
-        
+
         // Language
         final FieldData languageFieldData = doCreateUrl.getLangParameter().pickFieldData();
         final LanguageSelector languageInput = new LanguageSelector(CreateFeatureAction.LANGUAGE_CODE, tr("Language"));
@@ -125,34 +125,39 @@ public final class CreateFeaturePage extends LoggedPage {
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
-//        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData.getName(),
+        // final HtmlTextArea specificationInput = new
+        // HtmlTextArea(specificationFieldData.getName(),
         final MarkdownEditor specificationInput = new MarkdownEditor(specificationFieldData.getName(),
-                                                                 tr("Describe the feature"),
-                                                                 SPECIF_INPUT_NB_LINES,
-                                                                 SPECIF_INPUT_NB_COLUMNS);
+                                                                     tr("Describe the feature"),
+                                                                     SPECIF_INPUT_NB_LINES,
+                                                                     SPECIF_INPUT_NB_COLUMNS);
         final String suggestedValue = tr("What is the expected work ?\n" + "\n" + "What is the requested date ?\n" + "\n"
                 + "What is the expected compatibility ?\n" + "\n" + "  * Linux 2.6.x\n" + "  * Windows 7\n" + "  * Mac Os X\n" + "  * ...\n" + "\n"
                 + "What is the expected output ?\n" + "\n" + " * Source tarball\n" + " * Diff patch\n" + " * Public repository\n"
                 + " * Push in the project's official  repository\n" + " * Windows install\n" + " * Install shell script\n" + " * Deb package\n"
                 + " * Rpm package\n" + " * ...");
 
-        specificationInput.setDefaultValue(suggestedValue);
+        if (specificationFieldData.getSuggestedValue() == null || specificationFieldData.getSuggestedValue().isEmpty()) {
+            specificationInput.setDefaultValue(suggestedValue);
+        } else {
+            specificationInput.setDefaultValue(specificationFieldData.getSuggestedValue());
+        }
         specificationInput.addErrorMessages(specificationFieldData.getErrorMessages());
         specificationInput.setComment(tr("Enter a long description of the feature : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
         createFeatureForm.add(specificationInput);
 
         // Markdown editor
-//        MarkdownEditor mdEditor = new MarkdownEditor("plop");
-//        createFeatureForm.add(mdEditor);
+        // MarkdownEditor mdEditor = new MarkdownEditor("plop");
+        // createFeatureForm.add(mdEditor);
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
-        
+
         // Markdown previewer
         MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
         createFeatureTitle.add(mdPreview);
-        
+
         layout.addLeft(createFeatureTitle);
 
         // RightColunm
@@ -160,12 +165,6 @@ public final class CreateFeaturePage extends LoggedPage {
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
-    }
-
-    private HtmlElement generateBadRightError() {
-        final HtmlDiv group = new HtmlDiv();
-
-        return group;
     }
 
     @Override
