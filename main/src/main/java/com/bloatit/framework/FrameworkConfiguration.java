@@ -252,6 +252,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static boolean isHtmlMinified() {
         return configuration.htmlIndent.get();
     }
+    
+    public static int getMemoryCacheMaxSize(){
+        return 1000;
+    }
 
     public static String getCommonsDir() {
         return configuration.resourcesDir + "/commons";
