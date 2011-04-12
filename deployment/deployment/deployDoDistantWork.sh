@@ -177,10 +177,10 @@ startBloatitServer() {
 
 commitPrerelease "$PREFIX" "$RELEASE_VERSION"
 
-stopBloatitServer
+propagateConfFiles 
 exit_on_failure $?
 
-propagateConfFiles 
+stopBloatitServer
 exit_on_failure $?
 
 migratingDB "$PREFIX" "$RELEASE_VERSION" "$LIQUIBASE_DIR" "$USER"
