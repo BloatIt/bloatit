@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.HighlightFeature;
@@ -47,6 +48,7 @@ public final class IndexPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
+        final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
             final HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
@@ -60,7 +62,7 @@ public final class IndexPage extends MasterPage {
             globalDescription.add(presentationLink);
 
         }
-        add(globalDescription);
+        element.add(globalDescription);
 
         final TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
         twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"), 1));
@@ -111,7 +113,8 @@ public final class IndexPage extends MasterPage {
 
         twoColumnLayout.addLeft(featureList);
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-        return twoColumnLayout;
+        element.add(twoColumnLayout);
+        return element;
     }
 
     @Override
