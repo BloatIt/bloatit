@@ -56,9 +56,6 @@ public final class SignUpPage extends MasterPage {
         return layout;
     }
 
-    /**
-     * @return
-     */
     private HtmlElement generateSignUpPageMain() {
         final HtmlDiv master = new HtmlDiv();
 
