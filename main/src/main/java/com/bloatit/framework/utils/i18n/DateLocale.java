@@ -194,7 +194,6 @@ public final class DateLocale {
         this.parser.setLenient(false);
         try {
             this.javaDate = parser.parse(this.dateString);
-            System.err.println(javaDate);
         } catch (final ParseException e) {
             throw new DateParsingException(e);
         }
