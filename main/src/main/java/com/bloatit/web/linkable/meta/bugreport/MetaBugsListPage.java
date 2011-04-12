@@ -49,13 +49,17 @@ public final class MetaBugsListPage extends MasterPage {
 
         for (final MetaBug bug : bugList) {
             final HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
-            final HtmlDiv editBox = new HtmlDiv("float_right");
-            bugBox.add(editBox);
+
+            if (session.isLogged()) {
+                final HtmlDiv editBox = new HtmlDiv("float_right");
+                bugBox.add(editBox);
+                editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
+                editBox.addText(" - ");
+                editBox.add(new MetaBugDeleteActionUrl(bug.getId()).getHtmlLink(tr("delete")));
+            }
             bugBox.add(new HtmlMarkdownRenderer(bug.getDescription()));
-            editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
-            editBox.addText(" - ");
-            editBox.add(new MetaBugDeleteActionUrl(bug.getId()).getHtmlLink(tr("delete")));
             pageTitle.add(bugBox);
+
         }
 
         layout.addLeft(pageTitle);
