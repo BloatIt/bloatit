@@ -44,7 +44,7 @@ public final class AddSoftwarePage extends LoggedPage {
 
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
-    
+
     private AddSoftwarePageUrl url;
 
     public AddSoftwarePage(final AddSoftwarePageUrl url) {
@@ -71,7 +71,7 @@ public final class AddSoftwarePage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateFeatureCreationForm());
-        
+
         return layout;
     }
 
@@ -107,9 +107,9 @@ public final class AddSoftwarePage extends LoggedPage {
         // Description
         final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(),
-                                                               Context.tr("Describe the software"),
-                                                               DESCRIPTION_INPUT_NB_LINES,
-                                                               DESCRIPTION_INPUT_NB_COLUMNS);
+                                                                   Context.tr("Describe the software"),
+                                                                   DESCRIPTION_INPUT_NB_LINES,
+                                                                   DESCRIPTION_INPUT_NB_COLUMNS);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the projet : list all features, add siteweb links, etc."));

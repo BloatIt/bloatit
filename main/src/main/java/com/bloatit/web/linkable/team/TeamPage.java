@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ExternalAccount;
@@ -54,8 +55,7 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team")
 public class TeamPage extends MasterPage {
-    @SuppressWarnings("unused")
-    private final TeamPageUrl url; // we keep it for consistency
+    private final TeamPageUrl url;
 
     @RequestParam()
     private final Team targetTeam;
@@ -148,8 +148,8 @@ public class TeamPage extends MasterPage {
         // TODO add cache
         final HtmlTitleBlock description = new HtmlTitleBlock(Context.tr("Description"), 2);
         title.add(description);
-        final HtmlMarkdownRenderer hmr = new HtmlMarkdownRenderer(targetTeam.getDescription());
-        description.add(hmr);
+        final HtmlCachedMarkdownRenderer hcmr = new HtmlCachedMarkdownRenderer(targetTeam.getDescription());
+        description.add(hcmr);
 
         HtmlBranch financial;
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetInternalAccount()) {
