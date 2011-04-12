@@ -69,7 +69,6 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
         generator.setIsAction(isAction(element));
 
-
         addParameterForSuperClass(element, generator);
 
         for (final Element enclosed : element.getEnclosedElements()) {
@@ -79,13 +78,15 @@ public class ParamContainerProcessor extends AbstractProcessor {
         BufferedWriter out = null;
         BufferedWriter outUrl = null;
         try {
-            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + generator.getClassName());
+            // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
+            // "writing " + generator.getClassName());
             final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(generator.getClassName());
             out = new BufferedWriter(classFile.openWriter());
             out.write(generator.generateComponentUrlClass());
 
             if (!paramContainer.isComponent()) {
-                this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + generator.getUrlClassName());
+                // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
+                // "writing " + generator.getUrlClassName());
                 final JavaFileObject urlClassFile = this.processingEnv.getFiler().createSourceFile(generator.getUrlClassName());
                 outUrl = new BufferedWriter(urlClassFile.openWriter());
                 outUrl.write(generator.generateUrlClass());
@@ -103,94 +104,89 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
     }
 
-    private boolean isAction(Element element) {
+    private boolean isAction(final Element element) {
 
-
-
-        if(element.getSimpleName().toString().equals("Action")) {
+        if (element.getSimpleName().toString().equals("Action")) {
             return true;
         }
 
         return element.accept(new ElementScanner6<Boolean, Object>() {
 
             @Override
-            public Boolean visitType(TypeElement e, Object p) {
+            public Boolean visitType(final TypeElement e, final Object p) {
                 return isAction(e.getSuperclass());
 
-            }}, false);
+            }
+        }, false);
 
     }
 
-    private boolean isAction(TypeMirror type) {
+    private boolean isAction(final TypeMirror type) {
 
         return type.accept(new TypeVisitor<Boolean, Object>() {
 
             @Override
-            public Boolean visit(TypeMirror t, Object p) {
+            public Boolean visit(final TypeMirror t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visit(TypeMirror t) {
+            public Boolean visit(final TypeMirror t) {
                 return false;
             }
 
             @Override
-            public Boolean visitPrimitive(PrimitiveType t, Object p) {
+            public Boolean visitPrimitive(final PrimitiveType t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitNull(NullType t, Object p) {
+            public Boolean visitNull(final NullType t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitArray(ArrayType t, Object p) {
+            public Boolean visitArray(final ArrayType t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitDeclared(DeclaredType t, Object p) {
+            public Boolean visitDeclared(final DeclaredType t, final Object p) {
                 return isAction(t.asElement());
             }
 
             @Override
-            public Boolean visitError(ErrorType t, Object p) {
+            public Boolean visitError(final ErrorType t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitTypeVariable(TypeVariable t, Object p) {
+            public Boolean visitTypeVariable(final TypeVariable t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitWildcard(WildcardType t, Object p) {
+            public Boolean visitWildcard(final WildcardType t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitExecutable(ExecutableType t, Object p) {
+            public Boolean visitExecutable(final ExecutableType t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitNoType(NoType t, Object p) {
+            public Boolean visitNoType(final NoType t, final Object p) {
                 return false;
             }
 
             @Override
-            public Boolean visitUnknown(TypeMirror t, Object p) {
+            public Boolean visitUnknown(final TypeMirror t, final Object p) {
                 return false;
-            }}, null);
-
-
-
+            }
+        }, null);
 
     }
-
-
 
     private void addParameterForSuperClass(final Element element, final JavaGenerator generator) {
         final SimpleTypeVisitor6<Element, ProcessingEnvironment> vs = new SimpleTypeVisitor6<Element, ProcessingEnvironment>() {
@@ -221,7 +217,25 @@ public class ParamContainerProcessor extends AbstractProcessor {
         // Its a simple param
         if (parm != null) {
             final String attributeName = attribute.getSimpleName().toString();
-            final String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
+            String attributeUrlString;
+            if (parm.name().isEmpty()) {
+                if (parm.role() == Role.POST || parm.role() == Role.SESSION) {
+                    // Find if the type of the attribute has a ParamContainer
+                    // annotation
+                    final TypeKindVisitor6<String, Integer> vs = new TypeKindVisitor6<String, Integer>() {
+                        @Override
+                        public String visitDeclared(final DeclaredType t, final Integer p) {
+                            return t.asElement().getSimpleName().toString();
+                        }
+                    };
+                    final String className = attribute.getEnclosingElement().asType().accept(vs, null);
+                    attributeUrlString = className.toLowerCase() + "_" + attribute.getSimpleName().toString().toLowerCase();
+                } else {
+                    attributeUrlString = attribute.getSimpleName().toString();
+                }
+            } else {
+                attributeUrlString = parm.name();
+            }
             final String suggestedValue = RequestParam.DEFAULT_SUGGESTED_VALUE.equals(parm.suggestedValue()) ? null : parm.suggestedValue();
 
             if (parm.generatedFrom().isEmpty()) {
