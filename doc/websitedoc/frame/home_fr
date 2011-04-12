@@ -1,0 +1,26 @@
+Qu'est ce qu'elveos ?
+================
+Elveos est un endroit où les utilisateurs et les développeur de logiciel libre se rencontre plur créer les logiciels de demain.
+
+ * Si vous êtes un développeur, vous pouvez être payer pour créer des supers logiciels.
+ * Si vous êtes un utilisateur de logiciel libre, vous pouvez trouver ici des personnes partageant les mêmes besoins que vous, et avec qui partager le cout des développement.
+ 
+Où commencer ?
+======================
+You want to develop or fund open-source projects, [browse](/en/feature/list) the list of feature and find one you like.
+
+You need something implemented in open-source ? [Check](/en/feature/list) if somebody else already had the same idea. If not [ask](/en/feature/create) a developer to create it.
+
+If you want to know more, you can read the [documentation](/en/documentation).
+
+Glossaire
+========
+We'll use many specific words in the site. Here are the main ones :
+
+ * [Feature](/en/feature/list) is what you create when you ask someone to develop something.
+ * Contribution is a sum of money you place on a feature.
+ * Offer is a tender by a developer. It contains the developer requirements, mainly the amount of money he requires to develop it.
+ * [Brainstorm](/en/brainstorm/list) is a kind of wiki page where you can express an idea, and discuss it before creating a feature.
+ * [Team](/en/team/list): A place where users sharing the same interest can gather. Teams can also receive money ([more...](/en/documentation/teams))
+ * [Software](/en/software/list) are used to map features with real world free software.
+ 
