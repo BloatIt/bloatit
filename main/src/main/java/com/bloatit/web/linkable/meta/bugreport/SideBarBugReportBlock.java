@@ -29,7 +29,6 @@ public class SideBarBugReportBlock extends TitleSideBarElementLayout {
         final MetaReportBugActionUrl reportBugActionUrl = new MetaReportBugActionUrl();
         final HtmlForm form = new HtmlForm(reportBugActionUrl.urlString());
         final HtmlHidden hiddenUrl = new HtmlHidden(MetaReportBugAction.BUG_URL, currentUrl.urlString());
-        form.add(hiddenUrl);
 
         final FieldData descriptionFieldData = reportBugActionUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea bugDescription = new HtmlTextArea(descriptionFieldData.getName(), 5, 50);
