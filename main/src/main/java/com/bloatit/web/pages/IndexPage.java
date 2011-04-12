@@ -117,14 +117,21 @@ public final class IndexPage extends MasterPage {
 
         // Display of a button to create a feature
         SideBarElementLayout createBox = new SideBarElementLayout();
-
         HtmlDiv createDiv = new HtmlDiv("feature_create");
         HtmlLink link = new HtmlLink(new CreateFeaturePageUrl().urlString(), createDiv);
-        HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgIdea()), Context.tr("Request a feature"));
-        createDiv.add(img);
-        createDiv.addText(Context.tr("Request a feature."));
-        createBox.add(link);
+        { // Box to hold feature creating button content
+            HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgIdea()), Context.tr("Request a feature"));
+            createDiv.add(img);
+            HtmlDiv createTextDiv = new HtmlDiv("feature_create_text_box");
+            { // Box to hold text of the button
+                HtmlDiv createTextDiv2 = new HtmlDiv("feature_create_text");
+                createTextDiv.add(createTextDiv2);
+                createTextDiv2.addText(Context.tr("Request a feature."));
+            }
+            createDiv.add(createTextDiv);
+        }
 
+        createBox.add(link);
         twoColumnLayout.addRight(createBox);
 
         // Display of a summary of all website activity since creation
