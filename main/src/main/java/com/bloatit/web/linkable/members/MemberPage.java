@@ -18,6 +18,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -62,10 +63,8 @@ public final class MemberPage extends MasterPage {
     private HtmlPagedList<Team> pagedTeamList;
     private final MemberPageUrl url;
 
-    public static final String MEMBER_FIELD_NAME = "id";
-
     @ParamConstraint(optionalErrorMsg = @tr("The id of the member is incorrect or missing"))
-    @RequestParam(name = MEMBER_FIELD_NAME)
+    @RequestParam(name = "id")
     private final Member member;
 
     public MemberPage(final MemberPageUrl url) {
@@ -76,6 +75,10 @@ public final class MemberPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
+
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
 

@@ -36,12 +36,6 @@ public abstract class MasterPage extends GenericPage {
     // Template method pattern: Abstract methods
     // -----------------------------------------------------------------------
 
-    /**
-     * TODO Documenter
-     * 
-     * @return TODO
-     * @throws RedirectException
-     */
     protected abstract HtmlElement createBodyContent() throws RedirectException;
 
     protected abstract String createPageTitle();

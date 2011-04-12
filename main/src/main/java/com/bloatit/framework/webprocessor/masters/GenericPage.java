@@ -21,15 +21,13 @@ import com.bloatit.web.pages.master.HtmlNotification;
 public abstract class GenericPage extends Page {
 
     private final Url thisUrl;
-    private final Header pageHeader;
+    private Header pageHeader;
     protected final Session session;
 
     public GenericPage(final Url url) {
         super();
         this.thisUrl = url;
         session = Context.getSession();
-        pageHeader = new Header(getTitle());
-
     }
 
     // -----------------------------------------------------------------------
@@ -54,15 +52,16 @@ public abstract class GenericPage extends Page {
     public final void create() throws RedirectException {
         Log.framework().trace("Writing page: " + thisUrl.urlString());
         super.add(new XmlText("<!DOCTYPE html>"));
-        
+
         final HtmlBranch html = new HtmlGenericElement("html");
         super.add(html);
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+        pageHeader = new Header(getTitle());
         html.add(pageHeader);
 
         final HtmlGenericElement body = new HtmlGenericElement("body");
         html.add(body);
-        
+
         // Abstract method cf: template method pattern
         createPageContent(body);
 
@@ -77,7 +76,7 @@ public abstract class GenericPage extends Page {
         // Display waiting notifications
         // Abstract method cf: template method pattern
         addWaitingNotifications();
-        
+
         // Do not forget to add the css/js files.
         generateDependencies();
     }
@@ -89,6 +88,9 @@ public abstract class GenericPage extends Page {
      * </p>
      */
     private void generateDependencies() {
+        if (pageHeader == null) {
+            throw new BadProgrammerException("Make sure to call create before generateDependencies (to create the pageHeader).");
+        }
         for (final String css : getAllCss()) {
             pageHeader.addCss(css);
         }
