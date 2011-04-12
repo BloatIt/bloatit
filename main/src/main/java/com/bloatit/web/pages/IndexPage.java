@@ -32,7 +32,9 @@ import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -112,6 +114,23 @@ public final class IndexPage extends MasterPage {
         }
 
         twoColumnLayout.addLeft(featureList);
+
+        // Display of a button to create a feature
+        SideBarElementLayout createBox = new SideBarElementLayout();
+
+        HtmlDiv createDiv = new HtmlDiv("feature_create");
+        HtmlLink link = new HtmlLink(new CreateFeaturePageUrl().urlString(), createDiv);
+        HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgIdea()), Context.tr("Request a feature"));
+        createDiv.add(img);
+        createDiv.addText(Context.tr("Request a feature."));
+        createBox.add(link);
+
+        twoColumnLayout.addRight(createBox);
+
+        // Display of a summary of all website activity since creation
+        SideBarElementLayout summaryBox = new SideBarElementLayout();
+        twoColumnLayout.addRight(summaryBox);
+
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
         element.add(twoColumnLayout);
         return element;
