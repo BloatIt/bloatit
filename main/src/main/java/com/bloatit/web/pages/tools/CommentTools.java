@@ -165,14 +165,14 @@ public class CommentTools {
         commentInput.setComment(Context.tr("Use this field to comment the feature. If you want to reply to a previous comment, use the reply link."));
 
         // Attachement
-        form.add(generateAttachementBlock(url, commentable));
+        form.add(generateAttachementBlock(url));
 
         form.add(new HtmlSubmit(Context.tr("Submit comment")));
 
         return commentBlock;
     }
 
-    private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url, final UserContentInterface<?> userContent) {
+    private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url) {
 
         final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
 

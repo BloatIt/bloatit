@@ -34,107 +34,107 @@ import com.bloatit.web.pages.master.Breadcrumb;
 
 public class BreadcrumbTools {
 
-    public static Breadcrumb generateBreadcrumb(UserContentInterface userContent) {
+    public static Breadcrumb generateBreadcrumb(final UserContentInterface<?> userContent) {
 
         return userContent.accept(new ModelClassVisitor<Breadcrumb>() {
 
             @Override
-            public Breadcrumb visit(ExternalAccount model) {
+            public Breadcrumb visit(final ExternalAccount model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(InternalAccount model) {
+            public Breadcrumb visit(final InternalAccount model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Member model) {
+            public Breadcrumb visit(final Member model) {
                 return MemberPage.generateBreadcrumb(model);
             }
 
             @Override
-            public Breadcrumb visit(BankTransaction model) {
+            public Breadcrumb visit(final BankTransaction model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Milestone model) {
+            public Breadcrumb visit(final Milestone model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Description model) {
+            public Breadcrumb visit(final Description model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Team model) {
+            public Breadcrumb visit(final Team model) {
                 return TeamPage.generateBreadcrumb(model);
             }
 
             @Override
-            public Breadcrumb visit(HighlightFeature model) {
+            public Breadcrumb visit(final HighlightFeature model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(JoinTeamInvitation model) {
+            public Breadcrumb visit(final JoinTeamInvitation model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Software model) {
+            public Breadcrumb visit(final Software model) {
                 return SoftwarePage.generateBreadcrumb(model);
             }
 
             @Override
-            public Breadcrumb visit(Transaction model) {
+            public Breadcrumb visit(final Transaction model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Bug model) {
+            public Breadcrumb visit(final Bug model) {
                 return BugPage.generateBreadcrumb(model);
             }
 
             @Override
-            public Breadcrumb visit(Contribution model) {
+            public Breadcrumb visit(final Contribution model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(FileMetadata model) {
+            public Breadcrumb visit(final FileMetadata model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Kudos model) {
+            public Breadcrumb visit(final Kudos model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Comment model) {
+            public Breadcrumb visit(final Comment model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Feature model) {
+            public Breadcrumb visit(final Feature model) {
                 return FeaturePage.generateBreadcrumb(model);
             }
 
             @Override
-            public Breadcrumb visit(Offer model) {
+            public Breadcrumb visit(final Offer model) {
                 return FeaturePage.generateBreadcrumbOffers(model.getFeature());
             }
 
             @Override
-            public Breadcrumb visit(Translation model) {
+            public Breadcrumb visit(final Translation model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Release model) {
+            public Breadcrumb visit(final Release model) {
                 return ReleasePage.generateBreadcrumb(model);
             }});
     }
