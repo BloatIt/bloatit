@@ -93,7 +93,8 @@ performMvnRelease() {
         -DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
         -DautoVersionSubmodules=true \
         -Darguments="-DargLine=-DmasterPassword=$_password" \
-        && $_mvn release:clean
+        && $_mvn release:clean \
+        || ( $_mvn release:rollback ; false )
 
     exit_on_failure $?
 }
