@@ -79,29 +79,29 @@ public final class SignUpPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv();
 
         final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
-        final SignUpActionUrl signUpActionUrl = new SignUpActionUrl();
-        final HtmlForm form = new HtmlForm(signUpActionUrl.urlString());
+        final SignUpActionUrl targetUrl = new SignUpActionUrl();
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         container.add(form);
 
-        final FieldData loginFieldData = signUpActionUrl.getLoginParameter().pickFieldData();
+        final FieldData loginFieldData = targetUrl.getLoginParameter().pickFieldData();
         final HtmlTextField loginInput = new HtmlTextField(loginFieldData.getName(), Context.trc("Login (noun)", "Login"));
         loginInput.setDefaultValue(loginFieldData.getSuggestedValue());
         loginInput.setComment(Context.tr("When you login, case of login field be will be ignored"));
         loginInput.addErrorMessages(loginFieldData.getErrorMessages());
         form.add(loginInput);
 
-        final FieldData passwordFieldData = signUpActionUrl.getPasswordParameter().pickFieldData();
+        final FieldData passwordFieldData = targetUrl.getPasswordParameter().pickFieldData();
         final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), Context.tr("Password"));
         passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
         form.add(passwordInput);
 
-        final FieldData emailFieldData = signUpActionUrl.getEmailParameter().pickFieldData();
+        final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
         final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Email"));
         emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
         emailInput.addErrorMessages(emailFieldData.getErrorMessages());
         form.add(emailInput);
 
-        final HtmlDropDown countryInput = new HtmlDropDown(SignUpAction.COUNTRY_CODE, Context.tr("Country"));
+        final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName(), Context.tr("Country"));
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
@@ -112,12 +112,8 @@ public final class SignUpPage extends MasterPage {
         }
         form.add(countryInput);
 
-        final LanguageSelector langInput = new LanguageSelector(SignUpAction.LANGUAGE_CODE, Context.tr("Language"));
-        if (url.getLangParameter().getStringValue() != null && !url.getLangParameter().getStringValue().isEmpty()) {
-            langInput.setDefaultValue(url.getLangParameter().getStringValue());
-        } else {
-            langInput.setDefaultValue(Context.getLocalizator().getLanguageCode());
-        }
+        final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName(), Context.tr("Language"));
+        langInput.setDefaultValue(url.getLangParameter().getStringValue(), Context.getLocalizator().getLanguageCode());
         form.add(langInput);
 
         final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
