@@ -76,7 +76,7 @@ public class SignUpAction extends Action {
 
     @Override
     protected final Url doProcess() {
-        if (password != passwordCheck) {
+        if (!password.equals(passwordCheck)) {
             transmitParameters();
             session.notifyError("Password doesn't match confirmation.");
             return new SignUpPageUrl();
