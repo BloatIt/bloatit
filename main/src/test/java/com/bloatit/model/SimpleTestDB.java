@@ -39,17 +39,17 @@ public class SimpleTestDB {
 
         SessionManager.beginWorkUnit();
 
-        tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
+        tom = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
         tom.setFullname("Thomas Guyard");
         tom.setActivationState(ActivationState.ACTIVE);
-        fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
+        fred = DaoMember.createAndPersist("Fred", "other", "salt", "fred@gmail.com", Locale.FRANCE);
         fred.setFullname("Frédéric Bertolus");
         fred.setActivationState(ActivationState.ACTIVE);
-        yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
+        yo = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
 
-        final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin@gmail.com", Locale.FRANCE);
+        final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "salt", "admin@gmail.com", Locale.FRANCE);
         admin.setFullname("Administrator");
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
@@ -82,8 +82,8 @@ public class SimpleTestDB {
         project.setImage(DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
         feature = DaoFeature.createAndPersist(yo,
-                                            DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
-                                            project);
+                                              DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
+                                              project);
         final DaoComment c1 = DaoComment.createAndPersist(feature, tom, "Pas tres constructif hein !");
         final DaoComment c2 = DaoComment.createAndPersist(feature, fred, "Plop");
         final DaoComment c21 = DaoComment.createAndPersist(c2, tom, "plup");
@@ -107,11 +107,11 @@ public class SimpleTestDB {
             feature.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
             feature.addOffer(new DaoOffer(fred,
-                                         feature,
-                                         new BigDecimal("200"),
-                                         DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
-                                         DateUtils.tomorrow(),
-                                         0));
+                                          feature,
+                                          new BigDecimal("200"),
+                                          DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
+                                          DateUtils.tomorrow(),
+                                          0));
 
             feature.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 
@@ -124,14 +124,14 @@ public class SimpleTestDB {
             }
 
             final DaoFeature feature1 = DaoFeature.createAndPersist(fred, DaoDescription.createAndPersist(fred,
-                                                                                                       new Locale("en"),
-                                                                                                       "I try it in English",
-                                                                                                       "Hello world"), project);
+                                                                                                          new Locale("en"),
+                                                                                                          "I try it in English",
+                                                                                                          "Hello world"), project);
             feature1.getDescription().addTranslation(new DaoTranslation(tom,
-                                                                       feature1.getDescription(),
-                                                                       new Locale("fr"),
-                                                                       "J'essaie en anglais",
-                                                                       "Salut le monde"));
+                                                                        feature1.getDescription(),
+                                                                        new Locale("fr"),
+                                                                        "J'essaie en anglais",
+                                                                        "Salut le monde"));
             feature1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
             feature1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
         } catch (final NotEnoughMoneyException e1) {

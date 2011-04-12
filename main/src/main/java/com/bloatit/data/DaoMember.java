@@ -142,6 +142,8 @@ public class DaoMember extends DaoActor {
 
     @Basic(optional = false)
     private String password;
+    @Basic(optional = false)
+    private String salt;
 
     @Basic(optional = false)
     private Integer karma;
@@ -176,7 +178,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     *
+     * 
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
@@ -190,7 +192,7 @@ public class DaoMember extends DaoActor {
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     *
+     * 
      * @param login the member login.
      * @param password the password of the member "login". It is a string
      *            corresponding to the string in the database. This method does
@@ -216,7 +218,7 @@ public class DaoMember extends DaoActor {
     /**
      * Create a member. The member login must be unique, and you cannot change
      * it.
-     *
+     * 
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param locale the locale of the user.
@@ -225,22 +227,9 @@ public class DaoMember extends DaoActor {
      *             Or if the member as a non unique login. If an exception is
      *             thrown then the transaction is rolled back and reopened.
      */
-    public static DaoMember createAndPersist(final String login, final String password, final String email, final Locale locale) {
+    public static DaoMember createAndPersist(final String login, final String password, final String salt, final String email, final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoMember theMember = new DaoMember(login, password, email, locale);
-        try {
-            session.save(theMember);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        return theMember;
-    }
-    
-    public static DaoMember createAndPersist(final String login, final String password, final String email, final String fullname, final Locale locale) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoMember theMember = new DaoMember(login, password, email, fullname, locale);
+        final DaoMember theMember = new DaoMember(login, password, salt, email, locale);
         try {
             session.save(theMember);
         } catch (final HibernateException e) {
@@ -253,12 +242,12 @@ public class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     *
+     * 
      * @param locale is the locale in which this user is. (The country and
      *            language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
-    private DaoMember(final String login, final String password, final String email, final Locale locale) {
+    private DaoMember(final String login, final String password, final String salt, final String email, final Locale locale) {
         super(login);
         if (locale == null) {
             throw new NonOptionalParameterException("locale cannot be null!");
@@ -280,41 +269,9 @@ public class DaoMember extends DaoActor {
         this.role = Role.NORMAL;
         this.state = ActivationState.VALIDATING;
         this.password = password;
+        this.salt = salt;
         this.karma = 0;
         this.fullname = "";
-    }
-    
-    /**
-     * You have to use CreateAndPersist instead of this constructor
-     *
-     * @param locale is the locale in which this user is. (The country and
-     *            language.)
-     * @see DaoMember#createAndPersist(String, String, String, Locale)
-     */
-    private DaoMember(final String login, final String password, final String email, final String fullname, final Locale locale) {
-        super(login);
-        if (locale == null) {
-            throw new NonOptionalParameterException("locale cannot be null!");
-        }
-        if (email == null) {
-            throw new NonOptionalParameterException("email cannot be null!");
-        }
-        if (email.isEmpty()) {
-            throw new NonOptionalParameterException("email cannot be empty!");
-        }
-        if (password == null) {
-            throw new NonOptionalParameterException("Password cannot be null!");
-        }
-        if (password.isEmpty()) {
-            throw new NonOptionalParameterException("Password cannot be empty!");
-        }
-        setLocale(locale);
-        this.email = email;
-        this.role = Role.NORMAL;
-        this.state = ActivationState.VALIDATING;
-        this.password = password;
-        this.karma = 0;
-        this.fullname = fullname;
     }
 
     /**
@@ -405,7 +362,7 @@ public class DaoMember extends DaoActor {
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
      * PROTECTED teams. ]
-     *
+     * 
      * @return All the teams this member is in. (Use a HQL query)
      */
     public PageIterable<DaoTeam> getTeams() {
@@ -427,8 +384,16 @@ public class DaoMember extends DaoActor {
         return this.fullname;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
     public String getPassword() {
-        return this.password;
+        return password;
+    }
+
+    public boolean passwordEquals(final String otherPassword) {
+        return password.equals(otherPassword);
     }
 
     @Override
@@ -580,4 +545,5 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
+
 }

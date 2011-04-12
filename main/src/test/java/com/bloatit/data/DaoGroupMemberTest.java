@@ -30,11 +30,11 @@ public class DaoGroupMemberTest extends TestCase {
         SessionManager.generateTestSessionFactory();
 
         SessionManager.beginWorkUnit();
-        tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
+        tom = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
         tom.setFullname("Thomas Guyard");
-        fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
+        fred = DaoMember.createAndPersist("Fred", "other", "salt", "fred@gmail.com", Locale.FRANCE);
         fred.setFullname("Frédéric Bertolus");
-        yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
+        yo = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
 
         b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PUBLIC);
@@ -145,8 +145,8 @@ public class DaoGroupMemberTest extends TestCase {
     public void testAddRight() {
         SessionManager.beginWorkUnit();
 
-        DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
-        DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
+        final DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
+        final DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
         fred.addToTeam(b219);
         fred.addTeamRight(b219, UserTeamRight.CONSULT);
         fred.addTeamRight(b219, UserTeamRight.TALK);
@@ -160,8 +160,8 @@ public class DaoGroupMemberTest extends TestCase {
     public void testRemoveRight() {
         SessionManager.beginWorkUnit();
 
-        DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
-        DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
+        final DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
+        final DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
 
         fred.addToTeam(b219);
         fred.addTeamRight(b219, UserTeamRight.CONSULT);
