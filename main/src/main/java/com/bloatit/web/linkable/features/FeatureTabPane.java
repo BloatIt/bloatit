@@ -104,12 +104,12 @@ public final class FeatureTabPane extends HtmlPageComponent {
         }
 
         // Create Details tab
-        tabPane.addTab(new HtmlTab(Context.tr("Details"), DETAILS_TAB) {
-            @Override
-            public XmlNode generateBody() {
-                return new FeatureOfferListComponent(feature);
-            }
-        });
+        // tabPane.addTab(new HtmlTab(Context.tr("Details"), DETAILS_TAB) {
+        // @Override
+        // public XmlNode generateBody() {
+        // return new FeatureOfferListComponent(feature);
+        // }
+        // });
 
         // Create Bugtracker tab only after preparation
         if (feature.getFeatureState() != FeatureState.PENDING && feature.getFeatureState() != FeatureState.PREPARING) {
