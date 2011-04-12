@@ -258,6 +258,10 @@ public final class Loaders {
                 throw new ConversionErrorException(e);
             }
         }
+        
+        public String toString(DateLocale date){
+            return date.getIsoDateString();
+        }
     }
 
     private static class LowToIdentifiable extends Loader<Identifiable<?>> {
