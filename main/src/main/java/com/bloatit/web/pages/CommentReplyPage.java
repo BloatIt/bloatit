@@ -91,7 +91,7 @@ public final class CommentReplyPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Reply to a comment");
     }
 
@@ -101,7 +101,7 @@ public final class CommentReplyPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return CommentReplyPage.generateBreadcrumb(targetComment);
     }
 

@@ -104,10 +104,7 @@ public final class AddAttachementAction extends LoggedAction {
             return Context.getSession().pickPreferredPage();
         }
 
-        final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
-                                                                                            attachement,
-                                                                                            attachementFileName,
-                                                                                            attachementDescription);
+        FileMetadataManager.createFromTempFile(authenticatedMember, attachement, attachementFileName, attachementDescription);
 
         try {
             userContent.addFile(file);

@@ -25,7 +25,7 @@ public final class KudosableAdminPageImplementation extends
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Administration Kudosable");
     }
 
@@ -68,7 +68,7 @@ public final class KudosableAdminPageImplementation extends
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return KudosableAdminPageImplementation.generateBreadcrumb();
     }
 

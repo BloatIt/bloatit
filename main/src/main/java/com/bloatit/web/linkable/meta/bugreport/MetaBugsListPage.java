@@ -21,6 +21,7 @@ import com.bloatit.framework.meta.MetaBugManager;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -40,7 +41,7 @@ public final class MetaBugsListPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final List<MetaBug> bugList = MetaBugManager.getOpenBugs();
 
@@ -59,11 +60,11 @@ public final class MetaBugsListPage extends MasterPage {
 
         layout.addLeft(pageTitle);
 
-        add(layout);
+        return layout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Bugs list";
     }
 
@@ -73,7 +74,7 @@ public final class MetaBugsListPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return MetaBugsListPage.generateBreadcrumb();
     }
 

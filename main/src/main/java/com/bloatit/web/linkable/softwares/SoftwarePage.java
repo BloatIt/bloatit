@@ -25,6 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.FileMetadata;
@@ -54,7 +55,7 @@ public final class SoftwarePage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         session.notifyList(url.getMessages());
         if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
@@ -84,11 +85,11 @@ public final class SoftwarePage extends MasterPage {
             throw new ShallNotPassException("User cannot access software information", e);
         }
 
-        add(layout);
+        return layout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         try {
             return tr("Software - ") + software.getName();
         } catch (final UnauthorizedOperationException e) {
@@ -103,7 +104,7 @@ public final class SoftwarePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return SoftwarePage.generateBreadcrumb(software);
     }
 

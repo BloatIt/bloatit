@@ -51,12 +51,12 @@ public final class TestPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Html testing page"), 1);
         pageTitle.add(new HtmlTitleBlock(tr("Common markups"), 2).add(variousElements()));
         pageTitle.add(new HtmlTitleBlock(tr("Formulaires"), 2).add(generateForm()));
         pageTitle.add(new HtmlTitleBlock(tr("Listes"), 2).add(generateLists()));
-        add(pageTitle);
+        return pageTitle;
     }
 
     private HtmlElement variousElements() {
@@ -139,7 +139,7 @@ public final class TestPage extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "test page";
     }
 
@@ -149,7 +149,7 @@ public final class TestPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return TestPage.generateBreadcrumb();
     }
 

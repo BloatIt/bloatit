@@ -538,7 +538,7 @@ public final class CheckContributionPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Contribute to a feature - check");
     }
 
@@ -553,7 +553,7 @@ public final class CheckContributionPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
     }
 

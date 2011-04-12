@@ -53,7 +53,7 @@ public class JoinTeamPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         if (targetTeam.isPublic()) {
             return Context.tr("Join a team");
         } else {
@@ -67,7 +67,7 @@ public class JoinTeamPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return JoinTeamPage.generateBreadcrumb(targetTeam);
     }
 

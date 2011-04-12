@@ -37,14 +37,14 @@ public class CreateTeamPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("create_team"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
-        add(layout);
+        return layout;
     }
 
     private HtmlElement generateMain() {
@@ -95,7 +95,7 @@ public class CreateTeamPage extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Create a new team");
     }
 
@@ -105,7 +105,7 @@ public class CreateTeamPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return CreateTeamPage.generateBreadcrumb();
     }
 

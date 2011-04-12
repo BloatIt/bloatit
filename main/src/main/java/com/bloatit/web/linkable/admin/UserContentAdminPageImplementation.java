@@ -23,7 +23,7 @@ public class UserContentAdminPageImplementation extends
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Administration UserContent");
     }
 
@@ -56,7 +56,7 @@ public class UserContentAdminPageImplementation extends
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return UserContentAdminPageImplementation.generateBreadcrumb();
     }
 

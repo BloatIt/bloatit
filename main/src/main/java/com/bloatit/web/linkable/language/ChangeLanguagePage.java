@@ -45,12 +45,12 @@ public class ChangeLanguagePage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateChangeLanguagePageMain());
         layout.addRight(new SideBarDocumentationBlock("change_language"));
 
-        add(layout);
+        return layout;
     }
 
     private HtmlElement generateChangeLanguagePageMain() {
@@ -72,12 +72,12 @@ public class ChangeLanguagePage extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Change language");
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         final Breadcrumb br = new Breadcrumb();
         br.pushLink(new IndexPageUrl().getHtmlLink(Context.tr("Index")));
         br.pushLink(url.getHtmlLink(Context.tr("Change language")));

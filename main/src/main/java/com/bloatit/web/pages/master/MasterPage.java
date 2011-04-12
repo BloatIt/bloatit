@@ -15,8 +15,6 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.GenericPage;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -25,25 +23,39 @@ import com.bloatit.web.url.IndexPageUrl;
 
 public abstract class MasterPage extends GenericPage {
 
-    private final HtmlBranch content;
     private HtmlBranch notifications;
     private final HtmlDiv notificationBlock;
 
     public MasterPage(final Url url) {
         super(url);
-        content = new HtmlDiv().setId("content");
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
     }
 
+    // -----------------------------------------------------------------------
+    // Template method pattern: Abstract methods
+    // -----------------------------------------------------------------------
+
     /**
      * TODO Documenter
+     * 
+     * @return TODO
      * @throws RedirectException
      */
-    protected abstract void doCreate() throws RedirectException;
+    protected abstract HtmlElement createBodyContent() throws RedirectException;
+
+    protected abstract String createPageTitle();
+
+    protected abstract Breadcrumb createBreadcrumb();
+
+    // protected abstract HtmlElement addNotifications();
+
+    // -----------------------------------------------------------------------
+    // Template method pattern: Implementation
+    // -----------------------------------------------------------------------
 
     @Override
-    protected final void generateBody(final HtmlGenericElement body) throws RedirectException {
+    protected final void createPageContent(final HtmlGenericElement body) throws RedirectException {
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);
         final HtmlBranch headerContent = new HtmlDiv("header_content").setId("header_content");
@@ -57,48 +69,23 @@ public abstract class MasterPage extends GenericPage {
 
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
+
+        final HtmlBranch content = new HtmlDiv().setId("content");
         page.add(content);
-        
+
         final PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
         content.add(breacrumbPlaceHolder);
         content.add(notificationBlock);
+        content.add(createBodyContent());
 
         body.add(new Footer());
-        doCreate();
-        
-        breacrumbPlaceHolder.add(generateBreadcrumb());
-    }
 
-    private XmlNode generateBreadcrumb() {
-
-        return getBreadcrumb().toXmlNode();
+        breacrumbPlaceHolder.add(createBreadcrumb().toHtmlElement());
     }
 
     @Override
     protected final String getTitle() {
-        return "Elveos – " + getPageTitle();
-    }
-
-    protected abstract String getPageTitle();
-
-    protected abstract Breadcrumb getBreadcrumb();
-
-    @Override
-    public final HtmlElement addAttribute(final String name, final String value) {
-        content.addAttribute(name, value);
-        return this;
-    }
-
-    @Override
-    public final HtmlElement add(final XmlNode html) {
-        content.add(html);
-        return this;
-    }
-
-    @Override
-    public final HtmlElement addText(final String text) {
-        content.add(new HtmlText(text));
-        return this;
+        return "Elveos – " + createPageTitle();
     }
 
     @Override

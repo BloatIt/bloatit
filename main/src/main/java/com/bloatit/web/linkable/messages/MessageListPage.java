@@ -89,7 +89,7 @@ public class MessageListPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Bloatit private messages.");
     }
 
@@ -99,7 +99,7 @@ public class MessageListPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return MessageListPage.generateBreadcrumb(session.getAuthToken().getMember());
     }
 

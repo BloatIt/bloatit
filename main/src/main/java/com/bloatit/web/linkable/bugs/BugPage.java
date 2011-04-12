@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -59,7 +60,7 @@ public final class BugPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         session.notifyList(url.getMessages());
         if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
@@ -95,11 +96,11 @@ public final class BugPage extends MasterPage {
         box.add(CommentTools.generateCommentList(bug.getComments()));
         box.add(CommentTools.generateNewCommentComponent(bug));
 
-        add(box);
+        return box;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         if (bug != null) {
             return tr("Bug - ") + bug.getTitle();
         }
@@ -134,7 +135,7 @@ public final class BugPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return BugPage.generateBreadcrumb(bug);
     }
 

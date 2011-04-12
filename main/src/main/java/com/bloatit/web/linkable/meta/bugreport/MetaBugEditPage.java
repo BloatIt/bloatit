@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -46,7 +47,7 @@ public final class MetaBugEditPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
 
         // TODO: why not add this message on all pages ?
         addNotifications(url.getMessages());
@@ -81,11 +82,11 @@ public final class MetaBugEditPage extends MasterPage {
 
         layout.addLeft(pageTitle);
 
-        add(layout);
+        return layout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Members list";
     }
 
@@ -95,7 +96,7 @@ public final class MetaBugEditPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return MetaBugEditPage.generateBreadcrumb();
     }
 

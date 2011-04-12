@@ -55,17 +55,14 @@ public abstract class LoggedPage extends MasterPage {
      * warning to the user
      */
     @Override
-    protected final void doCreate() throws RedirectException {
-
+    protected final HtmlElement createBodyContent() throws RedirectException {
         processErrors();
-
         if (session.isLogged()) {
-            add(createRestrictedContent(session.getAuthToken().getMember()));
-        } else {
-            session.notifyBad(getRefusalReason());
-            session.setTargetPage(meUrl);
-            throw new RedirectException(new LoginPageUrl());
+            return createRestrictedContent(session.getAuthToken().getMember());
         }
+        session.notifyBad(getRefusalReason());
+        session.setTargetPage(meUrl);
+        throw new RedirectException(new LoginPageUrl());
     }
 
     /**

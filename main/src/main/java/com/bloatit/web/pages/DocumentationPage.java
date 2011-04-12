@@ -7,6 +7,7 @@ import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer.DocumentationType;
@@ -49,7 +50,7 @@ public class DocumentationPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
 
         final TwoColumnLayout layout = new TwoColumnLayout(url);
 
@@ -63,16 +64,16 @@ public class DocumentationPage extends MasterPage {
         box.add(docRenderer);
         layout.addLeft(box);
 
-        add(layout);
+        return layout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Elveos documentation: {0}", docTarget);
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         if (docTarget.equals(DEFAULT_DOC)) {
             return DocumentationPage.generateBreadcrumb();
         }

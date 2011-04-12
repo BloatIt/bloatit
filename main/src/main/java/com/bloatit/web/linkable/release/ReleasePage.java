@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
@@ -48,11 +49,9 @@ public final class ReleasePage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarFeatureBlock(release.getFeature()));
-
-        add(layout);
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("date: "
@@ -72,10 +71,11 @@ public final class ReleasePage extends MasterPage {
         if (release.canAddFile()) {
             fileBloc.add(new AddAttachementPageUrl(release).getHtmlLink(tr("Add an attachement")));
         }
+        return layout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Release");
     }
 
@@ -85,7 +85,7 @@ public final class ReleasePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return ReleasePage.generateBreadcrumb(release);
     }
 

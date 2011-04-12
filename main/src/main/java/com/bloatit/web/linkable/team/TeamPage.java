@@ -67,17 +67,17 @@ public class TeamPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
 
-        add(layout);
+        return layout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Consult team information");
     }
 
@@ -222,7 +222,7 @@ public class TeamPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return TeamPage.generateBreadcrumb(targetTeam);
     }
 

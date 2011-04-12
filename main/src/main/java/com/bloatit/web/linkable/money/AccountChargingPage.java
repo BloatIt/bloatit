@@ -40,7 +40,7 @@ public final class AccountChargingPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Charge your account");
     }
 
@@ -84,7 +84,7 @@ public final class AccountChargingPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return AccountChargingPage.generateBreadcrumb(session.getAuthToken().getMember(), process);
     }
 

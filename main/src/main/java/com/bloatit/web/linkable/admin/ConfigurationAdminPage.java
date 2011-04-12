@@ -83,12 +83,12 @@ public class ConfigurationAdminPage extends AdminPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Administrate configurations");
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink(Context.tr("Admin")));
         breadcrumb.pushLink(url.getHtmlLink(Context.tr("Configuration")));

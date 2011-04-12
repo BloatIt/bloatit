@@ -39,12 +39,12 @@ public class TeamsPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
 
-        add(layout);
+        return layout;
     }
 
     private HtmlElement generateMain() {
@@ -63,7 +63,7 @@ public class TeamsPage extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Team listing page");
     }
 
@@ -73,7 +73,7 @@ public class TeamsPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return TeamsPage.generateBreadcrumb();
     }
 

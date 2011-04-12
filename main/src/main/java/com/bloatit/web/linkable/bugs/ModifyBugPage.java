@@ -56,7 +56,7 @@ public final class ModifyBugPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Modify a bug";
     }
 
@@ -137,7 +137,7 @@ public final class ModifyBugPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return ModifyBugPage.generateBreadcrumb(bug);
     }
 

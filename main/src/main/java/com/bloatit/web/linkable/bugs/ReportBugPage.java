@@ -66,7 +66,7 @@ public final class ReportBugPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Report a bug";
     }
 
@@ -179,7 +179,7 @@ public final class ReportBugPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return ReportBugPage.generateBreadcrumb(offer);
     }
 

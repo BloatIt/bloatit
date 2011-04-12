@@ -11,6 +11,8 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.web.pages.IndexPage;
@@ -57,12 +59,13 @@ public final class PaylinePage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         // TODO maybe we should create the page here.
+        return new PlaceHolderElement();
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Transaction result";
     }
 
@@ -72,7 +75,7 @@ public final class PaylinePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return PaylinePage.generateBreadcrumb(ack);
     }
 

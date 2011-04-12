@@ -56,7 +56,7 @@ public final class AddReleasePage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Add a release");
     }
 
@@ -134,7 +134,7 @@ public final class AddReleasePage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return AddReleasePage.generateBreadcrumb(milestone);
     }
 

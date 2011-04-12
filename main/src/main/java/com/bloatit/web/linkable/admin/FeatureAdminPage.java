@@ -74,7 +74,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Administration Kudosable");
     }
 
@@ -183,7 +183,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return FeatureAdminPage.generateBreadcrumb();
     }
 

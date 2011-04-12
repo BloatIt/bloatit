@@ -58,7 +58,7 @@ public final class CreateFeaturePage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Create new feature";
     }
 
@@ -198,7 +198,7 @@ public final class CreateFeaturePage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return CreateFeaturePage.generateBreadcrumb();
     }
 

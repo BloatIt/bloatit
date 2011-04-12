@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -82,10 +83,9 @@ public final class FeatureListPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         // Search block
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        add(layout);
 
         // ////////////////////
         // Div feature_search_block
@@ -244,10 +244,11 @@ public final class FeatureListPage extends MasterPage {
             }
             layout.addLeft(noResultBlock);
         }
+        return layout;
     }
 
     @Override
-    public String getPageTitle() {
+    public String createPageTitle() {
         return Context.tr("View features - search features");
     }
 
@@ -312,7 +313,7 @@ public final class FeatureListPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return FeatureListPage.generateBreadcrumb();
     }
 

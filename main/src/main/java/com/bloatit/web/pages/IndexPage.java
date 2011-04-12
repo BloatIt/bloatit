@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
@@ -45,7 +46,7 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
             final HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
@@ -110,11 +111,11 @@ public final class IndexPage extends MasterPage {
 
         twoColumnLayout.addLeft(featureList);
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-        add(twoColumnLayout);
+        return twoColumnLayout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Finance free software";
     }
 
@@ -131,7 +132,7 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return generateBreadcrumb();
     }
 }

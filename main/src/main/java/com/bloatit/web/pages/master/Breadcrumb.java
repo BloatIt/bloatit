@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 
 /**
  * Breadcrumbs are a "guide" displayed at the top of each page indicating where
@@ -32,7 +32,7 @@ public class Breadcrumb {
      * 
      * @param link the link to add
      */
-    public void pushLink(HtmlLink link) {
+    public void pushLink(final HtmlLink link) {
         linkList.add(link);
     }
 
@@ -41,11 +41,11 @@ public class Breadcrumb {
      * 
      * @return a Node representing the breadcrumb
      */
-    public XmlNode toXmlNode() {
-        HtmlDiv breadcrumb = new HtmlDiv("breadcrumb");
+    public HtmlElement toHtmlElement() {
+        final HtmlDiv breadcrumb = new HtmlDiv("breadcrumb");
 
         boolean first = true;
-        for (HtmlLink link : linkList) {
+        for (final HtmlLink link : linkList) {
             if (!first) {
                 breadcrumb.addText(SEPARATOR);
             }

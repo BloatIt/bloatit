@@ -42,6 +42,7 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 @ParamContainer("usercontent/attachfile")
 public final class AddAttachementPage extends LoggedPage {
 
+    @SuppressWarnings("rawtypes")
     @RequestParam(name = "user_content")
     UserContentInterface userContent;
 
@@ -54,7 +55,7 @@ public final class AddAttachementPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return tr("Add an attachement to the release");
     }
 
@@ -117,11 +118,11 @@ public final class AddAttachementPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return AddAttachementPage.generateBreadcrumb(userContent);
     }
 
-    public static Breadcrumb generateBreadcrumb(final UserContentInterface userContent) {
+    public static Breadcrumb generateBreadcrumb(final UserContentInterface<?> userContent) {
         final Breadcrumb breadcrumb = BreadcrumbTools.generateBreadcrumb(userContent);
         breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachement")));
         return breadcrumb;

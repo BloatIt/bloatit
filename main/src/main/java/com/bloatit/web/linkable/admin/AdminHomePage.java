@@ -59,12 +59,12 @@ public class AdminHomePage extends AdminPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Administration home page");
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink("Admin"));
 

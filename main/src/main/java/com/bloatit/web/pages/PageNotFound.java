@@ -16,6 +16,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -28,7 +29,7 @@ public class PageNotFound extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Page not found");
     }
 
@@ -38,18 +39,18 @@ public class PageNotFound extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
 
         final HtmlDiv box = new HtmlDiv("padding_box");
 
         final HtmlTitle errorTitle = new HtmlTitle(Context.tr("Page not found"), 2);
         box.add(errorTitle);
 
-        add(box);
+        return box;
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return PageNotFound.generateBreadcrumb();
     }
 

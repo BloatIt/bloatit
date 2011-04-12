@@ -33,7 +33,7 @@ public class MessageConsultPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Bloatit private messages.");
     }
 
@@ -43,7 +43,7 @@ public class MessageConsultPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         throw new NotImplementedException();
     }
 

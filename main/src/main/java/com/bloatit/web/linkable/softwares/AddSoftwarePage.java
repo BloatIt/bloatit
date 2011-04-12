@@ -49,7 +49,7 @@ public final class AddSoftwarePage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return "Add a software";
     }
 
@@ -133,7 +133,7 @@ public final class AddSoftwarePage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return AddSoftwarePage.generateBreadcrumb();
     }
 

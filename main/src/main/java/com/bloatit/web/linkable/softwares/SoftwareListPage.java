@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
@@ -49,7 +50,7 @@ public final class SoftwareListPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -68,12 +69,11 @@ public final class SoftwareListPage extends MasterPage {
 
         layout.addLeft(pageTitle);
 
-        add(layout);
-
+        return layout;
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Software list");
     }
 
@@ -108,7 +108,7 @@ public final class SoftwareListPage extends MasterPage {
     };
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return SoftwareListPage.generateBreadcrumb();
     }
 

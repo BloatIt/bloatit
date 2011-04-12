@@ -72,7 +72,7 @@ public final class MakeOfferPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Make an offer");
     }
 
@@ -224,7 +224,7 @@ public final class MakeOfferPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return MakeOfferPage.generateBreadcrumb(feature);
     }
 

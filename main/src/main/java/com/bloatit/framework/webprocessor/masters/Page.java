@@ -15,9 +15,8 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     @Override
-    public final void writeToHttp(final HttpResponse response, WebProcessor server) throws RedirectException, IOException {
+    public final void writeToHttp(final HttpResponse response, final WebProcessor server) throws RedirectException, IOException {
         create();
-        generateDependencies();
         response.writePage(this);
     }
 
@@ -26,17 +25,13 @@ public abstract class Page extends HtmlElement implements Linkable {
         return false;
     }
 
-    protected abstract void create() throws RedirectException;
+    // -----------------------------------------------------------------------
+    // Template method pattern: Abstract methods
+    // -----------------------------------------------------------------------
 
     public abstract boolean isStable();
 
-    protected abstract String getTitle();
+    protected abstract void create() throws RedirectException;
 
-    /**
-     * Generate dependancies to javascript and css files.
-     * <p>
-     * This method needs to be called before writing the page
-     * </p>
-     */
-    protected abstract void generateDependencies();
+    protected abstract String getTitle();
 }

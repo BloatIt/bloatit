@@ -65,11 +65,11 @@ public final class SignUpPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
 
-        add(layout);
+        return layout;
     }
 
     /**
@@ -124,7 +124,7 @@ public final class SignUpPage extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Sign-in");
     }
 
@@ -134,7 +134,7 @@ public final class SignUpPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return SignUpPage.generateBreadcrumb();
     }
 

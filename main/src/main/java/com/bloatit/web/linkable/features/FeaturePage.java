@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -60,7 +61,7 @@ public final class FeaturePage extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         if (feature != null) {
             try {
                 return feature.getTitle();
@@ -77,7 +78,7 @@ public final class FeaturePage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         addNotifications(url.getMessages());
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
@@ -88,7 +89,6 @@ public final class FeaturePage extends MasterPage {
         // - The comments
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        ;
 
         layout.addLeft(new FeatureSummaryComponent(feature));
         layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
@@ -96,8 +96,7 @@ public final class FeaturePage extends MasterPage {
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
 
-        add(layout);
-
+        return layout;
     }
 
     public static Breadcrumb generateBreadcrumb(final Feature feature) {
@@ -164,7 +163,7 @@ public final class FeaturePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }

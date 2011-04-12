@@ -75,11 +75,11 @@ public final class MemberPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
 
-        add(layout);
+        return layout;
     }
 
     private HtmlElement generateMemberPageMain() {
@@ -147,7 +147,7 @@ public final class MemberPage extends MasterPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         if (member != null) {
             try {
                 return tr("Member - ") + member.getLogin();
@@ -181,7 +181,7 @@ public final class MemberPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return MemberPage.generateBreadcrumb(member);
     }
 

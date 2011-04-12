@@ -19,6 +19,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -33,17 +34,20 @@ public final class SpecialsPage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
+    protected HtmlElement createBodyContent() throws RedirectException {
+        // TODO do something here.
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Special pages"), 2);
         pageTitle.setCssClass("page_title");
 
         final HtmlList pageList = new HtmlList();
         final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(Context.tr("Members list"));
         pageList.add(memeHtmlLink);
+        
+        return pageTitle;
     }
 
     @Override
-    public String getPageTitle() {
+    public String createPageTitle() {
         return "Special pages list";
     }
 
@@ -53,7 +57,7 @@ public final class SpecialsPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return SpecialsPage.generateBreadcrumb();
     }
 

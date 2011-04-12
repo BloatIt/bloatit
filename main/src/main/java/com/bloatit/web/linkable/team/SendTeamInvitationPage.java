@@ -104,7 +104,7 @@ public class SendTeamInvitationPage extends LoggedPage {
     }
 
     @Override
-    protected String getPageTitle() {
+    protected String createPageTitle() {
         return Context.tr("Send team invitations");
     }
 
@@ -114,7 +114,7 @@ public class SendTeamInvitationPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb getBreadcrumb() {
+    protected Breadcrumb createBreadcrumb() {
         return SendTeamInvitationPage.generateBreadcrumb(team);
     }
 
