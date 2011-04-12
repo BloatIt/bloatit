@@ -64,7 +64,6 @@ public class CreateTeamPage extends MasterPage {
 
         // Contact
         String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");
-
         final FieldData contactData = target.getContactParameter().pickFieldData();
         final MarkdownEditor contactInput = new MarkdownEditor(contactData.getName(), Context.tr("Contact of the team: "), 5, 80);
         if (contactData.getSuggestedValue() == null || contactData.getSuggestedValue().isEmpty()) {
