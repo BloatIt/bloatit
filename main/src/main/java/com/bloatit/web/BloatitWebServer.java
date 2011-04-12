@@ -9,7 +9,6 @@ import com.bloatit.framework.webprocessor.masters.Linkable;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
-import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.PopularityVoteAction;
@@ -99,7 +98,6 @@ import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
-import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
@@ -335,9 +333,6 @@ public class BloatitWebServer extends WebProcessor {
                 }
             }
             return new PaylineNotifyAction(new PaylineNotifyActionUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(CommentCommentActionUrl.getName())) {
-            return new CommentCommentAction(new CommentCommentActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(AddSoftwareActionUrl.getName())) {
             return new AddSoftwareAction(new AddSoftwareActionUrl(params, session.getParameters()));

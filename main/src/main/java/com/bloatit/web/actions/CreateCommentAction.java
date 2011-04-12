@@ -33,36 +33,30 @@ import com.bloatit.web.url.CreateCommentActionUrl;
  */
 @ParamContainer("comment/docomment")
 public final class CreateCommentAction extends LoggedAction {
-    public static final String COMMENT_CONTENT_CODE = "bloatit_comment_content";
-    public static final String COMMENT_TARGET = "target";
-    public static final String ATTACHEMENT_CODE = "attachement";
-    public static final String ATTACHEMENT_NAME_CODE = "attachement/filename";
-    public static final String ATTACHEMENT_CONTENT_TYPE_CODE = "attachement/contenttype";
-    public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
-
     @ParamConstraint(optionalErrorMsg = @tr("The comment must be post on a commentable thing"))
-    @RequestParam(name = COMMENT_TARGET)
+    @RequestParam(name = "target")
     private final Commentable commentable;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must type a comment"))
-    @RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST)
+    @ParamConstraint(optionalErrorMsg = @tr("You must type a comment"),//
+    /*            */ min = "2", minErrorMsg = @tr("The comment must be at least 2 characters long."))
+    @RequestParam(role = Role.POST)
     private final String comment;
 
     @Optional
-    @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
+    @RequestParam(name = "attachement", role = Role.POST)
     private final String attachement;
 
     @Optional
-    @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
+    @RequestParam(name = "attachement/filename", role = Role.POST)
     private final String attachementFileName;
 
     @Optional
-    @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
+    @RequestParam(name = "attachement_description", role = Role.POST)
     private final String attachementDescription;
 
     @SuppressWarnings("unused")
     @Optional
-    @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
+    @RequestParam(name = "attachement/contenttype", role = Role.POST)
     private final String attachementContentType;
 
     private final CreateCommentActionUrl url;
