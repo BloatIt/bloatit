@@ -61,15 +61,12 @@ public final class FeaturePage extends MasterPage {
 
     @Override
     protected String getPageTitle() {
-        if (feature != null) {
-            try {
-                return feature.getTitle();
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from displaying feature name. Please notify us."));
-                throw new ShallNotPassException("User cannot access feature name", e);
-            }
+        try {
+            return feature.getTitle();
+        } catch (final UnauthorizedOperationException e) {
+            session.notifyError(Context.tr("An error prevented us from displaying feature name. Please notify us."));
+            throw new ShallNotPassException("User cannot access feature name", e);
         }
-        return tr("Feature not found !");
     }
 
     public Feature getFeature() {

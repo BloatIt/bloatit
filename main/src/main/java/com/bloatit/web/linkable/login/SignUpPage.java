@@ -15,10 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -44,24 +41,11 @@ import com.bloatit.web.url.SignUpPageUrl;
  */
 @ParamContainer("member/signup")
 public final class SignUpPage extends MasterPage {
-
-    @SuppressWarnings("unused")
-    @RequestParam(name = SignUpAction.COUNTRY_CODE, role = Role.SESSION)
-    @Optional("")
-    private final String country;
-
-    @SuppressWarnings("unused")
-    @RequestParam(name = SignUpAction.LANGUAGE_CODE, role = Role.SESSION)
-    @Optional("")
-    private final String lang;
-
     private final SignUpPageUrl url;
 
     public SignUpPage(final SignUpPageUrl url) {
         super(url);
         this.url = url;
-        this.country = url.getCountry();
-        this.lang = url.getLang();
     }
 
     @Override
@@ -78,11 +62,12 @@ public final class SignUpPage extends MasterPage {
     private HtmlElement generateSignUpPageMain() {
         final HtmlDiv master = new HtmlDiv();
 
-        final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
+        final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Sign up"), 1);
         final SignUpActionUrl targetUrl = new SignUpActionUrl();
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         container.add(form);
 
+        // Login
         final FieldData loginFieldData = targetUrl.getLoginParameter().pickFieldData();
         final HtmlTextField loginInput = new HtmlTextField(loginFieldData.getName(), Context.trc("Login (noun)", "Login"));
         loginInput.setDefaultValue(loginFieldData.getSuggestedValue());
@@ -90,33 +75,52 @@ public final class SignUpPage extends MasterPage {
         loginInput.addErrorMessages(loginFieldData.getErrorMessages());
         form.add(loginInput);
 
+        // Password
         final FieldData passwordFieldData = targetUrl.getPasswordParameter().pickFieldData();
-        final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), Context.tr("Password"));
+        final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), tr("Password"));
         passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
         form.add(passwordInput);
 
+        // Password check
+        final FieldData passwordCheckFieldData = targetUrl.getPasswordCheckParameter().pickFieldData();
+        final HtmlPasswordField passwordCheckInput = new HtmlPasswordField(passwordCheckFieldData.getName(), tr("Reenter your password"));
+        passwordCheckInput.addErrorMessages(passwordCheckFieldData.getErrorMessages());
+        form.add(passwordCheckInput);
+
+        // Email
         final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
-        final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Email"));
+        final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), tr("Email"));
         emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
         emailInput.addErrorMessages(emailFieldData.getErrorMessages());
         form.add(emailInput);
 
-        final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName(), Context.tr("Country"));
+        // Fullname
+        final FieldData fullnameFieldData = targetUrl.getFullnameParameter().pickFieldData();
+        final HtmlTextField fullnameInput = new HtmlTextField(fullnameFieldData.getName(), tr("Fullname"));
+        fullnameInput.setDefaultValue(fullnameFieldData.getSuggestedValue());
+        fullnameInput.addErrorMessages(fullnameFieldData.getErrorMessages());
+        fullnameInput.setComment(tr("Your real name"));
+        form.add(fullnameInput);
+
+        // Country
+        final HtmlDropDown countryInput = new HtmlDropDown(targetUrl.getCountryParameter().getName(), tr("Country"));
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
-        if (url.getCountryParameter().getStringValue() != null && !url.getCountryParameter().getStringValue().isEmpty()) {
-            countryInput.setDefaultValue(url.getCountryParameter().getStringValue());
+        if (targetUrl.getCountryParameter().getStringValue() != null && !targetUrl.getCountryParameter().getStringValue().isEmpty()) {
+            countryInput.setDefaultValue(targetUrl.getCountryParameter().getStringValue());
         } else {
             countryInput.setDefaultValue(Context.getLocalizator().getCountryCode());
         }
         form.add(countryInput);
 
-        final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName(), Context.tr("Language"));
-        langInput.setDefaultValue(url.getLangParameter().getStringValue(), Context.getLocalizator().getLanguageCode());
+        // Language
+        final LanguageSelector langInput = new LanguageSelector(targetUrl.getLangParameter().getName(), tr("Language"));
+        langInput.setDefaultValue(targetUrl.getLangParameter().getStringValue(), Context.getLocalizator().getLanguageCode());
         form.add(langInput);
 
-        final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
+        // Submit
+        final HtmlSubmit button = new HtmlSubmit(tr("Submit"));
         form.add(button);
 
         master.add(container);

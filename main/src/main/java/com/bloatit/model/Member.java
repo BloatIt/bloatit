@@ -73,6 +73,10 @@ public final class Member extends Actor<DaoMember> implements User {
     public Member(final String login, final String password, final String email, final Locale locale) {
         super(DaoMember.createAndPersist(login, password, email, locale));
     }
+    
+    public Member(final String login, final String password, final String email, final String fullname, final Locale locale) {
+        super(DaoMember.createAndPersist(login, password, email, fullname, locale));
+    }
 
     private Member(final DaoMember dao) {
         super(dao);

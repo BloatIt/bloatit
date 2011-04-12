@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-12 00:36+0200\n"
+"POT-Creation-Date: 2011-04-12 12:14+0200\n"
 "PO-Revision-Date: 2011-04-07 00:58+0200\n"
 "Last-Translator: Yoann Plénet <yoann@linkeos.com>\n"
 "Language-Team: French\n"
@@ -236,7 +236,7 @@ msgstr ""
 #: com/bloatit/web/linkable/release/AddReleasePage.java:115
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:131
 #: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:112
-#: com/bloatit/web/linkable/login/SignUpPage.java:115
+#: com/bloatit/web/linkable/login/SignUpPage.java:118
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:122
 msgid "Language"
 msgstr ""
@@ -820,7 +820,7 @@ msgid ""
 msgstr ""
 
 #: com/bloatit/web/linkable/login/LoginPage.java:65
-#: com/bloatit/web/linkable/login/SignUpPage.java:87
+#: com/bloatit/web/linkable/login/SignUpPage.java:72
 msgctxt "Login (noun)"
 msgid "Login"
 msgstr ""
@@ -830,7 +830,7 @@ msgid "Note: This field is not case sensitive"
 msgstr ""
 
 #: com/bloatit/web/linkable/login/LoginPage.java:70
-#: com/bloatit/web/linkable/login/SignUpPage.java:94
+#: com/bloatit/web/linkable/login/SignUpPage.java:80
 msgid "Password"
 msgstr ""
 
@@ -851,31 +851,38 @@ msgstr ""
 msgid "Password lost ?"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:38
+#: com/bloatit/web/linkable/login/SignUpAction.java:32
 msgid "Number of characters for login has to be superior to 4"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:39
+#: com/bloatit/web/linkable/login/SignUpAction.java:33
 msgid "Number of characters for login has to be inferior to 15"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:43
+#: com/bloatit/web/linkable/login/SignUpAction.java:37
+#: com/bloatit/web/linkable/login/SignUpAction.java:42
 msgid "Number of characters for password has to be superior to 4"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:44
+#: com/bloatit/web/linkable/login/SignUpAction.java:38
+#: com/bloatit/web/linkable/login/SignUpAction.java:43
+#: com/bloatit/web/linkable/login/SignUpAction.java:48
 msgid "Number of characters for password has to be inferior to 15"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:48
+#: com/bloatit/web/linkable/login/SignUpAction.java:47
+msgid "Number of characters for fullname has to be superior to 4"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpAction.java:53
 msgid "Number of characters for email has to be superior to 5"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:49
+#: com/bloatit/web/linkable/login/SignUpAction.java:54
 msgid "Number of characters for email address has to be inferior to 30"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:76
+#: com/bloatit/web/linkable/login/SignUpAction.java:90
 #, java-format
 msgid ""
 "Your Elveos.org account ''{0}'' was created. Please click on the following "
@@ -884,41 +891,53 @@ msgid ""
 " {1}"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:80
+#: com/bloatit/web/linkable/login/SignUpAction.java:94
 msgid "Elveos.org account activation"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:84
-msgid "Account created, you will receive a mail for activate it."
+#: com/bloatit/web/linkable/login/SignUpAction.java:98
+msgid "Account created, you will receive a mail to activate it."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:97
+#: com/bloatit/web/linkable/login/SignUpAction.java:111
 #, java-format
 msgid "Login ''{0}''already used. Find another login"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:102
+#: com/bloatit/web/linkable/login/SignUpAction.java:116
 #, java-format
 msgid "Email ''{0}''already used. Find another email or use your old account !"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:108
+#: com/bloatit/web/linkable/login/SignUpAction.java:122
 msgid "Invalid email address : "
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:81
-msgid "Register"
+#: com/bloatit/web/linkable/login/SignUpPage.java:65
+msgid "Sign up"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:89
+#: com/bloatit/web/linkable/login/SignUpPage.java:74
 msgid "When you login, case of login field be will be ignored"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:99
+#: com/bloatit/web/linkable/login/SignUpPage.java:86
+msgid "Reenter your password"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpPage.java:92
 msgid "Email"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:104
+#: com/bloatit/web/linkable/login/SignUpPage.java:99
+msgid "Fullname"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpPage.java:102
+msgid "Your real name"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpPage.java:106
 msgid "Country"
 msgstr ""
 
@@ -985,7 +1004,7 @@ msgid "delete"
 msgstr ""
 
 #: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:82
-#: com/bloatit/web/linkable/features/FeaturePage.java:125
+#: com/bloatit/web/linkable/features/FeaturePage.java:121
 msgid "Bugs"
 msgstr ""
 
@@ -1380,7 +1399,7 @@ msgid "+ Share"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:175
-#: com/bloatit/web/linkable/features/FeaturePage.java:111
+#: com/bloatit/web/linkable/features/FeaturePage.java:107
 msgid ""
 "An error prevented us from displaying feature information. Please notify us."
 msgstr ""
@@ -1672,28 +1691,24 @@ msgstr ""
 msgid "Comments ({0})"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturePage.java:68
+#: com/bloatit/web/linkable/features/FeaturePage.java:94
 msgid "An error prevented us from displaying feature name. Please notify us."
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturePage.java:72
-msgid "Feature not found !"
-msgstr ""
-
-#: com/bloatit/web/linkable/features/FeaturePage.java:109
+#: com/bloatit/web/linkable/features/FeaturePage.java:105
 #, java-format
 msgid "Feature for {0}"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturePage.java:137
+#: com/bloatit/web/linkable/features/FeaturePage.java:133
 msgid "Offers"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturePage.java:149
+#: com/bloatit/web/linkable/features/FeaturePage.java:145
 msgid "Contributions"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturePage.java:161
+#: com/bloatit/web/linkable/features/FeaturePage.java:157
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:107
 msgid "Details"
 msgstr ""

@@ -237,6 +237,19 @@ public class DaoMember extends DaoActor {
         }
         return theMember;
     }
+    
+    public static DaoMember createAndPersist(final String login, final String password, final String email, final String fullname, final Locale locale) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoMember theMember = new DaoMember(login, password, email, fullname, locale);
+        try {
+            session.save(theMember);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            throw e;
+        }
+        return theMember;
+    }
 
     /**
      * You have to use CreateAndPersist instead of this constructor
@@ -269,6 +282,39 @@ public class DaoMember extends DaoActor {
         this.password = password;
         this.karma = 0;
         this.fullname = "";
+    }
+    
+    /**
+     * You have to use CreateAndPersist instead of this constructor
+     *
+     * @param locale is the locale in which this user is. (The country and
+     *            language.)
+     * @see DaoMember#createAndPersist(String, String, String, Locale)
+     */
+    private DaoMember(final String login, final String password, final String email, final String fullname, final Locale locale) {
+        super(login);
+        if (locale == null) {
+            throw new NonOptionalParameterException("locale cannot be null!");
+        }
+        if (email == null) {
+            throw new NonOptionalParameterException("email cannot be null!");
+        }
+        if (email.isEmpty()) {
+            throw new NonOptionalParameterException("email cannot be empty!");
+        }
+        if (password == null) {
+            throw new NonOptionalParameterException("Password cannot be null!");
+        }
+        if (password.isEmpty()) {
+            throw new NonOptionalParameterException("Password cannot be empty!");
+        }
+        setLocale(locale);
+        this.email = email;
+        this.role = Role.NORMAL;
+        this.state = ActivationState.VALIDATING;
+        this.password = password;
+        this.karma = 0;
+        this.fullname = fullname;
     }
 
     /**
