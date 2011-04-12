@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.meta.bugreport;
 
+import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.meta.MetaBug;
 import com.bloatit.framework.meta.MetaBugManager;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -42,6 +43,12 @@ public final class MetaBugDeleteAction extends Action {
 
     @Override
     protected Url doProcess() {
+        if (!session.isLogged()) {
+            session.notifyError(Context.tr("You must be logged to delete a bug"));
+            throw new MeanUserException("The user try to delete a bug without been logged.");
+        }
+
+
         final MetaBug bug = MetaBugManager.getById(bugId);
         if (bug != null) {
             bug.delete();

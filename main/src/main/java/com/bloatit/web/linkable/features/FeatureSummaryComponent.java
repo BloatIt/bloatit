@@ -182,7 +182,14 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
-            featureSummaryProgress.add(FeaturesTools.generateProgress(feature));
+
+            final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
+            {
+                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature));
+                featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
+            }
+
+            featureSummaryProgress.add(featureSummaryProgressAndState);
 
             // ////////////////////
             // Div feature_summary_actions

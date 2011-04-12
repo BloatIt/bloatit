@@ -3,13 +3,32 @@
 OUTPUT_DIR_PREFIX=../../www/resources/
 OUTPUT_DIR_SUFFIX=/img/presentation.png
 OUTPUT_WIDTH=1024
+BASE_FILE=presentation_base.svg
+TEMP_BASE_OUTPUT=tempbase.png
+TEMP_WORK_FILE=tempworkfile.svg
+TEMP_OUTPUT_FILE=tempoutputfile.png
 
 LANG_LIST="en fr"
 
+#Generate base with the right size
+inkscape -e $TEMP_BASE_OUTPUT -C -w $OUTPUT_WIDTH $BASE_FILE
+
 for LANG in $LANG_LIST ; do
     OUTPUT_FILE=$OUTPUT_DIR_PREFIX$LANG$OUTPUT_DIR_SUFFIX
+    INPUT_FILE=presentation_$LANG.svg
+    grep -v $BASE_FILE $INPUT_FILE > $TEMP_WORK_FILE
 
     mkdir -p $(dirname $OUTPUT_FILE)
-    inkscape -e $OUTPUT_FILE -C -w $OUTPUT_WIDTH presentation_$LANG.svg
+    inkscape -e $TEMP_OUTPUT_FILE -C -w $OUTPUT_WIDTH $TEMP_WORK_FILE
+
+    #Merge base with text
+    composite -gravity center $TEMP_OUTPUT_FILE $TEMP_BASE_OUTPUT $OUTPUT_FILE
+
+    #Optimize the png
     optipng $OUTPUT_FILE
+
+    rm $TEMP_WORK_FILE
+    rm $TEMP_OUTPUT_FILE
 done
+
+rm $TEMP_BASE_OUTPUT
