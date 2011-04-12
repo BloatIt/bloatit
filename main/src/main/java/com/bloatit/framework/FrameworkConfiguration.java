@@ -64,6 +64,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
     // OTHERS
     private AtomicBoolean htmlIndent;
+    private int memoryCacheMaxSize;
 
     private FrameworkConfiguration() {
         super();
@@ -254,7 +255,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     }
     
     public static int getMemoryCacheMaxSize(){
-        return 1000;
+        return configuration.memoryCacheMaxSize;
     }
 
     public static String getCommonsDir() {
@@ -311,6 +312,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
         // OTHERS
         htmlIndent = new AtomicBoolean(properties.getBoolean("bloatit.html.minify"));
+        memoryCacheMaxSize = properties.getInt("bloatit.memory.cache.max.size");
     }
 
     public static void load() {
