@@ -355,6 +355,16 @@ public class DaoMember extends DaoActor {
         this.locale = locale;
     }
 
+    /**
+     * Must be only used in update script. Salt should be a non updatable value
+     * after that.
+     * 
+     * @param salt the new salt.
+     */
+    void setSalt(final String salt) {
+        this.salt = salt;
+    }
+
     // ======================================================================
     // Getters
     // ======================================================================
@@ -545,5 +555,4 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
-
 }

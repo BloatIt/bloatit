@@ -16,8 +16,14 @@
 //
 package com.bloatit.data;
 
+import java.util.List;
+
+import org.apache.commons.lang.RandomStringUtils;
 import org.hibernate.FlushMode;
+import org.hibernate.Query;
 import org.hibernate.classic.Session;
+
+import com.bloatit.framework.utils.SecuredHash;
 
 public class DataManager {
 
@@ -26,7 +32,20 @@ public class DataManager {
     }
 
     public static void launch() {
-        // For now do nothing.
+        // Verify that we do not have old not Hashed password:
+        open();
+        // "NO-SALT !" is the default value when adding the salt.
+        final Query query = SessionManager.createQuery("FROM DaoMember WHERE salt=:salt").setString("salt", "NO-SALT !");
+        @SuppressWarnings("unchecked")
+        final List<DaoMember> members = query.list();
+        for (final DaoMember member : members) {
+            final String salt = RandomStringUtils.random(150);
+            final String password = SecuredHash.calculateHash(member.getPassword(), salt);
+            member.setPassword(password);
+            member.setSalt(salt);
+        }
+        close();
+
     }
 
     public static void shutdown() {

@@ -6,6 +6,9 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
          
 	<include file="liquibase/common.liquibase.xml" />
+	
+	<include file="liquibase/password-sha.liquibase.xml" />
+	
 	<changeSet author="Frédéric Bertolus" id="1300878547256-92">
 	    <comment>Add valuePaid column in DaoBankTransaction</comment>
         <addColumn tableName="daobanktransaction">
