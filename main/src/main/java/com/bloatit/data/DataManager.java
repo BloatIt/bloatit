@@ -31,21 +31,19 @@ public class DataManager {
         // disactivate ctor;
     }
 
-    public static void launch() {
+    public static void initialize() {
         // Verify that we do not have old not Hashed password:
         open();
         // "NO-SALT !" is the default value when adding the salt.
         final Query query = SessionManager.createQuery("FROM DaoMember WHERE salt=:salt").setString("salt", "NO-SALT !");
-        @SuppressWarnings("unchecked")
-        final List<DaoMember> members = query.list();
+        @SuppressWarnings("unchecked") final List<DaoMember> members = query.list();
         for (final DaoMember member : members) {
-            final String salt = RandomStringUtils.random(150);
+            final String salt = RandomStringUtils.randomAscii(50);
             final String password = SecuredHash.calculateHash(member.getPassword(), salt);
             member.setPassword(password);
             member.setSalt(salt);
         }
         close();
-
     }
 
     public static void shutdown() {

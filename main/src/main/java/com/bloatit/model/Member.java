@@ -52,7 +52,7 @@ public final class Member extends Actor<DaoMember> implements User {
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static final int PASSWORD_SALT_LENGTH = 250;
+    private static final int PASSWORD_SALT_LENGTH = 50;
 
     private static final class MyCreator extends Creator<DaoMember, Member> {
         @SuppressWarnings("synthetic-access")
@@ -74,7 +74,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     private static DaoMember createDaoMember(final String login, final String password, final String email, final Locale locale) {
-        final String salt = RandomStringUtils.random(PASSWORD_SALT_LENGTH);
+        final String salt = RandomStringUtils.randomAscii(PASSWORD_SALT_LENGTH);
         final String passwd = SecuredHash.calculateHash(password, salt);
         return DaoMember.createAndPersist(login, passwd, salt, email, locale);
     }
