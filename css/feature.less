@@ -55,8 +55,31 @@
         .progress_text {
             font-size: 1.1em;
         }
-    }
+        
+        .feature_summary_progress_and_state {
+            .display-box;
+            width:100%;
+            .box-align(center);
 
+            
+            .feature_summary_progress {
+                .box-flex;  
+            }
+            
+            .feature_summary_state {
+                margin-top: -20px;
+                width: 100px;
+
+                //.transform(5deg);
+                //.transition;
+            }
+            
+            .feature_summary_state:hover {
+                //.transform(20deg,1.1);
+            }
+        }
+    }
+    
     .feature_summary_share_button {
         
         vertical-align : bottom;
