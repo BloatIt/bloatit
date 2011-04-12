@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -51,7 +52,7 @@ public final class MetaBugsListPage extends MasterPage {
             final HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
             final HtmlDiv editBox = new HtmlDiv("float_right");
             bugBox.add(editBox);
-            bugBox.add(new HtmlMarkdownRenderer(bug.getDescription()));
+            bugBox.add(new HtmlCachedMarkdownRenderer(bug.getDescription()));
             editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
             editBox.addText(" - ");
             editBox.add(new MetaBugDeleteActionUrl(bug.getId()).getHtmlLink(tr("delete")));
