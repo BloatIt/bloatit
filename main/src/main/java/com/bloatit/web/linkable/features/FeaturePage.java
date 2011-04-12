@@ -70,7 +70,7 @@ public final class FeaturePage extends MasterPage {
                 throw new ShallNotPassException("User cannot access feature name", e);
             }
         }
-        return tr("Feature not found !");
+        return Context.tr("feature not found.");
     }
 
     public Feature getFeature() {
