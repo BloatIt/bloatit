@@ -533,6 +533,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return getDao().getValidationDate();
     }
 
+    @Override
+    public Long getCommentsCount() {
+        return getDao().getCommentsCount();
+    }
+    
     /*
      * (non-Javadoc)
      * @see com.bloatit.model.Feature#getComments()

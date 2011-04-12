@@ -9,6 +9,7 @@ import java.util.Locale;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -17,6 +18,7 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
@@ -46,8 +48,8 @@ public class FeaturesTools {
     /**
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount)
-            throws UnauthorizedOperationException {
+    public static HtmlDiv
+            generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 
@@ -165,7 +167,9 @@ public class FeaturesTools {
         final HtmlDiv featureSummaryDetails = new HtmlDiv("feature_summary_details");
         {
 
-            final int commentsCount = feature.getComments().size();
+            final PageIterable<Comment> comments = feature.getComments();
+            final Long commentsCount = feature.getCommentsCount();
+
             final int offersCount = feature.getOffers().size();
 
             final int contributionsCount = feature.getContributions().size();
@@ -184,7 +188,7 @@ public class FeaturesTools {
             featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(Context.trn("{0} comment",
                                                                                  "{0} comments",
                                                                                  commentsCount,
-                                                                                 new Integer(commentsCount))));
+                                                                                 new Long(commentsCount))));
             featureSummaryDetails.addText(" – ");
             featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
             featureSummaryDetails.addText(" – ");
@@ -209,14 +213,14 @@ public class FeaturesTools {
         return featureSummaryDetails;
     }
 
-    public static HtmlDiv generateState(Feature feature) {
-        //Progress state
-        HtmlDiv progressState = new HtmlDiv("feature_summary_state");
+    public static HtmlDiv generateState(final Feature feature) {
+        // Progress state
+        final HtmlDiv progressState = new HtmlDiv("feature_summary_state");
         {
             String imageName = "";
             String imageLabel = "";
-            String languageCode = Context.getLocalizator().getLanguageCode();
-            switch(feature.getFeatureState()) {
+            final String languageCode = Context.getLocalizator().getLanguageCode();
+            switch (feature.getFeatureState()) {
                 case FINISHED:
                     imageName = WebConfiguration.getImgFeatureStateSuccess(languageCode);
                     imageLabel = "success";
