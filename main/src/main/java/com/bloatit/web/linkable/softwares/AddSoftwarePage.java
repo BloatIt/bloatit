@@ -17,6 +17,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -29,6 +30,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AddSoftwareActionUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 
@@ -37,15 +39,17 @@ import com.bloatit.web.url.AddSoftwarePageUrl;
  */
 @ParamContainer("software/add")
 public final class AddSoftwarePage extends LoggedPage {
-
     private static final int SHORT_DESCRIPTION_INPUT_NB_LINES = 3;
     private static final int SHORT_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
+    
+    private AddSoftwarePageUrl url;
 
-    public AddSoftwarePage(final AddSoftwarePageUrl addSoftwarePageUrl) {
-        super(addSoftwarePageUrl);
+    public AddSoftwarePage(final AddSoftwarePageUrl url) {
+        super(url);
+        this.url = url;
     }
 
     @Override
@@ -65,7 +69,10 @@ public final class AddSoftwarePage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-        return new HtmlDiv("padding_box").add(generateFeatureCreationForm());
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        layout.addLeft(generateFeatureCreationForm());
+        
+        return layout;
     }
 
     private HtmlElement generateFeatureCreationForm() {
@@ -97,8 +104,9 @@ public final class AddSoftwarePage extends LoggedPage {
         shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
         addSoftwareForm.add(shortDescriptionInput);
 
+        // Description
         final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(),
+        final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(),
                                                                Context.tr("Describe the software"),
                                                                DESCRIPTION_INPUT_NB_LINES,
                                                                DESCRIPTION_INPUT_NB_COLUMNS);
@@ -110,9 +118,8 @@ public final class AddSoftwarePage extends LoggedPage {
         // Language
         final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
-        languageInput.setDefaultValue(languageData.getSuggestedValue());
+        languageInput.setDefaultValue(languageData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
         languageInput.addErrorMessages(languageData.getErrorMessages());
-
         languageInput.setComment(Context.tr("Language of the descriptions."));
         addSoftwareForm.add(languageInput);
 
@@ -139,9 +146,7 @@ public final class AddSoftwarePage extends LoggedPage {
 
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
-
         breadcrumb.pushLink(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
-
         return breadcrumb;
     }
 }
