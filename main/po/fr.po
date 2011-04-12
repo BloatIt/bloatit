@@ -975,7 +975,7 @@ msgstr "Email"
 
 #: com/bloatit/web/linkable/login/SignUpPage.java:99
 msgid "Fullname"
-msgstr "Nom complet :"
+msgstr "Nom complet"
 
 #: com/bloatit/web/linkable/login/SignUpPage.java:102
 msgid "Your real name"
@@ -1118,7 +1118,7 @@ msgstr "Crediter votre compte"
 
 #: com/bloatit/web/linkable/money/PaylineAction.java:78
 msgid "You must be logged to charge your account."
-msgstr "Vous devez être connecté pour créditer votre compte"
+msgstr "Vous devez être connecté pour créditer votre compte."
 
 #: com/bloatit/web/linkable/members/MembersTools.java:19
 #: com/bloatit/web/linkable/members/MembersTools.java:22
@@ -1137,7 +1137,7 @@ msgstr "Membres : "
 
 #: com/bloatit/web/linkable/members/MemberPage.java:99
 msgid "Full name: "
-msgstr "Nom complet :"
+msgstr "Nom complet : "
 
 #: com/bloatit/web/linkable/members/MemberPage.java:100
 msgctxt "Login (noun) "
@@ -1869,6 +1869,7 @@ msgstr ""
 "équipe"
 
 #: com/bloatit/web/linkable/team/SendTeamInvitationAction.java:55
+#, fuzzy
 msgid ""
 "Oops, an error prevented us from sendint this invitaton. Please notify us of "
 "the bug"

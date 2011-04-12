@@ -26,7 +26,6 @@ import com.bloatit.model.Commentable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.CommentReplyPageUrl;
@@ -150,14 +149,14 @@ public class CommentTools {
     }
 
     public static <T extends UserContentInterface<?> & Commentable> HtmlElement generateNewCommentComponent(final T commentable) {
-        final CreateCommentActionUrl url = new CreateCommentActionUrl(commentable);
+        final CreateCommentActionUrl targetUrl = new CreateCommentActionUrl(commentable);
         final HtmlDiv commentBlock = new HtmlDiv("new_comment_block");
 
-        final HtmlForm form = new HtmlForm(url.urlString());
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         form.enableFileUpload();
         commentBlock.add(form);
 
-        final HtmlTextArea commentInput = new HtmlTextArea(CreateCommentAction.COMMENT_CONTENT_CODE,
+        final HtmlTextArea commentInput = new HtmlTextArea(targetUrl.getCommentParameter().getName(),
                                                            Context.tr("New comment : "),
                                                            NB_ROWS,
                                                            NB_COLUMNS);
@@ -165,7 +164,7 @@ public class CommentTools {
         commentInput.setComment(Context.tr("Use this field to comment the feature. If you want to reply to a previous comment, use the reply link."));
 
         // Attachement
-        form.add(generateAttachementBlock(url));
+        form.add(generateAttachementBlock(targetUrl));
 
         form.add(new HtmlSubmit(Context.tr("Submit comment")));
 
