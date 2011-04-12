@@ -1824,7 +1824,7 @@ msgstr "Détails"
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:83
 #, java-format
 msgid "Contributions ({0})"
-msgstr "Contributions ({0})"
+msgstr "Contributions ({0})"
 
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:90
 msgid ""
@@ -1842,7 +1842,7 @@ msgstr "Offres ({0})"
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:117
 #, java-format
 msgid "Bugs ({0})"
-msgstr "Bugs ({0})"
+msgstr "Bugs ({0})"
 
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:155
 #: com/bloatit/web/pages/tools/CommentTools.java:73
