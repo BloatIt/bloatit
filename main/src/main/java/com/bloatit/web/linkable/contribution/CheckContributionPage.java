@@ -58,7 +58,7 @@ import com.bloatit.web.linkable.money.QuotationEntry;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.DefineParagraph;
+import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
@@ -152,7 +152,7 @@ public final class CheckContributionPage extends CreateUserContentPage {
                                                                                                               .subtract(process.getAmount())));
                         changeLine.add(MembersTools.getMemberAvatar(member));
                         authorContributionSummary.add(changeLine);
-                        authorContributionSummary.add(new DefineParagraph(tr("Author: "), member.getDisplayName()));
+                        authorContributionSummary.add(new HtmlDefineParagraph(tr("Author: "), member.getDisplayName()));
                     }
                 } catch (final UnauthorizedOperationException e) {
                     session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
@@ -160,9 +160,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
                 }
 
                 if (process.getComment() != null) {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), process.getComment()));
+                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Comment: "), process.getComment()));
                 } else {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), tr("No comment")));
+                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Comment: "), tr("No comment")));
                 }
 
             }
@@ -482,7 +482,7 @@ public final class CheckContributionPage extends CreateUserContentPage {
                     changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
                 }
                 featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new DefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
+                featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                 throw new ShallNotPassException("User cannot access user information", e);
