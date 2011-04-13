@@ -102,10 +102,10 @@ public final class ReportBugAction extends LoggedAction {
         this.lang = url.getLang();
         this.level = url.getLevel();
         this.milestone = url.getMilestone();
-        this.attachment = url.getAttachement();
-        this.attachmentFileName = url.getAttachementFileName();
-        this.attachmentContentType = url.getAttachementContentType();
-        this.attachmentDescription = url.getAttachementDescription();
+        this.attachment = url.getAttachment();
+        this.attachmentFileName = url.getAttachmentFileName();
+        this.attachmentContentType = url.getAttachmentContentType();
+        this.attachmentDescription = url.getAttachmentDescription();
 
     }
 
@@ -114,9 +114,9 @@ public final class ReportBugAction extends LoggedAction {
         final Locale langLocale = new Locale(lang);
         final Bug bug = milestone.addBug(authenticatedMember, title, description, langLocale, level.getLevel());
         if (attachment != null) {
-            FileConstraintChecker fcc = new FileConstraintChecker(attachment);
+            final FileConstraintChecker fcc = new FileConstraintChecker(attachment);
             if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
-                for (String message : fcc.isImageAvatar()) {
+                for (final String message : fcc.isImageAvatar()) {
                     session.notifyBad(message);
                 }
                 return Context.getSession().pickPreferredPage();
@@ -165,7 +165,7 @@ public final class ReportBugAction extends LoggedAction {
         session.addParameter(url.getMilestoneParameter());
         session.addParameter(url.getLevelParameter());
         session.addParameter(url.getLangParameter());
-        session.addParameter(url.getAttachementDescriptionParameter());
+        session.addParameter(url.getAttachmentDescriptionParameter());
     }
 
 }

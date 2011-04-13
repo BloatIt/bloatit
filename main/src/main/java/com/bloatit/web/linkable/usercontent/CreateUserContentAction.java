@@ -29,21 +29,21 @@ public abstract class CreateUserContentAction extends LoggedAction {
     @Optional
     private final Locale locale;
 
-    @RequestParam(name = "attachement", role = Role.POST)
+    @RequestParam(name = "attachment", role = Role.POST)
     @Optional
-    private final String attachement;
+    private final String attachment;
 
-    @RequestParam(name = "attachement/filename", role = Role.POST)
+    @RequestParam(name = "attachment/filename", role = Role.POST)
     @Optional
-    private final String attachementFileName;
+    private final String attachmentFileName;
 
-    @RequestParam(name = "attachement_description", role = Role.POST)
+    @RequestParam(name = "attachment_description", role = Role.POST)
     @Optional
-    private final String attachementDescription;
+    private final String attachmentDescription;
 
-    @RequestParam(name = "attachement/contenttype", role = Role.POST)
+    @RequestParam(name = "attachment/contenttype", role = Role.POST)
     @Optional
-    private final String attachementContentType;
+    private final String attachmentContentType;
 
     private FileMetadata file;
 
@@ -54,24 +54,24 @@ public abstract class CreateUserContentAction extends LoggedAction {
         this.createUserActionurl = url;
         team = url.getTeam();
         locale = url.getLocale();
-        attachement = url.getAttachement();
-        attachementFileName = url.getAttachementFileName();
-        attachementDescription = url.getAttachementDescription();
-        attachementContentType = url.getAttachementContentType();
+        attachment = url.getAttachment();
+        attachmentFileName = url.getAttachmentFileName();
+        attachmentDescription = url.getAttachmentDescription();
+        attachmentContentType = url.getAttachmentContentType();
 
         file = null;
     }
 
     @Override
     protected final Url doProcessRestricted(final Member authenticatedMember) {
-        if (attachement != null) {
-            if (attachementFileName != null && attachementDescription != null && verifyFile(attachement)) {
-                file = FileMetadataManager.createFromTempFile(authenticatedMember, attachement, attachementFileName, attachementDescription);
+        if (attachment != null) {
+            if (attachmentFileName != null && attachmentDescription != null && verifyFile(attachment)) {
+                file = FileMetadataManager.createFromTempFile(authenticatedMember, attachment, attachmentFileName, attachmentDescription);
             } else {
-                if (attachementFileName == null) {
+                if (attachmentFileName == null) {
                     session.notifyError(Context.tr("Filename is empty. Could you report that bug?"));
                 }
-                if (attachementDescription == null) {
+                if (attachmentDescription == null) {
                     session.notifyError(Context.tr("When you add a file you have to describe it."));
                 }
                 return doProcessErrors();
@@ -127,19 +127,19 @@ public abstract class CreateUserContentAction extends LoggedAction {
     }
 
     protected final String getAttachement() {
-        return attachement;
+        return attachment;
     }
 
     protected final String getAttachementFileName() {
-        return attachementFileName;
+        return attachmentFileName;
     }
 
     protected final String getAttachementDescription() {
-        return attachementDescription;
+        return attachmentDescription;
     }
 
     protected final String getAttachementContentType() {
-        return attachementContentType;
+        return attachmentContentType;
     }
 
     protected final FileMetadata getFile() {

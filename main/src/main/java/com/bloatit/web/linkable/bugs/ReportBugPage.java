@@ -152,7 +152,7 @@ public final class ReportBugPage extends LoggedPage {
         attachmentInput.setComment("Optional. If attach a file, you must add an attachment description. Max 3MB.");
         attachmentBlock.add(attachmentInput);
 
-        final FieldData attachmentDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().pickFieldData();
+        final FieldData attachmentDescriptionFieldData = doReportUrl.getAttachmentDescriptionParameter().pickFieldData();
         final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptionFieldData.getName(),
                                                                             Context.tr("Attachment description"));
         attachmentDescriptionInput.setDefaultValue(attachmentDescriptionFieldData.getSuggestedValue());

@@ -73,10 +73,10 @@ public final class AddAttachementAction extends LoggedAction {
         this.url = url;
 
         this.userContent = url.getUserContent();
-        this.attachment = url.getAttachement();
-        this.attachmentFileName = url.getAttachementFileName();
-        this.attachmentContentType = url.getAttachementContentType();
-        this.attachmentDescription = url.getAttachementDescription();
+        this.attachment = url.getAttachment();
+        this.attachmentFileName = url.getAttachmentFileName();
+        this.attachmentContentType = url.getAttachmentContentType();
+        this.attachmentDescription = url.getAttachmentDescription();
 
     }
 
@@ -129,6 +129,6 @@ public final class AddAttachementAction extends LoggedAction {
     protected void transmitParameters() {
         // TODO make sure all the parameters are transmitted.
         session.addParameter(url.getUserContentParameter());
-        session.addParameter(url.getAttachementDescriptionParameter());
+        session.addParameter(url.getAttachmentDescriptionParameter());
     }
 }

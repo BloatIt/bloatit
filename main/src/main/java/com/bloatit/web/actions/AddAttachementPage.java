@@ -95,7 +95,7 @@ public final class AddAttachementPage extends LoggedPage {
         title.add(form);
 
         // attachment
-        final FieldData attachmentDescriptiondData = formUrl.getAttachementDescriptionParameter().pickFieldData();
+        final FieldData attachmentDescriptiondData = formUrl.getAttachmentDescriptionParameter().pickFieldData();
         final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(),
                                                                             Context.tr("Attachment description"));
         attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
@@ -103,7 +103,7 @@ public final class AddAttachementPage extends LoggedPage {
         attachmentDescriptionInput.setComment(tr("Mandatory"));
         form.add(attachmentDescriptionInput);
 
-        final FieldData attachedFileData = formUrl.getAttachementParameter().pickFieldData();
+        final FieldData attachedFileData = formUrl.getAttachmentParameter().pickFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
         attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
         attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());

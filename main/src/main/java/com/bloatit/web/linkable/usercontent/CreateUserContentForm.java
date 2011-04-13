@@ -98,14 +98,14 @@ public abstract class CreateUserContentForm extends LoggedPage {
                                         final String descriptionLabel,
                                         final String descriptionComment) {
         // Attachment
-        final FieldData attachedFileData = targetUrl.getAttachementParameter().pickFieldData();
+        final FieldData attachedFileData = targetUrl.getAttachmentParameter().pickFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), attachmentLabel);
         attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
         attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
         attachedFileInput.setComment(attachmentComment);
         form.add(attachedFileInput);
 
-        final FieldData attachmentDescriptiondData = targetUrl.getAttachementDescriptionParameter().pickFieldData();
+        final FieldData attachmentDescriptiondData = targetUrl.getAttachmentDescriptionParameter().pickFieldData();
         final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(), descriptionLabel);
         attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
         attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());

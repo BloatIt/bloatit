@@ -66,10 +66,10 @@ public final class CreateCommentAction extends LoggedAction {
         this.url = url;
         this.commentable = url.getCommentable();
         this.comment = url.getComment();
-        this.attachment = url.getAttachement();
-        this.attachmentFileName = url.getAttachementFileName();
-        this.attachmentContentType = url.getAttachementContentType();
-        this.attachmentDescription = url.getAttachementDescription();
+        this.attachment = url.getAttachment();
+        this.attachmentFileName = url.getAttachmentFileName();
+        this.attachmentContentType = url.getAttachmentContentType();
+        this.attachmentDescription = url.getAttachmentDescription();
     }
 
     @Override
@@ -109,7 +109,7 @@ public final class CreateCommentAction extends LoggedAction {
     public Url redirectWithError() {
         session.addParameter(url.getCommentParameter());
         session.addParameter(url.getCommentableParameter());
-        session.addParameter(url.getAttachementDescriptionParameter());
+        session.addParameter(url.getAttachmentDescriptionParameter());
         return Context.getSession().getLastVisitedPage();
     }
 
