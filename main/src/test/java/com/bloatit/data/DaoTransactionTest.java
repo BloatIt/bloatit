@@ -46,17 +46,17 @@ public class DaoTransactionTest extends TestCase {
         SessionManager.generateTestSessionFactory();
         SessionManager.beginWorkUnit();
         {
-            tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
+            tom = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
             tom.setFullname("Thomas Guyard");
             SessionManager.flush();
         }
         {
-            fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
+            fred = DaoMember.createAndPersist("Fred", "other", "salt", "fred@gmail.com", Locale.FRANCE);
             fred.setFullname("Frédéric Bertolus");
             SessionManager.flush();
         }
         {
-            yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
+            yo = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
             yo.setFullname("Yoann Plénet");
             SessionManager.flush();
 

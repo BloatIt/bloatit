@@ -47,7 +47,7 @@ import com.bloatit.web.url.FeatureListPageUrl;
 public final class FeatureListPage extends MasterPage {
 
     public static final String FILTER_ALL = "all";
-    public static final String FILTER_IN_PROGRESS = "in progress";
+    public static final String FILTER_IN_PROGRESS = "in_progress";
     public static final String FILTER_FINISHED = "finished";
     public static final String FILTER_CODE = "filter";
 
@@ -59,8 +59,8 @@ public final class FeatureListPage extends MasterPage {
     public static final String SORT_BY_CONTRIBUTION = "contribution";
     public static final String SORT_BY_PROGRESS = "progress";
     public static final String SORT_BY_POPULARITY = "popularity";
-    public static final String SORT_BY_CREATION_DATE = "creation date";
-    public static final String SORT_BY_EXPIRATION_DATE = "expiration date";
+    public static final String SORT_BY_CREATION_DATE = "creation_date";
+    public static final String SORT_BY_EXPIRATION_DATE = "expiration_date";
     public static final String SORT_CODE = "sort";
     @RequestParam(name = SORT_CODE)
     @Optional(SORT_BY_POPULARITY)

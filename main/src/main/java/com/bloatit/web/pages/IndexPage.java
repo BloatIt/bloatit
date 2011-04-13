@@ -127,7 +127,7 @@ public final class IndexPage extends MasterPage {
             { // Box to hold text of the button
                 HtmlDiv createTextDiv2 = new HtmlDiv("feature_create_text");
                 createTextDiv.add(createTextDiv2);
-                createTextDiv2.addText(Context.tr("Request a feature."));
+                createTextDiv2.addText(Context.tr("Request a feature"));
             }
             createDiv.add(createTextDiv);
         }

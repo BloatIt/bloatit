@@ -71,7 +71,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
 
     /**
      * Add a contribution on this feature.
-     *
+     * 
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char
      *            long.
@@ -85,27 +85,29 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
     /**
-     * Add a new Offer on this Feature. You can do this operation when you are in
-     * the {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}
+     * Add a new Offer on this Feature. You can do this operation when you are
+     * in the {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}
      * FeatureState. When you add the first Offer, the state pass from
      * {@link FeatureState#PENDING} to {@link FeatureState#PREPARING}; and this
-     * offer is selected (see {@link DaoFeature#setSelectedOffer(DaoOffer)}). The
-     * parameters of this function are used to create the first (non optional)
-     * milestone in this offer.
-     *
+     * offer is selected (see {@link DaoFeature#setSelectedOffer(DaoOffer)}).
+     * The parameters of this function are used to create the first (non
+     * optional) milestone in this offer.
+     * 
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#WRITE} right on the <code>Offer</code>
      *             property.
      * @throws WrongStateException if the state is != from
-     *             {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}.
+     *             {@link FeatureState#PENDING} or
+     *             {@link FeatureState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
-    Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
-            throws UnauthorizedOperationException;
+    Offer
+            addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
+                                                                                                                                       throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.
-     *
+     * 
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>DELETED</code> right on the <code>Offer</code>
@@ -116,7 +118,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
 
     /**
      * Works only in development state.
-     *
+     * 
      * @throws UnauthorizedOperationException If this is not the current
      *             developer thats try to cancel the dev.
      */
@@ -127,7 +129,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
 
     /**
      * Used by Offer class. You should never have to use it
-     *
+     * 
      * @param offer the offer to unselect. Nothing is done if the offer is not
      *            selected.
      */
@@ -145,6 +147,14 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     PageIterable<Comment> getComments() throws UnauthorizedOperationException;
 
     /**
+     * Get the total number of comments for this feature. It doesn't take into
+     * account the pageSize if you are using paged list (cf: {@link PageIterable}).
+     * 
+     * @return the total number of comments on this feature.
+     */
+    Long getCommentsCount();
+
+    /**
      * @return all the Contributions on this Feature.
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#READ} right on the <code>Contribution</code>
@@ -156,7 +166,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     /**
      * Return the progression in percent. It compare the amount of contribution
      * to the amount of the current offer.
-     *
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
@@ -168,9 +178,9 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     float getProgression() throws UnauthorizedOperationException;
 
     /**
-     * Return the progression due by the member in percent. It compare the amount of contribution
-     * to the amount of the current offer.
-     *
+     * Return the progression due by the member in percent. It compare the
+     * amount of contribution to the amount of the current offer.
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
@@ -181,11 +191,10 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      */
     float getMemberProgression(User member) throws UnauthorizedOperationException;
 
-
     /**
-     * Return the progression due by the amount in percent. It compare the amount of contribution
-     * to the amount of the current offer.
-     *
+     * Return the progression due by the amount in percent. It compare the
+     * amount of contribution to the amount of the current offer.
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
@@ -251,7 +260,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     *
+     * 
      * @return the current offer for this feature, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>READ</code> right on the <code>Offer</code> property.
@@ -263,7 +272,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      * A validated offer is an offer selected for more than one day. (If you are
      * in {@link FeatureState#DEVELOPPING} state then there should be always a
      * validated offer.
-     *
+     * 
      * @return the validated offer or null if there is no valid offer.
      * @throws UnauthorizedOperationException if you do not have the
      *             <code>READ</code> right on the offer property
@@ -292,7 +301,5 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     void computeSelectedOffer() throws UnauthorizedOperationException;
 
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
-
-
 
 }

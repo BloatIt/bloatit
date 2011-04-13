@@ -16,10 +16,11 @@
 //
 package com.bloatit.model;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Set;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
@@ -27,11 +28,11 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.SecuredHash;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.lists.CommentList;
@@ -50,6 +51,8 @@ public final class Member extends Actor<DaoMember> implements User {
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final int PASSWORD_SALT_LENGTH = 50;
 
     private static final class MyCreator extends Creator<DaoMember, Member> {
         @SuppressWarnings("synthetic-access")
@@ -70,12 +73,20 @@ public final class Member extends Actor<DaoMember> implements User {
         return new MyCreator().create(dao);
     }
 
-    public Member(final String login, final String password, final String email, final Locale locale) {
-        super(DaoMember.createAndPersist(login, password, email, locale));
+    private static DaoMember createDaoMember(final String login, final String password, final String email, final Locale locale) {
+        final String salt = RandomStringUtils.randomAscii(PASSWORD_SALT_LENGTH);
+        final String passwd = SecuredHash.calculateHash(password, salt);
+        return DaoMember.createAndPersist(login, passwd, salt, email, locale);
     }
-    
+
+    public Member(final String login, final String password, final String email, final Locale locale) {
+        super(createDaoMember(login, password, email, locale));
+
+    }
+
     public Member(final String login, final String password, final String email, final String fullname, final Locale locale) {
-        super(DaoMember.createAndPersist(login, password, email, fullname, locale));
+        this(login, password, email, locale);
+        getDao().setFullname(fullname);
     }
 
     private Member(final DaoMember dao) {
@@ -303,23 +314,6 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().setRole(role);
     }
 
-    public static String sha1(final String digest) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("SHA-1");
-        } catch (final NoSuchAlgorithmException ex) {
-            throw new BadProgrammerException("Algorithm Sha1 not available", ex);
-        }
-        md.update(digest.getBytes());
-        final byte byteData[] = md.digest();
-
-        final StringBuilder sb = new StringBuilder();
-        for (final byte element : byteData) {
-            sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
-    }
-
     public void activate() {
         getDao().setActivationState(ActivationState.ACTIVE);
     }
@@ -493,10 +487,6 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().addToKarma(value);
     }
 
-    protected String getPassword() {
-        return getDao().getPassword();
-    }
-
     public Role getRole() {
         return getDao().getRole();
     }
@@ -513,8 +503,7 @@ public final class Member extends Actor<DaoMember> implements User {
     public String getActivationKey() {
         final DaoMember m = getDao();
         final String digest = "" + m.getId() + m.getContact() + m.getFullname() + m.getPassword();
-
-        return sha1(digest);
+        return DigestUtils.sha256Hex(digest);
     }
 
     public FileMetadata getAvatar() {

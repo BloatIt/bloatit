@@ -26,7 +26,7 @@ public class FileConstraintChecker {
 
         private long size;
 
-        SizeUnit(long size) {
+        SizeUnit(final long size) {
             this.size = size;
         }
 
@@ -40,7 +40,7 @@ public class FileConstraintChecker {
      * 
      * @param file the file to check
      */
-    public FileConstraintChecker(File file) {
+    public FileConstraintChecker(final File file) {
         this.file = file;
     }
 
@@ -49,7 +49,7 @@ public class FileConstraintChecker {
      * 
      * @param url the <code>url</code> of the file to check
      */
-    public FileConstraintChecker(String url) {
+    public FileConstraintChecker(final String url) {
         this(new File(url));
     }
 
@@ -61,18 +61,18 @@ public class FileConstraintChecker {
     }
 
     /**
-     * Check if the file is smaller that a given <code>length</code>
+     * Check if the file is smaller than a given <code>length</code>
      * 
      * @param length the expected maximum <code>length</code> of the file
      * @param unit the unit of the <code>length</code>
      * @return <i>true</i> if the file is smaller than <code>length</code> *
      *         <code>unit</code>, <i>false</i> otherwise
      */
-    public boolean isFileSmaller(long length, SizeUnit unit) {
+    public boolean isFileSmaller(final long length, final SizeUnit unit) {
         if (!exists()) {
             return false;
         }
-        long fileLength = file.length();
+        final long fileLength = file.length();
         if ((length * unit.getSize()) >= fileLength) {
             return true;
         }
@@ -97,7 +97,7 @@ public class FileConstraintChecker {
             } else {
                 isImage = false;
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
             isImage = false;
         }
@@ -114,7 +114,7 @@ public class FileConstraintChecker {
      *         image height is smaller than <code>height</code>. <i>false</i>
      *         otherwise. Note if file is not an image, returns <i>false</i>.
      */
-    public boolean isImageSmaller(int width, int height) {
+    public boolean isImageSmaller(final int width, final int height) {
         if (!file.exists()) {
             return false;
         }
@@ -138,20 +138,20 @@ public class FileConstraintChecker {
      *         failed.
      */
     public List<String> isImageAvatar() {
-        ArrayList<String> failures = new ArrayList<String>();
+        final ArrayList<String> failures = new ArrayList<String>();
         if(!exists()){
-            failures.add(Context.tr("Sorry we messed up and lost the file you uploaded. Please try again"));
+            failures.add(Context.tr("Sorry we messed up and lost the file you uploaded. Please try again."));
             return failures;
         }
         if(!isImage()){
-            failures.add(Context.tr("Avatars can only be images. Please upload another file"));
+            failures.add(Context.tr("Avatars can only be images. Please upload another file."));
             return failures;
         }
         if(!isFileSmaller(50, SizeUnit.KBYTE)){
-            failures.add(Context.tr("Avatars have to be smaller than 50Kb. Please upload another file"));
+            failures.add(Context.tr("Avatars have to be smaller than 50Kb. Please upload another file."));
         }
         if(!isImageSmaller(64, 64)){
-            failures.add(Context.tr("Avatars have to be smaller than 64x64. Please upload another file"));
+            failures.add(Context.tr("Avatars have to be smaller than 64x64. Please upload another file."));
         }
         if(failures.size() > 0 ){
             return failures;

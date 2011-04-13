@@ -34,19 +34,20 @@ public class Model implements AbstractModel {
      */
     @Override
     public void initialize() {
+        DataManager.initialize();
         Log.model().trace("Launching the Model.");
         ModelConfiguration.loadConfiguration();
 
         open();
         // Find the feature with selected offer that should pass into validated.
-        PageIterable<Feature> featuresToValidate = new FeatureList(DBRequests.featuresThatShouldBeValidated());
-        for (Feature feature : featuresToValidate) {
+        final PageIterable<Feature> featuresToValidate = new FeatureList(DBRequests.featuresThatShouldBeValidated());
+        for (final Feature feature : featuresToValidate) {
             feature.updateDevelopmentState();
         }
 
         // Find the feature with selected offer that should pass into validated.
-        PageIterable<Feature> featuresToValidateInTheFuture = new FeatureList(DBRequests.featuresThatShouldBeValidatedInTheFuture());
-        for (Feature feature : featuresToValidateInTheFuture) {
+        final PageIterable<Feature> featuresToValidateInTheFuture = new FeatureList(DBRequests.featuresThatShouldBeValidatedInTheFuture());
+        for (final Feature feature : featuresToValidateInTheFuture) {
             new TaskUpdateDevelopingState(feature.getId(), feature.getValidationDate());
         }
         close();

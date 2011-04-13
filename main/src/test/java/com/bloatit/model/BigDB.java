@@ -36,7 +36,7 @@ public class BigDB {
         final List<DaoMember> members = new ArrayList<DaoMember>();
         for (int i = 0; i < nbUsers; i++) {
             DaoMember member;
-            member = DaoMember.createAndPersist("member " + i, Integer.toString(i), "mail" + i + "@nowhere.com", Locale.FRANCE);
+            member = DaoMember.createAndPersist("member " + i, Integer.toString(i), "salt", "mail" + i + "@nowhere.com", Locale.FRANCE);
             member.setFullname("User " + i + " Fullname");
             member.setExternalAccount(DaoExternalAccount.createAndPersist(member, AccountType.IBAN, "code"));
             members.add(member);
@@ -67,15 +67,16 @@ public class BigDB {
 
         DaoTeam.createAndPersiste("b2 ", "plop" + "@plop.com", "description", DaoTeam.Right.PUBLIC);
 
-        DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"));
+        final DaoSoftware project = DaoSoftware.createAndPersist("VLC",
+                                                                 DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 
         for (int i = 0; i < nbUsers; i++) {
             final DaoFeature feature = DaoFeature.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
-                                                                                                                new Locale("fr"),
-                                                                                                                fortune(140),
-                                                                                                                fortune(1000) + fortune(1000)
-                                                                                                                        + fortune(1000)), project);
+                                                                                                                   new Locale("fr"),
+                                                                                                                   fortune(140),
+                                                                                                                   fortune(1000) + fortune(1000)
+                                                                                                                           + fortune(1000)), project);
 
             final int commentCount = (int) (Math.random() * 5);
 
@@ -99,11 +100,11 @@ public class BigDB {
             final DaoMember member = members.get(pick(nbUsers));
             if (pick(2) == 0) {
                 feature.addOffer(new DaoOffer(member,
-                                             feature,
-                                             new BigDecimal((pick(50) + 10) * 10),
-                                             DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
-                                             new Date(System.currentTimeMillis() + 200),
-                                             0));
+                                              feature,
+                                              new BigDecimal((pick(50) + 10) * 10),
+                                              DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
+                                              new Date(System.currentTimeMillis() + 200),
+                                              0));
                 if (pick(2) == 0) {
                     for (final DaoContribution contrib : feature.getContributions()) {
                         try {

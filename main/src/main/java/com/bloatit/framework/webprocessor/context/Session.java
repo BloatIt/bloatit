@@ -12,8 +12,6 @@
 
 package com.bloatit.framework.webprocessor.context;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -21,8 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.bloatit.framework.FrameworkConfiguration;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage;
@@ -222,7 +221,7 @@ public final class Session {
         int length = 5;
         String key = null;
         while (key == null) {
-            final String tempKey = sha1(UUID.randomUUID().toString()).substring(0, length);
+            final String tempKey = DigestUtils.sha256Hex(UUID.randomUUID().toString()).substring(0, length);
 
             if (processes.containsKey(tempKey)) {
                 if (length < SHA1_SIZE) {
@@ -245,26 +244,4 @@ public final class Session {
         processes.remove(webProcess.getId());
     }
 
-    /**
-     * Finds the sha1 hash of an <code>input</code> string
-     * 
-     * @param input the string to hash
-     * @return the hashed string
-     */
-    private static String sha1(final String input) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("SHA-1");
-        } catch (final NoSuchAlgorithmException ex) {
-            throw new BadProgrammerException("Algorithm Sha1 not available", ex);
-        }
-        md.update(input.getBytes());
-        final byte byteData[] = md.digest();
-
-        final StringBuilder sb = new StringBuilder();
-        for (final byte element : byteData) {
-            sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
-    }
 }

@@ -297,7 +297,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
         final Feature feature = createFeatureByThomas();
-        final DaoMember admin = DaoMember.createAndPersist("admin1", "admin1", "admin1", Locale.FRANCE);
+        final DaoMember admin = DaoMember.createAndPersist("admin1", "admin1","salt", "admin1", Locale.FRANCE);
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
         assertEquals(FeatureState.PENDING, feature.getFeatureState());

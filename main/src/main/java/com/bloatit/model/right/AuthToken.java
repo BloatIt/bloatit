@@ -22,6 +22,8 @@ import java.util.UUID;
 import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoMember;
+import com.bloatit.framework.utils.SecuredHash;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.Member;
@@ -42,10 +44,19 @@ public final class AuthToken {
      *             wrong.
      */
     public AuthToken(final String login, final String password) throws NotFoundException {
-        final Member tmp = MemberManager.getByLoginAndPassword(login, password);
+        final DaoMember tmp = DaoMember.getByLogin(login);
         if (tmp == null) {
+            // Spend some time here.
+            SecuredHash.calculateHash(password, "012345678901234567890");
+            Log.model().info("Identification error with login " + login);
+            throw new NotFoundException("Identification failed");
+        }
+        
+        // Spend some time here. (Normal computation).
+        final String digestedPassword = SecuredHash.calculateHash(password, tmp.getSalt());
+        if (!tmp.passwordEquals(digestedPassword)) {
             Log.model().info("Authentication error with login " + login);
-            throw new NotFoundException("Identification or authentication failed");
+            throw new NotFoundException("Authentication failed");
         }
 
         if (tmp.getActivationState() != ActivationState.ACTIVE) {

@@ -124,6 +124,14 @@ import com.bloatit.framework.utils.PageIterable;
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
+                        @NamedQuery(
+                                    name = "feature.getComments.size",
+                                    query = "SELECT count(*) "+
+                                            "FROM com.bloatit.data.DaoComment  "+
+                                            "WHERE feature = :this "+
+                                            "OR father.id in ( "+
+                                                "FROM com.bloatit.data.DaoComment  "+
+                                                "WHERE feature = :this )"),
                      }
              )
 // @formatter:on
@@ -392,6 +400,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         return new MappedList<DaoContribution>(this.contributions);
     }
 
+    public Long getCommentsCount() {
+        return (Long) SessionManager.getNamedQuery("feature.getComments.size").setEntity("this", this).uniqueResult();
+    }
+    
     /*
      * (non-Javadoc)
      * @see com.bloatit.data.DaoCommentable#getCommentsFromQuery()
