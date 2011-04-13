@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-12 19:19+0200\n"
+"POT-Creation-Date: 2011-04-13 10:35+0200\n"
 "PO-Revision-Date: 2010-09-22 02:42+0100\n"
 "Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
 "Language-Team: French\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: com/bloatit/web/actions/AddAttachementPage.java:100
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:157
 #: com/bloatit/web/linkable/bugs/BugPage.java:127
-#: com/bloatit/web/pages/tools/CommentTools.java:185
+#: com/bloatit/web/pages/tools/CommentTools.java:184
 msgid "Attachment description"
 msgstr ""
 
@@ -49,12 +49,12 @@ msgid "Attached file"
 msgstr ""
 
 #: com/bloatit/web/actions/AddAttachementPage.java:113
-#: com/bloatit/web/linkable/login/SignUpPage.java:123
+#: com/bloatit/web/linkable/login/SignUpPage.java:112
 #: com/bloatit/web/linkable/members/MemberPage.java:146
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:107
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:104
 #: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:91
 #: com/bloatit/web/linkable/admin/ConfigurationAdminPage.java:75
-#: com/bloatit/web/pages/CommentReplyPage.java:79
+#: com/bloatit/web/pages/CommentReplyPage.java:78
 msgid "Submit"
 msgstr ""
 
@@ -117,16 +117,6 @@ msgstr ""
 msgid "Activation impossible on a no existing member."
 msgstr ""
 
-#: com/bloatit/web/actions/CommentCommentAction.java:59
-#: com/bloatit/web/actions/CreateCommentAction.java:106
-msgid "Your comment has been added."
-msgstr ""
-
-#: com/bloatit/web/actions/CommentCommentAction.java:74
-#: com/bloatit/web/actions/CreateCommentAction.java:129
-msgid "You must be logged in to comment."
-msgstr ""
-
 #: com/bloatit/web/actions/AddAttachementAction.java:47
 msgid "An attachement must be linked to a content"
 msgstr ""
@@ -146,22 +136,34 @@ msgid ""
 "this error without trying to hack the website, please make a bug report."
 msgstr ""
 
-#: com/bloatit/web/actions/CreateCommentAction.java:43
+#: com/bloatit/web/actions/CreateCommentAction.java:36
 msgid "The comment must be post on a commentable thing"
 msgstr ""
 
-#: com/bloatit/web/actions/CreateCommentAction.java:47
+#: com/bloatit/web/actions/CreateCommentAction.java:40
 msgid "You must type a comment"
 msgstr ""
 
-#: com/bloatit/web/actions/CreateCommentAction.java:93
+#: com/bloatit/web/actions/CreateCommentAction.java:41
+msgid "The comment must be at least 2 characters long."
+msgstr ""
+
+#: com/bloatit/web/actions/CreateCommentAction.java:87
 #: com/bloatit/web/linkable/bugs/ReportBugAction.java:142
 msgid ""
 "You must enter a description of the attachement if you add an attachement."
 msgstr ""
 
-#: com/bloatit/web/actions/CreateCommentAction.java:108
+#: com/bloatit/web/actions/CreateCommentAction.java:100
+msgid "Your comment has been added."
+msgstr ""
+
+#: com/bloatit/web/actions/CreateCommentAction.java:102
 msgid "Error commenting. Please notify us"
+msgstr ""
+
+#: com/bloatit/web/actions/CreateCommentAction.java:123
+msgid "You must be logged in to comment."
 msgstr ""
 
 #: com/bloatit/web/components/HtmlPagedList.java:82
@@ -238,7 +240,7 @@ msgstr ""
 #: com/bloatit/web/linkable/release/AddReleasePage.java:115
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:131
 #: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:120
-#: com/bloatit/web/linkable/login/SignUpPage.java:118
+#: com/bloatit/web/linkable/login/SignUpPage.java:107
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:122
 msgid "Language"
 msgstr ""
@@ -282,7 +284,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/release/ReleasePage.java:67
 #: com/bloatit/web/linkable/bugs/BugPage.java:88
-#: com/bloatit/web/pages/tools/CommentTools.java:65
+#: com/bloatit/web/pages/tools/CommentTools.java:64
 msgid ": "
 msgstr ""
 
@@ -291,6 +293,7 @@ msgid "Release "
 msgstr ""
 
 #: com/bloatit/web/linkable/release/AddReleaseAction.java:42
+#: com/bloatit/web/linkable/bugs/ReportBugAction.java:62
 msgid "The description must have at least 10 chars."
 msgstr ""
 
@@ -406,7 +409,7 @@ msgid "You must be logged to modify a bug."
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ModifyBugPage.java:147
-#: com/bloatit/web/linkable/team/TeamPage.java:283
+#: com/bloatit/web/linkable/team/TeamPage.java:282
 msgid "Modify"
 msgstr ""
 
@@ -446,24 +449,24 @@ msgid "Level of the bug."
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:148
-#: com/bloatit/web/pages/tools/CommentTools.java:177
+#: com/bloatit/web/pages/tools/CommentTools.java:176
 msgid "Attachement"
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:151
 #: com/bloatit/web/linkable/bugs/BugPage.java:121
-#: com/bloatit/web/pages/tools/CommentTools.java:179
+#: com/bloatit/web/pages/tools/CommentTools.java:178
 msgid "Attachement file"
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:160
 #: com/bloatit/web/linkable/bugs/BugPage.java:130
-#: com/bloatit/web/pages/tools/CommentTools.java:188
+#: com/bloatit/web/pages/tools/CommentTools.java:187
 msgid "Need only if you add an attachement."
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:163
-#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:39
+#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:38
 msgid "Report the bug"
 msgstr ""
 
@@ -705,8 +708,8 @@ msgid "You will have to release this feature before the release date."
 msgstr ""
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:167
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:75
-#: com/bloatit/web/linkable/team/TeamPage.java:149
+#: com/bloatit/web/linkable/features/FeatureTabPane.java:66
+#: com/bloatit/web/linkable/team/TeamPage.java:148
 msgid "Description"
 msgstr ""
 
@@ -786,27 +789,27 @@ msgstr ""
 msgid "''%param'' is a percent, and must be lesser or equal to 100."
 msgstr ""
 
-#: com/bloatit/web/linkable/offer/OfferAction.java:144
+#: com/bloatit/web/linkable/offer/OfferAction.java:143
 msgid "Error creating an offer. Please notify us"
 msgstr ""
 
-#: com/bloatit/web/linkable/offer/OfferAction.java:156
+#: com/bloatit/web/linkable/offer/OfferAction.java:155
 msgid "You have to specify both the Major and Fatal percent."
 msgstr ""
 
-#: com/bloatit/web/linkable/offer/OfferAction.java:160
+#: com/bloatit/web/linkable/offer/OfferAction.java:159
 msgid "Major + Fatal percent cannot be > 100 !!"
 msgstr ""
 
-#: com/bloatit/web/linkable/offer/OfferAction.java:164
+#: com/bloatit/web/linkable/offer/OfferAction.java:163
 msgid "The specified offer is not editable. You cannot add a lot in it."
 msgstr ""
 
-#: com/bloatit/web/linkable/offer/OfferAction.java:168
+#: com/bloatit/web/linkable/offer/OfferAction.java:167
 msgid "You cannot talk on the behalf of this team."
 msgstr ""
 
-#: com/bloatit/web/linkable/offer/OfferAction.java:187
+#: com/bloatit/web/linkable/offer/OfferAction.java:186
 msgid "You must be logged to make an offer."
 msgstr ""
 
@@ -816,13 +819,13 @@ msgstr ""
 
 #: com/bloatit/web/linkable/login/LogoutAction.java:61
 msgid ""
-"You should log in before you log out ...Note : if you log in using the form "
-"below, you'll be immediatlylogged out (yes this is a stupid behavior, but we "
-"try to use generic code... sometimes generic meands stupid ;)"
+"You should log in before you log out ... Note : if you log in using the form "
+"below, you'll be immediatly logged out (yes this is a stupid behavior, but "
+"we try to use generic code... sometimes generic means stupid ;)"
 msgstr ""
 
 #: com/bloatit/web/linkable/login/LoginPage.java:65
-#: com/bloatit/web/linkable/login/SignUpPage.java:72
+#: com/bloatit/web/linkable/login/SignUpPage.java:69
 msgctxt "Login (noun)"
 msgid "Login"
 msgstr ""
@@ -832,7 +835,7 @@ msgid "Note: This field is not case sensitive"
 msgstr ""
 
 #: com/bloatit/web/linkable/login/LoginPage.java:70
-#: com/bloatit/web/linkable/login/SignUpPage.java:80
+#: com/bloatit/web/linkable/login/SignUpPage.java:77
 msgid "Password"
 msgstr ""
 
@@ -853,38 +856,49 @@ msgstr ""
 msgid "Password lost ?"
 msgstr ""
 
+#: com/bloatit/web/linkable/login/SignUpAction.java:31
+msgid "Login cannot be blank."
+msgstr ""
+
 #: com/bloatit/web/linkable/login/SignUpAction.java:32
-msgid "Number of characters for login has to be superior to 4"
+msgid "Number of characters for login has to be superior to 4."
 msgstr ""
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:33
-msgid "Number of characters for login has to be inferior to 15"
+msgid "Number of characters for login has to be inferior to 15."
 msgstr ""
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:37
-#: com/bloatit/web/linkable/login/SignUpAction.java:42
-msgid "Number of characters for password has to be superior to 4"
+msgid "Password cannot be blank."
 msgstr ""
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:38
+#: com/bloatit/web/linkable/login/SignUpAction.java:44
+msgid "Number of characters for password has to be superior to 4."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpAction.java:39
+#: com/bloatit/web/linkable/login/SignUpAction.java:45
+msgid "Number of characters for password has to be inferior to 15."
+msgstr ""
+
 #: com/bloatit/web/linkable/login/SignUpAction.java:43
-#: com/bloatit/web/linkable/login/SignUpAction.java:48
-msgid "Number of characters for password has to be inferior to 15"
+msgid "Password confirmation cannot be blank."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:47
-msgid "Number of characters for fullname has to be superior to 4"
+#: com/bloatit/web/linkable/login/SignUpAction.java:49
+msgid "Email cannot be blank."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:53
-msgid "Number of characters for email has to be superior to 5"
+#: com/bloatit/web/linkable/login/SignUpAction.java:50
+msgid "Number of characters for email has to be superior to 5."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:54
-msgid "Number of characters for email address has to be inferior to 30"
+#: com/bloatit/web/linkable/login/SignUpAction.java:51
+msgid "Number of characters for email address has to be inferior to 30."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:90
+#: com/bloatit/web/linkable/login/SignUpAction.java:86
 #, java-format
 msgid ""
 "Your Elveos.org account ''{0}'' was created. Please click on the following "
@@ -893,58 +907,50 @@ msgid ""
 " {1}"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:94
+#: com/bloatit/web/linkable/login/SignUpAction.java:90
 msgid "Elveos.org account activation"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:98
+#: com/bloatit/web/linkable/login/SignUpAction.java:94
 msgid "Account created, you will receive a mail to activate it."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:111
+#: com/bloatit/web/linkable/login/SignUpAction.java:107
 #, java-format
 msgid "Login ''{0}''already used. Find another login"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:116
+#: com/bloatit/web/linkable/login/SignUpAction.java:112
 #, java-format
 msgid "Email ''{0}''already used. Find another email or use your old account !"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:122
+#: com/bloatit/web/linkable/login/SignUpAction.java:118
 msgid "Invalid email address : "
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:65
+#: com/bloatit/web/linkable/login/SignUpPage.java:62
 msgid "Sign up"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:74
+#: com/bloatit/web/linkable/login/SignUpPage.java:71
 msgid "When you login, case of login field be will be ignored"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:86
+#: com/bloatit/web/linkable/login/SignUpPage.java:83
 msgid "Reenter your password"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:92
+#: com/bloatit/web/linkable/login/SignUpPage.java:89
 msgid "Email"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:99
-msgid "Fullname"
-msgstr ""
-
-#: com/bloatit/web/linkable/login/SignUpPage.java:102
-msgid "Your real name"
-msgstr ""
-
-#: com/bloatit/web/linkable/login/SignUpPage.java:106
+#: com/bloatit/web/linkable/login/SignUpPage.java:95
 msgid "Country"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:132
-#: com/bloatit/web/linkable/login/SignUpPage.java:148
+#: com/bloatit/web/linkable/login/SignUpPage.java:121
+#: com/bloatit/web/linkable/login/SignUpPage.java:137
 msgid "Sign-in"
 msgstr ""
 
@@ -990,22 +996,22 @@ msgid ""
 "An error prevented us from displaying user information. Please notify us."
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:49
+#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:48
 #, java-format
 msgid "Bugs list ({0})"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:56
+#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:55
 msgid "edit"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:58
+#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:57
 #: com/bloatit/web/linkable/contribution/CheckContributionPage.java:386
 #: com/bloatit/web/linkable/admin/AdminActionManager.java:12
 msgid "delete"
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:87
+#: com/bloatit/web/linkable/meta/bugreport/MetaBugsListPage.java:86
 #: com/bloatit/web/linkable/features/FeaturePage.java:124
 msgid "Bugs"
 msgstr ""
@@ -1033,7 +1039,7 @@ msgid ""
 "website."
 msgstr ""
 
-#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:37
+#: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:36
 #: com/bloatit/web/linkable/meta/bugreport/MetaBugEditPage.java:75
 msgid "You can use markdown syntax in this field."
 msgstr ""
@@ -1044,7 +1050,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/meta/bugreport/MetaBugEditPage.java:106
 #: com/bloatit/web/linkable/members/MembersListPage.java:123
-#: com/bloatit/web/linkable/team/TeamPage.java:208
+#: com/bloatit/web/linkable/team/TeamPage.java:207
 #: com/bloatit/web/pages/master/Footer.java:32
 msgid "Members"
 msgstr ""
@@ -1177,6 +1183,10 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
+#: com/bloatit/web/linkable/features/CreateFeaturePage.java:81
+msgid "You are not allowed to create a new feature"
+msgstr ""
+
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:88
 msgid "Create a new feature"
 msgstr ""
@@ -1237,11 +1247,11 @@ msgid ""
 "all ... Try to leave as little room for ambiguity as possible."
 msgstr ""
 
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:178
+#: com/bloatit/web/linkable/features/CreateFeaturePage.java:172
 msgid "You must be logged to create a new feature."
 msgstr ""
 
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:213
+#: com/bloatit/web/linkable/features/CreateFeaturePage.java:207
 #: com/bloatit/web/pages/master/Footer.java:27
 msgid "Create a feature"
 msgstr ""
@@ -1251,7 +1261,7 @@ msgid "Report a new bug"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureBugListComponent.java:47
-#: com/bloatit/web/linkable/features/FeaturesTools.java:103
+#: com/bloatit/web/linkable/features/FeaturesTools.java:105
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:169
 msgid "An error prevented us from displaying selected offer. Please notify us."
 msgstr ""
@@ -1287,41 +1297,41 @@ msgstr ""
 msgid "Last update"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturesTools.java:116
-#: com/bloatit/web/linkable/features/FeaturesTools.java:159
+#: com/bloatit/web/linkable/features/FeaturesTools.java:118
+#: com/bloatit/web/linkable/features/FeaturesTools.java:161
 msgid ""
 "An error prevented us from displaying contribution amount. Please notify us."
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturesTools.java:124
+#: com/bloatit/web/linkable/features/FeaturesTools.java:126
 msgid " no offer"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeaturesTools.java:153
+#: com/bloatit/web/linkable/features/FeaturesTools.java:155
 msgid "<0:1600€:> i.e <1:69%:> of <2:2300€:> requested"
 msgid_plural "<0:1600€:> i.e <1:69%:> of <2:2300€:> requested"
 msgstr[0] ""
 
-#: com/bloatit/web/linkable/features/FeaturesTools.java:184
+#: com/bloatit/web/linkable/features/FeaturesTools.java:188
 #, java-format
 msgid "{0} comment"
 msgid_plural "{0} comments"
 msgstr[0] ""
 
-#: com/bloatit/web/linkable/features/FeaturesTools.java:189
+#: com/bloatit/web/linkable/features/FeaturesTools.java:193
 #, java-format
 msgid "{0} offer"
 msgid_plural "{0} offers"
 msgstr[0] ""
 
-#: com/bloatit/web/linkable/features/FeaturesTools.java:191
+#: com/bloatit/web/linkable/features/FeaturesTools.java:195
 #: com/bloatit/web/linkable/features/FeatureContributorsComponent.java:59
 #, java-format
 msgid "{0} contribution"
 msgid_plural "{0} contributions"
 msgstr[0] ""
 
-#: com/bloatit/web/linkable/features/FeaturesTools.java:204
+#: com/bloatit/web/linkable/features/FeaturesTools.java:208
 #, java-format
 msgid "{0} bug"
 msgid_plural "{0} bugs"
@@ -1717,38 +1727,34 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:85
+#: com/bloatit/web/linkable/features/FeatureTabPane.java:76
 #, java-format
 msgid "Contributions ({0})"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:92
+#: com/bloatit/web/linkable/features/FeatureTabPane.java:83
 msgid ""
 "An error prevented us from displaying cotnribution informations. Please "
 "notify us."
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:98
+#: com/bloatit/web/linkable/features/FeatureTabPane.java:89
 #, java-format
 msgid "Offers ({0})"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:119
+#: com/bloatit/web/linkable/features/FeatureTabPane.java:110
 #, java-format
 msgid "Bugs ({0})"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:158
-#: com/bloatit/web/pages/tools/CommentTools.java:73
+#: com/bloatit/web/linkable/features/FeatureTabPane.java:150
+#: com/bloatit/web/pages/tools/CommentTools.java:72
 msgid "Created by "
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:167
+#: com/bloatit/web/linkable/features/FeatureTabPane.java:159
 msgid " – "
-msgstr ""
-
-#: com/bloatit/web/linkable/features/FeatureTabPane.java:177
-msgid "Translate"
 msgstr ""
 
 #: com/bloatit/web/linkable/team/SendTeamInvitationAction.java:47
@@ -1793,21 +1799,21 @@ msgstr ""
 msgid "You must be logged before you accept (or refuse) a team invite"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:52
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:114
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:50
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:111
 #: com/bloatit/web/linkable/team/TeamsPage.java:52
 msgid "Create a new team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:61
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:59
 msgid "Name of the team: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:64
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:62
 msgid "The public name of the team. Between 5 and 50 characters."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:68
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:66
 msgid ""
 "You can contact us using: \n"
 "\n"
@@ -1817,42 +1823,42 @@ msgid ""
 " * ... "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:71
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:68
 msgid "Contact of the team: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:78
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:75
 msgid ""
 "The ways to contact the team. Email, IRC channel, mailing list ... Maximum "
 "300 characters. These informations will be publicly available. Markdown "
 "syntax available"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:87
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:84
 msgid "Description of the team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:90
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:87
 msgid "Between 5 and 5000 characters."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:99
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:96
 msgid "Type of the team : "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:102
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:99
 msgid "Public"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:103
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:100
 msgid "Protected"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:104
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:101
 msgid "Public teams can be joined by anybody without an invitation."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:130
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:127
 msgid "Create a team"
 msgstr ""
 
@@ -1950,95 +1956,95 @@ msgstr ""
 msgid "Team avatar"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:81
+#: com/bloatit/web/linkable/team/TeamPage.java:80
 msgid "Consult team information"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:92
+#: com/bloatit/web/linkable/team/TeamPage.java:91
 #, java-format
 msgid "How to contact {0}"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:94
+#: com/bloatit/web/linkable/team/TeamPage.java:93
 msgid ""
 "Oops, an error prevented us from showing you team name, please notify us."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:127
+#: com/bloatit/web/linkable/team/TeamPage.java:126
 msgid "Team: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:132
+#: com/bloatit/web/linkable/team/TeamPage.java:131
 #, java-format
 msgid "({0} team)"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:137
+#: com/bloatit/web/linkable/team/TeamPage.java:136
 msgid "Join this team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:156
+#: com/bloatit/web/linkable/team/TeamPage.java:155
 msgid "Team financial information"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:167
+#: com/bloatit/web/linkable/team/TeamPage.java:166
 msgid "Team's external account"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:173
-#: com/bloatit/web/linkable/team/TeamPage.java:197
+#: com/bloatit/web/linkable/team/TeamPage.java:172
+#: com/bloatit/web/linkable/team/TeamPage.java:196
 #, java-format
 msgid "Money available: {0} "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:178
+#: com/bloatit/web/linkable/team/TeamPage.java:177
 #, java-format
 msgid "Bank code: {0}"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:191
+#: com/bloatit/web/linkable/team/TeamPage.java:190
 msgid "Team's internal account"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:213
+#: com/bloatit/web/linkable/team/TeamPage.java:212
 msgid "Invite a member to this team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:235
+#: com/bloatit/web/linkable/team/TeamPage.java:234
 msgid "Unknown team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:273
+#: com/bloatit/web/linkable/team/TeamPage.java:272
 msgid "Member name"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:279
+#: com/bloatit/web/linkable/team/TeamPage.java:278
 msgid "Consult"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:281
+#: com/bloatit/web/linkable/team/TeamPage.java:280
 msgid "Talk"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:285
+#: com/bloatit/web/linkable/team/TeamPage.java:284
 msgid "Invite"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:287
-#: com/bloatit/web/linkable/team/TeamPage.java:332
+#: com/bloatit/web/linkable/team/TeamPage.java:286
+#: com/bloatit/web/linkable/team/TeamPage.java:331
 msgid "Promote"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:289
+#: com/bloatit/web/linkable/team/TeamPage.java:288
 msgid "Bank"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:326
-#: com/bloatit/web/linkable/team/TeamPage.java:330
+#: com/bloatit/web/linkable/team/TeamPage.java:325
+#: com/bloatit/web/linkable/team/TeamPage.java:329
 msgid "OK"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:327
+#: com/bloatit/web/linkable/team/TeamPage.java:326
 msgid "Remove"
 msgstr ""
 
@@ -2727,15 +2733,20 @@ msgstr ""
 msgid "Test"
 msgstr ""
 
-#: com/bloatit/web/pages/IndexPage.java:57
+#: com/bloatit/web/pages/IndexPage.java:59
 msgid "Elveos's presentation"
 msgstr ""
 
-#: com/bloatit/web/pages/IndexPage.java:68
+#: com/bloatit/web/pages/IndexPage.java:70
 msgid "Hightlighted features"
 msgstr ""
 
-#: com/bloatit/web/pages/IndexPage.java:133
+#: com/bloatit/web/pages/IndexPage.java:123
+#: com/bloatit/web/pages/IndexPage.java:130
+msgid "Request a feature"
+msgstr ""
+
+#: com/bloatit/web/pages/IndexPage.java:160
 msgid "Home"
 msgstr ""
 
@@ -2744,51 +2755,51 @@ msgstr ""
 msgid "Elveos documentation: {0}"
 msgstr ""
 
-#: com/bloatit/web/pages/tools/CommentTools.java:95
+#: com/bloatit/web/pages/tools/CommentTools.java:94
 #, java-format
 msgid "Popularity: {0}"
 msgstr ""
 
-#: com/bloatit/web/pages/tools/CommentTools.java:104
+#: com/bloatit/web/pages/tools/CommentTools.java:103
 msgid "Usefull"
 msgstr ""
 
-#: com/bloatit/web/pages/tools/CommentTools.java:109
+#: com/bloatit/web/pages/tools/CommentTools.java:108
 msgid "Useless"
 msgstr ""
 
-#: com/bloatit/web/pages/tools/CommentTools.java:143
+#: com/bloatit/web/pages/tools/CommentTools.java:142
 msgid "Reply"
 msgstr ""
 
-#: com/bloatit/web/pages/tools/CommentTools.java:161
+#: com/bloatit/web/pages/tools/CommentTools.java:160
 msgid "New comment : "
 msgstr ""
 
-#: com/bloatit/web/pages/tools/CommentTools.java:165
+#: com/bloatit/web/pages/tools/CommentTools.java:164
 msgid ""
 "Use this field to comment the feature. If you want to reply to a previous "
 "comment, use the reply link."
 msgstr ""
 
-#: com/bloatit/web/pages/tools/CommentTools.java:170
+#: com/bloatit/web/pages/tools/CommentTools.java:169
 msgid "Submit comment"
 msgstr ""
 
-#: com/bloatit/web/pages/CommentReplyPage.java:68
-#: com/bloatit/web/pages/CommentReplyPage.java:95
+#: com/bloatit/web/pages/CommentReplyPage.java:67
+#: com/bloatit/web/pages/CommentReplyPage.java:94
 msgid "Reply to a comment"
 msgstr ""
 
-#: com/bloatit/web/pages/CommentReplyPage.java:74
+#: com/bloatit/web/pages/CommentReplyPage.java:73
 msgid "Content"
 msgstr ""
 
-#: com/bloatit/web/pages/CommentReplyPage.java:90
+#: com/bloatit/web/pages/CommentReplyPage.java:89
 msgid "you must be logged in to comment."
 msgstr ""
 
-#: com/bloatit/web/pages/CommentReplyPage.java:127
+#: com/bloatit/web/pages/CommentReplyPage.java:126
 #, java-format
 msgid "Reply to {0}''s comment"
 msgstr ""
@@ -2803,19 +2814,19 @@ msgid "Members list"
 msgstr ""
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:143
-msgid "Sorry we messed up and lost the file you uploaded. Please try again"
+msgid "Sorry we messed up and lost the file you uploaded. Please try again."
 msgstr ""
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:147
-msgid "Avatars can only be images. Please upload another file"
+msgid "Avatars can only be images. Please upload another file."
 msgstr ""
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:151
-msgid "Avatars have to be smaller than 50Kb. Please upload another file"
+msgid "Avatars have to be smaller than 50Kb. Please upload another file."
 msgstr ""
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:154
-msgid "Avatars have to be smaller than 64x64. Please upload another file"
+msgid "Avatars have to be smaller than 64x64. Please upload another file."
 msgstr ""
 
 #: com/bloatit/framework/utils/i18n/CurrencyLocale.java:77
