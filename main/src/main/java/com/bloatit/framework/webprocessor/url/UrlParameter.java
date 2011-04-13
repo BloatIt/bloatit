@@ -57,7 +57,7 @@ public class UrlParameter<T, U> extends UrlNode {
     @Override
     protected void parseSessionParameters(final SessionParameters params) {
         final UrlParameter<?, ?> pick = params.look(getName());
-        if (pick != null && getValueClass().isAssignableFrom(pick.value.getClass())) {
+        if (pick != null && pick.value != null && getValueClass().isAssignableFrom(pick.value.getClass())) {
             value = (T) pick.value;
             strValue = pick.strValue;
             conversionError = pick.conversionError;
@@ -252,7 +252,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         *
+         * 
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
@@ -284,6 +284,5 @@ public class UrlParameter<T, U> extends UrlNode {
             return messages;
         }
     }
-
 
 }

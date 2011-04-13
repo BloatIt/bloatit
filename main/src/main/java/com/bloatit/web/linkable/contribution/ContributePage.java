@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.contribution;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -32,7 +33,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionActionUrl;
@@ -42,7 +43,7 @@ import com.bloatit.web.url.ContributePageUrl;
  * A page that hosts the form used to contribute on a Feature
  */
 @ParamContainer("contribute")
-public final class ContributePage extends LoggedPage {
+public final class ContributePage extends CreateUserContentForm {
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
@@ -50,7 +51,7 @@ public final class ContributePage extends LoggedPage {
     private final ContributePageUrl url;
 
     public ContributePage(final ContributePageUrl url) {
-        super(url);
+        super(url, new CheckContributionActionUrl(url.getProcess()));
         this.url = url;
         process = url.getProcess();
     }
@@ -67,14 +68,14 @@ public final class ContributePage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateContributeForm());
+        layout.addLeft(generateContributeForm(loggedUser));
         layout.addRight(new SideBarFeatureBlock(process.getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
     }
 
-    public HtmlElement generateContributeForm() {
+    public HtmlElement generateContributeForm(final Member me) {
         final CheckContributionActionUrl formActionUrl = new CheckContributionActionUrl(process);
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
@@ -89,6 +90,13 @@ public final class ContributePage extends LoggedPage {
         }
         contribInput.addErrorMessages(amountData.getErrorMessages());
         contribInput.setComment(Context.tr("The minimun is 1€. Don't use cents."));
+
+        // Input field : As team
+        addAsTeamForm(contribForm,
+                      me,
+                      UserTeamRight.BANK,
+                      tr("Make this contribution in the name of"),
+                      tr("Talk in the name of this team and use its money to make a contribution."));
 
         // Input field : comment
         final FieldData commentData = formActionUrl.getCommentParameter().pickFieldData();
