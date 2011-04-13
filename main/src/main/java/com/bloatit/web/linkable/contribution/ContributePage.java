@@ -95,7 +95,7 @@ public final class ContributePage extends CreateUserContentForm {
         addAsTeamForm(contribForm,
                       me,
                       UserTeamRight.BANK,
-                      tr("Make this contribution in the name of"),
+                      tr("In the name of"),
                       tr("Talk in the name of this team and use its money to make a contribution."));
 
         // Input field : comment

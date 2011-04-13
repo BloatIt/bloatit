@@ -118,7 +118,8 @@ public final class BugPage extends MasterPage {
         addAttachementForm.enableFileUpload();
 
         // File
-        final HtmlFileInput attachmentInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        // TODO correct me.
+        final HtmlFileInput attachmentInput = new HtmlFileInput("plop", Context.tr("Attachement file"));
         attachmentInput.setComment("Optional. If attach a file, you must add an attachment description. Max 2go.");
         addAttachementForm.add(attachmentInput);
 

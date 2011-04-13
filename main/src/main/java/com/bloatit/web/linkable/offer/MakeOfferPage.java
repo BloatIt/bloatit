@@ -126,7 +126,7 @@ public final class MakeOfferPage extends CreateUserContentForm {
         addAsTeamForm(offerForm,
                       me,
                       UserTeamRight.TALK,
-                      Context.tr("Write in the name of "),
+                      Context.tr("In the name of "),
                       Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
 
         // Date field

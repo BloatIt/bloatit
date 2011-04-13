@@ -12,6 +12,7 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -30,6 +31,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.release.ReleasePage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
@@ -38,7 +40,7 @@ import com.bloatit.web.url.CreateCommentActionUrl;
  * Page that hosts the form used to reply to an existing comment
  */
 @ParamContainer("comment/reply")
-public final class CommentReplyPage extends LoggedPage {
+public final class CommentReplyPage extends CreateUserContentForm {
 
     private static final int NB_LINES = 10;
     private static final int NB_COLUMNS = 80;
@@ -49,7 +51,7 @@ public final class CommentReplyPage extends LoggedPage {
     private final Comment targetComment;
 
     public CommentReplyPage(final CommentReplyPageUrl url) {
-        super(url);
+        super(url, new CreateCommentActionUrl(url.getTargetComment()));
         this.url = url;
         this.targetComment = url.getTargetComment();
     }
@@ -61,20 +63,30 @@ public final class CommentReplyPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
-
         final HtmlDiv box = new HtmlDiv("padding_box");
 
         final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
-
         final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(targetComment);
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
+        // as team
+        addAsTeamForm(form, loggedUser, UserTeamRight.TALK, Context.tr("In the name of"), Context.tr("Write this comment in the name of this group."));
+
+        // Comment text
         final FieldData commentData = commentCommentActionUrl.getCommentParameter().pickFieldData();
         final HtmlTextArea commentInput = new HtmlTextArea(commentData.getName(), Context.tr("Content"), NB_LINES, NB_COLUMNS);
         commentInput.setDefaultValue(commentData.getSuggestedValue());
         commentInput.addErrorMessages(commentData.getErrorMessages());
         form.add(commentInput);
 
+        // as team
+        addAddAttachmentForm(form,
+                             Context.tr("Join a file"),
+                             Context.tr("Optional. If you join a file you have to add description."),
+                             Context.tr("Describe the file"),
+                             Context.tr("You need to add a short description of the file if you add one."));
+
+        // submit
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
         form.add(submit);
 

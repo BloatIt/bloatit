@@ -26,7 +26,6 @@ import com.bloatit.model.Commentable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
@@ -174,14 +173,13 @@ public class CommentTools {
     private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url) {
 
         final HtmlFormBlock attachmentBlock = new HtmlFormBlock(tr("Attachement"));
-
-        final HtmlFileInput attachmentInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        // TODO correct this -------------------------------------v
+        final HtmlFileInput attachmentInput = new HtmlFileInput("plop", Context.tr("Attachement file"));
         attachmentInput.setComment("Optional. If attach a file, you must add an attachment description. Max 2go.");
         attachmentBlock.add(attachmentInput);
 
         final FieldData attachmentDescriptiondData = url.getAttachmentDescriptionParameter().pickFieldData();
-        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(),
-                                                                            Context.tr("Attachment description"));
+        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(), Context.tr("Attachment description"));
         attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
         attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());
         attachmentDescriptionInput.setComment(Context.tr("Need only if you add an attachment."));
