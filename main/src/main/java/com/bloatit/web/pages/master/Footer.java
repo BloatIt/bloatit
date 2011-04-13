@@ -33,15 +33,14 @@ public class Footer extends HtmlDiv {
             linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Software list"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new MetaBugsListPageUrl().getHtmlLink(Context.tr("Signal a bug"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Contacts"))));
-
         }
         add(linkBlock);
 
         final HtmlDiv licenceBlock = new HtmlDiv("licence_block", "licence_block");
         {
             licenceBlock.add(new HtmlDiv("agpl_block").addText(Context.tr("This website use Bloatit framework, and is under GNU Affero General Public Licence.")));
-            licenceBlock.add(new HtmlDiv("ccby_block").addText("Content is available under the Creative Commons Attribution (CC-by) License."));
-            licenceBlock.add(new HtmlDiv("linkeos_block").addText("Elveos, elveos.org and the elveos logo are registered trademark of the Linkeos SAS."));
+            licenceBlock.add(new HtmlDiv("ccby_block").addText(Context.tr("Content is available under the Creative Commons Attribution (CC-by) License.")));
+            licenceBlock.add(new HtmlDiv("linkeos_block").addText(Context.tr("Elveos, elveos.org and the elveos logo are registered trademark of the Linkeos SAS.")));
         }
         add(licenceBlock);
     }
