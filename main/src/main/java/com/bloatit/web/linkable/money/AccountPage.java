@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -27,6 +28,7 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Sorter;
 import com.bloatit.framework.utils.Sorter.Order;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -37,6 +39,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.EmptyCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -157,7 +160,20 @@ public final class AccountPage extends LoggedPage {
 
             for (BankTransaction bankTransaction : bankTransactions) {
                 if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
-                    sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
+
+                    if(bankTransaction.getState() == State.VALIDATED) {
+                        sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
+                    } else if (bankTransaction.getState() == State.REFUSED) {
+                        sorter.add(new ChargeAccountFailedLine(bankTransaction), bankTransaction.getModificationDate());
+                    } else {
+                        if(DateUtils.elapsed(bankTransaction.getModificationDate(), DateUtils.now()) > DateUtils.SECOND_PER_DAY*1000) {
+                            //Aborded
+                            sorter.add(new ChargeAccountAbordedLine(bankTransaction), bankTransaction.getModificationDate());
+                        }
+                    }
+
+
+
                 } else {
                     // TODO withdraw
                     throw new NotImplementedException();
@@ -260,6 +276,40 @@ public final class AccountPage extends LoggedPage {
         private HtmlDiv generateChargeAccountTitle() {
             final HtmlDiv title = new HtmlDiv("title");
             title.addText(tr("Charged account"));
+            return title;
+        }
+    }
+
+    private static class ChargeAccountFailedLine extends HtmlTableLine {
+
+        public ChargeAccountFailedLine(final BankTransaction bankTransaction) {
+            setCssClass("failed_line");
+            addCell(new EmptyCell());
+            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
+            addCell(new EmptyCell());
+            addCell(new MoneyCell(bankTransaction.getValue()));
+        }
+
+        private HtmlDiv generateChargeAccountFailedTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            title.addText(tr("Charging account failure"));
+            return title;
+        }
+    }
+
+    private static class ChargeAccountAbordedLine extends HtmlTableLine {
+
+        public ChargeAccountAbordedLine(final BankTransaction bankTransaction) {
+            setCssClass("failed_line");
+            addCell(new EmptyCell());
+            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
+            addCell(new EmptyCell());
+            addCell(new MoneyCell(bankTransaction.getValue()));
+        }
+
+        private HtmlDiv generateChargeAccountFailedTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            title.addText(tr("Charging account aborded"));
             return title;
         }
     }

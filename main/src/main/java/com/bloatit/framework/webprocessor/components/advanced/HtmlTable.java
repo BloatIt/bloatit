@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 /**
@@ -27,6 +28,11 @@ public class HtmlTable extends HtmlGenericElement {
         while (model.next()) {
             final HtmlGenericElement tr = new HtmlGenericElement("tr");
             columnCount = model.getColumnCount();
+
+            if (model.getLineCss() != null) {
+                tr.setCssClass(model.getLineCss());
+            }
+
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement td = new HtmlGenericElement("td");
                 td.add(model.getBody(i));
@@ -66,6 +72,10 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         public String getColumnCss(@SuppressWarnings("unused") final int column) {
+            return null;
+        }
+
+        public String getLineCss() {
             return null;
         }
     }
@@ -119,8 +129,22 @@ public class HtmlTable extends HtmlGenericElement {
             return lines.get(currentLine).getCells().get(column).getCss();
         }
 
+        @Override
+        public String getLineCss() {
+            return lines.get(currentLine).getCssClass();
+        }
+
         public static class HtmlTableLine {
             List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
+            private String css = null;
+
+            public void setCssClass(String css) {
+                this.css = css;
+            }
+
+            public String getCssClass() {
+                return css;
+            }
 
             public void addCell(final HtmlTableCell cell) {
                 cells.add(cell);
@@ -145,6 +169,18 @@ public class HtmlTable extends HtmlGenericElement {
                 return css;
             }
 
+        }
+
+        public static class EmptyCell extends HtmlTableCell {
+
+            public EmptyCell() {
+                super("");
+            }
+
+            @Override
+            public XmlNode getBody() {
+                return new PlaceHolderElement();
+            }
         }
 
     }
