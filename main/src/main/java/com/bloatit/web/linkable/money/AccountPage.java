@@ -32,6 +32,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel;
@@ -96,6 +97,8 @@ public final class AccountPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        layout.addLeft(generateAccountSolde(loggedUser));
+        layout.addLeft(new HtmlTitle(tr("Account informations"), 1));
         layout.addLeft(generateAccountMovementList(loggedUser));
 
         layout.addRight(new SideBarDocumentationBlock("internal_account"));
@@ -105,14 +108,30 @@ public final class AccountPage extends LoggedPage {
         return layout;
     }
 
+    private HtmlElement generateAccountSolde(Member loggedUser) {
+        HtmlDiv floatRight = new HtmlDiv("float_right");
+
+        HtmlDiv soldeBlock = new HtmlDiv("solde_block");
+        HtmlDiv soldeText = new HtmlDiv("solde_text");
+        soldeText.addText(tr("You currently have "));
+        HtmlDiv soldeAmount = new HtmlDiv("solde_amount");
+
+        try {
+            soldeAmount.addText(Context.getLocalizator().getCurrency(loggedUser.getInternalAccount().getAmount()).getDefaultString());
+        } catch (UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Right fail ton account page", e);
+        }
+
+        soldeBlock.add(soldeText);
+        soldeBlock.add(soldeAmount);
+        floatRight.add(soldeBlock);
+        return floatRight;
+    }
 
     private HtmlElement generateAccountMovementList(Member loggedUser) {
 
-
-
         List<HtmlTableLine> lineList = new ArrayList<HtmlTableLine>();
         Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
-
 
         try {
 
@@ -120,43 +139,40 @@ public final class AccountPage extends LoggedPage {
 
             PageIterable<BankTransaction> bankTransactions = loggedUser.getBankTransactions();
 
-
-            for (Contribution contribution: contributions) {
+            for (Contribution contribution : contributions) {
                 sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
 
             }
 
-            for (BankTransaction bankTransaction: bankTransactions) {
-                if(bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
+            for (BankTransaction bankTransaction : bankTransactions) {
+                if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
                     sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getCreationDate());
                 } else {
-                    //TODO withdraw
+                    // TODO withdraw
                     throw new NotImplementedException();
                 }
 
             }
 
-
         } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Right fail ton account page",e);
+            throw new ShallNotPassException("Right fail ton account page", e);
         }
 
         sorter.performSort(Order.DESC);
 
         HtmlLineTableModel model = new HtmlLineTableModel();
 
-        for(HtmlTableLine line : lineList) {
+        for (HtmlTableLine line : lineList) {
             model.addLine(line);
         }
 
         HtmlTable table = new HtmlTable(model);
 
-
         return table;
 
     }
 
-    private static class  ContributionLine extends HtmlTableLine {
+    private static class ContributionLine extends HtmlTableLine {
 
         private final Contribution contribution;
 
@@ -171,15 +187,13 @@ public final class AccountPage extends LoggedPage {
         private HtmlDiv generateContributionDescription() throws UnauthorizedOperationException {
             HtmlDiv description = new HtmlDiv("description");
 
-            HtmlSpan softwareLink =  SoftwaresTools.getSoftwareLink(contribution.getFeature().getSoftware());
+            HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(contribution.getFeature().getSoftware());
 
-            HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle()+" (<0::>)",softwareLink);
-
-
+            HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
 
             String statusString = "";
 
-            switch(contribution.getFeature().getFeatureState()) {
+            switch (contribution.getFeature().getFeatureState()) {
                 case DEVELOPPING:
                     statusString = tr("In developement");
                     break;
@@ -210,7 +224,7 @@ public final class AccountPage extends LoggedPage {
 
     }
 
-    private static class  ChargeAccountLine extends HtmlTableLine {
+    private static class ChargeAccountLine extends HtmlTableLine {
 
         private final BankTransaction bankTransaction;
 
@@ -224,7 +238,9 @@ public final class AccountPage extends LoggedPage {
 
         private HtmlDiv generateChargeAccountDescription() {
             HtmlDiv description = new HtmlDiv("description");
-            description.add(new DefineParagraph(tr("Total cost: "), Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getDecimalDefaultString()));
+            description.add(new DefineParagraph(tr("Total cost: "), Context.getLocalizator()
+                                                                           .getCurrency(bankTransaction.getValuePaid())
+                                                                           .getDecimalDefaultString()));
             return description;
         }
 
@@ -246,13 +262,11 @@ public final class AccountPage extends LoggedPage {
 
         @Override
         public XmlNode getBody() {
-            if(up) {
-                return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
-                "money up");
+            if (up) {
+                return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up");
             }
 
-            return new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
-            "money down");
+            return new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()), "money down");
         }
 
     }
@@ -318,7 +332,7 @@ public final class AccountPage extends LoggedPage {
 
             String amountString = Context.getLocalizator().getCurrency(amount).getDefaultString();
 
-            if(amount.compareTo(BigDecimal.ZERO) > 0) {
+            if (amount.compareTo(BigDecimal.ZERO) > 0) {
                 amountString = "+" + amountString;
                 moneyCell.setCssClass("money_up");
             } else {
@@ -331,7 +345,6 @@ public final class AccountPage extends LoggedPage {
         }
 
     }
-
 
     @Override
     protected Breadcrumb createBreadcrumb() {
