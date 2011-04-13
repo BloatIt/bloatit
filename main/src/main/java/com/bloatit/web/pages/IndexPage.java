@@ -53,7 +53,7 @@ public final class IndexPage extends MasterPage {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-            final HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
+            final HtmlTitle title = new HtmlTitle(Context.tr("Get paid to create free software"), 1);
             globalDescription.add(title);
             final HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())),
                                                   tr("Elveos's presentation"));
