@@ -8,6 +8,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.url.AccountChargingProcessUrl;
+import com.bloatit.web.url.AccountPageUrl;
 
 /**
  * Small component that displays an amount of money in euro with and in locale
@@ -24,7 +25,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
         final CurrencyLocale cl = Context.getLocalizator().getCurrency(amount);
         euroMoney.add(new HtmlText(cl.getDefaultString()));
 
-        final HtmlBranch money = new AccountChargingProcessUrl().getHtmlLink(euroMoney);
+        final HtmlBranch money = new AccountPageUrl().getHtmlLink(euroMoney);
         money.setCssClass("money");
 
         // Display user money in locale money (when needed)
