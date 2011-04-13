@@ -1,5 +1,7 @@
 package com.bloatit.framework.webprocessor.annotations;
 
+import java.util.regex.Matcher;
+
 public class Message {
     public enum What {
         UNKNOWN, NOT_FOUND, CONVERSION_ERROR, MIN_ERROR, MAX_ERROR, NO_ERROR, LENGTH_ERROR, OPTIONAL_ERROR, PRECISION_ERROR
@@ -23,9 +25,9 @@ public class Message {
     }
 
     private String extractErrorMessage(final String aMessage, final String name, final String value) {
-        String errorMsg = aMessage.replaceAll("%param", name);
+        String errorMsg = aMessage.replaceAll("%param", Matcher.quoteReplacement(name));
         if (!value.isEmpty()) {
-            errorMsg = errorMsg.replaceAll("%value", value);
+            errorMsg = errorMsg.replaceAll("%value", Matcher.quoteReplacement(value));
         } else {
             errorMsg = errorMsg.replaceAll("%value", "null");
         }
