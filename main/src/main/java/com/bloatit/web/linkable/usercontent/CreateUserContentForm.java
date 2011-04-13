@@ -111,6 +111,8 @@ public abstract class CreateUserContentForm extends LoggedPage {
         attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());
         attachmentDescriptionInput.setComment(descriptionComment);
         form.add(attachmentDescriptionInput);
+        
+        form.enableFileUpload();
     }
 
     protected final CreateUserContentActionUrl getTargetUrl() {

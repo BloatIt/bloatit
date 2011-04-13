@@ -1,5 +1,7 @@
 package com.bloatit.web.linkable.usercontent;
 
+import static com.bloatit.framework.utils.StringUtils.isEmpty;
+
 import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
@@ -65,13 +67,13 @@ public abstract class CreateUserContentAction extends LoggedAction {
     @Override
     protected final Url doProcessRestricted(final Member authenticatedMember) {
         if (attachment != null) {
-            if (attachmentFileName != null && attachmentDescription != null && verifyFile(attachment)) {
+            if (!isEmpty(attachmentFileName) && !isEmpty(attachmentDescription) && verifyFile(attachment)) {
                 file = FileMetadataManager.createFromTempFile(authenticatedMember, attachment, attachmentFileName, attachmentDescription);
             } else {
-                if (attachmentFileName == null) {
+                if (isEmpty(attachmentFileName)) {
                     session.notifyError(Context.tr("Filename is empty. Could you report that bug?"));
                 }
-                if (attachmentDescription == null) {
+                if (isEmpty(attachmentDescription)) {
                     session.notifyError(Context.tr("When you add a file you have to describe it."));
                 }
                 return doProcessErrors();
