@@ -39,7 +39,9 @@ public class Footer extends HtmlDiv {
 
         final HtmlDiv licenceBlock = new HtmlDiv("licence_block", "licence_block");
         {
-            licenceBlock.addText(Context.tr("This website use Bloatit framework, and is under GNU Affero Public Licence."));
+            licenceBlock.add(new HtmlDiv("agpl_block").addText(Context.tr("This website use Bloatit framework, and is under GNU Affero General Public Licence.")));
+            licenceBlock.add(new HtmlDiv("ccby_block").addText("Content is available under the Creative Commons Attribution (CC-by) License."));
+            licenceBlock.add(new HtmlDiv("linkeos_block").addText("Elveos, elveos.org and the elveos logo are registered trademark of the Linkeos SAS."));
         }
         add(licenceBlock);
     }
