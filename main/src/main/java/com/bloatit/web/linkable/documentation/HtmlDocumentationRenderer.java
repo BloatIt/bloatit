@@ -12,6 +12,7 @@ import java.util.Map;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlMarkdownRenderer;
@@ -45,7 +46,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
         public String toString() {
             return getPath();
         }
-    } 
+    }
 
     public HtmlDocumentationRenderer(final DocumentationType type, final String key) {
         final String dir = FrameworkConfiguration.getDocumentationDir();
@@ -82,7 +83,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 
     /**
      * Loads the markdown file at <code>path</code>
-     * 
+     *
      * @param path the path of the file to load
      * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
      */
@@ -112,7 +113,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 add(content);
             } else {
                 Log.framework().trace("Using cache for documentation file " + path);
-                add(new XmlText(mdc.htmlString));
+                add(new HtmlDiv("markdown_block").add(new XmlText(mdc.htmlString)));
             }
             return true;
 

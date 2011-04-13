@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="946.86426"
+   height="404.04825"
    id="svg4432"
    inkscape:version="0.48.0 r9654"
    sodipodi:docname="idea.svg"
    sodipodi:version="0.32"
-   width="671.24854"
+   width="283.88779"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.0"
    inkscape:export-filename="/home/fred/projets/bloatit/www/resources/img/idea.png"
@@ -110,25 +110,13 @@
        inkscape:vp_z="700 : 600 : 1"
        inkscape:persp3d-origin="300 : 400 : 1" />
     <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter4791-0"
-       x="-0.3247554"
-       width="1.6495107"
-       y="-0.20059071"
-       height="1.4011815">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="62.590277"
-         id="feGaussianBlur4793-1" />
-    </filter>
-    <filter
        inkscape:collect="always"
        id="filter5198"
-       x="-0.27237551"
+       x="-0.27237552"
        width="1.544751"
        y="-0.16823737"
-       height="1.3364747">
+       height="1.3364747"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
          inkscape:collect="always"
          stdDeviation="52.495071"
@@ -149,29 +137,33 @@
      borderopacity="1.0"
      id="base"
      inkscape:current-layer="layer1"
-     inkscape:cx="73.606777"
-     inkscape:cy="758.93357"
+     inkscape:cx="79.127177"
+     inkscape:cy="256.89363"
      inkscape:document-units="px"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:window-height="1123"
-     inkscape:window-width="1920"
+     inkscape:window-height="1155"
+     inkscape:window-width="1918"
      inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-y="19"
      inkscape:zoom="0.94333781"
      pagecolor="#ffffff"
      showgrid="false"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <g
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Calque 1"
-     transform="translate(-31.7051, -23.2158)">
+     transform="translate(-26.1847,-63.991858)">
     <path
        d="M 436.7758,665.70113 C 482.49494,644.618 583.30608,576.78285 583.80017,438.08536 584.29426,298.59407 471.65228,193.67653 356.74141,196.94217 c -113.1459,3.26564 -234.63494,79.48729 -235.48872,240.61631 -0.85379,160.33522 130.74277,238.59207 336.79117,293.21741 123.22685,33.38802 -297.58993,29.64397 -247.90965,45.51648 61.2687,19.57492 344.39896,37.88326 259.11276,60.0385 -82.01521,21.3055 -213.42326,10.6893 -260.51351,36.672 -42.23227,23.3022 459.80502,20.9424 204.46133,72.7366"
        id="path6404-5-54"
        sodipodi:nodetypes="czzzcsssc"
-       style="fill:none;stroke:#000000;stroke-width:18.45051415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter5198)"
+       style="fill:none;stroke:#000000;stroke-width:18.45051384;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter5198)"
        inkscape:connector-curvature="0"
        transform="matrix(0.38730628,0,0,0.38730628,31.593381,49.380273)" />
     <path
