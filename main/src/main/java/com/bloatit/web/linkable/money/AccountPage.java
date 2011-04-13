@@ -14,13 +14,19 @@ package com.bloatit.web.linkable.money;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.Sorter;
+import com.bloatit.framework.utils.Sorter.Order;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -103,7 +109,9 @@ public final class AccountPage extends LoggedPage {
     private HtmlElement generateAccountMovementList(Member loggedUser) {
 
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+
+        List<HtmlTableLine> lineList = new ArrayList<HtmlTableLine>();
+        Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
 
 
         try {
@@ -114,16 +122,18 @@ public final class AccountPage extends LoggedPage {
 
 
             for (Contribution contribution: contributions) {
-                model.addLine(new ContributionLine(contribution));
+                sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
 
-
-                //plop.addText(Context.getLocalizator().getDate(contribution.getCreationDate()).toString(FormatStyle.LONG));
-                //plop.addText(Context.getLocalizator().getCurrency(contribution.getAmount()).getDefaultString());
             }
 
             for (BankTransaction bankTransaction: bankTransactions) {
-                //plop.addText(Context.getLocalizator().getDate(bankTransaction.getCreationDate()).toString(FormatStyle.LONG));
-                //plop.addText(Context.getLocalizator().getCurrency(bankTransaction.getValue()).getDefaultString());
+                if(bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
+                    sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getCreationDate());
+                } else {
+                    //TODO withdraw
+                    throw new NotImplementedException();
+                }
+
             }
 
 
@@ -131,7 +141,13 @@ public final class AccountPage extends LoggedPage {
             throw new ShallNotPassException("Right fail ton account page",e);
         }
 
+        sorter.performSort(Order.DESC);
 
+        HtmlLineTableModel model = new HtmlLineTableModel();
+
+        for(HtmlTableLine line : lineList) {
+            model.addLine(line);
+        }
 
         HtmlTable table = new HtmlTable(model);
 
@@ -177,8 +193,8 @@ public final class AccountPage extends LoggedPage {
                     break;
             }
 
-            description.add(new DefineParagraph(tr("Description:"), descriptionString));
-            description.add(new DefineParagraph(tr("Status:"), statusString));
+            description.add(new DefineParagraph(tr("Description: "), descriptionString));
+            description.add(new DefineParagraph(tr("Status: "), statusString));
 
             return description;
         }
@@ -192,6 +208,31 @@ public final class AccountPage extends LoggedPage {
             return title;
         }
 
+    }
+
+    private static class  ChargeAccountLine extends HtmlTableLine {
+
+        private final BankTransaction bankTransaction;
+
+        public ChargeAccountLine(BankTransaction bankTransaction) {
+            this.bankTransaction = bankTransaction;
+            addCell(new MoneyVariationCell(true));
+            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountTitle()));
+            addCell(new DescriptionCell(tr("Account loading summary"), generateChargeAccountDescription()));
+            addCell(new MoneyCell(bankTransaction.getValue()));
+        }
+
+        private HtmlDiv generateChargeAccountDescription() {
+            HtmlDiv description = new HtmlDiv("description");
+            description.add(new DefineParagraph(tr("Total cost: "), Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getDecimalDefaultString()));
+            return description;
+        }
+
+        private HtmlDiv generateChargeAccountTitle() {
+            HtmlDiv title = new HtmlDiv("title");
+            title.addText(tr("Charged account"));
+            return title;
+        }
     }
 
     private static class MoneyVariationCell extends HtmlTableCell {
