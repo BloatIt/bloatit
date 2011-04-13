@@ -2,16 +2,18 @@ package com.bloatit.web.linkable.usercontent;
 
 import java.util.Locale;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.CreateUserContentActionUrl;
@@ -24,10 +26,8 @@ public abstract class CreateUserContentAction extends LoggedAction {
     private final Team team;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(length = 2, //
-                     LengthErrorMsg = @tr("Language ''%value'' not found. Are you sure you haven't messed up with this page parameters?"))
     @Optional
-    private final String locale;
+    private final Locale locale;
 
     @RequestParam(name = "attachement", role = Role.POST)
     @Optional
@@ -65,9 +65,15 @@ public abstract class CreateUserContentAction extends LoggedAction {
     @Override
     protected final Url doProcessRestricted(final Member authenticatedMember) {
         if (attachement != null) {
-            if (verifyFile(attachement)) {
+            if (attachementFileName != null && attachementDescription != null && verifyFile(attachement)) {
                 file = FileMetadataManager.createFromTempFile(authenticatedMember, attachement, attachementFileName, attachementDescription);
             } else {
+                if (attachementFileName == null) {
+                    session.notifyError(Context.tr("Filename is empty. Could you report that bug?"));
+                }
+                if (attachementDescription == null) {
+                    session.notifyError(Context.tr("When you add a file you have to describe it."));
+                }
                 return doProcessErrors();
             }
         }
@@ -88,15 +94,36 @@ public abstract class CreateUserContentAction extends LoggedAction {
 
     protected abstract boolean verifyFile(String filename);
 
+    protected final boolean propagateAttachedFileIfPossible(final UserContentInterface<?> content) {
+        if (getFile() != null && content.canAddFile()) {
+            try {
+                content.addFile(getFile());
+            } catch (final UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Yon cannot add an attachment file (Even if y tested it ...)", e);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    protected final boolean propagateAsTeamIfPossible(final UserContentInterface<?> content) {
+        if (getTeam() != null && content.canAccessAsTeam(getTeam())) {
+            try {
+                content.setAsTeam(getTeam());
+            } catch (final UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Yon cannot set AsTeam (Even if y tested it ...)", e);
+            }
+            return true;
+        }
+        return false;
+    }
+
     protected final Team getTeam() {
         return team;
     }
 
     protected final Locale getLocale() {
-        if (locale != null && locale.length() == 2) {
-            return new Locale(locale);
-        }
-        return null;
+        return locale;
     }
 
     protected final String getAttachement() {

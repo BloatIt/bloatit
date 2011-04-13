@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -87,6 +88,9 @@ public final class Loaders {
         }
         if (theClass.equals(String.class)) {
             return (Loader<T>) new ToString();
+        }
+        if (theClass.equals(Locale.class)) {
+            return (Loader<T>) new ToLocale();
         }
         if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
@@ -238,6 +242,18 @@ public final class Loaders {
         }
     }
 
+    private static class ToLocale extends Loader<Locale> {
+        @Override
+        public Locale fromString(final String data) {
+            return new Locale(data);
+        }
+
+        @Override
+        public String toString(final Locale locale) {
+            return locale.getLanguage();
+        }
+    }
+
     private static class ToDate extends Loader<Date> {
         @Override
         public Date fromString(final String data) throws ConversionErrorException {
@@ -258,8 +274,9 @@ public final class Loaders {
                 throw new ConversionErrorException(e);
             }
         }
-        
-        public String toString(DateLocale date){
+
+        @Override
+        public String toString(final DateLocale date) {
             return date.getIsoDateString();
         }
     }
@@ -273,8 +290,7 @@ public final class Loaders {
         @Override
         public Identifiable<?> fromString(final String data) throws ConversionErrorException {
             try {
-                @SuppressWarnings("rawtypes")
-                final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
+                @SuppressWarnings("rawtypes") final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
                 daoIdentifiableQuery.idEquals(Integer.valueOf(data));
                 return daoIdentifiableQuery.uniqueResult().accept(new DataVisitorConstructor());
             } catch (final NumberFormatException e) {
@@ -325,7 +341,7 @@ public final class Loaders {
         @Override
         public final T fromString(final String data) throws ConversionErrorException {
             final WebProcess webProcess = Context.getSession().getWebProcess(data);
-            if(webProcess != null) {
+            if (webProcess != null) {
                 webProcess.load();
             }
             return (T) webProcess;

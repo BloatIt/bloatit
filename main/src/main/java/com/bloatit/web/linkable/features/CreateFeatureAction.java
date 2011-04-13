@@ -11,8 +11,6 @@
  */
 package com.bloatit.web.linkable.features;
 
-import java.util.Locale;
-
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -25,7 +23,7 @@ import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -34,27 +32,19 @@ import com.bloatit.web.url.FeaturePageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/docreate")
-public final class CreateFeatureAction extends LoggedAction {
-
-    public static final String DESCRIPTION_CODE = "description";
-    public static final String SPECIFICATION_CODE = "specification";
-    public static final String SOFTWARE_CODE = "Software";
-    public static final String LANGUAGE_CODE = "feature_lang";
-
-    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
+public final class CreateFeatureAction extends CreateUserContentAction {
+    @RequestParam(role = Role.POST)
     @ParamConstraint(max = "80", maxErrorMsg = @tr("The title must be 80 chars length max."), //
                      min = "10", minErrorMsg = @tr("The title must have at least 10 chars."), //
                      optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
 
-    @RequestParam(name = SPECIFICATION_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final String specification;
 
-    @RequestParam(name = SOFTWARE_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final Software software;
 
-    @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
-    private final String lang;
     private final CreateFeatureActionUrl url;
 
     public CreateFeatureAction(final CreateFeatureActionUrl url) {
@@ -64,7 +54,6 @@ public final class CreateFeatureAction extends LoggedAction {
         this.description = url.getDescription();
         this.specification = url.getSpecification();
         this.software = url.getSoftware();
-        this.lang = url.getLang();
     }
 
     @Override
@@ -73,14 +62,19 @@ public final class CreateFeatureAction extends LoggedAction {
             session.notifyError(Context.tr("You are not authorized to create a feature."));
             return new CreateFeaturePageUrl();
         }
+        if (getLocale() == null) {
+            session.notifyError(Context.tr("You have to specify a valid language."));
+            return new CreateFeaturePageUrl();
+        }
         return NO_ERROR;
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
-        final Locale langLocale = new Locale(lang);
-        final Feature d = FeatureFactory.createFeature(authenticatedMember, langLocale, description, specification, software);
-        return new FeaturePageUrl(d);
+    public Url doDoProcessRestricted(final Member authenticatedMember) {
+        final Feature feature = FeatureFactory.createFeature(authenticatedMember, getLocale(), description, specification, software);
+        propagateAsTeamIfPossible(feature);
+        propagateAttachedFileIfPossible(feature);
+        return new FeaturePageUrl(feature);
     }
 
     @Override
@@ -94,11 +88,16 @@ public final class CreateFeatureAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSpecificationParameter());
         session.addParameter(url.getSoftwareParameter());
-        session.addParameter(url.getLangParameter());
+    }
+
+    @Override
+    protected boolean verifyFile(final String filename) {
+        // TODO verify the file.
+        return true;
     }
 
 }
