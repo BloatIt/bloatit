@@ -23,3 +23,9 @@ done
 
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/idea.png" -C -w 37 idea.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/idea.png"
+
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/team.png" -C -w 37 team.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/team.png"
+
+inkscape -e $OUTPUT_DIR_PREFIX"commons/img/message.png" -C -w 37 message.svg
+optipng $OUTPUT_DIR_PREFIX"commons/img/message.png"
