@@ -21,7 +21,6 @@ import java.util.Date;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.RestrictedInterface;
 
 /**
@@ -31,7 +30,7 @@ import com.bloatit.model.right.RestrictedInterface;
  * 
  * @param <T> the Dao class corresponding to this UserContent.
  */
-public interface UserContentInterface<T extends DaoUserContent> extends IdentifiableInterface, RestrictedInterface {
+public interface UserContentInterface<T extends DaoUserContent> extends IdentifiableInterface, RestrictedInterface, Attachmentable {
 
     /**
      * Gets the author.
@@ -65,22 +64,6 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
      * @return the as team
      */
     Team getAsTeam();
-
-    /**
-     * Gets the files associated with this user content.
-     * 
-     * @return the files
-     */
-    PageIterable<FileMetadata> getFiles();
-
-    /**
-     * Associate a file with this user content.
-     * 
-     * @throws UnauthorizedOperationException
-     */
-    void addFile(FileMetadata file) throws UnauthorizedOperationException;
-
-    boolean canAddFile();
 
     boolean isDeleted() throws UnauthorizedOperationException;
 

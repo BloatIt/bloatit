@@ -69,6 +69,7 @@ public abstract class CreateAttachmentAction extends LoggedAction {
         return doDoProcessRestricted(authenticatedMember);
     }
 
+    // TODO correct me.
     protected final boolean propagateAttachedFileIfPossible(final UserContentInterface<?> content) {
         if (getFile() != null && content.canAddFile()) {
             try {
