@@ -38,24 +38,17 @@ import com.bloatit.web.url.MemberPageUrl;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
-
     public static final String BUGS_TAB = "bugs_tab";
-
     public static final String DETAILS_TAB = "details_tab";
-
     public static final String OFFERS_TAB = "offers_tab";
-
     public static final String CONTRIBUTIONS_TAB = "contributions_tab";
-
     public static final String DESCRIPTION_TAB = "description_tab";
 
     @RequestParam(name = "feature_tab_pane")
     @Optional(DESCRIPTION_TAB)
     private String activeTabKey;
 
-    /**
-     * Useful for Url generation Do not delete
-     */
+    // Useful for Url generation Do not delete
     @SuppressWarnings("unused")
     private FeatureContributorsComponent contribution;
 
@@ -136,7 +129,8 @@ public final class FeatureTabPane extends HtmlPageComponent {
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
                 try {
                     final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
-//                    final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
+                    // final HtmlParagraph description = new HtmlParagraph(new
+                    // HtmlRawTextRenderer(translatedDescription.getText()));
                     final HtmlElement description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
                     descriptionText.add(description);
                 } catch (final UnauthorizedOperationException e1) {
@@ -170,11 +164,14 @@ public final class FeatureTabPane extends HtmlPageComponent {
                 }
                 descriptionFooter.add(descriptionDetails);
 
-                final HtmlDiv descriptionTranslate = new HtmlDiv("description_translate");
-                {
-                    descriptionTranslate.add(new PageNotFoundUrl().getHtmlLink(Context.tr("Translate")));
-                }
-                descriptionFooter.add(descriptionTranslate);
+                // KEEP THIS CODE, will be restored someday
+                // final HtmlDiv descriptionTranslate = new
+                // HtmlDiv("description_translate");
+                // {
+                // descriptionTranslate.add(new
+                // PageNotFoundUrl().getHtmlLink(Context.tr("Translate")));
+                // }
+                // descriptionFooter.add(descriptionTranslate);
 
             }
             descriptionBlock.add(descriptionFooter);
