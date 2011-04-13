@@ -1,0 +1,100 @@
+.account_page {
+
+    .solde_block {
+        
+        .display-box;
+        .box-align(center);
+        
+        .solde_text {
+            .box-flex;
+            font-size: 0.7em;
+            color: @light_text_color;
+            margin-top: 10px;
+        }
+        
+        .solde_amount {
+            .box-flex;
+            font-size: 2.3em;
+            color: @title_color;
+            margin-left : 20px;
+            margin-right : 20px;
+            font-weight: bold;
+        }
+        
+    }
+    
+    table {
+        border: none;
+        margin-left: 30px;
+        margin-right: 30px;
+        width: auto;
+        margin-top: 20px;
+        
+        tr {
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid @border_color;
+            height: 70px;
+            
+            td {
+                background-color: transparent;
+                border: none;
+                padding: 0;
+                vertical-align: center;
+                
+                
+            }
+            
+            .money_variation_cell {
+                padding: 5px;
+                padding-right: 15px;
+            }
+            
+            .title_cell {
+                min-width: 250px;
+                .date {
+                    color: @light_text_color;
+                    font-size: 0.7em;
+                }
+
+                .title {
+                    color: @title_color;
+                    margin-left: 10px;
+                    font-size: 1.1em;
+                }
+            }
+            
+            .description_cell {
+                font-size: 0.9em;
+                
+                .define_p {
+                    color: @light_text_color;
+                    margin-left: 15px;
+                    font-size: 0.8em;
+                    
+                    .software_link {
+                        a {
+                            color: @software_color + @light_text_color;
+                        }
+                    }
+                }
+            }
+            
+            .money {
+                
+                text-align: right;
+                
+                font-size: 1.2em;
+            
+                .money_down {
+                    color: @money_down_color;                    
+                }
+                
+                .money_up {
+                    color: @money_up_color;
+                }
+            }
+        }
+        
+    }
+}
