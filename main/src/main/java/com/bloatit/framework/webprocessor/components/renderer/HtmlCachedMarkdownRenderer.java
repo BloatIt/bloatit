@@ -4,21 +4,21 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.cache.MemoryCache;
 import com.bloatit.framework.utils.parsers.MarkdownParser;
 import com.bloatit.framework.utils.parsers.ParsingException;
-import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 
-public class HtmlCachedMarkdownRenderer extends HtmlLeaf {
+public class HtmlCachedMarkdownRenderer extends HtmlDiv {
     private final MarkdownParser parser;
 
     /**
      * Creates a new MarkdownRenderer based on markdown or html text
-     * 
+     *
      * @param text the content to display, must be markdown text if
      *            <code>alreadyRenderer</code> is <code>true</code> or html text
      *            if <code>alreadyRenderer</code> is <code>false</code>
      */
     public HtmlCachedMarkdownRenderer(final String text) {
-        super();
+        super("markdown_block");
         parser = new MarkdownParser();
 
         String cached = MemoryCache.getInstance().get(text);
