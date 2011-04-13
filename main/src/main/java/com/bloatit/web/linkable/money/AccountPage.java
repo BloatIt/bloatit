@@ -31,6 +31,7 @@ import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
@@ -46,6 +47,7 @@ import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Member;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.members.MemberPage;
@@ -53,6 +55,7 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.DefineParagraph;
+import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -97,9 +100,13 @@ public final class AccountPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateAccountSolde(loggedUser));
-        layout.addLeft(new HtmlTitle(tr("Account informations"), 1));
-        layout.addLeft(generateAccountMovementList(loggedUser));
+
+        HtmlDiv accountPage = new HtmlDiv("account_page");
+        accountPage.add(generateAccountSolde(loggedUser));
+        accountPage.add(new HtmlTitle(tr("Account informations"), 1));
+        accountPage.add(generateAccountMovementList(loggedUser));
+
+        layout.addLeft(accountPage);
 
         layout.addRight(new SideBarDocumentationBlock("internal_account"));
         layout.addRight(new SideBarLoadAccountBlock());
@@ -146,7 +153,7 @@ public final class AccountPage extends LoggedPage {
 
             for (BankTransaction bankTransaction : bankTransactions) {
                 if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
-                    sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getCreationDate());
+                    sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
                 } else {
                     // TODO withdraw
                     throw new NotImplementedException();
@@ -358,5 +365,33 @@ public final class AccountPage extends LoggedPage {
 
         return breadcrumb;
     }
+
+    public static class SideBarLoadAccountBlock extends TitleSideBarElementLayout {
+
+        SideBarLoadAccountBlock() {
+            setTitle(tr("Load account"));
+
+            add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
+            add(new SideBarButton(tr("Charge your account"), WebConfiguration.getImgIdea()).asElement());
+            add(new DefineParagraph(tr("Note: "), tr("We have charge to pay everytime you charge your account, hence we will perceive our 10% commission, even if you withdrow the money as soon as you hav loaded it.")));
+
+        }
+
+    }
+
+    public static class SideBarWithdrawMoneyBlock extends TitleSideBarElementLayout {
+
+        SideBarWithdrawMoneyBlock() {
+            setTitle(tr("Withdraw money"));
+
+            add(new HtmlParagraph(tr("You can withdraw money from you elveos account and get a bank transfer to your personal bank account using the following link:")));
+            add(new SideBarButton(tr("Withdraw money"), WebConfiguration.getImgIdea()).asElement());
+            add(new DefineParagraph(tr("Note: "), tr("Note : Do not withdraw money if you are planning to contribute to a project in the future, this will prevent you from paying our commission again later.\n" +
+            		"Oh, and by the way, we don't like when you withdraw money, not because it costs us money (it does but well that's OK), but because you could as well use this money to contribute to other open source projects.")));
+
+        }
+
+    }
+
 
 }

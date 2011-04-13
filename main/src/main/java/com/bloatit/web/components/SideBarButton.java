@@ -4,15 +4,18 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 
 public class SideBarButton extends SideBarElementLayout {
+    private final HtmlLink link;
+
     public SideBarButton(String text, String imgUri) {
         // Display of a button to create a feature
         SideBarElementLayout createBox = new SideBarElementLayout();
         HtmlDiv buttonMasterDiv = new HtmlDiv("side_bar_button");
-        HtmlLink link = new HtmlLink(new CreateFeaturePageUrl().urlString(), buttonMasterDiv);
+        link = new HtmlLink(new CreateFeaturePageUrl().urlString(), buttonMasterDiv);
         { // Box to hold feature creating button content
             HtmlImage img = new HtmlImage(new Image(imgUri), text);
             img.setCssClass("side_bar_button_img");
@@ -26,7 +29,11 @@ public class SideBarButton extends SideBarElementLayout {
             buttonMasterDiv.add(textBlock);
         }
         createBox.add(link);
-        
+
         add(link);
+    }
+
+    public HtmlElement asElement() {
+        return link;
     }
 }
