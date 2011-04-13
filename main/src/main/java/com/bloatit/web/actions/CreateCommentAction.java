@@ -38,7 +38,7 @@ public final class CreateCommentAction extends LoggedAction {
     private final Commentable commentable;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must type a comment"),//
-    /*            */ min = "2", minErrorMsg = @tr("The comment must be at least 2 characters long."))
+    /*            */min = "2", minErrorMsg = @tr("The comment must be at least 2 characters long."))
     @RequestParam(role = Role.POST)
     private final String comment;
 

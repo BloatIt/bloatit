@@ -23,14 +23,14 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
  * </p>
  * <p>
  * Usage: <br />
- *
+ * 
  * <pre>
  * HtmlForm form = new HtmlForm("someaction");
  * form.add(new HtmlTextField("login"));
  * form.add(new HtmlDateField("date of birt");
  * form.add(new HtmlSubmit("submit"));
  * </pre>
- *
+ * 
  * </p>
  * <p>
  * Every form should include a <code>HtmlSubmit</code> otherwise it won't be
@@ -59,7 +59,7 @@ public class HtmlForm extends HtmlBranch {
      * <p>
      * Similar to <code>new HtmlForm(target, Method.POST);</code>
      * </p>
-     *
+     * 
      * @param target the target of the form (used in the <code>action</code>
      *            attribute)
      * @see HtmlForm#HtmlForm(String, Method)
@@ -72,7 +72,7 @@ public class HtmlForm extends HtmlBranch {
      * <p>
      * Creates a form with a given target and a given send method
      * </p>
-     *
+     * 
      * @param target the target of the form (used in the <code>action</code>
      *            attribute)
      * @param method the method used to send data, either <code>GET</code> or
@@ -99,7 +99,7 @@ public class HtmlForm extends HtmlBranch {
      * simply return the file url instead of the file content, which shouldn't
      * be very helpful
      * </p>
-     *
+     * 
      * @see HtmlFileInput
      */
     public void enableFileUpload() {

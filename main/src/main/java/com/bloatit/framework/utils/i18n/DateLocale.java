@@ -180,7 +180,7 @@ public final class DateLocale {
     }
 
     public String getIsoDateString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(javaDate);
     }
 

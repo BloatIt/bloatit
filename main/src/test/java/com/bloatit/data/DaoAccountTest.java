@@ -7,7 +7,7 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 /**
  * The class <code>DaoAccountTest</code> contains tests for the class
  * <code>{@link DaoAccount}</code>.
- *
+ * 
  * @generatedBy CodePro at 27/01/11 16:38
  * @author tom
  * @version $Revision: 1.0 $

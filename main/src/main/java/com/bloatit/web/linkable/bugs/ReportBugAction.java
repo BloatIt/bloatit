@@ -53,10 +53,8 @@ public final class ReportBugAction extends LoggedAction {
     public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
 
     @RequestParam(name = BUG_TITLE, role = Role.POST)
-    @ParamConstraint(max = "120",
-                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
-                     optionalErrorMsg = @tr("You forgot to write a short description"))
+    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
+    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String title;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"), min = "10", minErrorMsg = @tr("The description must have at least 10 chars."))
@@ -114,9 +112,9 @@ public final class ReportBugAction extends LoggedAction {
         final Locale langLocale = new Locale(lang);
         final Bug bug = milestone.addBug(authenticatedMember, title, description, langLocale, level.getLevel());
         if (attachement != null) {
-            FileConstraintChecker fcc = new FileConstraintChecker(attachement);
+            final FileConstraintChecker fcc = new FileConstraintChecker(attachement);
             if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
-                for (String message : fcc.isImageAvatar()) {
+                for (final String message : fcc.isImageAvatar()) {
                     session.notifyBad(message);
                 }
                 return Context.getSession().pickPreferredPage();

@@ -113,7 +113,7 @@ public class RestOffer extends RestElement<Offer> {
      * <p>
      * Finds the RestOffer matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestOffer
      */
     @REST(name = "offers", method = RequestMethod.GET)

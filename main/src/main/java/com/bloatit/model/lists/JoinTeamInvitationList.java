@@ -26,7 +26,7 @@ import com.bloatit.model.JoinTeamInvitation;
  */
 public final class JoinTeamInvitationList extends ListBinder<JoinTeamInvitation, DaoJoinTeamInvitation> {
 
-    public JoinTeamInvitationList(PageIterable<DaoJoinTeamInvitation> daoCollection) {
+    public JoinTeamInvitationList(final PageIterable<DaoJoinTeamInvitation> daoCollection) {
         super(daoCollection);
     }
 

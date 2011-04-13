@@ -21,10 +21,11 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Milestone;
 
 /**
- * The Class MilestoneList transforms PageIterable<DaoMilestone> to PageIterable<Milestone>.
+ * The Class MilestoneList transforms PageIterable<DaoMilestone> to
+ * PageIterable<Milestone>.
  */
 public final class MilestoneList extends ListBinder<Milestone, DaoMilestone> {
-    public MilestoneList(PageIterable<DaoMilestone> daoCollection) {
+    public MilestoneList(final PageIterable<DaoMilestone> daoCollection) {
         super(daoCollection);
     }
 }

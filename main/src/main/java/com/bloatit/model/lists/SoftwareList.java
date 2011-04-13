@@ -25,7 +25,7 @@ import com.bloatit.model.Software;
  * PageIterable<Software>.
  */
 public final class SoftwareList extends ListBinder<Software, DaoSoftware> {
-    public SoftwareList(PageIterable<DaoSoftware> daoCollection) {
+    public SoftwareList(final PageIterable<DaoSoftware> daoCollection) {
         super(daoCollection);
     }
 }

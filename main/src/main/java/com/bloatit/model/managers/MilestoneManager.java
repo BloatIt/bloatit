@@ -36,7 +36,7 @@ public final class MilestoneManager {
 
     /**
      * Gets the a milestone by Id.
-     *
+     * 
      * @param id the milestone id.
      * @return the milestone or null if not found.
      */

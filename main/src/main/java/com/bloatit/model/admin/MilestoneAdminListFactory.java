@@ -26,11 +26,11 @@ public class MilestoneAdminListFactory extends IdentifiableAdminListFactory<DaoM
         return new MilestoneList(getfactory().createCollection());
     }
 
-    public void amount(Comparator cmp, BigDecimal value) {
+    public void amount(final Comparator cmp, final BigDecimal value) {
         getfactory().amount(cmp, value);
     }
 
-    public void stateEquals(MilestoneState state) {
+    public void stateEquals(final MilestoneState state) {
         getfactory().stateEquals(state);
     }
 

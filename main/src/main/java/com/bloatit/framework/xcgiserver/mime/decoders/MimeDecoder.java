@@ -27,7 +27,7 @@ public interface MimeDecoder {
      * will be performed using dummy data resulting in possibly erroneous
      * output.
      * </p>
-     *
+     * 
      * @param b the array of bytes to decode
      * @param offset the first byte to decode, bytes before offset will be
      *            ignored
@@ -52,7 +52,7 @@ public interface MimeDecoder {
      * If there is no such thing as a minimal amount of bytes to perform
      * decoding, returns 0.
      * </p>
-     *
+     * 
      * @return the amount of byte to turn in to perform decoding, or
      *         <code>0</code> if there is no minimum number of bytes to turn in
      */

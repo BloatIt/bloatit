@@ -24,7 +24,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
  * example personnal user data could be in one formblock and website preferences
  * in another one.
  * </p>
- *
+ * 
  * <pre>
  * {@code<fieldset>
  *      <legend>my legend here</legend>
@@ -39,7 +39,7 @@ public final class HtmlFormBlock extends HtmlBranch {
      * <p>
      * Create a new displayed form block, with a displayed legend
      * </p>
-     *
+     * 
      * @param legend The text displayed to explain content of the form block
      */
     public HtmlFormBlock(final String legend) {

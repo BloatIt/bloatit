@@ -109,7 +109,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * <p>
      * Finds the RestInternalAccount matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestInternalAccount
      */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
@@ -149,8 +149,8 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
         try {
             return model.getBlocked();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getBlocked on InternalAccount", e);
         }
     }
@@ -164,8 +164,8 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
         try {
             return model.getCreationDate();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getCreationDate on InternalAccount", e);
         }
     }
@@ -178,8 +178,8 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
         try {
             return model.getAmount();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getAmount on InternalAccount", e);
         }
     }
@@ -192,8 +192,8 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
         try {
             return new RestTransactionList(model.getTransactions());
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getTransactions on InternalAccount", e);
         }
     }
@@ -207,8 +207,8 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
         try {
             return model.getLastModificationDate();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getLastModificationDate on InternalAccount",
             // e);
         }

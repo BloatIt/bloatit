@@ -41,8 +41,8 @@ import com.bloatit.rest.list.RestHighlightFeatureList;
  * Representation of a HighlightFeature for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from HighlightFeature that needs to be
- * called through the ReST RPC. Every such method needs to be mapped with the
+ * This class should implement any methods from HighlightFeature that needs to
+ * be called through the ReST RPC. Every such method needs to be mapped with the
  * {@code @REST} interface.
  * <p>
  * ReST uses the four HTTP request methods <code>GET</code>, <code>POST</code>,
@@ -105,7 +105,7 @@ public class RestHighlightFeature extends RestElement<HighlightFeature> {
      * <p>
      * Finds the RestHighlightFeature matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestHighlightFeature
      */
     @REST(name = "highlightfeatures", method = RequestMethod.GET)

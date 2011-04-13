@@ -7,7 +7,6 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
 
 /**
@@ -15,7 +14,7 @@ import com.bloatit.web.url.AccountPageUrl;
  * currency
  */
 public class MoneyDisplayComponent extends HtmlSpan {
-    public MoneyDisplayComponent(BigDecimal amount) {
+    public MoneyDisplayComponent(final BigDecimal amount) {
         super();
 
         // Display user money in euro

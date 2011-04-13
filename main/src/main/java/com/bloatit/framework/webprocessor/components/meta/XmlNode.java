@@ -24,7 +24,7 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
     /**
      * A method that has to be implemented by all children, and that describes
      * the way it will be represented as an HtmlTag
-     *
+     * 
      * @param txt the <code>Text</code> that will be used to display the Html
      *            tags
      */
@@ -33,7 +33,7 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
     /**
      * This method should be overriden by any components needing some special
      * css files.
-     *
+     * 
      * @return the list of custom Css files needed by this component or null if
      *         no special js is needed
      */
@@ -42,26 +42,26 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
     /**
      * This method should be overriden by any components needing some special
      * javascript files.
-     *
+     * 
      * @return the list of custom js file needed by this component or null if no
      *         special js is needed
      */
     protected abstract List<String> getCustomJs();
 
     public final List<String> getAllCss() {
-        ArrayList<String> css = new ArrayList<String>();
+        final ArrayList<String> css = new ArrayList<String>();
         doGetAllCustomCss(css);
         return css;
     }
 
     public final Set<String> getAllJs() {
-        Set<String> js = new LinkedHashSet<String>();
+        final Set<String> js = new LinkedHashSet<String>();
         doGetAllCustomJs(js);
         return js;
     }
 
-    private final void doGetAllCustomCss(List<String> css) {
-        for (XmlNode node : this) {
+    private final void doGetAllCustomCss(final List<String> css) {
+        for (final XmlNode node : this) {
             node.doGetAllCustomCss(css);
         }
         if (getCustomCss() != null) {
@@ -69,8 +69,8 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
         }
     }
 
-    private final void doGetAllCustomJs(Set<String> js) {
-        for (XmlNode node : this) {
+    private final void doGetAllCustomJs(final Set<String> js) {
+        for (final XmlNode node : this) {
             node.doGetAllCustomJs(js);
         }
         if (getCustomJs() != null) {

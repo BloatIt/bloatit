@@ -27,19 +27,19 @@ public abstract class Search<T> {
 
     /**
      * Create a search on the db using Hibernate Search and Lucene
-     *
+     * 
      * <pre>
      * DBRequests.search(DaoFeature.class, new String[] { &quot;description.translations.title&quot;,
-     *                                                  &quot;description.translations.text&quot;,
-     *                                                  &quot;offers.description.translations.title&quot; }, &quot;Search string&quot;);
+     *                                                   &quot;description.translations.text&quot;,
+     *                                                   &quot;offers.description.translations.title&quot; }, &quot;Search string&quot;);
      * </pre>
-     *
+     * 
      * @param persistent is the class object associated with T.
      * @param fields is a list of field on which we are doing the search. These
      *            field are relative to the persistent class.
      * @param searchStr is the string we are looking for.
      */
-    protected void configure(Class<T> persistent, String[] fields, String searchStr) {
+    protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
         this.persistent = persistent;
         this.fields = fields;
         this.searchStr = searchStr != null ? searchStr : "";
@@ -53,15 +53,15 @@ public abstract class Search<T> {
         if ("".equals(searchStr)) {
             query = new MatchAllDocsQuery();
         } else {
-            MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
+            final MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
             try {
                 query = parser.parse(searchStr);
-            } catch (ParseException e) {
+            } catch (final ParseException e) {
                 return new EmptyPageIterable<T>();
             }
         }
 
-        FullTextQuery luceneQuery = SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent);
+        final FullTextQuery luceneQuery = SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent);
 
         applyFilters(luceneQuery);
 
@@ -69,9 +69,9 @@ public abstract class Search<T> {
 
     }
 
-    private void applyFilters(FullTextQuery luceneQuery) {
+    private void applyFilters(final FullTextQuery luceneQuery) {
         if (filter != null) {
-            FullTextFilter fullTextFilter = luceneQuery.enableFullTextFilter(filter);
+            final FullTextFilter fullTextFilter = luceneQuery.enableFullTextFilter(filter);
 
             fullTextFilter.setParameter("filteredTerms", filteredTerms);
         }
@@ -82,15 +82,15 @@ public abstract class Search<T> {
 
     protected abstract void prepareSearch();
 
-    protected void addFilterTerm(String term, String value) {
+    protected void addFilterTerm(final String term, final String value) {
         filteredTerms.add(new Pair<String, String>(term, value));
     }
 
-    protected void enableFilter(String filter) {
+    protected void enableFilter(final String filter) {
         this.filter = filter;
     }
 
-    protected void setSort(Sort sort) {
+    protected void setSort(final Sort sort) {
         this.sort = sort;
     }
 
@@ -99,14 +99,14 @@ public abstract class Search<T> {
         public U key;
         public V value;
 
-        public Pair(U key, V value) {
+        public Pair(final U key, final V value) {
             this.key = key;
             this.value = value;
         }
 
         @Override
         public int hashCode() {
-            int prime = 31;
+            final int prime = 31;
             int result = 1;
             result = prime * result + ((key == null) ? 0 : key.hashCode());
             result = prime * result + ((value == null) ? 0 : value.hashCode());
@@ -114,7 +114,7 @@ public abstract class Search<T> {
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals(final Object obj) {
             if (this == obj) {
                 return true;
             }
@@ -124,7 +124,7 @@ public abstract class Search<T> {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            Pair<?, ?> other = (Pair<?, ?>) obj;
+            final Pair<?, ?> other = (Pair<?, ?>) obj;
             if (key == null) {
                 if (other.key != null) {
                     return false;

@@ -334,8 +334,8 @@ public abstract class RestServer implements XcgiProcessor {
                 + "] does not exist");
     }
 
-    private Object
-            invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params) throws RestException {
+    private Object invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params)
+            throws RestException {
         return invoke(requestMethod, result.getClass(), result, path, params);
     }
 
@@ -347,9 +347,8 @@ public abstract class RestServer implements XcgiProcessor {
      * @see #invokeStatic(RequestMethod, String, Parameters)
      * @see #invokeMethod(RequestMethod, Object, String, Parameters)
      */
-    private Object
-            invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
-                                                                                                                                            throws RestException {
+    private Object invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
+            throws RestException {
         for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class)) {
                 final REST annotation = m.getAnnotation(REST.class);

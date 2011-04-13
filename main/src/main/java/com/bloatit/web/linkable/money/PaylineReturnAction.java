@@ -1,7 +1,5 @@
 package com.bloatit.web.linkable.money;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -47,7 +45,7 @@ public class PaylineReturnAction extends Action {
         } else if (ack.equals("cancel")) {
             try {
                 final Reponse paymentDetails = payline.getPaymentDetails(token);
-                String message = paymentDetails.getMessage().replace("\n", ". ");
+                final String message = paymentDetails.getMessage().replace("\n", ". ");
                 Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
                 session.notifyBad("Payment canceled. Reason : " + message + ".");
                 payline.cancelPayement(token);

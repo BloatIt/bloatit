@@ -71,5 +71,4 @@ public class Release extends UserContent<DaoRelease> {
         return getDao().getVersion();
     }
 
-
 }

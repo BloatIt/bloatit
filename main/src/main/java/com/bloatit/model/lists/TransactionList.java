@@ -25,7 +25,7 @@ import com.bloatit.model.Transaction;
  * PageIterable<Transaction>.
  */
 public final class TransactionList extends ListBinder<Transaction, DaoTransaction> {
-    public TransactionList(PageIterable<DaoTransaction> daoCollection) {
+    public TransactionList(final PageIterable<DaoTransaction> daoCollection) {
         super(daoCollection);
     }
 }

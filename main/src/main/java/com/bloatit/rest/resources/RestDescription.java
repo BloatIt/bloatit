@@ -107,7 +107,7 @@ public class RestDescription extends RestElement<Description> {
      * <p>
      * Finds the RestDescription matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestDescription
      */
     @REST(name = "descriptions", method = RequestMethod.GET)

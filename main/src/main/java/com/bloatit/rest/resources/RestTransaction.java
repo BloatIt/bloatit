@@ -109,7 +109,7 @@ public class RestTransaction extends RestElement<Transaction> {
      * <p>
      * Finds the RestTransaction matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestTransaction
      */
     @REST(name = "transactions", method = RequestMethod.GET)
@@ -150,8 +150,8 @@ public class RestTransaction extends RestElement<Transaction> {
         try {
             return model.getCreationDate();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getCreationDate on Transaction", e);
         }
     }
@@ -164,8 +164,8 @@ public class RestTransaction extends RestElement<Transaction> {
         try {
             return model.getAmount();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getAmount on Transaction", e);
         }
     }
@@ -179,8 +179,8 @@ public class RestTransaction extends RestElement<Transaction> {
         try {
             return new RestInternalAccount(model.getFrom());
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getFrom on Transaction", e);
         }
     }

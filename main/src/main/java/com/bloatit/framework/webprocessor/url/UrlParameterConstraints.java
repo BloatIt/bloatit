@@ -66,7 +66,7 @@ public class UrlParameterConstraints<U> {
         this(false);
     }
 
-    public UrlParameterConstraints(boolean optional) {
+    public UrlParameterConstraints(final boolean optional) {
         this.isMinExclusive = false;
         this.isMaxExclusive = false;
         this.min = new Param<Integer>(ParamConstraint.DEFAULT_MIN, "min constraint violation (%value) invalid for parameter %param.");

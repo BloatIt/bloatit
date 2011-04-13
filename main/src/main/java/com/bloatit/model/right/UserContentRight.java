@@ -34,7 +34,7 @@ public class UserContentRight extends RightManager {
         private final Team team;
 
         // TODO document
-        public AsTeam(Team team) {
+        public AsTeam(final Team team) {
             this.team = team;
         }
 

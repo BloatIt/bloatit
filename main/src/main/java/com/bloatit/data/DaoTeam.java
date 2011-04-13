@@ -108,7 +108,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Create a team and add it into the db.
-     *
+     * 
      * @param login it the unique and non updatable name of the team.
      * @param right is the type of team we are creating (Public or Private).
      * @return the newly created team.
@@ -128,7 +128,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Create a DaoTeam
-     *
+     * 
      * @param login is the name of the team. It must be unique.
      * @param contact ...
      * @param right is the default right value for this team.
@@ -154,7 +154,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Add a member in this team.
-     *
+     * 
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer
      *            this team. (This may change if the number of role change !)
@@ -216,7 +216,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Finds if a member is in this team, and which is its status.
-     *
+     * 
      * @return {@code null} if the member is not in this team, or a set
      *         otherwise. <br />
      *         Note, the returned set can be empty if the user is only a Member

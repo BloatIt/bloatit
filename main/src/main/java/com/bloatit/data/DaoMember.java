@@ -419,7 +419,7 @@ public class DaoMember extends DaoActor {
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      */
-    public PageIterable<DaoFeature> getFeatures(boolean asMemberOnly) {
+    public PageIterable<DaoFeature> getFeatures(final boolean asMemberOnly) {
         return getUserContent(DaoFeature.class, asMemberOnly);
     }
 
@@ -435,7 +435,7 @@ public class DaoMember extends DaoActor {
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      */
-    public PageIterable<DaoContribution> getContributions(boolean asMemberOnly) {
+    public PageIterable<DaoContribution> getContributions(final boolean asMemberOnly) {
         return getUserContent(DaoContribution.class, asMemberOnly);
     }
 
@@ -444,7 +444,7 @@ public class DaoMember extends DaoActor {
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      */
-    public PageIterable<DaoComment> getComments(boolean asMemberOnly) {
+    public PageIterable<DaoComment> getComments(final boolean asMemberOnly) {
         return getUserContent(DaoComment.class, asMemberOnly);
     }
 
@@ -453,7 +453,7 @@ public class DaoMember extends DaoActor {
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      */
-    public PageIterable<DaoOffer> getOffers(boolean asMemberOnly) {
+    public PageIterable<DaoOffer> getOffers(final boolean asMemberOnly) {
         return getUserContent(DaoOffer.class, asMemberOnly);
     }
 
@@ -462,7 +462,7 @@ public class DaoMember extends DaoActor {
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      */
-    public PageIterable<DaoTranslation> getTranslations(boolean asMemberOnly) {
+    public PageIterable<DaoTranslation> getTranslations(final boolean asMemberOnly) {
         return getUserContent(DaoTranslation.class, asMemberOnly);
     }
 
@@ -516,12 +516,28 @@ public class DaoMember extends DaoActor {
     }
 
     /**
+     * Finds the user recent activity
+     * 
+     * @return the user recent activity
+     */
+    public PageIterable<DaoUserContent> getActivity() {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(DaoFeature.class);
+        final Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author order by creationDate");
+        final Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName()
+                + " as x where x.member = :author order by creationDate");
+
+        final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
+        q.setEntity("author", this);
+        return q;
+    }
+
+    /**
      * Base method to all the get something created by the user.
      * 
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
      */
-    private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass, boolean asMemberOnly) {
+    private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass, final boolean asMemberOnly) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
         final Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author"
                 + (asMemberOnly ? " AND x.asTeam = null" : ""));

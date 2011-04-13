@@ -139,8 +139,8 @@ public class ModelConfiguration extends ReloadableConfiguration {
     public static int getKudosableMinInfluenceToKudos() {
         return configuration.kudosableMinInfluenceToKudos;
     }
-    
-    protected void load(){
+
+    protected void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
 
         //

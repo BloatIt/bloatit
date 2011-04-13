@@ -21,11 +21,11 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightFeature;
 
 /**
- * The Class HighlightFeatureList transforms PageIterable<DaoHighlightFeature> to
- * PageIterable<HighlightFeature>.
+ * The Class HighlightFeatureList transforms PageIterable<DaoHighlightFeature>
+ * to PageIterable<HighlightFeature>.
  */
 public final class HighlightFeatureList extends ListBinder<HighlightFeature, DaoHighlightFeature> {
-    public HighlightFeatureList(PageIterable<DaoHighlightFeature> daoCollection) {
+    public HighlightFeatureList(final PageIterable<DaoHighlightFeature> daoCollection) {
         super(daoCollection);
     }
 }

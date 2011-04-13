@@ -136,7 +136,8 @@ public class BreadcrumbTools {
             @Override
             public Breadcrumb visit(final Release model) {
                 return ReleasePage.generateBreadcrumb(model);
-            }});
+            }
+        });
     }
 
 }

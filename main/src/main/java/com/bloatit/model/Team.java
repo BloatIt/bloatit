@@ -26,7 +26,7 @@ import com.bloatit.model.lists.MemberList;
 
 /**
  * This is a team ... There are member in it.
- *
+ * 
  * @see DaoTeam
  */
 public final class Team extends Actor<DaoTeam> {
@@ -52,7 +52,7 @@ public final class Team extends Actor<DaoTeam> {
      * <p>
      * Creates a new team
      * </p>
-     *
+     * 
      * @param login the displayed name of the team
      * @param contact a string with various means to contact the team
      * @param description a textual description of the team
@@ -99,7 +99,7 @@ public final class Team extends Actor<DaoTeam> {
 
     /**
      * Indicates wheter the team is public or not
-     *
+     * 
      * @return <code>true</code> if the team is public, <code>false</code>
      *         otherwise
      */

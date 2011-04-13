@@ -28,7 +28,7 @@ import com.bloatit.rest.resources.ModelToRestVisitor;
  * Takes an iterator over a list of <code>M extends Identifiable</code> and
  * converts it to an iterator over a list of RestElements using a visitor to
  * create objects
- *
+ * 
  * @param <T> the Type of the RestElement to instantiate
  * @param <M> the Type of the Identifiable (from the model) from which it will
  *            be created

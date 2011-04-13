@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 public class Breadcrumb {
     private static final String SEPARATOR = " > ";
 
-    private List<HtmlLink> linkList = new ArrayList<HtmlLink>();
+    private final List<HtmlLink> linkList = new ArrayList<HtmlLink>();
 
     /**
      * Adds a <code>link</code> at the end of the breadcrumb

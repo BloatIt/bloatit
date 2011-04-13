@@ -9,8 +9,8 @@ import com.bloatit.framework.utils.PageIterable;
 
 public class MappedList<T> implements PageIterable<T> {
 
-    private List<T> list;
-    private Query sizeQuery;
+    private final List<T> list;
+    private final Query sizeQuery;
     private int pageSize;
     private int size;
     private int currentPage;

@@ -25,7 +25,7 @@ import com.bloatit.model.Comment;
  * PageIterable<Comment>.
  */
 public final class CommentList extends ListBinder<Comment, DaoComment> {
-    public CommentList(PageIterable<DaoComment> daoCollection) {
+    public CommentList(final PageIterable<DaoComment> daoCollection) {
         super(daoCollection);
     }
 }

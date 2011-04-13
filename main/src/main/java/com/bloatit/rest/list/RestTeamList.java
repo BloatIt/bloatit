@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestTeam;
  * <p>
  * This class can be represented in Xml as a list of Team<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <Teams>}
  *     {@code <Team name=Team1 />}
@@ -59,10 +59,10 @@ public class RestTeamList extends RestListBinder<RestTeam, Team> {
 
     /**
      * Creates a RestTeamList from a {@codePageIterable<Team>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestTeamList(PageIterable<Team> collection) {
+    public RestTeamList(final PageIterable<Team> collection) {
         super(collection);
     }
 
@@ -72,8 +72,8 @@ public class RestTeamList extends RestListBinder<RestTeam, Team> {
     @XmlElement(name = "team")
     @XmlIDREF
     public List<RestTeam> getTeams() {
-        List<RestTeam> teams = new ArrayList<RestTeam>();
-        for (RestTeam team : this) {
+        final List<RestTeam> teams = new ArrayList<RestTeam>();
+        for (final RestTeam team : this) {
             teams.add(team);
         }
         return teams;

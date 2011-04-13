@@ -12,11 +12,11 @@ import com.bloatit.framework.utils.PageIterable;
  */
 public class SearchCollection<T> implements PageIterable<T> {
 
-    private FullTextQuery query;
+    private final FullTextQuery query;
     private int pageSize;
     private int currentPage;
 
-    protected SearchCollection(FullTextQuery query) {
+    protected SearchCollection(final FullTextQuery query) {
         super();
         this.query = query;
         this.pageSize = 0;
@@ -30,7 +30,7 @@ public class SearchCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         query.setFetchSize(pageSize);
         query.setMaxResults(pageSize);
         this.pageSize = pageSize;
@@ -57,7 +57,7 @@ public class SearchCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPage(int page) {
+    public void setPage(final int page) {
         currentPage = page;
         query.setFirstResult(page * pageSize);
     }

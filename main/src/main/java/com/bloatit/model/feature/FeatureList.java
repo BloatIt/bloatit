@@ -24,13 +24,13 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.lists.ListBinder;
 
 /**
- * The Class FeatureList. It is a ListBinder to transform PageIterable<DaoFeature>
- * to PageIterable<Feature>
+ * The Class FeatureList. It is a ListBinder to transform
+ * PageIterable<DaoFeature> to PageIterable<Feature>
  */
 public final class FeatureList implements PageIterable<Feature> {
     private final ListBinder<FeatureImplementation, DaoFeature> listBinder;
 
-    public FeatureList(PageIterable<DaoFeature> daoList) {
+    public FeatureList(final PageIterable<DaoFeature> daoList) {
         listBinder = new ListBinder<FeatureImplementation, DaoFeature>(daoList);
     }
 
@@ -41,12 +41,12 @@ public final class FeatureList implements PageIterable<Feature> {
     }
 
     @Override
-    public final void setPage(int page) {
+    public final void setPage(final int page) {
         listBinder.setPage(page);
     }
 
     @Override
-    public final void setPageSize(int pageSize) {
+    public final void setPageSize(final int pageSize) {
         listBinder.setPageSize(pageSize);
     }
 

@@ -35,10 +35,8 @@ public final class MetaEditBugAction extends Action {
     public static final String BUG_DESCRIPTION = "bug_description";
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
-    @ParamConstraint(max = "800",
-                     maxErrorMsg = @tr("The title must be 800 chars length max."), //
-                     min = "1", minErrorMsg = @tr("The title must have at least 10 chars."),
-                     optionalErrorMsg = @tr("Error you forgot to write a title"))
+    @ParamConstraint(max = "800", maxErrorMsg = @tr("The title must be 800 chars length max."), //
+    min = "1", minErrorMsg = @tr("The title must have at least 10 chars."), optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
 
     @RequestParam

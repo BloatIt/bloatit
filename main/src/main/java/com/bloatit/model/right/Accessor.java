@@ -35,7 +35,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
  * </p>
  * For example you could create an {@link Accessor} on the Fullname property
  * like this:
- *
+ * 
  * <pre>
  * class MemberCanAccessFullname extends {@link Accessor} {
  *     &#064;Override
@@ -44,10 +44,10 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
  *     }
  * }
  * </pre>
- *
+ * 
  * There are some useful functions and code organization to manage the creation
  * of Accessor classes see {@link RightManager}.
- *
+ * 
  * @see RightManager
  */
 public abstract class Accessor {
@@ -56,7 +56,7 @@ public abstract class Accessor {
      * Can is the method you have to implement in the template method pattern.
      * It is used in the {@link #canAccess(RestrictedObject, Action)} and
      * {@link #tryAccess(RestrictedObject, Action)} methods
-     *
+     * 
      * @param object is the object on which we want to do the
      *            <code>action</code>
      * @param action is the action.
@@ -69,7 +69,7 @@ public abstract class Accessor {
      * CanAccess call the abstract {@link #can(RestrictedInterface, Action)}
      * method to know if the user has the right to access the
      * <code>object</code>.
-     *
+     * 
      * @param object is the object on which we want to do the
      *            <code>action</code>
      * @param action is the action.
@@ -87,7 +87,7 @@ public abstract class Accessor {
     /**
      * Throws an {@link UnauthorizedOperationException} if the
      * {@link #can(RestrictedInterface, Action)} return false.
-     *
+     * 
      * @param object is the object on which we want to do the
      *            <code>action</code>
      * @param action is the action.

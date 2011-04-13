@@ -330,10 +330,10 @@ public class BloatitWebServer extends WebProcessor {
             return new PaylineAction(new PaylineActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylineNotifyActionUrl.getName())) {
-            if(params.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
+            if (params.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
                 final String token = params.look(PaylineNotifyAction.TOKEN_CODE).getSimpleValue();
                 final Session fakeSession = SessionManager.pickTemporarySession(token);
-                if(fakeSession != null) {
+                if (fakeSession != null) {
                     Context.reInitializeContext(Context.getHeader(), fakeSession);
                 }
             }
@@ -407,7 +407,6 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(PaylineProcessUrl.getName())) {
             return new PaylineProcess(new PaylineProcessUrl(params, session.getParameters()));
         }
-
 
         // Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {

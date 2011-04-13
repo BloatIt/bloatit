@@ -19,8 +19,8 @@ package com.bloatit.model.right;
 import com.bloatit.model.Software;
 
 /**
- * The Class SoftwareRight store the properties accessor for the {@link Software}
- * class.
+ * The Class SoftwareRight store the properties accessor for the
+ * {@link Software} class.
  */
 public class SoftwareRight extends RightManager {
 

@@ -43,8 +43,8 @@ public final class CreateFeatureAction extends LoggedAction {
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
     @ParamConstraint(max = "80", maxErrorMsg = @tr("The title must be 80 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The title must have at least 10 chars."), //
-                     optionalErrorMsg = @tr("Error you forgot to write a title"))
+    min = "10", minErrorMsg = @tr("The title must have at least 10 chars."), //
+    optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
 
     @RequestParam(name = SPECIFICATION_CODE, role = Role.POST)

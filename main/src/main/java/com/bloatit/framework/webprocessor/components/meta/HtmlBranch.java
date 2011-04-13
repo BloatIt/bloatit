@@ -27,7 +27,7 @@ public abstract class HtmlBranch extends HtmlElement {
         super(tag);
     }
 
-    public HtmlBranch(HtmlBranch branch) {
+    public HtmlBranch(final HtmlBranch branch) {
         super(branch);
     }
 

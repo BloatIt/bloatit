@@ -38,8 +38,8 @@ public final class MetaReportBugAction extends Action {
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
     @ParamConstraint(max = "800", maxErrorMsg = @tr("The title must be 800 chars length max."), //
-                     min = "1", minErrorMsg = @tr("The title must have at least 10 chars."), //
-                     optionalErrorMsg = @tr("Error you forgot to write a title"))
+    min = "1", minErrorMsg = @tr("The title must have at least 10 chars."), //
+    optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
 
     @RequestParam(name = BUG_URL, role = Role.POST)

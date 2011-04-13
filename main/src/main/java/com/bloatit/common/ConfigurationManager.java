@@ -46,7 +46,7 @@ public class ConfigurationManager {
      * The <code>name</code> of the property file is the name of the file, or
      * the path from the root of the configuration directory.
      * </p>
-     *
+     * 
      * @param name the name of the property file
      * @return a map key -> value
      */
@@ -54,7 +54,7 @@ public class ConfigurationManager {
         return loadProperties(name, PropertiesType.ETC);
     }
 
-    public static PropertiesRetriever loadProperties(final String name, PropertiesType type) {
+    public static PropertiesRetriever loadProperties(final String name, final PropertiesType type) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("null input: name");
         }
@@ -122,7 +122,7 @@ public class ConfigurationManager {
         private final Properties properties;
         private final Date lastModified;
 
-        public PropertiesRetriever(final Properties properties, Date lastModified) {
+        public PropertiesRetriever(final Properties properties, final Date lastModified) {
             this.properties = properties;
             this.lastModified = lastModified;
         }
@@ -240,7 +240,7 @@ public class ConfigurationManager {
             return getSome(key, String.class);
         }
 
-        public Date getModificationDate(){
+        public Date getModificationDate() {
             return lastModified;
         }
     }

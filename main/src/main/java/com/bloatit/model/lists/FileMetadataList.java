@@ -25,7 +25,7 @@ import com.bloatit.model.FileMetadata;
  * PageIterable<FileMetadata>.
  */
 public final class FileMetadataList extends ListBinder<FileMetadata, DaoFileMetadata> {
-    public FileMetadataList(PageIterable<DaoFileMetadata> daoCollection) {
+    public FileMetadataList(final PageIterable<DaoFileMetadata> daoCollection) {
         super(daoCollection);
     }
 }

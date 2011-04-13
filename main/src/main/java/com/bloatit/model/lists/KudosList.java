@@ -24,7 +24,7 @@ import com.bloatit.model.Kudos;
  * The Class KudosList transforms PageIterable<DaoKudos> to PageIterable<Kudos>.
  */
 public final class KudosList extends ListBinder<Kudos, DaoKudos> {
-    public KudosList(PageIterable<DaoKudos> daoCollection) {
+    public KudosList(final PageIterable<DaoKudos> daoCollection) {
         super(daoCollection);
     }
 }

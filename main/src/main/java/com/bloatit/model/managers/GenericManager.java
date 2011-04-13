@@ -41,14 +41,14 @@ public final class GenericManager {
      * Create an identifiable using its Id. If the identifiable is found in the
      * cache then no new object is created (It will return the one from the
      * cache).
-     *
+     * 
      * @param id the id
      * @return the {@link Identifiable}, or <code>null</code> if not found.
      */
     public static Identifiable<?> getById(final Integer id) {
         final Criteria criteria = SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoIdentifiable.class);
         criteria.add(Restrictions.eq("id", id));
-        DaoIdentifiable daoIdentifiable = (DaoIdentifiable) criteria.uniqueResult();
+        final DaoIdentifiable daoIdentifiable = (DaoIdentifiable) criteria.uniqueResult();
         if (daoIdentifiable == null) {
             return null;
         }

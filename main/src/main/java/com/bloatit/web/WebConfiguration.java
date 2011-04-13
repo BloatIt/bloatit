@@ -160,11 +160,11 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgMessage() {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgMessage;
     }
-    
+
     public static String getImgTeam() {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgTeam;
     }
-    
+
     protected void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("web.properties");
 

@@ -75,7 +75,7 @@ public class HtmlTable extends HtmlGenericElement {
         List<HtmlTableLine> lines = new ArrayList<HtmlTableLine>();
         int currentLine = -1;
 
-        public void addLine(HtmlTableLine line) {
+        public void addLine(final HtmlTableLine line) {
             lines.add(line);
         }
 
@@ -88,12 +88,12 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         @Override
-        public XmlNode getHeader(int column) {
+        public XmlNode getHeader(final int column) {
             return null;
         }
 
         @Override
-        public XmlNode getBody(int column) {
+        public XmlNode getBody(final int column) {
             if (lines.size() > currentLine) {
                 return lines.get(currentLine).getCells().get(column).getBody();
             }
@@ -115,14 +115,14 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         @Override
-        public String getColumnCss(int column) {
+        public String getColumnCss(final int column) {
             return lines.get(currentLine).getCells().get(column).getCss();
         }
 
         public static class HtmlTableLine {
             List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
 
-            public void addCell(HtmlTableCell cell) {
+            public void addCell(final HtmlTableCell cell) {
                 cells.add(cell);
             }
 
@@ -135,7 +135,7 @@ public class HtmlTable extends HtmlGenericElement {
 
             final String css;
 
-            public HtmlTableCell(String css) {
+            public HtmlTableCell(final String css) {
                 this.css = css;
             }
 

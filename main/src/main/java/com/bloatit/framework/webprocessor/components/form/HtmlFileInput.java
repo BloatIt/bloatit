@@ -20,14 +20,14 @@ package com.bloatit.framework.webprocessor.components.form;
  * use the {@link HtmlForm#enableFileUpload()}, otherwise the file will not be
  * uploaded.
  * </p>
- *
+ * 
  * @see HtmlForm#enableFileUpload()
  */
 public final class HtmlFileInput extends HtmlStringFormField {
 
     /**
      * Creates a file input with a given name
-     *
+     * 
      * @param name the name used in the html attribute <code>name</code>
      */
     public HtmlFileInput(final String name) {
@@ -36,7 +36,7 @@ public final class HtmlFileInput extends HtmlStringFormField {
 
     /**
      * Creates a file input with a given name and some displayed text
-     *
+     * 
      * @param name the name used in the html attribute <code>name</code>
      * @param label the text displayed inside the {@code <label>} markup
      */

@@ -261,7 +261,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_PENDING}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#PENDING} state.
      */
@@ -272,7 +272,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_VALID}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#VALIDATED} state.
      */
@@ -283,7 +283,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_REJECTED}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#REJECTED} state.
      */
@@ -294,7 +294,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_HIDDEN}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#HIDDEN} state.
      */
@@ -304,7 +304,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /**
      * This method is called each time this Kudosable is kudosed.
-     *
+     * 
      * @param positif true if it is a kudos false if it is an unKudos.
      */
     protected void notifyKudos(final boolean positif) {

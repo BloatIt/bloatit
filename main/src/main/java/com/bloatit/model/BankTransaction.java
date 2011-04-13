@@ -26,7 +26,7 @@ import com.bloatit.data.DaoBankTransaction.State;
 
 /**
  * The Class BankTransaction.
- *
+ * 
  * @see DaoBankTransaction
  */
 @Entity
@@ -57,7 +57,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Check the cache, if a corresponding BankTransaction exist return it,
      * otherwise create a BankTransaction using its dao representation. If the
      * dao == null return null;
-     *
+     * 
      * @param dao the dao
      * @return the bank transaction
      */
@@ -68,7 +68,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the by token.
-     *
+     * 
      * @param token the token
      * @return the by token
      * @see DaoBankTransaction#getByToken(String)
@@ -79,7 +79,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Create a new BankTransaction.
-     *
+     * 
      * @param message is the message from the bank. May be a Ok message or an
      *            error message.
      * @param token is a token to authenticate this transaction. The online bank
@@ -90,13 +90,18 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @param orderReference is a reference we have to create and should be
      *            unique.
      */
-    public BankTransaction(final String message, final String token, final Actor<?> author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
+    public BankTransaction(final String message,
+                           final String token,
+                           final Actor<?> author,
+                           final BigDecimal value,
+                           final BigDecimal valuePayed,
+                           final String orderReference) {
         super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, valuePayed, orderReference));
     }
 
     /**
      * Instantiates a new bank transaction.
-     *
+     * 
      * @param dao the dao
      */
     private BankTransaction(final DaoBankTransaction dao) {
@@ -109,7 +114,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Sets authorized.
-     *
+     * 
      * @see DaoBankTransaction#setAuthorized()
      */
     public void setAuthorized() {
@@ -118,7 +123,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Sets refused.
-     *
+     * 
      * @see DaoBankTransaction#setRefused()
      */
     public void setRefused() {
@@ -127,7 +132,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Sets the validated.
-     *
+     * 
      * @return true, if successful
      * @see DaoBankTransaction#setValidated()
      */
@@ -139,7 +144,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Sets the process informations. The process informations are every kind of
      * information you might have during the process of making a bank
      * transaction. For example you can put here specific error messages.
-     *
+     * 
      * @param processInformations the new process informations
      */
     public void setProcessInformations(final String processInformations) {
@@ -149,7 +154,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     /**
      * Gets the message. The message is the error (or not) message sent by the
      * bank during a transaction.
-     *
+     * 
      * @return the message
      */
     public String getMessage() {
@@ -158,7 +163,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the paid value.
-     *
+     * 
      * @return the value
      */
     public BigDecimal getValuePaid() {
@@ -167,17 +172,16 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the value.
-     *
+     * 
      * @return the value
      */
     public BigDecimal getValue() {
         return getDao().getValue();
     }
 
-
     /**
      * Gets the state.
-     *
+     * 
      * @return the state
      */
     public State getState() {
@@ -186,7 +190,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the creation date.
-     *
+     * 
      * @return the creation date
      */
     public Date getCreationDate() {
@@ -195,7 +199,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the modification date.
-     *
+     * 
      * @return the modification date
      */
     public Date getModificationDate() {
@@ -204,7 +208,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the reference. This is the generated purchase reference.
-     *
+     * 
      * @return the reference
      */
     public String getReference() {
@@ -214,7 +218,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     /**
      * Gets the token. The token is a unique string identifying this
      * transaction.
-     *
+     * 
      * @return the token
      */
     public String getToken() {
@@ -225,7 +229,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Gets the process informations. The process informations are every kind of
      * information you might have during the process of making a bank
      * transaction. For example you can put here error messages.
-     *
+     * 
      * @return the process informations
      */
     public String getProcessInformations() {

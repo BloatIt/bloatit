@@ -4,7 +4,7 @@ import com.bloatit.framework.webprocessor.url.UrlParameter;
 
 public class SessionParameters extends GenericParameters<UrlParameter<?, ?>, UrlParameter<?, ?>> {
 
-     /**
+    /**
      * Create an empty list of parameter
      */
     public SessionParameters() {
@@ -13,7 +13,7 @@ public class SessionParameters extends GenericParameters<UrlParameter<?, ?>, Url
 
     /**
      * Add a parameter to the list
-     *
+     * 
      * @param name the name of the parameter to add
      * @param value the value of the paramter to add
      */
@@ -21,8 +21,5 @@ public class SessionParameters extends GenericParameters<UrlParameter<?, ?>, Url
     public final void add(final String name, final UrlParameter<?, ?> value) {
         getElements().put(name, value);
     }
-
-
-
 
 }

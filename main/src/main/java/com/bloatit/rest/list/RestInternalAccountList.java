@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestInternalAccount;
  * <p>
  * This class can be represented in Xml as a list of InternalAccount<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <InternalAccounts>}
  *     {@code <InternalAccount name=InternalAccount1 />}
@@ -60,10 +60,10 @@ public class RestInternalAccountList extends RestListBinder<RestInternalAccount,
     /**
      * Creates a RestInternalAccountList from a
      * {@codePageIterable<InternalAccount>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestInternalAccountList(PageIterable<InternalAccount> collection) {
+    public RestInternalAccountList(final PageIterable<InternalAccount> collection) {
         super(collection);
     }
 
@@ -73,8 +73,8 @@ public class RestInternalAccountList extends RestListBinder<RestInternalAccount,
     @XmlElement(name = "internalaccount")
     @XmlIDREF
     public List<RestInternalAccount> getInternalAccounts() {
-        List<RestInternalAccount> internalaccounts = new ArrayList<RestInternalAccount>();
-        for (RestInternalAccount internalaccount : this) {
+        final List<RestInternalAccount> internalaccounts = new ArrayList<RestInternalAccount>();
+        for (final RestInternalAccount internalaccount : this) {
             internalaccounts.add(internalaccount);
         }
         return internalaccounts;

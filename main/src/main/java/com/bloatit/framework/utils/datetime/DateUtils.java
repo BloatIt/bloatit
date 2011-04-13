@@ -56,7 +56,7 @@ public class DateUtils {
 
     /**
      * In millisecond
-     *
+     * 
      * @param from
      * @param to
      */

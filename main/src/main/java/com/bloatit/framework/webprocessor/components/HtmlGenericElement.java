@@ -21,11 +21,11 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
  * </p>
  * <p>
  * The following example will create a blank textarea :
- *
+ * 
  * <pre>
  * HtmlElement element = new HtmlGenericElement(&quot;textarea&quot;);
  * </pre>
- *
+ * 
  * </p>
  * <p>
  * Methods such as add or addatribute will be available on such element

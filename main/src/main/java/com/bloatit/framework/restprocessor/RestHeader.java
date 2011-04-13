@@ -21,16 +21,16 @@ public class RestHeader {
 
     /**
      * Constructs a new RestHeader based on a given <code>HttpHeader</code>
-     *
+     * 
      * @param httpHeader the <code>HttpHeader</code> containing all informations
      *            of the Http request
      * @see HttpHeader
      */
-    public RestHeader(HttpHeader httpHeader) {
+    public RestHeader(final HttpHeader httpHeader) {
         this.httpHeader = httpHeader;
         try {
             // Extract language
-            String pathInfo = httpHeader.getPathInfo();
+            final String pathInfo = httpHeader.getPathInfo();
             if (pathInfo.startsWith("/") && pathInfo.length() > 1) {
                 resourceName = URLDecoder.decode(pathInfo.substring(1), UTF_8);
             }
@@ -57,7 +57,7 @@ public class RestHeader {
      * ==>    directory/id/action
      * </code>
      * </p>
-     *
+     * 
      * @return the name of the resource
      */
     public final String getResourceName() {
@@ -75,7 +75,7 @@ public class RestHeader {
      * ==>    {[parameter1 : value1][parameter2 : value2]}
      * </code>
      * </p>
-     *
+     * 
      * @return the list of parameters
      */
     public final Parameters getParameters() {

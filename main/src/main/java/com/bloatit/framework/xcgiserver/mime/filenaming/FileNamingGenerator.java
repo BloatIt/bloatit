@@ -9,7 +9,7 @@ public interface FileNamingGenerator {
      * <p>
      * Generate a file name
      * </p>
-     *
+     * 
      * @param fileName the fileName of the file to save
      * @return the file name
      */

@@ -12,7 +12,7 @@ public class HtmlCachedMarkdownRenderer extends HtmlDiv {
 
     /**
      * Creates a new MarkdownRenderer based on markdown or html text
-     *
+     * 
      * @param text the content to display, must be markdown text if
      *            <code>alreadyRenderer</code> is <code>true</code> or html text
      *            if <code>alreadyRenderer</code> is <code>false</code>
@@ -21,10 +21,10 @@ public class HtmlCachedMarkdownRenderer extends HtmlDiv {
         super("markdown_block");
         parser = new MarkdownParser();
 
-        String cached = MemoryCache.getInstance().get(text);
+        final String cached = MemoryCache.getInstance().get(text);
         if (cached == null) {
             try {
-                String renderered = parser.parse(text);
+                final String renderered = parser.parse(text);
                 MemoryCache.getInstance().cache(text, renderered);
                 add(new XmlText(renderered));
             } catch (final ParsingException e) {

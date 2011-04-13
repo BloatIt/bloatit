@@ -36,7 +36,7 @@ public final class CommentManager {
 
     /**
      * Gets a Comment by id.
-     *
+     * 
      * @param id the {@link Comment} id
      * @return the Comment or null if not found.
      */

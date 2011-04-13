@@ -256,7 +256,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
-        Offer selectedOffer = feature.getSelectedOffer();
+        final Offer selectedOffer = feature.getSelectedOffer();
         if (selectedOffer != null) {
             final BigDecimal amountLeft = selectedOffer.getAmount().subtract(feature.getContribution());
 
@@ -275,11 +275,10 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         }
 
-            final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink();
-            final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
-                                                                                    link));
-            element.add(makeOfferText);
-
+        final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink();
+        final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
+                                                                                link));
+        element.add(makeOfferText);
 
         return element;
     }

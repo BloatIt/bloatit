@@ -37,7 +37,7 @@ public final class MemberManager {
 
     /**
      * Gets the member by login.
-     *
+     * 
      * @param login the login
      * @return the member or <code>null</code> if not found.
      */
@@ -52,7 +52,7 @@ public final class MemberManager {
 
     /**
      * Tells if a Login exists.
-     *
+     * 
      * @param login the login
      * @return <code>true</code>, if it exists, <code>false</code> otherwise.
      */
@@ -62,7 +62,7 @@ public final class MemberManager {
 
     /**
      * Tells if Email exists.
-     *
+     * 
      * @param email the email
      * @return <code>true</code>, if it exists, <code>false</code> otherwise.
      */
@@ -73,7 +73,7 @@ public final class MemberManager {
 
     /**
      * Gets the member by id.
-     *
+     * 
      * @param id the id
      * @return the member or <code>null</code> if not found.
      */
@@ -83,7 +83,7 @@ public final class MemberManager {
 
     /**
      * Gets all the members.
-     *
+     * 
      * @return the all the members in the DB.
      */
     public static PageIterable<Member> getAll() {
@@ -92,7 +92,7 @@ public final class MemberManager {
 
     /**
      * Gets a member using its login/password.
-     *
+     * 
      * @param login the login
      * @param password the password
      * @return the member or null if the login/password does not match any user.
@@ -108,7 +108,7 @@ public final class MemberManager {
 
     /**
      * Gets the number of members.
-     *
+     * 
      * @return the members count
      */
     public static int getMembersCount() {

@@ -18,7 +18,7 @@ public abstract class GenericParameters<T, U> {
 
     /**
      * Add a parameter to the list
-     *
+     * 
      * @param name the name of the parameter to add
      * @param value the value of the parameter to add
      */
@@ -42,7 +42,7 @@ public abstract class GenericParameters<T, U> {
      * <p>
      * Finds a parameter into the list and removes it.
      * </p>
-     *
+     * 
      * @param name the name of the parameter to find
      * @return the string value of the parameter
      */
@@ -59,7 +59,7 @@ public abstract class GenericParameters<T, U> {
      * <p>
      * Finds a parameter into the list without removing it.
      * </p>
-     *
+     * 
      * @param name the name of the parameter to find
      * @return the string value of the parameter
      */

@@ -77,7 +77,7 @@ public class MimeBase64Decoder implements MimeDecoder {
      * href="http://www.source-code.biz/base64coder/java/"
      * >http://www.source-code.biz/base64coder/java/</a>
      * </p>
-     *
+     * 
      * @param input the array of bytes to decode
      * @param offset the first byte to decode, bytes before offset will be
      *            ignored

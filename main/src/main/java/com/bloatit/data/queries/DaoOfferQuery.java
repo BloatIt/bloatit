@@ -100,13 +100,13 @@ public class DaoOfferQuery extends DaoKudosableQuery<DaoOffer> {
      * Add a WHERE close restricting the <code>amount</code> value of the
      * returning offers. For example if you want your query to return only the
      * offers that have less than 42 €, you can call:
-     *
+     * 
      * <pre>
      * DaoOfferListFactory factory = new DaoOfferListFactory();
      * factory.amount(Comparator.LESS, 42);
      * PageIterable&lt;DaoOffer&gt; offers = factory.createCollection();
      * </pre>
-     *
+     * 
      * @param cmp the cmp.
      * @param value the value
      */

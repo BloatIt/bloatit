@@ -25,7 +25,7 @@ public class PendingState extends CanContributeMetaState {
 
     /**
      * Instantiates a new pending state.
-     *
+     * 
      * @param feature the feature on which this state apply.
      */
     public PendingState(final FeatureImplementation feature) {

@@ -24,7 +24,7 @@ import com.bloatit.model.DataVisitorConstructor;
  * The Class IteratorBinder is the base class of the iterator used in the List
  * classes. The List classes transform PageIterable<Dao...> to
  * PageIterable<...>.
- *
+ * 
  * @param <E> the Model representation of a Dao element.
  * @param <DAO> the Dao Element. (If <code>E</code> id Feature then
  *            <code>DAO</code> must be DaoFeature.
@@ -36,7 +36,7 @@ public class IteratorBinder<E extends IdentifiableInterface, DAO extends DaoIden
 
     /**
      * Instantiates a new iterator binder.
-     *
+     * 
      * @param daoIterator the dao iterator
      */
     public IteratorBinder(final java.util.Iterator<DAO> daoIterator) {
@@ -46,7 +46,7 @@ public class IteratorBinder<E extends IdentifiableInterface, DAO extends DaoIden
 
     /**
      * Instantiates a new iterator binder.
-     *
+     * 
      * @param daoIterator the dao iterator
      */
     public IteratorBinder(final Iterable<DAO> daoIterator) {

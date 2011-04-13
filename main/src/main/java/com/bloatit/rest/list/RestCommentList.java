@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestComment;
  * <p>
  * This class can be represented in Xml as a list of Comment<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <Comments>}
  *     {@code <Comment name=Comment1 />}
@@ -59,10 +59,10 @@ public class RestCommentList extends RestListBinder<RestComment, Comment> {
 
     /**
      * Creates a RestCommentList from a {@codePageIterable<Comment>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestCommentList(PageIterable<Comment> collection) {
+    public RestCommentList(final PageIterable<Comment> collection) {
         super(collection);
     }
 
@@ -72,8 +72,8 @@ public class RestCommentList extends RestListBinder<RestComment, Comment> {
     @XmlElement(name = "comment")
     @XmlIDREF
     public List<RestComment> getComments() {
-        List<RestComment> comments = new ArrayList<RestComment>();
-        for (RestComment comment : this) {
+        final List<RestComment> comments = new ArrayList<RestComment>();
+        for (final RestComment comment : this) {
             comments.add(comment);
         }
         return comments;

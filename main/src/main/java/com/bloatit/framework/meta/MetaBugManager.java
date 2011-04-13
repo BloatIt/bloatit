@@ -47,7 +47,7 @@ public class MetaBugManager {
         final List<MetaBug> bugList = new ArrayList<MetaBug>();
         for (final File bugFile : orderedFiles) {
             try {
-                if(!bugFile.getName().endsWith("-deleted")) {
+                if (!bugFile.getName().endsWith("-deleted")) {
                     bugList.add(new MetaBug(bugFile));
                 }
             } catch (final IOException e) {
@@ -59,8 +59,8 @@ public class MetaBugManager {
 
     public static MetaBug getById(final String bugId) {
         final List<MetaBug> openBugs = getOpenBugs();
-        for(final MetaBug bug: openBugs) {
-            if(bug.getId().equals(bugId)) {
+        for (final MetaBug bug : openBugs) {
+            if (bug.getId().equals(bugId)) {
                 return bug;
             }
         }

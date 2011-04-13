@@ -17,13 +17,13 @@ public class RestResource {
 
     /**
      * Creates a rest resource
-     *
+     * 
      * @param underlying the object returned by the call to the rest method
      * @param request the string representation of the reqyest
      * @param classes the list of classes available to convert
      *            <code>underlying</code> to XML
      */
-    public RestResource(Object underlying, String request, Class<?>... classes) {
+    public RestResource(final Object underlying, final String request, final Class<?>... classes) {
         this.underlying = underlying;
         this.classes = classes;
         this.request = request;
@@ -31,7 +31,7 @@ public class RestResource {
 
     /**
      * Converts <code>underlying</code> to XML
-     *
+     * 
      * @return the XML string obtained from converting <code>underlying</code>
      *         to XML
      * @throws JAXBException when an error occurs during conversion
@@ -42,12 +42,12 @@ public class RestResource {
         }
         // Marshaller is not thread-safe, and creating one can be expensive. If
         // needed add pooling.
-        Marshaller m = context.createMarshaller();
+        final Marshaller m = context.createMarshaller();
         m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         m.setProperty("com.sun.xml.bind.xmlDeclaration", false);
 
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         m.marshal(underlying, sw);
         return sw.toString();
     }

@@ -409,7 +409,7 @@ public class BloatitExampleDB {
         bankTransaction.setValidated();
     }
 
-    public Member createMember(final String login, final String name, Locale locale) throws UnauthorizedOperationException {
+    public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {
         final Member member = new Member(login, "plop", login + "@elveos.org", locale);
         member.authenticate(new AuthToken(member));
         member.setFullname(name);

@@ -50,8 +50,8 @@ public final class CheckContributionAction extends LoggedAction {
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
     @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
-                     max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))
+    max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
+    precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))
     private final BigDecimal amount;
 
     private final CheckContributionActionUrl url;

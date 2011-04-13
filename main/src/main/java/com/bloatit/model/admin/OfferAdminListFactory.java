@@ -25,7 +25,7 @@ public class OfferAdminListFactory extends KudosableAdminListFactory<DaoOffer, O
         return new OfferList(getfactory().createCollection());
     }
 
-    public void amount(Comparator cmp, BigDecimal value) {
+    public void amount(final Comparator cmp, final BigDecimal value) {
         getfactory().amount(cmp, value);
     }
 

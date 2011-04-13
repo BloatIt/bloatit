@@ -25,7 +25,7 @@ import com.bloatit.model.ExternalAccount;
  * PageIterable<ExternalAccount>.
  */
 public final class ExternalAccountList extends ListBinder<ExternalAccount, DaoExternalAccount> {
-    public ExternalAccountList(PageIterable<DaoExternalAccount> daoCollection) {
+    public ExternalAccountList(final PageIterable<DaoExternalAccount> daoCollection) {
         super(daoCollection);
     }
 }

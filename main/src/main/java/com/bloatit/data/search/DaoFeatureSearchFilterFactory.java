@@ -14,20 +14,20 @@ public class DaoFeatureSearchFilterFactory {
 
     private List<Pair<String, String>> filteredTerms = null;
 
-    public void setFilteredTerms(List<Pair<String, String>> filteredTerms) {
+    public void setFilteredTerms(final List<Pair<String, String>> filteredTerms) {
         this.filteredTerms = filteredTerms;
     }
 
     @Key
     public FilterKey getKey() {
-        StandardFilterKey key = new StandardFilterKey();
+        final StandardFilterKey key = new StandardFilterKey();
         key.addParameter(filteredTerms);
         return key;
     }
 
     @Factory
     public Filter getFilter() {
-        DaoFeatureSearchFilter searchFilter = new DaoFeatureSearchFilter();
+        final DaoFeatureSearchFilter searchFilter = new DaoFeatureSearchFilter();
         searchFilter.setFilteredTerms(filteredTerms);
         filteredTerms = null;
         return searchFilter;

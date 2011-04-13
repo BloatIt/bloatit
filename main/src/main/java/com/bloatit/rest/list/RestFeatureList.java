@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestFeature;
  * <p>
  * This class can be represented in Xml as a list of Feature<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <Features>}
  *     {@code <Feature name=Feature1 />}
@@ -59,10 +59,10 @@ public class RestFeatureList extends RestListBinder<RestFeature, Feature> {
 
     /**
      * Creates a RestFeatureList from a {@codePageIterable<Feature>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestFeatureList(PageIterable<Feature> collection) {
+    public RestFeatureList(final PageIterable<Feature> collection) {
         super(collection);
     }
 
@@ -72,8 +72,8 @@ public class RestFeatureList extends RestListBinder<RestFeature, Feature> {
     @XmlElement(name = "feature")
     @XmlIDREF
     List<RestFeature> getFeaturesID() {
-        List<RestFeature> features = new ArrayList<RestFeature>();
-        for (RestFeature feature : this) {
+        final List<RestFeature> features = new ArrayList<RestFeature>();
+        for (final RestFeature feature : this) {
             features.add(feature);
         }
         return features;

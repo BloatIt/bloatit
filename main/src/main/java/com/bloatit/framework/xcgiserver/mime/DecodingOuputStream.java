@@ -23,7 +23,7 @@ public class DecodingOuputStream extends OutputStream {
      * <p>
      * Creates a new DecodingOutputStream with a default buffer size.
      * </p>
-     *
+     * 
      * @param output The stream used to write the decoded text
      * @param codec The codec used to decode the text
      */
@@ -35,7 +35,7 @@ public class DecodingOuputStream extends OutputStream {
      * <p>
      * Creates a new DecodingOutputStream with a given buffer size.
      * </p>
-     *
+     * 
      * @param output The stream used to write the decoded text
      * @param codec The codec used to decode the text
      * @param bufferMultiply The multiplicator used to compute the buffer size.
@@ -90,7 +90,7 @@ public class DecodingOuputStream extends OutputStream {
      * method, except it will result in VERY slightly less overehead so should
      * be prefered ...
      * </p>
-     *
+     * 
      * @param b the byte to write
      * @throws IOException when an IO error occurs
      */

@@ -94,7 +94,12 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     @Enumerated
     private BugState state;
 
-    public DaoBug(final DaoMember member, final DaoMilestone milestone, final String title, final String description, final Locale locale, final Level level) {
+    public DaoBug(final DaoMember member,
+                  final DaoMilestone milestone,
+                  final String title,
+                  final String description,
+                  final Locale locale,
+                  final Level level) {
         super(member);
         if (title == null || description == null || milestone == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -138,7 +143,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * The person assigned to a bug is the developer (the member that has
      * created the offer). The person assigned to a bug is the developer (the
      * member that has created the offer).
-     *
+     * 
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {

@@ -24,7 +24,7 @@ public class MessageConsultPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override

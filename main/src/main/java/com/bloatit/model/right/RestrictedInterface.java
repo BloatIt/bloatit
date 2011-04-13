@@ -28,7 +28,7 @@ public interface RestrictedInterface {
 
     /**
      * Authenticate this content using an {@link AuthToken}.
-     *
+     * 
      * @param token the token representing the user wanting to be authenticated
      *            on this content.
      */
@@ -36,7 +36,7 @@ public interface RestrictedInterface {
 
     /**
      * Checks for team privilege.
-     *
+     * 
      * @param right the right
      * @return true, if successful
      */
@@ -44,7 +44,7 @@ public interface RestrictedInterface {
 
     /**
      * Checks for user privilege.
-     *
+     * 
      * @param role the role
      * @return true, if successful
      */
@@ -52,21 +52,21 @@ public interface RestrictedInterface {
 
     /**
      * Checks if is authenticated.
-     *
+     * 
      * @return true, if is authenticated
      */
     public abstract boolean isAuthenticated();
 
     /**
      * Checks if is owner.
-     *
+     * 
      * @return true, if is owner
      */
     public abstract boolean isOwner();
 
     /**
      * Checks if is nobody.
-     *
+     * 
      * @return true, if is nobody
      */
     public abstract boolean isNobody();

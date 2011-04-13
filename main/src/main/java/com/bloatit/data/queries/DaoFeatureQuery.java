@@ -114,7 +114,7 @@ public class DaoFeatureQuery extends DaoKudosableQuery<DaoFeature> {
 
     /**
      * Add a WHERE close with featureState = <code>state</code>.
-     *
+     * 
      * @param state the state
      */
     public void stateEquals(final FeatureState state) {
@@ -123,7 +123,7 @@ public class DaoFeatureQuery extends DaoKudosableQuery<DaoFeature> {
 
     /**
      * Add a WHERE close with software = <code>software</code>.
-     *
+     * 
      * @param software the software
      */
     public void softwareEquals(final DaoSoftware software) {
@@ -179,13 +179,13 @@ public class DaoFeatureQuery extends DaoKudosableQuery<DaoFeature> {
      * Add a WHERE close restricting the total contribution value of the
      * returning features. For example if you want your query to return only the
      * features that have less than 42 €, you can call:
-     *
+     * 
      * <pre>
      * DaoFeatureListFactory factory = new DaoFeatureListfactory();
      * factory.contribution(Comparator.LESS, 42);
      * PageIterable&lt;DaoFeature&gt; features = factory.createCollection();
      * </pre>
-     *
+     * 
      * @param cmp the cmp.
      * @param value the value
      */

@@ -10,7 +10,7 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 public class WebHeader {
 
     private static final String UTF_8 = "UTF-8";
-    
+
     private String language = "en";
     private String pageName = "";
     private final Parameters parameters = new Parameters();
@@ -37,7 +37,7 @@ public class WebHeader {
                         // "-"
                         if (part.contains("-")) {
                             // Part of the params
-                            final String[] pair = part.split("-",2);
+                            final String[] pair = part.split("-", 2);
                             if (pair.length == 2) {
                                 parameters.add(pair[0], pair[1]);
                             } else {

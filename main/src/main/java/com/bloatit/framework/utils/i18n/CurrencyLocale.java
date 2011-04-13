@@ -171,8 +171,8 @@ public final class CurrencyLocale {
     public boolean availableTargetCurrency() {
         return currencies.containsKey(currency);
     }
-    
-    public boolean isDefaultCurrency(){
+
+    public boolean isDefaultCurrency() {
         return currency.equals(DEFAULT_CURRENCY);
     }
 

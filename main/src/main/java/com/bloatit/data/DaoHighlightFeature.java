@@ -20,8 +20,8 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * List of hightlighted features with the reason, the position and the hightlight
- * date
+ * List of hightlighted features with the reason, the position and the
+ * hightlight date
  */
 @Entity
 @Cacheable
@@ -65,7 +65,7 @@ public class DaoHighlightFeature extends DaoIdentifiable {
 
     /**
      * Create a DaoHighlightFeature and add it into the db.
-     *
+     * 
      * @param feature the feature
      * @param position the position
      * @param reason the reason
@@ -74,10 +74,10 @@ public class DaoHighlightFeature extends DaoIdentifiable {
      * @return the dao highlight feature
      */
     public static DaoHighlightFeature createAndPersist(final DaoFeature feature,
-                                                      final int position,
-                                                      final String reason,
-                                                      final Date activationDate,
-                                                      final Date desactivationDate) {
+                                                       final int position,
+                                                       final String reason,
+                                                       final Date activationDate,
+                                                       final Date desactivationDate) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoHighlightFeature hightlightFeature = new DaoHighlightFeature(feature, position, reason, activationDate, desactivationDate);
         try {
@@ -92,14 +92,18 @@ public class DaoHighlightFeature extends DaoIdentifiable {
 
     /**
      * Create a DaoHighlightFeature
-     *
+     * 
      * @param feature
      * @param position
      * @param reason
      * @param activationDate
      * @param desactivationDate
      */
-    public DaoHighlightFeature(final DaoFeature feature, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
+    public DaoHighlightFeature(final DaoFeature feature,
+                               final int position,
+                               final String reason,
+                               final Date activationDate,
+                               final Date desactivationDate) {
         if (feature == null || activationDate == null || desactivationDate == null) {
             throw new NonOptionalParameterException();
         }

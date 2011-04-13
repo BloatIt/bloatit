@@ -33,7 +33,7 @@ public class RestListBinder<T extends RestElement<M>, M extends IdentifiableInte
 
     /**
      * Instantiates a new list binder for model to rest elements
-     *
+     * 
      * @param collection the dao collection
      */
     public RestListBinder(final PageIterable<M> collection) {

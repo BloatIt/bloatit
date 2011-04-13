@@ -155,7 +155,7 @@ public final class CreateFeaturePage extends LoggedPage {
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
 
         // Markdown previewer
-        MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
+        final MarkdownPreviewer mdPreview = new MarkdownPreviewer(specificationInput);
         createFeatureTitle.add(mdPreview);
 
         layout.addLeft(createFeatureTitle);

@@ -11,23 +11,22 @@ public class Sorter<T, U extends Comparable<U>> {
     private final List<SortEntry> inputList;
 
     public enum Order {
-        ASC,
-        DESC,
+        ASC, DESC,
     }
 
-    public Sorter(List<T> outputList) {
+    public Sorter(final List<T> outputList) {
         this.outputList = outputList;
         inputList = new ArrayList<Sorter<T, U>.SortEntry>();
     }
 
-    public void add(T element, U sortkey) {
+    public void add(final T element, final U sortkey) {
         inputList.add(new SortEntry(element, sortkey));
     }
 
-    public void performSort(Order order) {
+    public void performSort(final Order order) {
         Collections.sort(inputList, new SortEntryComparator(order));
 
-        for (SortEntry entry : inputList) {
+        for (final SortEntry entry : inputList) {
             outputList.add(entry.getElement());
         }
     }
@@ -36,7 +35,7 @@ public class Sorter<T, U extends Comparable<U>> {
         private final T element;
         private final U sortKey;
 
-        SortEntry(T element, U sortKey) {
+        SortEntry(final T element, final U sortKey) {
             this.element = element;
             this.sortKey = sortKey;
 
@@ -51,7 +50,7 @@ public class Sorter<T, U extends Comparable<U>> {
         }
 
         @Override
-        public int compareTo(SortEntry o) {
+        public int compareTo(final SortEntry o) {
             return sortKey.compareTo(o.getSortKey());
         }
     }
@@ -60,16 +59,14 @@ public class Sorter<T, U extends Comparable<U>> {
 
         private final Order order;
 
-
-        private SortEntryComparator(Order order) {
+        private SortEntryComparator(final Order order) {
             this.order = order;
 
         }
 
-
         @Override
-        public int compare(SortEntry o1, SortEntry o2) {
-            if(order == Order.ASC) {
+        public int compare(final SortEntry o1, final SortEntry o2) {
+            if (order == Order.ASC) {
                 return o1.compareTo(o2);
             }
             return -o1.compareTo(o2);

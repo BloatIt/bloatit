@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
  * Html buttons are <b>NOT</b> to be mistaken with html submits. If you want to
  * submit a form, use {@link HtmlSubmit}
  * </p>
- *
+ * 
  * @see HtmlSubmit
  */
 public final class HtmlButton extends HtmlLeaf {
@@ -36,7 +36,7 @@ public final class HtmlButton extends HtmlLeaf {
      * <p>
      * Creates a HtmlButton
      * </p>
-     *
+     * 
      * @param value the text that will be shown on the button
      */
     public HtmlButton(final String value) {

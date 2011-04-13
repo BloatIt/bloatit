@@ -115,19 +115,19 @@ public class ContributionProcess extends PaymentProcess {
     @Override
     public Url endSubProcess(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
-            PaylineProcess subPro = (PaylineProcess) subProcess;
+            final PaylineProcess subPro = (PaylineProcess) subProcess;
             if (subPro.isSuccessful()) {
                 if (amountToCharge.compareTo(BigDecimal.ZERO) > 0) {
                     Context.getSession().notifyGood(tr("Your account has been credited."));
                 }
                 try {
-                    String title = Context.tr("Accepted payment on elveos.org");
-                    String memberName = session.getAuthToken().getMember().getDisplayName();
-                    String content = Context.tr("Dear {0}, \nWe are pleased to announce that your payment {1} to http://elveos.org has been validated \nWe thank you for your trust.",
+                    final String title = Context.tr("Accepted payment on elveos.org");
+                    final String memberName = session.getAuthToken().getMember().getDisplayName();
+                    final String content = Context.tr("Dear {0}, \nWe are pleased to announce that your payment {1} to http://elveos.org has been validated \nWe thank you for your trust.",
                                                 memberName,
                                                 Context.getLocalizator().getCurrency(amountToCharge).getLocaleString());
                     sendMail(title, content);
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     session.notifyError(Context.tr("An error prevented us from sending you a mail. Please notify us."));
                     throw new ShallNotPassException("Cannot access connecter user email.");
                 }
@@ -157,9 +157,9 @@ public class ContributionProcess extends PaymentProcess {
      * @param content the content of the mail
      * @throws UnauthorizedOperationException when something unexpected happens
      */
-    private void sendMail(String title, String content) throws UnauthorizedOperationException {
-        String email = session.getAuthToken().getMember().getEmail();
-        String mailSenderID = "payline-action";
+    private void sendMail(final String title, final String content) throws UnauthorizedOperationException {
+        final String email = session.getAuthToken().getMember().getEmail();
+        final String mailSenderID = "payline-action";
         MailServer.getInstance().send(new Mail(email, title, content, mailSenderID));
     }
 }

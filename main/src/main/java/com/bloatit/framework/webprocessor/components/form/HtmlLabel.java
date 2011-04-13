@@ -21,7 +21,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 public final class HtmlLabel extends HtmlLeaf {
     /**
      * Creates a label with displayed text
-     *
+     * 
      * @param content the displayed text
      */
     protected HtmlLabel(final String content) {
@@ -31,7 +31,7 @@ public final class HtmlLabel extends HtmlLeaf {
 
     /**
      * Links a label with a formfield
-     *
+     * 
      * @param forId the Id of the formfield
      */
     protected void setFor(final String forId) {

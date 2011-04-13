@@ -43,7 +43,7 @@ public final class Loaders {
 
     public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException {
         // if (value.equals("null")) {
-        // return null;
+        // throw new NotImplementedException();
         // }
         try {
             final Loader<T> loader = getLoader(toClass);
@@ -258,8 +258,9 @@ public final class Loaders {
                 throw new ConversionErrorException(e);
             }
         }
-        
-        public String toString(DateLocale date){
+
+        @Override
+        public String toString(final DateLocale date) {
             return date.getIsoDateString();
         }
     }
@@ -273,8 +274,7 @@ public final class Loaders {
         @Override
         public Identifiable<?> fromString(final String data) throws ConversionErrorException {
             try {
-                @SuppressWarnings("rawtypes")
-                final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
+                @SuppressWarnings("rawtypes") final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
                 daoIdentifiableQuery.idEquals(Integer.valueOf(data));
                 return daoIdentifiableQuery.uniqueResult().accept(new DataVisitorConstructor());
             } catch (final NumberFormatException e) {
@@ -325,7 +325,7 @@ public final class Loaders {
         @Override
         public final T fromString(final String data) throws ConversionErrorException {
             final WebProcess webProcess = Context.getSession().getWebProcess(data);
-            if(webProcess != null) {
+            if (webProcess != null) {
                 webProcess.load();
             }
             return (T) webProcess;

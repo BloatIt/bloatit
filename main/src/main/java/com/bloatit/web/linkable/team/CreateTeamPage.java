@@ -63,7 +63,7 @@ public class CreateTeamPage extends MasterPage {
         form.add(nameInput);
 
         // Contact
-        String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");
+        final String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");
         final FieldData contactData = target.getContactParameter().pickFieldData();
         final MarkdownEditor contactInput = new MarkdownEditor(contactData.getName(), Context.tr("Contact of the team: "), 5, 80);
         if (contactData.getSuggestedValue() == null || contactData.getSuggestedValue().isEmpty()) {
@@ -76,7 +76,7 @@ public class CreateTeamPage extends MasterPage {
         form.add(contactInput);
 
         // Contact preview
-        MarkdownPreviewer contactPreview = new MarkdownPreviewer(contactInput);
+        final MarkdownPreviewer contactPreview = new MarkdownPreviewer(contactInput);
         form.add(contactPreview);
 
         // Description
@@ -88,7 +88,7 @@ public class CreateTeamPage extends MasterPage {
         form.add(descriptionInput);
 
         // Description preview
-        MarkdownPreviewer descriptionPreview = new MarkdownPreviewer(descriptionInput);
+        final MarkdownPreviewer descriptionPreview = new MarkdownPreviewer(descriptionInput);
         form.add(descriptionPreview);
 
         // PUBLIC / PRIVATE

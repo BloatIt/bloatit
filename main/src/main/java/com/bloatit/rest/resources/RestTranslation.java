@@ -110,7 +110,7 @@ public class RestTranslation extends RestElement<Translation> {
      * <p>
      * Finds the RestTranslation matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestTranslation
      */
     @REST(name = "translations", method = RequestMethod.GET)

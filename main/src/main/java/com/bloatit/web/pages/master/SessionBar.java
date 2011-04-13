@@ -46,8 +46,11 @@ public class SessionBar extends HtmlDiv {
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));
 
             try {
-                add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(new MoneyDisplayComponent(session.getAuthToken().getMember().getInternalAccount().getAmount())));
-            } catch (UnauthorizedOperationException e) {
+                add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(new MoneyDisplayComponent(session.getAuthToken()
+                                                                                                                     .getMember()
+                                                                                                                     .getInternalAccount()
+                                                                                                                     .getAmount())));
+            } catch (final UnauthorizedOperationException e) {
             }
 
             // Display link to private messages

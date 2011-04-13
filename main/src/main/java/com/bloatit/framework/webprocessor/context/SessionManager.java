@@ -204,7 +204,7 @@ public final class SessionManager {
     }
 
     public static synchronized Session pickTemporarySession(final String key) {
-        if(temporarySessions.containsKey(key)) {
+        if (temporarySessions.containsKey(key)) {
             final Session session = temporarySessions.get(key);
             temporarySessions.remove(key);
             return session;

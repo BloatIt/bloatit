@@ -47,10 +47,8 @@ public final class AddSoftwareAction extends LoggedAction {
     public static final String LANGUAGE_CODE = "feature_lang";
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(max = "120",
-                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
-                     optionalErrorMsg = @tr("You forgot to write a short description"))
+    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
+    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String shortDescription;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
@@ -59,10 +57,8 @@ public final class AddSoftwareAction extends LoggedAction {
     private final String description;
 
     @RequestParam(name = SOFTWARE_NAME_CODE, role = Role.POST)
-    @ParamConstraint(max = "100",
-                     maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
-                     min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."),
-                     optionalErrorMsg = @tr("The software name is requiered."))
+    @ParamConstraint(max = "100", maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
+    min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."), optionalErrorMsg = @tr("The software name is requiered."))
     private final String softwareName;
 
     @Optional
@@ -113,9 +109,9 @@ public final class AddSoftwareAction extends LoggedAction {
         final Software p = new Software(softwareName, session.getAuthToken().getMember(), langLocale, shortDescription, description);
 
         if (image != null) {
-            FileConstraintChecker fcc = new FileConstraintChecker(image);
+            final FileConstraintChecker fcc = new FileConstraintChecker(image);
             if (fcc.isImageAvatar() != null) {
-                for (String message : fcc.isImageAvatar()) {
+                for (final String message : fcc.isImageAvatar()) {
                     session.notifyBad(message);
                 }
                 return Context.getSession().pickPreferredPage();

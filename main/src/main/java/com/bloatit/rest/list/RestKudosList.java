@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestKudos;
  * <p>
  * This class can be represented in Xml as a list of Kudos<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <Kudoss>}
  *     {@code <Kudos name=Kudos1 />}
@@ -59,10 +59,10 @@ public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
 
     /**
      * Creates a RestKudosList from a {@codePageIterable<Kudos>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestKudosList(PageIterable<Kudos> collection) {
+    public RestKudosList(final PageIterable<Kudos> collection) {
         super(collection);
     }
 
@@ -72,8 +72,8 @@ public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
     @XmlElement(name = "kudos")
     @XmlIDREF
     public List<RestKudos> getKudoss() {
-        List<RestKudos> kudoss = new ArrayList<RestKudos>();
-        for (RestKudos kudos : this) {
+        final List<RestKudos> kudoss = new ArrayList<RestKudos>();
+        for (final RestKudos kudos : this) {
             kudoss.add(kudos);
         }
         return kudoss;

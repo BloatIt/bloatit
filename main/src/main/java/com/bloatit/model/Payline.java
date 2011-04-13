@@ -41,7 +41,6 @@ public final class Payline extends RestrictedObject {
     public static final BigDecimal COMMISSION_VARIABLE_RATE = new BigDecimal("0.1");
     public static final BigDecimal COMMISSION_FIX_RATE = new BigDecimal("0.3");
 
-
     private static final String ACCEPTED_CODE = "00000";
     private static final String ORDER_ORIGINE = "payline";
     /**
@@ -172,8 +171,7 @@ public final class Payline extends RestrictedObject {
         paymentRequest.setReturnURL(returnUrl);
         paymentRequest.setNotificationURL(notificationUrl);
 
-        BigDecimal amountToPay = computateAmountToPay(amount);
-
+        final BigDecimal amountToPay = computateAmountToPay(amount);
 
         if (getAuthToken() == null) {
             throw new UnauthorizedOperationException(Action.READ);
@@ -258,7 +256,7 @@ public final class Payline extends RestrictedObject {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param member
      * @return
      */

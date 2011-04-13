@@ -403,7 +403,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public Long getCommentsCount() {
         return (Long) SessionManager.getNamedQuery("feature.getComments.size").setEntity("this", this).uniqueResult();
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.bloatit.data.DaoCommentable#getCommentsFromQuery()

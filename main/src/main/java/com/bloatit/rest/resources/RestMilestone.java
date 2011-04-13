@@ -45,8 +45,8 @@ import com.bloatit.rest.list.RestReleaseList;
  * Representation of a Milestone for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from Milestone that needs to be called
- * through the ReST RPC. Every such method needs to be mapped with the
+ * This class should implement any methods from Milestone that needs to be
+ * called through the ReST RPC. Every such method needs to be mapped with the
  * {@code @REST} interface.
  * <p>
  * ReST uses the four HTTP request methods <code>GET</code>, <code>POST</code>,
@@ -109,7 +109,7 @@ public class RestMilestone extends RestElement<Milestone> {
      * <p>
      * Finds the RestMilestone matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestMilestone
      */
     @REST(name = "milestones", method = RequestMethod.GET)

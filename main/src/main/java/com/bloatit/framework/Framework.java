@@ -13,7 +13,6 @@ import com.bloatit.model.AbstractModel;
 
 /**
  * This class represent the whole framework.
- *
  */
 public class Framework {
 

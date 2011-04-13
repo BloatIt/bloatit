@@ -21,7 +21,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
  * </p>
  * <p>
  * Example :
- *
+ * 
  * <pre>
  * HtmlForm form = new HtmlForm(&quot;anAction&quot;);
  * form.addText(&quot;What do you like ?&quot;);
@@ -31,9 +31,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
  * halfOpenQuestion.addCheckBox(&quot;nothing&quot;, &quot;I like nothing&quot;);
  * form.add(halfOpenQuestion);
  * </pre>
- *
+ * 
  * Will later generate following Html :
- *
+ * 
  * <pre>
  * {@code
  * <form>
@@ -44,7 +44,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
  * </form>
  * }
  * </pre>
- *
+ * 
  * </p>
  */
 public final class CheckBoxGroup extends HtmlLeaf {
@@ -59,7 +59,7 @@ public final class CheckBoxGroup extends HtmlLeaf {
      * Example (after adding a field): <br />
      * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
      * </p>
-     *
+     * 
      * @see #CheckBoxGroup(LabelPosition)
      * @see LabelPosition
      */
@@ -81,7 +81,7 @@ public final class CheckBoxGroup extends HtmlLeaf {
      * Example (after adding a field) of <code>LabelPosition.AFTER</code> :<br />
      * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
      * </p>
-     *
+     * 
      * @param position the relative position of the Labels compared to the
      *            checkBoxes
      */
@@ -92,7 +92,7 @@ public final class CheckBoxGroup extends HtmlLeaf {
 
     /**
      * Adds a new checkbox to the group
-     *
+     * 
      * @param name the name of the checkbox (html attribute name)
      * @param label the html {@code <label>} value that will be linked with the
      *            checkbox

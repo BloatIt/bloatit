@@ -139,21 +139,21 @@ public class FileConstraintChecker {
      */
     public List<String> isImageAvatar() {
         final ArrayList<String> failures = new ArrayList<String>();
-        if(!exists()){
+        if (!exists()) {
             failures.add(Context.tr("Sorry we messed up and lost the file you uploaded. Please try again."));
             return failures;
         }
-        if(!isImage()){
+        if (!isImage()) {
             failures.add(Context.tr("Avatars can only be images. Please upload another file."));
             return failures;
         }
-        if(!isFileSmaller(50, SizeUnit.KBYTE)){
+        if (!isFileSmaller(50, SizeUnit.KBYTE)) {
             failures.add(Context.tr("Avatars have to be smaller than 50Kb. Please upload another file."));
         }
-        if(!isImageSmaller(64, 64)){
+        if (!isImageSmaller(64, 64)) {
             failures.add(Context.tr("Avatars have to be smaller than 64x64. Please upload another file."));
         }
-        if(failures.size() > 0 ){
+        if (failures.size() > 0) {
             return failures;
         }
         return null;

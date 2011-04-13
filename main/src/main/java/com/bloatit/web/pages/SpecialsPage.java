@@ -42,7 +42,7 @@ public final class SpecialsPage extends MasterPage {
         final HtmlList pageList = new HtmlList();
         final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(Context.tr("Members list"));
         pageList.add(memeHtmlLink);
-        
+
         return pageTitle;
     }
 

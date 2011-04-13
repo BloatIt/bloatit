@@ -22,7 +22,7 @@ public class HtmlTag {
      * <p>
      * Creates a new Tag
      * </p>
-     *
+     * 
      * @param tag the string representation of the tag (img to create a new
      *            {@code <img>} tag)
      */
@@ -37,15 +37,15 @@ public class HtmlTag {
      * </p>
      * <p>
      * Example :
-     *
+     * 
      * <pre>
      * HtmlTag img = new HtmlTag(&quot;img&quot;);
      * img.addAttribute(&quot;src&quot;, &quot;example.com/example.png&quot;);
      * </pre>
-     *
+     * 
      * will later be rendered as {@code <img src="example.com/example.png" />}
      * </p>
-     *
+     * 
      * @param name The name of the attribute
      * @param value the value of the attribute
      * @return itself
@@ -61,7 +61,7 @@ public class HtmlTag {
      * <p>
      * A convenience method to add an <code>id</code> attribute to the tag.
      * </p>
-     *
+     * 
      * @param value the id of the tag
      * @return itself
      */
@@ -74,7 +74,7 @@ public class HtmlTag {
 
     /**
      * Finds the id of the tag
-     *
+     * 
      * @return the value entetered for the field "id" or null if no field id
      *         exists
      */
@@ -88,17 +88,17 @@ public class HtmlTag {
      * </p>
      * <p>
      * For example :
-     *
+     * 
      * <pre>
      * HtmlTag img = new HtmlTag(&quot;img&quot;);
      * img.addAttribute(&quot;src&quot;, &quot;example.com/example.png&quot;);
      * System.out.println(img.getOpenTag()):
      * </pre>
-     *
+     * 
      * will display {@code  <img src="example.com/example.png" >} (which is not a
      * valid Html element by the way)
      * </p>
-     *
+     * 
      * @return the <code>String</code> representing an opening tag
      */
     protected String getOpenTag() {
@@ -111,16 +111,16 @@ public class HtmlTag {
      * </p>
      * <p>
      * For example :
-     *
+     * 
      * <pre>
      * HtmlTag img = new HtmlTag(&quot;img&quot;);
      * img.addAttribute(&quot;src&quot;, &quot;example.com/example.png&quot;);
      * System.out.println(img.getClosedTag()):
      * </pre>
-     *
+     * 
      * will display {@code  <img src="example.com/example.png" />}
      * </p>
-     *
+     * 
      * @return the <code>String</code> representing a self closing tag
      */
     protected String getSelfClosingTag() {
@@ -133,13 +133,13 @@ public class HtmlTag {
      * </p>
      * <p>
      * For example :
-     *
+     * 
      * <pre>
      * HtmlTag img = new HtmlTag(&quot;img&quot;);
      * img.addAttribute(&quot;src&quot;, &quot;example.com/example.png&quot;);
      * System.out.println(img.getClosedTag()):
      * </pre>
-     *
+     * 
      * will display {@code  </img>} (which is not a valid Html element by the
      * way)
      * </p>
@@ -147,7 +147,7 @@ public class HtmlTag {
      * <b>NOTE</b> : this method should obviously be used after
      * {@link #getOpenTag()}
      * </p>
-     *
+     * 
      * @return the <code>String</code> representing an opening tag
      */
     protected String getCloseTag() {
@@ -160,7 +160,7 @@ public class HtmlTag {
      * without the closing mark. This is the base method to create an opening
      * tag, which should be called for self-closing tag (which will add
      * {@code />}) and normal open tags (which will add {@code >}).
-     *
+     * 
      * @return the String representing the opening tag, with all its attributes
      *         but not the closing marker
      */

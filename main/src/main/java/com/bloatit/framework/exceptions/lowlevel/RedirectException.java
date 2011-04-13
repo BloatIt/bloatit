@@ -26,7 +26,7 @@ public class RedirectException extends Exception {
 
     /**
      * Create a {@link RedirectException} that redirect to <code>url</code>.
-     *
+     * 
      * @param url is where the user will be redirect to.
      */
     public RedirectException(final Url url) {

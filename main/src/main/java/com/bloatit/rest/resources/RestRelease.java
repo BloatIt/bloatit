@@ -108,7 +108,7 @@ public class RestRelease extends RestElement<Release> {
      * <p>
      * Finds the RestRelease matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestRelease
      */
     @REST(name = "releases", method = RequestMethod.GET)

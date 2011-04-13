@@ -14,20 +14,20 @@ public class FeatureSearch extends Search<DaoFeature> {
         SORT_BY_RELEVANCE, SORT_BY_CONTRIBUTION, SORT_BY_PROGRESS, SORT_BY_POPULARITY, SORT_BY_CREATION_DATE, SORT_BY_EXPIRATION_DATE
     }
 
-    public FeatureSearch(String searchText) {
+    public FeatureSearch(final String searchText) {
         super();
         sortMethod = SortMethod.SORT_BY_RELEVANCE;
         configure(DaoFeature.class, new String[] { "description.translations.title",
-                                                 "description.translations.text",
-                                                 "offers.description.translations.title" }, searchText);
+                                                  "description.translations.text",
+                                                  "offers.description.translations.title" }, searchText);
     }
 
     /**
      * The features with state as FeatureState will not be in the search results
-     *
+     * 
      * @param state
      */
-    public void addFeatureStateFilter(FeatureState state) {
+    public void addFeatureStateFilter(final FeatureState state) {
         addFilterTerm("featureState", state.toString());
     }
 
@@ -35,7 +35,7 @@ public class FeatureSearch extends Search<DaoFeature> {
     protected void prepareSearch() {
         enableFilter("searchFilter");
 
-        Sort sort = new Sort();
+        final Sort sort = new Sort();
 
         switch (sortMethod) {
             case SORT_BY_CONTRIBUTION:
@@ -61,7 +61,7 @@ public class FeatureSearch extends Search<DaoFeature> {
         setSort(sort);
     }
 
-    public void setSortMethod(SortMethod sortMethod) {
+    public void setSortMethod(final SortMethod sortMethod) {
         this.sortMethod = sortMethod;
     }
 

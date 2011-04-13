@@ -225,7 +225,7 @@ public class DaoFileMetadata extends DaoUserContent {
         return true;
     }
 
-    public void setRelatedContent(DaoUserContent relatedContent) {
+    public void setRelatedContent(final DaoUserContent relatedContent) {
         this.relatedContent = relatedContent;
     }
 
