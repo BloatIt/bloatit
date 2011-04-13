@@ -199,17 +199,21 @@ public final class MemberPage extends MasterPage {
         main.add(new HtmlClearer());
 
         // Displaying list of user recent activity
-        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
-        main.add(recentActivity);
-
-        final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
-        recentActivity.add(recent);
-
-        final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
-        final MemberPageUrl clonedUrl = url.clone();
-        HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
-        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new MemberRenderer(), activity, clonedUrl, clonedUrl.getPagedActivityUrl());
-        recent.add(feed);
+        // final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
+        // main.add(recentActivity);
+        //
+        // final HtmlTitleBlock recent = new
+        // HtmlTitleBlock(Context.tr("Recent activity"), 2);
+        // recentActivity.add(recent);
+        //
+        // final PageIterable<UserContent<? extends DaoUserContent>> activity =
+        // member.getActivity();
+        // final MemberPageUrl clonedUrl = url.clone();
+        // HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
+        // feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new
+        // MemberRenderer(), activity, clonedUrl,
+        // clonedUrl.getPagedActivityUrl());
+        // recent.add(feed);
 
         return master;
     }
