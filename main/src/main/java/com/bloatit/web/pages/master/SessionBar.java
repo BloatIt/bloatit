@@ -9,6 +9,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberPageUrl;

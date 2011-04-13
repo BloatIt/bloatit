@@ -212,6 +212,10 @@ public class DaoContribution extends DaoUserContent {
         return this.comment;
     }
 
+    public DaoFeature getFeature() {
+        return this.feature;
+    }
+
     // ======================================================================
     // Visitor.
     // ======================================================================
@@ -229,9 +233,7 @@ public class DaoContribution extends DaoUserContent {
         super();
     }
 
-    protected DaoFeature getFeature() {
-        return this.feature;
-    }
+
 
     // ======================================================================
     // equals and hashcode

@@ -1,5 +1,8 @@
 package com.bloatit.framework.webprocessor.components.advanced;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
@@ -9,13 +12,11 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 public class HtmlTable extends HtmlGenericElement {
 
     private final HtmlTableModel model;
-    private final int columnCount;
+    private int columnCount;
 
     public HtmlTable(final HtmlTableModel model) {
         super("table");
         this.model = model;
-
-        columnCount = model.getColumnCount();
 
         generateHeader();
         generateBody();
@@ -25,7 +26,7 @@ public class HtmlTable extends HtmlGenericElement {
     private void generateBody() {
         while (model.next()) {
             final HtmlGenericElement tr = new HtmlGenericElement("tr");
-
+            columnCount = model.getColumnCount();
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement td = new HtmlGenericElement("td");
                 td.add(model.getBody(i));
@@ -39,14 +40,16 @@ public class HtmlTable extends HtmlGenericElement {
     }
 
     private void generateHeader() {
-        final HtmlGenericElement tr = new HtmlGenericElement("tr");
-
-        for (int i = 0; i < columnCount; i++) {
-            final HtmlGenericElement th = new HtmlGenericElement("th");
-            th.add(model.getHeader(i));
-            tr.add(th);
+        if (model.hasHeader()) {
+            final HtmlGenericElement tr = new HtmlGenericElement("tr");
+            columnCount = model.getColumnCount();
+            for (int i = 0; i < columnCount; i++) {
+                final HtmlGenericElement th = new HtmlGenericElement("th");
+                th.add(model.getHeader(i));
+                tr.add(th);
+            }
+            add(tr);
         }
-        add(tr);
     }
 
     public static abstract class HtmlTableModel {
@@ -65,6 +68,85 @@ public class HtmlTable extends HtmlGenericElement {
         public String getColumnCss(@SuppressWarnings("unused") final int column) {
             return null;
         }
+    }
+
+    public static class HtmlLineTableModel extends HtmlTableModel {
+
+        List<HtmlTableLine> lines = new ArrayList<HtmlTableLine>();
+        int currentLine = -1;
+
+        public void addLine(HtmlTableLine line) {
+            lines.add(line);
+        }
+
+        @Override
+        public int getColumnCount() {
+            if (lines.size() > currentLine) {
+                return lines.get(currentLine).getCells().size();
+            }
+            return 0;
+        }
+
+        @Override
+        public XmlNode getHeader(int column) {
+            return null;
+        }
+
+        @Override
+        public XmlNode getBody(int column) {
+            if (lines.size() > currentLine) {
+                return lines.get(currentLine).getCells().get(column).getBody();
+            }
+            return null;
+        }
+
+        @Override
+        public boolean next() {
+            currentLine++;
+            if (lines.size() > currentLine) {
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean hasHeader() {
+            return false;
+        }
+
+        @Override
+        public String getColumnCss(int column) {
+            return lines.get(currentLine).getCells().get(column).getCss();
+        }
+
+        public static class HtmlTableLine {
+            List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
+
+            public void addCell(HtmlTableCell cell) {
+                cells.add(cell);
+            }
+
+            public List<HtmlTableCell> getCells() {
+                return cells;
+            }
+        }
+
+        public static abstract class HtmlTableCell {
+
+            final String css;
+
+            public HtmlTableCell(String css) {
+                this.css = css;
+            }
+
+            public abstract XmlNode getBody();
+
+            public String getCss() {
+                return css;
+            }
+
+        }
+
     }
 
 }

@@ -94,4 +94,8 @@ public class MemberRight extends RightManager {
     public static class Name extends Public {
         // nothing this is just a rename.
     }
+
+    public static class Contributions extends Public {
+        // nothing this is just a rename.
+    }
 }
