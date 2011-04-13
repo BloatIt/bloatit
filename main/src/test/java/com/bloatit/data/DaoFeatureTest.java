@@ -18,7 +18,7 @@ public class DaoFeatureTest extends DataTestUnit {
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
-        assertEquals(feature, yo.getFeatures().iterator().next());
+        assertEquals(feature, yo.getFeatures(false).iterator().next());
     }
 
     public void testRetrieveFeature() {

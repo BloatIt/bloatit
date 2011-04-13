@@ -158,7 +158,7 @@ public class RestMember extends RestElement<Member> {
 
     @XmlElement
     public RestFeatureList getFeatures() {
-        return new RestFeatureList(model.getFeatures());
+        return new RestFeatureList(model.getFeatures(false));
     }
 
     @XmlIDREF

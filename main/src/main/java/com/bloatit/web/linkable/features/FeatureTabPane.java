@@ -39,6 +39,8 @@ import com.bloatit.web.url.MemberPageUrl;
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
 
+    public static final String FEATURE_TAB_PANE = "feature_tab_pane";
+
     public static final String BUGS_TAB = "bugs_tab";
 
     public static final String DETAILS_TAB = "details_tab";
@@ -49,7 +51,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
     public static final String DESCRIPTION_TAB = "description_tab";
 
-    @RequestParam(name = "feature_tab_pane")
+    @RequestParam(name = FEATURE_TAB_PANE)
     @Optional(DESCRIPTION_TAB)
     private String activeTabKey;
 
@@ -67,7 +69,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         featureUrl.setFeatureTabPaneUrl(new FeatureTabPaneUrl());
 
         // Create tab pane
-        final HtmlTabBlock tabPane = new HtmlTabBlock("feature_tab_pane", activeTabKey, featureUrl);
+        final HtmlTabBlock tabPane = new HtmlTabBlock(FEATURE_TAB_PANE, activeTabKey, featureUrl);
 
         // Create description tab
         tabPane.addTab(new HtmlTab(Context.tr("Description"), DESCRIPTION_TAB) {

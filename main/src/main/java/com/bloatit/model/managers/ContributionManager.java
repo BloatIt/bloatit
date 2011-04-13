@@ -45,4 +45,5 @@ public class ContributionManager {
     public static ContributionList getAll() {
         return new ContributionList(DBRequests.getAll(DaoContribution.class));
     }
+
 }
