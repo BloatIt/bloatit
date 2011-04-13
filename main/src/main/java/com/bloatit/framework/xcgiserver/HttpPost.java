@@ -18,6 +18,8 @@
  */
 package com.bloatit.framework.xcgiserver;
 
+import static com.bloatit.framework.utils.StringUtils.isEmpty;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +42,7 @@ public class HttpPost {
      * <p>
      * Construct an HttpPost from a POST request
      * </p>
-     *
+     * 
      * @param is The stream to read containing the post Data
      * @param length The length of the post content
      * @param contentType The contentType of the post (obtained previouysly from
@@ -53,7 +55,7 @@ public class HttpPost {
 
     /**
      * Gets the list of parameters
-     *
+     * 
      * @return the list of post parameters for the page
      */
     public final Parameters getParameters() {
@@ -64,7 +66,7 @@ public class HttpPost {
      * <p>
      * Parses the post and fills the list of parameters
      * </p>
-     *
+     * 
      * @param postStream the stream to read post from
      * @param length the length of the post
      * @param contentType the contentType of the post (text/plain,
@@ -75,13 +77,15 @@ public class HttpPost {
         final PostParser parser = new PostParser(postStream, length, contentType, UPLOAD_TEMP_DIRECTORY);
         PostParameter pp;
         while ((pp = getNext(parser)) != null) {
-            parameters.add(pp.getName(), pp.getValue());
+            if (!isEmpty(pp.getName()) && !isEmpty(pp.getValue())) {
+                parameters.add(pp.getName(), pp.getValue());
+            }
         }
     }
 
     /**
      * Gets the next PostParameter in the parser, ignoring the exceptions
-     *
+     * 
      * @param parser the <code>POST</code> parser from which content is read
      * @return the next <code>PostParameter</code> or <code>null</code> if no
      *         more content is available
