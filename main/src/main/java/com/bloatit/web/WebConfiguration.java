@@ -147,7 +147,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgSoftwareNoLogo() {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgSoftwareNoLogo;
     }
-    
+
     /**
      * @return the imgIdea
      */
@@ -168,7 +168,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgMoneyDown = properties.getString("bloatit.img.money.down");
         imgMoneyDownSmall = properties.getString("bloatit.img.money.down.small");
         imgMoneyUp = properties.getString("bloatit.img.money.up");
-        imgMoneyUpSmall = properties.getString("bloatit.img.money.up");
+        imgMoneyUpSmall = properties.getString("bloatit.img.money.up.small");
         imgNoAvatar = properties.getString("bloatit.img.no.avatar");
         imgValidIcon = properties.getString("bloatit.img.valid");
         imgSoftwareNoLogo = properties.getString("bloatit.img.software.no.logo");
