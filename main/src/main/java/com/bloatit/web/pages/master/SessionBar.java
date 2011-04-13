@@ -12,6 +12,7 @@ import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.web.HtmlTools;
+import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
@@ -49,31 +50,9 @@ public class SessionBar extends HtmlDiv {
             }
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));
 
-            // Display user money in euro
-            final HtmlBranch euroMoney = new HtmlSpan();
-            euroMoney.setCssClass("euro_money");
-
-            final Member member = session.getAuthToken().getMember();
-            InternalAccount internalAccount;
             try {
-                internalAccount = member.getInternalAccount();
-                final CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
-                euroMoney.add(new HtmlText(cl.getDefaultString()));
-
-                final HtmlBranch money = new AccountChargingProcessUrl().getHtmlLink(euroMoney);
-                money.setCssClass("money");
-
-                // Display user money in locale money (when needed)
-                if (cl.availableTargetCurrency() && !cl.getDefaultString().equals(cl.getLocaleString())) {
-                    final HtmlBranch localeMoney = new HtmlSpan();
-                    localeMoney.setCssClass("locale_money");
-
-                    localeMoney.addText(cl.getLocaleString());
-                    money.add(localeMoney);
-                }
-                add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(money));
-            } catch (final UnauthorizedOperationException e) {
-                // no right, no money displayed
+                add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(new MoneyDisplayComponent(session.getAuthToken().getMember().getInternalAccount().getAmount())));
+            } catch (UnauthorizedOperationException e) {
             }
 
             // Display link to private messages
