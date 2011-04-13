@@ -17,6 +17,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Team;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.url.CheckContributionPageUrl;
@@ -30,6 +31,7 @@ public class ContributionProcess extends PaymentProcess {
     @RequestParam
     private Feature feature;
 
+    private Team team;
     private BigDecimal amount = new BigDecimal("0");
     private BigDecimal amountToPay = new BigDecimal("0");
     private BigDecimal amountToCharge = new BigDecimal("0");
@@ -148,6 +150,17 @@ public class ContributionProcess extends PaymentProcess {
 
     public boolean isLocked() {
         return locked;
+    }
+
+    public void setTeam(final Team team) throws IllegalWriteException {
+        if (locked) {
+            throw new IllegalWriteException();
+        }
+        this.team = team;
+    }
+
+    public Team getTeam() {
+        return team;
     }
 
     /**

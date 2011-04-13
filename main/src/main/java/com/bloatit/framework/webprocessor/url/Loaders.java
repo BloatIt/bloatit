@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -87,6 +88,9 @@ public final class Loaders {
         }
         if (theClass.equals(String.class)) {
             return (Loader<T>) new ToString();
+        }
+        if (theClass.equals(Locale.class)) {
+            return (Loader<T>) new ToLocale();
         }
         if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
@@ -235,6 +239,18 @@ public final class Loaders {
         @Override
         public String fromString(final String data) {
             return data;
+        }
+    }
+
+    private static class ToLocale extends Loader<Locale> {
+        @Override
+        public Locale fromString(final String data) {
+            return new Locale(data);
+        }
+
+        @Override
+        public String toString(final Locale locale) {
+            return locale.getLanguage();
         }
     }
 

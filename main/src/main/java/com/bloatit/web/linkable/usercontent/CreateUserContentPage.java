@@ -1,0 +1,66 @@
+package com.bloatit.web.linkable.usercontent;
+
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.model.Member;
+import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.url.CreateUserContentActionUrl;
+import com.bloatit.web.url.CreateUserContentPageUrl;
+
+/**
+ * @author thomas
+ */
+@ParamContainer("usercontent/create")
+public abstract class CreateUserContentPage extends LoggedPage {
+
+    private final CreateUserContentActionUrl targetUrl;
+
+    public CreateUserContentPage(final CreateUserContentPageUrl url, final CreateUserContentActionUrl targetUrl) {
+        super(url);
+        this.targetUrl = targetUrl;
+    }
+
+    @Override
+    public boolean isStable() {
+        return false;
+    }
+
+    /**
+     * Add a asTeam field into the form (see: {@link #getForm()}).
+     * 
+     * @param me The user creating this userContent
+     * @param right The type of action we are doing. For example if this
+     *            userContent is a comment you should use
+     *            {@link UserTeamRight#TALK} ; But if it is a contribution, you
+     *            have to use the {@link UserTeamRight#BANK}.
+     * @param label The asTeam field label.
+     * @param comment The comment of the field.
+     */
+    protected void addAsTeamField(final HtmlForm form, final Member me, final UserTeamRight right, final String label, final String comment) {
+        form.add(new AsTeamField(targetUrl, me, right, label, comment));
+    }
+
+    /**
+     * Add a language selector into the {@link #getForm()} form.
+     * 
+     * @param label the label of the language selector.
+     * @param comment the comment on the language selector field.
+     */
+    protected void addLanguageField(final HtmlForm form, final String label, final String comment) {
+        form.add(new LanguageField(targetUrl, label, comment));
+    }
+
+    protected void addAddAttachmentField(final HtmlForm form,
+                                         final String attachmentLabel,
+                                         final String attachmentComment,
+                                         final String descriptionLabel,
+                                         final String descriptionComment) {
+        form.add(new AttachmentField(targetUrl, attachmentLabel, attachmentComment, descriptionLabel, descriptionComment));
+        form.enableFileUpload();
+    }
+
+    protected final CreateUserContentActionUrl getTargetUrl() {
+        return targetUrl;
+    }
+}

@@ -20,8 +20,10 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
+import com.bloatit.web.linkable.usercontent.CreateCommentForm;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.pages.tools.CommentTools;
+import com.bloatit.web.url.CreateCommentActionUrl;
 
 public final class FeatureCommentListComponent extends HtmlPageComponent {
 
@@ -51,7 +53,7 @@ public final class FeatureCommentListComponent extends HtmlPageComponent {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", targetFeature.getCommentsCount()), 1).setCssClass("comments_title"));
 
             commentsBlock.add(CommentTools.generateCommentList(comments));
-            commentsBlock.add(CommentTools.generateNewCommentComponent(targetFeature));
+            commentsBlock.add(new CreateCommentForm(new CreateCommentActionUrl(targetFeature)));
         }
         return commentsBlock;
     }

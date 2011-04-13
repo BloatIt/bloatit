@@ -26,7 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -35,7 +35,7 @@ import com.bloatit.web.url.ContributePageUrl;
  * A response to a form used to create a contribution to a feature
  */
 @ParamContainer("action/contribute/check")
-public final class CheckContributionAction extends LoggedAction {
+public final class CheckContributionAction extends CreateUserContentAction {
 
     public static final String AMOUNT_CODE = "contributionAmount";
     public static final String COMMENT_CODE = "comment";
@@ -70,7 +70,7 @@ public final class CheckContributionAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doDoProcessRestricted(final Member authenticatedMember) {
         final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
 
         try {
@@ -79,6 +79,9 @@ public final class CheckContributionAction extends LoggedAction {
             }
             if (!(process.getComment() == comment || (process.getComment() != null && process.getComment().equals(comment)))) {
                 process.setComment(comment);
+            }
+            if (!(process.getTeam() == getTeam() || (process.getTeam() != null && process.getTeam().equals(getTeam())))) {
+                process.setTeam(getTeam());
             }
         } catch (final IllegalWriteException e) {
             session.notifyBad(tr("The contribution's amount is locked during the payment process."));
@@ -98,8 +101,14 @@ public final class CheckContributionAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         session.addParameter(url.getCommentParameter());
         session.addParameter(url.getAmountParameter());
+    }
+
+    @Override
+    protected boolean verifyFile(final String filename) {
+        // no file
+        return true;
     }
 }

@@ -18,6 +18,8 @@
  */
 package com.bloatit.framework.xcgiserver;
 
+import static com.bloatit.framework.utils.StringUtils.isEmpty;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +77,9 @@ public class HttpPost {
         final PostParser parser = new PostParser(postStream, length, contentType, UPLOAD_TEMP_DIRECTORY);
         PostParameter pp;
         while ((pp = getNext(parser)) != null) {
-            parameters.add(pp.getName(), pp.getValue());
+            if (!isEmpty(pp.getName()) && !isEmpty(pp.getValue())) {
+                parameters.add(pp.getName(), pp.getValue());
+            }
         }
     }
 

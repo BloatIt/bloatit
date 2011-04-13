@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -33,9 +34,8 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
-import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -45,14 +45,14 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
  * Page that hosts the form to create a new Feature
  */
 @ParamContainer("feature/create")
-public final class CreateFeaturePage extends LoggedPage {
+public final class CreateFeaturePage extends CreateUserContentPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 20;
     private static final int SPECIF_INPUT_NB_COLUMNS = 100;
     private final CreateFeaturePageUrl url;
 
     public CreateFeaturePage(final CreateFeaturePageUrl url) {
-        super(url);
+        super(url, new CreateFeatureActionUrl());
         this.url = url;
     }
 
@@ -74,14 +74,14 @@ public final class CreateFeaturePage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         if (FeatureManager.canCreate(session.getAuthToken())) {
-            return generateFeatureCreationForm();
+            return generateFeatureCreationForm(loggedUser);
         }
         // TODO
         session.notifyBad("//TODO");
         return new HtmlParagraph(Context.tr("You are not allowed to create a new feature"));
     }
 
-    private HtmlElement generateFeatureCreationForm() {
+    private HtmlElement generateFeatureCreationForm(final Member loggedUser) {
 
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -103,7 +103,8 @@ public final class CreateFeaturePage extends LoggedPage {
         createFeatureForm.add(descriptionInput);
 
         // Linked software
-        final HtmlDropDown softwareInput = new HtmlDropDown(CreateFeatureAction.SOFTWARE_CODE, Context.tr("Software"));
+        final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
+        final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
         for (final Software software : SoftwareManager.getAll()) {
             try {
                 softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
@@ -113,15 +114,14 @@ public final class CreateFeaturePage extends LoggedPage {
             }
         }
         // TODO: set the default value to "select a software"
-        // TODO: add form to create a new software
-
         createFeatureForm.add(softwareInput);
 
-        // Language
-        final FieldData languageFieldData = doCreateUrl.getLangParameter().pickFieldData();
-        final LanguageSelector languageInput = new LanguageSelector(CreateFeatureAction.LANGUAGE_CODE, tr("Language"));
-        languageInput.setDefaultValue(languageFieldData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        createFeatureForm.add(languageInput);
+        // As team input
+        addAsTeamField(createFeatureForm,
+                      loggedUser,
+                      UserTeamRight.TALK,
+                      tr("In the name of"),
+                      tr("You can create this feature in the name of a team."));
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
@@ -131,11 +131,30 @@ public final class CreateFeaturePage extends LoggedPage {
                                                                      tr("Describe the feature"),
                                                                      SPECIF_INPUT_NB_LINES,
                                                                      SPECIF_INPUT_NB_COLUMNS);
-        final String suggestedValue = tr("What is the expected work ?\n" + "\n" + "What is the requested date ?\n" + "\n"
-                + "What is the expected compatibility ?\n" + "\n" + "  * Linux 2.6.x\n" + "  * Windows 7\n" + "  * Mac Os X\n" + "  * ...\n" + "\n"
-                + "What is the expected output ?\n" + "\n" + " * Source tarball\n" + " * Diff patch\n" + " * Public repository\n"
-                + " * Push in the project's official  repository\n" + " * Windows install\n" + " * Install shell script\n" + " * Deb package\n"
-                + " * Rpm package\n" + " * ...");
+        //@formatter:off
+        final String suggestedValue = tr("What is the expected work ?\n" +
+                                         "\n" + 
+                                         "What is the requested date ?\n" + 
+                                         "\n" + 
+                                         "What is the expected compatibility ?\n" + 
+                                         "\n" + 
+                                         "  * Linux 2.6.x\n" + 
+                                         "  * Windows 7\n" + 
+                                         "  * Mac Os X\n" + 
+                                         "  * ...\n" + 
+                                         "\n" + 
+                                         "What is the expected output ?\n" + 
+                                         "\n" + 
+                                         " * Source tarball\n" + 
+                                         " * Diff patch\n" + 
+                                         " * Public repository\n" + 
+                                         " * Push in the project's official  repository\n" + 
+                                         " * Windows install\n" + 
+                                         " * Install shell script\n" + 
+                                         " * Deb package\n" + 
+                                         " * Rpm package\n" + 
+                                         " * ...");
+        //@formatter:on
 
         if (specificationFieldData.getSuggestedValue() == null || specificationFieldData.getSuggestedValue().isEmpty()) {
             specificationInput.setDefaultValue(suggestedValue);
@@ -147,9 +166,15 @@ public final class CreateFeaturePage extends LoggedPage {
                 + "... Try to leave as little room for ambiguity as possible."));
         createFeatureForm.add(specificationInput);
 
-        // Markdown editor
-        // MarkdownEditor mdEditor = new MarkdownEditor("plop");
-        // createFeatureForm.add(mdEditor);
+        // Language
+        addLanguageField(createFeatureForm, tr("Description language"), tr("The language of the description you just wrote."));
+
+        // Attachment
+        addAddAttachmentField(createFeatureForm,
+                             tr("join a file"),
+                             tr("You can join a file on this feature description if you need to."),
+                             tr("file description"),
+                             tr("If you join a file you have to input a short description of this file."));
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));

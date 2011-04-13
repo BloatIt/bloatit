@@ -17,7 +17,6 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -26,7 +25,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
-import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
@@ -38,21 +36,18 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
-import com.bloatit.model.Team;
-import com.bloatit.model.right.Action;
-import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 
 @ParamContainer("offer/create")
-public final class MakeOfferPage extends LoggedPage {
+public final class MakeOfferPage extends CreateUserContentPage {
 
     @RequestParam
     @ParamConstraint(optionalErrorMsg = @tr("The feature id is not optional !"))
@@ -65,7 +60,7 @@ public final class MakeOfferPage extends LoggedPage {
     private final MakeOfferPageUrl url;
 
     public MakeOfferPage(final MakeOfferPageUrl url) {
-        super(url);
+        super(url, new OfferActionUrl(url.getFeature()));
         this.url = url;
         this.feature = url.getFeature();
         this.offer = url.getOffer();
@@ -93,7 +88,6 @@ public final class MakeOfferPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateOfferForm(loggedUser));
 
@@ -116,35 +110,9 @@ public final class MakeOfferPage extends LoggedPage {
         }
 
         // Create offer form
-        final OfferActionUrl offerActionUrl = new OfferActionUrl(feature);
+        final OfferActionUrl offerActionUrl = (OfferActionUrl) getTargetUrl();
         offerActionUrl.setDraftOffer(offer);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
-
-        // Offering on the behalf of
-        if (me.canAccessTeams(Action.READ)) {
-            try {
-                final PageIterable<Team> teams = me.getTeams();
-                final FieldData teamData = offerActionUrl.getTeamParameter().pickFieldData();
-                final HtmlDropDown teamInput = new HtmlDropDown(teamData.getName(), Context.tr("On the behalf of"));
-                teamInput.setDefaultValue(teamData.getSuggestedValue());
-                teamInput.addErrorMessages(teamData.getErrorMessages());
-                teamInput.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
-                teamInput.addDropDownElement("", Context.tr("Myself"));
-                int nbTeam = 0;
-                for (final Team team : teams) {
-                    if (team.getUserTeamRight(me).contains(UserTeamRight.TALK)) {
-                        teamInput.addDropDownElement(team.getId().toString(), team.getLogin());
-                        nbTeam++;
-                    }
-                }
-                if (nbTeam > 0) {
-                    offerForm.add(teamInput);
-                }
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from displaying you some information. Please notify us"));
-                throw new ShallNotPassException("Can't access current user teams (I checked before tho)", e);
-            }
-        }
 
         // Price field
         final FieldData priceData = offerActionUrl.getPriceParameter().pickFieldData();
@@ -153,6 +121,13 @@ public final class MakeOfferPage extends LoggedPage {
         priceInput.addErrorMessages(priceData.getErrorMessages());
         priceInput.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
         offerForm.add(priceInput);
+
+        // asTeam
+        addAsTeamField(offerForm,
+                      me,
+                      UserTeamRight.TALK,
+                      Context.tr("In the name of "),
+                      Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
 
         // Date field
         final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
@@ -170,12 +145,9 @@ public final class MakeOfferPage extends LoggedPage {
         offerForm.add(descriptionInput);
 
         // locale
-        final FieldData localeData = offerActionUrl.getLocaleParameter().pickFieldData();
-        final LanguageSelector localeInput = new LanguageSelector(localeData.getName(), Context.tr("description langue"));
-        localeInput.setDefaultValue(localeData.getSuggestedValue());
-        localeInput.addErrorMessages(localeData.getErrorMessages());
-        localeInput.setComment(Context.tr("The language in which you have maid the description."));
-        offerForm.add(localeInput);
+        addLanguageField(offerForm, //
+                        Context.tr("description langue"), //
+                        Context.tr("The language in which you have maid the description."));
 
         // days before validation
         final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();

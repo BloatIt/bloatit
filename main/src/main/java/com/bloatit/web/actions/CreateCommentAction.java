@@ -13,7 +13,6 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -23,41 +22,24 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Commentable;
-import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
-import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
 /**
  * A response to a form used to create a comment to a content
  */
 @ParamContainer("comment/docomment")
-public final class CreateCommentAction extends LoggedAction {
+public final class CreateCommentAction extends CreateUserContentAction {
+    
     @ParamConstraint(optionalErrorMsg = @tr("The comment must be post on a commentable thing"))
     @RequestParam(name = "target")
     private final Commentable commentable;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must type a comment"),//
-    /*            */min = "2", minErrorMsg = @tr("The comment must be at least 2 characters long."))
+                     min = "2", minErrorMsg = @tr("The comment must be at least 2 characters long."))
     @RequestParam(role = Role.POST)
     private final String comment;
-
-    @Optional
-    @RequestParam(name = "attachement", role = Role.POST)
-    private final String attachement;
-
-    @Optional
-    @RequestParam(name = "attachement/filename", role = Role.POST)
-    private final String attachementFileName;
-
-    @Optional
-    @RequestParam(name = "attachement_description", role = Role.POST)
-    private final String attachementDescription;
-
-    @SuppressWarnings("unused")
-    @Optional
-    @RequestParam(name = "attachement/contenttype", role = Role.POST)
-    private final String attachementContentType;
 
     private final CreateCommentActionUrl url;
 
@@ -66,10 +48,6 @@ public final class CreateCommentAction extends LoggedAction {
         this.url = url;
         this.commentable = url.getCommentable();
         this.comment = url.getComment();
-        this.attachement = url.getAttachement();
-        this.attachementFileName = url.getAttachementFileName();
-        this.attachementContentType = url.getAttachementContentType();
-        this.attachementDescription = url.getAttachementDescription();
     }
 
     @Override
@@ -79,37 +57,23 @@ public final class CreateCommentAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doDoProcessRestricted(final Member authenticatedMember) {
         try {
             final Comment newComment = commentable.addComment(comment);
-
-            if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
-                session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
-                return redirectWithError();
-            }
-
-            if (attachement != null) {
-                final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
-                                                                                                    attachement,
-                                                                                                    attachementFileName,
-                                                                                                    attachementDescription);
-
-                newComment.addFile(attachementFileMedatata);
-            }
-
+            propagateAsTeamIfPossible(newComment);
+            propagateAttachedFileIfPossible(newComment);
             session.notifyGood(Context.tr("Your comment has been added."));
         } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("Error commenting. Please notify us"));
             throw new ShallNotPassException("user couldn't create to a comment", e);
         }
-
         return session.pickPreferredPage();
     }
 
     public Url redirectWithError() {
         session.addParameter(url.getCommentParameter());
         session.addParameter(url.getCommentableParameter());
-        session.addParameter(url.getAttachementDescriptionParameter());
+        session.addParameter(url.getAttachmentDescriptionParameter());
         return Context.getSession().getLastVisitedPage();
     }
 
@@ -124,7 +88,13 @@ public final class CreateCommentAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         session.addParameter(url.getCommentParameter());
+    }
+
+    @Override
+    protected boolean verifyFile(final String filename) {
+        // TODO verify the file.
+        return false;
     }
 }
