@@ -29,6 +29,7 @@ import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -131,9 +132,10 @@ public final class IndexPage extends MasterPage {
             }
             createDiv.add(createTextDiv);
         }
-
         createBox.add(link);
-        twoColumnLayout.addRight(createBox);
+
+        // twoColumnLayout.addRight(createBox);
+        twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), WebConfiguration.getImgIdea()));
 
         // Display of a summary of all website activity since creation
         SideBarElementLayout summaryBox = new SideBarElementLayout();
