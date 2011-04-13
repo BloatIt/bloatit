@@ -1,19 +1,14 @@
 package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
-import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.model.InternalAccount;
-import com.bloatit.model.Member;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
-import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
