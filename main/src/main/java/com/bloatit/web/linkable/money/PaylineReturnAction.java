@@ -10,6 +10,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Payline;
+import com.bloatit.model.Payline.Reponse;
 import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
@@ -39,12 +40,16 @@ public class PaylineReturnAction extends Action {
         if (ack.equals("ok")) {
             try {
                 payline.validatePayment(token);
+                process.setSuccessful();
             } catch (final TokenNotfoundException e) {
                 Log.web().fatal("Token not found.", e);
             }
         } else if (ack.equals("cancel")) {
-            Context.getSession().notifyError(tr("Error in filling up your account."));
             try {
+                final Reponse paymentDetails = payline.getPaymentDetails(token);
+                String message = paymentDetails.getMessage().replace("\n", ". ");
+                Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
+                session.notifyBad("Payment canceled. Reason : " + message + ".");
                 payline.cancelPayement(token);
             } catch (final TokenNotfoundException e) {
                 Log.web().fatal("Token not found.", e);

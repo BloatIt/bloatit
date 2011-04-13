@@ -1,9 +1,14 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.mailsender.Mail;
+import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Payline;
@@ -14,7 +19,6 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 
 @ParamContainer("payline/donotify")
 public final class PaylineNotifyAction extends Action {
-
     public static final String TOKEN_CODE = "token";
 
     @RequestParam(name = TOKEN_CODE)
@@ -38,11 +42,11 @@ public final class PaylineNotifyAction extends Action {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             if (paymentDetails.isAccepted()) {
                 payline.validatePayment(token);
+                process.setSuccessful();
             } else {
-                // TODO send mail
                 payline.cancelPayement(token);
                 session.notifyBad("Your payment is refused.");
-                Log.web().error("Payment is not accepted: " + token);
+                Log.web().warn("Payment is not accepted: " + token);
             }
         } catch (final TokenNotfoundException e) {
             Log.web().error("Token not found ! ", e);
@@ -56,6 +60,8 @@ public final class PaylineNotifyAction extends Action {
 
         return new IndexPageUrl();
     }
+
+
 
     @Override
     public Url doProcessErrors() {
