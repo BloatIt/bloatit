@@ -33,7 +33,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionActionUrl;
@@ -43,7 +43,7 @@ import com.bloatit.web.url.ContributePageUrl;
  * A page that hosts the form used to contribute on a Feature
  */
 @ParamContainer("contribute")
-public final class ContributePage extends CreateUserContentForm {
+public final class ContributePage extends CreateUserContentPage {
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
@@ -92,7 +92,7 @@ public final class ContributePage extends CreateUserContentForm {
         contribInput.setComment(Context.tr("The minimun is 1€. Don't use cents."));
 
         // Input field : As team
-        addAsTeamForm(contribForm,
+        addAsTeamField(contribForm,
                       me,
                       UserTeamRight.BANK,
                       tr("In the name of"),

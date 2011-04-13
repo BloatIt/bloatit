@@ -37,7 +37,7 @@ import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -47,7 +47,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
  * Page that hosts the form to create a new feature
  */
 @ParamContainer("feature/bug/report")
-public final class ReportBugPage extends CreateUserContentForm {
+public final class ReportBugPage extends CreateUserContentPage {
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
@@ -103,8 +103,6 @@ public final class ReportBugPage extends CreateUserContentForm {
 
         // Create the form stub
         final HtmlForm reportBugForm = new HtmlForm(doReportUrl.urlString());
-        reportBugForm.enableFileUpload();
-
         formTitle.add(reportBugForm);
 
         // title of the bug
@@ -116,7 +114,7 @@ public final class ReportBugPage extends CreateUserContentForm {
         reportBugForm.add(bugTitleInput);
 
         // As team
-        addAsTeamForm(reportBugForm,
+        addAsTeamField(reportBugForm,
                       loggedUser,
                       UserTeamRight.TALK,
                       Context.tr("In the name of "),
@@ -134,7 +132,7 @@ public final class ReportBugPage extends CreateUserContentForm {
         reportBugForm.add(descriptionInput);
 
         // Language
-        addLanguageForm(reportBugForm, Context.tr("Language"), Context.tr("Language of the description."));
+        addLanguageField(reportBugForm, Context.tr("Language"), Context.tr("Language of the description."));
 
         // Level
         final FieldData levelFieldData = doReportUrl.getLevelParameter().pickFieldData();
@@ -146,7 +144,7 @@ public final class ReportBugPage extends CreateUserContentForm {
         reportBugForm.add(levelInput);
 
         // File
-        addAddAttachmentForm(reportBugForm,
+        addAddAttachmentField(reportBugForm,
                              Context.tr("Join a file"),
                              Context.tr("Optional. If attach a file, you must add an attachment description. Max 3MB."),
                              Context.tr("File description"),

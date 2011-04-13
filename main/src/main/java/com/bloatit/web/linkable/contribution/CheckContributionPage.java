@@ -56,7 +56,7 @@ import com.bloatit.web.linkable.money.Quotation.QuotationPercentEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
 import com.bloatit.web.linkable.money.QuotationEntry;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.DefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -70,7 +70,7 @@ import com.bloatit.web.url.PaylineProcessUrl;
  * A page that hosts the form used to check the contribution on a Feature
  */
 @ParamContainer("contribute/check")
-public final class CheckContributionPage extends CreateUserContentForm {
+public final class CheckContributionPage extends CreateUserContentPage {
 
     @RequestParam
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))

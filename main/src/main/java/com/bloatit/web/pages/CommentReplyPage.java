@@ -31,7 +31,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.release.ReleasePage;
-import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
@@ -40,7 +40,7 @@ import com.bloatit.web.url.CreateCommentActionUrl;
  * Page that hosts the form used to reply to an existing comment
  */
 @ParamContainer("comment/reply")
-public final class CommentReplyPage extends CreateUserContentForm {
+public final class CommentReplyPage extends CreateUserContentPage {
 
     private static final int NB_LINES = 10;
     private static final int NB_COLUMNS = 80;
@@ -70,7 +70,7 @@ public final class CommentReplyPage extends CreateUserContentForm {
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
         // as team
-        addAsTeamForm(form, loggedUser, UserTeamRight.TALK, Context.tr("In the name of"), Context.tr("Write this comment in the name of this group."));
+        addAsTeamField(form, loggedUser, UserTeamRight.TALK, Context.tr("In the name of"), Context.tr("Write this comment in the name of this group."));
 
         // Comment text
         final FieldData commentData = commentCommentActionUrl.getCommentParameter().pickFieldData();
@@ -80,7 +80,7 @@ public final class CommentReplyPage extends CreateUserContentForm {
         form.add(commentInput);
 
         // as team
-        addAddAttachmentForm(form,
+        addAddAttachmentField(form,
                              Context.tr("Join a file"),
                              Context.tr("Optional. If you join a file you have to add description."),
                              Context.tr("Describe the file"),

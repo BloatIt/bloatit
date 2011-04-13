@@ -40,14 +40,14 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 
 @ParamContainer("offer/create")
-public final class MakeOfferPage extends CreateUserContentForm {
+public final class MakeOfferPage extends CreateUserContentPage {
 
     @RequestParam
     @ParamConstraint(optionalErrorMsg = @tr("The feature id is not optional !"))
@@ -123,7 +123,7 @@ public final class MakeOfferPage extends CreateUserContentForm {
         offerForm.add(priceInput);
 
         // asTeam
-        addAsTeamForm(offerForm,
+        addAsTeamField(offerForm,
                       me,
                       UserTeamRight.TALK,
                       Context.tr("In the name of "),
@@ -145,7 +145,7 @@ public final class MakeOfferPage extends CreateUserContentForm {
         offerForm.add(descriptionInput);
 
         // locale
-        addLanguageForm(offerForm, //
+        addLanguageField(offerForm, //
                         Context.tr("description langue"), //
                         Context.tr("The language in which you have maid the description."));
 

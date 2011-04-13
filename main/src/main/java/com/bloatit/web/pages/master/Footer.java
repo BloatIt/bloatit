@@ -6,7 +6,6 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
-import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
@@ -23,7 +22,6 @@ public class Footer extends HtmlDiv {
         {
             linkBlock.add(new HtmlDiv("footer_link").add(new IndexPageUrl().getHtmlLink(Context.tr("Home page"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new SpecialsPageUrl().getHtmlLink(Context.tr("All pages"))));
-            linkBlock.add(new HtmlDiv("footer_link").add(new FileUploadPageUrl().getHtmlLink(Context.tr("Upload file"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new CreateFeaturePageUrl().getHtmlLink(Context.tr("Create a feature"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new AddSoftwarePageUrl().getHtmlLink(Context.tr("Add a software"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language"))));

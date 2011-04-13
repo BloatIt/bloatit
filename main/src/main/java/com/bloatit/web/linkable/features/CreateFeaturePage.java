@@ -35,7 +35,7 @@ import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.usercontent.CreateUserContentForm;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -45,7 +45,7 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
  * Page that hosts the form to create a new Feature
  */
 @ParamContainer("feature/create")
-public final class CreateFeaturePage extends CreateUserContentForm {
+public final class CreateFeaturePage extends CreateUserContentPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 20;
     private static final int SPECIF_INPUT_NB_COLUMNS = 100;
@@ -117,7 +117,7 @@ public final class CreateFeaturePage extends CreateUserContentForm {
         createFeatureForm.add(softwareInput);
 
         // As team input
-        addAsTeamForm(createFeatureForm,
+        addAsTeamField(createFeatureForm,
                       loggedUser,
                       UserTeamRight.TALK,
                       tr("In the name of"),
@@ -167,10 +167,10 @@ public final class CreateFeaturePage extends CreateUserContentForm {
         createFeatureForm.add(specificationInput);
 
         // Language
-        addLanguageForm(createFeatureForm, tr("Description language"), tr("The language of the description you just wrote."));
+        addLanguageField(createFeatureForm, tr("Description language"), tr("The language of the description you just wrote."));
 
         // Attachment
-        addAddAttachmentForm(createFeatureForm,
+        addAddAttachmentField(createFeatureForm,
                              tr("join a file"),
                              tr("You can join a file on this feature description if you need to."),
                              tr("file description"),

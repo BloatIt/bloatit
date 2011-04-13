@@ -19,28 +19,22 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.components.SideBarUserContentBlock;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.BreadcrumbTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddAttachementPageUrl;
 
-/**
- * Page that hosts the form to create a new feature
- */
 @ParamContainer("usercontent/attachfile")
-public final class AddAttachementPage extends LoggedPage {
+public final class AddAttachementPage extends CreateUserContentPage {
 
     @SuppressWarnings("rawtypes")
     @RequestParam(name = "user_content")
@@ -49,7 +43,7 @@ public final class AddAttachementPage extends LoggedPage {
     private final AddAttachementPageUrl url;
 
     public AddAttachementPage(final AddAttachementPageUrl url) {
-        super(url);
+        super(url, new AddAttachementActionUrl(url.getUserContent()));
         this.url = url;
         userContent = url.getUserContent();
     }
@@ -84,36 +78,17 @@ public final class AddAttachementPage extends LoggedPage {
     }
 
     private HtmlElement generateReleaseCreationForm() {
-        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachment"), 1);
-
-        final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(userContent);
-
-        // Create the form stub
-        final HtmlForm form = new HtmlForm(formUrl.urlString());
-        form.enableFileUpload();
-
-        title.add(form);
-
-        // attachment
-        final FieldData attachmentDescriptiondData = formUrl.getAttachmentDescriptionParameter().pickFieldData();
-        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(),
-                                                                            Context.tr("Attachment description"));
-        attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
-        attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());
-        attachmentDescriptionInput.setComment(tr("Mandatory"));
-        form.add(attachmentDescriptionInput);
-
-        final FieldData attachedFileData = formUrl.getAttachmentParameter().pickFieldData();
-        final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
-        attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
-        attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
-        attachedFileInput.setComment("You must attach a file. Maximum size is 3MB");
-        form.add(attachedFileInput);
-
-        form.add(new HtmlSubmit(tr("Submit")));
-
         final HtmlDiv group = new HtmlDiv();
+        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachment"), 1);
+        final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(userContent);
+        final HtmlForm form = new HtmlForm(formUrl.urlString());
+        
+        form.enableFileUpload();
+        addAddAttachmentField(form, tr("Attached file"), tr("Mandatory"), Context.tr("Attachment description"), tr("You must attach a file. Maximum size is 3MB"));
+        form.add(new HtmlSubmit(tr("Submit")));
+        
         group.add(title);
+        title.add(form);
         return group;
     }
 
