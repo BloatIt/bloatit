@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-13 10:35+0200\n"
+"POT-Creation-Date: 2011-04-13 13:09+0200\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -151,9 +151,8 @@ msgid "You must type a comment"
 msgstr "Vous devez taper un commentaire"
 
 #: com/bloatit/web/actions/CreateCommentAction.java:41
-#, fuzzy
 msgid "The comment must be at least 2 characters long."
-msgstr "Le titre doit avoir au minimum 10 caractères."
+msgstr "Le commentaire doit faire au moins 2 caractères de long."
 
 #: com/bloatit/web/actions/CreateCommentAction.java:87
 #: com/bloatit/web/linkable/bugs/ReportBugAction.java:142
@@ -628,7 +627,7 @@ msgid "Software list"
 msgstr "Liste des logiciels"
 
 #: com/bloatit/web/linkable/softwares/SoftwareListPage.java:118
-#: com/bloatit/web/pages/master/Menu.java:21
+#: com/bloatit/web/pages/master/Menu.java:20
 msgid "Softwares"
 msgstr "Logiciels"
 
@@ -853,7 +852,6 @@ msgid "Logout success."
 msgstr "Déconnexion réussie."
 
 #: com/bloatit/web/linkable/login/LogoutAction.java:61
-#, fuzzy
 msgid ""
 "You should log in before you log out ... Note : if you log in using the form "
 "below, you'll be immediatly logged out (yes this is a stupid behavior, but "
@@ -862,7 +860,7 @@ msgstr ""
 "Vous devez vous connecter avant de vous déconnecter... Notez : si vous "
 "connectez en utilisant le champs si dessous, vous allez être immédiatement "
 "déconnecté (oui, c'est un comportement stupide, mais nous essayons "
-"d'utiliser du code générique ... et parfois générique signifie stupide)"
+"d'utiliser du code générique ... et parfois générique signifie stupide)."
 
 #: com/bloatit/web/linkable/login/LoginPage.java:65
 #: com/bloatit/web/linkable/login/SignUpPage.java:69
@@ -883,7 +881,7 @@ msgstr "Mot de passe"
 #: com/bloatit/web/linkable/login/LoginPage.java:78
 #: com/bloatit/web/linkable/login/LoginPage.java:90
 #: com/bloatit/web/linkable/login/LoginPage.java:105
-#: com/bloatit/web/pages/master/SessionBar.java:88
+#: com/bloatit/web/pages/master/SessionBar.java:62
 msgctxt "Login (verb)"
 msgid "Login"
 msgstr "Se connecter"
@@ -898,52 +896,45 @@ msgstr "Mot de passe perdu ?"
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:31
 msgid "Login cannot be blank."
-msgstr ""
+msgstr "Le champ login ne peut être vide."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:32
-#, fuzzy
 msgid "Number of characters for login has to be superior to 4."
-msgstr "Le nombre de caractère pour le login doit être supérieur à 4"
+msgstr "Le nombre de caractère pour le login doit être supérieur à 4."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:33
-#, fuzzy
 msgid "Number of characters for login has to be inferior to 15."
-msgstr "Le nombre de caractères pour le login doit être inférieur à 15"
+msgstr "Le nombre de caractères pour le login doit être inférieur à 15."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:37
-#, fuzzy
 msgid "Password cannot be blank."
-msgstr "Mot de passe perdu ?"
+msgstr "Le champ mot de passe ne peut être vide."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:38
 #: com/bloatit/web/linkable/login/SignUpAction.java:44
-#, fuzzy
 msgid "Number of characters for password has to be superior to 4."
-msgstr "Le nombre de caractère pour le mot de passe doit être supérieur à 4"
+msgstr "Le nombre de caractère pour le mot de passe doit être supérieur à 4."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:39
 #: com/bloatit/web/linkable/login/SignUpAction.java:45
-#, fuzzy
 msgid "Number of characters for password has to be inferior to 15."
-msgstr "Le nombre de caractères pour le mot de passe doit être inférieur à 15"
+msgstr "Le nombre de caractères pour le mot de passe doit être inférieur à 15."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:43
 msgid "Password confirmation cannot be blank."
-msgstr ""
+msgstr "Le champ de confirmation du mot de passe ne peut être vide."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:49
 msgid "Email cannot be blank."
-msgstr ""
+msgstr "Le champ email ne peut être vide."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:50
-#, fuzzy
 msgid "Number of characters for email has to be superior to 5."
-msgstr "Le nombre de caractère pour l'email doit être supérieur à 5"
+msgstr "Le nombre de caractère pour l'email doit être supérieur à 5."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:51
-#, fuzzy
 msgid "Number of characters for email address has to be inferior to 30."
-msgstr "Le nombre de caractères pour l'email doit être inférieur à 30"
+msgstr "Le nombre de caractères pour l'email doit être inférieur à 30."
 
 #: com/bloatit/web/linkable/login/SignUpAction.java:86
 #, java-format
@@ -1118,10 +1109,6 @@ msgstr "Résultat de la transaction"
 msgid "Total to pay"
 msgstr "Total à payer"
 
-#: com/bloatit/web/linkable/money/PaylineReturnAction.java:46
-msgid "Error in filling up your account."
-msgstr "Erreur lors du chargement de votre compte."
-
 #: com/bloatit/web/linkable/money/AccountChargingPage.java:44
 #: com/bloatit/web/linkable/money/AccountChargingPage.java:60
 msgid "Charge your account"
@@ -1239,9 +1226,8 @@ msgid "Index"
 msgstr "Accueil"
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:81
-#, fuzzy
 msgid "You are not allowed to create a new feature"
-msgstr "Vous n'êtes pas autorisé à créer une idée."
+msgstr "Vous n'êtes pas autorisé à créer une demande."
 
 #: com/bloatit/web/linkable/features/CreateFeaturePage.java:88
 msgid "Create a new feature"
@@ -1499,7 +1485,7 @@ msgid "View features - search features"
 msgstr "Voir les demandes - Rechercher des demandes"
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:310
-#: com/bloatit/web/pages/master/Menu.java:20
+#: com/bloatit/web/pages/master/Menu.java:19
 msgid "Features"
 msgstr "Demandes"
 
@@ -1530,8 +1516,8 @@ msgstr "Contribuer"
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:247
 msgid "You are a developer and want to be paid to achieve this request?"
 msgstr ""
-"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette "
-"demande ?"
+"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette demande "
+"?"
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:267
 #, java-format
@@ -1547,8 +1533,8 @@ msgid ""
 "An offer has already been made on this feature. However, you can <0::make an "
 "alternative offer>."
 msgstr ""
-"Une offre a déjà été faite sur cette demande. Vous pouvez cependant <0::"
-"créer une offre alternative>."
+"Une offre a déjà été faite sur cette demande. Vous pouvez cependant "
+"<0::créer une offre alternative>."
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:295
 msgid "There is no release yet."
@@ -2256,9 +2242,32 @@ msgstr ""
 "Pour des raisons obscures, vous n'êtes pas autorisé à contribuer à cette "
 "demande."
 
-#: com/bloatit/web/linkable/contribution/ContributionProcess.java:114
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:121
 msgid "Your account has been credited."
 msgstr "Votre compte a été crédité."
+
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:124
+msgid "Accepted payment on elveos.org"
+msgstr "Paiement accepté sur le site elveos.org."
+
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:126
+#, java-format
+msgid ""
+"Dear {0}, \n"
+"We are pleased to announce that your payment {1} to http://elveos.org has "
+"been validated \n"
+"We thank you for your trust."
+msgstr ""
+"Cher {0},\n"
+"Nous sommes heureux de vous annoncer que votre paiement {1} à "
+"http://elveos.org a été validé.\n"
+"Nous vous remercions de votre confiance."
+
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:131
+msgid "An error prevented us from sending you a mail. Please notify us."
+msgstr ""
+"Une erreur nous empèchent de vous afficher certaines informations. S'il vous "
+"plait informez nous du problème."
 
 #: com/bloatit/web/linkable/contribution/ContributePage.java:83
 msgid "Choose amount: "
@@ -2420,13 +2429,13 @@ msgstr "Contribuer à une demande - verification"
 msgid "Contribute - Check"
 msgstr "Contribuer - Vérification"
 
-#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:61
-#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:72
+#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:62
+#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:73
 #, java-format
 msgid "Documentation entry {0} doesn''t exist."
 msgstr "L''entrée de documentation {0} n''existe pas."
 
-#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:65
+#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:66
 #, java-format
 msgid ""
 "Documentation file {0} doesn''t exist in language {1}, using english instead"
@@ -2813,24 +2822,21 @@ msgstr "Contacts"
 
 #: com/bloatit/web/pages/master/Footer.java:42
 msgid ""
-"This website use Bloatit framework, and is under GNU Affero Public Licence."
+"This website use Bloatit framework, and is under GNU Affero General Public "
+"Licence."
 msgstr ""
 "Ce site utilise Bloatit framework, et est sous la GNU Affero Public Licence."
-
-#: com/bloatit/web/pages/master/Menu.java:22
-msgid "Brainstorm"
-msgstr "Brainstorming"
 
 #: com/bloatit/web/pages/master/Menu.java:26
 #: com/bloatit/web/pages/DocumentationPage.java:87
 msgid "Documentation"
 msgstr "Documentation"
 
-#: com/bloatit/web/pages/master/SessionBar.java:84
+#: com/bloatit/web/pages/master/SessionBar.java:58
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: com/bloatit/web/pages/master/SessionBar.java:89
+#: com/bloatit/web/pages/master/SessionBar.java:63
 msgctxt "Sign up (verb)"
 msgid "Sign up"
 msgstr "S'inscrire"
@@ -2907,6 +2913,10 @@ msgstr "Liste numérotée"
 msgid "Test"
 msgstr "Test"
 
+#: com/bloatit/web/pages/IndexPage.java:56
+msgid "Get paid to create free software"
+msgstr "Soyez payé pour créer des logiciels libres"
+
 #: com/bloatit/web/pages/IndexPage.java:59
 msgid "Elveos's presentation"
 msgstr "Presentation d'Elveos"
@@ -2917,9 +2927,8 @@ msgstr "Demandes sélectionnées"
 
 #: com/bloatit/web/pages/IndexPage.java:123
 #: com/bloatit/web/pages/IndexPage.java:130
-#, fuzzy
 msgid "Request a feature"
-msgstr "Créer une nouvelle demande"
+msgstr "Créer une demande"
 
 #: com/bloatit/web/pages/IndexPage.java:160
 msgid "Home"
@@ -2991,30 +3000,26 @@ msgid "Members list"
 msgstr "Liste des membres"
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:143
-#, fuzzy
 msgid "Sorry we messed up and lost the file you uploaded. Please try again."
 msgstr ""
 "Désolé nous avons fait une bétise est perdu le fichier que vous avez "
-"uploadé. Essayez à nouveau"
+"uploadé. Essayez à nouveau."
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:147
-#, fuzzy
 msgid "Avatars can only be images. Please upload another file."
 msgstr ""
 "Les avatars ne peuvent être que des images. S'il vous plait, uploadez un "
-"autre fichier"
+"autre fichier."
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:151
-#, fuzzy
 msgid "Avatars have to be smaller than 50Kb. Please upload another file."
-msgstr "Les avatars doivent êtres plus petits que 50Ko"
+msgstr "Les avatars doivent êtres plus petits que 50Ko."
 
 #: com/bloatit/framework/utils/FileConstraintChecker.java:154
-#, fuzzy
 msgid "Avatars have to be smaller than 64x64. Please upload another file."
-msgstr "Les avatars doivent être plus petits que 64x64"
+msgstr "Les avatars doivent être plus petits que 64x64."
 
-#: com/bloatit/framework/utils/i18n/CurrencyLocale.java:77
+#: com/bloatit/framework/utils/i18n/CurrencyLocale.java:78
 msgid ""
 "We can't handle properly the country you selected, considering you're from "
 "the US"
@@ -3064,6 +3069,12 @@ msgid "{0} millisecond"
 msgid_plural "{0} milliseconds"
 msgstr[0] "{0} milliseconde"
 msgstr[1] "{0} millisecondes"
+
+#~ msgid "Error in filling up your account."
+#~ msgstr "Erreur lors du chargement de votre compte."
+
+#~ msgid "Brainstorm"
+#~ msgstr "Brainstorming"
 
 #~ msgid "Number of characters for fullname has to be superior to 4"
 #~ msgstr "Le nombre de caractère pour le login doit être supérieur à 4"

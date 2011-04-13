@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-13 10:35+0200\n"
+"POT-Creation-Date: 2011-04-13 13:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -614,7 +614,7 @@ msgid "Software list"
 msgstr ""
 
 #: com/bloatit/web/linkable/softwares/SoftwareListPage.java:118
-#: com/bloatit/web/pages/master/Menu.java:21
+#: com/bloatit/web/pages/master/Menu.java:20
 msgid "Softwares"
 msgstr ""
 
@@ -841,7 +841,7 @@ msgstr ""
 #: com/bloatit/web/linkable/login/LoginPage.java:78
 #: com/bloatit/web/linkable/login/LoginPage.java:90
 #: com/bloatit/web/linkable/login/LoginPage.java:105
-#: com/bloatit/web/pages/master/SessionBar.java:88
+#: com/bloatit/web/pages/master/SessionBar.java:62
 msgctxt "Login (verb)"
 msgid "Login"
 msgstr ""
@@ -1059,10 +1059,6 @@ msgstr ""
 
 #: com/bloatit/web/linkable/money/HtmlQuotation.java:127
 msgid "Total to pay"
-msgstr ""
-
-#: com/bloatit/web/linkable/money/PaylineReturnAction.java:46
-msgid "Error in filling up your account."
 msgstr ""
 
 #: com/bloatit/web/linkable/money/AccountChargingPage.java:44
@@ -1408,7 +1404,7 @@ msgid "View features - search features"
 msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:310
-#: com/bloatit/web/pages/master/Menu.java:20
+#: com/bloatit/web/pages/master/Menu.java:19
 msgid "Features"
 msgstr ""
 
@@ -2103,8 +2099,25 @@ msgstr ""
 msgid "For obscure reasons, you are not allowed to contribute on this feature."
 msgstr ""
 
-#: com/bloatit/web/linkable/contribution/ContributionProcess.java:114
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:121
 msgid "Your account has been credited."
+msgstr ""
+
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:124
+msgid "Accepted payment on elveos.org"
+msgstr ""
+
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:126
+#, java-format
+msgid ""
+"Dear {0}, \n"
+"We are pleased to announce that your payment {1} to http://elveos.org has "
+"been validated \n"
+"We thank you for your trust."
+msgstr ""
+
+#: com/bloatit/web/linkable/contribution/ContributionProcess.java:131
+msgid "An error prevented us from sending you a mail. Please notify us."
 msgstr ""
 
 #: com/bloatit/web/linkable/contribution/ContributePage.java:83
@@ -2259,13 +2272,13 @@ msgstr ""
 msgid "Contribute - Check"
 msgstr ""
 
-#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:61
-#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:72
+#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:62
+#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:73
 #, java-format
 msgid "Documentation entry {0} doesn''t exist."
 msgstr ""
 
-#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:65
+#: com/bloatit/web/linkable/documentation/HtmlDocumentationRenderer.java:66
 #, java-format
 msgid ""
 "Documentation file {0} doesn''t exist in language {1}, using english instead"
@@ -2650,11 +2663,8 @@ msgstr ""
 
 #: com/bloatit/web/pages/master/Footer.java:42
 msgid ""
-"This website use Bloatit framework, and is under GNU Affero Public Licence."
-msgstr ""
-
-#: com/bloatit/web/pages/master/Menu.java:22
-msgid "Brainstorm"
+"This website use Bloatit framework, and is under GNU Affero General Public "
+"Licence."
 msgstr ""
 
 #: com/bloatit/web/pages/master/Menu.java:26
@@ -2662,11 +2672,11 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: com/bloatit/web/pages/master/SessionBar.java:84
+#: com/bloatit/web/pages/master/SessionBar.java:58
 msgid "Logout"
 msgstr ""
 
-#: com/bloatit/web/pages/master/SessionBar.java:89
+#: com/bloatit/web/pages/master/SessionBar.java:63
 msgctxt "Sign up (verb)"
 msgid "Sign up"
 msgstr ""
@@ -2741,6 +2751,10 @@ msgstr ""
 
 #: com/bloatit/web/pages/TestPage.java:159
 msgid "Test"
+msgstr ""
+
+#: com/bloatit/web/pages/IndexPage.java:56
+msgid "Get paid to create free software"
 msgstr ""
 
 #: com/bloatit/web/pages/IndexPage.java:59
@@ -2839,7 +2853,7 @@ msgstr ""
 msgid "Avatars have to be smaller than 64x64. Please upload another file."
 msgstr ""
 
-#: com/bloatit/framework/utils/i18n/CurrencyLocale.java:77
+#: com/bloatit/framework/utils/i18n/CurrencyLocale.java:78
 msgid ""
 "We can't handle properly the country you selected, considering you're from "
 "the US"
