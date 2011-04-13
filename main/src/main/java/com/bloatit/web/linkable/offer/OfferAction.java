@@ -12,7 +12,6 @@
 package com.bloatit.web.linkable.offer;
 
 import java.math.BigDecimal;
-import java.util.Locale;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
@@ -31,9 +30,8 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
-import com.bloatit.model.Team;
-import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.linkable.features.FeatureTabPane;
+import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
@@ -42,7 +40,7 @@ import com.bloatit.web.url.OfferActionUrl;
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/offer")
-public final class OfferAction extends LoggedAction {
+public final class OfferAction extends CreateUserContentAction {
 
     @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target feature is mandatory to make an offer."))
     private final Feature feature;
@@ -59,9 +57,6 @@ public final class OfferAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     private final String description;
-
-    @RequestParam(role = Role.POST)
-    private final String locale;
 
     @RequestParam(role = Role.POST)
     private final Integer daysBeforeValidation;
@@ -81,22 +76,16 @@ public final class OfferAction extends LoggedAction {
     @RequestParam(role = Role.POST, suggestedValue = "true")
     private final Boolean isFinished;
 
-    @RequestParam(role = Role.POST)
-    @Optional
-    private final Team team;
-
     private final OfferActionUrl url;
 
     public OfferAction(final OfferActionUrl url) {
         super(url);
         this.url = url;
         this.description = url.getDescription();
-        this.locale = url.getLocale();
         this.expiryDate = url.getExpiryDate();
         this.price = url.getPrice();
         this.feature = url.getFeature();
         this.draftOffer = url.getDraftOffer();
-        this.team = url.getTeam();
         this.daysBeforeValidation = url.getDaysBeforeValidation();
         this.percentFatal = url.getPercentFatal();
         this.percentMajor = url.getPercentMajor();
@@ -104,7 +93,7 @@ public final class OfferAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doDoProcessRestricted(final Member authenticatedMember) {
 
         Offer constructingOffer;
         try {
@@ -113,20 +102,17 @@ public final class OfferAction extends LoggedAction {
                 constructingOffer = feature.addOffer(session.getAuthToken().getMember(),
                                                      price,
                                                      description,
-                                                     new Locale(locale),
+                                                     getLocale(),
                                                      expiryDate.getJavaDate(),
                                                      daysBeforeValidation * DateUtils.SECOND_PER_DAY);
-                if (team != null) {
-                    constructingOffer.setAsTeam(team);
+                if (getTeam() != null) {
+                    constructingOffer.setAsTeam(getTeam());
                 }
                 constructingMilestone = constructingOffer.getMilestonees().iterator().next();
             } else {
                 constructingOffer = draftOffer;
-                constructingMilestone = draftOffer.addMilestone(price,
-                                                                description,
-                                                                new Locale(locale),
-                                                                expiryDate.getJavaDate(),
-                                                                daysBeforeValidation * DateUtils.SECOND_PER_DAY);
+                constructingMilestone = draftOffer.addMilestone(price, description, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
+                        * DateUtils.SECOND_PER_DAY);
             }
             if (percentFatal != null && percentMajor != null) {
                 constructingMilestone.updateMajorFatalPercent(percentFatal, percentMajor);
@@ -163,7 +149,7 @@ public final class OfferAction extends LoggedAction {
             session.notifyBad(Context.tr("The specified offer is not editable. You cannot add a lot in it."));
             return session.pickPreferredPage();
         }
-        if (team != null && !team.getUserTeamRight(authenticatedMember).contains(UserTeamRight.TALK)) {
+        if (getTeam() != null && !getTeam().getUserTeamRight(authenticatedMember).contains(UserTeamRight.TALK)) {
             session.notifyBad(Context.tr("You cannot talk on the behalf of this team."));
             return session.pickPreferredPage();
         }
@@ -187,15 +173,18 @@ public final class OfferAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         session.addParameter(url.getDescriptionParameter());
-        session.addParameter(url.getLocaleParameter());
         session.addParameter(url.getExpiryDateParameter());
         session.addParameter(url.getPriceParameter());
-        session.addParameter(url.getTeamParameter());
         session.addParameter(url.getDaysBeforeValidationParameter());
         session.addParameter(url.getPercentFatalParameter());
         session.addParameter(url.getPercentMajorParameter());
         session.addParameter(url.getIsFinishedParameter());
+    }
+
+    @Override
+    protected boolean verifyFile(final String filename) {
+        return true;
     }
 }

@@ -104,8 +104,6 @@ public final class AddAttachementAction extends LoggedAction {
             return Context.getSession().pickPreferredPage();
         }
 
-        FileMetadataManager.createFromTempFile(authenticatedMember, attachement, attachementFileName, attachementDescription);
-
         try {
             userContent.addFile(file);
             session.notifyGood(Context.tr("Attachement add successfuly !"));

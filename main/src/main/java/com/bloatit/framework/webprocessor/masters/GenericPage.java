@@ -7,6 +7,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
@@ -51,6 +52,11 @@ public abstract class GenericPage extends Page {
     @Override
     public final void create() throws RedirectException {
         Log.framework().trace("Writing page: " + thisUrl.urlString());
+        if (!thisUrl.getMessages().isEmpty()) {
+            session.notifyList(thisUrl.getMessages());
+            Log.framework().trace("Error messages. Abording the page creation.");
+            throw new PageNotFoundException();
+        }
         super.add(new XmlText("<!DOCTYPE html>"));
 
         final HtmlBranch html = new HtmlGenericElement("html");
