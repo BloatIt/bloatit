@@ -28,6 +28,8 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgFeatureStateDeveloping;
     private String imgFeatureStateFunding;
     private String imgIdea;
+    private String imgTeam;
+    private String imgMessage;
 
     private WebConfiguration() {
         super();
@@ -155,6 +157,14 @@ public class WebConfiguration extends ReloadableConfiguration {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgIdea;
     }
 
+    public static String getImgMessage() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgMessage;
+    }
+    
+    public static String getImgTeam() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgTeam;
+    }
+    
     protected void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("web.properties");
 
@@ -177,6 +187,8 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgFeatureStateDeveloping = properties.getString("bloatit.img.feature.state.developing");
         imgFeatureStateFunding = properties.getString("bloatit.img.feature.state.funding");
         imgIdea = properties.getString("bloatit.img.idea");
+        imgTeam = properties.getString("bloatit.img.team");
+        imgMessage = properties.getString("bloatit.img.message");
     }
 
     public static void load() {
@@ -192,5 +204,4 @@ public class WebConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
-
 }

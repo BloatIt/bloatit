@@ -178,21 +178,20 @@ public class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     *
+     * 
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
     public static DaoMember getByLogin(final String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.getNamedQuery("member.byLogin");
-        q.setString("login", login);
+        final Criteria q = session.createCriteria(DaoMember.class).add(Restrictions.like("login", login).ignoreCase());
         return (DaoMember) q.uniqueResult();
     }
 
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     *
+     * 
      * @param login the member login.
      * @param password the password of the member "login". It is a string
      *            corresponding to the string in the database. This method does
@@ -218,7 +217,7 @@ public class DaoMember extends DaoActor {
     /**
      * Create a member. The member login must be unique, and you cannot change
      * it.
-     *
+     * 
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param locale the locale of the user.
@@ -242,7 +241,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     *
+     * 
      * @param locale is the locale in which this user is. (The country and
      *            language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
@@ -358,7 +357,7 @@ public class DaoMember extends DaoActor {
     /**
      * Must be only used in update script. Salt should be a non updatable value
      * after that.
-     *
+     * 
      * @param salt the new salt.
      */
     void setSalt(final String salt) {
@@ -372,7 +371,7 @@ public class DaoMember extends DaoActor {
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
      * PROTECTED teams. ]
-     *
+     * 
      * @return All the teams this member is in. (Use a HQL query)
      */
     public PageIterable<DaoTeam> getTeams() {
@@ -417,7 +416,8 @@ public class DaoMember extends DaoActor {
 
     /**
      * @return All the features created by this member.
-     * @param asMemberOnly the result must contains only result that are not done as name of a team.
+     * @param asMemberOnly the result must contains only result that are not
+     *            done as name of a team.
      */
     public PageIterable<DaoFeature> getFeatures(boolean asMemberOnly) {
         return getUserContent(DaoFeature.class, asMemberOnly);
@@ -432,15 +432,17 @@ public class DaoMember extends DaoActor {
 
     /**
      * @return All the contributions created by this member.
-     * @param asMemberOnly the result must contains only result that are not done as name of a team.
+     * @param asMemberOnly the result must contains only result that are not
+     *            done as name of a team.
      */
     public PageIterable<DaoContribution> getContributions(boolean asMemberOnly) {
-        return getUserContent(DaoContribution.class , asMemberOnly);
+        return getUserContent(DaoContribution.class, asMemberOnly);
     }
 
     /**
      * @return All the Comments created by this member.
-     * @param asMemberOnly the result must contains only result that are not done as name of a team.
+     * @param asMemberOnly the result must contains only result that are not
+     *            done as name of a team.
      */
     public PageIterable<DaoComment> getComments(boolean asMemberOnly) {
         return getUserContent(DaoComment.class, asMemberOnly);
@@ -448,7 +450,8 @@ public class DaoMember extends DaoActor {
 
     /**
      * @return All the Offers created by this member.
-     * @param asMemberOnly the result must contains only result that are not done as name of a team.
+     * @param asMemberOnly the result must contains only result that are not
+     *            done as name of a team.
      */
     public PageIterable<DaoOffer> getOffers(boolean asMemberOnly) {
         return getUserContent(DaoOffer.class, asMemberOnly);
@@ -456,7 +459,8 @@ public class DaoMember extends DaoActor {
 
     /**
      * @return All the Translations created by this member.
-     * @param asMemberOnly the result must contains only result that are not done as name of a team.
+     * @param asMemberOnly the result must contains only result that are not
+     *            done as name of a team.
      */
     public PageIterable<DaoTranslation> getTranslations(boolean asMemberOnly) {
         return getUserContent(DaoTranslation.class, asMemberOnly);
@@ -513,12 +517,16 @@ public class DaoMember extends DaoActor {
 
     /**
      * Base method to all the get something created by the user.
-     * @param asMemberOnly the result must contains only result that are not done as name of a team.
+     * 
+     * @param asMemberOnly the result must contains only result that are not
+     *            done as name of a team.
      */
     private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass, boolean asMemberOnly) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
-        final Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author"+ (asMemberOnly?" AND x.asTeam = null":""));
-        final Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName() + " as x where x.member = :author"+ (asMemberOnly?" AND x.asTeam = null":""));
+        final Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author"
+                + (asMemberOnly ? " AND x.asTeam = null" : ""));
+        final Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName() + " as x where x.member = :author"
+                + (asMemberOnly ? " AND x.asTeam = null" : ""));
         final QueryCollection<T> q = new QueryCollection<T>(query, size);
         q.setEntity("author", this);
         return q;
