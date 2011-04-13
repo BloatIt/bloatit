@@ -11,9 +11,10 @@ import com.bloatit.web.url.PaylineProcessUrl;
 
 @ParamContainer("payline/process")
 public class PaylineProcess extends WebProcess {
-
     @RequestParam
     private final PaymentProcess parentProcess;
+
+    private boolean success = false;
 
     private final PaylineProcessUrl url;
 
@@ -45,5 +46,26 @@ public class PaylineProcess extends WebProcess {
     @Override
     public void load() {
         parentProcess.load();
+    }
+
+    /**
+     * Indicates that the payment process is successful
+     */
+    public void setSuccessful() {
+        this.success = true;
+    }
+
+    /**
+     * Indicates if the process was successful or not.
+     * <p>
+     * Note: To be successful, a call to {@link #setSuccessful()} must be done
+     * before. The default value is not successful.
+     * </p>
+     * 
+     * @return <i>true</i> when the process is successful, <i>false</i>
+     *         otherwise
+     */
+    public boolean isSuccessful() {
+        return success;
     }
 }

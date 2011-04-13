@@ -27,8 +27,8 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
 
     public static class InputField extends InputBlock {
 
-        private HtmlSimpleInput input;
-        private HtmlDiv content;
+        private final HtmlSimpleInput input;
+        private final HtmlDiv content;
 
         public InputField() {
             content = new HtmlDiv("money_input");

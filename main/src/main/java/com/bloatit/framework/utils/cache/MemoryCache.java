@@ -17,11 +17,12 @@ public class MemoryCache implements Cache {
     private static MemoryCache instance;
 
     @SuppressWarnings("unchecked")
-    private Map<String, String> cache = Collections.synchronizedMap(new LinkedHashMap<String, String>() {
+    private final Map<String, String> cache = Collections.synchronizedMap(new LinkedHashMap<String, String>() {
         private static final long serialVersionUID = 8626612206780654805L;
+
         @Override
-        protected boolean removeEldestEntry(Entry<String, String> eldest) {
-            boolean remove = size() > FrameworkConfiguration.getMemoryCacheMaxSize();
+        protected boolean removeEldestEntry(final Entry<String, String> eldest) {
+            final boolean remove = size() > FrameworkConfiguration.getMemoryCacheMaxSize();
             if (remove) {
                 Log.framework().info("Removing eldest entry from Memory cache. (size " + size() + ")");
             }
@@ -53,7 +54,7 @@ public class MemoryCache implements Cache {
      * @param keyGenerator a String that will ba hashed to serve as a key
      */
     @Override
-    public void cache(String keyGenerator, String value) {
+    public void cache(final String keyGenerator, final String value) {
         if (keyGenerator == null || keyGenerator.isEmpty()) {
             throw new NonOptionalParameterException("Trying to cache with a null or empty key");
         }
@@ -64,7 +65,7 @@ public class MemoryCache implements Cache {
     }
 
     @Override
-    public String get(String keyGenerator) {
+    public String get(final String keyGenerator) {
         return cache.get(sha1(keyGenerator));
     }
 

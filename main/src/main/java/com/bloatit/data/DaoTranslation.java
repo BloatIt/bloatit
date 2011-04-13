@@ -62,7 +62,7 @@ public class DaoTranslation extends DaoKudosable {
 
     /**
      * Create a new translation.
-     *
+     * 
      * @param member
      * @param description
      * @param locale

@@ -35,7 +35,7 @@ public class JsShowHide {
 
         if (!state) {
             for (final HtmlBranch listener : listeners) {
-                 listener.addAttribute("style", "display: none;");
+                listener.addAttribute("style", "display: none;");
             }
         }
 

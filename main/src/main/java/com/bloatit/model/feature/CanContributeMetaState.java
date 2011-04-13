@@ -29,7 +29,7 @@ public abstract class CanContributeMetaState extends AbstractFeatureState {
 
     /**
      * Instantiates a new can contribute meta state.
-     *
+     * 
      * @param feature the feature on which this state apply.
      */
     public CanContributeMetaState(final FeatureImplementation feature) {
@@ -39,14 +39,15 @@ public abstract class CanContributeMetaState extends AbstractFeatureState {
     /**
      * Notify that a new contribution arrived. This method is called each time a
      * new contribution is done on the feature.
-     *
+     * 
      * @return the abstract feature state
      */
     protected abstract AbstractFeatureState notifyAddContribution();
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.feature.AbstractFeatureState#eventAddContribution()
+     * @see
+     * com.bloatit.model.feature.AbstractFeatureState#eventAddContribution()
      */
     @Override
     public final AbstractFeatureState eventAddContribution() {
@@ -57,7 +58,7 @@ public abstract class CanContributeMetaState extends AbstractFeatureState {
      * Test if the current feature should pass in DevelopingState. To pass in
      * {@link DevelopingState} state we have to have a selected offer, enough
      * contribution and the validation period spent.
-     *
+     * 
      * @return the abstract feature state (Developing or this.)
      */
     protected final AbstractFeatureState handleEvent() {

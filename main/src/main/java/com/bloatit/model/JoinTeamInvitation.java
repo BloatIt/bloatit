@@ -19,9 +19,9 @@ package com.bloatit.model;
 import com.bloatit.data.DaoJoinTeamInvitation;
 
 /**
- * This is an invitation to join a team. Some teams are not public, and you
- * have to have an invitation to join it.
- *
+ * This is an invitation to join a team. Some teams are not public, and you have
+ * to have an invitation to join it.
+ * 
  * @author Thomas Guyard
  */
 public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation> {

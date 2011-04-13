@@ -36,7 +36,7 @@ public final class SoftwareManager {
 
     /**
      * Gets the software by id.
-     *
+     * 
      * @param id the id
      * @return the software or null if not found.
      */
@@ -46,7 +46,7 @@ public final class SoftwareManager {
 
     /**
      * Gets all the softwares.
-     *
+     * 
      * @return all the softwares
      */
     public static PageIterable<Software> getAll() {

@@ -35,5 +35,5 @@ public class NotEnoughMoneyException extends Exception {
     public NotEnoughMoneyException(final Throwable cause) {
         super(cause);
     }
-    
+
 }

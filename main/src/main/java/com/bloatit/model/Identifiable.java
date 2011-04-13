@@ -23,7 +23,7 @@ import com.bloatit.model.right.RestrictedObject;
 
 /**
  * An identifiable is the base class for each class that map a dao class.
- *
+ * 
  * @author Thomas Guyard
  * @param <T> is the dao being mapped.
  */

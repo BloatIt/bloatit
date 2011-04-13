@@ -8,14 +8,14 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 
 public class MarkdownPreviewer extends HtmlLeaf {
-    private HtmlDiv output;
+    private final HtmlDiv output;
 
-    public MarkdownPreviewer(MarkdownEditor source) {
+    public MarkdownPreviewer(final MarkdownEditor source) {
         this.output = new HtmlDiv("md_preview");
         add(output);
-        String id = "blmdprev-" + RandomStringUtils.randomAlphabetic(10);
+        final String id = "blmdprev-" + RandomStringUtils.randomAlphabetic(10);
         output.setId(id);
-        HtmlGenericElement script = new HtmlGenericElement("script");
+        final HtmlGenericElement script = new HtmlGenericElement("script");
 
         script.add(new XmlText("setup_wmd({ input: \"" + source.getInputId() + "\", button_bar: \"" + source.getButtonBarId() + "\", preview: \""
                 + output.getId() + "\", output: \"copy_html\" });"));

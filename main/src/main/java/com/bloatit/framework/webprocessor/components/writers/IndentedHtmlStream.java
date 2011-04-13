@@ -17,7 +17,7 @@ public final class IndentedHtmlStream extends QueryResponseStream {
 
     /**
      * Creates a new IndentedHtmlStream
-     *
+     * 
      * @param out
      */
     public IndentedHtmlStream(final OutputStream out) {

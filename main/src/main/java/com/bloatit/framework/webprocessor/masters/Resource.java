@@ -14,7 +14,7 @@ public abstract class Resource implements Linkable {
     private final static String FILE_STORAGE_DIRECTORY = FrameworkConfiguration.getRessourcesDirStorage();
 
     @Override
-    final public void writeToHttp(final HttpResponse response, WebProcessor server) throws RedirectException, IOException {
+    final public void writeToHttp(final HttpResponse response, final WebProcessor server) throws RedirectException, IOException {
 
         final File file = new File(getFileUrl());
 

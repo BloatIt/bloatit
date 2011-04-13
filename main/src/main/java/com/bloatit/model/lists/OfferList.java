@@ -24,7 +24,7 @@ import com.bloatit.model.Offer;
  * The Class OfferList transforms PageIterable<DaoOffer> to PageIterable<Offer>.
  */
 public final class OfferList extends ListBinder<Offer, DaoOffer> {
-    public OfferList(PageIterable<DaoOffer> daoCollection) {
+    public OfferList(final PageIterable<DaoOffer> daoCollection) {
         super(daoCollection);
     }
 }

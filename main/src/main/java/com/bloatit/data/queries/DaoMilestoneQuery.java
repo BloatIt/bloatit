@@ -39,15 +39,15 @@ public class DaoMilestoneQuery extends DaoIdentifiableQuery<DaoMilestone> {
 
     /**
      * Add a WHERE close restricting the <code>amount</code> value of the
-     * returning milestonees. For example if you want your query to return only the
-     * milestonees that have less than 42 €, you can call:
-     *
+     * returning milestonees. For example if you want your query to return only
+     * the milestonees that have less than 42 €, you can call:
+     * 
      * <pre>
      * DaoOfferListFactory factory = new DaoMilestoneesListFactory();
      * factory.amount(Comparator.LESS, 42);
      * PageIterable&lt;DaoMilestonees&gt; milestonees = factory.createCollection();
      * </pre>
-     *
+     * 
      * @param cmp the cmp.
      * @param value the value
      */
@@ -57,7 +57,7 @@ public class DaoMilestoneQuery extends DaoIdentifiableQuery<DaoMilestone> {
 
     /**
      * Add a close on the state of this milestone.
-     *
+     * 
      * @param state the state of the resulting milestonees.
      */
     public void stateEquals(final MilestoneState state) {

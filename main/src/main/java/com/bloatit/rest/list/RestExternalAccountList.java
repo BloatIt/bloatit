@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestExternalAccount;
  * <p>
  * This class can be represented in Xml as a list of ExternalAccount<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <ExternalAccounts>}
  *     {@code <ExternalAccount name=ExternalAccount1 />}
@@ -60,10 +60,10 @@ public class RestExternalAccountList extends RestListBinder<RestExternalAccount,
     /**
      * Creates a RestExternalAccountList from a
      * {@codePageIterable<ExternalAccount>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestExternalAccountList(PageIterable<ExternalAccount> collection) {
+    public RestExternalAccountList(final PageIterable<ExternalAccount> collection) {
         super(collection);
     }
 
@@ -73,8 +73,8 @@ public class RestExternalAccountList extends RestListBinder<RestExternalAccount,
     @XmlElement(name = "externalaccount")
     @XmlIDREF
     public List<RestExternalAccount> getExternalAccounts() {
-        List<RestExternalAccount> externalaccounts = new ArrayList<RestExternalAccount>();
-        for (RestExternalAccount externalaccount : this) {
+        final List<RestExternalAccount> externalaccounts = new ArrayList<RestExternalAccount>();
+        for (final RestExternalAccount externalaccount : this) {
             externalaccounts.add(externalaccount);
         }
         return externalaccounts;

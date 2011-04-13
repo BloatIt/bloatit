@@ -40,7 +40,7 @@ public final class TeamManager {
 
     /**
      * Gets a team using its (unique) name.
-     *
+     * 
      * @param name the name of the team we are looking for.
      * @return the team found or null if not found.
      */
@@ -50,7 +50,7 @@ public final class TeamManager {
 
     /**
      * Tells if a team exist using its name.
-     *
+     * 
      * @param name the name of the team we are trying to know if it exists.
      * @return true, if it exist, false otherwise.
      */
@@ -60,7 +60,7 @@ public final class TeamManager {
 
     /**
      * Gets the invitation to join a team.
-     *
+     * 
      * @param team the team this invitation is on.
      * @param member the member this invitation was sent to.
      * @return the invitation, are null if there is no invitation on that
@@ -72,7 +72,7 @@ public final class TeamManager {
 
     /**
      * Gets the invitation by id.
-     *
+     * 
      * @param id the id
      * @return the invitation or null if not found.
      */
@@ -82,7 +82,7 @@ public final class TeamManager {
 
     /**
      * Gets the team by id.
-     *
+     * 
      * @param id the id
      * @return the team or null if not found
      */
@@ -92,7 +92,7 @@ public final class TeamManager {
 
     /**
      * Gets the all the teams.
-     *
+     * 
      * @return the teams.
      */
     public static PageIterable<Team> getAll() {

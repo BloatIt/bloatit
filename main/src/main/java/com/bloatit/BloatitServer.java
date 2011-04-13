@@ -18,9 +18,9 @@ public class BloatitServer {
             if (framework.initialize()) {
                 framework.run();
             }
-        } catch(Throwable e) {
+        } catch (final Throwable e) {
             e.printStackTrace();
-            Log.framework().fatal("It's the lose... :(",e);
+            Log.framework().fatal("It's the lose... :(", e);
         } finally {
             // framework.shutdown(); done in the hook (ook OoOk oOk!!)
             System.exit(0);

@@ -68,11 +68,10 @@ public abstract class Url implements Cloneable {
 
     public Parameters getStringParameters() {
 
-        Parameters parameters = new Parameters();
+        final Parameters parameters = new Parameters();
         doGetStringParameters(parameters);
         return parameters;
     }
-
 
     public final String externalUrlString(final HttpHeader header) {
         if (header.getServerProtocol().startsWith("HTTPS")) {
@@ -96,6 +95,5 @@ public abstract class Url implements Cloneable {
     public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
-
 
 }

@@ -28,6 +28,7 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
@@ -42,6 +43,7 @@ import com.bloatit.model.lists.KudosList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.lists.TeamList;
 import com.bloatit.model.lists.TranslationList;
+import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.MemberRight;
@@ -379,6 +381,10 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getKarma();
     }
 
+    public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
+        return new UserContentList(getDao().getActivity());
+    }
+
     private static final float INFLUENCE_MULTIPLICATOR = 2;
     private static final float INFLUENCE_DIVISER = 100;
     private static final float INFLUENCE_BASE = 1;
@@ -430,28 +436,29 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getLocale();
     }
 
-    public PageIterable<Feature> getFeatures() {
-        return new FeatureList(getDao().getFeatures());
+    public PageIterable<Feature> getFeatures(final boolean asMemberOnly) {
+        return new FeatureList(getDao().getFeatures(asMemberOnly));
     }
 
     public PageIterable<Kudos> getKudos() {
         return new KudosList(getDao().getKudos());
     }
 
-    public PageIterable<Contribution> getContributions() {
-        return new ContributionList(getDao().getTransactions());
+    public PageIterable<Contribution> getContributions(final boolean asMemberOnly) throws UnauthorizedOperationException {
+        tryAccess(new MemberRight.Contributions(), Action.READ);
+        return new ContributionList(getDao().getContributions(asMemberOnly));
     }
 
-    public PageIterable<Comment> getComments() {
-        return new CommentList(getDao().getComments());
+    public PageIterable<Comment> getComments(final boolean asMemberOnly) {
+        return new CommentList(getDao().getComments(asMemberOnly));
     }
 
-    public PageIterable<Offer> getOffers() {
-        return new OfferList(getDao().getOffers());
+    public PageIterable<Offer> getOffers(final boolean asMemberOnly) {
+        return new OfferList(getDao().getOffers(asMemberOnly));
     }
 
-    public PageIterable<Translation> getTranslations() {
-        return new TranslationList(getDao().getTranslations());
+    public PageIterable<Translation> getTranslations(final boolean asMemberOnly) {
+        return new TranslationList(getDao().getTranslations(asMemberOnly));
     }
 
     public boolean isInTeam(final Team team) {

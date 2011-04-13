@@ -28,10 +28,10 @@ public class HighlightFeature extends Identifiable<DaoHighlightFeature> {
 
     public HighlightFeature(final Feature feature, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
         super(DaoHighlightFeature.createAndPersist(DBRequests.getById(DaoFeature.class, feature.getId()),
-                                                  position,
-                                                  reason,
-                                                  activationDate,
-                                                  desactivationDate));
+                                                   position,
+                                                   reason,
+                                                   activationDate,
+                                                   desactivationDate));
     }
 
     private HighlightFeature(final DaoHighlightFeature dao) {
@@ -56,7 +56,7 @@ public class HighlightFeature extends Identifiable<DaoHighlightFeature> {
 
     @Override
     protected boolean isMine(final Member member) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 

@@ -45,7 +45,7 @@ public final class AddSoftwarePage extends LoggedPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    private AddSoftwarePageUrl url;
+    private final AddSoftwarePageUrl url;
 
     public AddSoftwarePage(final AddSoftwarePageUrl url) {
         super(url);

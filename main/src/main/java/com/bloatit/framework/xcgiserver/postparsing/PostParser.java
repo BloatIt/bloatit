@@ -43,7 +43,7 @@ public class PostParser {
      * Creates a new Parser that can be used to get all the elements contained
      * in a post
      * </p>
-     *
+     * 
      * @param postStream the stream from which the <code>POST</code> will be
      *            read
      * @param length the length of the <code>POST</code> (the number of data
@@ -66,7 +66,7 @@ public class PostParser {
      * <p>
      * Reads the next parameter of the post
      * </p>
-     *
+     * 
      * @return the next parameter of the post, or null if no parameter is
      *         available
      * @throws MalformedPostException whenever there is an exception in the
@@ -105,7 +105,7 @@ public class PostParser {
 
     /**
      * Finds the parser matching this <code>POST</code> data
-     *
+     * 
      * @return the parser to use to parse this data
      */
     private PostParameterParser getParser() {

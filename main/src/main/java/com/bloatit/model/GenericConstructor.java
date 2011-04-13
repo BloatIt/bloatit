@@ -28,20 +28,20 @@ import com.bloatit.data.queries.DBRequests;
 
 public class GenericConstructor {
 
-    public static IdentifiableInterface create(Class<? extends IdentifiableInterface> clazz, Integer id) throws ClassNotFoundException {
+    public static IdentifiableInterface create(final Class<? extends IdentifiableInterface> clazz, final Integer id) throws ClassNotFoundException {
         // TODO: Crash if not found
-        Class<?> daoClass = getDaoClass(clazz);
+        final Class<?> daoClass = getDaoClass(clazz);
         if (daoClass == null) {
             throw new ClassNotFoundException("Cannot find a dao class for the class " + clazz);
         }
-        DaoIdentifiable byId = (DaoIdentifiable) DBRequests.getById(daoClass, id);
+        final DaoIdentifiable byId = (DaoIdentifiable) DBRequests.getById(daoClass, id);
         if (byId != null) {
             return byId.accept(new DataVisitorConstructor());
         }
         return null;
     }
 
-    public static Class<?> getDaoClass(Class<? extends IdentifiableInterface> clazz) {
+    public static Class<?> getDaoClass(final Class<? extends IdentifiableInterface> clazz) {
         if (clazz.equals(ExternalAccount.class)) {
             return DaoExternalAccount.class;
         }

@@ -253,8 +253,8 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static boolean isHtmlMinified() {
         return configuration.htmlIndent.get();
     }
-    
-    public static int getMemoryCacheMaxSize(){
+
+    public static int getMemoryCacheMaxSize() {
         return configuration.memoryCacheMaxSize;
     }
 

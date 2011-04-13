@@ -25,7 +25,7 @@ public class DevelopingState extends AbstractFeatureState {
 
     /**
      * Instantiates a new developing state.
-     *
+     * 
      * @param feature the feature on which this state apply.
      */
     public DevelopingState(final FeatureImplementation feature) {
@@ -35,7 +35,8 @@ public class DevelopingState extends AbstractFeatureState {
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.feature.AbstractFeatureState#eventMilestoneReleased()
+     * @see
+     * com.bloatit.model.feature.AbstractFeatureState#eventMilestoneReleased()
      */
     @Override
     public AbstractFeatureState eventMilestoneReleased() {

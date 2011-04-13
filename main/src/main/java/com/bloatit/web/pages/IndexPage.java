@@ -29,6 +29,7 @@ import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -53,7 +54,7 @@ public final class IndexPage extends MasterPage {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-            final HtmlTitle title = new HtmlTitle("Get paid to create free software", 1);
+            final HtmlTitle title = new HtmlTitle(Context.tr("Get paid to create free software"), 1);
             globalDescription.add(title);
             final HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())),
                                                   tr("Elveos's presentation"));
@@ -116,27 +117,28 @@ public final class IndexPage extends MasterPage {
         twoColumnLayout.addLeft(featureList);
 
         // Display of a button to create a feature
-        SideBarElementLayout createBox = new SideBarElementLayout();
-        HtmlDiv createDiv = new HtmlDiv("feature_create");
-        HtmlLink link = new HtmlLink(new CreateFeaturePageUrl().urlString(), createDiv);
+        final SideBarElementLayout createBox = new SideBarElementLayout();
+        final HtmlDiv createDiv = new HtmlDiv("feature_create");
+        final HtmlLink link = new HtmlLink(new CreateFeaturePageUrl().urlString(), createDiv);
         { // Box to hold feature creating button content
-            HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgIdea()), Context.tr("Request a feature"));
+            final HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgIdea()), Context.tr("Request a feature"));
             img.setCssClass("feature_create_img");
             createDiv.add(img);
-            HtmlDiv createTextDiv = new HtmlDiv("feature_create_text_box");
+            final HtmlDiv createTextDiv = new HtmlDiv("feature_create_text_box");
             { // Box to hold text of the button
-                HtmlDiv createTextDiv2 = new HtmlDiv("feature_create_text");
+                final HtmlDiv createTextDiv2 = new HtmlDiv("feature_create_text");
                 createTextDiv.add(createTextDiv2);
                 createTextDiv2.addText(Context.tr("Request a feature"));
             }
             createDiv.add(createTextDiv);
         }
-
         createBox.add(link);
-        twoColumnLayout.addRight(createBox);
+
+        // twoColumnLayout.addRight(createBox);
+        twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), WebConfiguration.getImgIdea()));
 
         // Display of a summary of all website activity since creation
-        SideBarElementLayout summaryBox = new SideBarElementLayout();
+        final SideBarElementLayout summaryBox = new SideBarElementLayout();
         twoColumnLayout.addRight(summaryBox);
 
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));

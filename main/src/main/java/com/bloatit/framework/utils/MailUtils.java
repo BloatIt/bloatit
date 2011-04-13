@@ -18,7 +18,7 @@ public class MailUtils {
      * <li>has any number of A-Za-z0-9</li>
      * <li>has a '.' then 2 to 4 A-Za-z</li>
      * </p>
-     *
+     * 
      * @param email the string to validate
      * @return <code>true</code> if the string is a valid email address,
      *         <code>false</code> otherwise

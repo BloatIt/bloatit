@@ -32,31 +32,31 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     public void testCreate() {
         final Feature feature = FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
-                                                                                     DaoDescription.createAndPersist(tomAuthToken.getMember()
-                                                                                                                                 .getDao(),
-                                                                                                                     Locale.FRANCE,
-                                                                                                                     "title",
-                                                                                                                     "description"),
-                                                                                     DaoSoftware.getByName("VLC")));
+                                                                                         DaoDescription.createAndPersist(tomAuthToken.getMember()
+                                                                                                                                     .getDao(),
+                                                                                                                         Locale.FRANCE,
+                                                                                                                         "title",
+                                                                                                                         "description"),
+                                                                                         DaoSoftware.getByName("VLC")));
         assertNotNull(feature);
         assertNull(FeatureImplementation.create(null));
     }
 
     private Feature createFeatureByThomas() {
         return FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
-                                                                      DaoDescription.createAndPersist(tomAuthToken.getMember().getDao(),
-                                                                                                      Locale.FRANCE,
-                                                                                                      "title",
-                                                                                                      "description"),
-                                                                      DaoSoftware.getByName("VLC")));
+                                                                        DaoDescription.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                                                        Locale.FRANCE,
+                                                                                                        "title",
+                                                                                                        "description"),
+                                                                        DaoSoftware.getByName("VLC")));
     }
 
     public void testFeature() {
         final Feature feature = new FeatureImplementation(tomAuthToken.getMember(),
-                                                       Locale.FRANCE,
-                                                       "title",
-                                                       "Description",
-                                                       Software.create(DaoSoftware.getByName("VLC")));
+                                                          Locale.FRANCE,
+                                                          "title",
+                                                          "Description",
+                                                          Software.create(DaoSoftware.getByName("VLC")));
         assertEquals(feature.getAuthor(), tomAuthToken.getMember());
         try {
             assertEquals(feature.getDescription().getDefaultLocale(), Locale.FRANCE);
@@ -297,7 +297,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
         final Feature feature = createFeatureByThomas();
-        final DaoMember admin = DaoMember.createAndPersist("admin1", "admin1","salt", "admin1", Locale.FRANCE);
+        final DaoMember admin = DaoMember.createAndPersist("admin1", "admin1", "salt", "admin1", Locale.FRANCE);
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
@@ -420,11 +420,11 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         feature.authenticate(tomAuthToken);
         final Offer offer = feature.addOffer(tomAuthToken.getMember(),
-                                            BigDecimal.TEN,
-                                            "description",
-                                            Locale.FRENCH,
-                                            DateUtils.tomorrow(),
-                                            DateUtils.SECOND_PER_WEEK);
+                                             BigDecimal.TEN,
+                                             "description",
+                                             Locale.FRENCH,
+                                             DateUtils.tomorrow(),
+                                             DateUtils.SECOND_PER_WEEK);
 
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);

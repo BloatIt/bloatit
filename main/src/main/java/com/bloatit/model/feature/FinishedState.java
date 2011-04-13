@@ -26,7 +26,7 @@ public class FinishedState extends AbstractFeatureState {
 
     /**
      * Instantiates a new finished state.
-     *
+     * 
      * @param feature the feature on which this state apply.
      */
     public FinishedState(final FeatureImplementation feature) {

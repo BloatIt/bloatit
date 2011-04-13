@@ -25,7 +25,7 @@ import com.bloatit.model.Member;
  * PageIterable<Member>.
  */
 public final class MemberList extends ListBinder<Member, DaoMember> {
-    public MemberList(PageIterable<DaoMember> daoCollection) {
+    public MemberList(final PageIterable<DaoMember> daoCollection) {
         super(daoCollection);
     }
 }

@@ -166,7 +166,12 @@ public class DaoBankTransaction extends DaoIdentifiable {
      * throw a {@link NonOptionalParameterException} if any of the parameters is
      * null (or string isEmpty).
      */
-    private DaoBankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final BigDecimal valuePayed, final String orderReference) {
+    private DaoBankTransaction(final String message,
+                               final String token,
+                               final DaoActor author,
+                               final BigDecimal value,
+                               final BigDecimal valuePayed,
+                               final String orderReference) {
         super();
         if (message == null || token == null || author == null || value == null || valuePayed == null || orderReference == null) {
             throw new NonOptionalParameterException();
@@ -199,7 +204,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the
      * external to the internal account.
-     *
+     * 
      * @return true if performed, false otherwise.
      */
     public boolean setValidated() {

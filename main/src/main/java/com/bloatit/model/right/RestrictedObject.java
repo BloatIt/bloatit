@@ -169,7 +169,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Return true if this content is mine (I am the author).
-     *
+     * 
      * @param member is the person that wish to know if the content is his.
      * @return true if <code>member</code> is the author of <code>this</code>,
      *         false otherwise.
@@ -178,7 +178,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Calculate my team rights.
-     *
+     * 
      * @param member the member
      * @return the enum set
      */
@@ -188,7 +188,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Gets the auth token.
-     *
+     * 
      * @return the auth token
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
@@ -203,7 +203,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Gets the auth token unprotected.
-     *
+     * 
      * @return the auth token unprotected
      */
     protected final AuthToken getAuthTokenUnprotected() {
@@ -213,7 +213,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Can access.
-     *
+     * 
      * @param accessor the accessor
      * @param action the action
      * @return true, if successful
@@ -224,7 +224,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Try access.
-     *
+     * 
      * @param accessor the accessor
      * @param action the action
      * @throws UnauthorizedOperationException the unauthorized operation

@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestContribution;
  * <p>
  * This class can be represented in Xml as a list of Contribution<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <Contributions>}
  *     {@code <Contribution name=Contribution1 />}
@@ -59,10 +59,10 @@ public class RestContributionList extends RestListBinder<RestContribution, Contr
 
     /**
      * Creates a RestContributionList from a {@codePageIterable<Contribution>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestContributionList(PageIterable<Contribution> collection) {
+    public RestContributionList(final PageIterable<Contribution> collection) {
         super(collection);
     }
 
@@ -72,8 +72,8 @@ public class RestContributionList extends RestListBinder<RestContribution, Contr
     @XmlElement(name = "contribution")
     @XmlIDREF
     public List<RestContribution> getContributions() {
-        List<RestContribution> contributions = new ArrayList<RestContribution>();
-        for (RestContribution contribution : this) {
+        final List<RestContribution> contributions = new ArrayList<RestContribution>();
+        for (final RestContribution contribution : this) {
             contributions.add(contribution);
         }
         return contributions;

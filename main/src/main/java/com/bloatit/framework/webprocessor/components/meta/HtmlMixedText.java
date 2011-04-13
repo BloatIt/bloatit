@@ -19,18 +19,18 @@ public class HtmlMixedText extends HtmlBranch {
 
     public HtmlMixedText(final String content, final HtmlBranch... parameters) {
 
-        String[] split = content.split("<[0-9]+(:[^>]+)*>");
+        final String[] split = content.split("<[0-9]+(:[^>]+)*>");
 
         int index = 0;
 
-        for (String string : split) {
+        for (final String string : split) {
             add(new XmlText(string));
             index += string.length();
 
             // If it not the end, replace a tag
-            int startIndex = content.indexOf("<", index);
+            final int startIndex = content.indexOf("<", index);
             if (startIndex != -1) {
-                int endIndex = content.indexOf(">", index);
+                final int endIndex = content.indexOf(">", index);
 
                 parseTag(content.substring(startIndex + 1, endIndex), parameters);
 
@@ -41,21 +41,21 @@ public class HtmlMixedText extends HtmlBranch {
     }
 
     public void parseTag(final String tag, final HtmlBranch parameters[]) {
-        String[] split = tag.split(":");
+        final String[] split = tag.split(":");
 
         if (split.length < 1) {
             add(new XmlText(" ### Invalid tag '" + tag + "'. Not enough content ### "));
             return;
         }
 
-        int paramIndex = Integer.valueOf(split[0]);
+        final int paramIndex = Integer.valueOf(split[0]);
         // Check out of bound
         if (paramIndex >= parameters.length) {
             add(new XmlText(" ### Invalid index '" + paramIndex + "' in tag '" + tag + "'. Param length: " + parameters.length + " ### "));
             return;
         }
 
-        HtmlBranch node = (HtmlBranch) parameters[paramIndex].clone();
+        final HtmlBranch node = (HtmlBranch) parameters[paramIndex].clone();
 
         if (split.length >= 3) {
             node.addText(split[2]);

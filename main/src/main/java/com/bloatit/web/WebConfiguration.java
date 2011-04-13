@@ -28,6 +28,8 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgFeatureStateDeveloping;
     private String imgFeatureStateFunding;
     private String imgIdea;
+    private String imgTeam;
+    private String imgMessage;
 
     private WebConfiguration() {
         super();
@@ -147,12 +149,20 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgSoftwareNoLogo() {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgSoftwareNoLogo;
     }
-    
+
     /**
      * @return the imgIdea
      */
     public static String getImgIdea() {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgIdea;
+    }
+
+    public static String getImgMessage() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgMessage;
+    }
+
+    public static String getImgTeam() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgTeam;
     }
 
     protected void loadConfiguration() {
@@ -168,7 +178,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgMoneyDown = properties.getString("bloatit.img.money.down");
         imgMoneyDownSmall = properties.getString("bloatit.img.money.down.small");
         imgMoneyUp = properties.getString("bloatit.img.money.up");
-        imgMoneyUpSmall = properties.getString("bloatit.img.money.up");
+        imgMoneyUpSmall = properties.getString("bloatit.img.money.up.small");
         imgNoAvatar = properties.getString("bloatit.img.no.avatar");
         imgValidIcon = properties.getString("bloatit.img.valid");
         imgSoftwareNoLogo = properties.getString("bloatit.img.software.no.logo");
@@ -177,6 +187,8 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgFeatureStateDeveloping = properties.getString("bloatit.img.feature.state.developing");
         imgFeatureStateFunding = properties.getString("bloatit.img.feature.state.funding");
         imgIdea = properties.getString("bloatit.img.idea");
+        imgTeam = properties.getString("bloatit.img.team");
+        imgMessage = properties.getString("bloatit.img.message");
     }
 
     public static void load() {
@@ -192,5 +204,4 @@ public class WebConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
-
 }

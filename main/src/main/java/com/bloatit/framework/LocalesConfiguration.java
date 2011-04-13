@@ -32,31 +32,31 @@ public class LocalesConfiguration extends ReloadableConfiguration {
     public static final LocalesConfiguration configuration = new LocalesConfiguration();
     private PropertiesRetriever languagesProperties;
     private PropertiesRetriever countryProperties;
-    
+
     private LocalesConfiguration() {
         super();
         loadConfiguration();
     }
-    
+
     /**
      * @return the list of available countries on the system
      */
-    public static Properties getCountries(){
+    public static Properties getCountries() {
         return configuration.countryProperties.getProperties();
     }
 
     /**
      * @return the list of available languages on the system
      */
-    public static Properties getLanguages(){
+    public static Properties getLanguages() {
         return configuration.languagesProperties.getProperties();
     }
-    
+
     protected void loadConfiguration() {
         languagesProperties = ConfigurationManager.loadProperties("locales/languages.properties", PropertiesType.SHARE);
         countryProperties = ConfigurationManager.loadProperties("locales/countries.properties", PropertiesType.SHARE);
     }
-    
+
     @Override
     public String getName() {
         return "Locales";

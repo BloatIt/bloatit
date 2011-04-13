@@ -143,13 +143,13 @@ public class DaoMilestone extends DaoIdentifiable {
     @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoBug> bugs = new ArrayList<DaoBug>();
+    private final List<DaoBug> bugs = new ArrayList<DaoBug>();
 
     @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "id DESC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoRelease> releases = new ArrayList<DaoRelease>();
+    private final List<DaoRelease> releases = new ArrayList<DaoRelease>();
 
     @ManyToOne(optional = false)
     private DaoOffer offer;

@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestHighlightFeature;
  * <p>
  * This class can be represented in Xml as a list of HighlightFeature<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <HighlightFeatures>}
  *     {@code <HighlightFeature name=HighlightFeature1 />}
@@ -60,10 +60,10 @@ public class RestHighlightFeatureList extends RestListBinder<RestHighlightFeatur
     /**
      * Creates a RestHighlightFeatureList from a
      * {@codePageIterable<HighlightFeature>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestHighlightFeatureList(PageIterable<HighlightFeature> collection) {
+    public RestHighlightFeatureList(final PageIterable<HighlightFeature> collection) {
         super(collection);
     }
 
@@ -73,8 +73,8 @@ public class RestHighlightFeatureList extends RestListBinder<RestHighlightFeatur
     @XmlElement(name = "highlightfeature")
     @XmlIDREF
     public List<RestHighlightFeature> getHighlightFeatures() {
-        List<RestHighlightFeature> highlightfeatures = new ArrayList<RestHighlightFeature>();
-        for (RestHighlightFeature highlightfeature : this) {
+        final List<RestHighlightFeature> highlightfeatures = new ArrayList<RestHighlightFeature>();
+        for (final RestHighlightFeature highlightfeature : this) {
             highlightfeatures.add(highlightfeature);
         }
         return highlightfeatures;

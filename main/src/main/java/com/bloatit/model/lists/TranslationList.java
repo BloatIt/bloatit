@@ -25,7 +25,7 @@ import com.bloatit.model.Translation;
  * PageIterable<Translation>.
  */
 public final class TranslationList extends ListBinder<Translation, DaoTranslation> {
-    public TranslationList(PageIterable<DaoTranslation> daoCollection) {
+    public TranslationList(final PageIterable<DaoTranslation> daoCollection) {
         super(daoCollection);
     }
 }

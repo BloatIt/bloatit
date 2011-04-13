@@ -14,7 +14,7 @@ import com.bloatit.data.search.Search.Pair;
 
 public class DaoFeatureSearchFilter extends Filter {
     private static final long serialVersionUID = -1252700875329385254L;
-    
+
     private List<Pair<String, String>> filteredTerms = null;
 
     public void setFilteredTerms(final List<Pair<String, String>> filteredTerms) {

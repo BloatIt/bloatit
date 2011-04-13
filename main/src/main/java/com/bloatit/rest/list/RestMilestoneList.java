@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestMilestone;
  * <p>
  * This class can be represented in Xml as a list of Milestone<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <Milestones>}
  *     {@code <Milestone name=Milestone1 />}
@@ -59,10 +59,10 @@ public class RestMilestoneList extends RestListBinder<RestMilestone, Milestone> 
 
     /**
      * Creates a RestMilestoneList from a {@codePageIterable<Milestone>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestMilestoneList(PageIterable<Milestone> collection) {
+    public RestMilestoneList(final PageIterable<Milestone> collection) {
         super(collection);
     }
 
@@ -72,8 +72,8 @@ public class RestMilestoneList extends RestListBinder<RestMilestone, Milestone> 
     @XmlElement(name = "milestone")
     @XmlIDREF
     public List<RestMilestone> getMilestones() {
-        List<RestMilestone> milestones = new ArrayList<RestMilestone>();
-        for (RestMilestone milestone : this) {
+        final List<RestMilestone> milestones = new ArrayList<RestMilestone>();
+        for (final RestMilestone milestone : this) {
             milestones.add(milestone);
         }
         return milestones;

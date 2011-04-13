@@ -8,7 +8,7 @@ public class HtmlSpan extends HtmlBranch {
         super("span");
     }
 
-    public HtmlSpan(HtmlSpan span) {
+    public HtmlSpan(final HtmlSpan span) {
         super(span);
     }
 

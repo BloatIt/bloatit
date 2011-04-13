@@ -37,9 +37,9 @@ import com.bloatit.rest.list.RestJoinTeamInvitationList;
  * Representation of a JoinTeamInvitation for the ReST RPC calls
  * </p>
  * <p>
- * This class should implement any methods from JoinTeamInvitation that needs
- * to be called through the ReST RPC. Every such method needs to be mapped with
- * the {@code @REST} interface.
+ * This class should implement any methods from JoinTeamInvitation that needs to
+ * be called through the ReST RPC. Every such method needs to be mapped with the
+ * {@code @REST} interface.
  * <p>
  * ReST uses the four HTTP request methods <code>GET</code>, <code>POST</code>,
  * <code>PUT</code>, <code>DELETE</code> each with their own meaning. Please
@@ -101,7 +101,7 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
      * <p>
      * Finds the RestJoinTeamInvitation matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestJoinTeamInvitation
      */
     @REST(name = "jointeaminvitations", method = RequestMethod.GET)

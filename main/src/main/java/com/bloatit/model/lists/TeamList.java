@@ -24,7 +24,7 @@ import com.bloatit.model.Team;
  * The Class TeamList transforms PageIterable<DaoTeam> to PageIterable<Team>.
  */
 public final class TeamList extends ListBinder<Team, DaoTeam> {
-    public TeamList(PageIterable<DaoTeam> daoCollection) {
+    public TeamList(final PageIterable<DaoTeam> daoCollection) {
         super(daoCollection);
         // TODO Auto-generated constructor stub
     }

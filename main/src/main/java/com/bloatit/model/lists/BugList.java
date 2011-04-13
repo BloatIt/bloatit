@@ -24,7 +24,7 @@ import com.bloatit.model.Bug;
  * The Class BugList transforms PageIterable<DaoBug> to PageIterable<Bug>.
  */
 public final class BugList extends ListBinder<Bug, DaoBug> {
-    public BugList(PageIterable<DaoBug> daoCollection) {
+    public BugList(final PageIterable<DaoBug> daoCollection) {
         super(daoCollection);
     }
 }

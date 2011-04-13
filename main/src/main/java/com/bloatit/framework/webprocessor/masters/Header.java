@@ -51,7 +51,7 @@ public final class Header extends HtmlElement {
      * 
      * @param css the string describing the name of the css
      */
-    public void addCss(String css) {
+    public void addCss(final String css) {
         final HtmlElement cssLink = new HtmlGenericElement("link") {
             @Override
             public boolean selfClosable() {
@@ -78,7 +78,7 @@ public final class Header extends HtmlElement {
      * @param js a string describing the URI of the js link, either relative to
      *            the application or absolute (and starting with http://)
      */
-    public void addJs(String js) {
+    public void addJs(final String js) {
         final HtmlElement jsLink = new HtmlGenericElement("script");
         jsLink.addAttribute("type", "text/javascript");
         jsLink.addAttribute("src", js);

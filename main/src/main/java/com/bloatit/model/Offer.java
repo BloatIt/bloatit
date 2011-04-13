@@ -74,15 +74,15 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     public Milestone addMilestone(final BigDecimal amount,
-                          final String description,
-                          final Locale local,
-                          final Date dateExpire,
-                          final int secondBeforeValidation) {
+                                  final String description,
+                                  final Locale local,
+                                  final Date dateExpire,
+                                  final int secondBeforeValidation) {
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
-                                         amount,
-                                         DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
-                                         getDao(),
-                                         secondBeforeValidation);
+                                                           amount,
+                                                           DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
+                                                           getDao(),
+                                                           secondBeforeValidation);
         getDao().addMilestone(daoMilestone);
         return Milestone.create(daoMilestone);
     }
@@ -189,7 +189,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * Return the progression of the funding of this offer with the amount
      * available on the feature
-     *
+     * 
      * @throws UnauthorizedOperationException
      */
     public float getProgression() throws UnauthorizedOperationException {

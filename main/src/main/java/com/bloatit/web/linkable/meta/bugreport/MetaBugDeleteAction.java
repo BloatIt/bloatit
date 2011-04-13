@@ -48,7 +48,6 @@ public final class MetaBugDeleteAction extends Action {
             throw new MeanUserException("The user try to delete a bug without been logged.");
         }
 
-
         final MetaBug bug = MetaBugManager.getById(bugId);
         if (bug != null) {
             bug.delete();

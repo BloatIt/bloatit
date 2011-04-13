@@ -22,7 +22,11 @@ import com.bloatit.model.feature.FeatureImplementation;
 
 public class FeatureFactory {
 
-    public static Feature createFeature(final Member author, final Locale locale, final String title, final String description, final Software software) {
+    public static Feature createFeature(final Member author,
+                                        final Locale locale,
+                                        final String title,
+                                        final String description,
+                                        final Software software) {
         return new FeatureImplementation(author, locale, title, description, software);
     }
 }

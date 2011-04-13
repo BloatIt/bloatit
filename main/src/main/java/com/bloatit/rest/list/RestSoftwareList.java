@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestSoftware;
  * <p>
  * This class can be represented in Xml as a list of Software<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <Softwares>}
  *     {@code <Software name=Software1 />}
@@ -59,10 +59,10 @@ public class RestSoftwareList extends RestListBinder<RestSoftware, Software> {
 
     /**
      * Creates a RestSoftwareList from a {@codePageIterable<Software>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestSoftwareList(PageIterable<Software> collection) {
+    public RestSoftwareList(final PageIterable<Software> collection) {
         super(collection);
     }
 
@@ -72,8 +72,8 @@ public class RestSoftwareList extends RestListBinder<RestSoftware, Software> {
     @XmlElement(name = "software")
     @XmlIDREF
     public List<RestSoftware> getSoftwares() {
-        List<RestSoftware> softwares = new ArrayList<RestSoftware>();
-        for (RestSoftware software : this) {
+        final List<RestSoftware> softwares = new ArrayList<RestSoftware>();
+        for (final RestSoftware software : this) {
             softwares.add(software);
         }
         return softwares;

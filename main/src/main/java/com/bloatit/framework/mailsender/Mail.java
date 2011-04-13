@@ -22,7 +22,7 @@ public class Mail {
      * Mail mail = new Mail("mail@example.come", title, content, session.getAuthToken().getMember().getId()); <br />
      * </code>
      * </p>
-     *
+     * 
      * @param to the email addresse of the receiver of the mail
      * @param title the title of the email
      * @param content the text content of the email

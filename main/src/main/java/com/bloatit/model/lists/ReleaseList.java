@@ -26,7 +26,7 @@ import com.bloatit.model.Release;
  *
  */
 public class ReleaseList extends ListBinder<Release, DaoRelease> {
-    public ReleaseList(PageIterable<DaoRelease> daoCollection) {
+    public ReleaseList(final PageIterable<DaoRelease> daoCollection) {
         super(daoCollection);
     }
 }

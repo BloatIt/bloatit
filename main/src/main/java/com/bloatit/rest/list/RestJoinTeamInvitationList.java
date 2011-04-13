@@ -37,7 +37,7 @@ import com.bloatit.rest.resources.RestJoinTeamInvitation;
  * <p>
  * This class can be represented in Xml as a list of JoinTeamInvitation<br />
  * Example:
- *
+ * 
  * <pre>
  * {@code <JoinTeamInvitations>}
  *     {@code <JoinTeamInvitation name=JoinTeamInvitation1 />}
@@ -60,10 +60,10 @@ public class RestJoinTeamInvitationList extends RestListBinder<RestJoinTeamInvit
     /**
      * Creates a RestJoinTeamInvitationList from a
      * {@codePageIterable<JoinTeamInvitation>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestJoinTeamInvitationList(PageIterable<JoinTeamInvitation> collection) {
+    public RestJoinTeamInvitationList(final PageIterable<JoinTeamInvitation> collection) {
         super(collection);
     }
 
@@ -73,8 +73,8 @@ public class RestJoinTeamInvitationList extends RestListBinder<RestJoinTeamInvit
     @XmlElement(name = "jointeaminvitation")
     @XmlIDREF
     public List<RestJoinTeamInvitation> getJoinTeamInvitations() {
-        List<RestJoinTeamInvitation> jointeaminvitations = new ArrayList<RestJoinTeamInvitation>();
-        for (RestJoinTeamInvitation jointeaminvitation : this) {
+        final List<RestJoinTeamInvitation> jointeaminvitations = new ArrayList<RestJoinTeamInvitation>();
+        for (final RestJoinTeamInvitation jointeaminvitation : this) {
             jointeaminvitations.add(jointeaminvitation);
         }
         return jointeaminvitations;

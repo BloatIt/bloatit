@@ -25,7 +25,7 @@ import com.bloatit.model.Description;
  * PageIterable<Description>.
  */
 public final class DescriptionList extends ListBinder<Description, DaoDescription> {
-    public DescriptionList(PageIterable<DaoDescription> daoCollection) {
+    public DescriptionList(final PageIterable<DaoDescription> daoCollection) {
         super(daoCollection);
     }
 }

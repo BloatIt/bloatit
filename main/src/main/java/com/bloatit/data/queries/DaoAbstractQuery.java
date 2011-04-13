@@ -30,7 +30,7 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * The Class DaoAbstractQuery factor some useful methods for
  * <code>Criteria</code> based query on <code>DaoIdentifiable</code>.
- *
+ * 
  * @param <T> the Dao class returned by this query
  */
 public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
@@ -70,7 +70,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
 
     /**
      * Instantiates a new dao abstract query.
-     *
+     * 
      * @param criteria the criteria
      */
     public DaoAbstractQuery(final Criteria criteria) {
@@ -80,7 +80,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
 
     /**
      * Creates the {@link PageIterable} resulting from this query.
-     *
+     * 
      * @return the {@link PageIterable}
      */
     public final PageIterable<T> createCollection() {
@@ -90,7 +90,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
 
     /**
      * If you are sure this query will return a unique result.
-     *
+     * 
      * @return the result of this query
      */
     @SuppressWarnings("unchecked")
@@ -116,7 +116,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
      * </code> Will select elements which has more than 12 offers associated
      * with.
      * </p>
-     *
+     * 
      * @param cmp the comparator
      * @param element the element name. It must be a collection (a mapped
      *            association).
@@ -147,7 +147,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
      * createNbRestriction(GREATER, &quot;amount&quot;, 12)
      * </code> Will select elements with amount > 12.
      * </p>
-     *
+     * 
      * @param cmp the comparator
      * @param element the countable element name.
      * @param nb the number on which we try to compare the <code>element</code>
@@ -173,7 +173,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
 
     /**
      * Adds the <code>criterion</code> on the current Criteria query.
-     *
+     * 
      * @param criterion the criterion
      * @return the criteria
      */
@@ -183,7 +183,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
 
     /**
      * Adds the <code>order</code> on the current Criteria query.
-     *
+     * 
      * @param order the order
      * @return the criteria
      */
@@ -194,7 +194,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
     /**
      * Adds the projection on the current Criteria query. All the projections
      * will be add at the end of the criteria in a {@link ProjectionList}.
-     *
+     * 
      * @param proj the {@link Projection}
      * @return the projection list
      * @see ProjectionList#add(Projection)
@@ -207,7 +207,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
      * /** Adds the projection on the current Criteria query. All the
      * projections will be add at the end of the criteria in a
      * {@link ProjectionList}.
-     *
+     * 
      * @param projection the projection
      * @param alias the alias
      * @return the projection list

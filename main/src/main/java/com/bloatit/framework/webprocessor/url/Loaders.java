@@ -44,7 +44,7 @@ public final class Loaders {
 
     public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException {
         // if (value.equals("null")) {
-        // return null;
+        // throw new NotImplementedException();
         // }
         try {
             final Loader<T> loader = getLoader(toClass);

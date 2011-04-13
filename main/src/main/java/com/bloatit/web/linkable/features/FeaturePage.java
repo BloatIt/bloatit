@@ -119,7 +119,7 @@ public final class FeaturePage extends MasterPage {
 
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
-        featurePageUrl.setAnchor(FeatureTabPane.BUGS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Bugs")));
 
@@ -131,7 +131,7 @@ public final class FeaturePage extends MasterPage {
 
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
-        featurePageUrl.setAnchor(FeatureTabPane.OFFERS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Offers")));
 
@@ -143,7 +143,7 @@ public final class FeaturePage extends MasterPage {
 
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
-        featurePageUrl.setAnchor(FeatureTabPane.CONTRIBUTIONS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Contributions")));
 
@@ -155,7 +155,7 @@ public final class FeaturePage extends MasterPage {
 
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.DETAILS_TAB);
-        featurePageUrl.setAnchor(FeatureTabPane.DETAILS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Details")));
 

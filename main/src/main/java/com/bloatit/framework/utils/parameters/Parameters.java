@@ -3,7 +3,6 @@ package com.bloatit.framework.utils.parameters;
 import java.util.Map.Entry;
 import java.util.Set;
 
-
 /**
  * <p>
  * A class used to describe a set of parameters
@@ -27,7 +26,7 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
 
     /**
      * Add a parameter to the list
-     *
+     * 
      * @param name the name of the parameter to add
      * @param value the value of the parameter to add
      */

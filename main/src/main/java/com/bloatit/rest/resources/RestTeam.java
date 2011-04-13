@@ -109,7 +109,7 @@ public class RestTeam extends RestElement<Team> {
      * <p>
      * Finds the RestTeam matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestTeam
      */
     @REST(name = "teams", method = RequestMethod.GET)
@@ -173,8 +173,8 @@ public class RestTeam extends RestElement<Team> {
         try {
             return model.getLogin();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getLogin on Team", e);
         }
     }
@@ -187,8 +187,8 @@ public class RestTeam extends RestElement<Team> {
         try {
             return new RestInternalAccount(model.getInternalAccount());
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getInternalAccount on Team", e);
         }
     }
@@ -201,8 +201,8 @@ public class RestTeam extends RestElement<Team> {
         try {
             return new RestExternalAccount(model.getExternalAccount());
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getExternalAccount on Team", e);
         }
     }
@@ -215,8 +215,8 @@ public class RestTeam extends RestElement<Team> {
         try {
             return model.getEmail();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getEmail on Team", e);
         }
     }
@@ -230,8 +230,8 @@ public class RestTeam extends RestElement<Team> {
         try {
             return model.getDateCreation();
         } catch (final UnauthorizedOperationException e) {
-            return null;
-            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            return null; // throw new
+                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
             // "Not allowed to use getDateCreation on Team", e);
         }
     }

@@ -38,6 +38,7 @@ public final class CurrencyLocale {
     private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
     private static final int DISPLAY_PRECISION = 0;
     private static final int DISPLAY_PRECISION_DECIMAL = 2;
+    private static final Currency DEFAULT_CURRENCY = Currency.getInstance("EUR");
 
     private static Date lastParse = new Date();
     private static Map<Currency, BigDecimal> currencies = Collections.synchronizedMap(new HashMap<Currency, BigDecimal>());
@@ -171,6 +172,17 @@ public final class CurrencyLocale {
         return currencies.containsKey(currency);
     }
 
+    public boolean isDefaultCurrency() {
+        return currency.equals(DEFAULT_CURRENCY);
+    }
+
+    /**
+     * Returns the current targetLocale
+     */
+    public Locale getTargetLocale() {
+        return targetLocale;
+    }
+
     /**
      * Checks if a currency is handled
      * 
@@ -189,13 +201,6 @@ public final class CurrencyLocale {
      */
     public static boolean availableCurrency(final Currency currency) {
         return currencies.containsKey(currency);
-    }
-
-    /**
-     * Returns the current targetLocale
-     */
-    public Locale getTargetLocale() {
-        return targetLocale;
     }
 
     /**

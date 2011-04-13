@@ -14,7 +14,6 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 
 @ParamContainer("payline/donotify")
 public final class PaylineNotifyAction extends Action {
-
     public static final String TOKEN_CODE = "token";
 
     @RequestParam(name = TOKEN_CODE)
@@ -38,11 +37,11 @@ public final class PaylineNotifyAction extends Action {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             if (paymentDetails.isAccepted()) {
                 payline.validatePayment(token);
+                process.setSuccessful();
             } else {
-                // TODO send mail
                 payline.cancelPayement(token);
                 session.notifyBad("Your payment is refused.");
-                Log.web().error("Payment is not accepted: " + token);
+                Log.web().warn("Payment is not accepted: " + token);
             }
         } catch (final TokenNotfoundException e) {
             Log.web().error("Token not found ! ", e);

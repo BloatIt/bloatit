@@ -34,7 +34,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Instantiates a new abstract feature state.
-     *
+     * 
      * @param feature the feature on which this state apply.
      */
     public AbstractFeatureState(final FeatureImplementation feature) {
@@ -43,14 +43,14 @@ abstract class AbstractFeatureState {
 
     /**
      * Gets the featureState associated with this state.
-     *
+     * 
      * @return the state
      */
     public abstract FeatureState getState();
 
     /**
      * Event add offer. Called when an offer is add to the feature.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      */
@@ -61,7 +61,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event remove offer.
-     *
+     * 
      * @param offer the offer
      * @return the state object representing the featureState, after receiving
      *         this event
@@ -73,7 +73,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event add contribution.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      */
@@ -84,7 +84,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event selected offer time out.
-     *
+     * 
      * @param contribution the contribution
      * @return the state object representing the featureState, after receiving
      *         this event
@@ -96,7 +96,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event development time out.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      */
@@ -107,7 +107,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event developer canceled.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was
@@ -121,7 +121,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event feature rejected.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was
@@ -135,7 +135,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event popularity pending.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was
@@ -149,7 +149,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Popularity validated.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was
@@ -163,7 +163,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event milestone released.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was
@@ -177,7 +177,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event milestone is rejected.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was
@@ -191,7 +191,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event milestone is validated.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was
@@ -205,7 +205,7 @@ abstract class AbstractFeatureState {
 
     /**
      * Event offer is validated is called when every milestonees are finished.
-     *
+     * 
      * @return the state object representing the featureState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the feature was

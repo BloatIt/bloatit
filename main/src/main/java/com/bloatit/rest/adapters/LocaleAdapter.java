@@ -33,7 +33,7 @@ public class LocaleAdapter extends XmlAdapter<String, Locale> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
-    public Locale unmarshal(String localeString) throws Exception {
+    public Locale unmarshal(final String localeString) throws Exception {
         if (localeString.isEmpty()) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Locale mustn't be empty !");
         }
@@ -49,7 +49,7 @@ public class LocaleAdapter extends XmlAdapter<String, Locale> {
             return new Locale(localeString);
         }
 
-        String[] parts = localeString.split(sep);
+        final String[] parts = localeString.split(sep);
         if (parts.length > 1) {
             return new Locale(parts[0], parts[1]);
         }
@@ -63,7 +63,7 @@ public class LocaleAdapter extends XmlAdapter<String, Locale> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
-    public String marshal(Locale locale) throws Exception {
+    public String marshal(final Locale locale) throws Exception {
         return locale.toString();
     }
 }

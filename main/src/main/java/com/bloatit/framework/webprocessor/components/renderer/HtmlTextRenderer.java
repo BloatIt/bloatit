@@ -12,7 +12,7 @@ public abstract class HtmlTextRenderer extends XmlText {
 
     /**
      * Creates an htmlRenderer
-     *
+     * 
      * @param text
      */
     public HtmlTextRenderer(final String text) {
@@ -22,7 +22,7 @@ public abstract class HtmlTextRenderer extends XmlText {
 
     /**
      * This method does the rendering
-     *
+     * 
      * @param text the string to render
      * @return the rendered string
      */

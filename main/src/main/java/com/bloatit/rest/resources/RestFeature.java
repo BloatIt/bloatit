@@ -115,7 +115,7 @@ public class RestFeature extends RestElement<Feature> {
      * <p>
      * Finds the RestFeature matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestFeature
      */
     @REST(name = "features", method = RequestMethod.GET)

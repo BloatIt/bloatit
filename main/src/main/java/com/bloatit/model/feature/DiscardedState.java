@@ -25,7 +25,7 @@ public class DiscardedState extends AbstractFeatureState {
 
     /**
      * Instantiates a new discarded state.
-     *
+     * 
      * @param feature the feature on which this state apply.
      */
     public DiscardedState(final FeatureImplementation feature) {

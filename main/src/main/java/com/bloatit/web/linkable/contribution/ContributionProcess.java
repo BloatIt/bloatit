@@ -6,6 +6,10 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.mailsender.Mail;
+import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.WebProcess.PaymentProcess;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -16,6 +20,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Team;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.money.PaylineProcess;
+import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
@@ -112,10 +117,29 @@ public class ContributionProcess extends PaymentProcess {
     @Override
     public Url endSubProcess(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
-            if (amountToCharge.compareTo(BigDecimal.ZERO) > 0) {
-                Context.getSession().notifyGood(tr("Your account has been credited."));
+            final PaylineProcess subPro = (PaylineProcess) subProcess;
+            if (subPro.isSuccessful()) {
+                if (amountToCharge.compareTo(BigDecimal.ZERO) > 0) {
+                    Context.getSession().notifyGood(tr("Your account has been credited."));
+                }
+                try {
+                    final String title = Context.tr("Accepted payment on elveos.org");
+                    final String memberName = session.getAuthToken().getMember().getDisplayName();
+                    final String content = Context.tr("Dear {0}, \nWe are pleased to announce that your payment {1} to http://elveos.org has been validated \nWe thank you for your trust.",
+                                                memberName,
+                                                Context.getLocalizator().getCurrency(amountToCharge).getLocaleString());
+                    sendMail(title, content);
+                } catch (final UnauthorizedOperationException e) {
+                    session.notifyError(Context.tr("An error prevented us from sending you a mail. Please notify us."));
+                    throw new ShallNotPassException("Cannot access connecter user email.");
+                }
+                // Redirects to the contribution action which will perform the
+                // actual contribution
+                return new ContributionActionUrl(this);
+            } else {
+                locked = false;
+                return new CheckContributionPageUrl(this);
             }
-            return new ContributionActionUrl(this);
         }
         return null;
     }
@@ -139,4 +163,16 @@ public class ContributionProcess extends PaymentProcess {
         return team;
     }
 
+    /**
+     * Sends a payment notification email
+     * 
+     * @param title the title of the mail
+     * @param content the content of the mail
+     * @throws UnauthorizedOperationException when something unexpected happens
+     */
+    private void sendMail(final String title, final String content) throws UnauthorizedOperationException {
+        final String email = session.getAuthToken().getMember().getEmail();
+        final String mailSenderID = "payline-action";
+        MailServer.getInstance().send(new Mail(email, title, content, mailSenderID));
+    }
 }

@@ -2,7 +2,6 @@ package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
@@ -19,7 +18,8 @@ public class Menu extends HtmlDiv {
 
         mainMenu.add(new HtmlDiv("menu_item").add(new FeatureListPageUrl().getHtmlLink(Context.tr("Features"))));
         mainMenu.add(new HtmlDiv("menu_item").add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares"))));
-        mainMenu.add(new HtmlDiv("menu_item").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Brainstorm"))));
+        // mainMenu.add(new HtmlDiv("menu_item").add(new
+        // PageNotFoundUrl().getHtmlLink(Context.tr("Brainstorm"))));
         // mainMenu.add(new HtmlDiv("menu_item").add(new
         // MembersListPageUrl().getHtmlLink(Context.tr("Members"))));
         mainMenu.add(new HtmlDiv("menu_item").add(new TeamsPageUrl().getHtmlLink(Context.tr("Teams"))));

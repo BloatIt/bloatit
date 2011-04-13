@@ -87,7 +87,7 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
 
     /**
      * Gets the invitation to join a team.
-     *
+     * 
      * @param team the team this invitation is on.
      * @param member the member this invitation was sent to.
      * @return the invitation, are null if there is no invitation on that
@@ -95,16 +95,16 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
      */
     public static DaoJoinTeamInvitation getRecievedInvitation(final DaoTeam team, final DaoMember member) {
         return (DaoJoinTeamInvitation) SessionManager.getNamedQuery("joinTeamInvitation.byTeamReceiver")
-                                                      .setEntity("team", team)
-                                                      .setEntity("member", member)
-                                                      .uniqueResult();
+                                                     .setEntity("team", team)
+                                                     .setEntity("member", member)
+                                                     .uniqueResult();
     }
 
     public static DaoJoinTeamInvitation getSentInvitation(final DaoTeam team, final DaoMember member) {
         return (DaoJoinTeamInvitation) SessionManager.getNamedQuery("joinTeamInvitation.byTeamSender")
-                                                      .setEntity("team", team)
-                                                      .setEntity("member", member)
-                                                      .uniqueResult();
+                                                     .setEntity("team", team)
+                                                     .setEntity("member", member)
+                                                     .uniqueResult();
     }
 
     // ======================================================================
@@ -125,7 +125,7 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
 
     /**
      * Create a new invitation. Set the state to PENDING.
-     *
+     * 
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinTeamInvitation(final DaoMember sender, final DaoMember receiver, final DaoTeam team) {

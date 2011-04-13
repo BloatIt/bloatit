@@ -90,7 +90,8 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoMilestone)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoMilestone)
      */
     @Override
     public Identifiable<?> visit(final DaoMilestone dao) {
@@ -148,7 +149,8 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoSoftware)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoSoftware)
      */
     @Override
     public Identifiable<?> visit(final DaoSoftware dao) {
@@ -246,7 +248,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
      * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoTranslation)
      */
     @Override
-    public Identifiable<?> visit(DaoRelease dao) {
+    public Identifiable<?> visit(final DaoRelease dao) {
         return Release.create(dao);
     }
 

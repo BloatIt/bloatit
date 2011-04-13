@@ -105,7 +105,7 @@ public class RestSoftware extends RestElement<Software> {
      * <p>
      * Finds the RestSoftware matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestSoftware
      */
     @REST(name = "softwares", method = RequestMethod.GET)

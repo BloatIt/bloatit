@@ -20,7 +20,7 @@ import com.bloatit.framework.webprocessor.url.Url;
  * Used to display an image
  */
 public class HtmlImage extends HtmlLeaf {
-    public HtmlImage(final Image image, String alt) {
+    public HtmlImage(final Image image, final String alt) {
         super("img");
         String uri = "";
         uri = image.getIdentifier();
@@ -28,18 +28,18 @@ public class HtmlImage extends HtmlLeaf {
         addAttribute("alt", alt);
     }
 
-    public HtmlImage(final Image image, String alt, final String cssClass) {
+    public HtmlImage(final Image image, final String alt, final String cssClass) {
         this(image, alt);
         addAttribute("class", cssClass);
     }
 
-    public HtmlImage(final Url imageUrl, String alt) {
+    public HtmlImage(final Url imageUrl, final String alt) {
         super("img");
         addAttribute("src", imageUrl.urlString());
         addAttribute("alt", alt);
     }
 
-    public HtmlImage(final Url imageUrl, String alt, final String cssClass) {
+    public HtmlImage(final Url imageUrl, final String alt, final String cssClass) {
         this(imageUrl, alt);
         addAttribute("class", cssClass);
     }

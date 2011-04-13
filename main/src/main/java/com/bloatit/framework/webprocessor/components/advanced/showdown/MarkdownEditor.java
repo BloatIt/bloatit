@@ -21,11 +21,11 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
  * </p>
  */
 public class MarkdownEditor extends HtmlStringFormField {
-    public MarkdownEditor(String name, int rows, int cols) {
+    public MarkdownEditor(final String name, final int rows, final int cols) {
         super(new MarkdownEditorInputBlock(name, rows, cols), name);
     }
 
-    public MarkdownEditor(String name, String label, int rows, int cols) {
+    public MarkdownEditor(final String name, final String label, final int rows, final int cols) {
         super(new MarkdownEditorInputBlock(name, rows, cols), name);
         setLabel(label);
     }
@@ -43,20 +43,20 @@ public class MarkdownEditor extends HtmlStringFormField {
 
     @Override
     protected List<String> getCustomJs() {
-        List<String> js = new ArrayList<String>();
+        final List<String> js = new ArrayList<String>();
         js.add(FrameworkConfiguration.getJsShowdownUi());
         return js;
     }
 
     @Override
     protected List<String> getCustomCss() {
-        List<String> css = new ArrayList<String>();
+        final List<String> css = new ArrayList<String>();
         css.add(FrameworkConfiguration.getCssShowdown());
         return css;
     }
 
     @Override
-    protected void doSetDefaultValue(String value) {
+    protected void doSetDefaultValue(final String value) {
         ((HtmlTextArea) inputBlock.getInputElement()).setDefaultValue(value);
     }
 
@@ -64,18 +64,18 @@ public class MarkdownEditor extends HtmlStringFormField {
     public void setComment(final String comment) {
         ((HtmlTextArea) inputBlock.getInputElement()).setComment(comment);
     }
-    
+
     public static class MarkdownEditorInputBlock extends InputBlock {
         private final HtmlTextArea input;
         private final HtmlDiv buttonBar = new HtmlDiv("md_button");
         private final HtmlDiv container = new HtmlDiv("md_editor");
 
-        public MarkdownEditorInputBlock(String name, int rows, int cols) {
+        public MarkdownEditorInputBlock(final String name, final int rows, final int cols) {
             input = new HtmlTextArea(name, rows, cols);
             generate();
         }
 
-        public MarkdownEditorInputBlock(String name, String label, int rows, int cols) {
+        public MarkdownEditorInputBlock(final String name, final String label, final int rows, final int cols) {
             input = new HtmlTextArea(name, label, rows, cols);
             generate();
         }

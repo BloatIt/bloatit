@@ -41,7 +41,7 @@ public abstract class WebProcessor implements XcgiProcessor {
 
         try {
             final WebHeader header = new WebHeader(httpHeader);
-            
+
             ModelAccessor.open();
             Context.reInitializeContext(header, session);
 

@@ -45,7 +45,7 @@ public abstract class WebProcess extends Action {
 
         public abstract BigDecimal getAmountToPay();
     }
-    
+
     @Override
     protected Url checkRightsAndEverything() {
         return NO_ERROR;
@@ -53,6 +53,6 @@ public abstract class WebProcess extends Action {
 
     @Override
     protected void transmitParameters() {
-        // Nothing to do 
+        // Nothing to do
     }
 }

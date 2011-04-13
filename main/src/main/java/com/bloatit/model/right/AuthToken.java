@@ -51,7 +51,7 @@ public final class AuthToken {
             Log.model().info("Identification error with login " + login);
             throw new NotFoundException("Identification failed");
         }
-        
+
         // Spend some time here. (Normal computation).
         final String digestedPassword = SecuredHash.calculateHash(password, tmp.getSalt());
         if (!tmp.passwordEquals(digestedPassword)) {

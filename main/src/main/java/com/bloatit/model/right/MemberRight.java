@@ -84,7 +84,7 @@ public class MemberRight extends RightManager {
     /**
      * The Class Locale is a {@link Private} accessor for the Locale property.
      */
-    public static class Locale extends Private {
+    public static class Locale extends Public {
         // nothing this is just a rename.
     }
 
@@ -92,6 +92,10 @@ public class MemberRight extends RightManager {
      * The Class Name is a {@link Public} accessor for the Name property.
      */
     public static class Name extends Public {
+        // nothing this is just a rename.
+    }
+
+    public static class Contributions extends Public {
         // nothing this is just a rename.
     }
 }

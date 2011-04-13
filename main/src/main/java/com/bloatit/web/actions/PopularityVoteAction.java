@@ -87,7 +87,7 @@ public final class PopularityVoteAction extends LoggedAction {
 
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

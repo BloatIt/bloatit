@@ -33,7 +33,7 @@ public class HtmlList extends HtmlLeaf {
 
     /**
      * Creates a list with the precised type (numbered or bullet)
-     *
+     * 
      * @param type the type of the list
      */
     public HtmlList(final ListType type) {

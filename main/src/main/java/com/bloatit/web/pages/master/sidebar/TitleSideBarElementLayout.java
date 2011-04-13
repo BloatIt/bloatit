@@ -25,17 +25,17 @@ public class TitleSideBarElementLayout extends SideBarElementLayout {
         super.add(body);
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title.addText(title);
     }
 
     @Override
-    public HtmlBranch add(XmlNode element) {
+    public HtmlBranch add(final XmlNode element) {
         body.add(element);
         return this;
     }
 
-    public HtmlBranch setFloatRight(HtmlElement element) {
+    public HtmlBranch setFloatRight(final HtmlElement element) {
         floatRight.add(new HtmlDiv("float_right").add(element));
         return this;
     }

@@ -49,7 +49,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * )
      */
     @Override
-    public Class<?> visit(ExternalAccount model) {
+    public Class<?> visit(final ExternalAccount model) {
         return DaoExternalAccount.class;
     }
 
@@ -60,7 +60,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * )
      */
     @Override
-    public Class<?> visit(InternalAccount model) {
+    public Class<?> visit(final InternalAccount model) {
         return DaoInternalAccount.class;
     }
 
@@ -69,7 +69,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Member)
      */
     @Override
-    public Class<?> visit(Member model) {
+    public Class<?> visit(final Member model) {
         return DaoMember.class;
     }
 
@@ -80,16 +80,17 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * )
      */
     @Override
-    public Class<?> visit(BankTransaction model) {
+    public Class<?> visit(final BankTransaction model) {
         return DaoBankTransaction.class;
     }
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Milestone)
+     * @see
+     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Milestone)
      */
     @Override
-    public Class<?> visit(Milestone model) {
+    public Class<?> visit(final Milestone model) {
         return DaoMilestone.class;
     }
 
@@ -99,7 +100,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Description)
      */
     @Override
-    public Class<?> visit(Description model) {
+    public Class<?> visit(final Description model) {
         return DaoDescription.class;
     }
 
@@ -108,7 +109,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Team)
      */
     @Override
-    public Class<?> visit(Team model) {
+    public Class<?> visit(final Team model) {
         return DaoTeam.class;
     }
 
@@ -119,7 +120,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * )
      */
     @Override
-    public Class<?> visit(HighlightFeature model) {
+    public Class<?> visit(final HighlightFeature model) {
         return DaoHighlightFeature.class;
     }
 
@@ -129,16 +130,17 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * JoinTeamInvitation)
      */
     @Override
-    public Class<?> visit(JoinTeamInvitation model) {
+    public Class<?> visit(final JoinTeamInvitation model) {
         return DaoJoinTeamInvitation.class;
     }
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Software)
+     * @see
+     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Software)
      */
     @Override
-    public Class<?> visit(Software model) {
+    public Class<?> visit(final Software model) {
         return DaoSoftware.class;
     }
 
@@ -148,7 +150,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Transaction)
      */
     @Override
-    public Class<?> visit(Transaction model) {
+    public Class<?> visit(final Transaction model) {
         return DaoTransaction.class;
     }
 
@@ -157,7 +159,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Bug)
      */
     @Override
-    public Class<?> visit(Bug model) {
+    public Class<?> visit(final Bug model) {
         return DaoBug.class;
     }
 
@@ -167,7 +169,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Contribution)
      */
     @Override
-    public Class<?> visit(Contribution model) {
+    public Class<?> visit(final Contribution model) {
         return DaoContribution.class;
     }
 
@@ -177,7 +179,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.FileMetadata)
      */
     @Override
-    public Class<?> visit(FileMetadata model) {
+    public Class<?> visit(final FileMetadata model) {
         return DaoFileMetadata.class;
     }
 
@@ -186,7 +188,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Kudos)
      */
     @Override
-    public Class<?> visit(Kudos model) {
+    public Class<?> visit(final Kudos model) {
         return DaoKudos.class;
     }
 
@@ -195,7 +197,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Comment)
      */
     @Override
-    public Class<?> visit(Comment model) {
+    public Class<?> visit(final Comment model) {
         return DaoComment.class;
     }
 
@@ -204,7 +206,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Feature)
      */
     @Override
-    public Class<?> visit(Feature model) {
+    public Class<?> visit(final Feature model) {
         return DaoFeature.class;
     }
 
@@ -213,7 +215,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Offer)
      */
     @Override
-    public Class<?> visit(Offer model) {
+    public Class<?> visit(final Offer model) {
         return DaoOffer.class;
     }
 
@@ -223,7 +225,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Translation)
      */
     @Override
-    public Class<?> visit(Translation model) {
+    public Class<?> visit(final Translation model) {
         return DaoTranslation.class;
     }
 
@@ -232,7 +234,7 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
      * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Release)
      */
     @Override
-    public Class<?> visit(Release model) {
+    public Class<?> visit(final Release model) {
         return DaoRelease.class;
     }
 }

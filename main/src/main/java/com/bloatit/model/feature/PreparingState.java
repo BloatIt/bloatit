@@ -29,7 +29,7 @@ public class PreparingState extends CanContributeMetaState {
 
     /**
      * Instantiates a new preparing state.
-     *
+     * 
      * @param feature the feature on which this state apply.
      */
     public PreparingState(final FeatureImplementation feature) {

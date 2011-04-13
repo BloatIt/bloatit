@@ -54,7 +54,7 @@ public class SimplePostParser extends PostParameterParser {
                     final String key = URLDecoder.decode(pair[0], "UTF-8");
                     String value;
                     value = URLDecoder.decode(pair[1], "UTF-8");
-                    PostParameter postParameter = new PostParameter(key, value);
+                    final PostParameter postParameter = new PostParameter(key, value);
                     i++;
                     return postParameter;
                 }

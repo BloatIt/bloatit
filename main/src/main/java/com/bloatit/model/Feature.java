@@ -101,9 +101,8 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *             {@link FeatureState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
-    Offer
-            addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
-                                                                                                                                       throws UnauthorizedOperationException;
+    Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
+            throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.
@@ -148,7 +147,8 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
 
     /**
      * Get the total number of comments for this feature. It doesn't take into
-     * account the pageSize if you are using paged list (cf: {@link PageIterable}).
+     * account the pageSize if you are using paged list (cf:
+     * {@link PageIterable}).
      * 
      * @return the total number of comments on this feature.
      */

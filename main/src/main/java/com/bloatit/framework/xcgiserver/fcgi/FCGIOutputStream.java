@@ -81,11 +81,11 @@ public class FCGIOutputStream extends OutputStream {
 
         while (wroteLen < len) {
 
-            int currentOffset = off + wroteLen;
-            int lenToWrite = len - wroteLen;
+            final int currentOffset = off + wroteLen;
+            final int lenToWrite = len - wroteLen;
 
             // Check if left size in next record
-            int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
+            final int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
             if (leftSize > 0) {
                 // Check if there too bytes for the current record
                 if (lenToWrite <= leftSize) {
@@ -103,7 +103,7 @@ public class FCGIOutputStream extends OutputStream {
     }
 
     private void sendStdoutRecordIfNeeded() throws IOException {
-        int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
+        final int leftSize = WAIT_BUFFER_SIZE - waitBuffer.size();
         if (leftSize <= 0) {
             sendStdoutRecord();
         }

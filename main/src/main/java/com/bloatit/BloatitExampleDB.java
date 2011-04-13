@@ -49,18 +49,18 @@ public class BloatitExampleDB {
 
         SessionManager.beginWorkUnit();
 
-        fred = createMember("fred", "Frédéric Bertolus");
-        thomas = createMember("thomas", "Thomas Guyard");
-        yoann = createMember("yoann", "Yoann Plénet");
-        admin = createMember("admin", "Administrator");
+        fred = createMember("fred", "Frédéric Bertolus", Locale.FRANCE);
+        thomas = createMember("thomas", "Thomas Guyard", Locale.FRANCE);
+        yoann = createMember("yoann", "Yoann Plénet", Locale.US);
+        admin = createMember("admin", "Administrator", Locale.FRANCE);
         admin.setRole(Role.ADMIN);
 
-        chogall = createMember("chogall", "Cho'gall");
-        cerbere = createMember("cerbere", "Cerbère");
-        hydre = createMember("hydre", "Hydre");
-        elephantman = createMember("elephantman", "ElephantMan");
-        celeste = createMember("celeste", "Céleste");
-        rataxes = createMember("rataxes", "Rataxès");
+        chogall = createMember("chogall", "Cho'gall", Locale.UK);
+        cerbere = createMember("cerbere", "Cerbère", Locale.KOREA);
+        hydre = createMember("hydre", "Hydre", Locale.GERMANY);
+        elephantman = createMember("elephantman", "ElephantMan", Locale.JAPAN);
+        celeste = createMember("celeste", "Céleste", Locale.CHINA);
+        rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
         // Add avatar
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
@@ -409,8 +409,8 @@ public class BloatitExampleDB {
         bankTransaction.setValidated();
     }
 
-    public Member createMember(final String login, final String name) throws UnauthorizedOperationException {
-        final Member member = new Member(login, "plop", login + "@elveos.org", Locale.FRANCE);
+    public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {
+        final Member member = new Member(login, "plop", login + "@elveos.org", locale);
         member.authenticate(new AuthToken(member));
         member.setFullname(name);
         member.activate();

@@ -48,8 +48,8 @@ public class FeaturesTools {
     /**
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv
-            generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount)
+            throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 

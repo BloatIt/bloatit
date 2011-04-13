@@ -37,7 +37,7 @@ public final class HighlightFeatureManager {
 
     /**
      * Gets a {@link HighlightFeature} by its id.
-     *
+     * 
      * @param id the id
      * @return the {@link HighlightFeature} or null if not found.
      */
@@ -47,7 +47,7 @@ public final class HighlightFeatureManager {
 
     /**
      * Gets the all th {@link HighlightFeature}s.
-     *
+     * 
      * @return the {@link HighlightFeature} features.
      */
     public static PageIterable<HighlightFeature> getAll() {

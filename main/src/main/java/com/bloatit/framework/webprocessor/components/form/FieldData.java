@@ -21,7 +21,7 @@ public interface FieldData {
     /**
      * When a user input wrong value, you have to regenerated the form with
      * error messages.
-     *
+     * 
      * @return the error messages on the field.
      */
     Messages getErrorMessages();

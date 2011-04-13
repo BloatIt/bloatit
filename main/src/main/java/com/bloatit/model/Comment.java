@@ -24,7 +24,7 @@ import com.bloatit.model.lists.CommentList;
 
 /**
  * The Class Comment.
- *
+ * 
  * @see DaoComment
  */
 public final class Comment extends Kudosable<DaoComment> implements Commentable {
@@ -54,7 +54,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     /**
      * Create a new comment and return it. It return null if the
      * <code>dao</code> is null.
-     *
+     * 
      * @param dao the dao
      * @return the comment or null.
      */
@@ -65,7 +65,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Instantiates a new comment.
-     *
+     * 
      * @param dao the dao
      */
     private Comment(final DaoComment dao) {
@@ -74,7 +74,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Return all the children comment of this comment.
-     *
+     * 
      * @return the children
      * @see DaoComment#getChildren()
      */
@@ -84,7 +84,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Gets the text.
-     *
+     * 
      * @return the text of this comment.
      */
     public String getText() {
@@ -93,7 +93,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Turn pending.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnPending()
      */
@@ -104,7 +104,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Turn valid.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnValid()
      */
@@ -115,7 +115,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Turn rejected.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnRejected()
      */
@@ -126,7 +126,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Turn hidden.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnHidden()
      */
@@ -137,7 +137,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Adds the comment.
-     *
+     * 
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
      */
     @Override

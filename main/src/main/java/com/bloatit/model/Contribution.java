@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ContributionRight;
@@ -129,6 +130,10 @@ public final class Contribution extends UserContent<DaoContribution> {
     public BigDecimal getAmount() throws UnauthorizedOperationException {
         tryAccess(new ContributionRight.Amount(), Action.READ);
         return getDao().getAmount();
+    }
+
+    public Feature getFeature() {
+        return FeatureImplementation.create(getDao().getFeature());
     }
 
     /**

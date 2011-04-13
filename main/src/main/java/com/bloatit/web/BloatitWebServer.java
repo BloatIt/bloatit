@@ -52,6 +52,7 @@ import com.bloatit.web.linkable.meta.bugreport.MetaEditBugAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
+import com.bloatit.web.linkable.money.AccountPage;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylinePage;
@@ -84,6 +85,7 @@ import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
+import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
@@ -292,6 +294,9 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ChangeLanguagePageUrl.getName())) {
             return new ChangeLanguagePage(new ChangeLanguagePageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(AccountPageUrl.getName())) {
+            return new AccountPage(new AccountPageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -325,10 +330,10 @@ public class BloatitWebServer extends WebProcessor {
             return new PaylineAction(new PaylineActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylineNotifyActionUrl.getName())) {
-            if(params.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
+            if (params.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
                 final String token = params.look(PaylineNotifyAction.TOKEN_CODE).getSimpleValue();
                 final Session fakeSession = SessionManager.pickTemporarySession(token);
-                if(fakeSession != null) {
+                if (fakeSession != null) {
                     Context.reInitializeContext(Context.getHeader(), fakeSession);
                 }
             }
@@ -402,7 +407,6 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(PaylineProcessUrl.getName())) {
             return new PaylineProcess(new PaylineProcessUrl(params, session.getParameters()));
         }
-
 
         // Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {

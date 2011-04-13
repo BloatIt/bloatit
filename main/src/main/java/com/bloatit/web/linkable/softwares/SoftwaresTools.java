@@ -39,7 +39,7 @@ public class SoftwaresTools {
         return logoDiv;
     }
 
-    public static HtmlElement getSoftwareLink(final Software software) throws UnauthorizedOperationException {
+    public static HtmlSpan getSoftwareLink(final Software software) throws UnauthorizedOperationException {
         final HtmlSpan softwareSpan = new HtmlSpan("software_link");
         softwareSpan.add(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
 
