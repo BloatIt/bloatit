@@ -118,7 +118,7 @@ public final class AddReleasePage extends LoggedPage {
         languageInput.setComment(tr("Language of the descriptions."));
         form.add(languageInput);
 
-        // attachement
+        // attachment
         final FieldData attachedFileData = doCreateUrl.getAttachedfileParameter().pickFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
         attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());

@@ -56,7 +56,7 @@ public final class AddAttachementPage extends LoggedPage {
 
     @Override
     protected String createPageTitle() {
-        return tr("Add an attachement to the release");
+        return tr("Add an attachment to the release");
     }
 
     @Override
@@ -84,7 +84,7 @@ public final class AddAttachementPage extends LoggedPage {
     }
 
     private HtmlElement generateReleaseCreationForm() {
-        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachement"), 1);
+        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachment"), 1);
 
         final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(userContent);
 
@@ -94,14 +94,14 @@ public final class AddAttachementPage extends LoggedPage {
 
         title.add(form);
 
-        // attachement
-        final FieldData attachementDescriptiondData = formUrl.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(),
+        // attachment
+        final FieldData attachmentDescriptiondData = formUrl.getAttachementDescriptionParameter().pickFieldData();
+        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(),
                                                                             Context.tr("Attachment description"));
-        attachementDescriptionInput.setDefaultValue(attachementDescriptiondData.getSuggestedValue());
-        attachementDescriptionInput.addErrorMessages(attachementDescriptiondData.getErrorMessages());
-        attachementDescriptionInput.setComment(tr("Mandatory"));
-        form.add(attachementDescriptionInput);
+        attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
+        attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());
+        attachmentDescriptionInput.setComment(tr("Mandatory"));
+        form.add(attachmentDescriptionInput);
 
         final FieldData attachedFileData = formUrl.getAttachementParameter().pickFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
@@ -124,12 +124,12 @@ public final class AddAttachementPage extends LoggedPage {
 
     public static Breadcrumb generateBreadcrumb(final UserContentInterface<?> userContent) {
         final Breadcrumb breadcrumb = BreadcrumbTools.generateBreadcrumb(userContent);
-        breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachement")));
+        breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachment")));
         return breadcrumb;
     }
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to add a new attachement.");
+        return tr("You must be logged to add a new attachment.");
     }
 }

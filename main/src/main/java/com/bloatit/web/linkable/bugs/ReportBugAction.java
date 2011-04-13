@@ -47,10 +47,10 @@ public final class ReportBugAction extends LoggedAction {
     public static final String BUG_LEVEL = "bug_level";
     public static final String BUG_BATCH = "bug_milestone";
     public static final String LANGUAGE_CODE = "bug_description_language";
-    public static final String ATTACHEMENT_CODE = "attachement";
-    public static final String ATTACHEMENT_NAME_CODE = "attachement/filename";
-    public static final String ATTACHEMENT_CONTENT_TYPE_CODE = "attachement/contenttype";
-    public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
+    public static final String ATTACHEMENT_CODE = "attachment";
+    public static final String ATTACHEMENT_NAME_CODE = "attachment/filename";
+    public static final String ATTACHEMENT_CONTENT_TYPE_CODE = "attachment/contenttype";
+    public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachment_description";
 
     @RequestParam(name = BUG_TITLE, role = Role.POST)
     @ParamConstraint(max = "120",
@@ -78,20 +78,20 @@ public final class ReportBugAction extends LoggedAction {
 
     @Optional
     @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
-    private final String attachement;
+    private final String attachment;
 
     @Optional
     @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
-    private final String attachementFileName;
+    private final String attachmentFileName;
 
     @Optional
     @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
-    private final String attachementDescription;
+    private final String attachmentDescription;
 
     @SuppressWarnings("unused")
     @Optional
     @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
-    private final String attachementContentType;
+    private final String attachmentContentType;
 
     public ReportBugAction(final ReportBugActionUrl url) {
         super(url);
@@ -102,10 +102,10 @@ public final class ReportBugAction extends LoggedAction {
         this.lang = url.getLang();
         this.level = url.getLevel();
         this.milestone = url.getMilestone();
-        this.attachement = url.getAttachement();
-        this.attachementFileName = url.getAttachementFileName();
-        this.attachementContentType = url.getAttachementContentType();
-        this.attachementDescription = url.getAttachementDescription();
+        this.attachment = url.getAttachement();
+        this.attachmentFileName = url.getAttachementFileName();
+        this.attachmentContentType = url.getAttachementContentType();
+        this.attachmentDescription = url.getAttachementDescription();
 
     }
 
@@ -113,24 +113,24 @@ public final class ReportBugAction extends LoggedAction {
     public Url doProcessRestricted(final Member authenticatedMember) {
         final Locale langLocale = new Locale(lang);
         final Bug bug = milestone.addBug(authenticatedMember, title, description, langLocale, level.getLevel());
-        if (attachement != null) {
-            FileConstraintChecker fcc = new FileConstraintChecker(attachement);
+        if (attachment != null) {
+            FileConstraintChecker fcc = new FileConstraintChecker(attachment);
             if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
                 for (String message : fcc.isImageAvatar()) {
                     session.notifyBad(message);
                 }
                 return Context.getSession().pickPreferredPage();
             }
-            final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
-                                                                                                attachement,
-                                                                                                attachementFileName,
-                                                                                                attachementDescription);
+            final FileMetadata attachmentFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
+                                                                                                attachment,
+                                                                                                attachmentFileName,
+                                                                                                attachmentDescription);
 
             try {
-                bug.addFile(attachementFileMedatata);
+                bug.addFile(attachmentFileMedatata);
             } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("Fail to add the attachement to the bug report."));
-                throw new ShallNotPassException("Fail to add an attachement to the new bug report.", e);
+                session.notifyError(Context.tr("Fail to add the attachment to the bug report."));
+                throw new ShallNotPassException("Fail to add an attachment to the new bug report.", e);
             }
         }
         return new BugPageUrl(bug);
@@ -138,8 +138,8 @@ public final class ReportBugAction extends LoggedAction {
 
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
-        if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
-            session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
+        if (attachment != null && (attachmentDescription == null || attachmentDescription.isEmpty())) {
+            session.notifyError(Context.tr("You must enter a description of the attachment if you add an attachment."));
             return doProcessErrors();
         }
         return NO_ERROR;

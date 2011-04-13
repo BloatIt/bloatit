@@ -145,20 +145,20 @@ public final class ReportBugPage extends LoggedPage {
         reportBugForm.add(levelInput);
 
         // File
-        final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
-        reportBugForm.add(attachementBlock);
+        final HtmlFormBlock attachmentBlock = new HtmlFormBlock(tr("Attachement"));
+        reportBugForm.add(attachmentBlock);
 
-        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
-        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 3MB.");
-        attachementBlock.add(attachementInput);
+        final HtmlFileInput attachmentInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        attachmentInput.setComment("Optional. If attach a file, you must add an attachment description. Max 3MB.");
+        attachmentBlock.add(attachmentInput);
 
-        final FieldData attachementDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(),
+        final FieldData attachmentDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().pickFieldData();
+        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptionFieldData.getName(),
                                                                             Context.tr("Attachment description"));
-        attachementDescriptionInput.setDefaultValue(attachementDescriptionFieldData.getSuggestedValue());
-        attachementDescriptionInput.addErrorMessages(attachementDescriptionFieldData.getErrorMessages());
-        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
-        attachementBlock.add(attachementDescriptionInput);
+        attachmentDescriptionInput.setDefaultValue(attachmentDescriptionFieldData.getSuggestedValue());
+        attachmentDescriptionInput.addErrorMessages(attachmentDescriptionFieldData.getErrorMessages());
+        attachmentDescriptionInput.setComment(Context.tr("Need only if you add an attachment."));
+        attachmentBlock.add(attachmentDescriptionInput);
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 

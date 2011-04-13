@@ -82,11 +82,11 @@ public final class BugPage extends MasterPage {
 
         // Attachements
 
-        for (final FileMetadata attachement : bug.getFiles()) {
-            final HtmlParagraph attachementPara = new HtmlParagraph();
-            attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
-            attachementPara.addText(tr(": ") + attachement.getShortDescription());
-            box.add(attachementPara);
+        for (final FileMetadata attachment : bug.getFiles()) {
+            final HtmlParagraph attachmentPara = new HtmlParagraph();
+            attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
+            attachmentPara.addText(tr(": ") + attachment.getShortDescription());
+            box.add(attachmentPara);
         }
 
         if (bug.isOwner()) {
@@ -118,18 +118,18 @@ public final class BugPage extends MasterPage {
         addAttachementForm.enableFileUpload();
 
         // File
-        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
-        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
-        addAttachementForm.add(attachementInput);
+        final HtmlFileInput attachmentInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        attachmentInput.setComment("Optional. If attach a file, you must add an attachment description. Max 2go.");
+        addAttachementForm.add(attachmentInput);
 
-        final FieldData attachementDescriptionFieldData = addAttachementActionUrl.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(),
+        final FieldData attachmentDescriptionFieldData = addAttachementActionUrl.getAttachementDescriptionParameter().pickFieldData();
+        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptionFieldData.getName(),
                                                                             Context.tr("Attachment description"));
-        attachementDescriptionInput.setDefaultValue(attachementDescriptionFieldData.getSuggestedValue());
-        attachementDescriptionInput.addErrorMessages(attachementDescriptionFieldData.getErrorMessages());
-        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
-        addAttachementForm.add(attachementDescriptionInput);
-        addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachement")));
+        attachmentDescriptionInput.setDefaultValue(attachmentDescriptionFieldData.getSuggestedValue());
+        attachmentDescriptionInput.addErrorMessages(attachmentDescriptionFieldData.getErrorMessages());
+        attachmentDescriptionInput.setComment(Context.tr("Need only if you add an attachment."));
+        addAttachementForm.add(attachmentDescriptionInput);
+        addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachment")));
 
         return addAttachementForm;
     }

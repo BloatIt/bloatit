@@ -38,34 +38,34 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 public final class AddAttachementAction extends LoggedAction {
 
     public static final String USER_CONTENT = "user_content";
-    public static final String ATTACHEMENT_CODE = "attachement";
-    public static final String ATTACHEMENT_NAME_CODE = "attachement/filename";
-    public static final String ATTACHEMENT_CONTENT_TYPE_CODE = "attachement/contenttype";
-    public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
+    public static final String ATTACHEMENT_CODE = "attachment";
+    public static final String ATTACHEMENT_NAME_CODE = "attachment/filename";
+    public static final String ATTACHEMENT_CONTENT_TYPE_CODE = "attachment/contenttype";
+    public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachment_description";
 
     @SuppressWarnings("rawtypes")
-    @ParamConstraint(optionalErrorMsg = @tr("An attachement must be linked to a content"))
+    @ParamConstraint(optionalErrorMsg = @tr("An attachment must be linked to a content"))
     @RequestParam(name = USER_CONTENT)
     private final UserContentInterface userContent;
 
     @ParamConstraint
     @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
-    private final String attachement;
+    private final String attachment;
 
     @ParamConstraint
     @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
     @Optional
-    private final String attachementFileName;
+    private final String attachmentFileName;
 
     @ParamConstraint
     @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
-    private final String attachementDescription;
+    private final String attachmentDescription;
 
     @SuppressWarnings("unused")
     @Optional
     @ParamConstraint
     @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
-    private final String attachementContentType;
+    private final String attachmentContentType;
     private final AddAttachementActionUrl url;
 
     public AddAttachementAction(final AddAttachementActionUrl url) {
@@ -73,10 +73,10 @@ public final class AddAttachementAction extends LoggedAction {
         this.url = url;
 
         this.userContent = url.getUserContent();
-        this.attachement = url.getAttachement();
-        this.attachementFileName = url.getAttachementFileName();
-        this.attachementContentType = url.getAttachementContentType();
-        this.attachementDescription = url.getAttachementDescription();
+        this.attachment = url.getAttachement();
+        this.attachmentFileName = url.getAttachementFileName();
+        this.attachmentContentType = url.getAttachementContentType();
+        this.attachmentDescription = url.getAttachementDescription();
 
     }
 
@@ -93,10 +93,10 @@ public final class AddAttachementAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(final Member authenticatedMember) {
         final FileMetadata file = FileMetadataManager.createFromTempFile(authenticatedMember,
-                                                                         attachement,
-                                                                         attachementFileName,
-                                                                         attachementDescription);
-        final FileConstraintChecker fcc = new FileConstraintChecker(attachement);
+                                                                         attachment,
+                                                                         attachmentFileName,
+                                                                         attachmentDescription);
+        final FileConstraintChecker fcc = new FileConstraintChecker(attachment);
         if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
             for (final String message : fcc.isImageAvatar()) {
                 session.notifyBad(message);
@@ -109,8 +109,8 @@ public final class AddAttachementAction extends LoggedAction {
             session.notifyGood(Context.tr("Attachement add successfuly !"));
 
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("You're allowed to add an attachement only if you own the content. If you get this error without trying to hack the website, please make a bug report."));
-            throw new MeanUserException("The user try to add an attachement but he doesn't have the right", e);
+            session.notifyError(Context.tr("You're allowed to add an attachment only if you own the content. If you get this error without trying to hack the website, please make a bug report."));
+            throw new MeanUserException("The user try to add an attachment but he doesn't have the right", e);
         }
         return session.pickPreferredPage();
     }
@@ -122,7 +122,7 @@ public final class AddAttachementAction extends LoggedAction {
 
     @Override
     protected String getRefusalReason() {
-        return "You must be logged in to add an attachement.";
+        return "You must be logged in to add an attachment.";
     }
 
     @Override

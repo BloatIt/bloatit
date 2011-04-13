@@ -43,21 +43,21 @@ public final class CreateCommentAction extends LoggedAction {
     private final String comment;
 
     @Optional
-    @RequestParam(name = "attachement", role = Role.POST)
-    private final String attachement;
+    @RequestParam(name = "attachment", role = Role.POST)
+    private final String attachment;
 
     @Optional
-    @RequestParam(name = "attachement/filename", role = Role.POST)
-    private final String attachementFileName;
+    @RequestParam(name = "attachment/filename", role = Role.POST)
+    private final String attachmentFileName;
 
     @Optional
-    @RequestParam(name = "attachement_description", role = Role.POST)
-    private final String attachementDescription;
+    @RequestParam(name = "attachment_description", role = Role.POST)
+    private final String attachmentDescription;
 
     @SuppressWarnings("unused")
     @Optional
-    @RequestParam(name = "attachement/contenttype", role = Role.POST)
-    private final String attachementContentType;
+    @RequestParam(name = "attachment/contenttype", role = Role.POST)
+    private final String attachmentContentType;
 
     private final CreateCommentActionUrl url;
 
@@ -66,10 +66,10 @@ public final class CreateCommentAction extends LoggedAction {
         this.url = url;
         this.commentable = url.getCommentable();
         this.comment = url.getComment();
-        this.attachement = url.getAttachement();
-        this.attachementFileName = url.getAttachementFileName();
-        this.attachementContentType = url.getAttachementContentType();
-        this.attachementDescription = url.getAttachementDescription();
+        this.attachment = url.getAttachement();
+        this.attachmentFileName = url.getAttachementFileName();
+        this.attachmentContentType = url.getAttachementContentType();
+        this.attachmentDescription = url.getAttachementDescription();
     }
 
     @Override
@@ -83,18 +83,18 @@ public final class CreateCommentAction extends LoggedAction {
         try {
             final Comment newComment = commentable.addComment(comment);
 
-            if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
-                session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
+            if (attachment != null && (attachmentDescription == null || attachmentDescription.isEmpty())) {
+                session.notifyError(Context.tr("You must enter a description of the attachment if you add an attachment."));
                 return redirectWithError();
             }
 
-            if (attachement != null) {
-                final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
-                                                                                                    attachement,
-                                                                                                    attachementFileName,
-                                                                                                    attachementDescription);
+            if (attachment != null) {
+                final FileMetadata attachmentFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
+                                                                                                    attachment,
+                                                                                                    attachmentFileName,
+                                                                                                    attachmentDescription);
 
-                newComment.addFile(attachementFileMedatata);
+                newComment.addFile(attachmentFileMedatata);
             }
 
             session.notifyGood(Context.tr("Your comment has been added."));

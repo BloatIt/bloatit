@@ -58,11 +58,11 @@ public class CommentTools {
             commentBlock.add(commentText);
 
             // Attachements
-            for (final FileMetadata attachement : comment.getFiles()) {
-                final HtmlParagraph attachementPara = new HtmlParagraph();
-                attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
-                attachementPara.addText(tr(": ") + attachement.getShortDescription());
-                commentBlock.add(attachementPara);
+            for (final FileMetadata attachment : comment.getFiles()) {
+                final HtmlParagraph attachmentPara = new HtmlParagraph();
+                attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
+                attachmentPara.addText(tr(": ") + attachment.getShortDescription());
+                commentBlock.add(attachmentPara);
             }
 
             final HtmlDiv commentInfo = new HtmlDiv("comment_info");
@@ -173,21 +173,21 @@ public class CommentTools {
 
     private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url) {
 
-        final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
+        final HtmlFormBlock attachmentBlock = new HtmlFormBlock(tr("Attachement"));
 
-        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
-        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
-        attachementBlock.add(attachementInput);
+        final HtmlFileInput attachmentInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        attachmentInput.setComment("Optional. If attach a file, you must add an attachment description. Max 2go.");
+        attachmentBlock.add(attachmentInput);
 
-        final FieldData attachementDescriptiondData = url.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(),
+        final FieldData attachmentDescriptiondData = url.getAttachementDescriptionParameter().pickFieldData();
+        final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(),
                                                                             Context.tr("Attachment description"));
-        attachementDescriptionInput.setDefaultValue(attachementDescriptiondData.getSuggestedValue());
-        attachementDescriptionInput.addErrorMessages(attachementDescriptiondData.getErrorMessages());
-        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
-        attachementBlock.add(attachementDescriptionInput);
+        attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
+        attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());
+        attachmentDescriptionInput.setComment(Context.tr("Need only if you add an attachment."));
+        attachmentBlock.add(attachmentDescriptionInput);
 
-        return attachementBlock;
+        return attachmentBlock;
     }
 
 }
