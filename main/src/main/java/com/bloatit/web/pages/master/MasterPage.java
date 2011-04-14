@@ -11,6 +11,7 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
@@ -99,7 +100,14 @@ public abstract class MasterPage extends GenericPage {
         final HtmlImage logoImage = new HtmlImage(new Image(WebConfiguration.getImgLogo()), tr("elveos.org logo"));
         logoImage.setCssClass("logo_elveos");
 
+
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
+
+
+        final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
+        logoTextDiv.addText(tr("the cooperative platform for free software funding"));
+
+        logoDiv.add(logoTextDiv);
 
         return logoDiv;
     }
