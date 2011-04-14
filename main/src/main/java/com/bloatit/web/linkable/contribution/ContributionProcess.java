@@ -19,6 +19,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Team;
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -105,6 +106,9 @@ public class ContributionProcess extends PaymentProcess {
     @Override
     public void load() {
         feature = FeatureManager.getFeatureById(feature.getId());
+        if (team != null) {
+            team = TeamManager.getById(team.getId());
+        }
     }
 
     @Override
@@ -126,8 +130,8 @@ public class ContributionProcess extends PaymentProcess {
                     final String title = Context.tr("Accepted payment on elveos.org");
                     final String memberName = session.getAuthToken().getMember().getDisplayName();
                     final String content = Context.tr("Dear {0}, \nWe are pleased to announce that your payment {1} to http://elveos.org has been validated \nWe thank you for your trust.",
-                                                memberName,
-                                                Context.getLocalizator().getCurrency(amountToCharge).getLocaleString());
+                                                      memberName,
+                                                      Context.getLocalizator().getCurrency(amountToCharge).getLocaleString());
                     sendMail(title, content);
                 } catch (final UnauthorizedOperationException e) {
                     session.notifyError(Context.tr("An error prevented us from sending you a mail. Please notify us."));

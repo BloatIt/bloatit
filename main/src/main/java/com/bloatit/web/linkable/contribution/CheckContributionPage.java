@@ -42,6 +42,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
+import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.web.WebConfiguration;
@@ -118,7 +119,7 @@ public final class CheckContributionPage extends CreateUserContentPage {
 
         BigDecimal account;
         try {
-            account = member.getInternalAccount().getAmount();
+            account = getAccount(member).getAmount();
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
@@ -147,9 +148,8 @@ public final class CheckContributionPage extends CreateUserContentPage {
                     final HtmlDiv changeLine = new HtmlDiv("change_line");
                     {
 
-                        changeLine.add(new MoneyVariationBlock(member.getInternalAccount().getAmount(), member.getInternalAccount()
-                                                                                                              .getAmount()
-                                                                                                              .subtract(process.getAmount())));
+                        changeLine.add(new MoneyVariationBlock(getAccount(member).getAmount(), getAccount(member).getAmount()
+                                                                                                                 .subtract(process.getAmount())));
                         changeLine.add(MembersTools.getMemberAvatar(member));
                         authorContributionSummary.add(changeLine);
                         authorContributionSummary.add(new HtmlDefineParagraph(tr("Author: "), member.getDisplayName()));
@@ -200,6 +200,13 @@ public final class CheckContributionPage extends CreateUserContentPage {
         group.add(buttonDiv);
     }
 
+    private InternalAccount getAccount(final Member member) throws UnauthorizedOperationException {
+        if (process.getTeam() != null) {
+            return process.getTeam().getInternalAccount();
+        }
+        return member.getInternalAccount();
+    }
+
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Member member, final BigDecimal account) {
 
         if (process.isLocked()) {
@@ -239,8 +246,8 @@ public final class CheckContributionPage extends CreateUserContentPage {
         try {
             detailsLines.add(new HtmlContributionLine(process));
 
-            if (member.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
-                detailsLines.add(new HtmlPrepaidLine(member));
+            if (getAccount(member).getAmount().compareTo(BigDecimal.ZERO) > 0) {
+                detailsLines.add(new HtmlPrepaidLine(member, getAccount(member)));
             }
 
             detailsLines.add(new HtmlChargeAccountLine(member));
@@ -409,14 +416,12 @@ public final class CheckContributionPage extends CreateUserContentPage {
 
     public static class HtmlPrepaidLine extends HtmlDiv {
 
-        public HtmlPrepaidLine(final Member member) throws UnauthorizedOperationException {
+        public HtmlPrepaidLine(final Member member, final InternalAccount account) throws UnauthorizedOperationException {
             super("quotation_detail_line");
 
             add(MembersTools.getMemberAvatarSmall(member));
 
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
-                                                                          .getCurrency(member.getInternalAccount().getAmount())
-                                                                          .getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(account.getAmount()).getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
                                                                                                  "money up")));
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
@@ -426,13 +431,10 @@ public final class CheckContributionPage extends CreateUserContentPage {
             final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                             .getCurrency(member.getInternalAccount()
-                                                                                                                .getAmount()
-                                                                                                                .negate())
+                                                                                             .getCurrency(account.getAmount().negate())
                                                                                              .getDecimalDefaultString()));
 
             add(amountBlock);
-
         }
     }
 
