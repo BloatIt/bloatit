@@ -124,6 +124,17 @@
 				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> 
 				</plugin> -->
 		</plugins>
+
+		<resources>
+			<resource>
+				<targetPath>${project.build.directory}/classes</targetPath>
+				<filtering>true</filtering>
+				<directory>${basedir}</directory>
+				<includes>
+					<include>build.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 	<repositories>
@@ -262,7 +273,7 @@
 			<scope>compile</scope>
 		</dependency>
 
-        <!-- Encrypt/decrypt md5 sha1 etc.. -->
+		<!-- Encrypt/decrypt md5 sha1 etc.. -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
@@ -313,6 +324,8 @@
 
 
 	</pluginRepositories>
+
+
 
 
 </project>
