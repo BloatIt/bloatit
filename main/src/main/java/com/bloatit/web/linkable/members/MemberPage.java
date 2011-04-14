@@ -35,6 +35,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
@@ -252,24 +253,36 @@ public final class MemberPage extends MasterPage {
                 public HtmlElement visit(Comment model) {
                     HtmlDiv feedBox = new HtmlDiv("feed_box");
                     String contentType = "";
-
                     if (model.getParentType() == ParentType.COMMENT) {
-                        contentType = generateDate(model) + Context.tr("Replied to a comment on: ");
+                        try {
+                            MemberPageUrl memberPageUrl = new MemberPageUrl(model.getParentComment().getAuthor());
+                            HtmlLink htmlLink = memberPageUrl.getHtmlLink(model.getParentComment().getAuthor().getDisplayName());
+                            String tr = Context.tr("[{0} Replied to comment from <0:comment author:> on: ", generateDate(model));
+                            HtmlMixedText mixedText = new HtmlMixedText(tr, htmlLink);
+                            feedBox.add(mixedText);
+                        } catch (UnauthorizedOperationException e) {
+                            throw new ShallNotPassException("Error while generating activity feed", e);
+                        }
                         Comment c = model;
                         while (c.getParentType() == ParentType.COMMENT) {
                             c = c.getParentComment();
                         }
                         model = c;
                     } else {
-                        contentType = generateDate(model) + Context.tr("Commented on a: ");
+                        contentType = generateDate(model) + Context.tr("Commented on : ");
+                        feedBox.addText(contentType);
                     }
-                    feedBox.addText(contentType);
+
                     HtmlDiv targetBox = new HtmlDiv("feed_target");
                     feedBox.add(targetBox);
 
                     switch (model.getParentType()) {
                         case BUG:
-                            break;
+                            HtmlLink htmlLink = new BugPageUrl(model.getParentBug()).getHtmlLink();
+                            HtmlMixedText mixedText = new HtmlMixedText(Context.tr("A <0:bug title:bug> in feature: "), htmlLink);
+                            targetBox.add(mixedText);
+                            XmlNode f = generateFeature(model.getParentBug().getFeature());
+                            targetBox.add(f);
                         case COMMENT:
                             // Shouldn't happen
                             break;
@@ -282,7 +295,7 @@ public final class MemberPage extends MasterPage {
                     return feedBox;
                 }
 
-                private XmlNode generateFeature(Feature feature) {
+                private HtmlBranch generateFeature(Feature feature) {
                     try {
                         return FeaturesTools.generateFeatureTitle(feature);
                     } catch (UnauthorizedOperationException e) {

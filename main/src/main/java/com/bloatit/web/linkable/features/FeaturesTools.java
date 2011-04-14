@@ -52,7 +52,7 @@ public class FeaturesTools {
      *             accessed
      */
 
-    public static HtmlElement generateFeatureTitle(final Feature feature) throws UnauthorizedOperationException {
+    public static HtmlBranch generateFeatureTitle(final Feature feature) throws UnauthorizedOperationException {
         return generateFeatureTitle(feature, false);
     }
 
@@ -80,12 +80,12 @@ public class FeaturesTools {
      * @throws UnauthorizedOperationException when some operation cannot be
      *             accessed
      */
-    public static HtmlElement generateFeatureTitle(final Feature feature, boolean isTitle) throws UnauthorizedOperationException {
+    public static HtmlBranch generateFeatureTitle(final Feature feature, boolean isTitle) throws UnauthorizedOperationException {
         HtmlBranch master;
         if (isTitle) {
             master = new HtmlTitle(1);
         } else {
-            master = new HtmlDiv("feature_complete_title");
+            master = new HtmlSpan("feature_complete_title");
         }
         master.setCssClass("feature_title");
         master.add(SoftwaresTools.getSoftwareLink(feature.getSoftware()));
