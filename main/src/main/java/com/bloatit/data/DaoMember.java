@@ -128,8 +128,20 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                    "JOIN gm.bloatitTeam AS g " +
                                    "WHERE m = :member AND g = :team"),
 
-
+                       @NamedQuery(
+                           name = "member.getActivity",
+                           query = "FROM DaoUserContent as u " +
+                                   "WHERE m = :member " +
+                                   "ORDER BY creationDate"),
+                                   
+                       @NamedQuery(
+                           name = "member.getActivity.size",
+                           query = "SELECT COUNT(*)" +
+                           		   "FROM DaoUserContent as u " +
+                                   "WHERE m = :member "),                                   
+                                   
                       }
+
              )
 // @formatter:on
 public class DaoMember extends DaoActor {
@@ -521,10 +533,8 @@ public class DaoMember extends DaoActor {
      * @return the user recent activity
      */
     public PageIterable<DaoUserContent> getActivity() {
-        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(DaoFeature.class);
-        final Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author order by creationDate");
-        final Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName()
-                + " as x where x.member = :author order by creationDate");
+        final Query query = SessionManager.createQuery("from DaoUserContent as x where x.member = :author order by creationDate");
+        final Query size = SessionManager.createQuery("SELECT count(*) from DaoUserContent as x where x.member = :author");
 
         final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
         q.setEntity("author", this);
@@ -539,10 +549,8 @@ public class DaoMember extends DaoActor {
      */
     private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass, final boolean asMemberOnly) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
-        final Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author"
-                + (asMemberOnly ? " AND x.asTeam = null" : ""));
-        final Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName() + " as x where x.member = :author"
-                + (asMemberOnly ? " AND x.asTeam = null" : ""));
+        final Query query = SessionManager.createQuery("member.getActivity");
+        final Query size = SessionManager.createQuery("member.getActivity.size");
         final QueryCollection<T> q = new QueryCollection<T>(query, size);
         q.setEntity("author", this);
         return q;
