@@ -20,6 +20,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -61,6 +62,7 @@ import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -240,13 +242,9 @@ public final class MemberPage extends MasterPage {
             return content.accept(new AbstractModelClassVisitor<HtmlElement>() {
                 @Override
                 public HtmlElement visit(final Contribution model) {
-                    final HtmlDiv feedBox = new HtmlDiv("feed_box");
-                    final String contentType = generateDate(model) + Context.tr("Contributed on the feature request: ");
-                    feedBox.addText(contentType);
-                    final HtmlDiv targetBox = new HtmlDiv("feed_target");
-                    feedBox.add(targetBox);
-                    targetBox.add(generateFeature(model.getFeature()));
-                    return feedBox;
+                    HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("<0::Contributed>"), contribSpan);
+                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
                 }
 
                 @Override
@@ -257,7 +255,7 @@ public final class MemberPage extends MasterPage {
                         try {
                             final MemberPageUrl memberPageUrl = new MemberPageUrl(model.getParentComment().getMember());
                             final HtmlLink htmlLink = memberPageUrl.getHtmlLink(model.getParentComment().getMember().getDisplayName());
-                            final String tr = Context.tr("[{0} Replied to comment from <0:comment author:> on: ", generateDate(model));
+                            final String tr = Context.tr("{0} Replied to comment from <0:comment author:> on: ", generateDate(model));
                             final HtmlMixedText mixedText = new HtmlMixedText(tr, htmlLink);
                             feedBox.add(mixedText);
                         } catch (final UnauthorizedOperationException e) {
@@ -290,6 +288,7 @@ public final class MemberPage extends MasterPage {
                             targetBox.add(generateFeature(model.getParentFeature()));
                             break;
                         case RELEASE:
+                            // No comment on releases
                             break;
                     }
                     return feedBox;
@@ -305,35 +304,23 @@ public final class MemberPage extends MasterPage {
 
                 @Override
                 public HtmlElement visit(final Feature model) {
-                    final HtmlDiv feedBox = new HtmlDiv("feed_box");
-                    final String contentType = generateDate(model) + Context.tr("Made a feature request: ");
-                    feedBox.addText(contentType);
-                    final HtmlDiv targetBox = new HtmlDiv("feed_target");
-                    feedBox.add(targetBox);
-                    targetBox.add(generateFeature(model));
-                    return feedBox;
+                    HtmlSpan featureSpan = new HtmlSpan("feed_feature");
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Requested <0::feature>"), featureSpan);
+                    return generateFeatureFeedStructure(mixedText, model, model);
                 }
 
                 @Override
                 public HtmlElement visit(final Offer model) {
-                    final HtmlDiv feedBox = new HtmlDiv("feed_box");
-                    final String contentType = generateDate(model) + Context.tr("Made an offer on the feature request: ");
-                    feedBox.addText(contentType);
-                    final HtmlDiv targetBox = new HtmlDiv("feed_target");
-                    feedBox.add(targetBox);
-                    targetBox.add(generateFeature(model.getFeature()));
-                    return feedBox;
+                    HtmlSpan offerSpan = new HtmlSpan("feed_offer");
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Made an <0::offer>"), offerSpan);
+                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
                 }
 
                 @Override
                 public HtmlElement visit(final Release model) {
-                    final HtmlDiv feedBox = new HtmlDiv("feed_box");
-                    final String contentType = generateDate(model) + Context.tr("Made a new release: ");
-                    feedBox.addText(contentType);
-                    final HtmlDiv targetBox = new HtmlDiv("feed_target");
-                    feedBox.add(targetBox);
-                    targetBox.add(generateFeature(model.getFeature()));
-                    return feedBox;
+                    HtmlSpan releaseSpan = new HtmlSpan("feed_release");
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Made a <0::release>"), releaseSpan);
+                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
                 }
 
                 @Override
@@ -376,7 +363,34 @@ public final class MemberPage extends MasterPage {
         }
     }
 
-    private String generateDate(final UserContentInterface<? extends DaoUserContent> content) {
+    protected HtmlElement generateFeedSecondLine(String item, HtmlElement target) {
+        return new HtmlDefineParagraph(item, target);
+    }
+
+    protected HtmlElement
+            generateFeatureFeedStructure(HtmlElement firstLine, Feature feature, UserContentInterface<? extends DaoUserContent> content) {
+        PlaceHolderElement ph = new PlaceHolderElement();
+        try {
+            ph.add(generateFeedSecondLine(Context.tr("Feature"), FeaturesTools.generateFeatureTitle(feature)));
+        } catch (UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Cannot access some feature information.", e);
+        }
+        return generateFeedStructure(firstLine, ph, content);
+    }
+
+    protected HtmlElement
+            generateFeedStructure(HtmlElement firstLine, HtmlElement secondLine, UserContentInterface<? extends DaoUserContent> content) {
+        HtmlDiv master = new HtmlDiv("feed_item");
+        master.add(new HtmlDiv("feed_item_title").add(firstLine));
+        master.add(new HtmlDiv("feed_item_description").add(secondLine));
+        HtmlBranch dateBox = new HtmlDiv("feed_item_date");
+        master.add(dateBox);
+        String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
+        dateBox.addText(dateString);
+        return master;
+    }
+
+    protected String generateDate(final UserContentInterface<? extends DaoUserContent> content) {
         return "[" + Context.getLocalizator().getDate(content.getCreationDate()).toString() + "] ";
     }
 
