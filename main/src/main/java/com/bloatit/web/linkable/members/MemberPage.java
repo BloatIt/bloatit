@@ -19,11 +19,13 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
@@ -34,25 +36,36 @@ import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.AbstractModelClassVisitor;
+import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
+import com.bloatit.model.Comment.ParentType;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
+import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.Team;
+import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
+import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
+import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
+import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -198,27 +211,26 @@ public final class MemberPage extends MasterPage {
         main.add(new HtmlClearer());
 
         // Displaying list of user recent activity
-        // final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
-        // main.add(recentActivity);
-        //
-        // final HtmlTitleBlock recent = new
-        // HtmlTitleBlock(Context.tr("Recent activity"), 2);
-        // recentActivity.add(recent);
-        //
-        // final PageIterable<UserContent<? extends DaoUserContent>> activity =
-        // member.getActivity();
-        // final MemberPageUrl clonedUrl = url.clone();
-        // HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
-        // feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new
-        // MemberRenderer(), activity, clonedUrl,
-        // clonedUrl.getPagedActivityUrl());
-        // recent.add(feed);
+        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
+        main.add(recentActivity);
+
+        final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
+        recentActivity.add(recent);
+
+        final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
+        final MemberPageUrl clonedUrl = url.clone();
+        HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
+        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getPagedActivityUrl());
+        recent.add(feed);
 
         return master;
     }
 
-    private final class MemberRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
-        public MemberRenderer() {
+    /**
+     * Paged renderer for the activity feed
+     */
+    private final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
+        public ActivityRenderer() {
             super();
         }
 
@@ -227,30 +239,132 @@ public final class MemberPage extends MasterPage {
             return content.accept(new AbstractModelClassVisitor<HtmlElement>() {
                 @Override
                 public HtmlElement visit(final Contribution model) {
-                    return super.visit(model);
+                    HtmlDiv feedBox = new HtmlDiv("feed_box");
+                    String contentType = generateDate(model) + Context.tr("Contributed on the feature request: ");
+                    feedBox.addText(contentType);
+                    HtmlDiv targetBox = new HtmlDiv("feed_target");
+                    feedBox.add(targetBox);
+                    targetBox.add(generateFeature(model.getFeature()));
+                    return feedBox;
                 }
 
                 @Override
-                public HtmlElement visit(final Comment model) {
-                    return super.visit(model);
+                public HtmlElement visit(Comment model) {
+                    HtmlDiv feedBox = new HtmlDiv("feed_box");
+                    String contentType = "";
+
+                    if (model.getParentType() == ParentType.COMMENT) {
+                        contentType = generateDate(model) + Context.tr("Replied to a comment on: ");
+                        Comment c = model;
+                        while (c.getParentType() == ParentType.COMMENT) {
+                            c = c.getParentComment();
+                        }
+                        model = c;
+                    } else {
+                        contentType = generateDate(model) + Context.tr("Commented on a: ");
+                    }
+                    feedBox.addText(contentType);
+                    HtmlDiv targetBox = new HtmlDiv("feed_target");
+                    feedBox.add(targetBox);
+
+                    switch (model.getParentType()) {
+                        case BUG:
+                            break;
+                        case COMMENT:
+                            // Shouldn't happen
+                            break;
+                        case FEATURE:
+                            targetBox.add(generateFeature(model.getParentFeature()));
+                            break;
+                        case RELEASE:
+                            break;
+                    }
+                    return feedBox;
+                }
+
+                private XmlNode generateFeature(Feature feature) {
+                    try {
+                        return FeaturesTools.generateFeatureTitle(feature);
+                    } catch (UnauthorizedOperationException e) {
+                        throw new ShallNotPassException("Error when generating feature box", e);
+                    }
                 }
 
                 @Override
                 public HtmlElement visit(final Feature model) {
-                    return super.visit(model);
+                    HtmlDiv feedBox = new HtmlDiv("feed_box");
+                    String contentType = generateDate(model) + Context.tr("Made a feature request: ");
+                    feedBox.addText(contentType);
+                    HtmlDiv targetBox = new HtmlDiv("feed_target");
+                    feedBox.add(targetBox);
+                    targetBox.add(generateFeature(model));
+                    return feedBox;
                 }
 
                 @Override
                 public HtmlElement visit(final Offer model) {
-                    return super.visit(model);
+                    HtmlDiv feedBox = new HtmlDiv("feed_box");
+                    String contentType = generateDate(model) + Context.tr("Made an offer on the feature request: ");
+                    feedBox.addText(contentType);
+                    HtmlDiv targetBox = new HtmlDiv("feed_target");
+                    feedBox.add(targetBox);
+                    targetBox.add(generateFeature(model.getFeature()));
+                    return feedBox;
                 }
 
                 @Override
                 public HtmlElement visit(final Release model) {
-                    return super.visit(model);
+                    HtmlDiv feedBox = new HtmlDiv("feed_box");
+                    String contentType = generateDate(model) + Context.tr("Made a new release: ");
+                    feedBox.addText(contentType);
+                    HtmlDiv targetBox = new HtmlDiv("feed_target");
+                    feedBox.add(targetBox);
+                    targetBox.add(generateFeature(model.getFeature()));
+                    return feedBox;
+                }
+
+                @Override
+                public HtmlElement visit(final Bug model) {
+                    HtmlDiv feedBox = new HtmlDiv("feed_box");
+                    HtmlLink htmlLink = new BugPageUrl(model).getHtmlLink(model.getTitle());
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Reported bug (<0:bug title:>) on feature: "), htmlLink);
+                    String contentType = generateDate(model);
+                    feedBox.addText(contentType);
+                    feedBox.add(mixedText);
+                    HtmlDiv targetBox = new HtmlDiv("feed_target");
+                    feedBox.add(targetBox);
+                    targetBox.add(generateFeature(model.getFeature()));
+                    return feedBox;
+                }
+
+                @Override
+                public HtmlElement visit(final FileMetadata model) {
+                    HtmlDiv feedBox = new HtmlDiv("feed_box");
+                    String contentType = generateDate(model) + Context.tr("Uploaded a file: ");
+                    feedBox.addText(contentType);
+                    HtmlDiv targetBox = new HtmlDiv("feed_target");
+                    feedBox.add(targetBox);
+                    targetBox.add(new FileResourceUrl(model).getHtmlLink(model.getFileName()));
+                    return feedBox;
+                }
+
+                @Override
+                public HtmlElement visit(final Kudos model) {
+                    return new PlaceHolderElement();
+                }
+
+                @Override
+                public HtmlElement visit(final Translation model) {
+                    // TODO: After implementing correct translation stuff, do
+                    // something in here
+                    return new PlaceHolderElement();
                 }
             });
         }
+    }
+
+    private String generateDate(UserContentInterface<? extends DaoUserContent> content) {
+        return "[" + Context.getLocalizator().getDate(content.getCreationDate()).toString() + "] ";
     }
 
     private XmlNode generateAvatarChangeForm() {

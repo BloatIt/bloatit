@@ -56,7 +56,6 @@ public class AbstractModelClassVisitor<T> implements ModelClassVisitor<T> {
 
     @Override
     public T visit(final Transaction model) {
-
         throw new NotImplementedException();
     }
 
