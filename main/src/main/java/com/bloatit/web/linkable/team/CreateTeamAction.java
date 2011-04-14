@@ -73,7 +73,7 @@ public class CreateTeamAction extends LoggedAction {
         } else if (right.equals(PROTECTED)) {
             teamRight = Right.PROTECTED;
         } else {
-            session.notifyBad(Context.tr("A team can either be public or protected (and dude, stop playing with our post data)"));
+            session.notifyBad(Context.tr("A team can either be public or protected (and dude, stop playing with our post data)."));
             transmitParameters();
             return new CreateTeamPageUrl();
         }

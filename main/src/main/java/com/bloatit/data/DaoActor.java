@@ -27,13 +27,16 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.queries.QueryCollection;
@@ -97,8 +100,9 @@ public abstract class DaoActor extends DaoIdentifiable {
      * getByLogin != null, to minimize the number of HQL request).
      */
     public static boolean loginExists(final String login) {
-        final Query q = SessionManager.getNamedQuery("actor.byLogin.size").setString("login", login);
-        return ((Long) q.uniqueResult()) > 0;
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Criteria c = session.createCriteria(DaoActor.class).add(Restrictions.like("login", login).ignoreCase());
+        return ((Long) c.uniqueResult()) > 0;
     }
 
     /**
@@ -116,7 +120,7 @@ public abstract class DaoActor extends DaoIdentifiable {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     * 
+     *
      * @param login is the login or name of this actor. It must be non null, and
      *            unique.
      * @throws NonOptionalParameterException if login or mail is null.
@@ -144,7 +148,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * No check is performed on the correctness of the new email.
-     * 
+     *
      * @param email the new email.
      */
     public abstract void setContact(String email);
@@ -155,7 +159,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * Set the external account for this actor.
-     * 
+     *
      * @param externalAccount the new external account for this actor
      * @throws BadProgrammerException if the externalAccount.getActor() != this
      */

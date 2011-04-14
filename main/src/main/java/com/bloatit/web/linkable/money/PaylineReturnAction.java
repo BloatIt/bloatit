@@ -47,7 +47,7 @@ public class PaylineReturnAction extends Action {
                 final Reponse paymentDetails = payline.getPaymentDetails(token);
                 final String message = paymentDetails.getMessage().replace("\n", ". ");
                 Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
-                session.notifyBad("Payment canceled. Reason : " + message + ".");
+                session.notifyBad("Payment canceled. Reason: " + message + ".");
                 payline.cancelPayement(token);
             } catch (final TokenNotfoundException e) {
                 Log.web().fatal("Token not found.", e);

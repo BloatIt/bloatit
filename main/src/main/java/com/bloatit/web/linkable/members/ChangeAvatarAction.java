@@ -75,7 +75,7 @@ public final class ChangeAvatarAction extends LoggedAction {
         final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
         member.setAvatar(avatarfm);
 
-        session.notifyGood(tr("Avatar change to ''{0}''", avatarFileName));
+        session.notifyGood(tr("Avatar change to ''{0}''.", avatarFileName));
         return Context.getSession().pickPreferredPage();
     }
 
@@ -94,7 +94,7 @@ public final class ChangeAvatarAction extends LoggedAction {
 
     @Override
     protected String getRefusalReason() {
-        return Context.tr("You have to be logged to change your avatar");
+        return Context.tr("You have to be logged to change your avatar.");
     }
 
     @Override

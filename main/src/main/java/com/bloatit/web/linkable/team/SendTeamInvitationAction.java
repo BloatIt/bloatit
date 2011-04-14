@@ -44,15 +44,15 @@ public class SendTeamInvitationAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(final Member me) {
         if (!me.canSendInvitation(team)) {
-            session.notifyBad(Context.tr("You are not allowed to send invitations for this team"));
+            session.notifyBad(Context.tr("You are not allowed to send invitations for this team."));
             return session.getLastVisitedPage();
         }
 
         try {
             me.sendInvitation(receiver, team);
-            session.notifyGood("Invitation sent to " + receiver.getDisplayName() + " for team " + team.getLogin());
+            session.notifyGood(Context.tr("Invitation sent to {0} for team {0}.", receiver.getDisplayName(), team.getLogin()));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("Oops, an error prevented us from sendint this invitaton. Please notify us of the bug"));
+            session.notifyBad(Context.tr("Oops, an error prevented us from sendint this invitaton. Please notify us of the bug."));
             throw new ShallNotPassException("User couldn't send a team invitation, while he should be able to", e);
         }
         return session.getLastVisitedPage();

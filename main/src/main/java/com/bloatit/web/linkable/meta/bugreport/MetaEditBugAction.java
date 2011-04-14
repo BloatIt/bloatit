@@ -54,13 +54,13 @@ public final class MetaEditBugAction extends Action {
     @Override
     protected Url doProcess() {
         if (!session.isLogged()) {
-            session.notifyError(Context.tr("You must be logged to edit a bug"));
+            session.notifyError(Context.tr("You must be logged to edit a bug."));
             throw new MeanUserException("The user try to edit a bug without been logged.");
         }
 
         try {
             MetaBugManager.getById(bugId).update(description);
-            session.notifyGood("Bug update");
+            session.notifyGood("Bug updated.");
         } catch (final IOException e) {
             session.notifyError("A problem occur during the bug update process! Please report this bug! :)");
             return doProcessErrors();

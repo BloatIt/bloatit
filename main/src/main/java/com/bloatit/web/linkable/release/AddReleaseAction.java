@@ -107,7 +107,7 @@ public final class AddReleaseAction extends LoggedAction {
                                                                               null);
         try {
             milestone.addRelease(description, version, langLocale, fileImage);
-            session.notifyGood(Context.tr("Release created successfuly !"));
+            session.notifyGood(Context.tr("Release created successfuly!"));
 
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("Failed to create the release."));

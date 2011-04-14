@@ -58,7 +58,7 @@ public final class ContributionAction extends LoggedAction {
         try {
             process.getFeature().addContribution(process.getAmount(), process.getComment());
 
-            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator()
+            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
                                                                                                  .getCurrency(process.getAmount())
                                                                                                  .getLocaleString()));
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());

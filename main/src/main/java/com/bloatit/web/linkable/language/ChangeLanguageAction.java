@@ -50,7 +50,7 @@ public class ChangeLanguageAction extends Action {
             Context.getLocalizator().forceLanguage(l);
             return session.pickPreferredPage();
         }
-        session.notifyBad(Context.tr("Incorrect language, same player play again !"));
+        session.notifyBad(Context.tr("Incorrect language, same player play again!"));
         return new ChangeLanguagePageUrl();
     }
 

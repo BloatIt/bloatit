@@ -126,7 +126,7 @@ public final class OfferAction extends CreateUserContentAction {
             }
 
         } catch (final UnauthorizedOperationException e) {
-            Context.getSession().notifyError(Context.tr("Error creating an offer. Please notify us"));
+            Context.getSession().notifyError(Context.tr("Error creating an offer. Please notify us."));
             throw new ShallNotPassException("Error creating an offer", e);
         }
 

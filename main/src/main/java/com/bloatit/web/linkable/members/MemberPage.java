@@ -19,7 +19,6 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -192,7 +191,7 @@ public final class MemberPage extends MasterPage {
             karma.addText(Context.tr("Karma: "));
             memberIdList.add(new PlaceHolderElement().add(karma).addText("" + member.getKarma()));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError("An error prevented us from displaying user information. Please notify us");
+            session.notifyError("An error prevented us from displaying user information. Please notify us.");
             throw new ShallNotPassException("Error while gathering user information", e);
         }
 

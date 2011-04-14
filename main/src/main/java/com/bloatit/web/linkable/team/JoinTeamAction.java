@@ -36,14 +36,14 @@ public class JoinTeamAction extends LoggedAction {
             try {
                 me.addToPublicTeam(targetTeam);
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("Oops we had an internal issue preventing you to join team. It's a bug, please notify us.");
+                session.notifyBad(Context.tr("Oops we had an internal issue preventing you to join team. It's a bug, please notify us."));
                 throw new ShallNotPassException("User tries to join public team, but is not allowed to", e);
             }
         } else {
             try {
-                session.notifyBad("The team " + targetTeam.getLogin() + " is not public, you need an invitation to join it");
+                session.notifyBad(Context.tr("The team {0} is not public, you need an invitation to join it.", targetTeam.getLogin()));
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("Oops we had an internal issue preventing you to see a team name. It's a bug, please notify us.");
+                session.notifyBad(Context.tr("Oops we had an internal issue preventing you to see a team name. It's a bug, please notify us."));
                 throw new ShallNotPassException("Couldn't display team name", e);
             }
             return session.getLastVisitedPage();

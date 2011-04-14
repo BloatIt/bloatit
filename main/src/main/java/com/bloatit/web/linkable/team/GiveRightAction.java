@@ -66,9 +66,9 @@ public class GiveRightAction extends LoggedAction {
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
         if (!authenticatedMember.equals(targetMember) && !authenticatedMember.canPromote(targetTeam)) {
             try {
-                session.notifyBad(Context.tr("You are not allowed to promote people in the team: " + targetTeam.getLogin()));
+                session.notifyBad(Context.tr("You are not allowed to promote people in the team: {0}.", targetTeam.getLogin()));
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug");
+                session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug.");
                 throw new ShallNotPassException("Cannot display a team name", e);
             }
             return new TeamPageUrl(targetTeam);

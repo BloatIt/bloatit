@@ -24,7 +24,7 @@ public abstract class AdminPage extends LoggedPage {
             try {
                 return createAdminContent();
             } catch (final UnauthorizedOperationException e) {
-                session.notifyError(tr("Are you sure you are admin ? "));
+                session.notifyError(tr("Are you sure you are admin?"));
                 throw new ShallNotPassException("Admin content got a UnauthorizedOperationException", e);
             }
         }

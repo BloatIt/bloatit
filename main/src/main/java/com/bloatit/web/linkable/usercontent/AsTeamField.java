@@ -41,7 +41,7 @@ public class AsTeamField extends PlaceHolderElement {
                     add(teamInput);
                 }
             } catch (final UnauthorizedOperationException e) {
-                Context.getSession().notifyError(Context.tr("An error prevented us from displaying you some information. Please notify us"));
+                Context.getSession().notifyError(Context.tr("An error prevented us from displaying you some information. Please notify us."));
                 throw new ShallNotPassException("Can't access current user teams (I checked before tho)", e);
             }
         }

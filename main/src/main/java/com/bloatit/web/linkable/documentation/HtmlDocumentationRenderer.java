@@ -63,7 +63,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                     Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist");
                 } else {
                     Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist in language " + language);
-                    final String notify = Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead", key, language);
+                    final String notify = Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead.", key, language);
                     Context.getSession().notifyBad(notify);
                     exist = true;
                 }
@@ -83,7 +83,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
 
     /**
      * Loads the markdown file at <code>path</code>
-     * 
+     *
      * @param path the path of the file to load
      * @return <i>true</i> if the file has been loaded, <i>false</i> otherwise
      */
