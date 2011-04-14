@@ -167,9 +167,9 @@ public class UrlParameterConstraints<U> {
         @Override
         public boolean triggerMinConstraint(final String value) {
             if (constraints.isMinExclusive()) {
-                return value.length() <= constraints.getMin();
+                return value.trim().length() <= constraints.getMin();
             }
-            return value.length() < constraints.getMin();
+            return value.trim().length() < constraints.getMin();
         }
 
         @Override
