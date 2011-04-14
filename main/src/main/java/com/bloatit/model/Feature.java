@@ -81,8 +81,8 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *             property.
      * @see #authenticate(AuthToken)
      */
-    void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
-
+    Contribution addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
+    
     /**
      * Add a new Offer on this Feature. You can do this operation when you are
      * in the {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}

@@ -91,10 +91,11 @@ public class DaoContribution extends DaoUserContent {
     private BigDecimal alreadyGivenMoney;
 
     /**
-     * Create a new contribution. Update the internal account of the member
+     * Create a new contribution. Update the internal account of the author
      * (block the value that is reserved to this contribution)
      * 
-     * @param member the person making the contribution.
+     * @param member the person making the contribution. (Use DaoUserContent#setAsTeam() to make
+     *            a contribution in the name of team)
      * @param feature the feature on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.

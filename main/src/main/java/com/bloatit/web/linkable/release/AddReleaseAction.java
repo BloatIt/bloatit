@@ -86,13 +86,13 @@ public final class AddReleaseAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         // TODO: Verify user right
         return NO_ERROR;
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doProcessRestricted(final Member me) {
         final Locale langLocale = new Locale(lang);
 
         final FileConstraintChecker fcc = new FileConstraintChecker(attachedfile);

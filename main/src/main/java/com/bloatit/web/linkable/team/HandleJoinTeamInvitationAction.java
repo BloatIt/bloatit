@@ -19,7 +19,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("team/dojoin")
-public class HandleJoinTeamInvitationAction extends LoggedAction {
+public final class HandleJoinTeamInvitationAction extends LoggedAction {
     @RequestParam()
     private final JoinTeamInvitation invite;
 
@@ -74,7 +74,7 @@ public class HandleJoinTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 

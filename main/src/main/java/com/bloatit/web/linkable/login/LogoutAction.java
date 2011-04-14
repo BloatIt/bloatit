@@ -37,7 +37,7 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doProcessRestricted(final Member me) {
         final Url prefUrl = session.pickPreferredPage();
         SessionManager.destroySession(session);
         final Session newSess = SessionManager.createSession();
@@ -47,7 +47,7 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 

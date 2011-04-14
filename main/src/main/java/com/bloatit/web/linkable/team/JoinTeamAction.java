@@ -18,7 +18,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("team/dojoin")
-public class JoinTeamAction extends LoggedAction {
+public final class JoinTeamAction extends LoggedAction {
     @SuppressWarnings("unused")
     private JoinTeamActionUrl url;
 
@@ -52,7 +52,7 @@ public class JoinTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 

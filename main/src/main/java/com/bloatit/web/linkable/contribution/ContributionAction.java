@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.contribution;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -19,9 +20,11 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Contribution;
 import com.bloatit.model.Member;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.model.Team;
 import com.bloatit.web.linkable.features.FeatureTabPane;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
@@ -31,7 +34,7 @@ import com.bloatit.web.url.FeaturePageUrl;
  * A response to a form used to create a contribution to a feature
  */
 @ParamContainer("action/contribute")
-public final class ContributionAction extends LoggedAction {
+public final class ContributionAction extends UserContentAction {
 
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
@@ -42,21 +45,16 @@ public final class ContributionAction extends LoggedAction {
     private final ContributionActionUrl url;
 
     public ContributionAction(final ContributionActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.BANK);
         this.url = url;
         this.process = url.getProcess();
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
-        // Add a can access contribution..
-        return NO_ERROR;
-    }
-
-    @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         try {
-            process.getFeature().addContribution(process.getAmount(), process.getComment());
+            final Contribution contribution = process.getFeature().addContribution(process.getAmount(), process.getComment());
+            propagateAsTeamIfPossible(contribution);
 
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator()
                                                                                                  .getCurrency(process.getAmount())
@@ -75,6 +73,17 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
+    protected Url doCheckRightsAndEverything(final Member me) {
+        // Add a can access contribution..
+        return NO_ERROR;
+    }
+
+    @Override
+    protected boolean verifyFile(final String filename) {
+        return true;
+    }
+
+    @Override
     protected Url doProcessErrors() {
         return new CheckContributionPageUrl(process);
     }
@@ -85,7 +94,8 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         // No parameters to transmit.
     }
+
 }

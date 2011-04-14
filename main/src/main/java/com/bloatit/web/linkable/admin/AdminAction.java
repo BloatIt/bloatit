@@ -45,8 +45,8 @@ public abstract class AdminAction extends LoggedAction {
     }
 
     @Override
-    public final Url doProcessRestricted(final Member authenticatedMember) {
-        if (!authenticatedMember.hasUserPrivilege(DaoMember.Role.ADMIN)) {
+    public final Url doProcessRestricted(final Member me) {
+        if (!me.hasUserPrivilege(DaoMember.Role.ADMIN)) {
             session.notifyError(getRefusalReason());
             return new LoginPageUrl();
         }

@@ -19,7 +19,6 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -31,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -260,7 +260,8 @@ public final class MemberPage extends MasterPage {
         changeAvatarForm.enableFileUpload();
 
         // File
-        final HtmlFileInput avatarInput = new HtmlFileInput(ChangeAvatarAction.AVATAR_CODE, Context.tr("Avatar image file"));
+        final FieldData avatarField = changeAvatarActionUrl.getAttachmentParameter().pickFieldData();
+        final HtmlFileInput avatarInput = new HtmlFileInput(avatarField.getName(), Context.tr("Avatar image file"));
         avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
         changeAvatarForm.add(avatarInput);
 

@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.bugs;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -22,7 +23,8 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
+import com.bloatit.model.Team;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
@@ -31,7 +33,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/bug/doreport")
-public final class ReportBugAction extends CreateUserContentAction {
+public final class ReportBugAction extends UserContentAction {
 
     @ParamConstraint(optionalErrorMsg = @tr("A new bug must be linked to a milestone"))
     @RequestParam(role = Role.GET)
@@ -56,7 +58,7 @@ public final class ReportBugAction extends CreateUserContentAction {
     private final ReportBugActionUrl url;
 
     public ReportBugAction(final ReportBugActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.TALK);
         this.url = url;
 
         this.title = url.getTitle();
@@ -66,15 +68,15 @@ public final class ReportBugAction extends CreateUserContentAction {
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member authenticatedMember) {
-        final Bug bug = milestone.addBug(authenticatedMember, title, description, getLocale(), level.getLevel());
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+        final Bug bug = milestone.addBug(me, title, description, getLocale(), level.getLevel());
         propagateAsTeamIfPossible(bug);
         propagateAttachedFileIfPossible(bug);
         return new BugPageUrl(bug);
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyBad(Context.tr("You have to specify the description language."));
             return new ReportBugPageUrl(milestone.getOffer());

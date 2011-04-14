@@ -36,7 +36,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * Action used to give a user a new right in a team
  */
 @ParamContainer("team/dogiveright")
-public class GiveRightAction extends LoggedAction {
+public final class GiveRightAction extends LoggedAction {
     @SuppressWarnings("unused")
     // Kept for consistency
     private final GiveRightActionUrl url;
@@ -63,8 +63,8 @@ public class GiveRightAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
-        if (!authenticatedMember.equals(targetMember) && !authenticatedMember.canPromote(targetTeam)) {
+    protected Url doCheckRightsAndEverything(final Member me) {
+        if (!me.equals(targetMember) && !me.canPromote(targetTeam)) {
             try {
                 session.notifyBad(Context.tr("You are not allowed to promote people in the team: " + targetTeam.getLogin()));
             } catch (final UnauthorizedOperationException e) {
@@ -77,7 +77,7 @@ public class GiveRightAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doProcessRestricted(final Member me) {
         if (give) {
             targetMember.addTeamRight(targetTeam, right);
         } else {

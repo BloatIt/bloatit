@@ -93,7 +93,7 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use SoftwareManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to add a software."));
@@ -103,7 +103,7 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doProcessRestricted(final Member me) {
         final Locale langLocale = new Locale(lang);
 
         final Software p = new Software(softwareName, session.getAuthToken().getMember(), langLocale, shortDescription, description);

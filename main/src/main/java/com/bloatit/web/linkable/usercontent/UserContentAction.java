@@ -2,6 +2,9 @@ package com.bloatit.web.linkable.usercontent;
 
 import static com.bloatit.framework.utils.StringUtils.isEmpty;
 
+import java.util.Locale;
+
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -12,13 +15,23 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.CreateAttachmentActionUrl;
+import com.bloatit.web.url.CreateUserContentActionUrl;
 
-@ParamContainer("attachment/docreate")
-public abstract class CreateAttachmentAction extends LoggedAction {
+@ParamContainer("usercontent/docreate")
+public abstract class UserContentAction extends LoggedAction {
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Team team;
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Locale locale;
+
     @RequestParam(name = "attachment", role = Role.POST)
     @Optional
     private final String attachment;
@@ -37,8 +50,16 @@ public abstract class CreateAttachmentAction extends LoggedAction {
 
     private FileMetadata file;
 
-    public CreateAttachmentAction(final CreateAttachmentActionUrl url) {
+    private final CreateUserContentActionUrl createUserActionurl;
+
+    private final UserTeamRight right;
+
+    protected UserContentAction(final CreateUserContentActionUrl url, final UserTeamRight right) {
         super(url);
+        this.createUserActionurl = url;
+        this.right = right;
+        team = url.getTeam();
+        locale = url.getLocale();
         attachment = url.getAttachment();
         attachmentFileName = url.getAttachmentFileName();
         attachmentDescription = url.getAttachmentDescription();
@@ -47,15 +68,47 @@ public abstract class CreateAttachmentAction extends LoggedAction {
         file = null;
     }
 
+    @Override
+    protected final void transmitParameters() {
+        session.addParameter(createUserActionurl.getTeamParameter());
+        session.addParameter(createUserActionurl.getLocaleParameter());
+        doTransmitParameters();
+    }
+
+    protected abstract void doTransmitParameters();
+
     protected abstract boolean verifyFile(String filename);
 
-    protected abstract Url doDoProcessRestricted(Member authenticatedMember);
+    protected abstract Url doDoProcessRestricted(Member me, Team asTeam);
+
+    /**
+     * Use the {@link UserContentInterface#setAsTeam(Team)} method to propagate
+     * the asTeam property. It also make sure you have the rights to do so.
+     * 
+     * @param content the content created by in the name of a team.
+     * @param right the right to use (Mostly TALK but it can also be BANK)
+     * @return true if the propagation is done, else otherwise.
+     */
+    protected final boolean propagateAsTeamIfPossible(final UserContentInterface<?> content) {
+        if (team != null) {
+            if (content.canAccessAsTeam(team) && content.hasTeamPrivilege(right)) {
+                try {
+                    content.setAsTeam(team);
+                } catch (final UnauthorizedOperationException e) {
+                    throw new ShallNotPassException("Yon cannot set AsTeam (Even if y tested it ...)", e);
+                }
+                return true;
+            }
+            session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
+        }
+        return false;
+    }
 
     @Override
-    protected final Url doProcessRestricted(final Member authenticatedMember) {
+    protected final Url doProcessRestricted(final Member me) {
         if (attachment != null) {
             if (!isEmpty(attachmentFileName) && !isEmpty(attachmentDescription) && verifyFile(attachment)) {
-                file = FileMetadataManager.createFromTempFile(authenticatedMember, attachment, attachmentFileName, attachmentDescription);
+                file = FileMetadataManager.createFromTempFile(me, attachment, attachmentFileName, attachmentDescription);
             } else {
                 if (isEmpty(attachmentFileName)) {
                     session.notifyError(Context.tr("Filename is empty. Could you report that bug?"));
@@ -66,7 +119,13 @@ public abstract class CreateAttachmentAction extends LoggedAction {
                 return doProcessErrors();
             }
         }
-        return doDoProcessRestricted(authenticatedMember);
+        if (team != null) {
+            if (!team.hasTeamPrivilege(right)) {
+                session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
+                return doProcessErrors();
+            }
+        }
+        return doDoProcessRestricted(me, team);
     }
 
     // TODO correct me.
@@ -102,4 +161,7 @@ public abstract class CreateAttachmentAction extends LoggedAction {
         return file;
     }
 
+    protected final Locale getLocale() {
+        return locale;
+    }
 }

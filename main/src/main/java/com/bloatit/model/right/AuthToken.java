@@ -27,7 +27,9 @@ import com.bloatit.framework.utils.SecuredHash;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.managers.TeamManager;
 
 /**
  * An AuthToken is a token representing an authenticated user. You can use it to
@@ -35,6 +37,7 @@ import com.bloatit.model.managers.MemberManager;
  */
 public final class AuthToken {
     private final int memberId;
+    private Integer asTeamId;
     private final UUID key;
 
     /**
@@ -105,6 +108,18 @@ public final class AuthToken {
      */
     public Member getMember() {
         return MemberManager.getById(memberId);
+    }
+
+    public void setAsTeamId(final Team team) {
+        if (team != null) {
+            this.asTeamId = team.getId();
+        } else {
+            this.asTeamId = null;
+        }
+    }
+
+    public Team getAsTeamId() {
+        return TeamManager.getById(asTeamId);
     }
 
 }

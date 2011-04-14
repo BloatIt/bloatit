@@ -22,7 +22,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("team/docreate")
-public class CreateTeamAction extends LoggedAction {
+public final class CreateTeamAction extends LoggedAction {
     public final static String PROTECTED = "PROTECTED";
     public final static String PUBLIC = "PUBLIC";
 
@@ -61,12 +61,12 @@ public class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doProcessRestricted(final Member me) {
         Right teamRight = Right.PUBLIC;
         if (right.equals(PUBLIC)) {
             teamRight = Right.PUBLIC;

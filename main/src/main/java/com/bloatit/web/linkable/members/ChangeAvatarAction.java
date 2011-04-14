@@ -13,83 +13,65 @@ package com.bloatit.web.linkable.members;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
-import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.model.Team;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 
 /**
  * A response to a form used to change user avatar
  */
 @ParamContainer("member/changeavatar")
-public final class ChangeAvatarAction extends LoggedAction {
-
-    public static final String MEMBER = "member";
-    public static final String AVATAR_CODE = "avatar";
-    public static final String AVATAR_NAME_CODE = "avatar/filename";
-    public static final String AVATAR_CONTENT_TYPE_CODE = "avatar/contenttype";
-
+public final class ChangeAvatarAction extends UserContentAction {
     @ParamConstraint(optionalErrorMsg = @tr("An avatar must be linked to a member"))
-    @RequestParam(name = MEMBER)
+    @RequestParam
     private final Member member;
-
-    @ParamConstraint(optionalErrorMsg = @tr("You must provide an image as avatar"))
-    @RequestParam(name = AVATAR_CODE, role = Role.POST)
-    private final String avatar;
-
-    @ParamConstraint
-    @RequestParam(name = AVATAR_NAME_CODE, role = Role.POST)
-    private final String avatarFileName;
 
     private final ChangeAvatarActionUrl url;
 
     public ChangeAvatarAction(final ChangeAvatarActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.TALK);
         this.url = url;
-
         this.member = url.getMember();
-        this.avatar = url.getAvatar();
-        this.avatarFileName = url.getAvatarFileName();
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
-        // TODO create a member.canAccessAvatar.
-        final FileConstraintChecker fcc = new FileConstraintChecker(avatar);
-        if (fcc.isImageAvatar() != null) {
-            for (final String message : fcc.isImageAvatar()) {
-                session.notifyBad(message);
-            }
-            return Context.getSession().pickPreferredPage();
-        }
-
-        final FileMetadata avatarfm = FileMetadataManager.createFromTempFile(member, avatar, avatarFileName, "avatar image");
-        member.setAvatar(avatarfm);
-
-        session.notifyGood(tr("Avatar change to ''{0}''", avatarFileName));
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+        member.setAvatar(getFile());
+        session.notifyGood(tr("Avatar change to ''{0}''", getAttachementFileName()));
         return Context.getSession().pickPreferredPage();
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
+        // TODO create a member.canAccessAvatar.
         return NO_ERROR;
+    }
+    
+    @Override
+    protected boolean verifyFile(final String filename) {
+        final FileConstraintChecker fcc = new FileConstraintChecker(filename);
+        if (fcc.isImageAvatar() != null) {
+            for (final String message : fcc.isImageAvatar()) {
+                session.notifyBad(message);
+            }
+            return false;
+        }
+        return true;
     }
 
     @Override
     protected Url doProcessErrors() {
-        if (member != null) {
-            return Context.getSession().getLastVisitedPage();
-        }
-        return Context.getSession().getLastVisitedPage();
+        // TODO can we use something else than pickPreferredPage
+        return Context.getSession().pickPreferredPage();
     }
 
     @Override
@@ -98,7 +80,7 @@ public final class ChangeAvatarAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         session.addParameter(url.getMemberParameter());
     }
 }

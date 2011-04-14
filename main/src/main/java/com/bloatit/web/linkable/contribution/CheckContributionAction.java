@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -26,7 +27,8 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
+import com.bloatit.model.Team;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -35,7 +37,7 @@ import com.bloatit.web.url.ContributePageUrl;
  * A response to a form used to create a contribution to a feature
  */
 @ParamContainer("action/contribute/check")
-public final class CheckContributionAction extends CreateUserContentAction {
+public final class CheckContributionAction extends UserContentAction {
 
     public static final String AMOUNT_CODE = "contributionAmount";
     public static final String COMMENT_CODE = "comment";
@@ -50,14 +52,14 @@ public final class CheckContributionAction extends CreateUserContentAction {
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
     @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
-    max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
-    precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))
+                     max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
+                     precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))
     private final BigDecimal amount;
 
     private final CheckContributionActionUrl url;
 
     public CheckContributionAction(final CheckContributionActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.BANK);
         this.url = url;
         this.process = url.getProcess();
         this.comment = url.getComment();
@@ -65,12 +67,7 @@ public final class CheckContributionAction extends CreateUserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
-        return NO_ERROR;
-    }
-
-    @Override
-    public Url doDoProcessRestricted(final Member authenticatedMember) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
 
         try {
@@ -80,14 +77,25 @@ public final class CheckContributionAction extends CreateUserContentAction {
             if (!(process.getComment() == comment || (process.getComment() != null && process.getComment().equals(comment)))) {
                 process.setComment(comment);
             }
-            if (!(process.getTeam() == getTeam() || (process.getTeam() != null && process.getTeam().equals(getTeam())))) {
-                process.setTeam(getTeam());
+            if (!(process.getTeam() == asTeam || (process.getTeam() != null && process.getTeam().equals(asTeam)))) {
+                process.setTeam(asTeam);
             }
         } catch (final IllegalWriteException e) {
             session.notifyBad(tr("The contribution's amount is locked during the payment process."));
         }
 
         return checkContributionPageUrl;
+    }
+
+    @Override
+    protected Url doCheckRightsAndEverything(final Member me) {
+        return NO_ERROR;
+    }
+
+    @Override
+    protected boolean verifyFile(final String filename) {
+        // no file
+        return true;
     }
 
     @Override
@@ -106,9 +114,4 @@ public final class CheckContributionAction extends CreateUserContentAction {
         session.addParameter(url.getAmountParameter());
     }
 
-    @Override
-    protected boolean verifyFile(final String filename) {
-        // no file
-        return true;
-    }
 }

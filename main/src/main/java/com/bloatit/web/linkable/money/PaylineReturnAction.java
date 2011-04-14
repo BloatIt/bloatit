@@ -13,7 +13,7 @@ import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
 @ParamContainer("payline/doreturn")
-public class PaylineReturnAction extends Action {
+public final class PaylineReturnAction extends Action {
 
     @RequestParam(name = "token")
     @Optional

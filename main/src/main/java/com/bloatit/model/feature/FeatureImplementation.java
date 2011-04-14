@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.data.DaoComment;
+import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -170,10 +171,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * java.lang.String)
      */
     @Override
-    public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
+    public Contribution addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         tryAccess(new FeatureRight.Contribute(), Action.WRITE);
-        getDao().addContribution(getAuthToken().getMember().getDao(), amount, comment);
+        // For exception safety  keep the order.
+        final DaoContribution contribution = getDao().addContribution(getAuthToken().getMember().getDao(), amount, comment);
         setStateObject(getStateObject().eventAddContribution());
+        return Contribution.create(contribution);
     }
 
     @Override

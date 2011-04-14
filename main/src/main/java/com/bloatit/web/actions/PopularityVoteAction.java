@@ -56,7 +56,7 @@ public final class PopularityVoteAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doProcessRestricted(final Member me) {
         try {
             if (voteUp) {
                 final EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
@@ -86,7 +86,7 @@ public final class PopularityVoteAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
 
         return null;
     }

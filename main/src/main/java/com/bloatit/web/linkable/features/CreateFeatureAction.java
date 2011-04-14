@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.features;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -22,8 +23,9 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
+import com.bloatit.model.Team;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -32,7 +34,7 @@ import com.bloatit.web.url.FeaturePageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/docreate")
-public final class CreateFeatureAction extends CreateUserContentAction {
+public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @ParamConstraint(max = "80", maxErrorMsg = @tr("The title must be 80 chars length max."), //
     min = "10", minErrorMsg = @tr("The title must have at least 10 chars."), //
@@ -48,7 +50,7 @@ public final class CreateFeatureAction extends CreateUserContentAction {
     private final CreateFeatureActionUrl url;
 
     public CreateFeatureAction(final CreateFeatureActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.TALK);
         this.url = url;
 
         this.description = url.getDescription();
@@ -57,7 +59,7 @@ public final class CreateFeatureAction extends CreateUserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             session.notifyError(Context.tr("You are not authorized to create a feature."));
             return new CreateFeaturePageUrl();
@@ -70,8 +72,8 @@ public final class CreateFeatureAction extends CreateUserContentAction {
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member authenticatedMember) {
-        final Feature feature = FeatureFactory.createFeature(authenticatedMember, getLocale(), description, specification, software);
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+        final Feature feature = FeatureFactory.createFeature(me, getLocale(), description, specification, software);
         propagateAsTeamIfPossible(feature);
         propagateAttachedFileIfPossible(feature);
         return new FeaturePageUrl(feature);

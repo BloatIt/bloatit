@@ -56,14 +56,14 @@ public abstract class LoggedAction extends Action {
         return new LoginPageUrl();
     }
 
-    protected abstract Url doCheckRightsAndEverything(Member authenticatedMember);
+    protected abstract Url doCheckRightsAndEverything(Member me);
 
     /**
      * Called when user is correctly authentified
      * 
-     * @param authenticatedMember TODO
+     * @param me TODO
      */
-    protected abstract Url doProcessRestricted(Member authenticatedMember);
+    protected abstract Url doProcessRestricted(Member me);
 
     /**
      * Called when some RequestParams contain erroneous parameters.

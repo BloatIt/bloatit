@@ -30,8 +30,9 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
+import com.bloatit.model.Team;
 import com.bloatit.web.linkable.features.FeatureTabPane;
-import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
@@ -40,7 +41,7 @@ import com.bloatit.web.url.OfferActionUrl;
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/offer")
-public final class OfferAction extends CreateUserContentAction {
+public final class OfferAction extends UserContentAction {
 
     @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target feature is mandatory to make an offer."))
     private final Feature feature;
@@ -64,13 +65,13 @@ public final class OfferAction extends CreateUserContentAction {
     @RequestParam(role = Role.POST)
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
-    max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST)
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
-    max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentMajor;
 
     @RequestParam(role = Role.POST, suggestedValue = "true")
@@ -79,7 +80,7 @@ public final class OfferAction extends CreateUserContentAction {
     private final OfferActionUrl url;
 
     public OfferAction(final OfferActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.TALK);
         this.url = url;
         this.description = url.getDescription();
         this.expiryDate = url.getExpiryDate();
@@ -93,7 +94,7 @@ public final class OfferAction extends CreateUserContentAction {
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member authenticatedMember) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
 
         Offer constructingOffer;
         try {
@@ -105,9 +106,7 @@ public final class OfferAction extends CreateUserContentAction {
                                                      getLocale(),
                                                      expiryDate.getJavaDate(),
                                                      daysBeforeValidation * DateUtils.SECOND_PER_DAY);
-                if (getTeam() != null) {
-                    constructingOffer.setAsTeam(getTeam());
-                }
+                propagateAsTeamIfPossible(constructingOffer);
                 constructingMilestone = constructingOffer.getMilestonees().iterator().next();
             } else {
                 constructingOffer = draftOffer;
@@ -136,7 +135,7 @@ public final class OfferAction extends CreateUserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
             session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
             return session.pickPreferredPage();
@@ -146,11 +145,7 @@ public final class OfferAction extends CreateUserContentAction {
             return session.pickPreferredPage();
         }
         if (draftOffer != null && !draftOffer.isDraft()) {
-            session.notifyBad(Context.tr("The specified offer is not editable. You cannot add a lot in it."));
-            return session.pickPreferredPage();
-        }
-        if (getTeam() != null && !getTeam().getUserTeamRight(authenticatedMember).contains(UserTeamRight.TALK)) {
-            session.notifyBad(Context.tr("You cannot talk on the behalf of this team."));
+            session.notifyBad(Context.tr("The specified offer is not modifiable. You cannot add a lot in it."));
             return session.pickPreferredPage();
         }
         return NO_ERROR;

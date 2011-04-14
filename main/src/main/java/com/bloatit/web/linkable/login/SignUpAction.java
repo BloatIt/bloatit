@@ -26,7 +26,7 @@ import com.bloatit.web.url.SignUpPageUrl;
  * A response to a form used sign into the website (creation of a new user)
  */
 @ParamContainer("member/dosignup")
-public class SignUpAction extends Action {
+public final class SignUpAction extends Action {
     @RequestParam(name = "bloatit_login", role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
     min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//

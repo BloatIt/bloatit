@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -23,14 +24,15 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Commentable;
 import com.bloatit.model.Member;
-import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
+import com.bloatit.model.Team;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
 /**
  * A response to a form used to create a comment to a content
  */
 @ParamContainer("comment/docomment")
-public final class CreateCommentAction extends CreateUserContentAction {
+public final class CreateCommentAction extends UserContentAction {
     
     @ParamConstraint(optionalErrorMsg = @tr("The comment must be post on a commentable thing"))
     @RequestParam(name = "target")
@@ -44,20 +46,20 @@ public final class CreateCommentAction extends CreateUserContentAction {
     private final CreateCommentActionUrl url;
 
     public CreateCommentAction(final CreateCommentActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.TALK);
         this.url = url;
         this.commentable = url.getCommentable();
         this.comment = url.getComment();
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         // add a can access comment.
         return NO_ERROR;
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member authenticatedMember) {
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         try {
             final Comment newComment = commentable.addComment(comment);
             propagateAsTeamIfPossible(newComment);

@@ -29,7 +29,7 @@ public final class PaylineAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
+    public Url doProcessRestricted(final Member me) {
         // Constructing the urls.
         final HttpHeader header = Context.getHeader().getHttpHeader();
         final PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok", process);
@@ -64,7 +64,7 @@ public final class PaylineAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 

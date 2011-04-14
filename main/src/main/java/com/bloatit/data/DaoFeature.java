@@ -281,7 +281,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @param comment a <= 144 char comment on this contribution
      * @throws NotEnoughMoneyException
      */
-    public void addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }
@@ -294,8 +294,10 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             throw new BadProgrammerException("Comments lenght of Contribution must be < 144.", null);
         }
 
-        this.contributions.add(new DaoContribution(member, this, amount, comment));
+        final DaoContribution newContribution = new DaoContribution(member, this, amount, comment);
+        this.contributions.add(newContribution);
         this.contribution = this.contribution.add(amount);
+        return newContribution;
     }
 
     /**

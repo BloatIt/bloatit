@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -18,9 +19,10 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddAttachementPageUrl;
 
@@ -28,7 +30,7 @@ import com.bloatit.web.url.AddAttachementPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("usercontent/doattachfile")
-public final class AddAttachementAction extends CreateUserContentAction {
+public final class AddAttachementAction extends UserContentAction {
 
     @SuppressWarnings("rawtypes")
     @ParamConstraint(optionalErrorMsg = @tr("An attachment must be linked to a content"))
@@ -38,13 +40,19 @@ public final class AddAttachementAction extends CreateUserContentAction {
     private final AddAttachementActionUrl url;
 
     public AddAttachementAction(final AddAttachementActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.TALK);
         this.url = url;
         this.userContent = url.getUserContent();
     }
+    
+    @Override
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+        propagateAttachedFileIfPossible(userContent);
+        return session.pickPreferredPage();
+    }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         if (!FeatureManager.canCreate(session.getAuthToken())) {
             // TODO: use UserContentManager and not FeatureManager here
             session.notifyError(Context.tr("You must be logged in to report a bug."));
@@ -57,12 +65,6 @@ public final class AddAttachementAction extends CreateUserContentAction {
     protected boolean verifyFile(final String filename) {
         // TODO make some generic check (file size ...)
         return true;
-    }
-
-    @Override
-    public Url doDoProcessRestricted(final Member authenticatedMember) {
-        propagateAttachedFileIfPossible(userContent);
-        return session.pickPreferredPage();
     }
 
     @Override

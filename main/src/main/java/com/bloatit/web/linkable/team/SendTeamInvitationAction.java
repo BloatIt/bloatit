@@ -20,7 +20,7 @@ import com.bloatit.web.url.SendTeamInvitationActionUrl;
  * </p>
  */
 @ParamContainer("invitation/dosend")
-public class SendTeamInvitationAction extends LoggedAction {
+public final class SendTeamInvitationAction extends LoggedAction {
     public final static String TEAM_JOIN_CODE = "bloatit_join_team";
     public final static String RECEIVER_CODE = "bloatit_join_receiver";
 
@@ -59,7 +59,7 @@ public class SendTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
