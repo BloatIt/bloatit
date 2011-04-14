@@ -7,7 +7,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.webprocessor.url.UrlStringBinder;
+import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
@@ -52,7 +52,7 @@ public final class PaylineAction extends LoggedAction {
                 SessionManager.storeTemporarySession(reponse.getToken(), session);
 
                 if (reponse.isAccepted()) {
-                    return new UrlStringBinder(reponse.getRedirectUrl());
+                    return new UrlString(reponse.getRedirectUrl());
                 }
                 session.notifyBad(reponse.getMessage());
             } catch (final UnauthorizedOperationException e) {
