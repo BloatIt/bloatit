@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -30,7 +31,10 @@ import com.bloatit.framework.utils.Sorter;
 import com.bloatit.framework.utils.Sorter.Order;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -46,15 +50,18 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
+import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -71,11 +78,16 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("account")
 public final class AccountPage extends LoggedPage {
 
+    @RequestParam
+    @Optional
+    private Team team;
+
     private final AccountPageUrl url;
 
     public AccountPage(final AccountPageUrl url) {
         super(url);
         this.url = url;
+        team = url.getTeam();
     }
 
     @Override
@@ -99,24 +111,41 @@ public final class AccountPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(final Member loggedUser) {
-        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws PageNotFoundException {
+        try {
+            Actor<?> currentActor = loggedUser;
+            if (isTeamAccount()) {
+                if (team.hasTeamPrivilege(UserTeamRight.BANK)) {
+                    currentActor = team;
+                } else {
+                    session.notifyBad(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));
+                    throw new PageNotFoundException();
+                }
+            }
 
-        final HtmlDiv accountPage = new HtmlDiv("account_page");
-        accountPage.add(generateAccountSolde(loggedUser));
-        accountPage.add(new HtmlTitle(tr("Account informations"), 1));
-        accountPage.add(generateAccountMovementList(loggedUser));
+            final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+            final HtmlDiv accountPage = new HtmlDiv("account_page");
+            accountPage.add(generateAccountSolde(currentActor));
+            accountPage.add(new HtmlTitle(tr("{0} – Account informations", isTeamAccount() ? team.getLogin() : loggedUser.getDisplayName()), 1));
+            accountPage.add(generateAccountMovementList(currentActor.getContributions(), currentActor.getBankTransactions()));
 
-        layout.addLeft(accountPage);
+            layout.addLeft(accountPage);
 
-        layout.addRight(new SideBarDocumentationBlock("internal_account"));
-        layout.addRight(new SideBarLoadAccountBlock());
-        layout.addRight(new SideBarWithdrawMoneyBlock());
+            layout.addRight(new SideBarDocumentationBlock("internal_account"));
+            layout.addRight(new SideBarLoadAccountBlock());
+            layout.addRight(new SideBarWithdrawMoneyBlock());
 
-        return layout;
+            return layout;
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Right error.", e);
+        }
     }
 
-    private HtmlElement generateAccountSolde(final Member loggedUser) {
+    private boolean isTeamAccount() {
+        return team != null;
+    }
+
+    private HtmlElement generateAccountSolde(final Actor<?> loggedUser) {
         final HtmlDiv floatRight = new HtmlDiv("float_right");
         final HtmlDiv soldeBlock = new HtmlDiv("solde_block");
         final HtmlDiv soldeText = new HtmlDiv("solde_text");
@@ -126,7 +155,7 @@ public final class AccountPage extends LoggedPage {
         try {
             soldeAmount.addText(Context.getLocalizator().getCurrency(loggedUser.getInternalAccount().getAmount()).getDefaultString());
         } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Right fail ton account page", e);
+            throw new ShallNotPassException("Right error.", e);
         }
 
         soldeBlock.add(soldeText);
@@ -135,39 +164,35 @@ public final class AccountPage extends LoggedPage {
         return floatRight;
     }
 
-    private HtmlElement generateAccountMovementList(final Member loggedUser) {
+    private HtmlElement generateAccountMovementList(final PageIterable<Contribution> contributions,
+                                                    final PageIterable<BankTransaction> bankTransactions) {
         final List<HtmlTableLine> lineList = new ArrayList<HtmlTableLine>();
         final Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
-        
+
         try {
-            final PageIterable<Contribution> contributions = loggedUser.getContributions(true);
-            final PageIterable<BankTransaction> bankTransactions = loggedUser.getBankTransactions();
             for (final Contribution contribution : contributions) {
                 sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
             }
             for (final BankTransaction bankTransaction : bankTransactions) {
                 if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
 
-                    if(bankTransaction.getState() == State.VALIDATED) {
+                    if (bankTransaction.getState() == State.VALIDATED) {
                         sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
                     } else if (bankTransaction.getState() == State.REFUSED) {
                         sorter.add(new ChargeAccountFailedLine(bankTransaction), bankTransaction.getModificationDate());
                     } else {
-                        if(DateUtils.elapsed(bankTransaction.getModificationDate(), DateUtils.now()) > DateUtils.SECOND_PER_DAY*1000) {
-                            //Aborded
+                        if (DateUtils.elapsed(bankTransaction.getModificationDate(), DateUtils.now()) > DateUtils.SECOND_PER_DAY * 1000) {
+                            // Aborted
                             sorter.add(new ChargeAccountAbordedLine(bankTransaction), bankTransaction.getModificationDate());
                         }
                     }
-
-
-
                 } else {
                     // TODO withdraw
                     throw new NotImplementedException();
                 }
             }
         } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Right fail ton account page", e);
+            throw new ShallNotPassException("Right fail on account page", e);
         }
 
         sorter.performSort(Order.DESC);
@@ -196,11 +221,11 @@ public final class AccountPage extends LoggedPage {
             final HtmlDiv description = new HtmlDiv("description");
             final HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(contribution.getFeature().getSoftware());
             final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
-            
+
             String statusString = "";
             switch (contribution.getFeature().getFeatureState()) {
                 case DEVELOPPING:
-                    statusString = tr("In developement");
+                    statusString = tr("In development");
                     break;
                 case FINISHED:
                     statusString = tr("Success");
@@ -225,7 +250,6 @@ public final class AccountPage extends LoggedPage {
             title.add(new HtmlMixedText(tr("Contributed to a <0::feature>"), featurePageUrl.getHtmlLink()));
             return title;
         }
-
     }
 
     private static class ChargeAccountLine extends HtmlTableLine {
@@ -243,8 +267,8 @@ public final class AccountPage extends LoggedPage {
         private HtmlDiv generateChargeAccountDescription() {
             final HtmlDiv description = new HtmlDiv("description");
             description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
-                                                                           .getCurrency(bankTransaction.getValuePaid())
-                                                                           .getDecimalDefaultString()));
+                                                                               .getCurrency(bankTransaction.getValuePaid())
+                                                                               .getDecimalDefaultString()));
             return description;
         }
 
@@ -284,7 +308,7 @@ public final class AccountPage extends LoggedPage {
 
         private HtmlDiv generateChargeAccountFailedTitle() {
             final HtmlDiv title = new HtmlDiv("title");
-            title.addText(tr("Charging account aborded"));
+            title.addText(tr("Charging account aborted"));
             return title;
         }
     }
@@ -303,10 +327,8 @@ public final class AccountPage extends LoggedPage {
             if (up) {
                 return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up");
             }
-
             return new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()), "money down");
         }
-
     }
 
     private static class TitleCell extends HtmlTableCell {
@@ -318,20 +340,17 @@ public final class AccountPage extends LoggedPage {
             super("title_cell");
             this.date = date;
             this.title = title;
-
         }
 
         @Override
         public XmlNode getBody() {
             final PlaceHolderElement titleCell = new PlaceHolderElement();
-
             final HtmlDiv dateDiv = new HtmlDiv("date");
             dateDiv.addText(Context.getLocalizator().getDate(date).toString(FormatStyle.LONG));
             titleCell.add(dateDiv);
             titleCell.add(title);
             return titleCell;
         }
-
     }
 
     private static class DescriptionCell extends HtmlTableCell {
@@ -352,7 +371,6 @@ public final class AccountPage extends LoggedPage {
             descriptionCell.add(description);
             return descriptionCell;
         }
-
     }
 
     private static class MoneyCell extends HtmlTableCell {
@@ -367,33 +385,36 @@ public final class AccountPage extends LoggedPage {
         @Override
         public XmlNode getBody() {
             final HtmlDiv moneyCell = new HtmlDiv();
-
             String amountString = Context.getLocalizator().getCurrency(amount).getDefaultString();
-
             if (amount.compareTo(BigDecimal.ZERO) > 0) {
                 amountString = "+" + amountString;
                 moneyCell.setCssClass("money_up");
             } else {
                 moneyCell.setCssClass("money_down");
             }
-
             moneyCell.addText(amountString);
-
             return moneyCell;
         }
-
     }
 
     @Override
     protected Breadcrumb createBreadcrumb() {
+        if (isTeamAccount()) {
+            return AccountPage.generateBreadcrumb(team);
+        }
         return AccountPage.generateBreadcrumb(session.getAuthToken().getMember());
+
+    }
+
+    public static Breadcrumb generateBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+        breadcrumb.pushLink(new AccountPageUrl().getHtmlLink(tr("Account informations")));
+        return breadcrumb;
     }
 
     public static Breadcrumb generateBreadcrumb(final Member loggerUser) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(loggerUser);
-
         breadcrumb.pushLink(new AccountPageUrl().getHtmlLink(tr("Account informations")));
-
         return breadcrumb;
     }
 
@@ -404,7 +425,8 @@ public final class AccountPage extends LoggedPage {
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
             add(new SideBarButton(tr("Charge your account"), WebConfiguration.getImgAccountCharge()).asElement());
-            add(new HtmlDefineParagraph(tr("Note: "), tr("We have charge to pay everytime you charge your account, hence we will perceive our 10% commission, even if you withdrow the money as soon as you hav loaded it.")));
+            add(new HtmlDefineParagraph(tr("Note: "),
+                                        tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
     }
 
@@ -415,11 +437,10 @@ public final class AccountPage extends LoggedPage {
 
             add(new HtmlParagraph(tr("You can withdraw money from you elveos account and get a bank transfer to your personal bank account using the following link:")));
             add(new SideBarButton(tr("Withdraw money"), WebConfiguration.getImgAccountWithdraw()).asElement());
-            add(new HtmlDefineParagraph(tr("Note: "), tr("Note : Do not withdraw money if you are planning to contribute to a project in the future, this will prevent you from paying our commission again later.\n" +
-            		"Oh, and by the way, we don't like when you withdraw money, not because it costs us money (it does but well that's OK), but because you could as well use this money to contribute to other open source projects.")));
+            add(new HtmlDefineParagraph(tr("Note: "),
+                                        tr("Note : Do not withdraw money if you are planning to contribute to a project in the future, this will prevent you from paying our commission again later.\n"
+                                                + "Oh, and by the way, we don't like when you withdraw money, not because it costs us money (it does but well that's OK), but because you could as well use this money to contribute to other open source projects.")));
 
         }
-
     }
-
 }

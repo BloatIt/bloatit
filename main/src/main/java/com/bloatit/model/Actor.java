@@ -211,6 +211,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         tryAccess(new ActorRight.BankTransaction(), Action.READ);
         return new BankTransactionList(getDao().getBankTransactions());
     }
+    
+    public abstract PageIterable<Contribution> getContributions() throws UnauthorizedOperationException;
+
 
     /*
      * (non-Javadoc)

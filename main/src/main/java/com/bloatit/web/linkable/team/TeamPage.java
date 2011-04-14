@@ -178,7 +178,7 @@ public class TeamPage extends MasterPage {
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
-                Log.web().error("Cannot access to bank external accound, I checked just before tho", e);
+                Log.web().error("Cannot access to bank external account, I checked just before tho", e);
             }
         }
 
@@ -199,7 +199,7 @@ public class TeamPage extends MasterPage {
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
-                Log.web().error("Cannot access to bank internal accound, I checked just before tho", e);
+                Log.web().error("Cannot access to bank internal account, I checked just before tho", e);
             }
         }
 

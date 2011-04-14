@@ -51,8 +51,14 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "team.byName",
-                           query = "FROM DaoTeam WHERE login = :login")
+                                    name = "team.byName",
+                                    query = "FROM DaoTeam WHERE login = :login"),
+                        @NamedQuery(
+                                    name = "team.getContributions",
+                                    query = "FROM DaoContribution WHERE asTeam = :this "),
+                        @NamedQuery(
+                                    name = "team.getContributions.size",
+                                    query = "SELECT count(*) FROM DaoContribution WHERE asTeam = :this "),
                        }
              )
 // @formatter:on
@@ -171,6 +177,10 @@ public class DaoTeam extends DaoActor {
         this.teamMembership.remove(link);
         member.getTeamMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
+    }
+
+    public PageIterable<DaoContribution> getContributions() {
+        return new QueryCollection<DaoContribution>("team.getContributions").setEntity("this", this);
     }
 
     /**

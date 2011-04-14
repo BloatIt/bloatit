@@ -18,10 +18,13 @@ package com.bloatit.model;
 
 import java.util.EnumSet;
 
+import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
 
 /**
@@ -125,6 +128,11 @@ public final class Team extends Actor<DaoTeam> {
     public void setAvatar(final FileMetadata fileImage) {
         // TODO: right management
         getDao().setAvatar(fileImage.getDao());
+    }
+
+    @Override
+    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
+        return new ListBinder<Contribution, DaoContribution>(getDao().getContributions());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

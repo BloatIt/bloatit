@@ -444,6 +444,11 @@ public final class Member extends Actor<DaoMember> implements User {
         return new KudosList(getDao().getKudos());
     }
 
+    @Override
+    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
+        return getContributions(true);
+    }
+
     public PageIterable<Contribution> getContributions(final boolean asMemberOnly) throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Contributions(), Action.READ);
         return new ContributionList(getDao().getContributions(asMemberOnly));
