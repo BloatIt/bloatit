@@ -24,12 +24,12 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.SpecialsPageUrl;
+import com.bloatit.web.url.SiteMapPageUrl;
 
-@ParamContainer("special")
-public final class SpecialsPage extends MasterPage {
+@ParamContainer("sitemap")
+public final class SiteMapPage extends MasterPage {
 
-    public SpecialsPage(final SpecialsPageUrl specialsPageUrl) {
+    public SiteMapPage(final SiteMapPageUrl specialsPageUrl) {
         super(specialsPageUrl);
     }
 
@@ -58,13 +58,13 @@ public final class SpecialsPage extends MasterPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return SpecialsPage.generateBreadcrumb();
+        return SiteMapPage.generateBreadcrumb();
     }
 
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        breadcrumb.pushLink(new SpecialsPageUrl().getHtmlLink(tr("Special pages")));
+        breadcrumb.pushLink(new SiteMapPageUrl().getHtmlLink(tr("Special pages")));
 
         return breadcrumb;
     }
