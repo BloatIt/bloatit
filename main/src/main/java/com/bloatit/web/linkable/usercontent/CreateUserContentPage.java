@@ -5,7 +5,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.model.Member;
 import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.url.CreateUserContentActionUrl;
+import com.bloatit.web.url.UserContentActionUrl;
 import com.bloatit.web.url.CreateUserContentPageUrl;
 
 /**
@@ -14,9 +14,9 @@ import com.bloatit.web.url.CreateUserContentPageUrl;
 @ParamContainer("usercontent/create")
 public abstract class CreateUserContentPage extends LoggedPage {
 
-    private final CreateUserContentActionUrl targetUrl;
+    private final UserContentActionUrl targetUrl;
 
-    public CreateUserContentPage(final CreateUserContentPageUrl url, final CreateUserContentActionUrl targetUrl) {
+    public CreateUserContentPage(final CreateUserContentPageUrl url, final UserContentActionUrl targetUrl) {
         super(url);
         this.targetUrl = targetUrl;
     }
@@ -60,7 +60,7 @@ public abstract class CreateUserContentPage extends LoggedPage {
         form.enableFileUpload();
     }
 
-    protected final CreateUserContentActionUrl getTargetUrl() {
+    protected final UserContentActionUrl getTargetUrl() {
         return targetUrl;
     }
 }

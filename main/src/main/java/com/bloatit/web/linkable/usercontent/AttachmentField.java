@@ -4,7 +4,7 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
-import com.bloatit.web.url.CreateUserContentActionUrl;
+import com.bloatit.web.url.UserContentActionUrl;
 
 public class AttachmentField extends PlaceHolderElement {
 
@@ -17,7 +17,7 @@ public class AttachmentField extends PlaceHolderElement {
      * @param descriptionLabel
      * @param descriptionComment
      */
-    public AttachmentField(final CreateUserContentActionUrl targetUrl,
+    public AttachmentField(final UserContentActionUrl targetUrl,
                             final String attachmentLabel,
                             final String attachmentComment,
                             final String descriptionLabel,

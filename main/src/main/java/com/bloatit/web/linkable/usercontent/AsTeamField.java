@@ -11,11 +11,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
-import com.bloatit.web.url.CreateUserContentActionUrl;
+import com.bloatit.web.url.UserContentActionUrl;
 
 public class AsTeamField extends PlaceHolderElement {
 
-    public AsTeamField(final CreateUserContentActionUrl targetUrl,
+    public AsTeamField(final UserContentActionUrl targetUrl,
                         final Member me,
                         final UserTeamRight right,
                         final String label,

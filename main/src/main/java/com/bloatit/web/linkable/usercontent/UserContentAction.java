@@ -19,7 +19,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.CreateUserContentActionUrl;
+import com.bloatit.web.url.UserContentActionUrl;
 
 @ParamContainer("usercontent/docreate")
 public abstract class UserContentAction extends LoggedAction {
@@ -50,11 +50,11 @@ public abstract class UserContentAction extends LoggedAction {
 
     private FileMetadata file;
 
-    private final CreateUserContentActionUrl createUserActionurl;
+    private final UserContentActionUrl createUserActionurl;
 
     private final UserTeamRight right;
 
-    protected UserContentAction(final CreateUserContentActionUrl url, final UserTeamRight right) {
+    protected UserContentAction(final UserContentActionUrl url, final UserTeamRight right) {
         super(url);
         this.createUserActionurl = url;
         this.right = right;
