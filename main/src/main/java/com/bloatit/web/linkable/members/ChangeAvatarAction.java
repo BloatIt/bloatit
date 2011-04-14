@@ -76,7 +76,7 @@ public final class ChangeAvatarAction extends UserContentAction {
 
     @Override
     protected String getRefusalReason() {
-        return Context.tr("You have to be logged to change your avatar");
+        return Context.tr("You have to be logged to change your avatar.");
     }
 
     @Override

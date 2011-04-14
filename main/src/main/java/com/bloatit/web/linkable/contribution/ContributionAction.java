@@ -56,7 +56,7 @@ public final class ContributionAction extends UserContentAction {
             final Contribution contribution = process.getFeature().addContribution(process.getAmount(), process.getComment());
             propagateAsTeamIfPossible(contribution);
 
-            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature", Context.getLocalizator()
+            session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
                                                                                                  .getCurrency(process.getAmount())
                                                                                                  .getLocaleString()));
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());

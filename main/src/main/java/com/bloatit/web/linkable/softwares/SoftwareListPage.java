@@ -101,7 +101,7 @@ public final class SoftwareListPage extends MasterPage {
 
                 return box;
             } catch (final UnauthorizedOperationException e) {
-                session.notifyError("An error prevented us from displaying team information");
+                session.notifyError("An error prevented us from displaying team information.");
                 throw new ShallNotPassException("Cannot display software information", e);
             }
         }

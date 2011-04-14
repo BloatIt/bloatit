@@ -15,16 +15,21 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
+import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class FeaturesTools {
@@ -35,6 +40,62 @@ public class FeaturesTools {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
         return translatedDescription.getTitle();
+    }
+
+    /**
+     * Convenience method for {@link #generateFeatureTitle(Feature, boolean)}
+     * with <i>isTitle</i> set to false
+     * 
+     * @param feature the feature for which a block will be generated
+     * @return the generated block
+     * @throws UnauthorizedOperationException when some operation cannot be
+     *             accessed
+     */
+
+    public static HtmlBranch generateFeatureTitle(final Feature feature) throws UnauthorizedOperationException {
+        return generateFeatureTitle(feature, false);
+    }
+
+    /**
+     * Generates a block indicating the title of a given <code>feature</code>
+     * <p>
+     * The block contains:
+     * <li>The software name (and a link to the software page) of the
+     * <code>feature</code></li>
+     * <li>The feature title</li>
+     * </p>
+     * <p>
+     * Note:
+     * <li>If <code>isTitle</code> is <i>true</i>, the whole block will be
+     * rendered as a title</li>
+     * <li>If <code>isTitle</code> is <i>true</i>, the whole block will be
+     * rendered as a normal text, and a link to the feature page will be added</li>
+     * </p>
+     * 
+     * @param feature the feature for which we want to generate a description
+     *            block
+     * @param isTitle <i>true</i> if the block has to be rendered as a title,
+     *            <i>false</i> otherwise
+     * @return the title block
+     * @throws UnauthorizedOperationException when some operation cannot be
+     *             accessed
+     */
+    public static HtmlBranch generateFeatureTitle(final Feature feature, boolean isTitle) throws UnauthorizedOperationException {
+        HtmlBranch master;
+        if (isTitle) {
+            master = new HtmlTitle(1);
+        } else {
+            master = new HtmlSpan("feature_complete_title");
+        }
+        master.setCssClass("feature_title");
+        master.add(SoftwaresTools.getSoftwareLink(feature.getSoftware()));
+        master.addText(" – ");
+        if (isTitle) {
+            master.addText(getTitle(feature));
+        } else {
+            master.add(new FeaturePageUrl(feature).getHtmlLink(getTitle(feature)));
+        }
+        return master;
     }
 
     public static HtmlDiv generateProgress(final Feature feature) throws UnauthorizedOperationException {

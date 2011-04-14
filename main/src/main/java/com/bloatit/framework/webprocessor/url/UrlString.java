@@ -2,18 +2,18 @@ package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.framework.utils.parameters.Parameters;
 
-public class UrlStringBinder extends Url {
+public class UrlString extends Url {
 
     private final String url;
 
-    public UrlStringBinder(final String url) {
+    public UrlString(final String url) {
         super("");
         this.url = url;
     }
 
     @Override
     public Url clone() {
-        return new UrlStringBinder(url);
+        return new UrlString(url);
     }
 
     @Override

@@ -63,7 +63,7 @@ public final class PopularityVoteAction extends LoggedAction {
 
                 if (canVote.isEmpty()) {
                     final int weight = targetKudosable.voteUp();
-                    session.notifyGood(Context.tr("Vote up applied: {0}", weight));
+                    session.notifyGood(Context.tr("Vote up applied: {0}.", weight));
                 } else {
                     analyseErrors(canVote);
                 }
@@ -72,13 +72,13 @@ public final class PopularityVoteAction extends LoggedAction {
 
                 if (canVote.isEmpty()) {
                     final int weight = targetKudosable.voteDown();
-                    session.notifyGood(Context.tr("Vote down applied: {0}", weight));
+                    session.notifyGood(Context.tr("Vote down applied: {0}.", weight));
                 } else {
                     analyseErrors(canVote);
                 }
             }
         } catch (final UnauthorizedOperationException e) {
-            Context.getSession().notifyError(Context.tr("Error voting on a component. Please notify us"));
+            Context.getSession().notifyError(Context.tr("Error voting on a component. Please notify us."));
             throw new ShallNotPassException("Error voting", e);
         }
 

@@ -30,6 +30,8 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgIdea;
     private String imgTeam;
     private String imgMessage;
+    private String imgAccountCharge;
+    private String imgAccountWithdraw;
 
     private WebConfiguration() {
         super();
@@ -165,6 +167,14 @@ public class WebConfiguration extends ReloadableConfiguration {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgTeam;
     }
 
+    public static String getImgAccountCharge() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgAccountCharge;
+    }
+
+    public static String getImgAccountWithdraw() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgAccountWithdraw;
+    }
+
     protected void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("web.properties");
 
@@ -189,6 +199,8 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgIdea = properties.getString("bloatit.img.idea");
         imgTeam = properties.getString("bloatit.img.team");
         imgMessage = properties.getString("bloatit.img.message");
+        imgAccountCharge = properties.getString("bloatit.img.account.charge");
+        imgAccountWithdraw = properties.getString("bloatit.img.account.withdraw");
     }
 
     public static void load() {
@@ -204,4 +216,6 @@ public class WebConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
+
+
 }

@@ -105,7 +105,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
                 offerPageContainer.add(new FeatureOfferListComponent.OfferBlock(offer, true));
             }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad("For an obscure reason you cannot see the offer you are constructing, please warn us of the bug");
+            session.notifyBad("For an obscure reason you cannot see the offer you are constructing, please warn us of the bug.");
             throw new ShallNotPassException("Cannot see an offer when constructing it", e);
         }
 

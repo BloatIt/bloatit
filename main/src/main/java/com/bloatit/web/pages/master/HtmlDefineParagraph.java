@@ -5,15 +5,15 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
-public class DefineParagraph extends HtmlParagraph {
+public class HtmlDefineParagraph extends HtmlParagraph {
 
-    public DefineParagraph(final String key, final String text) {
+    public HtmlDefineParagraph(final String key, final String text) {
         setCssClass("define_p");
         add(new HtmlSpan("define_key").addText(key));
         addText(text);
     }
 
-    public DefineParagraph(final String key, final HtmlElement body) {
+    public HtmlDefineParagraph(final String key, final HtmlElement body) {
         setCssClass("define_p");
         add(new HtmlSpan("define_key").addText(key));
         add(body);

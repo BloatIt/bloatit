@@ -115,7 +115,7 @@ public final class SignUpAction extends Action {
 
         final String userEmail = email.trim();
         if (!MailUtils.isValidEmail(userEmail)) {
-            session.notifyError(Context.tr("Invalid email address : " + userEmail));
+            session.notifyError(Context.tr("Invalid email address : {0}.", userEmail));
             return doProcessErrors();
         }
         return NO_ERROR;

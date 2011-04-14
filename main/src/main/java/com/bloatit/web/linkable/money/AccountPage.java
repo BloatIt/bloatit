@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -27,6 +28,7 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Sorter;
 import com.bloatit.framework.utils.Sorter.Order;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -37,6 +39,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.EmptyCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -54,7 +57,7 @@ import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.DefineParagraph;
+import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountPageUrl;
@@ -144,7 +147,20 @@ public final class AccountPage extends LoggedPage {
             }
             for (final BankTransaction bankTransaction : bankTransactions) {
                 if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
-                    sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
+
+                    if(bankTransaction.getState() == State.VALIDATED) {
+                        sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
+                    } else if (bankTransaction.getState() == State.REFUSED) {
+                        sorter.add(new ChargeAccountFailedLine(bankTransaction), bankTransaction.getModificationDate());
+                    } else {
+                        if(DateUtils.elapsed(bankTransaction.getModificationDate(), DateUtils.now()) > DateUtils.SECOND_PER_DAY*1000) {
+                            //Aborded
+                            sorter.add(new ChargeAccountAbordedLine(bankTransaction), bankTransaction.getModificationDate());
+                        }
+                    }
+
+
+
                 } else {
                     // TODO withdraw
                     throw new NotImplementedException();
@@ -196,8 +212,8 @@ public final class AccountPage extends LoggedPage {
                     break;
             }
 
-            description.add(new DefineParagraph(tr("Description: "), descriptionString));
-            description.add(new DefineParagraph(tr("Status: "), statusString));
+            description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
+            description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
             return description;
         }
 
@@ -226,7 +242,7 @@ public final class AccountPage extends LoggedPage {
 
         private HtmlDiv generateChargeAccountDescription() {
             final HtmlDiv description = new HtmlDiv("description");
-            description.add(new DefineParagraph(tr("Total cost: "), Context.getLocalizator()
+            description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
                                                                            .getCurrency(bankTransaction.getValuePaid())
                                                                            .getDecimalDefaultString()));
             return description;
@@ -235,6 +251,40 @@ public final class AccountPage extends LoggedPage {
         private HtmlDiv generateChargeAccountTitle() {
             final HtmlDiv title = new HtmlDiv("title");
             title.addText(tr("Charged account"));
+            return title;
+        }
+    }
+
+    private static class ChargeAccountFailedLine extends HtmlTableLine {
+
+        public ChargeAccountFailedLine(final BankTransaction bankTransaction) {
+            setCssClass("failed_line");
+            addCell(new EmptyCell());
+            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
+            addCell(new EmptyCell());
+            addCell(new MoneyCell(bankTransaction.getValue()));
+        }
+
+        private HtmlDiv generateChargeAccountFailedTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            title.addText(tr("Charging account failure"));
+            return title;
+        }
+    }
+
+    private static class ChargeAccountAbordedLine extends HtmlTableLine {
+
+        public ChargeAccountAbordedLine(final BankTransaction bankTransaction) {
+            setCssClass("failed_line");
+            addCell(new EmptyCell());
+            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
+            addCell(new EmptyCell());
+            addCell(new MoneyCell(bankTransaction.getValue()));
+        }
+
+        private HtmlDiv generateChargeAccountFailedTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            title.addText(tr("Charging account aborded"));
             return title;
         }
     }
@@ -353,12 +403,9 @@ public final class AccountPage extends LoggedPage {
             setTitle(tr("Load account"));
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
-            add(new SideBarButton(tr("Charge your account"), WebConfiguration.getImgIdea()).asElement());
-            add(new DefineParagraph(tr("Note: "),
-                                    tr("We have charge to pay everytime you charge your account, hence we will perceive our 10% commission, even if you withdrow the money as soon as you hav loaded it.")));
-
+            add(new SideBarButton(tr("Charge your account"), WebConfiguration.getImgAccountCharge()).asElement());
+            add(new HtmlDefineParagraph(tr("Note: "), tr("We have charge to pay everytime you charge your account, hence we will perceive our 10% commission, even if you withdrow the money as soon as you hav loaded it.")));
         }
-
     }
 
     public static class SideBarWithdrawMoneyBlock extends TitleSideBarElementLayout {
@@ -367,10 +414,9 @@ public final class AccountPage extends LoggedPage {
             setTitle(tr("Withdraw money"));
 
             add(new HtmlParagraph(tr("You can withdraw money from you elveos account and get a bank transfer to your personal bank account using the following link:")));
-            add(new SideBarButton(tr("Withdraw money"), WebConfiguration.getImgIdea()).asElement());
-            add(new DefineParagraph(tr("Note: "),
-                                    tr("Note : Do not withdraw money if you are planning to contribute to a project in the future, this will prevent you from paying our commission again later.\n"
-                                            + "Oh, and by the way, we don't like when you withdraw money, not because it costs us money (it does but well that's OK), but because you could as well use this money to contribute to other open source projects.")));
+            add(new SideBarButton(tr("Withdraw money"), WebConfiguration.getImgAccountWithdraw()).asElement());
+            add(new HtmlDefineParagraph(tr("Note: "), tr("Note : Do not withdraw money if you are planning to contribute to a project in the future, this will prevent you from paying our commission again later.\n" +
+            		"Oh, and by the way, we don't like when you withdraw money, not because it costs us money (it does but well that's OK), but because you could as well use this money to contribute to other open source projects.")));
 
         }
 

@@ -43,7 +43,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
             final Team g = invite.getTeam();
 
             if (me.isInTeam(g)) {
-                session.notifyError(Context.tr("You cannot join a team you already belong in"));
+                session.notifyError(Context.tr("You cannot join a team you already belong in."));
                 return session.getLastVisitedPage();
             }
 
@@ -56,11 +56,11 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
             }
 
             try {
-                session.notifyGood(Context.tr("You are now a member of team ''" + g.getLogin() + "''"));
+                session.notifyGood(Context.tr("You are now a member of team ''{0}''.", g.getLogin()));
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
                 session.notifyBad(Context.tr("Ooops, we couldn't display team name. It's a bug, please notify us."));
-                throw new ShallNotPassException("Couldn't display a team name, while user should be part of it", e);
+                throw new ShallNotPassException("Couldn't display a team name, while user should be part of it.", e);
             }
             return new TeamPageUrl(invite.getTeam());
         }
@@ -68,7 +68,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
             me.refuseInvitation(invite);
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("Ooops, you tried to refuse a legitimate team invitation, but it failed. It's a bug please notify us."));
-            throw new ShallNotPassException("User refuse a legitimate team invitation, but it failed", e);
+            throw new ShallNotPassException("User refuse a legitimate team invitation, but it failed.", e);
         }
         return session.getLastVisitedPage();
     }

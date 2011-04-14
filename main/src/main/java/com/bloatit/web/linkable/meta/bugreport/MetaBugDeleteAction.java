@@ -44,17 +44,17 @@ public final class MetaBugDeleteAction extends Action {
     @Override
     protected Url doProcess() {
         if (!session.isLogged()) {
-            session.notifyError(Context.tr("You must be logged to delete a bug"));
+            session.notifyError(Context.tr("You must be logged to delete a bug."));
             throw new MeanUserException("The user try to delete a bug without been logged.");
         }
 
         final MetaBug bug = MetaBugManager.getById(bugId);
         if (bug != null) {
             bug.delete();
-            session.notifyGood("Bug deleted");
+            session.notifyGood("Bug deleted.");
             return new MetaBugsListPageUrl();
         }
-        session.notifyError(Context.tr("Bug id ''{0}'' doesn't exist. Maybe it has already been deleted", bugId));
+        session.notifyError(Context.tr("Bug id ''{0}'' doesn't exist. Maybe it has already been deleted.", bugId));
         return new MetaBugsListPageUrl();
     }
 
