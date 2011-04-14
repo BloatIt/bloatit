@@ -127,6 +127,9 @@
 
 		<resources>
 			<resource>
+				<directory>${basedir}/src/main/resources/</directory>
+			</resource>
+			<resource>
 				<targetPath>${project.build.directory}/classes</targetPath>
 				<filtering>true</filtering>
 				<directory>${basedir}</directory>
@@ -134,6 +137,7 @@
 					<include>build.properties</include>
 				</includes>
 			</resource>
+
 		</resources>
 	</build>
 
