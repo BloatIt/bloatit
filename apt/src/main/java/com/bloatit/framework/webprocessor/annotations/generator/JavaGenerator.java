@@ -398,7 +398,7 @@ public abstract class JavaGenerator {
         urlClass.append("    protected void doGetStringParameters(Parameters parameters) {\n");
         urlClass.append("        component.getStringParameters(parameters);\n");
         if (urlSuperClass != null) {
-            urlClass.append("        doGetStringParameters(parameters);\n");
+            urlClass.append("        super.doGetStringParameters(parameters);\n");
         }
         urlClass.append("    }\n");
 
