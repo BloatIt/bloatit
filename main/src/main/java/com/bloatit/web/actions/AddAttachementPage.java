@@ -19,28 +19,22 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.components.SideBarUserContentBlock;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.BreadcrumbTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddAttachementPageUrl;
 
-/**
- * Page that hosts the form to create a new feature
- */
 @ParamContainer("usercontent/attachfile")
-public final class AddAttachementPage extends LoggedPage {
+public final class AddAttachementPage extends CreateUserContentPage {
 
     @SuppressWarnings("rawtypes")
     @RequestParam(name = "user_content")
@@ -49,14 +43,14 @@ public final class AddAttachementPage extends LoggedPage {
     private final AddAttachementPageUrl url;
 
     public AddAttachementPage(final AddAttachementPageUrl url) {
-        super(url);
+        super(url, new AddAttachementActionUrl(url.getUserContent()));
         this.url = url;
         userContent = url.getUserContent();
     }
 
     @Override
     protected String createPageTitle() {
-        return tr("Add an attachement to the release");
+        return tr("Add an attachment to the release");
     }
 
     @Override
@@ -84,36 +78,17 @@ public final class AddAttachementPage extends LoggedPage {
     }
 
     private HtmlElement generateReleaseCreationForm() {
-        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachement"), 1);
-
-        final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(userContent);
-
-        // Create the form stub
-        final HtmlForm form = new HtmlForm(formUrl.urlString());
-        form.enableFileUpload();
-
-        title.add(form);
-
-        // attachement
-        final FieldData attachementDescriptiondData = formUrl.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(),
-                                                                            Context.tr("Attachment description"));
-        attachementDescriptionInput.setDefaultValue(attachementDescriptiondData.getSuggestedValue());
-        attachementDescriptionInput.addErrorMessages(attachementDescriptiondData.getErrorMessages());
-        attachementDescriptionInput.setComment(tr("Mandatory"));
-        form.add(attachementDescriptionInput);
-
-        final FieldData attachedFileData = formUrl.getAttachementParameter().pickFieldData();
-        final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
-        attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
-        attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
-        attachedFileInput.setComment("You must attach a file. Maximum size is 3MB");
-        form.add(attachedFileInput);
-
-        form.add(new HtmlSubmit(tr("Submit")));
-
         final HtmlDiv group = new HtmlDiv();
+        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachment"), 1);
+        final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(userContent);
+        final HtmlForm form = new HtmlForm(formUrl.urlString());
+        
+        form.enableFileUpload();
+        addAddAttachmentField(form, tr("Attached file"), tr("Mandatory"), Context.tr("Attachment description"), tr("You must attach a file. Maximum size is 3MB"));
+        form.add(new HtmlSubmit(tr("Submit")));
+        
         group.add(title);
+        title.add(form);
         return group;
     }
 
@@ -124,12 +99,12 @@ public final class AddAttachementPage extends LoggedPage {
 
     public static Breadcrumb generateBreadcrumb(final UserContentInterface<?> userContent) {
         final Breadcrumb breadcrumb = BreadcrumbTools.generateBreadcrumb(userContent);
-        breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachement")));
+        breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachment")));
         return breadcrumb;
     }
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to add a new attachement.");
+        return tr("You must be logged to add a new attachment.");
     }
 }

@@ -57,7 +57,7 @@ public class UrlParameter<T, U> extends UrlNode {
     @Override
     protected void parseSessionParameters(final SessionParameters params) {
         final UrlParameter<?, ?> pick = params.look(getName());
-        if (pick != null && getValueClass().isAssignableFrom(pick.value.getClass())) {
+        if (pick != null && pick.value != null && getValueClass().isAssignableFrom(pick.value.getClass())) {
             value = (T) pick.value;
             strValue = pick.strValue;
             conversionError = pick.conversionError;

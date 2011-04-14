@@ -15,7 +15,7 @@
         .solde_amount {
             .box-flex;
             font-size: 2.3em;
-            color: @title_color;
+            color: @big_text_color;
             margin-left : 20px;
             margin-right : 20px;
             font-weight: bold;
@@ -92,6 +92,23 @@
                 
                 .money_up {
                     color: @money_up_color;
+                }
+            }
+        }
+        
+        .failed_line {
+            height: 40px;
+            .title_cell {
+                .title {
+                    font-size: 0.9em;
+                    color: @light_text_color;
+                }
+            }
+            
+            .money {
+                font-size: 1.0em;
+                .money_down, .money_up {
+                    color: @light_text_color;
                 }
             }
         }

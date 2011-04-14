@@ -11,13 +11,6 @@
  */
 package com.bloatit.web.linkable.bugs;
 
-import java.util.Locale;
-
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.FileConstraintChecker;
-import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -27,11 +20,9 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
-import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.usercontent.CreateUserContentAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
@@ -40,56 +31,29 @@ import com.bloatit.web.url.ReportBugPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/bug/doreport")
-public final class ReportBugAction extends LoggedAction {
-
-    public static final String BUG_TITLE = "bug_title";
-    public static final String BUG_DESCRIPTION = "bug_description";
-    public static final String BUG_LEVEL = "bug_level";
-    public static final String BUG_BATCH = "bug_milestone";
-    public static final String LANGUAGE_CODE = "bug_description_language";
-    public static final String ATTACHEMENT_CODE = "attachement";
-    public static final String ATTACHEMENT_NAME_CODE = "attachement/filename";
-    public static final String ATTACHEMENT_CONTENT_TYPE_CODE = "attachement/contenttype";
-    public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
-
-    @RequestParam(name = BUG_TITLE, role = Role.POST)
-    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
-    private final String title;
-
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"), min = "10", minErrorMsg = @tr("The description must have at least 10 chars."))
-    @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
-    private final String description;
-
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a description language"))
-    @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
-    private final String lang;
-    private final ReportBugActionUrl url;
-
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
-    @RequestParam(name = BUG_LEVEL, suggestedValue = "MINOR", role = Role.POST)
-    private final BindedLevel level;
+public final class ReportBugAction extends CreateUserContentAction {
 
     @ParamConstraint(optionalErrorMsg = @tr("A new bug must be linked to a milestone"))
-    @RequestParam(name = BUG_BATCH, role = Role.GET)
+    @RequestParam(role = Role.GET)
     private final Milestone milestone;
 
-    @Optional
-    @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
-    private final String attachement;
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(max = "120",
+                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
+                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
+                     optionalErrorMsg = @tr("You forgot to write a short description"))
+    private final String title;
 
-    @Optional
-    @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
-    private final String attachementFileName;
+    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"), min = "10",
+                     minErrorMsg = @tr("The description must have at least 10 chars."))
+    @RequestParam(role = Role.POST)
+    private final String description;
 
-    @Optional
-    @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
-    private final String attachementDescription;
+    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
+    @RequestParam(suggestedValue = "MINOR", role = Role.POST)
+    private final BindedLevel level;
 
-    @SuppressWarnings("unused")
-    @Optional
-    @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
-    private final String attachementContentType;
+    private final ReportBugActionUrl url;
 
     public ReportBugAction(final ReportBugActionUrl url) {
         super(url);
@@ -97,48 +61,23 @@ public final class ReportBugAction extends LoggedAction {
 
         this.title = url.getTitle();
         this.description = url.getDescription();
-        this.lang = url.getLang();
         this.level = url.getLevel();
         this.milestone = url.getMilestone();
-        this.attachement = url.getAttachement();
-        this.attachementFileName = url.getAttachementFileName();
-        this.attachementContentType = url.getAttachementContentType();
-        this.attachementDescription = url.getAttachementDescription();
-
     }
 
     @Override
-    public Url doProcessRestricted(final Member authenticatedMember) {
-        final Locale langLocale = new Locale(lang);
-        final Bug bug = milestone.addBug(authenticatedMember, title, description, langLocale, level.getLevel());
-        if (attachement != null) {
-            final FileConstraintChecker fcc = new FileConstraintChecker(attachement);
-            if (!fcc.exists() || !fcc.isFileSmaller(3, SizeUnit.MBYTE)) {
-                for (final String message : fcc.isImageAvatar()) {
-                    session.notifyBad(message);
-                }
-                return Context.getSession().pickPreferredPage();
-            }
-            final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(authenticatedMember,
-                                                                                                attachement,
-                                                                                                attachementFileName,
-                                                                                                attachementDescription);
-
-            try {
-                bug.addFile(attachementFileMedatata);
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("Fail to add the attachement to the bug report."));
-                throw new ShallNotPassException("Fail to add an attachement to the new bug report.", e);
-            }
-        }
+    public Url doDoProcessRestricted(final Member authenticatedMember) {
+        final Bug bug = milestone.addBug(authenticatedMember, title, description, getLocale(), level.getLevel());
+        propagateAsTeamIfPossible(bug);
+        propagateAttachedFileIfPossible(bug);
         return new BugPageUrl(bug);
     }
 
     @Override
     protected Url doCheckRightsAndEverything(final Member authenticatedMember) {
-        if (attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
-            session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
-            return doProcessErrors();
+        if (getLocale() == null) {
+            session.notifyBad(Context.tr("You have to specify the description language."));
+            return new ReportBugPageUrl(milestone.getOffer());
         }
         return NO_ERROR;
     }
@@ -157,13 +96,18 @@ public final class ReportBugAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         session.addParameter(url.getTitleParameter());
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getMilestoneParameter());
         session.addParameter(url.getLevelParameter());
-        session.addParameter(url.getLangParameter());
-        session.addParameter(url.getAttachementDescriptionParameter());
+        session.addParameter(url.getAttachmentDescriptionParameter());
+    }
+
+    @Override
+    protected boolean verifyFile(final String filename) {
+        // TODO verify the file
+        return true;
     }
 
 }

@@ -29,6 +29,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -55,10 +56,11 @@ import com.bloatit.web.linkable.money.Quotation.QuotationPercentEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationTotalEntry;
 import com.bloatit.web.linkable.money.QuotationEntry;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.DefineParagraph;
+import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -68,7 +70,7 @@ import com.bloatit.web.url.PaylineProcessUrl;
  * A page that hosts the form used to check the contribution on a Feature
  */
 @ParamContainer("contribute/check")
-public final class CheckContributionPage extends LoggedPage {
+public final class CheckContributionPage extends CreateUserContentPage {
 
     @RequestParam
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -85,7 +87,7 @@ public final class CheckContributionPage extends LoggedPage {
     private final BigDecimal preload;
 
     public CheckContributionPage(final CheckContributionPageUrl url) {
-        super(url);
+        super(url, new CheckContributionActionUrl(url.getProcess()));
         this.url = url;
         process = url.getProcess();
         showFeesDetails = url.getShowFeesDetails();
@@ -99,17 +101,13 @@ public final class CheckContributionPage extends LoggedPage {
             session.notifyList(url.getMessages());
             throw new RedirectException(Context.getSession().pickPreferredPage());
         }
-
     }
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
-
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-
         layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
-
         return layout;
     }
 
@@ -154,7 +152,7 @@ public final class CheckContributionPage extends LoggedPage {
                                                                                                               .subtract(process.getAmount())));
                         changeLine.add(MembersTools.getMemberAvatar(member));
                         authorContributionSummary.add(changeLine);
-                        authorContributionSummary.add(new DefineParagraph(tr("Author: "), member.getDisplayName()));
+                        authorContributionSummary.add(new HtmlDefineParagraph(tr("Author: "), member.getDisplayName()));
                     }
                 } catch (final UnauthorizedOperationException e) {
                     session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
@@ -162,9 +160,9 @@ public final class CheckContributionPage extends LoggedPage {
                 }
 
                 if (process.getComment() != null) {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), process.getComment()));
+                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Comment: "), process.getComment()));
                 } else {
-                    authorContributionSummary.add(new DefineParagraph(tr("Comment: "), tr("No comment")));
+                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Comment: "), tr("No comment")));
                 }
 
             }
@@ -181,6 +179,14 @@ public final class CheckContributionPage extends LoggedPage {
                                                                                                  .getCurrency(process.getAmount())
                                                                                                  .getDefaultString()));
             confirmContributionLink.setCssClass("button");
+
+            if (process.getTeam() != null) {
+                try {
+                    buttonDiv.add(new HtmlParagraph(Context.tr("Using the '") + process.getTeam().getLogin() + Context.tr("' account")));
+                } catch (final UnauthorizedOperationException e) {
+                    throw new ShallNotPassException(e);
+                }
+            }
 
             buttonDiv.add(confirmContributionLink);
 
@@ -344,6 +350,15 @@ public final class CheckContributionPage extends LoggedPage {
                                                                                          .getCurrency(quotation.totalTTC.getValue())
                                                                                          .getDecimalDefaultString()));
             payContributionLink.setCssClass("button");
+
+            if (process.getTeam() != null) {
+                try {
+                    payBlock.add(new HtmlParagraph(Context.tr("Using the '") + process.getTeam().getLogin() + Context.tr("' account")));
+                } catch (final UnauthorizedOperationException e) {
+                    throw new ShallNotPassException(e);
+                }
+            }
+
             payBlock.add(payContributionLink);
 
         }
@@ -467,7 +482,7 @@ public final class CheckContributionPage extends LoggedPage {
                     changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
                 }
                 featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new DefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
+                featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                 throw new ShallNotPassException("User cannot access user information", e);

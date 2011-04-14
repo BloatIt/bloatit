@@ -62,14 +62,14 @@ public final class ReleasePage extends MasterPage {
         final HtmlDiv fileBloc = new HtmlDiv();
         layout.addLeft(fileBloc);
         for (final FileMetadata files : release.getFiles()) {
-            final HtmlParagraph attachementPara = new HtmlParagraph();
-            attachementPara.add(new FileResourceUrl(files).getHtmlLink(files.getFileName()));
-            attachementPara.addText(tr(": ") + files.getShortDescription());
-            fileBloc.add(attachementPara);
+            final HtmlParagraph attachmentPara = new HtmlParagraph();
+            attachmentPara.add(new FileResourceUrl(files).getHtmlLink(files.getFileName()));
+            attachmentPara.addText(tr(": ") + files.getShortDescription());
+            fileBloc.add(attachmentPara);
         }
 
         if (release.canAddFile()) {
-            fileBloc.add(new AddAttachementPageUrl(release).getHtmlLink(tr("Add an attachement")));
+            fileBloc.add(new AddAttachementPageUrl(release).getHtmlLink(tr("Add an attachment")));
         }
         return layout;
     }

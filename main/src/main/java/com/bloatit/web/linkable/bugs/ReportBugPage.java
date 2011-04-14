@@ -15,6 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.EnumSet;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -23,22 +24,20 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlFormBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -48,20 +47,22 @@ import com.bloatit.web.url.ReportBugPageUrl;
  * Page that hosts the form to create a new feature
  */
 @ParamContainer("feature/bug/report")
-public final class ReportBugPage extends LoggedPage {
+public final class ReportBugPage extends CreateUserContentPage {
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    public static final String BUG_BATCH = "bug_offer";
-
-    @RequestParam(name = BUG_BATCH, role = Role.GET)
+    @SuppressWarnings("unused")
+    @RequestParam(role = Role.GET)
     private final Offer offer;
+
+    private final Milestone milestone;
 
     private final ReportBugPageUrl url;
 
     public ReportBugPage(final ReportBugPageUrl url) {
-        super(url);
+        super(url, new ReportBugActionUrl(url.getOffer().getCurrentMilestone()));
         this.url = url;
+        milestone = url.getOffer().getCurrentMilestone();
         offer = url.getOffer();
     }
 
@@ -85,28 +86,26 @@ public final class ReportBugPage extends LoggedPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         if (FeatureManager.canCreate(session.getAuthToken())) {
-            layout.addLeft(generateReportBugForm());
+            layout.addLeft(generateReportBugForm(loggedUser));
         } else {
             layout.addLeft(generateBadRightError());
         }
 
-        layout.addRight(new SideBarFeatureBlock(offer.getFeature()));
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
     }
 
-    private HtmlElement generateReportBugForm() {
+    private HtmlElement generateReportBugForm(final Member loggedUser) {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Report a bug"), 1);
-        final ReportBugActionUrl doReportUrl = new ReportBugActionUrl(offer.getCurrentMilestone());
+        final ReportBugActionUrl doReportUrl = new ReportBugActionUrl(milestone);
 
         // Create the form stub
         final HtmlForm reportBugForm = new HtmlForm(doReportUrl.urlString());
-        reportBugForm.enableFileUpload();
-
         formTitle.add(reportBugForm);
 
-        // Create the field for the title of the bug
+        // title of the bug
         final FieldData bugTitleFieldData = doReportUrl.getTitleParameter().pickFieldData();
         final HtmlTextField bugTitleInput = new HtmlTextField(bugTitleFieldData.getName(), Context.tr("Bug title"));
         bugTitleInput.setDefaultValue(bugTitleFieldData.getSuggestedValue());
@@ -114,8 +113,14 @@ public final class ReportBugPage extends LoggedPage {
         bugTitleInput.addErrorMessages(bugTitleFieldData.getErrorMessages());
         reportBugForm.add(bugTitleInput);
 
-        // Create the fields that will describe the descriptions of the bug
+        // As team
+        addAsTeamField(reportBugForm,
+                      loggedUser,
+                      UserTeamRight.TALK,
+                      Context.tr("In the name of "),
+                      Context.tr("Write this bug report in the name of this group."));
 
+        // descriptions of the bug
         final FieldData descriptionFieldData = doReportUrl.getDescriptionParameter().pickFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFieldData.getName(),
                                                                Context.tr("Describe the bug"),
@@ -127,13 +132,7 @@ public final class ReportBugPage extends LoggedPage {
         reportBugForm.add(descriptionInput);
 
         // Language
-        final FieldData languageFieldData = doReportUrl.getLangParameter().pickFieldData();
-        final LanguageSelector languageInput = new LanguageSelector(languageFieldData.getName(), Context.tr("Language"));
-        languageInput.setDefaultValue(languageFieldData.getSuggestedValue());
-        languageInput.addErrorMessages(languageFieldData.getErrorMessages());
-        languageInput.setComment(Context.tr("Language of the description."));
-        languageInput.setDefaultValue(languageFieldData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        reportBugForm.add(languageInput);
+        addLanguageField(reportBugForm, Context.tr("Language"), Context.tr("Language of the description."));
 
         // Level
         final FieldData levelFieldData = doReportUrl.getLevelParameter().pickFieldData();
@@ -145,20 +144,11 @@ public final class ReportBugPage extends LoggedPage {
         reportBugForm.add(levelInput);
 
         // File
-        final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
-        reportBugForm.add(attachementBlock);
-
-        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
-        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 3MB.");
-        attachementBlock.add(attachementInput);
-
-        final FieldData attachementDescriptionFieldData = doReportUrl.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFieldData.getName(),
-                                                                            Context.tr("Attachment description"));
-        attachementDescriptionInput.setDefaultValue(attachementDescriptionFieldData.getSuggestedValue());
-        attachementDescriptionInput.addErrorMessages(attachementDescriptionFieldData.getErrorMessages());
-        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
-        attachementBlock.add(attachementDescriptionInput);
+        addAddAttachmentField(reportBugForm,
+                             Context.tr("Join a file"),
+                             Context.tr("Optional. If attach a file, you must add an attachment description. Max 3MB."),
+                             Context.tr("File description"),
+                             Context.tr("You need to add a file description only if you add an attachment."));
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
@@ -180,7 +170,7 @@ public final class ReportBugPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return ReportBugPage.generateBreadcrumb(offer);
+        return ReportBugPage.generateBreadcrumb(milestone.getOffer());
     }
 
     public static Breadcrumb generateBreadcrumb(final Offer offer) {

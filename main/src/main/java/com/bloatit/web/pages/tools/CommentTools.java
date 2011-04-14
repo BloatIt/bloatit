@@ -10,26 +10,15 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlFormBlock;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
-import com.bloatit.model.Commentable;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.CommentReplyPageUrl;
-import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -58,11 +47,11 @@ public class CommentTools {
             commentBlock.add(commentText);
 
             // Attachements
-            for (final FileMetadata attachement : comment.getFiles()) {
-                final HtmlParagraph attachementPara = new HtmlParagraph();
-                attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
-                attachementPara.addText(tr(": ") + attachement.getShortDescription());
-                commentBlock.add(attachementPara);
+            for (final FileMetadata attachment : comment.getFiles()) {
+                final HtmlParagraph attachmentPara = new HtmlParagraph();
+                attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
+                attachmentPara.addText(tr(": ") + attachment.getShortDescription());
+                commentBlock.add(attachmentPara);
             }
 
             final HtmlDiv commentInfo = new HtmlDiv("comment_info");
@@ -147,47 +136,4 @@ public class CommentTools {
 
         return commentBlock;
     }
-
-    public static <T extends UserContentInterface<?> & Commentable> HtmlElement generateNewCommentComponent(final T commentable) {
-        final CreateCommentActionUrl targetUrl = new CreateCommentActionUrl(commentable);
-        final HtmlDiv commentBlock = new HtmlDiv("new_comment_block");
-
-        final HtmlForm form = new HtmlForm(targetUrl.urlString());
-        form.enableFileUpload();
-        commentBlock.add(form);
-
-        final HtmlTextArea commentInput = new HtmlTextArea(targetUrl.getCommentParameter().getName(),
-                                                           Context.tr("New comment : "),
-                                                           NB_ROWS,
-                                                           NB_COLUMNS);
-        form.add(commentInput);
-        commentInput.setComment(Context.tr("Use this field to comment the feature. If you want to reply to a previous comment, use the reply link."));
-
-        // Attachement
-        form.add(generateAttachementBlock(targetUrl));
-
-        form.add(new HtmlSubmit(Context.tr("Submit comment")));
-
-        return commentBlock;
-    }
-
-    private static XmlNode generateAttachementBlock(final CreateCommentActionUrl url) {
-
-        final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
-
-        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
-        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
-        attachementBlock.add(attachementInput);
-
-        final FieldData attachementDescriptiondData = url.getAttachementDescriptionParameter().pickFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptiondData.getName(),
-                                                                            Context.tr("Attachment description"));
-        attachementDescriptionInput.setDefaultValue(attachementDescriptiondData.getSuggestedValue());
-        attachementDescriptionInput.addErrorMessages(attachementDescriptiondData.getErrorMessages());
-        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
-        attachementBlock.add(attachementDescriptionInput);
-
-        return attachementBlock;
-    }
-
 }

@@ -136,6 +136,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         return EnumSet.noneOf(UserTeamRight.class);
     }
 
+    @Override
     public final boolean canAddFile() {
         return canAccess(new UserContentRight.File(), Action.WRITE);
     }
