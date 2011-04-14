@@ -2,6 +2,7 @@ package com.bloatit.framework;
 
 import java.net.BindException;
 
+import com.bloatit.common.CommonConfiguration;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
@@ -32,6 +33,7 @@ public class Framework {
 
     public boolean initialize() {
         try {
+            CommonConfiguration.load();
             FrameworkConfiguration.load();
             LocalesConfiguration.load();
             mailServer.initialize();
