@@ -21,6 +21,9 @@ public class Footer extends HtmlDiv {
         super();
         setId("footer");
 
+        final HtmlDiv footerBlock = new HtmlDiv("footer_block", "footer_block");
+
+
         final HtmlDiv linkBlock = new HtmlDiv("link_block", "link_block");
         {
             linkBlock.add(new HtmlDiv("footer_link").add(new IndexPageUrl().getHtmlLink(Context.tr("Home page"))));
@@ -35,7 +38,7 @@ public class Footer extends HtmlDiv {
             linkBlock.add(new HtmlDiv("footer_link").add(new MetaBugsListPageUrl().getHtmlLink(Context.tr("Signal a bug"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Contacts"))));
         }
-        add(linkBlock);
+        footerBlock.add(linkBlock);
 
         final HtmlDiv licenceBlock = new HtmlDiv("licence_block", "licence_block");
         {
@@ -52,7 +55,9 @@ public class Footer extends HtmlDiv {
             licenceBlock.add(new HtmlDiv("linkeos_block").add(new HtmlMixedText(Context.tr("Elveos, elveos.org and the elveos logo are registered trademark of the <0::Linkeos> SAS."),
                                                                                 new UrlString("http://linkeos.com").getHtmlLink())));
         }
-        add(licenceBlock);
+        footerBlock.add(licenceBlock);
+
+        add(footerBlock);
     }
 
 }
