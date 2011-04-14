@@ -147,7 +147,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
-        return getMilestone().getOffer().getAuthor();
+        return getMilestone().getOffer().getMember();
     }
 
     /**

@@ -135,7 +135,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         }
 
         try {
-            breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to {0}''s comment", comment.getAuthor().getDisplayName())));
+            breadcrumb.pushLink(new CommentReplyPageUrl(comment).getHtmlLink(tr("Reply to {0}''s comment", comment.getMember().getDisplayName())));
         } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyBad("For an obscure reason you cannot see a user name, please warn us of the bug");
             throw new ShallNotPassException("Error displaying a user name", e);

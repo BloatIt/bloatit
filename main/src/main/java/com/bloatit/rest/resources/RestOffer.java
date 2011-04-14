@@ -224,12 +224,12 @@ public class RestOffer extends RestElement<Offer> {
     }
 
     /**
-     * @see com.bloatit.model.UserContent#getAuthor()
+     * @see com.bloatit.model.UserContent#getMember()
      */
     @XmlElement
     @XmlIDREF
     public RestMember getAuthor() {
-        return new RestMember(model.getAuthor());
+        return new RestMember(model.getMember());
     }
 
     /**

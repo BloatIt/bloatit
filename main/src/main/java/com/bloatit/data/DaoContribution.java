@@ -145,9 +145,11 @@ public class DaoContribution extends DaoUserContent {
             throw new BadProgrammerException("Percent must be > 0 and <= 100.");
         }
         final BigDecimal moneyToGive = calculateHowMuchToTransfer(percent);
+        final DaoInternalAccount fromAccount = getAuthor().getInternalAccount();
+        final DaoInternalAccount toAccount = offer.getAuthor().getInternalAccount();
         try {
             // First we try to unblock. It can throw a notEnouthMoneyException.
-            getAuthor().getInternalAccount().unBlock(moneyToGive);
+            fromAccount.unBlock(moneyToGive);
         } catch (final NotEnoughMoneyException e) {
             // If it fails then there is a bug in our code. Set the state to
             // canceled and throw a fatalError.
@@ -156,10 +158,8 @@ public class DaoContribution extends DaoUserContent {
         }
         try {
             // If we succeeded the unblock then we create a transaction.
-            if (getAuthor() != offer.getAuthor()) {
-                this.transaction.add(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(),
-                                                                     offer.getAuthor().getInternalAccount(),
-                                                                     moneyToGive));
+            if (!fromAccount.equals(toAccount)) {
+                this.transaction.add(DaoTransaction.createAndPersist(fromAccount, toAccount, moneyToGive));
             }
             // if the transaction is ok then we set the state to VALIDATED.
             this.percentDone += percent;

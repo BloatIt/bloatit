@@ -9,7 +9,7 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 public class DaoUserContentTest extends TestCase {
 
     public void testGetAuthor() {
-        assertEquals(yo, feature.getAuthor());
+        assertEquals(yo, feature.getMember());
     }
 
     public void testSetAsGroup() {

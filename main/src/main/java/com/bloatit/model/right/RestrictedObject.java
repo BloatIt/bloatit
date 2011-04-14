@@ -27,6 +27,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.Member;
+import com.bloatit.model.UserContent;
 
 /**
  * A restricted object is an object that contains some properties which accesses
@@ -123,6 +124,18 @@ public abstract class RestrictedObject implements RestrictedInterface {
         return teamRights.contains(right);
     }
 
+    /**
+     * Check if an authenticated user can talk as the creator of this content.
+     * 
+     * @return true if the authenticate user is the owner (and no group has
+     *         created this content) or if he has the right to TALK. False
+     *         otherwise.
+     */
+    @Override
+    public final boolean canTalkAs() {
+        return (isOwner() && teamRights.isEmpty()) || hasTeamPrivilege(UserTeamRight.TALK);
+    }
+
     /*
      * (non-Javadoc)
      * @see
@@ -177,7 +190,8 @@ public abstract class RestrictedObject implements RestrictedInterface {
     protected abstract boolean isMine(Member member);
 
     /**
-     * Calculate my team rights.
+     * Calculate my team rights. This method is redefined in
+     * {@link UserContent#calculateMyTeamRights(Member)}.
      * 
      * @param member the member
      * @return the enum set

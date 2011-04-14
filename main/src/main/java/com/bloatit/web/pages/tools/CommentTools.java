@@ -40,7 +40,7 @@ public class CommentTools {
         final HtmlDiv commentBlock = (child) ? new HtmlDiv("child_comment_block") : new HtmlDiv("main_comment_block");
         {
 
-            commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getAuthor())));
+            commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getMember())));
 
             final HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(comment.getText()));
@@ -61,8 +61,8 @@ public class CommentTools {
             commentInfo.addText(Context.tr("Created by "));
 
             try {
-                final MemberPageUrl memberUrl = new MemberPageUrl(comment.getAuthor());
-                commentInfo.add(memberUrl.getHtmlLink(comment.getAuthor().getDisplayName()));
+                final MemberPageUrl memberUrl = new MemberPageUrl(comment.getMember());
+                commentInfo.add(memberUrl.getHtmlLink(comment.getMember().getDisplayName()));
             } catch (final UnauthorizedOperationException e1) {
                 // Nothing.
             }

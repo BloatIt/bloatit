@@ -80,7 +80,7 @@ public final class Offer extends Kudosable<DaoOffer> {
                                   final int secondBeforeValidation) {
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                                            amount,
-                                                           DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
+                                                           DaoDescription.createAndPersist(getDao().getMember(), local, "RFU", description),
                                                            getDao(),
                                                            secondBeforeValidation);
         getDao().addMilestone(daoMilestone);

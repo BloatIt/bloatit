@@ -32,7 +32,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.webprocessor.context.User;
+import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
@@ -157,7 +157,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public boolean canAccessDescription() {
-        return canAccess(new FeatureRight.Specification(), Action.READ);
+        return canAccess(new FeatureRight.Description(), Action.READ);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         }
         tryAccess(new FeatureRight.Offer(), Action.WRITE);
 
-        if (!offer.getAuthor().equals(getAuthToken().getMember())) {
+        if (!offer.getMember().equals(getAuthToken().getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
         getDao().addOffer(offer.getDao());
@@ -255,7 +255,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public void cancelDevelopment() throws UnauthorizedOperationException {
-        if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
+        // TODO Verify the rights.
+        if (!getSelectedOffer().canTalkAs()) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_FEATURE);
         }
         setStateObject(getStateObject().eventDeveloperCanceled());
@@ -596,7 +597,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @see com.bloatit.model.Feature#getMemberProgression()
      */
     @Override
-    public float getMemberProgression(final User member) throws UnauthorizedOperationException {
+    public float getMemberProgression(final Actor author) throws UnauthorizedOperationException {
         tryAccess(new FeatureRight.Contribute(), Action.READ);
 
         final PageIterable<Contribution> contributions = getContributions();
@@ -604,7 +605,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         BigDecimal memberAmount = BigDecimal.ZERO;
         // TODO: optimize to avoid to kill the server
         for (final Contribution contribution : contributions) {
-            if (contribution.getAuthor().equals(member)) {
+            if (contribution.getAuthor().equals(author)) {
                 memberAmount = memberAmount.add(contribution.getAmount());
             }
         }

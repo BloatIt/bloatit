@@ -33,11 +33,19 @@ import com.bloatit.model.right.RestrictedInterface;
 public interface UserContentInterface<T extends DaoUserContent> extends IdentifiableInterface, RestrictedInterface, Attachmentable {
 
     /**
-     * Gets the author.
+     * Gets the member author.
      * 
      * @return the author
      */
-    Member getAuthor();
+    Member getMember();
+
+    /**
+     * Get the author. It can be the member or the team if this
+     * {@link UserContent} has been created as a team.
+     * 
+     * @return the author (member or team).
+     */
+    Actor<?> getAuthor();
 
     /**
      * Gets the creation date.

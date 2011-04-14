@@ -36,7 +36,7 @@ public class FeatureRight extends RightManager {
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
-            return canRead(action) || authentifiedCanWrite(role, action);
+            return canRead(action) || ownerCanWrite(role, action);
         }
     }
 
@@ -44,22 +44,6 @@ public class FeatureRight extends RightManager {
      * The Class Offer is an accessor for the Offer property.
      */
     public static class Offer extends Accessor {
-
-        /*
-         * (non-Javadoc)
-         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
-         * RestrictedInterface , com.bloatit.model.right.Action)
-         */
-        @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            return canRead(action) || authentifiedCanWrite(role, action);
-        }
-    }
-
-    /**
-     * The Class Specification is an accessor for the Specification property.
-     */
-    public static class Specification extends Accessor {
 
         /*
          * (non-Javadoc)
@@ -86,13 +70,6 @@ public class FeatureRight extends RightManager {
         protected final boolean can(final RestrictedInterface role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
-    }
-
-    /**
-     * The Class FeatureContent is an accessor for the FeatureContent property.
-     */
-    public static class FeatureContent extends Public {
-        // nothing this is just a rename.
     }
 
     /**

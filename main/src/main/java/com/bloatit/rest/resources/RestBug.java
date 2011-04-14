@@ -238,12 +238,12 @@ public class RestBug extends RestElement<Bug> {
     }
 
     /**
-     * @see com.bloatit.model.UserContent#getAuthor()
+     * @see com.bloatit.model.UserContent#getMember()
      */
     @XmlAttribute
     @XmlIDREF
     public RestMember getAuthor() {
-        final RestMember author = new RestMember(model.getAuthor());
+        final RestMember author = new RestMember(model.getMember());
         if (author.isNull()) {
             return null;
         }

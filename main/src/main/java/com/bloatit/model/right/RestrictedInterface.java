@@ -71,4 +71,13 @@ public interface RestrictedInterface {
      */
     public abstract boolean isNobody();
 
+    /**
+     * Check if an authenticated user can talk as the creator of this content.
+     * 
+     * @return true if the authenticate user is the owner (and no group has
+     *         created this content) or if he has the right to TALK. False
+     *         otherwise.
+     */
+    boolean canTalkAs();
+
 }

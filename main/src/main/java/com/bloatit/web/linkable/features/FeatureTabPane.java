@@ -150,8 +150,8 @@ public final class FeatureTabPane extends HtmlPageComponent {
                     descriptionDetails.addText(Context.tr("Created by "));
 
                     try {
-                        final MemberPageUrl memberUrl = new MemberPageUrl(feature.getAuthor());
-                        descriptionDetails.add(memberUrl.getHtmlLink(feature.getAuthor().getDisplayName()));
+                        final MemberPageUrl memberUrl = new MemberPageUrl(feature.getMember());
+                        descriptionDetails.add(memberUrl.getHtmlLink(feature.getMember().getDisplayName()));
                     } catch (final UnauthorizedOperationException e1) {
                         // Nothing.
                     }

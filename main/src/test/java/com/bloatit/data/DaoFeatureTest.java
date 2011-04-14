@@ -33,7 +33,7 @@ public class DaoFeatureTest extends DataTestUnit {
 
         assertEquals(feature, DBRequests.getAll(DaoFeature.class).iterator().next());
 
-        assertEquals(yo, feature.getAuthor());
+        assertEquals(yo, feature.getMember());
     }
 
     public void testDeleteFeature() {

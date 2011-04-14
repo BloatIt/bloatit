@@ -148,7 +148,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         final int influence = member.calculateInfluence();
 
         if (influence > 0) {
-            getAuthor().addToKarma(influence);
+            getMember().addToKarma(influence);
             calculateNewState(getDao().addKudos(member.getDao(), sign * influence));
         }
 

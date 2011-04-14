@@ -57,7 +57,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                           "title",
                                                           "Description",
                                                           Software.create(DaoSoftware.getByName("VLC")));
-        assertEquals(feature.getAuthor(), tomAuthToken.getMember());
+        assertEquals(feature.getMember(), tomAuthToken.getMember());
         try {
             assertEquals(feature.getDescription().getDefaultLocale(), Locale.FRANCE);
             assertEquals(feature.getDescription().getDefaultTranslation().getTitle(), "title");

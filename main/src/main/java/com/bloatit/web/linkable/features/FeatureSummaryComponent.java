@@ -319,7 +319,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
-        final Member author = feature.getSelectedOffer().getAuthor();
+        final Member author = feature.getSelectedOffer().getMember();
         final HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 
@@ -335,7 +335,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
-        final Member author = feature.getSelectedOffer().getAuthor();
+        final Member author = feature.getSelectedOffer().getMember();
         final HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 

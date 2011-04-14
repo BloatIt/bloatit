@@ -155,12 +155,12 @@ public class RestKudos extends RestElement<Kudos> {
     }
 
     /**
-     * @see com.bloatit.model.UserContent#getAuthor()
+     * @see com.bloatit.model.UserContent#getMember()
      */
     @XmlAttribute
     @XmlIDREF
     public RestMember getAuthor() {
-        return new RestMember(model.getAuthor());
+        return new RestMember(model.getMember());
     }
 
     // ---------------------------------------------------------------------------------------

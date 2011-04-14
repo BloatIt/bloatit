@@ -37,7 +37,7 @@ public abstract class RightManager {
      * {@link Accessor#can(EnumSet, Action)} method
      */
     protected static boolean ownerCanRead(final RestrictedInterface role, final Action action) {
-        return role.isOwner() && Action.READ == action;
+        return role.canTalkAs() && Action.READ == action;
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class RightManager {
      * {@link Accessor#can(EnumSet, Action)} method
      */
     protected static boolean ownerCanWrite(final RestrictedInterface role, final Action action) {
-        return role.isOwner() && Action.WRITE == action;
+        return role.canTalkAs() && Action.WRITE == action;
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class RightManager {
      * {@link Accessor#can(EnumSet, Action)} method
      */
     protected static boolean ownerCanDelete(final RestrictedInterface role, final Action action) {
-        return role.isOwner() && Action.DELETE == action;
+        return role.canTalkAs() && Action.DELETE == action;
     }
 
     /**

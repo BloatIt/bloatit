@@ -183,12 +183,12 @@ public class RestComment extends RestElement<Comment> {
     }
 
     /**
-     * @see com.bloatit.model.UserContent#getAuthor()
+     * @see com.bloatit.model.UserContent#getMember()
      */
     @XmlAttribute
     @XmlIDREF
     public RestMember getAuthor() {
-        return new RestMember(model.getAuthor());
+        return new RestMember(model.getMember());
     }
 
     /**

@@ -51,8 +51,13 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
      * @see com.bloatit.model.UserContentInterface#getAuthor()
      */
     @Override
-    public final Member getAuthor() {
-        return Member.create(getDao().getAuthor());
+    public final Member getMember() {
+        return Member.create(getDao().getMember());
+    }
+
+    @Override
+    public final Actor<?> getAuthor() {
+        return getAsTeam() == null ? getMember() : getAsTeam();
     }
 
     /*
@@ -125,7 +130,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     @Override
     protected boolean isMine(final Member member) {
-        return getAuthor().isMine(member);
+        return getMember().isMine(member);
     }
 
     @Override

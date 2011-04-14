@@ -150,7 +150,7 @@ public class RestFeature extends RestElement<Feature> {
     @XmlAttribute
     @XmlIDREF
     public RestMember getAuthor() {
-        return new RestMember(model.getAuthor());
+        return new RestMember(model.getMember());
     }
 
     @XmlAttribute

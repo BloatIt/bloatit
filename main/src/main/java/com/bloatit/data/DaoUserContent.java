@@ -38,6 +38,7 @@ import org.hibernate.search.annotations.Store;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.UserContent;
 
 /**
  * A user content is a content created by a user. A user content as an Author,
@@ -92,8 +93,23 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         setIsDeleted(false);
     }
 
-    public DaoMember getAuthor() {
+    /**
+     * Gets the member that created this {@link UserContent}.
+     * 
+     * @return the member that created this {@link UserContent}.
+     */
+    public DaoMember getMember() {
         return this.member;
+    }
+
+    /**
+     * Get the author. It can be the member or the team if this
+     * {@link UserContent} has been created as a team.
+     * 
+     * @return the author (member or team).
+     */
+    public DaoActor getAuthor() {
+        return asTeam == null ? member : asTeam;
     }
 
     public Date getCreationDate() {

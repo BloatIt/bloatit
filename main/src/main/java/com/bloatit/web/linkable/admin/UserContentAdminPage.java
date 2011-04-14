@@ -194,7 +194,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
             @Override
             public String getStringBody(final V element) {
                 try {
-                    return element.getAuthor().getLogin();
+                    return element.getMember().getLogin();
                 } catch (final UnauthorizedOperationException e) {
                     throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }

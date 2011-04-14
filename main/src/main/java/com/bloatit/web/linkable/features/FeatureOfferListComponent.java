@@ -225,7 +225,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
             {
                 final HtmlDiv offerLeftTopColumn = new HtmlDiv("offer_left_top_column");
                 {
-                    offerLeftTopColumn.add(MembersTools.getMemberAvatar(offer.getAuthor()));
+                    offerLeftTopColumn.add(MembersTools.getMemberAvatar(offer.getMember()));
                 }
                 offerTopBlock.add(offerLeftTopColumn);
 
@@ -250,7 +250,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         authorLabel.addText(Context.tr("Author: "));
                         authorPara.add(authorLabel);
 
-                        final HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
+                        final HtmlLink author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
                         if (offer.getAsTeam() != null) {
@@ -406,7 +406,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         private boolean isDeveloper() throws UnauthorizedOperationException {
             return Context.getSession().isLogged() && offer.getFeature().getSelectedOffer() != null
-                    && Context.getSession().getAuthToken().getMember().equals(offer.getFeature().getSelectedOffer().getAuthor());
+                    && Context.getSession().getAuthToken().getMember().equals(offer.getFeature().getSelectedOffer().getMember());
         }
 
         private String getLotState(final Milestone lot) {

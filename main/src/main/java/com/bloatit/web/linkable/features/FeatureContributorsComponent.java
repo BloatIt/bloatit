@@ -180,7 +180,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             try {
                 switch (column) {
                     case 0:
-                        value = contribution.getAuthor().getDisplayName();
+                        value = contribution.getMember().getDisplayName();
                         break;
                     case 1:
                         // TODO: align money at right in CSS

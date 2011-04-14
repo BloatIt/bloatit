@@ -27,7 +27,6 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 
@@ -189,7 +188,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *             property.
      * @see #authenticate(AuthToken)
      */
-    float getMemberProgression(User member) throws UnauthorizedOperationException;
+    float getMemberProgression(Actor author) throws UnauthorizedOperationException;
 
     /**
      * Return the progression due by the amount in percent. It compare the

@@ -132,7 +132,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
      */
     public void addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
             throws UnauthorizedOperationException {
-        final Release release = new Release(getOffer().getAuthor(), this, description, version, locale);
+        final Release release = new Release(getOffer().getMember(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
         }
