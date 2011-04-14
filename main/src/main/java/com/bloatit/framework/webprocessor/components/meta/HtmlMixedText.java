@@ -18,26 +18,21 @@ package com.bloatit.framework.webprocessor.components.meta;
 public class HtmlMixedText extends HtmlBranch {
 
     public HtmlMixedText(final String content, final HtmlBranch... parameters) {
-
         final String[] split = content.split("<[0-9]+(:[^>]+)*>");
-
         int index = 0;
-
+        
         for (final String string : split) {
             add(new XmlText(string));
             index += string.length();
-
+            
             // If it not the end, replace a tag
             final int startIndex = content.indexOf("<", index);
             if (startIndex != -1) {
                 final int endIndex = content.indexOf(">", index);
-
                 parseTag(content.substring(startIndex + 1, endIndex), parameters);
-
                 index = endIndex + 1;
             }
         }
-
     }
 
     public void parseTag(final String tag, final HtmlBranch parameters[]) {
