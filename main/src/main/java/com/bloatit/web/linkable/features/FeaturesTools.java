@@ -88,13 +88,15 @@ public class FeaturesTools {
             master = new HtmlSpan("feature_complete_title");
         }
         master.setCssClass("feature_title");
-        master.add(SoftwaresTools.getSoftwareLink(feature.getSoftware()));
-        master.addText(" – ");
+
         if (isTitle) {
             master.addText(getTitle(feature));
         } else {
             master.add(new FeaturePageUrl(feature).getHtmlLink(getTitle(feature)));
         }
+        HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(feature.getSoftware());
+        HtmlMixedText mixed = new HtmlMixedText(Context.tr(" (<0:software:>)"), softwareLink);
+        master.add(mixed);
         return master;
     }
 
