@@ -445,16 +445,16 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");
                         {
                             // Useful
-                            final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(offer, true);
-                            final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
-                            usefullLink.setCssClass("usefull");
+                            final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(offer, true);
+                            final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
+                            usefulLink.setCssClass("useful");
 
                             // Useless
                             final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(offer, false);
                             final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
                             uselessLink.setCssClass("useless");
 
-                            offerPopularityJudge.add(usefullLink);
+                            offerPopularityJudge.add(usefulLink);
                             offerPopularityJudge.add(uselessLink);
                         }
                         offerSummaryPopularity.add(offerPopularityJudge);
@@ -463,7 +463,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         final HtmlDiv offerPopularityJudged = new HtmlDiv("offer_popularity_judged");
                         {
                             if (vote > 0) {
-                                offerPopularityJudged.add(new HtmlParagraph("+" + vote, "usefull"));
+                                offerPopularityJudged.add(new HtmlParagraph("+" + vote, "Useful"));
                             } else {
                                 offerPopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
                             }
