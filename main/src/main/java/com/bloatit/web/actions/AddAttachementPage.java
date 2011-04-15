@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.components.SideBarUserContentBlock;
@@ -40,7 +39,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
 
     @SuppressWarnings("rawtypes")
     @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value''."))
-     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
     UserContentInterface userContent;
 
     private final AddAttachementPageUrl url;
@@ -86,11 +85,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
         final HtmlForm form = new HtmlForm(formUrl.urlString());
 
         form.enableFileUpload();
-        addAddAttachmentField(form,
-                              tr("Attached file"),
-                              tr("Mandatory"),
-                              Context.tr("Attachment description"),
-                              tr("You must attach a file. Maximum size is 3MB"));
+        addAddAttachmentField(form, "2 Mio");
         form.add(new HtmlSubmit(tr("Submit")));
 
         group.add(title);

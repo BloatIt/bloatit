@@ -35,11 +35,7 @@ public class CreateCommentForm extends HtmlDiv {
                                  Context.tr("Write this comment in the name of this team.")));
 
         form.enableFileUpload();
-        form.add(new AttachmentField(targetUrl,
-                                     Context.tr("Join a file"),
-                                     Context.tr("You have to add a description if you join a file."),
-                                     Context.tr("Describe the file"),
-                                     Context.tr("If you join a file you have to describe it.")));
+        form.add(new AttachmentField(targetUrl, "2 Mio"));
 
         form.add(new HtmlSubmit(Context.tr("Submit comment")));
     }

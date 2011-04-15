@@ -116,11 +116,7 @@ public final class AddReleasePage extends CreateUserContentPage {
         addLanguageField(form, tr("Language"), tr("Language of the descriptions."));
 
         // attachment
-        addAddAttachmentField(form,
-                              tr("Attached file"),
-                              tr("Add here a file for your release."),
-                              tr("File description"),
-                              tr("Add a little description of the file."));
+        addAddAttachmentField(form, "1 Gio");
 
         form.add(new HtmlSubmit(tr("submit")));
 

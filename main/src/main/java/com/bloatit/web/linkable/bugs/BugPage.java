@@ -113,12 +113,8 @@ public final class BugPage extends MasterPage {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
         addAttachementForm.enableFileUpload();
-        
-        addAttachementForm.add(new AttachmentField(targetUrl,
-                            Context.tr("Join a file"),
-                            Context.tr("Optional. If attach a file, you must add an attachment description. Max 2go."),
-                            Context.tr("Attachment description"),
-                            Context.tr("Need only if you add an attachment.")));
+
+        addAttachementForm.add(new AttachmentField(targetUrl, "2 Gio"));
 
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachment")));
         return addAttachementForm;

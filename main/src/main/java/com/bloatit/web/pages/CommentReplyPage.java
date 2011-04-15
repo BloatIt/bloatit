@@ -90,11 +90,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         form.add(commentInput);
 
         // as team
-        addAddAttachmentField(form,
-                              Context.tr("Join a file"),
-                              Context.tr("Optional. If you join a file you have to add description."),
-                              Context.tr("Describe the file"),
-                              Context.tr("You need to add a short description of the file if you add one."));
+        addAddAttachmentField(form, "2 Mio");
 
         // submit
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));

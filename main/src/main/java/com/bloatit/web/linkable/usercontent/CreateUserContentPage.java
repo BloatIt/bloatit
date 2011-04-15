@@ -5,8 +5,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.model.Member;
 import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.url.UserContentActionUrl;
 import com.bloatit.web.url.CreateUserContentPageUrl;
+import com.bloatit.web.url.UserContentActionUrl;
 
 /**
  * @author thomas
@@ -51,12 +51,8 @@ public abstract class CreateUserContentPage extends LoggedPage {
         form.add(new LanguageField(targetUrl, label, comment));
     }
 
-    protected void addAddAttachmentField(final HtmlForm form,
-                                         final String attachmentLabel,
-                                         final String attachmentComment,
-                                         final String descriptionLabel,
-                                         final String descriptionComment) {
-        form.add(new AttachmentField(targetUrl, attachmentLabel, attachmentComment, descriptionLabel, descriptionComment));
+    protected void addAddAttachmentField(final HtmlForm form, final String size) {
+        form.add(new AttachmentField(targetUrl, size));
         form.enableFileUpload();
     }
 

@@ -118,10 +118,10 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         // As team input
         addAsTeamField(createFeatureForm,
-                      loggedUser,
-                      UserTeamRight.TALK,
-                      tr("In the name of"),
-                      tr("You can create this feature in the name of a team."));
+                       loggedUser,
+                       UserTeamRight.TALK,
+                       tr("In the name of"),
+                       tr("You can create this feature in the name of a team."));
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
@@ -170,11 +170,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         addLanguageField(createFeatureForm, tr("Description language"), tr("The language of the description you just wrote."));
 
         // Attachment
-        addAddAttachmentField(createFeatureForm,
-                             tr("join a file"),
-                             tr("You can join a file on this feature description if you need to."),
-                             tr("file description"),
-                             tr("If you join a file you have to input a short description of this file."));
+        addAddAttachmentField(createFeatureForm, "2 Mio");
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));

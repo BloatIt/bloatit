@@ -146,11 +146,7 @@ public final class ReportBugPage extends CreateUserContentPage {
         reportBugForm.add(levelInput);
 
         // File
-        addAddAttachmentField(reportBugForm,
-                              Context.tr("Join a file"),
-                              Context.tr("Optional. If attach a file, you must add an attachment description. Max 3MB."),
-                              Context.tr("File description"),
-                              Context.tr("You need to add a file description only if you add an attachment."));
+        addAddAttachmentField(reportBugForm,"2 Mio");
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
