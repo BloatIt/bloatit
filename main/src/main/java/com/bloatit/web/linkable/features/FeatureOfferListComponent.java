@@ -252,11 +252,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         authorPara.add(authorLabel);
 
                         HtmlLink author = null;
-                        if (offer.getAsTeam() != null) {
-                            author = new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAuthor().getDisplayName());
-                        } else {
-                            author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getAuthor().getDisplayName());
-                        }
+                        author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
                         if (offer.getAsTeam() != null) {
