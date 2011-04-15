@@ -9,7 +9,6 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
@@ -31,6 +30,7 @@ public final class SiteMapPage extends MasterPage {
 
     public SiteMapPage(final SiteMapPageUrl specialsPageUrl) {
         super(specialsPageUrl);
+
     }
 
     @Override

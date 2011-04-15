@@ -15,8 +15,12 @@ public class HtmlDefineParagraph extends HtmlParagraph {
 
     public HtmlDefineParagraph(final String key, final HtmlElement body) {
         setCssClass("define_p");
+
         add(new HtmlSpan("define_key").addText(key));
         add(body);
+
+
+
     }
 
     public XmlNode addCssClass(final String css) {

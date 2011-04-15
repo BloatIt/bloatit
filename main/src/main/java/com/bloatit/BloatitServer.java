@@ -26,5 +26,4 @@ public class BloatitServer {
             System.exit(0);
         }
     }
-
 }
