@@ -38,6 +38,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Actor;
 import com.bloatit.model.Feature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
@@ -106,24 +107,29 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
         BigDecimal account;
         try {
             account = getAccount(member).getAmount();
+            generateNoMoneyContent(group, getActor(member), account);
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
 
-        generateNoMoneyContent(group, member, account);
+        
 
         return group;
     }
 
     private InternalAccount getAccount(final Member member) throws UnauthorizedOperationException {
-        if (process.getTeam() != null) {
-            return process.getTeam().getInternalAccount();
-        }
-        return member.getInternalAccount();
+        return getActor(member).getInternalAccount();
     }
 
-    private void generateNoMoneyContent(final HtmlTitleBlock group, final Member member, final BigDecimal account) {
+    private Actor<?> getActor(final Member member) throws UnauthorizedOperationException {
+        if (process.getTeam() != null) {
+            return process.getTeam();
+        }
+        return member;
+    }
+
+    private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
         // Total
         final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
@@ -140,10 +146,10 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
         final HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
         try {
             detailsLines.add(new HtmlContributionLine(process));
-            if (getAccount(member).getAmount().compareTo(BigDecimal.ZERO) > 0) {
-                detailsLines.add(new HtmlPrepaidLine(member, getAccount(member)));
+            if (actor.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
+                detailsLines.add(new HtmlPrepaidLine(actor));
             }
-            detailsLines.add(new HtmlChargeAccountLine(member));
+            detailsLines.add(new HtmlChargeAccountLine(actor));
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
@@ -235,7 +241,7 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
 
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
-            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process, process.getTeam() != null ? process.getTeam() : member);
+            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process, actor);
 
             final HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
                                                                                   Context.getLocalizator()
@@ -243,11 +249,11 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
                                                                                          .getDecimalDefaultString()));
             payContributionLink.setCssClass("button");
 
-            payBlock.add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated.")))
-                    .add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123.")));
+            payBlock.add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated."), "debug"))
+                    .add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123."), "debug"));
             if (process.getTeam() != null) {
                 try {
-                    payBlock.add(new HtmlParagraph(Context.tr("Using the ''{0}'' account", process.getTeam().getLogin())));
+                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),"use_account"));
                 } catch (final UnauthorizedOperationException e) {
                     throw new ShallNotPassException(e);
                 }
@@ -290,12 +296,12 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
 
     public static class HtmlPrepaidLine extends HtmlDiv {
 
-        public HtmlPrepaidLine(final Member member, final InternalAccount account) throws UnauthorizedOperationException {
+        public HtmlPrepaidLine(final Actor<?> actor) throws UnauthorizedOperationException {
             super("quotation_detail_line");
 
-            add(MembersTools.getMemberAvatarSmall(member));
+            add(MembersTools.getMemberAvatarSmall(actor));
 
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(account.getAmount()).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(actor.getInternalAccount().getAmount()).getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
                                                                                                  "money up")));
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
@@ -305,7 +311,7 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
             final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                             .getCurrency(account.getAmount().negate())
+                                                                                             .getCurrency(actor.getInternalAccount().getAmount().negate())
                                                                                              .getDecimalDefaultString()));
 
             add(amountBlock);
@@ -315,10 +321,10 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
     public class HtmlChargeAccountLine extends HtmlDiv {
 
         @SuppressWarnings("synthetic-access")
-        public HtmlChargeAccountLine(final Member member) throws UnauthorizedOperationException {
+        public HtmlChargeAccountLine(final Actor<?> actor) throws UnauthorizedOperationException {
             super("quotation_detail_line");
 
-            add(MembersTools.getMemberAvatarSmall(member));
+            add(MembersTools.getMemberAvatarSmall(actor));
 
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
@@ -330,11 +336,12 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
             add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
 
-            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_field");
+            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
                                                                                              .getCurrency(process.getAmountToCharge())
                                                                                              .getDecimalDefaultString()));
+
             add(amountBlock);
 
         }
