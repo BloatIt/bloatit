@@ -34,7 +34,7 @@ import com.bloatit.web.url.ChangeLanguagePageUrl;
 public final class ChangeLanguageAction extends Action {
     private final ChangeLanguageActionUrl url;
 
-    @RequestParam(role = Role.POST)
+    @RequestParam(role = Role.POSTGET)
     private final String language;
 
     public ChangeLanguageAction(final ChangeLanguageActionUrl url) {
