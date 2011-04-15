@@ -1,100 +1,82 @@
-.progress_bar_block, .progress_bar_block_slim {
+.progress_bar_block, .progress_bar_block_success{
     display:inline-block;
     margin-left:10%;
     margin-right:10%;
     width:80%;
+
+    .progress_bar_background, .progress_bar_label, .progress_bar_state_1, .progress_bar_state_2, .progress_bar_state_3  {
+                 display:block;
+        .no_insets;
+         height:16px;
+     }
+
+    .progress_bar_background {
+        background: @progress_background_color;
+        .horizontal-gradient(@progress_background_color_dark, @progress_background_color_light); 
+        margin-bottom:0px;
+        width:100%;
+
+    }
+
+    .progress_bar_label {
+        font-size: 11px;
+        color: @progress_label_color;
+        text-align: center;
+        margin-top: -15px;
+        width:100%;
+    }
+
+    .progress_bar_state_1, .progress_bar_state_2, .progress_bar_state_3 {   
+        margin-top: -16px;
+    }
 }
 
-.progress_bar_background {
-    display:block;
-    padding:0;
-    margin:0;
-    height:16px;
-    background: @progress_background_color;
-    .horizontal-gradient(@progress_background_color_dark, @progress_background_color_light); 
-    padding:0;
-    margin-bottom:0px;
-    width:100%;
+.progress_bar_block {
+    .progress_bar_state_1 {
+        background: @progress_color;
+        .horizontal-gradient(@progress_color_dark, @progress_color_light);    
+    }
 
+    .progress_bar_state_2 {
+        background: @progress_color_my;
+        .horizontal-gradient(@progress_color_my_dark, @progress_color_my_light);    
+    }
 
+    .progress_bar_state_3{
+        background: @progress_color_future;
+        .horizontal-gradient(@progress_color_future_dark, @progress_color_future_light);    
+    }
 }
 
-.progress_bar_label {
-    display:block;
+.progress_bar_block_success {
+    .progress_bar_state_1 {
+        background: @progress_color_success;
+        .horizontal-gradient(@progress_color_dark_success, @progress_color_light_success);    
+    }
 
-    font-size: 11px;
-    color: @progress_label_color;
-    text-align: center;
-    height:16px;
+    .progress_bar_state_2 {
+        background: @progress_color_my_success;
+        .horizontal-gradient(@progress_color_my_dark_success, @progress_color_my_light_success);    
+    }
 
-    padding:0;
-    margin:0;
-   
-    margin-top: -15px;
-    width:100%;
+    .progress_bar_state_3{
+        background: @progress_color_future_success;
+        .horizontal-gradient(@progress_color_future_dark_success, @progress_color_future_light_success);    
+    }
 }
-
-
-.progress_bar_state_1, .progress_bar_state_2, .progress_bar_state_3 {
-    display:block;
-    height:16px;
-    padding:0;
-    margin:0;
-    margin-top: -16px;
-}
-
-
-.progress_bar_state_1 {
-
-    background: @progress_color;
-    .horizontal-gradient(@progress_color_dark, @progress_color_light);    
-}
-
-.progress_bar_state_2 {
-
-    background: @progress_color_my;
-    .horizontal-gradient(@progress_color_my_dark, @progress_color_my_light);    
-}
-
-.progress_bar_state_3{
-
-    background: @progress_color_future;
-    .horizontal-gradient(@progress_color_future_dark, @progress_color_future_light);    
-}
-
-.progress_bar_background_slim {
-    height:8px;
-  //  .rounded_corners(4px);
-}
-
-.progress_bar_border_slim {
-    height:8px;
-    margin-top: -10px;
-   // .rounded_corners(4px);
-}
-
-
-.progress_bar_state_slim_1, .progress_bar_state_slim_2, .progress_bar_state_slim_3 {
-    height:10px;
-    margin-top: -10px;
-   // .rounded_corners(4px);
-}
-
 
 .progress_text {
      color: @light_text_color;
      font-size: 0.8em;
-     margin: 0px;
-     padding: 0px;
+     .no_insets;
      margin-top : 5px;
      margin-bottom : 7px;
      text-align: center;
+     
      .important {
         font-size: 1.2em;
         margin-left: 1em;
         margin-right: 1em;
         color:@title_color;
      }
-     
-    
 }

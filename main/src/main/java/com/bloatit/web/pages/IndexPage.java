@@ -54,8 +54,6 @@ public final class IndexPage extends MasterPage {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
-            final HtmlTitle title = new HtmlTitle(Context.tr("Get paid to create free software"), 1);
-            globalDescription.add(title);
             final HtmlImage image = new HtmlImage(new Image(WebConfiguration.getImgPresentation(Context.getLocalizator().getLanguageCode())),
                                                   tr("Elveos's presentation"));
             final DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();
@@ -68,7 +66,7 @@ public final class IndexPage extends MasterPage {
         element.add(globalDescription);
 
         final TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
-        twoColumnLayout.addLeft(new HtmlTitle(tr("Hightlighted features"), 1));
+        
 
         final HtmlDiv featureList = new HtmlDiv("feature_list");
         {
@@ -113,6 +111,7 @@ public final class IndexPage extends MasterPage {
                 featureList.add(featureListRow);
             }
         }
+
 
         twoColumnLayout.addLeft(featureList);
 

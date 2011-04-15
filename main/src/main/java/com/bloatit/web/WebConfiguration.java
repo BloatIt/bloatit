@@ -25,8 +25,6 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgSoftwareNoLogo;
     private String imgFeatureStateSuccess;
     private String imgFeatureStateFailed;
-    private String imgFeatureStateDeveloping;
-    private String imgFeatureStateFunding;
     private String imgIdea;
     private String imgTeam;
     private String imgMessage;
@@ -132,20 +130,6 @@ public class WebConfiguration extends ReloadableConfiguration {
     }
 
     /**
-     * @return the imgFeatureStateSuccess
-     */
-    public static String getImgFeatureStateDeveloping(final String langCode) {
-        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateDeveloping;
-    }
-
-    /**
-     * @return the imgFeatureStateSuccess
-     */
-    public static String getImgFeatureStateFunding(final String langCode) {
-        return FrameworkConfiguration.getResourcesDir() + "/" + langCode + configuration.imgFeatureStateFunding;
-    }
-
-    /**
      * @return the imgValidIcon
      */
     public static String getImgSoftwareNoLogo() {
@@ -194,8 +178,6 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgSoftwareNoLogo = properties.getString("bloatit.img.software.no.logo");
         imgFeatureStateSuccess = properties.getString("bloatit.img.feature.state.success");
         imgFeatureStateFailed = properties.getString("bloatit.img.feature.state.failed");
-        imgFeatureStateDeveloping = properties.getString("bloatit.img.feature.state.developing");
-        imgFeatureStateFunding = properties.getString("bloatit.img.feature.state.funding");
         imgIdea = properties.getString("bloatit.img.idea");
         imgTeam = properties.getString("bloatit.img.team");
         imgMessage = properties.getString("bloatit.img.message");

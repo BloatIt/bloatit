@@ -19,7 +19,10 @@
 package com.bloatit.web.linkable.language;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -34,6 +37,7 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.IndexPageUrl;
+import java.util.Map.Entry;
 
 @ParamContainer("language/change")
 public class ChangeLanguagePage extends MasterPage {
@@ -68,6 +72,22 @@ public class ChangeLanguagePage extends MasterPage {
         form.add(language);
 
         form.add(new HtmlSubmit("Change language"));
+
+        //Link map
+
+        HtmlDiv linkMap = new HtmlDiv("language_link_map");
+        
+
+        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
+            final ChangeLanguageActionUrl langagueChangeAction = new ChangeLanguageActionUrl();
+            langagueChangeAction.setLanguage(langEntry.getValue().getCode());
+            linkMap.add(langagueChangeAction.getHtmlLink(langEntry.getValue().getName()));
+
+            
+        }
+
+        master.add(linkMap);
+
         return master;
     }
 

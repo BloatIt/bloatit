@@ -17,6 +17,7 @@ import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
@@ -52,7 +53,6 @@ public class FeaturesTools {
      * @throws UnauthorizedOperationException when some operation cannot be
      *             accessed
      */
-
     public static HtmlBranch generateFeatureTitle(final Feature feature) throws UnauthorizedOperationException {
         return generateFeatureTitle(feature, false);
     }
@@ -105,10 +105,6 @@ public class FeaturesTools {
         return generateProgress(feature, false, BigDecimal.ZERO);
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, final boolean slim) throws UnauthorizedOperationException {
-        return generateProgress(feature, slim, BigDecimal.ZERO);
-    }
-
     /**
      * @throws UnauthorizedOperationException
      */
@@ -148,11 +144,18 @@ public class FeaturesTools {
             }
 
             String barLabel = "";
-            if(feature.getFeatureState() == FeatureState.DEVELOPPING) {
+
+            if (feature.getFeatureState() == FeatureState.DEVELOPPING) {
                 barLabel = Context.tr("In developement");
             }
 
-            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel,
+            String styleSuffix = null;
+            if (feature.getFeatureState() == FeatureState.FINISHED) {
+                styleSuffix = "success";
+            }
+
+
+            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel, styleSuffix,
                                                                     cappedProgressValue - myProgressValue,
                                                                     cappedProgressValue,
                                                                     cappedProgressValue + futureProgressValue);
@@ -282,35 +285,20 @@ public class FeaturesTools {
         return featureSummaryDetails;
     }
 
-    public static HtmlDiv generateState(final Feature feature) {
+    public static HtmlElement generateState(final Feature feature) {
         // Progress state
-        final HtmlDiv progressState = new HtmlDiv("feature_summary_state");
-        {
-            String imageName = "";
-            String imageLabel = "";
-            final String languageCode = Context.getLocalizator().getLanguageCode();
-            switch (feature.getFeatureState()) {
-                case FINISHED:
-                    imageName = WebConfiguration.getImgFeatureStateSuccess(languageCode);
-                    imageLabel = "success";
-                    break;
-                case DISCARDED:
-                    imageName = WebConfiguration.getImgFeatureStateFailed(languageCode);
-                    imageLabel = "failed";
-                    break;
-                case DEVELOPPING:
-                    imageName = WebConfiguration.getImgFeatureStateDeveloping(languageCode);
-                    imageLabel = "success";
-                    break;
-                case PENDING:
-                case PREPARING:
-                    imageName = WebConfiguration.getImgFeatureStateFunding(languageCode);
-                    imageLabel = "success";
-                    break;
-            }
 
-            progressState.add(new HtmlImage(new Image(imageName), imageLabel));
+        HtmlDiv progressState = new HtmlDiv("feature_summary_state");
+
+        final String languageCode = Context.getLocalizator().getLanguageCode();
+        switch (feature.getFeatureState()) {
+            case FINISHED:
+                progressState.add(new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(languageCode)), Context.tr("success")));
+                return progressState;
+            case DISCARDED:
+                progressState.add(new HtmlImage(new Image(WebConfiguration.getImgFeatureStateFailed(languageCode)), Context.tr("failed")));
+                return progressState;
         }
-        return progressState;
+        return new PlaceHolderElement();
     }
 }
