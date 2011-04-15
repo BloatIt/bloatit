@@ -81,7 +81,7 @@ import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.PageNotFound;
-import com.bloatit.web.pages.SpecialsPage;
+import com.bloatit.web.pages.SiteMapPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
@@ -154,7 +154,7 @@ import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
-import com.bloatit.web.url.SpecialsPageUrl;
+import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
@@ -186,8 +186,8 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(FeaturePageUrl.getName())) {
             return new FeaturePage(new FeaturePageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(SpecialsPageUrl.getName())) {
-            return new SpecialsPage(new SpecialsPageUrl(params, session.getParameters()));
+        if (pageCode.equals(SiteMapPageUrl.getName())) {
+            return new SiteMapPage(new SiteMapPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MembersListPageUrl.getName())) {
             return new MembersListPage(new MembersListPageUrl(params, session.getParameters()));

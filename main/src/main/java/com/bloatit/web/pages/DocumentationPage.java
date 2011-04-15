@@ -30,9 +30,9 @@ import com.bloatit.web.url.DocumentationPageUrl;
  */
 @ParamContainer("documentation")
 public class DocumentationPage extends MasterPage {
+
     private final static String DOC_TARGET = "doc";
     private final static String DEFAULT_DOC = "home";
-
     @RequestParam(name = DOC_TARGET)
     @Optional(DEFAULT_DOC)
     private final String docTarget;
@@ -83,9 +83,7 @@ public class DocumentationPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
-
         breadcrumb.pushLink(new DocumentationPageUrl().getHtmlLink(tr("Documentation")));
-
         return breadcrumb;
     }
 
@@ -98,5 +96,4 @@ public class DocumentationPage extends MasterPage {
 
         return breadcrumb;
     }
-
 }

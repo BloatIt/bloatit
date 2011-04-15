@@ -392,7 +392,6 @@ public class BloatitExampleDB {
     // feature;
     // featureImpl.getDao().setFeatureState(FeatureState.DISCARDED);
     // }
-
     public void giveMoney(final Member member, final int amount) {
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),
@@ -423,5 +422,4 @@ public class BloatitExampleDB {
         System.out.println("Database generation ended");
         System.exit(0);
     }
-
 }

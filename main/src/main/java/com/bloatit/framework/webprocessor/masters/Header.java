@@ -4,6 +4,7 @@ import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.WebConfiguration;
 
 public final class Header extends HtmlElement {
@@ -13,13 +14,23 @@ public final class Header extends HtmlElement {
     public Header(final String title) {
         super("head");
 
-        final HtmlBranch meta = new HtmlGenericElement("meta") {
+        final HtmlBranch metaCharset = new HtmlGenericElement("meta") {
             @Override
             public boolean selfClosable() {
                 return true;
             }
         };
-        meta.addAttribute("charset", "UTF-8");
+        metaCharset.addAttribute("charset", "UTF-8");
+
+        final HtmlBranch metaKeywords = new HtmlGenericElement("meta") {
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
+        };
+        metaKeywords.addAttribute("keywords", Context.tr("free software funding, open-source, bulk purchases"));
+
+
 
         final HtmlBranch link = new HtmlGenericElement("link") {
 
@@ -34,7 +45,8 @@ public final class Header extends HtmlElement {
         link.addAttribute("type", "text/css");
         link.addAttribute("media", "handheld, all");
 
-        add(meta);
+        add(metaCharset);
+        add(metaKeywords);
         add(link);
 
         cssPh = new PlaceHolderElement();
@@ -48,7 +60,7 @@ public final class Header extends HtmlElement {
 
     /**
      * Adds a new css link to the page
-     * 
+     *
      * @param css the string describing the name of the css
      */
     public void addCss(final String css) {
@@ -74,7 +86,7 @@ public final class Header extends HtmlElement {
      * <li>Absolute URI (http://host.com/script.js), and will be left as is.
      * Absolute URI MUST start with http:// or https://</li>
      * </p>
-     * 
+     *
      * @param js a string describing the URI of the js link, either relative to
      *            the application or absolute (and starting with http://)
      */

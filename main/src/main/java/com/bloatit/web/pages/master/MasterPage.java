@@ -11,6 +11,7 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
@@ -35,7 +36,6 @@ public abstract class MasterPage extends GenericPage {
     // -----------------------------------------------------------------------
     // Template method pattern: Abstract methods
     // -----------------------------------------------------------------------
-
     protected abstract HtmlElement createBodyContent() throws RedirectException;
 
     protected abstract String createPageTitle();
@@ -43,11 +43,9 @@ public abstract class MasterPage extends GenericPage {
     protected abstract Breadcrumb createBreadcrumb();
 
     // protected abstract HtmlElement addNotifications();
-
     // -----------------------------------------------------------------------
     // Template method pattern: Implementation
     // -----------------------------------------------------------------------
-
     @Override
     protected final void createPageContent(final HtmlGenericElement body) throws RedirectException {
         final HtmlBranch header = new HtmlDiv("header").setId("header");
@@ -100,6 +98,11 @@ public abstract class MasterPage extends GenericPage {
         logoImage.setCssClass("logo_elveos");
 
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
+
+        final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
+        logoTextDiv.addText(tr("the cooperative platform for free software funding"));
+
+        logoDiv.add(logoTextDiv);
 
         return logoDiv;
     }

@@ -36,3 +36,4 @@ log-*
 
 # vim temp files
 .*.swp
+main/nb-configuration.xml
