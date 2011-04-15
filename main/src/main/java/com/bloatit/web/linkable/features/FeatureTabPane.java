@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -29,11 +28,10 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdown
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Translation;
-import com.bloatit.web.HtmlTools;
+import com.bloatit.web.components.UserContentAuthorBlock;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FeatureTabPaneUrl;
-import com.bloatit.web.url.MemberPageUrl;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
@@ -145,24 +143,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
 
             final HtmlDiv descriptionFooter = new HtmlDiv("description_footer");
             {
-                final HtmlDiv descriptionDetails = new HtmlDiv("description_details");
-                {
-                    descriptionDetails.addText(Context.tr("Created by "));
-
-                    try {
-                        final MemberPageUrl memberUrl = new MemberPageUrl(feature.getMember());
-                        descriptionDetails.add(memberUrl.getHtmlLink(feature.getMember().getDisplayName()));
-                    } catch (final UnauthorizedOperationException e1) {
-                        // Nothing.
-                    }
-
-                    descriptionDetails.addText(Context.tr(" – "));
-
-                    final HtmlSpan dateSpan = new HtmlSpan("description_date");
-                    dateSpan.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(feature.getCreationDate())));
-                    descriptionDetails.add(dateSpan);
-                }
-                descriptionFooter.add(descriptionDetails);
+                descriptionFooter.add(new UserContentAuthorBlock(feature));
 
                 // KEEP THIS CODE, will be restored someday
                 // final HtmlDiv descriptionTranslate = new

@@ -57,7 +57,7 @@ public class Software extends Identifiable<DaoSoftware> {
      * you can create a new feature.
      */
     public Software(final String name, final Member author, final Locale locale, final String title, final String description) {
-        this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
+        this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, locale, title, description)));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

@@ -31,18 +31,18 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.web.HtmlTools;
+import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
-import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
@@ -173,7 +173,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         } catch (final UnauthorizedOperationException e) {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
-            throw new ShallNotPassException("User cannot access feature nformation", e);
+            throw new ShallNotPassException("User cannot access feature information", e);
         }
     }
 
@@ -264,17 +264,13 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
 
-                element.add(new HtmlParagraph(tr(" {0} are missing before the developement start.", currency.toString())));
+                element.add(new HtmlParagraph(tr(" {0} are missing before the development start.", currency.toString())));
             } else {
                 final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
                 element.add(new HtmlParagraph(tr("The development will begin in about ") + renderer.getTimeString() + "."));
             }
-
-        } else {
-
         }
-
         final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink();
         final HtmlParagraph makeOfferText = new HtmlParagraph(new HtmlMixedText(Context.tr("An offer has already been made on this feature. However, you can <0::make an alternative offer>."),
                                                                                 link));
@@ -319,15 +315,15 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
-        final Member author = feature.getSelectedOffer().getMember();
-        final HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
+        final Actor<?> author = feature.getSelectedOffer().getAuthor();
+        final HtmlLink authorLink = new HtmlAuthorLink(feature.getSelectedOffer());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
 
         element.add(new HtmlParagraph(tr("This feature is currently in development.")));
 
         element.add(new HtmlParagraph(new HtmlMixedText(tr("This feature is developed by <0>."), authorLink)));
 
-        element.add(new HtmlParagraph(tr("Read the comments to have an more recents informations.")));
+        element.add(new HtmlParagraph(tr("Read the comments to have an more recent informations.")));
 
         return element;
     }
@@ -335,13 +331,12 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
-        final Member author = feature.getSelectedOffer().getMember();
-        final HtmlLink authorLink = new MemberPageUrl(author).getHtmlLink(author.getDisplayName());
-        element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
+        final HtmlLink authorLink = new HtmlAuthorLink(feature.getSelectedOffer());
+        element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(feature.getSelectedOffer().getAuthor())));
 
         element.add(new HtmlParagraph(tr("This feature is finished.")));
 
-        element.add(new HtmlParagraph(new HtmlMixedText(tr("The developement was done by <0>."), authorLink)));
+        element.add(new HtmlParagraph(new HtmlMixedText(tr("The development was done by <0>."), authorLink)));
 
         final PageIterable<Bug> openBugs = feature.getOpenBugs();
 

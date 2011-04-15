@@ -14,7 +14,9 @@ public class DaoFeatureTest extends DataTestUnit {
 
     public void testCreateFeature() {
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
@@ -25,7 +27,9 @@ public class DaoFeatureTest extends DataTestUnit {
 
     public void testRetrieveFeature() {
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
@@ -38,7 +42,9 @@ public class DaoFeatureTest extends DataTestUnit {
 
     public void testDeleteFeature() {
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
@@ -51,15 +57,19 @@ public class DaoFeatureTest extends DataTestUnit {
     }
 
     public void testAddContribution() throws Throwable {
-        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
-                                                                                             new Locale("fr"),
-                                                                                             "Ma super demande !",
-                                                                                             "Ceci est la descption de ma demande :) "), project);
+        DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                         null,
+                                                         DaoDescription.createAndPersist(yo,
+                                                                                         null,
+                                                                                         new Locale("fr"),
+                                                                                         "Ma super demande !",
+                                                                                         "Ceci est la descption de ma demande :) "),
+                                                         project);
         fred.getInternalAccount().setAmount(new BigDecimal("100"));
         yo.getInternalAccount().setAmount(new BigDecimal("100"));
 
-        feature.addContribution(fred, new BigDecimal("25.00"), "Contribution");
-        feature.addContribution(yo, new BigDecimal("18.00"), "I'm so generous");
+        feature.addContribution(fred, null, new BigDecimal("25.00"), "Contribution");
+        feature.addContribution(yo, null, new BigDecimal("18.00"), "I'm so generous");
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
@@ -74,10 +84,14 @@ public class DaoFeatureTest extends DataTestUnit {
     }
 
     public void testAddOffer() {
-        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
-                                                                                             new Locale("fr"),
-                                                                                             "Ma super demande !",
-                                                                                             "Ceci est la descption de ma demande :) "), project);
+        DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                         null,
+                                                         DaoDescription.createAndPersist(yo,
+                                                                                         null,
+                                                                                         new Locale("fr"),
+                                                                                         "Ma super demande !",
+                                                                                         "Ceci est la descption de ma demande :) "),
+                                                         project);
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
@@ -89,14 +103,18 @@ public class DaoFeatureTest extends DataTestUnit {
     }
 
     public void testAddComment() throws Throwable {
-        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
-                                                                                             new Locale("fr"),
-                                                                                             "Ma super demande !",
-                                                                                             "Ceci est la descption de ma demande :) "), project);
-        feature.addComment(DaoComment.createAndPersist(feature, yo, "4"));
-        feature.addComment(DaoComment.createAndPersist(feature, yo, "3"));
-        feature.addComment(DaoComment.createAndPersist(feature, yo, "2"));
-        feature.addComment(DaoComment.createAndPersist(feature, yo, "1"));
+        DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                         null,
+                                                         DaoDescription.createAndPersist(yo,
+                                                                                         null,
+                                                                                         new Locale("fr"),
+                                                                                         "Ma super demande !",
+                                                                                         "Ceci est la descption de ma demande :) "),
+                                                         project);
+        feature.addComment(DaoComment.createAndPersist(feature, null, yo, "4"));
+        feature.addComment(DaoComment.createAndPersist(feature, null, yo, "3"));
+        feature.addComment(DaoComment.createAndPersist(feature, null, yo, "2"));
+        feature.addComment(DaoComment.createAndPersist(feature, null, yo, "1"));
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
@@ -110,7 +128,9 @@ public class DaoFeatureTest extends DataTestUnit {
         yo.getInternalAccount().setAmount(new BigDecimal(50));
 
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
@@ -118,8 +138,8 @@ public class DaoFeatureTest extends DataTestUnit {
         final DaoOffer offer = createOffer(feature);
         feature.addOffer(offer);
 
-        feature.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
-        feature.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
+        feature.addContribution(fred, null, new BigDecimal("25.00"), "I'm so generous too");
+        feature.addContribution(yo, null, new BigDecimal("18.00"), "I'm so generous too");
 
         for (final DaoContribution Contribution : feature.getContributions()) {
             Contribution.validate(offer, 100);
@@ -133,9 +153,10 @@ public class DaoFeatureTest extends DataTestUnit {
 
     private DaoOffer createOffer(final DaoFeature feature) {
         return new DaoOffer(fred,
+                            null,
                             feature,
                             new BigDecimal("200"),
-                            DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
+                            DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
                             DateUtils.tomorrow(),
                             0);
     }
@@ -143,15 +164,19 @@ public class DaoFeatureTest extends DataTestUnit {
     public void testRejectContribution() throws Throwable {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
-        DaoFeature feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
-                                                                                             new Locale("fr"),
-                                                                                             "Ma super demande !",
-                                                                                             "Ceci est la descption de ma demande :) "), project);
+        DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                         null,
+                                                         DaoDescription.createAndPersist(yo,
+                                                                                         null,
+                                                                                         new Locale("fr"),
+                                                                                         "Ma super demande !",
+                                                                                         "Ceci est la descption de ma demande :) "),
+                                                         project);
         feature.addOffer(createOffer(feature));
         fred.getInternalAccount().setAmount(new BigDecimal("100"));
         yo.getInternalAccount().setAmount(new BigDecimal("100"));
-        feature.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
-        feature.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
+        feature.addContribution(fred, null, new BigDecimal("25.00"), "I'm so generous too");
+        feature.addContribution(yo, null, new BigDecimal("18.00"), "I'm so generous too");
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
@@ -173,7 +198,9 @@ public class DaoFeatureTest extends DataTestUnit {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
@@ -189,7 +216,9 @@ public class DaoFeatureTest extends DataTestUnit {
 
     public void testSearchFeature() {
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
@@ -207,12 +236,14 @@ public class DaoFeatureTest extends DataTestUnit {
 
     public void testGetComment() {
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),
                                                                project);
-        feature.addComment(DaoComment.createAndPersist(feature, yo, "plop"));
+        feature.addComment(DaoComment.createAndPersist(feature, null, yo, "plop"));
         assertNotNull(feature.getComments().iterator().next());
     }
 

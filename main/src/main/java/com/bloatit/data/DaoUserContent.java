@@ -82,13 +82,14 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
-    public DaoUserContent(final DaoMember member) {
+    public DaoUserContent(final DaoMember member, final DaoTeam team) {
         super();
         if (member == null) {
             Log.data().fatal("Cannot create a DaoUserContent with a null member.");
             throw new NonOptionalParameterException();
         }
         this.member = member;
+        this.asTeam = team;
         this.creationDate = new Date();
         setIsDeleted(false);
     }
@@ -108,15 +109,15 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * 
      * @return the author (member or team).
      */
-    public DaoActor getAuthor() {
+    public final DaoActor getAuthor() {
         return asTeam == null ? member : asTeam;
     }
 
-    public Date getCreationDate() {
+    public final Date getCreationDate() {
         return (Date) this.creationDate.clone();
     }
 
-    public DaoTeam getAsTeam() {
+    public final DaoTeam getAsTeam() {
         return this.asTeam;
     }
 

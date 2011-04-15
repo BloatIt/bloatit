@@ -61,13 +61,14 @@ public class DaoFileMetadata extends DaoUserContent {
     private DaoUserContent relatedContent;
 
     public static DaoFileMetadata createAndPersist(final DaoMember member,
+                                                   final DaoTeam team,
                                                    final DaoUserContent relatedContent,
                                                    final String filename,
                                                    final String url,
                                                    final FileType type,
                                                    final int size) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFileMetadata file = new DaoFileMetadata(member, relatedContent, filename, url, type, size);
+        final DaoFileMetadata file = new DaoFileMetadata(member, team, relatedContent, filename, url, type, size);
         try {
             session.save(file);
         } catch (final HibernateException e) {
@@ -90,12 +91,13 @@ public class DaoFileMetadata extends DaoUserContent {
      * @param size is the size of the file.
      */
     private DaoFileMetadata(final DaoMember member,
+                            final DaoTeam team,
                             final DaoUserContent relatedContent,
                             final String filename,
                             final String url,
                             final FileType type,
                             final int size) {
-        super(member);
+        super(member, team);
         if (filename == null || url == null || type == null || filename.isEmpty() || url.isEmpty()) {
             throw new NonOptionalParameterException();
         }

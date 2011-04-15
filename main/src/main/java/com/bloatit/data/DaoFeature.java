@@ -93,7 +93,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byNonState",
                             query = "SELECT bugs_ " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.milestonees as bs " +
+                                    "JOIN offer_.milestones as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state != :state "),
@@ -102,7 +102,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byNonState.size",
                             query = "SELECT count(bugs_) " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.milestonees as bs " +
+                                    "JOIN offer_.milestones as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state != :state "),
@@ -111,7 +111,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byState",
                             query = "SELECT bugs_ " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.milestonees as bs " +
+                                    "JOIN offer_.milestones as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
@@ -120,7 +120,7 @@ import com.bloatit.framework.utils.PageIterable;
                             name = "feature.getBugs.byState.size",
                             query = "SELECT count(bugs_) " +
                                     "FROM com.bloatit.data.DaoOffer offer_ " +
-                                    "JOIN offer_.milestonees as bs " +
+                                    "JOIN offer_.milestones as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
@@ -223,11 +223,12 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     /**
-     * @see #DaoFeature(DaoMember, DaoDescription, DaoSoftware)
+     * @see #DaoFeature(DaoMember, DaoTeam, DaoDescription, DaoSoftware)
      */
-    public static DaoFeature createAndPersist(final DaoMember member, final DaoDescription description, final DaoSoftware software) {
+    public static DaoFeature
+            createAndPersist(final DaoMember member, final DaoTeam team, final DaoDescription description, final DaoSoftware software) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFeature feature = new DaoFeature(member, description, software);
+        final DaoFeature feature = new DaoFeature(member, team, description, software);
         try {
             session.save(feature);
         } catch (final HibernateException e) {
@@ -245,8 +246,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
-    private DaoFeature(final DaoMember member, final DaoDescription description, final DaoSoftware software) {
-        super(member);
+    private DaoFeature(final DaoMember member, final DaoTeam team, final DaoDescription description, final DaoSoftware software) {
+        super(member, team);
         if (description == null || software == null) {
             throw new NonOptionalParameterException();
         }
@@ -277,11 +278,13 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * Add a contribution to a feature.
      * 
      * @param member the author of the contribution
+     * @param team add this contribution in the name of team.
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
      * @throws NotEnoughMoneyException
      */
-    public DaoContribution addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution
+            addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }
@@ -290,11 +293,13 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             throw new BadProgrammerException("The amount of a contribution cannot be <= 0.", null);
         }
         if (comment != null && comment.length() > DaoContribution.COMMENT_MAX_LENGTH) {
-            Log.data().fatal("The comment of a contribution must be <= 144 chars long.");
-            throw new BadProgrammerException("Comments lenght of Contribution must be < 144.", null);
+            Log.data().fatal("The comment of a contribution must be <= 140 chars long.");
+            throw new BadProgrammerException("Comments length of Contribution must be < 140.", null);
         }
 
-        final DaoContribution newContribution = new DaoContribution(member, this, amount, comment);
+        // TODO right management for contribution as a team.
+
+        final DaoContribution newContribution = new DaoContribution(member, team, this, amount, comment);
         this.contributions.add(newContribution);
         this.contribution = this.contribution.add(amount);
         return newContribution;

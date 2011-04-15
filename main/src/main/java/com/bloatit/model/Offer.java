@@ -23,10 +23,8 @@ import java.util.Locale;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
-import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureImplementation;
@@ -55,6 +53,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     public Offer(final Member member,
+                 final Team team,
                  final Feature feature,
                  final BigDecimal amount,
                  final String description,
@@ -62,9 +61,10 @@ public final class Offer extends Kudosable<DaoOffer> {
                  final Date dateExpire,
                  final int secondsBeforeValidation) {
         super(new DaoOffer(member.getDao(),
-                           DBRequests.getById(DaoFeature.class, feature.getId()),
+                           DaoGetter.getTeam(team),
+                           ((FeatureImplementation) feature).getDao(),
                            amount,
-                           DaoDescription.createAndPersist(member.getDao(), local, "RFU", description),
+                           DaoDescription.createAndPersist(member.getDao(), DaoGetter.getTeam(team), local, "RFU", description),
                            dateExpire,
                            secondsBeforeValidation));
     }
@@ -77,10 +77,14 @@ public final class Offer extends Kudosable<DaoOffer> {
                                   final String description,
                                   final Locale local,
                                   final Date dateExpire,
-                                  final int secondBeforeValidation) {
+                                  final int secondBeforeValidation) throws UnauthorizedOperationException {
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                                            amount,
-                                                           DaoDescription.createAndPersist(getDao().getMember(), local, "RFU", description),
+                                                           DaoDescription.createAndPersist(getDao().getMember(),
+                                                                                           DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                                                           local,
+                                                                                           "RFU",
+                                                                                           description),
                                                            getDao(),
                                                            secondBeforeValidation);
         getDao().addMilestone(daoMilestone);

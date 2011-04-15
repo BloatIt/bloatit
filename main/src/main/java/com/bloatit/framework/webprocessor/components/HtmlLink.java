@@ -19,7 +19,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 /**
  * Class to create htmllinks (<a href="...">plop</a>)
  */
-public final class HtmlLink extends HtmlBranch {
+public class HtmlLink extends HtmlBranch {
 
     /**
      * Creates a link with a given URL and a given displayed element. Element

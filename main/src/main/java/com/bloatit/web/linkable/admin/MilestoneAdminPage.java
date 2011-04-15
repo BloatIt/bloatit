@@ -28,7 +28,7 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
 
-@ParamContainer("admin/milestonees")
+@ParamContainer("admin/milestones")
 public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMilestone, Milestone, MilestoneAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)

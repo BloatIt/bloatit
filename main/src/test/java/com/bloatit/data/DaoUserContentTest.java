@@ -55,10 +55,10 @@ public class DaoUserContentTest extends TestCase {
             (b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED)).addMember(yo, true);
         }
 
-        final DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
-        project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
+        final DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, null, Locale.FRANCE, "title", "descrip"));
+        project.setImage(DaoFileMetadata.createAndPersist(fred, null, null, "/dev/", "null", FileType.JPG, 12));
 
-        feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+        feature = DaoFeature.createAndPersist(yo, null, DaoDescription.createAndPersist(yo, null,
                                                                                   new Locale("fr"),
                                                                                   "Ma super demande !",
                                                                                   "Ceci est la descption de ma demande :) "), project);

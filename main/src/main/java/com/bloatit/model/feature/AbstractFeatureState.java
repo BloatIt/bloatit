@@ -204,7 +204,7 @@ abstract class AbstractFeatureState {
     }
 
     /**
-     * Event offer is validated is called when every milestonees are finished.
+     * Event offer is validated is called when every milestones are finished.
      * 
      * @return the state object representing the featureState, after receiving
      *         this event

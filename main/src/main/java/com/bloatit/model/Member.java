@@ -399,6 +399,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return 0;
     }
 
+    @Override
     public String getDisplayName() throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Name(), Action.READ);
         if (getDao().getFullname() != null && !getDao().getFullname().isEmpty()) {
@@ -518,6 +519,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return DigestUtils.sha256Hex(digest);
     }
 
+    @Override
     public FileMetadata getAvatar() {
         return FileMetadata.create(getDao().getAvatar());
     }

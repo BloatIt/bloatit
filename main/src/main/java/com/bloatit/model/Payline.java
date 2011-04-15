@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -164,7 +166,7 @@ public final class Payline extends RestrictedObject {
         return parameters;
     }
 
-    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
+    public Reponse doPayment(final Actor<?> targetActor, final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
             throws UnauthorizedOperationException {
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
@@ -202,19 +204,20 @@ public final class Payline extends RestrictedObject {
         final DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
 
         final Reponse reponse = new Reponse(apiReponse);
-        createBankTransaction(amount, amountToPay, orderReference, reponse);
+        createBankTransaction(targetActor, amount, amountToPay, orderReference, reponse);
         return reponse;
     }
 
     public static BigDecimal computateAmountToPay(final BigDecimal amount) {
+        // TODO migrate me in bankTransaction and store me.
         return amount.add(amount.multiply(COMMISSION_VARIABLE_RATE)).add(COMMISSION_FIX_RATE).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
-    private void createBankTransaction(final BigDecimal amount, final BigDecimal amountToPay, final String orderReference, final Reponse reponse) {
+    private void createBankTransaction(final Actor<?> targetActor, final BigDecimal amount, final BigDecimal amountToPay, final String orderReference, final Reponse reponse) {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
                                                                         reponse.getToken(),//
-                                                                        getAuthTokenUnprotected().getMember(),//
+                                                                        targetActor,//
                                                                         amount, //
                                                                         amountToPay, //
                                                                         orderReference);
@@ -262,20 +265,27 @@ public final class Payline extends RestrictedObject {
      */
     private String createOrderRef(final Member member) {
         final StringBuilder ref = new StringBuilder();
+        // It is a payline action
         ref.append("PAYLINE-");
+        
+        // Add the member id
         ref.append(member.getId());
         ref.append("-");
+        
         PageIterable<BankTransaction> bankTransaction;
         try {
+            // Add the last bankTransaction + 1
             bankTransaction = member.getBankTransactions();
             if (bankTransaction.size() == 0) {
                 ref.append("0");
             } else {
                 ref.append(bankTransaction.iterator().next().getId() + 1);
             }
+            
+            // Add a random string to ensure uniqueness.
+            ref.append("-").append(RandomStringUtils.randomAlphabetic(5));
         } catch (final UnauthorizedOperationException e) {
             Log.model().fatal("Unauthorized exception should never append ! ", e);
-            assert false;
             ref.append("ERROR");
             return ref.toString();
         }

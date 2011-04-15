@@ -350,7 +350,7 @@ public final class CheckContributionPage extends CreateUserContentPage {
             // payBlock.add(continueNavigation);
             // TODO: real pay later button
 
-            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process);
+            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process, process.getTeam() != null ? process.getTeam() : member);
 
             final HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
                                                                                   Context.getLocalizator()

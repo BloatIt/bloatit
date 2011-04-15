@@ -195,6 +195,9 @@ public class DaoMember extends DaoActor {
      * @return null if not found. (or if login == null)
      */
     public static DaoMember getByLogin(final String login) {
+        if (login != null) {
+            return null;
+        }
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Criteria q = session.createCriteria(DaoMember.class).add(Restrictions.like("login", login).ignoreCase());
         return (DaoMember) q.uniqueResult();

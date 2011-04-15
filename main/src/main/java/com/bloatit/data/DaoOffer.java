@@ -54,10 +54,10 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "offer.getMilestonees",
+                           name = "offer.getMilestones",
                            query = "FROM DaoMilestone WHERE offer = :this ORDER BY expirationDate, id"),
                         @NamedQuery(
-                           name = "offer.getMilestonees.size",
+                           name = "offer.getMilestones.size",
                            query = "SELECT count(*) FROM DaoMilestone WHERE offer = :this"),
                        }
              )
@@ -73,10 +73,10 @@ public class DaoOffer extends DaoKudosable {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private final List<DaoMilestone> milestonees = new ArrayList<DaoMilestone>();
+    private final List<DaoMilestone> milestones = new ArrayList<DaoMilestone>();
 
     /**
-     * The expirationDate is calculated from the milestonees variables.
+     * The expirationDate is calculated from the milestones variables.
      */
     @Basic(optional = false)
     @Field(index = Index.UN_TOKENIZED, store = Store.YES)
@@ -89,7 +89,7 @@ public class DaoOffer extends DaoKudosable {
     /**
      * The amount represents the money the member want to have to make his
      * offer. This is a calculated field used for performance speedup.
-     * <code>(= foreach milestonees; amount += baches.getAmount)</code>
+     * <code>(= foreach milestones; amount += baches.getAmount)</code>
      */
     @Basic(optional = false)
     private BigDecimal amount;
@@ -112,12 +112,13 @@ public class DaoOffer extends DaoKudosable {
      *             the future.
      */
     public DaoOffer(final DaoMember member,
+                    final DaoTeam team,
                     final DaoFeature feature,
                     final BigDecimal amount,
                     final DaoDescription description,
                     final Date dateExpire,
                     final int secondsBeforeValidation) {
-        super(member);
+        super(member, team);
         if (feature == null) {
             throw new NonOptionalParameterException();
         }
@@ -130,10 +131,10 @@ public class DaoOffer extends DaoKudosable {
     }
 
     public void cancelEverythingLeft() {
-        for (int i = this.currentMilestone; i < this.milestonees.size(); ++i) {
-            this.milestonees.get(i).cancelMilestone();
+        for (int i = this.currentMilestone; i < this.milestones.size(); ++i) {
+            this.milestones.get(i).cancelMilestone();
         }
-        this.currentMilestone = this.milestonees.size();
+        this.currentMilestone = this.milestones.size();
     }
 
     public void addMilestone(final DaoMilestone milestone) {
@@ -145,11 +146,11 @@ public class DaoOffer extends DaoKudosable {
         if (this.expirationDate.before(expiration)) {
             this.expirationDate = expiration;
         }
-        this.milestonees.add(milestone);
+        this.milestones.add(milestone);
     }
 
     public boolean hasMilestoneesLeft() {
-        return this.currentMilestone < this.milestonees.size();
+        return this.currentMilestone < this.milestones.size();
     }
 
     void passToNextMilestone() {
@@ -158,10 +159,10 @@ public class DaoOffer extends DaoKudosable {
 
     void milestoneHasARelease(final DaoMilestone milestone) {
         // Find next milestone. Passe it into developing state.
-        for (int i = 0; i < this.milestonees.size(); ++i) {
-            if (this.milestonees.get(i).equals(milestone)) {
-                if ((i + 1) < this.milestonees.size()) {
-                    this.milestonees.get(i + 1).setDeveloping();
+        for (int i = 0; i < this.milestones.size(); ++i) {
+            if (this.milestones.get(i).equals(milestone)) {
+                if ((i + 1) < this.milestones.size()) {
+                    this.milestones.get(i + 1).setDeveloping();
                 }
                 break;
             }
@@ -181,14 +182,14 @@ public class DaoOffer extends DaoKudosable {
     }
 
     /**
-     * @return All the milestonees for this offer. (Even the MasterMilestone).
+     * @return All the milestones for this offer. (Even the MasterMilestone).
      */
     public PageIterable<DaoMilestone> getMilestonees() {
         return new QueryCollection<DaoMilestone>("offer.getMilestonees").setEntity("this", this);
     }
 
     public DaoMilestone getCurrentMilestone() {
-        return this.milestonees.get(this.currentMilestone);
+        return this.milestones.get(this.currentMilestone);
     }
 
     /**
@@ -211,18 +212,18 @@ public class DaoOffer extends DaoKudosable {
      * @return an int between [0;100]
      */
     int getMilestonePercent(final DaoMilestone current) {
-        if (this.milestonees.size() == 1) {
+        if (this.milestones.size() == 1) {
             return 100;
         }
 
         int alreadyReturned = 0;
-        for (int i = 0; i < this.milestonees.size(); ++i) {
+        for (int i = 0; i < this.milestones.size(); ++i) {
             // Calculate the percent of the milestone
-            final DaoMilestone milestone = this.milestonees.get(i);
+            final DaoMilestone milestone = this.milestones.get(i);
             final int percent = milestone.getAmount().divide(this.amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
             if (current.equals(milestone)) {
                 // if the current is the last one
-                if (i == (this.milestonees.size() - 1)) {
+                if (i == (this.milestones.size() - 1)) {
                     return 100 - alreadyReturned;
                 }
                 return percent;
@@ -234,14 +235,14 @@ public class DaoOffer extends DaoKudosable {
     }
 
     public boolean hasRelease() {
-        final Query query = SessionManager.createFilter(this.milestonees, "SELECT count(*) WHERE this.releases is not empty");
+        final Query query = SessionManager.createFilter(this.milestones, "SELECT count(*) WHERE this.releases is not empty");
         return !((Long) query.uniqueResult()).equals(0L);
     }
 
     public DaoRelease getLastRelease() {
         final String q = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
                 "FROM DaoOffer as o " + //
-                "INNER JOIN o.milestonees as b " + //
+                "INNER JOIN o.milestones as b " + //
                 "INNER JOIN b.releases as r " + //
                 "WHERE o=:this)";
 

@@ -110,7 +110,7 @@ public final class AuthToken {
         return MemberManager.getById(memberId);
     }
 
-    public void setAsTeamId(final Team team) {
+    public void setAsTeam(final Team team) {
         if (team != null) {
             this.asTeamId = team.getId();
         } else {
@@ -118,7 +118,7 @@ public final class AuthToken {
         }
     }
 
-    public Team getAsTeamId() {
+    public Team getAsTeam() {
         return TeamManager.getById(asTeamId);
     }
 

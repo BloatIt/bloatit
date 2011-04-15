@@ -63,8 +63,13 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
 
     private String version;
 
-    public DaoRelease(final DaoMember member, final DaoMilestone milestone, final String description, final String version, final Locale locale) {
-        super(member);
+    public DaoRelease(final DaoMember member,
+                      final DaoTeam team,
+                      final DaoMilestone milestone,
+                      final String description,
+                      final String version,
+                      final Locale locale) {
+        super(member, team);
         if (description == null || milestone == null || locale == null || version == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
@@ -75,12 +80,13 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
     }
 
     public static DaoRelease createAndPersist(final DaoMember member,
+                                              final DaoTeam team,
                                               final DaoMilestone milestone,
                                               final String description,
                                               final String version,
                                               final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoRelease release = new DaoRelease(member, milestone, description, version, locale);
+        final DaoRelease release = new DaoRelease(member, team, milestone, description, version, locale);
         try {
             session.save(release);
         } catch (final HibernateException e) {

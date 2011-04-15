@@ -60,8 +60,8 @@ public final class Description extends Identifiable<DaoDescription> {
      * @param description is the main text of the description (the actual
      *            description)
      */
-    public Description(final Member member, final Locale locale, final String title, final String description) {
-        super(DaoDescription.createAndPersist(member.getDao(), locale, title, description));
+    public Description(final Member member, final Team team, final Locale locale, final String title, final String description) {
+        super(DaoDescription.createAndPersist(member.getDao(), DaoGetter.getTeam(team), locale, title, description));
     }
 
     /**

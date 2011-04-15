@@ -7,47 +7,47 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 public class DaoTranslationTest extends DataTestUnit {
 
     public void testDaoTranslationDaoMemberDaoDescriptionLocaleStringString() {
-        final DaoDescription description = DaoDescription.createAndPersist(yo, Locale.ENGLISH, "English title", "English body");
+        final DaoDescription description = DaoDescription.createAndPersist(yo, null, Locale.ENGLISH, "English title", "English body");
 
-        new DaoTranslation(fred, description, Locale.FRANCE, "plop", "plip");
+        new DaoTranslation(fred, null, description, Locale.FRANCE, "plop", "plip");
         try {
-            new DaoTranslation(fred, description, Locale.FRANCE, "plop", "");
+            new DaoTranslation(fred, null, description, Locale.FRANCE, "plop", "");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            new DaoTranslation(fred, description, Locale.FRANCE, "", "plip");
+            new DaoTranslation(fred, null, description, Locale.FRANCE, "", "plip");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            new DaoTranslation(fred, description, Locale.FRANCE, "plop", null);
+            new DaoTranslation(fred, null, description, Locale.FRANCE, "plop", null);
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            new DaoTranslation(fred, description, Locale.FRANCE, null, "plip");
+            new DaoTranslation(fred, null, description, Locale.FRANCE, null, "plip");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            new DaoTranslation(fred, description, null, "plop", "plip");
+            new DaoTranslation(fred, null, description, null, "plop", "plip");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            new DaoTranslation(fred, null, Locale.FRANCE, "plop", "plip");
+            new DaoTranslation(fred, null, null, Locale.FRANCE, "plop", "plip");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            new DaoTranslation(null, description, Locale.FRANCE, "plop", "plip");
+            new DaoTranslation(null, null, description, Locale.FRANCE, "plop", "plip");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
@@ -55,11 +55,11 @@ public class DaoTranslationTest extends DataTestUnit {
     }
 
     public void testUniqunessOfTranslation() {
-        final DaoDescription description = DaoDescription.createAndPersist(yo, Locale.ENGLISH, "English title", "English body");
+        final DaoDescription description = DaoDescription.createAndPersist(yo, null, Locale.ENGLISH, "English title", "English body");
 
-        description.addTranslation(new DaoTranslation(fred, description, Locale.FRANCE, "plop", "plip"));
+        description.addTranslation(new DaoTranslation(fred, null, description, Locale.FRANCE, "plop", "plip"));
         try {
-            description.addTranslation(new DaoTranslation(yo, description, Locale.FRANCE, "plup", "plyp"));
+            description.addTranslation(new DaoTranslation(yo, null, description, Locale.FRANCE, "plup", "plyp"));
 
             SessionManager.endWorkUnitAndFlush();
             fail();

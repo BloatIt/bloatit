@@ -32,8 +32,10 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     public void testCreate() {
         final Feature feature = FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                                         null,
                                                                                          DaoDescription.createAndPersist(tomAuthToken.getMember()
                                                                                                                                      .getDao(),
+                                                                                                                         null,
                                                                                                                          Locale.FRANCE,
                                                                                                                          "title",
                                                                                                                          "description"),
@@ -44,7 +46,9 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     private Feature createFeatureByThomas() {
         return FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                        null,
                                                                         DaoDescription.createAndPersist(tomAuthToken.getMember().getDao(),
+                                                                                                        null,
                                                                                                         Locale.FRANCE,
                                                                                                         "title",
                                                                                                         "description"),
@@ -53,6 +57,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     public void testFeature() {
         final Feature feature = new FeatureImplementation(tomAuthToken.getMember(),
+                                                          null,
                                                           Locale.FRANCE,
                                                           "title",
                                                           "Description",
@@ -252,7 +257,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         try {
             feature.authenticate(fredAuthToken);
-            feature.addOffer(fredAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+            feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
@@ -283,7 +288,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
         feature.authenticate(tomAuthToken);
-        feature.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
         feature.authenticate(yoAuthToken);
@@ -308,7 +313,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         feature.authenticate(tomAuthToken);
 
-        feature.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
         assertNotNull(feature.getSelectedOffer());
@@ -372,7 +377,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         feature.authenticate(tomAuthToken);
 
-        feature.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
 
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
@@ -419,12 +424,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         Feature feature = createFeatureByThomas();
 
         feature.authenticate(tomAuthToken);
-        final Offer offer = feature.addOffer(tomAuthToken.getMember(),
-                                             BigDecimal.TEN,
-                                             "description",
-                                             Locale.FRENCH,
-                                             DateUtils.tomorrow(),
-                                             DateUtils.SECOND_PER_WEEK);
+        final Offer offer = feature.addOffer(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
 
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);

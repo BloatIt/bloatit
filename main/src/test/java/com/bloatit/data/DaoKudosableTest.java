@@ -9,9 +9,9 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 public class DaoKudosableTest extends TestCase {
 
     public void testAddKudos() {
-        feature.addKudos(fred, 12);
-        feature.addKudos(yo, -12);
-        feature.addKudos(tom, 42);
+        feature.addKudos(fred, null, 12);
+        feature.addKudos(yo, null, -12);
+        feature.addKudos(tom, null, 42);
     }
 
     private DaoMember yo;
@@ -45,13 +45,15 @@ public class DaoKudosableTest extends TestCase {
             DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED).addMember(yo, true);
         }
 
-        final DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
-        project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
+        final DaoSoftware project = DaoSoftware.createAndPersist("VLC",
+                                                                 DaoDescription.createAndPersist(fred, null, Locale.FRANCE, "title", "descrip"));
+        project.setImage(DaoFileMetadata.createAndPersist(fred, null, null, "/dev/", "null", FileType.JPG, 12));
 
-        feature = DaoFeature.createAndPersist(yo, DaoDescription.createAndPersist(yo,
-                                                                                  new Locale("fr"),
-                                                                                  "Ma super demande !",
-                                                                                  "Ceci est la descption de ma demande :) "), project);
+        feature = DaoFeature.createAndPersist(yo, null, DaoDescription.createAndPersist(yo,
+                                                                                        null,
+                                                                                        new Locale("fr"),
+                                                                                        "Ma super demande !",
+                                                                                        "Ceci est la descption de ma demande :) "), project);
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();

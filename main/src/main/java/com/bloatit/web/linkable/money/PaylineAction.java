@@ -48,7 +48,7 @@ public final class PaylineAction extends LoggedAction {
             Reponse reponse;
             try {
 
-                reponse = payline.doPayment(process.getAmount(), cancelUrl, returnUrl, notificationUrl);
+                reponse = payline.doPayment(process.getActor(), process.getAmount(), cancelUrl, returnUrl, notificationUrl);
                 SessionManager.storeTemporarySession(reponse.getToken(), session);
 
                 if (reponse.isAccepted()) {

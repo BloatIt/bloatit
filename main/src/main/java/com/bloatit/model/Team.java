@@ -117,10 +117,16 @@ public final class Team extends Actor<DaoTeam> {
         return getDao().getDescription();
     }
 
+    @Override
+    public String getDisplayName() throws UnauthorizedOperationException {
+        return getLogin();
+    }
+
     public EnumSet<UserTeamRight> getUserTeamRight(final Member member) {
         return getDao().getUserTeamRight(member.getDao());
     }
 
+    @Override
     public FileMetadata getAvatar() {
         return FileMetadata.create(getDao().getAvatar());
     }

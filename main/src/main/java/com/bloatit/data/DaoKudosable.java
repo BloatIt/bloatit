@@ -101,10 +101,10 @@ public abstract class DaoKudosable extends DaoUserContent {
      * initial state is PENDING, and popularity is 0.
      * 
      * @param member the author.
-     * @see DaoUserContent#DaoUserContent(DaoMember)
+     * @see DaoUserContent#DaoUserContent(DaoMember, DaoTeam)
      */
-    public DaoKudosable(final DaoMember member) {
-        super(member);
+    public DaoKudosable(final DaoMember member, final DaoTeam team) {
+        super(member, team);
         this.popularity = 0;
         setState(PopularityState.PENDING);
         this.isPopularityLocked = false;
@@ -115,8 +115,8 @@ public abstract class DaoKudosable extends DaoUserContent {
      * 
      * @return the new popularity
      */
-    public int addKudos(final DaoMember member, final int value) {
-        this.kudos.add(new DaoKudos(member, value, this));
+    public int addKudos(final DaoMember member, final DaoTeam team, final int value) {
+        this.kudos.add(new DaoKudos(member, team, value, this));
         this.popularity += value;
         return this.popularity;
     }

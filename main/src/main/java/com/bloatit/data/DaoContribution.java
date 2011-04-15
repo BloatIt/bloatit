@@ -46,7 +46,7 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class DaoContribution extends DaoUserContent {
-    protected static final int COMMENT_MAX_LENGTH = 144;
+    protected static final int COMMENT_MAX_LENGTH = 140;
 
     /**
      * The state of a contribution should follow the state of the associated
@@ -81,7 +81,6 @@ public class DaoContribution extends DaoUserContent {
      */
     @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST)
     // TODO add a nullable contribution into daoTransaction to have a mapped by
-    // ?
     private final List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
 
     @Basic(optional = false)
@@ -94,8 +93,9 @@ public class DaoContribution extends DaoUserContent {
      * Create a new contribution. Update the internal account of the author
      * (block the value that is reserved to this contribution)
      * 
-     * @param member the person making the contribution. (Use DaoUserContent#setAsTeam() to make
-     *            a contribution in the name of team)
+     * @param member the person making the contribution. (Use
+     *            DaoUserContent#setAsTeam() to make a contribution in the name
+     *            of team)
      * @param feature the feature on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
@@ -104,8 +104,8 @@ public class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if the account of "member" has not enough
      *             money in it.
      */
-    public DaoContribution(final DaoMember member, final DaoFeature feature, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
-        super(member);
+    public DaoContribution(final DaoMember member, final DaoTeam team, final DaoFeature feature, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+        super(member, team);
         if (feature == null) {
             throw new NonOptionalParameterException();
         }

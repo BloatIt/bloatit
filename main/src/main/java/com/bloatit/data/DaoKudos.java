@@ -57,8 +57,8 @@ public class DaoKudos extends DaoUserContent {
      * @param member is the person creating the kudos.
      * @param value is value of the kudos.
      */
-    public DaoKudos(final DaoMember member, final int value, final DaoKudosable kudosable) {
-        super(member);
+    public DaoKudos(final DaoMember member, final DaoTeam team, final int value, final DaoKudosable kudosable) {
+        super(member, team);
         this.value = value;
         this.kudosable = kudosable;
     }

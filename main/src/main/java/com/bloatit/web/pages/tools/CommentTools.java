@@ -2,12 +2,10 @@ package com.bloatit.web.pages.tools;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
-import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
@@ -16,17 +14,12 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRendere
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.web.HtmlTools;
+import com.bloatit.web.components.KudosableAuthorBlocck;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
-import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.PopularityVoteActionUrl;
 
 public class CommentTools {
-
-    private static final int NB_COLUMNS = 80;
-    private static final int NB_ROWS = 10;
 
     public static XmlNode generateCommentList(final PageIterable<Comment> comments) {
         final PlaceHolderElement ph = new PlaceHolderElement();
@@ -54,72 +47,8 @@ public class CommentTools {
                 commentBlock.add(attachmentPara);
             }
 
-            final HtmlDiv commentInfo = new HtmlDiv("comment_info");
-            commentBlock.add(commentInfo);
+            commentBlock.add(new KudosableAuthorBlocck(comment));
             commentBlock.add(new HtmlClearer());
-
-            commentInfo.addText(Context.tr("Created by "));
-
-            try {
-                final MemberPageUrl memberUrl = new MemberPageUrl(comment.getMember());
-                commentInfo.add(memberUrl.getHtmlLink(comment.getMember().getDisplayName()));
-            } catch (final UnauthorizedOperationException e1) {
-                // Nothing.
-            }
-
-            commentInfo.addText(" – ");
-
-            final HtmlSpan dateSpan = new HtmlSpan("comment_date");
-            dateSpan.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
-            commentInfo.add(dateSpan);
-
-            commentInfo.addText(" – ");
-
-            // ////////////////////
-            // Popularity
-            final HtmlSpan commentPopularity = new HtmlSpan("comment_populatity");
-            {
-
-                commentPopularity.addText(Context.tr("Popularity: {0}", HtmlTools.compressKarma(comment.getPopularity())));
-
-                if (!comment.isOwner()) {
-                    final int vote = comment.getUserVoteValue();
-                    if (vote == 0) {
-                        commentPopularity.addText(" (");
-
-                        // Usefull
-                        final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(comment, true);
-                        final HtmlLink usefullLink = usefullUrl.getHtmlLink(Context.tr("Usefull"));
-                        usefullLink.setCssClass("usefull");
-
-                        // Useless
-                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(comment, false);
-                        final HtmlLink uselessLink = uselessUrl.getHtmlLink(Context.tr("Useless"));
-                        uselessLink.setCssClass("useless");
-
-                        commentPopularity.add(usefullLink);
-                        commentPopularity.addText(" – ");
-                        commentPopularity.add(uselessLink);
-
-                        commentPopularity.addText(")");
-                    } else {
-                        // Already voted
-                        final HtmlSpan voted = new HtmlSpan("comment_voted");
-                        {
-                            if (vote > 0) {
-                                voted.addText("+" + vote);
-                                voted.setCssClass("comment_voted usefull");
-                            } else {
-                                voted.addText("−" + Math.abs(vote));
-                                voted.setCssClass("comment_voted useless");
-                            }
-                        }
-                        commentPopularity.add(voted);
-                    }
-                }
-
-            }
-            commentInfo.add(commentPopularity);
 
             // Display child elements
             for (final Comment childComment : comment.getChildren()) {

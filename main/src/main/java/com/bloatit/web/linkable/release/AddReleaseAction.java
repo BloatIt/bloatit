@@ -11,13 +11,11 @@
  */
 package com.bloatit.web.linkable.release;
 
-import java.util.Locale;
-
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -25,46 +23,26 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.model.Team;
+import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.AddReleaseActionUrl;
 
 /**
  * A response to a form used to create a new feature
  */
 @ParamContainer("release/doadd")
-public final class AddReleaseAction extends LoggedAction {
+public final class AddReleaseAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."), //
-    optionalErrorMsg = @tr("You forgot to write a description"))
+                     optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
-
-    @ParamConstraint(optionalErrorMsg = @tr("You forgot the attachment file."))
-    @RequestParam(role = Role.POST)
-    private final String attachedfile;
-
-    @Optional
-    @RequestParam(name = "attachedfile/filename", role = Role.POST)
-    private final String attachedfileFileName;
-
-    @SuppressWarnings("unused")
-    @Optional
-    @RequestParam(name = "attachedfile/contenttype", role = Role.POST)
-    private final String attachedfileContentType;
-
-    @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "2", minErrorMsg = @tr("Are you sure this is a ISO language code"), //
-    max = "2", maxErrorMsg = @tr("Are you sure this is a ISO language code"), //
-    optionalErrorMsg = @tr("Language code is not optional. You are messing up with our web site..."))
-    private final String lang;
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(min = "1", minErrorMsg = @tr("The version should be something like ''1.2.3''."), //
-    optionalErrorMsg = @tr("You forgot to write a version."))
+                     optionalErrorMsg = @tr("You forgot to write a version."))
     private final String version;
 
     @RequestParam
@@ -73,16 +51,25 @@ public final class AddReleaseAction extends LoggedAction {
     private final AddReleaseActionUrl url;
 
     public AddReleaseAction(final AddReleaseActionUrl url) {
-        super(url);
+        super(url, UserTeamRight.TALK);
         this.url = url;
 
         this.description = url.getDescription();
-        this.attachedfile = url.getAttachedfile();
-        this.attachedfileContentType = url.getAttachedfileContentType();
-        this.attachedfileFileName = url.getAttachedfileFileName();
-        this.lang = url.getLang();
         this.milestone = url.getMilestone();
         this.version = url.getVersion();
+    }
+
+    @Override
+    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+        try {
+            milestone.addRelease(description, version, getLocale(), getFile());
+            session.notifyGood(Context.tr("Release created successfully!"));
+
+        } catch (final UnauthorizedOperationException e) {
+            session.notifyError(Context.tr("Failed to create the release."));
+            new ShallNotPassException("Fail to create a release.", e);
+        }
+        return session.pickPreferredPage();
     }
 
     @Override
@@ -92,28 +79,13 @@ public final class AddReleaseAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted(final Member me) {
-        final Locale langLocale = new Locale(lang);
-
-        final FileConstraintChecker fcc = new FileConstraintChecker(attachedfile);
+    protected boolean verifyFile(final String filename) {
+        final FileConstraintChecker fcc = new FileConstraintChecker(filename);
         if (!fcc.exists() || !fcc.isFileSmaller(1, SizeUnit.GBYTE)) {
             session.notifyBad(Context.tr("File format error: Your file is to big."));
-            return Context.getSession().pickPreferredPage();
+            return false;
         }
-
-        final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
-                                                                              attachedfile,
-                                                                              attachedfileFileName,
-                                                                              null);
-        try {
-            milestone.addRelease(description, version, langLocale, fileImage);
-            session.notifyGood(Context.tr("Release created successfuly!"));
-
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("Failed to create the release."));
-            new ShallNotPassException("Fail to create a release.", e);
-        }
-        return session.pickPreferredPage();
+        return true;
     }
 
     @Override
@@ -127,11 +99,8 @@ public final class AddReleaseAction extends LoggedAction {
     }
 
     @Override
-    protected void transmitParameters() {
+    protected void doTransmitParameters() {
         session.addParameter(url.getDescriptionParameter());
-        session.addParameter(url.getAttachedfileContentTypeParameter());
-        session.addParameter(url.getAttachedfileFileNameParameter());
-        session.addParameter(url.getAttachedfileParameter());
-        session.addParameter(url.getLangParameter());
     }
+
 }

@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
@@ -27,6 +28,7 @@ import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
@@ -38,6 +40,7 @@ import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Creator;
+import com.bloatit.model.DaoGetter;
 import com.bloatit.model.Description;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Kudosable;
@@ -47,6 +50,7 @@ import com.bloatit.model.ModelConfiguration;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
 import com.bloatit.model.Software;
+import com.bloatit.model.Team;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
@@ -103,9 +107,15 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      *            to make sure you can create a new feature.
      * @see DaoFeature
      */
-    public FeatureImplementation(final Member author, final Locale locale, final String title, final String description, final Software software) {
+    public FeatureImplementation(final Member author,
+                                 final Team team,
+                                 final Locale locale,
+                                 final String title,
+                                 final String description,
+                                 final Software software) {
         this(DaoFeature.createAndPersist(author.getDao(),
-                                         DaoDescription.createAndPersist(author.getDao(), locale, title, description),
+                                         team.getDao(),
+                                         DaoDescription.createAndPersist(author.getDao(), team.getDao(), locale, title, description),
                                          software.getDao()));
     }
 
@@ -173,20 +183,36 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public Contribution addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         tryAccess(new FeatureRight.Contribute(), Action.WRITE);
-        // For exception safety  keep the order.
-        final DaoContribution contribution = getDao().addContribution(getAuthToken().getMember().getDao(), amount, comment);
+        // For exception safety keep the order.
+        if (getAuthToken().getAsTeam() != null) {
+            if (getAuthToken().getAsTeam().hasTeamPrivilege(UserTeamRight.BANK)) {
+                Log.model().trace("Doing a contribution in the name of a team: " + getAuthToken().getAsTeam().getId());
+            } else {
+                throw new UnauthorizedOperationException(SpecialCode.TEAM_CONTRIBUTION_WITHOUT_BANK);
+            }
+        }
+        final DaoContribution contribution = getDao().addContribution(getAuthToken().getMember().getDao(),
+                                                                      DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                                      amount,
+                                                                      comment);
         setStateObject(getStateObject().eventAddContribution());
         return Contribution.create(contribution);
     }
 
     @Override
-    public Offer addOffer(final Member member,
-                          final BigDecimal amount,
+    public Offer addOffer(final BigDecimal amount,
                           final String description,
                           final Locale local,
                           final Date dateExpire,
                           final int secondsBeforeValidation) throws UnauthorizedOperationException {
-        final Offer offer = new Offer(member, this, amount, description, local, dateExpire, secondsBeforeValidation);
+        final Offer offer = new Offer(getAuthToken().getMember(),
+                                      getAuthToken().getAsTeam(),
+                                      this,
+                                      amount,
+                                      description,
+                                      local,
+                                      dateExpire,
+                                      secondsBeforeValidation);
         return doAddOffer(offer);
     }
 
@@ -225,7 +251,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new FeatureRight.Comment(), Action.WRITE);
-        final DaoComment comment = DaoComment.createAndPersist(this.getDao(), getAuthToken().getMember().getDao(), text);
+        final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
+                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               getAuthToken().getMember().getDao(),
+                                                               text);
         getDao().addComment(comment);
         return Comment.create(comment);
     }
@@ -600,7 +629,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @see com.bloatit.model.Feature#getMemberProgression()
      */
     @Override
-    public float getMemberProgression(final Actor author) throws UnauthorizedOperationException {
+    public float getMemberProgression(final Actor<?> author) throws UnauthorizedOperationException {
         tryAccess(new FeatureRight.Contribute(), Action.READ);
 
         final PageIterable<Contribution> contributions = getContributions();

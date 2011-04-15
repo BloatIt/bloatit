@@ -81,7 +81,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *             property.
      * @see #authenticate(AuthToken)
      */
-    Contribution addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
+    Contribution addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
     
     /**
      * Add a new Offer on this Feature. You can do this operation when you are
@@ -100,7 +100,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *             {@link FeatureState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
-    Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
+    Offer addOffer(BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
             throws UnauthorizedOperationException;
 
     /**
@@ -188,7 +188,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *             property.
      * @see #authenticate(AuthToken)
      */
-    float getMemberProgression(Actor author) throws UnauthorizedOperationException;
+    float getMemberProgression(Actor<?> author) throws UnauthorizedOperationException;
 
     /**
      * Return the progression due by the amount in percent. It compare the
@@ -300,5 +300,4 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
     void computeSelectedOffer() throws UnauthorizedOperationException;
 
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
-
 }

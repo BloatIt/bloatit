@@ -51,8 +51,8 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see DaoFileMetadata#createAndPersist(com.bloatit.data.DaoMember,
      *      DaoUserContent, String, String, FileType, int)
      */
-    public FileMetadata(final Member author, final String filename, final String url, final FileType type, final int size) {
-        this(DaoFileMetadata.createAndPersist(author.getDao(), null, filename, url, type, size));
+    public FileMetadata(final Member author, final Team team, final String filename, final String url, final FileType type, final int size) {
+        this(DaoFileMetadata.createAndPersist(author.getDao(), DaoGetter.getTeam(team), null, filename, url, type, size));
     }
 
     /**

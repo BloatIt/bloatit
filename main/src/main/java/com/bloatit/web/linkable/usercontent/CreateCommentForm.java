@@ -1,5 +1,6 @@
 package com.bloatit.web.linkable.usercontent;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -23,6 +24,13 @@ public class CreateCommentForm extends HtmlDiv {
                                                            NB_COLUMNS);
         form.add(commentInput);
         commentInput.setComment(Context.tr("Add a new comment. If you want to reply to a previous comment, use the reply link."));
+
+        // TODO remove dependence to Context.getSession()
+        form.add(new AsTeamField(targetUrl,
+                                 Context.getSession().getAuthToken().getMember(),
+                                 UserTeamRight.TALK,
+                                 Context.tr("In the name of"),
+                                 Context.tr("Write this comment in the name of this team.")));
 
         form.enableFileUpload();
         form.add(new AttachmentField(targetUrl,

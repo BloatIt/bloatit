@@ -148,9 +148,7 @@ public final class ContributePage extends CreateUserContentPage {
 
     public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
-
         breadcrumb.pushLink(new ContributePageUrl(process).getHtmlLink(tr("Contribute")));
-
         return breadcrumb;
     }
 }

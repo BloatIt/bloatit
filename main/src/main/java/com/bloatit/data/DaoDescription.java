@@ -68,9 +68,13 @@ public class DaoDescription extends DaoIdentifiable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoTranslation> translations = new ArrayList<DaoTranslation>(0);
 
-    public static DaoDescription createAndPersist(final DaoMember member, final Locale locale, final String title, final String description) {
+    public static DaoDescription createAndPersist(final DaoMember member,
+                                                  final DaoTeam team,
+                                                  final Locale locale,
+                                                  final String title,
+                                                  final String description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoDescription descr = new DaoDescription(member, locale, title, description);
+        final DaoDescription descr = new DaoDescription(member, team, locale, title, description);
         try {
             session.save(descr);
         } catch (final HibernateException e) {
@@ -90,10 +94,10 @@ public class DaoDescription extends DaoIdentifiable {
      * @param description is the main text of the description (the actual
      *            description)
      */
-    private DaoDescription(final DaoMember member, final Locale locale, final String title, final String description) {
+    private DaoDescription(final DaoMember member, final DaoTeam team, final Locale locale, final String title, final String description) {
         super();
         setDefaultLocale(locale);
-        this.translations.add(new DaoTranslation(member, this, locale, title, description));
+        this.translations.add(new DaoTranslation(member, team, this, locale, title, description));
     }
 
     /**

@@ -101,15 +101,16 @@ public class Milestone extends Identifiable<DaoMilestone> {
     /**
      * Adds the bug.
      * 
-     * @param member the author of the bug
      * @param title the title of the bug
      * @param description the description
      * @param locale the locale in which it is written
      * @param errorLevel the error level of the bug
      * @return the bug added in this milestone.
+     * @throws UnauthorizedOperationException
      */
-    public Bug addBug(final Member member, final String title, final String description, final Locale locale, final Level errorLevel) {
-        final Bug bug = new Bug(member, this, title, description, locale, errorLevel);
+    public Bug addBug(final String title, final String description, final Locale locale, final Level errorLevel)
+                                                                                                                throws UnauthorizedOperationException {
+        final Bug bug = new Bug(getAuthToken().getMember(), getAuthToken().getAsTeam(), this, title, description, locale, errorLevel);
         getDao().addBug(bug.getDao());
         return bug;
     }
@@ -130,9 +131,10 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * 
      * @throws UnauthorizedOperationException
      */
-    public void addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
-            throws UnauthorizedOperationException {
-        final Release release = new Release(getOffer().getMember(), this, description, version, locale);
+    public Release
+            addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
+                                                                                                                    throws UnauthorizedOperationException {
+        final Release release = new Release(getOffer().getMember(), getAuthToken().getAsTeam(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
         }
@@ -141,6 +143,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
         // release.setAsTeam(getOffer().getAsTeam());
         // }
         getDao().addRelease(release.getDao());
+        return release;
 
     }
 

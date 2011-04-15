@@ -78,38 +78,40 @@ public class SimpleTestDB {
             e.printStackTrace();
         }
 
-        project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"));
-        project.setImage(DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
+        project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(tom, null, Locale.FRANCE, "title", "descrip"));
 
         feature = DaoFeature.createAndPersist(yo,
-                                              DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
+                                              null,
+                                              DaoDescription.createAndPersist(yo, null, new Locale("fr"), "Mon titre", "Ceci est une description"),
                                               project);
-        final DaoComment c1 = DaoComment.createAndPersist(feature, tom, "Pas tres constructif hein !");
-        final DaoComment c2 = DaoComment.createAndPersist(feature, fred, "Plop");
-        final DaoComment c21 = DaoComment.createAndPersist(c2, tom, "plup");
-        final DaoComment c22 = DaoComment.createAndPersist(c2, tom, "CCC-Combo Breaker ;) ");
-        final DaoComment c23 = DaoComment.createAndPersist(c2, fred, "Plip");
+        
+        project.setImage(DaoFileMetadata.createAndPersist(tom, null, feature, "/dev/", "null", FileType.JPG, 12));
+        final DaoComment c1 = DaoComment.createAndPersist(feature, null, tom, "Pas tres constructif hein !");
+        final DaoComment c2 = DaoComment.createAndPersist(feature, null, fred, "Plop");
+        final DaoComment c21 = DaoComment.createAndPersist(c2, null, tom, "plup");
+        final DaoComment c22 = DaoComment.createAndPersist(c2, null, tom, "CCC-Combo Breaker ;) ");
+        final DaoComment c23 = DaoComment.createAndPersist(c2, null, fred, "Plip");
         feature.addComment(c1);
         feature.addComment(c2);
-        c1.addChildComment(DaoComment.createAndPersist(c1, yo, "Je sais c'est just un test"));
+        c1.addChildComment(DaoComment.createAndPersist(c1, null, yo, "Je sais c'est just un test"));
         c2.addChildComment(c21);
         c2.addChildComment(c22);
         c2.addChildComment(c23);
 
-        c22.addKudos(yo, 12);
-        c22.addKudos(fred, 22);
-        c2.addKudos(tom, 42);
-        c1.addKudos(tom, -12);
-        c21.addKudos(fred, -1);
+        c22.addKudos(yo, null, 12);
+        c22.addKudos(fred, null, 22);
+        c2.addKudos(tom, null, 42);
+        c1.addKudos(tom, null, -12);
+        c21.addKudos(fred, null, -1);
 
         try {
-            feature.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
-            feature.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
+            feature.addContribution(yo, null, new BigDecimal("120"), "I'm so generous too");
+            feature.addContribution(tom, null, new BigDecimal("121"), "I'm so generous too");
 
             feature.addOffer(new DaoOffer(fred,
-                                          feature,
+                                          null, feature,
                                           new BigDecimal("200"),
-                                          DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
+                                          DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Mon Offre", "Voici la description"),
                                           DateUtils.tomorrow(),
                                           0));
 
@@ -123,17 +125,17 @@ public class SimpleTestDB {
                 }
             }
 
-            final DaoFeature feature1 = DaoFeature.createAndPersist(fred, DaoDescription.createAndPersist(fred,
-                                                                                                          new Locale("en"),
+            final DaoFeature feature1 = DaoFeature.createAndPersist(fred, null, DaoDescription.createAndPersist(fred,
+                                                                                                          null, new Locale("en"),
                                                                                                           "I try it in English",
                                                                                                           "Hello world"), project);
             feature1.getDescription().addTranslation(new DaoTranslation(tom,
-                                                                        feature1.getDescription(),
+                                                                        null, feature1.getDescription(),
                                                                         new Locale("fr"),
                                                                         "J'essaie en anglais",
                                                                         "Salut le monde"));
-            feature1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
-            feature1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
+            feature1.addContribution(yo, null, new BigDecimal("12"), "I'm so generous too");
+            feature1.addContribution(fred, null, new BigDecimal("11"), "I'm so generous too");
         } catch (final NotEnoughMoneyException e1) {
             e1.printStackTrace();
         }

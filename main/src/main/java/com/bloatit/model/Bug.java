@@ -87,8 +87,14 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
-    Bug(final Member member, final Milestone milestone, final String title, final String description, final Locale locale, final Level errorLevel) {
-        super(DaoBug.createAndPersist(member.getDao(), milestone.getDao(), title, description, locale, errorLevel));
+    Bug(final Member member,
+        final Team team,
+        final Milestone milestone,
+        final String title,
+        final String description,
+        final Locale locale,
+        final Level errorLevel) {
+        super(DaoBug.createAndPersist(member.getDao(), DaoGetter.getTeam(team), milestone.getDao(), title, description, locale, errorLevel));
     }
 
     /**
@@ -222,7 +228,10 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         // TODO: access right
         // tryAccess(new BugRight.Comment(), Action.WRITE);
-        final DaoComment comment = DaoComment.createAndPersist(this.getDao(), getAuthToken().getMember().getDao(), text);
+        final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
+                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               getAuthToken().getMember().getDao(),
+                                                               text);
         getDao().addComment(comment);
         return Comment.create(comment);
     }

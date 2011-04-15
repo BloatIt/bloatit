@@ -12,7 +12,9 @@ public class DaoIdentifiableListFactoryTest extends DataTestUnit {
     public void testDaoIdentifiableListFactory() {
 
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
+                                                               null,
                                                                DaoDescription.createAndPersist(yo,
+                                                                                               null,
                                                                                                new Locale("fr"),
                                                                                                "Ma super demande !",
                                                                                                "Ceci est la descption de ma demande :) "),

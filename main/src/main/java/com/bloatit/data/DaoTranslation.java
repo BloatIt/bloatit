@@ -70,8 +70,8 @@ public class DaoTranslation extends DaoKudosable {
      * @param text
      * @throws NonOptionalParameterException if any of the field is null
      */
-    public DaoTranslation(final DaoMember member, final DaoDescription description, final Locale locale, final String title, final String text) {
-        super(member);
+    public DaoTranslation(final DaoMember member, final DaoTeam team, final DaoDescription description, final Locale locale, final String title, final String text) {
+        super(member, team);
         if (description == null || locale == null || title == null || text == null) {
             throw new NonOptionalParameterException();
         }

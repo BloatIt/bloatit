@@ -37,8 +37,8 @@ import com.bloatit.web.url.FeaturePageUrl;
 public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @ParamConstraint(max = "80", maxErrorMsg = @tr("The title must be 80 chars length max."), //
-    min = "10", minErrorMsg = @tr("The title must have at least 10 chars."), //
-    optionalErrorMsg = @tr("Error you forgot to write a title"))
+                     min = "10", minErrorMsg = @tr("The title must have at least 10 chars."), //
+                     optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
 
     @RequestParam(role = Role.POST)
@@ -73,7 +73,7 @@ public final class CreateFeatureAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-        final Feature feature = FeatureFactory.createFeature(me, getLocale(), description, specification, software);
+        final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
         propagateAsTeamIfPossible(feature);
         propagateAttachedFileIfPossible(feature);
         return new FeaturePageUrl(feature);

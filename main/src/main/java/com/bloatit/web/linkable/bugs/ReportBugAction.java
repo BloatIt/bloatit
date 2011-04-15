@@ -12,6 +12,8 @@
 package com.bloatit.web.linkable.bugs;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -69,10 +71,15 @@ public final class ReportBugAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-        final Bug bug = milestone.addBug(me, title, description, getLocale(), level.getLevel());
-        propagateAsTeamIfPossible(bug);
-        propagateAttachedFileIfPossible(bug);
-        return new BugPageUrl(bug);
+        Bug bug;
+        try {
+            bug = milestone.addBug(title, description, getLocale(), level.getLevel());
+            propagateAsTeamIfPossible(bug);
+            propagateAttachedFileIfPossible(bug);
+            return new BugPageUrl(bug);
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException(e);
+        }
     }
 
     @Override

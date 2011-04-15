@@ -30,6 +30,7 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.lists.FileMetadataList;
 
 /**
@@ -70,14 +71,18 @@ public final class FileMetadataManager {
      *            {@link FileMetadata}.
      * @return the newly created {@link FileMetadata}
      */
-    public static FileMetadata createFromTempFile(final Member author, final String tempFileUrl, final String filename, final String description) {
+    public static FileMetadata createFromTempFile(final Member author,
+                                                  final Team team,
+                                                  final String tempFileUrl,
+                                                  final String filename,
+                                                  final String description) {
         createWipDirectory();
 
         final File tempFile = new File(tempFileUrl);
         final File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
         tempFile.renameTo(storedFile);
 
-        return createFileMetadata(author, filename, description, storedFile);
+        return createFileMetadata(author, team, filename, description, storedFile);
     }
 
     /**
@@ -92,7 +97,7 @@ public final class FileMetadataManager {
     }
 
     /**
-     * Same as {@link #createFromTempFile(Member, String, String, String)} but
+     * Same as {@link #createFromTempFile(Member, Team, String, String, String)} but
      * with a copy.
      * 
      * @param author the author of the new {@link FileMetadata}
@@ -103,7 +108,11 @@ public final class FileMetadataManager {
      *            {@link FileMetadata}.
      * @return the newly created {@link FileMetadata}
      */
-    public static FileMetadata createFromLocalFile(final Member author, final String path, final String name, final String description) {
+    public static FileMetadata createFromLocalFile(final Member author,
+                                                   final Team team,
+                                                   final String path,
+                                                   final String name,
+                                                   final String description) {
         createWipDirectory();
 
         final File tempFile = new File(path);
@@ -112,7 +121,7 @@ public final class FileMetadataManager {
         try {
             copyFile(tempFile, storedFile);
 
-            return createFileMetadata(author, name, description, storedFile);
+            return createFileMetadata(author, team, name, description, storedFile);
 
         } catch (final IOException e) {
             Log.model().error("Copy failed", e);
@@ -130,7 +139,11 @@ public final class FileMetadataManager {
      * @param storedFile
      * @return
      */
-    private static FileMetadata createFileMetadata(final Member author, final String name, final String description, final File storedFile) {
+    private static FileMetadata createFileMetadata(final Member author,
+                                                   final Team team,
+                                                   final String name,
+                                                   final String description,
+                                                   final File storedFile) {
         // TODO: improve mine type detection
         FileType type = FileType.UNKNOWN;
         if (storedFile.getName().endsWith(".txt")) {
@@ -155,7 +168,7 @@ public final class FileMetadataManager {
             type = FileType.SVG;
         }
 
-        final FileMetadata file = new FileMetadata(author, name, storedFile.getPath(), type, (int) storedFile.length());
+        final FileMetadata file = new FileMetadata(author, team, name, storedFile.getPath(), type, (int) storedFile.length());
         file.setShortDescription(description);
         return file;
     }

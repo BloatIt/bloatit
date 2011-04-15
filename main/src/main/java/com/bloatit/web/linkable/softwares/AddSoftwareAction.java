@@ -117,6 +117,7 @@ public final class AddSoftwareAction extends LoggedAction {
                 return Context.getSession().pickPreferredPage();
             }
             final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
+                                                                                  null,
                                                                                   image,
                                                                                   imageFileName,
                                                                                   "Image for the software '" + softwareName + "'");

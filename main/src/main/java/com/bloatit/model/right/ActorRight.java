@@ -16,6 +16,7 @@
 //
 package com.bloatit.model.right;
 
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.Actor;
 
 /**
@@ -35,24 +36,33 @@ public class ActorRight extends RightManager {
      * The Class ExternalAccount is a {@link Private} accessor for the
      * ExternalAccount property.
      */
-    public static class ExternalAccount extends Private {
-        // nothing this is just a rename.
+    public static class ExternalAccount extends Accessor {
+        @Override
+        protected final boolean can(final RestrictedInterface role, final Action action) {
+            return (role.isOwner() || role.hasTeamPrivilege(UserTeamRight.BANK)) && (action == Action.READ || action == Action.WRITE);
+        }
     }
 
     /**
      * The Class InternalAccount is a {@link Private} accessor for the
      * InternalAccount property.
      */
-    public static class InternalAccount extends Private {
-        // nothing this is just a rename.
+    public static class InternalAccount extends Accessor {
+        @Override
+        protected final boolean can(final RestrictedInterface role, final Action action) {
+            return (role.isOwner() || role.hasTeamPrivilege(UserTeamRight.BANK)) && (action == Action.READ || action == Action.WRITE);
+        }
     }
 
     /**
      * The Class BankTransaction is a {@link Private} accessor for the
      * BankTransaction property.
      */
-    public static class BankTransaction extends Private {
-        // nothing this is just a rename.
+    public static class BankTransaction extends Accessor {
+        @Override
+        protected final boolean can(final RestrictedInterface role, final Action action) {
+            return (role.isOwner() || role.hasTeamPrivilege(UserTeamRight.BANK)) && (action == Action.READ || action == Action.WRITE);
+        }
     }
 
     /**

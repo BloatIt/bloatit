@@ -90,8 +90,12 @@ public abstract class UserContentAction extends LoggedAction {
      * @return true if the propagation is done, else otherwise.
      */
     protected final boolean propagateAsTeamIfPossible(final UserContentInterface<?> content) {
+        return propagateAsTeamIfPossible(content, team);
+    }
+
+    protected final boolean propagateAsTeamIfPossible(final UserContentInterface<?> content, final Team team) {
         if (team != null) {
-            if (content.canAccessAsTeam(team) && content.hasTeamPrivilege(right)) {
+            if (content.canAccessAsTeam(team) && team.hasTeamPrivilege(right)) {
                 try {
                     content.setAsTeam(team);
                 } catch (final UnauthorizedOperationException e) {
@@ -108,7 +112,7 @@ public abstract class UserContentAction extends LoggedAction {
     protected final Url doProcessRestricted(final Member me) {
         if (attachment != null) {
             if (!isEmpty(attachmentFileName) && !isEmpty(attachmentDescription) && verifyFile(attachment)) {
-                file = FileMetadataManager.createFromTempFile(me, attachment, attachmentFileName, attachmentDescription);
+                file = FileMetadataManager.createFromTempFile(me, team, attachment, attachmentFileName, attachmentDescription);
             } else {
                 if (isEmpty(attachmentFileName)) {
                     session.notifyError(Context.tr("Filename is empty. Could you report that bug?"));
@@ -124,6 +128,7 @@ public abstract class UserContentAction extends LoggedAction {
                 session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
                 return doProcessErrors();
             }
+            session.getAuthToken().setAsTeam(team);
         }
         return doDoProcessRestricted(me, team);
     }

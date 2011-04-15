@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.Contribution;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.features.FeatureTabPane;
@@ -53,12 +52,10 @@ public final class ContributionAction extends UserContentAction {
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         try {
-            final Contribution contribution = process.getFeature().addContribution(process.getAmount(), process.getComment());
-            propagateAsTeamIfPossible(contribution);
-
+            process.getFeature().addContribution(process.getAmount(), process.getComment());
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
-                                                                                                 .getCurrency(process.getAmount())
-                                                                                                 .getLocaleString()));
+                                                                                                  .getCurrency(process.getAmount())
+                                                                                                  .getLocaleString()));
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());
             featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             process.close();

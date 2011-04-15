@@ -115,11 +115,11 @@ public class DaoOfferQuery extends DaoKudosableQuery<DaoOffer> {
     }
 
     public void withMilestonees() {
-        add(Restrictions.sizeGe("milestonees", 1));
+        add(Restrictions.sizeGe("milestones", 1));
     }
 
     public void withoutMilestonees() {
-        add(Restrictions.sizeEq("milestonees", 1));
+        add(Restrictions.sizeEq("milestones", 1));
     }
 
     public void hasExpired() {

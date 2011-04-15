@@ -107,7 +107,7 @@ public final class Loaders {
         if (WebProcess.class.isAssignableFrom(theClass)) {
             return (Loader<T>) new ToWebProcess();
         }
-        throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
+        throw new NotImplementedException("Cannot find a conversion class for: " + theClass);
     }
 
     /**

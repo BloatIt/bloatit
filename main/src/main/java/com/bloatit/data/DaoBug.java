@@ -95,12 +95,13 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     private BugState state;
 
     public DaoBug(final DaoMember member,
+                  final DaoTeam team,
                   final DaoMilestone milestone,
                   final String title,
                   final String description,
                   final Locale locale,
                   final Level level) {
-        super(member);
+        super(member, team);
         if (title == null || description == null || milestone == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
@@ -113,13 +114,14 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     public static DaoBug createAndPersist(final DaoMember member,
+                                          final DaoTeam team,
                                           final DaoMilestone milestone,
                                           final String title,
                                           final String description,
                                           final Locale locale,
                                           final Level level) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoBug bug = new DaoBug(member, milestone, title, description, locale, level);
+        final DaoBug bug = new DaoBug(member, team, milestone, title, description, locale, level);
         try {
             session.save(bug);
         } catch (final HibernateException e) {

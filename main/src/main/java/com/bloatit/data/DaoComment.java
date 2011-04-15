@@ -74,9 +74,9 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> children = new ArrayList<DaoComment>(0);
 
-    public static DaoComment createAndPersist(final DaoBug father, final DaoMember member, final String text) {
+    public static DaoComment createAndPersist(final DaoBug father, final DaoTeam team, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, team, member, text);
         try {
             session.save(comment);
         } catch (final HibernateException e) {
@@ -87,9 +87,9 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         return comment;
     }
 
-    public static DaoComment createAndPersist(final DaoFeature father, final DaoMember member, final String text) {
+    public static DaoComment createAndPersist(final DaoFeature father, final DaoTeam team, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, team, member, text);
         try {
             session.save(comment);
         } catch (final HibernateException e) {
@@ -100,9 +100,9 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         return comment;
     }
 
-    public static DaoComment createAndPersist(final DaoRelease father, final DaoMember member, final String text) {
+    public static DaoComment createAndPersist(final DaoRelease father, final DaoTeam team, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, team, member, text);
         try {
             session.save(comment);
         } catch (final HibernateException e) {
@@ -113,9 +113,9 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         return comment;
     }
 
-    public static DaoComment createAndPersist(final DaoComment father, final DaoMember member, final String text) {
+    public static DaoComment createAndPersist(final DaoComment father, final DaoTeam team, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(father, member, text);
+        final DaoComment comment = new DaoComment(father, team, member, text);
         try {
             session.save(comment);
         } catch (final HibernateException e) {
@@ -136,31 +136,31 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      * @throws NonOptionalParameterException if the text is null
      * @see DaoKudosable#DaoKudosable(DaoMember)
      */
-    private DaoComment(final DaoMember member, final String text) {
-        super(member);
+    private DaoComment(final DaoMember member, final DaoTeam team, final String text) {
+        super(member, team);
         if (text == null || text.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.text = text;
     }
 
-    private DaoComment(final DaoBug father, final DaoMember member, final String text) {
-        this(member, text);
+    private DaoComment(final DaoBug father, final DaoTeam team, final DaoMember member, final String text) {
+        this(member, team, text);
         this.bug = father;
     }
 
-    private DaoComment(final DaoFeature father, final DaoMember member, final String text) {
-        this(member, text);
+    private DaoComment(final DaoFeature father, final DaoTeam team, final DaoMember member, final String text) {
+        this(member, team, text);
         this.feature = father;
     }
 
-    private DaoComment(final DaoRelease father, final DaoMember member, final String text) {
-        this(member, text);
+    private DaoComment(final DaoRelease father, final DaoTeam team, final DaoMember member, final String text) {
+        this(member, team, text);
         this.release = father;
     }
 
-    private DaoComment(final DaoComment father, final DaoMember member, final String text) {
-        this(member, text);
+    private DaoComment(final DaoComment father, final DaoTeam team, final DaoMember member, final String text) {
+        this(member, team, text);
         this.father = father;
     }
 

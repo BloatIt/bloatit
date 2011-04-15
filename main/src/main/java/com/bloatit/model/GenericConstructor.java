@@ -1,5 +1,6 @@
 package com.bloatit.model;
 
+import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
@@ -51,6 +52,12 @@ public class GenericConstructor {
         if (clazz.equals(Member.class)) {
             return DaoMember.class;
         }
+        if (clazz.equals(Team.class)) {
+            return DaoTeam.class;
+        }
+        if (clazz.equals(Actor.class)) {
+            return DaoActor.class;
+        }
         if (clazz.equals(BankTransaction.class)) {
             return DaoBankTransaction.class;
         }
@@ -59,9 +66,6 @@ public class GenericConstructor {
         }
         if (clazz.equals(Description.class)) {
             return DaoDescription.class;
-        }
-        if (clazz.equals(Team.class)) {
-            return DaoTeam.class;
         }
         if (clazz.equals(HighlightFeature.class)) {
             return DaoHighlightFeature.class;

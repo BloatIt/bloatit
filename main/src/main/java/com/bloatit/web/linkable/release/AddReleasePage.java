@@ -19,7 +19,6 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
@@ -27,10 +26,9 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
-import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AddReleaseActionUrl;
@@ -40,7 +38,7 @@ import com.bloatit.web.url.AddReleasePageUrl;
  * Page that hosts the form to create a new feature
  */
 @ParamContainer("release/add")
-public final class AddReleasePage extends LoggedPage {
+public final class AddReleasePage extends CreateUserContentPage {
 
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
@@ -50,7 +48,7 @@ public final class AddReleasePage extends LoggedPage {
     private final AddReleasePageUrl url;
 
     public AddReleasePage(final AddReleasePageUrl url) {
-        super(url);
+        super(url, new AddReleaseActionUrl(url.getMilestone()));
         this.url = url;
         milestone = url.getMilestone();
     }
@@ -111,20 +109,14 @@ public final class AddReleasePage extends LoggedPage {
         form.add(descriptionInput);
 
         // Language
-        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
-        final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), tr("Language"));
-        languageInput.setDefaultValue(languageData.getSuggestedValue());
-        languageInput.addErrorMessages(languageData.getErrorMessages());
-        languageInput.setComment(tr("Language of the descriptions."));
-        form.add(languageInput);
+        addLanguageField(form, tr("Language"), tr("Language of the descriptions."));
 
         // attachment
-        final FieldData attachedFileData = doCreateUrl.getAttachedfileParameter().pickFieldData();
-        final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), tr("Attached file"));
-        attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
-        attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
-        attachedFileInput.setComment("You must attache a file. This is your release, it can take be a patch, a tar.gz etc. Maxiumum size is 1GB");
-        form.add(attachedFileInput);
+        addAddAttachmentField(form,
+                              tr("Attached file"),
+                              tr("Add here a file for your release."),
+                              tr("File description"),
+                              tr("Add a little description of the file."));
 
         form.add(new HtmlSubmit(tr("submit")));
 

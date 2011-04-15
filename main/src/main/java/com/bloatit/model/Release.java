@@ -30,8 +30,8 @@ public class Release extends UserContent<DaoRelease> {
         super(dao);
     }
 
-    Release(final Member member, final Milestone milestone, final String description, final String version, final Locale locale) {
-        this(DaoRelease.createAndPersist(member.getDao(), milestone.getDao(), description, version, locale));
+    Release(final Member member, final Team team, final Milestone milestone, final String description, final String version, final Locale locale) {
+        this(DaoRelease.createAndPersist(member.getDao(), DaoGetter.getTeam(team), milestone.getDao(), description, version, locale));
     }
 
     public Milestone getMilestone() {

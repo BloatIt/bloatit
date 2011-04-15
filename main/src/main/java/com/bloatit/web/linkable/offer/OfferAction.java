@@ -100,12 +100,8 @@ public final class OfferAction extends UserContentAction {
         try {
             Milestone constructingMilestone;
             if (draftOffer == null) {
-                constructingOffer = feature.addOffer(session.getAuthToken().getMember(),
-                                                     price,
-                                                     description,
-                                                     getLocale(),
-                                                     expiryDate.getJavaDate(),
-                                                     daysBeforeValidation * DateUtils.SECOND_PER_DAY);
+                constructingOffer = feature.addOffer(price, description, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
+                        * DateUtils.SECOND_PER_DAY);
                 propagateAsTeamIfPossible(constructingOffer);
                 constructingMilestone = constructingOffer.getMilestonees().iterator().next();
             } else {

@@ -93,7 +93,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     private void updateRights() {
         if (token == null) {
-            Log.model().debug("Try to authanticate with a null token.");
+            Log.model().debug("Try to authenticate with a null token.");
             owningState = OwningState.NOBODY;
             return;
         }

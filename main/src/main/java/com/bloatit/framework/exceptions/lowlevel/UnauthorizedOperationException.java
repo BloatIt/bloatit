@@ -80,6 +80,12 @@ public class UnauthorizedOperationException extends Exception {
         TEAM_NOT_PUBLIC,
 
         /**
+         * You try to contribute in the name of a team without having the BANK
+         * right.
+         */
+        TEAM_CONTRIBUTION_WITHOUT_BANK,
+
+        /**
          * You try to accept/refuse an invitation, but you are not the receiver.
          */
         INVITATION_RECIEVER_MISMATCH,

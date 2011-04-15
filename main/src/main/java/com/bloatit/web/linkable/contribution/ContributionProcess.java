@@ -140,10 +140,9 @@ public class ContributionProcess extends PaymentProcess {
                 // Redirects to the contribution action which will perform the
                 // actual contribution
                 return new ContributionActionUrl(this);
-            } else {
-                locked = false;
-                return new CheckContributionPageUrl(this);
             }
+            locked = false;
+            return new CheckContributionPageUrl(this);
         }
         return null;
     }

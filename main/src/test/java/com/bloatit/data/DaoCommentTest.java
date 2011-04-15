@@ -8,22 +8,22 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 public class DaoCommentTest extends DataTestUnit {
 
     public void testCreateAndPersist() {
-        final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), "A text");
+        final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), "A text");
         assertEquals("A text", comment.getText());
         try {
-            DaoComment.createAndPersist((DaoComment) null, null, "A text");
+            DaoComment.createAndPersist((DaoComment) null, null, null, "A text");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), "");
+            DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), "");
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), null);
+            DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), null);
             fail();
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
@@ -31,14 +31,14 @@ public class DaoCommentTest extends DataTestUnit {
     }
 
     public void testAddChildComment() {
-        final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), "A text");
-        final DaoComment commentChild = DaoComment.createAndPersist(comment, DaoMember.getByLogin(fred.getLogin()), "A comment");
+        final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), "A text");
+        final DaoComment commentChild = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(fred.getLogin()), "A comment");
         comment.addChildComment(commentChild);
-        final DaoComment commentChild1 = DaoComment.createAndPersist(comment, DaoMember.getByLogin(yo.getLogin()), "hello");
+        final DaoComment commentChild1 = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(yo.getLogin()), "hello");
         comment.addChildComment(commentChild1);
-        final DaoComment commentChild2 = DaoComment.createAndPersist(comment, DaoMember.getByLogin(tom.getLogin()), "An other text");
+        final DaoComment commentChild2 = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(tom.getLogin()), "An other text");
         comment.addChildComment(commentChild2);
-        final DaoComment commentChildChild = DaoComment.createAndPersist(commentChild1, DaoMember.getByLogin(tom.getLogin()), "An other text");
+        final DaoComment commentChildChild = DaoComment.createAndPersist(commentChild1, null, DaoMember.getByLogin(tom.getLogin()), "An other text");
         commentChild1.addChildComment(commentChildChild);
 
         try {
@@ -57,14 +57,14 @@ public class DaoCommentTest extends DataTestUnit {
     }
 
     public void testGetChildrenFromQuery() {
-        final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, DaoMember.getByLogin(yo.getLogin()), "A text");
-        final DaoComment commentChild = DaoComment.createAndPersist(comment, DaoMember.getByLogin(fred.getLogin()), "A comment");
+        final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), "A text");
+        final DaoComment commentChild = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(fred.getLogin()), "A comment");
         comment.addChildComment(commentChild);
-        final DaoComment commentChild1 = DaoComment.createAndPersist(comment, DaoMember.getByLogin(yo.getLogin()), "hello");
+        final DaoComment commentChild1 = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(yo.getLogin()), "hello");
         comment.addChildComment(commentChild1);
-        final DaoComment commentChild2 = DaoComment.createAndPersist(comment, DaoMember.getByLogin(tom.getLogin()), "An other text");
+        final DaoComment commentChild2 = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(tom.getLogin()), "An other text");
         comment.addChildComment(commentChild2);
-        final DaoComment commentChildChild = DaoComment.createAndPersist(commentChild1, DaoMember.getByLogin(tom.getLogin()), "An other text");
+        final DaoComment commentChildChild = DaoComment.createAndPersist(commentChild1, null, DaoMember.getByLogin(tom.getLogin()), "An other text");
         commentChild1.addChildComment(commentChildChild);
 
         final Iterator<DaoComment> it = comment.getChildren().iterator();
