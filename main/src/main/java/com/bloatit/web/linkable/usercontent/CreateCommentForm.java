@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.usercontent;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
@@ -18,10 +19,11 @@ public class CreateCommentForm extends HtmlDiv {
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         add(form);
 
-        final HtmlTextArea commentInput = new HtmlTextArea(targetUrl.getCommentParameter().getName(),
-                                                           Context.tr("New comment : "),
-                                                           NB_ROWS,
-                                                           NB_COLUMNS);
+        final FieldData inputData = targetUrl.getCommentParameter().pickFieldData();
+        final HtmlTextArea commentInput = new HtmlTextArea(inputData.getName(), Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
+        commentInput.setDefaultValue(inputData.getSuggestedValue());
+        commentInput.addErrorMessages(inputData.getErrorMessages());
+
         form.add(commentInput);
         commentInput.setComment(Context.tr("Add a new comment. If you want to reply to a previous comment, use the reply link."));
 

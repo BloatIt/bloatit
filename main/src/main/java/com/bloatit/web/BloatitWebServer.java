@@ -30,6 +30,7 @@ import com.bloatit.web.linkable.contribution.CheckContributionPage;
 import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributionAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
+import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -152,9 +153,10 @@ import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
+import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
-import com.bloatit.web.url.SiteMapPageUrl;
+import com.bloatit.web.url.StaticCheckContributionPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
@@ -200,6 +202,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(CheckContributionPageUrl.getName())) {
             return new CheckContributionPage(new CheckContributionPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(StaticCheckContributionPageUrl.getName())) {
+            return new StaticCheckContributionPage(new StaticCheckContributionPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MakeOfferPageUrl.getName())) {
             return new MakeOfferPage(new MakeOfferPageUrl(params, session.getParameters()));
