@@ -304,11 +304,8 @@ public final class FeatureListPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
-
         final FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
-
         breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));
-
         return breadcrumb;
     }
 

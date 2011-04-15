@@ -17,9 +17,9 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -52,7 +52,7 @@ public final class ReportBugPage extends CreateUserContentPage {
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
     @SuppressWarnings("unused")
-    @RequestParam(role = Role.GET)
+    @RequestParam
     private final Offer offer;
 
     private final Milestone milestone;
@@ -78,7 +78,9 @@ public final class ReportBugPage extends CreateUserContentPage {
 
     @Override
     public void processErrors() throws RedirectException {
-        // TODO you should process the errors.
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
     }
 
     @Override
@@ -115,10 +117,10 @@ public final class ReportBugPage extends CreateUserContentPage {
 
         // As team
         addAsTeamField(reportBugForm,
-                      loggedUser,
-                      UserTeamRight.TALK,
-                      Context.tr("In the name of "),
-                      Context.tr("Write this bug report in the name of this group."));
+                       loggedUser,
+                       UserTeamRight.TALK,
+                       Context.tr("In the name of "),
+                       Context.tr("Write this bug report in the name of this group."));
 
         // descriptions of the bug
         final FieldData descriptionFieldData = doReportUrl.getDescriptionParameter().pickFieldData();
@@ -145,10 +147,10 @@ public final class ReportBugPage extends CreateUserContentPage {
 
         // File
         addAddAttachmentField(reportBugForm,
-                             Context.tr("Join a file"),
-                             Context.tr("Optional. If attach a file, you must add an attachment description. Max 3MB."),
-                             Context.tr("File description"),
-                             Context.tr("You need to add a file description only if you add an attachment."));
+                              Context.tr("Join a file"),
+                              Context.tr("Optional. If attach a file, you must add an attachment description. Max 3MB."),
+                              Context.tr("File description"),
+                              Context.tr("You need to add a file description only if you add an attachment."));
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 

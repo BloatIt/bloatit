@@ -12,8 +12,11 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -53,10 +56,11 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("team")
-public class TeamPage extends MasterPage {
+public final class TeamPage extends MasterPage {
     private final TeamPageUrl url;
 
-    @RequestParam()
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team targetTeam;
 
     public TeamPage(final TeamPageUrl url) {
@@ -67,11 +71,13 @@ public class TeamPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
+        if (!url.getTargetTeamParameter().getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
-
         return layout;
     }
 

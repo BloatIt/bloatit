@@ -6,8 +6,11 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -33,7 +36,8 @@ public class SendTeamInvitationPage extends LoggedPage {
     @SuppressWarnings("unused")
     private final SendTeamInvitationPageUrl url;
 
-    @RequestParam
+    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team team;
 
     public SendTeamInvitationPage(final SendTeamInvitationPageUrl url) {
@@ -44,6 +48,9 @@ public class SendTeamInvitationPage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
     }
 
     @Override

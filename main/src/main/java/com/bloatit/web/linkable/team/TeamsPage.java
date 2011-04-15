@@ -28,7 +28,7 @@ import com.bloatit.web.url.TeamsPageUrl;
  * </p>
  */
 @ParamContainer("team/list")
-public class TeamsPage extends MasterPage {
+public final class TeamsPage extends MasterPage {
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Team> pagedTeamList;
     private final TeamsPageUrl url;

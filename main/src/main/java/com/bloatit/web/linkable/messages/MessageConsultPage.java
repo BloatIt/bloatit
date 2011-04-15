@@ -12,7 +12,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.MessageConsultPageUrl;
 
 @ParamContainer("messages/consult")
-public class MessageConsultPage extends LoggedPage {
+public final class MessageConsultPage extends LoggedPage {
     public MessageConsultPage(final MessageConsultPageUrl url) {
         super(url);
     }
@@ -34,7 +34,7 @@ public class MessageConsultPage extends LoggedPage {
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Bloatit private messages.");
+        return Context.tr("Elveos private messages.");
     }
 
     @Override

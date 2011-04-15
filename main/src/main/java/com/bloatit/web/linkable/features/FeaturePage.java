@@ -18,9 +18,11 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -33,9 +35,8 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("feature")
 public final class FeaturePage extends MasterPage {
 
-    public static final String FEATURE_FIELD_NAME = "id";
-
-    @RequestParam(name = FEATURE_FIELD_NAME)
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the feature number: ''%value''."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a feature number."))
     private final Feature feature;
 
     @SuppressWarnings("unused")
@@ -79,7 +80,6 @@ public final class FeaturePage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        addNotifications(url.getMessages());
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
         }

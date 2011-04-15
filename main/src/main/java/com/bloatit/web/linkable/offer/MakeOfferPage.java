@@ -17,6 +17,7 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -49,7 +50,7 @@ import com.bloatit.web.url.OfferActionUrl;
 @ParamContainer("offer/create")
 public final class MakeOfferPage extends CreateUserContentPage {
 
-    @RequestParam
+    @RequestParam(conversionErrorMsg = @tr("I cannot find the feature number: ''%value''."))
     @ParamConstraint(optionalErrorMsg = @tr("The feature id is not optional !"))
     private final Feature feature;
 
@@ -83,7 +84,9 @@ public final class MakeOfferPage extends CreateUserContentPage {
 
     @Override
     public void processErrors() throws RedirectException {
-        // TODO we should process the errors.
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
     }
 
     @Override

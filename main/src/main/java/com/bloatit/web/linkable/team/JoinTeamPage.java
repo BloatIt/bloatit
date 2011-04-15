@@ -3,8 +3,11 @@ package com.bloatit.web.linkable.team;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -18,11 +21,11 @@ import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.JoinTeamPageUrl;
 
 @ParamContainer("team/join")
-public class JoinTeamPage extends LoggedPage {
-    @SuppressWarnings("unused")
+public final class JoinTeamPage extends LoggedPage {
     private JoinTeamPageUrl url;
 
-    @RequestParam()
+    @RequestParam(name = "target", conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private Team targetTeam;
 
     public JoinTeamPage(final JoinTeamPageUrl url) {
@@ -31,7 +34,9 @@ public class JoinTeamPage extends LoggedPage {
 
     @Override
     public void processErrors() throws RedirectException {
-        session.notifyList(url.getMessages());
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
     }
 
     @Override

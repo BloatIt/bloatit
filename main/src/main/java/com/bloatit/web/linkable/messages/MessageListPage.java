@@ -29,7 +29,7 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
  * A plain list of messages received by the user
  */
 @ParamContainer("messages/list")
-public class MessageListPage extends LoggedPage {
+public final class MessageListPage extends LoggedPage {
     private final MessageListPageUrl url;
 
     public MessageListPage(final MessageListPageUrl url) {
@@ -46,7 +46,7 @@ public class MessageListPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 
-        final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Bloatit private messages"), 1);
+        final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Elveos private messages"), 1);
         master.add(main);
 
         // Generating links to team invites
@@ -90,7 +90,7 @@ public class MessageListPage extends LoggedPage {
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Bloatit private messages.");
+        return Context.tr("Elveos private messages.");
     }
 
     @Override

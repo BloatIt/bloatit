@@ -64,7 +64,7 @@ import com.bloatit.web.url.UnlockActionUrl;
 @ParamContainer("contribute/staticcheck")
 public final class StaticCheckContributionPage extends CreateUserContentPage {
 
-    @RequestParam
+    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 
