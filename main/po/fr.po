@@ -2059,7 +2059,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/usercontent/CreateCommentForm.java:35
 msgid "Write this comment in the name of this team."
-msgstr "Rédifer ce commentaire au nom de cette équipe."
+msgstr "Rédiger ce commentaire au nom de cette équipe."
 
 #: com/bloatit/web/linkable/usercontent/CreateCommentForm.java:40
 msgid "You have to add a description if you join a file."
@@ -3257,7 +3257,7 @@ msgstr "Vous devez indiquer un mot de passe."
 
 #: com/bloatit/web/linkable/login/LoginAction.java:58
 msgid "Login success."
-msgstr "Connexion réussi."
+msgstr "Connexion réussie."
 
 #: com/bloatit/web/linkable/login/LoginAction.java:64
 msgid "Login failed. Wrong login or password."
