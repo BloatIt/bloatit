@@ -195,7 +195,7 @@ public class DaoMember extends DaoActor {
      * @return null if not found. (or if login == null)
      */
     public static DaoMember getByLogin(final String login) {
-        if (login != null) {
+        if (login == null) {
             return null;
         }
         final Session session = SessionManager.getSessionFactory().getCurrentSession();

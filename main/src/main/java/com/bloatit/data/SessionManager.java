@@ -20,6 +20,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
@@ -121,11 +122,18 @@ public class SessionManager {
      */
     public static void generateTestSessionFactory() {
         try {
-            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create-drop")
+
+            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create")
                                                                      .setProperty("hibernate.cache.use_second_level_cache", "false")
                                                                      .setProperty("hibernate.cache.use_query_cache", "false")
-                                                                     .setProperty("hibernate.connection.url",
-                                                                                  "jdbc:postgresql://localhost/bloatit_test");
+                                                                     .setProperty("hibernate.cache.provider_class", "hibernate.cache.provider_class")
+                                                                     .setProperty(Environment.SHOW_SQL, "false")
+//                                                                     .setProperty(Environment.DRIVER, "org.hsqldb.jdbcDriver")
+//                                                                     .setProperty(Environment.DIALECT, HSQLDialect.class.getName())
+//                                                                     .setProperty(Environment.USER, "sa")
+//                                                                     .setProperty(Environment.PASS, "")
+//                                                                     .setProperty(Environment.URL, "jdbc:hsqldb:mem:testdb")
+                                                                     ;
             sessionFactory = configuration.buildSessionFactory();
 
         } catch (final Exception ex) {
