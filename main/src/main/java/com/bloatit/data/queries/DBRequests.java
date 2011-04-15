@@ -74,6 +74,9 @@ public class DBRequests {
      */
     @SuppressWarnings("unchecked")
     public static <T> T getById(final Class<T> persistant, final Integer id) {
+        if (id == null) {
+            return null;
+        }
         return (T) SessionManager.getSessionFactory().getCurrentSession().get(persistant, id);
     }
 

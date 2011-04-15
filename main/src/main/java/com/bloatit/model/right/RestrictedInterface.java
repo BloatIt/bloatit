@@ -18,6 +18,7 @@ package com.bloatit.model.right;
 
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.model.Team;
 
 /**
  * The Interface RestrictedInterface represent a Restricted by some right
@@ -79,5 +80,7 @@ public interface RestrictedInterface {
      *         otherwise.
      */
     boolean canTalkAs();
+    
+    Team getAsTeam();
 
 }

@@ -303,7 +303,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public void setPassword(final String password) throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Password(), Action.WRITE);
-        getDao().setPassword(password);
+        getDao().setPassword(SecuredHash.calculateHash(password, getDao().getSalt()));
     }
 
     public void setLocal(final Locale loacle) throws UnauthorizedOperationException {

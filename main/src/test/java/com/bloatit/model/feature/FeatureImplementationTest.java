@@ -356,6 +356,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         }
 
         feature.authenticate(tomAuthToken);
+        feature.getSelectedOffer().authenticate(tomAuthToken);
 
         assertEquals(120, feature.getContribution().intValue());
 
@@ -426,6 +427,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         feature.authenticate(tomAuthToken);
         final Offer offer = feature.addOffer(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
 
+        offer.authenticate(tomAuthToken);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);

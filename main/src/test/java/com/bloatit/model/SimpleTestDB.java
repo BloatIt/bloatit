@@ -39,17 +39,17 @@ public class SimpleTestDB {
 
         SessionManager.beginWorkUnit();
 
-        tom = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
+        tom = new Member("Thomas", "password", "tom@gmail.com", Locale.FRANCE).getDao();
         tom.setFullname("Thomas Guyard");
         tom.setActivationState(ActivationState.ACTIVE);
-        fred = DaoMember.createAndPersist("Fred", "other", "salt", "fred@gmail.com", Locale.FRANCE);
+        fred = new Member("Fred", "other", "fred@gmail.com", Locale.FRANCE).getDao();
         fred.setFullname("Frédéric Bertolus");
         fred.setActivationState(ActivationState.ACTIVE);
-        yo = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
+        yo = new Member("Yo", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
 
-        final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "salt", "admin@gmail.com", Locale.FRANCE);
+        final DaoMember admin = new Member("admin", "admin",  "admin@gmail.com", Locale.FRANCE).getDao();
         admin.setFullname("Administrator");
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
@@ -84,7 +84,7 @@ public class SimpleTestDB {
                                               null,
                                               DaoDescription.createAndPersist(yo, null, new Locale("fr"), "Mon titre", "Ceci est une description"),
                                               project);
-        
+
         project.setImage(DaoFileMetadata.createAndPersist(tom, null, feature, "/dev/", "null", FileType.JPG, 12));
         final DaoComment c1 = DaoComment.createAndPersist(feature, null, tom, "Pas tres constructif hein !");
         final DaoComment c2 = DaoComment.createAndPersist(feature, null, fred, "Plop");
@@ -109,7 +109,8 @@ public class SimpleTestDB {
             feature.addContribution(tom, null, new BigDecimal("121"), "I'm so generous too");
 
             feature.addOffer(new DaoOffer(fred,
-                                          null, feature,
+                                          null,
+                                          feature,
                                           new BigDecimal("200"),
                                           DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Mon Offre", "Voici la description"),
                                           DateUtils.tomorrow(),
@@ -126,11 +127,13 @@ public class SimpleTestDB {
             }
 
             final DaoFeature feature1 = DaoFeature.createAndPersist(fred, null, DaoDescription.createAndPersist(fred,
-                                                                                                          null, new Locale("en"),
-                                                                                                          "I try it in English",
-                                                                                                          "Hello world"), project);
+                                                                                                                null,
+                                                                                                                new Locale("en"),
+                                                                                                                "I try it in English",
+                                                                                                                "Hello world"), project);
             feature1.getDescription().addTranslation(new DaoTranslation(tom,
-                                                                        null, feature1.getDescription(),
+                                                                        null,
+                                                                        feature1.getDescription(),
                                                                         new Locale("fr"),
                                                                         "J'essaie en anglais",
                                                                         "Salut le monde"));

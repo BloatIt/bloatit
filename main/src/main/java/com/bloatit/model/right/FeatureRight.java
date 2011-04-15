@@ -17,7 +17,6 @@
 package com.bloatit.model.right;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Team;
 
@@ -66,7 +65,7 @@ public class FeatureRight extends RightManager {
 
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
-            final Team team = Context.getSession().getAuthToken().getAsTeam();
+            final Team team = role.getAsTeam();
             return (((role.isAuthenticated() &&  team == null) || (team != null && team.hasTeamPrivilege(UserTeamRight.BANK))) && (action == Action.WRITE)) || canRead(action);
         }
     }

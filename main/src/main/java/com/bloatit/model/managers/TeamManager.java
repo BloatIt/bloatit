@@ -86,7 +86,7 @@ public final class TeamManager {
      * @param id the id
      * @return the team or null if not found
      */
-    public static Team getById(final int id) {
+    public static Team getById(final Integer id) {
         return Team.create(DBRequests.getById(DaoTeam.class, id));
     }
 

@@ -114,8 +114,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                  final String description,
                                  final Software software) {
         this(DaoFeature.createAndPersist(author.getDao(),
-                                         team.getDao(),
-                                         DaoDescription.createAndPersist(author.getDao(), team.getDao(), locale, title, description),
+                                         DaoGetter.getTeam(team),
+                                         DaoDescription.createAndPersist(author.getDao(), DaoGetter.getTeam(team), locale, title, description),
                                          software.getDao()));
     }
 
@@ -288,6 +288,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public void cancelDevelopment() throws UnauthorizedOperationException {
         // TODO Verify the rights.
+        getAuthToken(); // Make sure we are authenticated.
         if (!getSelectedOffer().canTalkAs()) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_FEATURE);
         }

@@ -27,6 +27,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 import com.bloatit.model.UserContent;
 
 /**
@@ -246,5 +247,10 @@ public abstract class RestrictedObject implements RestrictedInterface {
      */
     protected final void tryAccess(final Accessor accessor, final Action action) throws UnauthorizedOperationException {
         accessor.tryAccess(this, action);
+    }
+
+    @Override
+    public Team getAsTeam() {
+        return getAuthTokenUnprotected() != null ? getAuthTokenUnprotected().getAsTeam() : null;
     }
 }

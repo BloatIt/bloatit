@@ -119,6 +119,9 @@ public final class AuthToken {
     }
 
     public Team getAsTeam() {
+        if (asTeamId == null) {
+            return null;
+        }
         return TeamManager.getById(asTeamId);
     }
 
