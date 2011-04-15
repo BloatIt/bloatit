@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -144,7 +145,7 @@ public final class MemberPage extends MasterPage {
     }
 
     private HtmlElement generateMemberPageMain() {
-        final HtmlDiv master = new HtmlDiv("member");
+        final HtmlDiv master = new HtmlDiv("member_page");
 
         // Link to change account settings
         final HtmlDiv modify = new HtmlDiv("float_right");
@@ -153,19 +154,22 @@ public final class MemberPage extends MasterPage {
 
         // Title
         final String title = (myPage) ? Context.tr("My page") : Context.tr("Member page");
-        final HtmlTitleBlock main = new HtmlTitleBlock(title, 1);
+        final HtmlTitleBlock tBlock = new HtmlTitleBlock(title, 1);
+        master.add(tBlock);
+
+        HtmlDiv main = new HtmlDiv("member");
         master.add(main);
+
+        // Member ID card
+        final HtmlDiv memberId = new HtmlDiv("member_id");
 
         // Avatar
         final HtmlDiv avatarDiv = new HtmlDiv("float_left");
         avatarDiv.add(MembersTools.getMemberAvatar(member));
-        main.add(avatarDiv);
-
-        // Member ID card
-        final HtmlDiv memberId = new HtmlDiv("member_id");
+        memberId.add(avatarDiv);
         main.add(memberId);
-        try {
 
+        try {
             final HtmlList memberIdList = new HtmlList();
             memberId.add(memberIdList);
 
@@ -214,17 +218,18 @@ public final class MemberPage extends MasterPage {
         main.add(new HtmlClearer());
 
         // Displaying list of user recent activity
-        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
-        main.add(recentActivity);
 
         final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
-        recentActivity.add(recent);
+        main.add(recent);
+
+        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
+        recent.add(recentActivity);
 
         final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
         final MemberPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
         feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getPagedActivityUrl());
-        recent.add(feed);
+        recentActivity.add(feed);
 
         return master;
     }
@@ -244,12 +249,12 @@ public final class MemberPage extends MasterPage {
                 public HtmlElement visit(final Translation model) {
                     // TODO: After implementing correct translation stuff, do
                     // something in here
-                    return new PlaceHolderElement();
+                    return new HtmlParagraph("translation");
                 }
 
                 @Override
                 public HtmlElement visit(final Kudos model) {
-                    return new PlaceHolderElement();
+                    return new HtmlParagraph("kudos");
                 }
 
                 @Override
@@ -285,7 +290,7 @@ public final class MemberPage extends MasterPage {
                     HtmlSpan bugSpan = new HtmlSpan("feed_bug");
                     HtmlLink bugUrl = new BugPageUrl(model).getHtmlLink(model.getTitle());
                     bugUrl.setCssClass("bug_link");
-                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Reported a <0::bug> (<1::>)"), bugSpan, bugUrl);
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Reported <0::bug> (<1::>)"), bugSpan, bugUrl);
                     return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
                 }
 
@@ -314,6 +319,11 @@ public final class MemberPage extends MasterPage {
                             throw new ShallNotPassException("Cannot access member display name.", e);
                         }
                         mixedText = new HtmlMixedText(Context.tr("Replied to a <0::comment> (from <1::>)"), commentSpan, commenterUrl);
+
+                        while (model.getParentType() == ParentType.COMMENT) {
+                            model = model.getParentComment();
+                        }
+
                     } else {
                         mixedText = new HtmlMixedText(Context.tr("<0::Commented>"), commentSpan);
                     }
@@ -384,9 +394,11 @@ public final class MemberPage extends MasterPage {
     private HtmlElement generateFeedStructure(HtmlElement firstLine, HtmlElement secondLine, UserContentInterface<? extends DaoUserContent> content) {
         HtmlDiv master = new HtmlDiv("feed_item");
         master.add(new HtmlDiv("feed_item_title").add(firstLine));
-        master.add(new HtmlDiv("feed_item_description").add(secondLine));
+        HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");
+        master.add(secondAndThirdLine);
+        secondAndThirdLine.add(new HtmlDiv("feed_item_description").add(secondLine));
         HtmlBranch dateBox = new HtmlDiv("feed_item_date");
-        master.add(dateBox);
+        secondAndThirdLine.add(dateBox);
         String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
         dateBox.addText(dateString);
         return master;

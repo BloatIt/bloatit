@@ -132,13 +132,17 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                            name = "member.getActivity",
                            query = "FROM DaoUserContent as u " +
                                    "WHERE u.member = :member " +
+                                   "AND id not in (from DaoKudos) " +
+                                   "AND id not in (from DaoTranslation)"  +
                                    "ORDER BY creationDate DESC"),
                                    
                        @NamedQuery(
                            name = "member.getActivity.size",
                            query = "SELECT COUNT(*)" +
                            		   "FROM DaoUserContent as u " +
-                                   "WHERE u.member = :member "),                                   
+                                   "WHERE u.member = :member " +
+                                   "AND id not in (from DaoKudos) " +
+                                   "AND id not in (from DaoTranslation)"),                                   
                                    
                       }
 
