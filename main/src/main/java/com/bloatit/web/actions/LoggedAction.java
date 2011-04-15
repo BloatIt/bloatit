@@ -53,7 +53,10 @@ public abstract class LoggedAction extends Action {
         if (member != null) {
             return doCheckRightsAndEverything(member);
         }
-        return new LoginPageUrl();
+
+        // If member is null, let the Logged action do its work (return to the
+        // logged page...)
+        return NO_ERROR;
     }
 
     protected abstract Url doCheckRightsAndEverything(Member me);
