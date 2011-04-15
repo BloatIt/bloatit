@@ -30,13 +30,13 @@ public class MembersTools {
         return avatarDiv;
     }
 
-    public static HtmlElement getMemberAvatarSmall(final Member member) {
+    public static HtmlElement getMemberAvatarSmall(final Actor<?> actor) {
 
         final HtmlDiv avatarDiv = new HtmlDiv("avatar_small_block");
-        if (member.getAvatar() == null) {
+        if (actor.getAvatar() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar_small"));
         } else {
-            final FileResourceUrl imageUrl = new FileResourceUrl(member.getAvatar());
+            final FileResourceUrl imageUrl = new FileResourceUrl(actor.getAvatar());
             avatarDiv.add(new HtmlImage(imageUrl, tr("Member avatar"), "avatar_small"));
         }
 
