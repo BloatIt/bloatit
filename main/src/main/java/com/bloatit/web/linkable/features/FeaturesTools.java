@@ -1,5 +1,6 @@
 package com.bloatit.web.linkable.features;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.math.BigDecimal;
@@ -144,7 +145,12 @@ public class FeaturesTools {
                 cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT - futureProgressValue;
             }
 
-            final HtmlProgressBar progressBar = new HtmlProgressBar(slim,
+            String barLabel = "";
+            if(feature.getFeatureState() == FeatureState.DEVELOPPING) {
+                barLabel = Context.tr("In developement");
+            }
+
+            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel,
                                                                     cappedProgressValue - myProgressValue,
                                                                     cappedProgressValue,
                                                                     cappedProgressValue + futureProgressValue);
