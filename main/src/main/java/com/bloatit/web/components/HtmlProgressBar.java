@@ -43,7 +43,9 @@ public class HtmlProgressBar extends HtmlDiv {
             progressIndex--;
         }
 
-        add(new HtmlDiv("progress_bar_label").addText(label));
+        if(label != null) {
+            add(new HtmlDiv("progress_bar_label").addText(label));
+        }
 
     }
 }

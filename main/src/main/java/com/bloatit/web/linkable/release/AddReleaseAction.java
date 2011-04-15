@@ -97,7 +97,7 @@ public final class AddReleaseAction extends LoggedAction {
 
         final FileConstraintChecker fcc = new FileConstraintChecker(attachedfile);
         if (!fcc.exists() || !fcc.isFileSmaller(1, SizeUnit.GBYTE)) {
-            session.notifyBad(Context.tr("File format error: Your file is to big."));
+            session.notifyBad(Context.tr("File format error: Your file is too big."));
             return Context.getSession().pickPreferredPage();
         }
 
