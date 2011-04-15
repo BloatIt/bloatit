@@ -123,7 +123,7 @@ public class SessionManager {
     public static void generateTestSessionFactory() {
         try {
 
-            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create")
+            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create-drop")
                                                                      .setProperty("hibernate.cache.use_second_level_cache", "false")
                                                                      .setProperty("hibernate.cache.use_query_cache", "false")
                                                                      .setProperty("hibernate.cache.provider_class", "hibernate.cache.provider_class")
@@ -133,6 +133,7 @@ public class SessionManager {
 //                                                                     .setProperty(Environment.USER, "sa")
 //                                                                     .setProperty(Environment.PASS, "")
 //                                                                     .setProperty(Environment.URL, "jdbc:hsqldb:mem:testdb")
+                                                                     .setProperty(Environment.URL, "jdbc:postgresql://localhost/bloatit_test")
                                                                      ;
             sessionFactory = configuration.buildSessionFactory();
 

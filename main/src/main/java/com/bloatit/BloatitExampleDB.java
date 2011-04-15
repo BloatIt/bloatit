@@ -199,7 +199,7 @@ public class BloatitExampleDB {
 
         final String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
         twoSubtitlesInVlcFeature.authenticate(new AuthToken(rataxes));
-        final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(null, rataxesOfferDescription, rataxes.getLocale(), DateUtils.tomorrow(), 0);
+        final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"), rataxesOfferDescription, rataxes.getLocale(), DateUtils.tomorrow(), 0);
 
         rataxesOffer.authenticate(new AuthToken(chogall));
         rataxesOffer.voteUp();
@@ -209,12 +209,13 @@ public class BloatitExampleDB {
         twoSubtitlesInVlcFeature.authenticate(new AuthToken(celeste));
         final String celesteMilestone1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
-        final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(null,
+        final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
                                                                      celesteMilestone1Description,
                                                                      celeste.getLocale(),
                                                                      DateUtils.nowPlusSomeDays(2),
                                                                      0);
 
+        celesteOffer.authenticate(new AuthToken(celeste));
         final String celesteMilestone2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
         celesteOffer.addMilestone(new BigDecimal(1000), celesteMilestone2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
 
@@ -269,12 +270,16 @@ public class BloatitExampleDB {
         // Add bugs
         setFeatureInDevelopmentState(addPerroquetInMageiaFeature);
 
-        final Milestone firstMilestone = addPerroquetInMageiaFeature.getSelectedOffer().getMilestonees().iterator().next();
+        final Milestone firstMilestone = addPerroquetInMageiaFeature.getSelectedOffer().getMilestones().iterator().next();
+        firstMilestone.authenticate(new AuthToken(fred));
         firstMilestone.addBug("Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
+        firstMilestone.authenticate(new AuthToken(elephantman));
         firstMilestone.addBug("Faible qualité graphique pour les éléphants",
                               "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
                               elephantman.getLocale(),
                               Level.MINOR);
+        
+        firstMilestone.authenticate(new AuthToken(yoann));
         firstMilestone.addBug("Fichier de conf système manquant",
                               "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
                               yoann.getLocale(),

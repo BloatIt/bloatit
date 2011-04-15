@@ -184,8 +184,8 @@ public class DaoOffer extends DaoKudosable {
     /**
      * @return All the milestones for this offer. (Even the MasterMilestone).
      */
-    public PageIterable<DaoMilestone> getMilestonees() {
-        return new QueryCollection<DaoMilestone>("offer.getMilestonees").setEntity("this", this);
+    public PageIterable<DaoMilestone> getMilestones() {
+        return new QueryCollection<DaoMilestone>("offer.getMilestones").setEntity("this", this);
     }
 
     public DaoMilestone getCurrentMilestone() {

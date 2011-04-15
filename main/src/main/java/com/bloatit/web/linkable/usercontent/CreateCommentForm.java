@@ -27,7 +27,7 @@ public class CreateCommentForm extends HtmlDiv {
 
         // TODO remove dependence to Context.getSession()
         form.add(new AsTeamField(targetUrl,
-                                 Context.getSession().getAuthToken().getMember(),
+                                 Context.getSession().getAuthToken() != null ? Context.getSession().getAuthToken().getMember() : null,
                                  UserTeamRight.TALK,
                                  Context.tr("In the name of"),
                                  Context.tr("Write this comment in the name of this team.")));

@@ -21,7 +21,7 @@ public class AsTeamField extends PlaceHolderElement {
                         final String label,
                         final String comment) {
         super();
-        if (me.canAccessTeams(Action.READ)) {
+        if (me != null && me.canAccessTeams(Action.READ)) {
             try {
                 final PageIterable<Team> teams = me.getTeams();
                 final FieldData teamData = targetUrl.getTeamParameter().pickFieldData();

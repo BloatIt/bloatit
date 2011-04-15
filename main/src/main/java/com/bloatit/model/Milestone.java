@@ -324,7 +324,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * @return the position
      */
     public int getPosition() {
-        final Iterator<DaoMilestone> iterator = getDao().getOffer().getMilestonees().iterator();
+        final Iterator<DaoMilestone> iterator = getDao().getOffer().getMilestones().iterator();
 
         final int order = 1;
         while (iterator.hasNext()) {

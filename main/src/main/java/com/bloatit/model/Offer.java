@@ -179,8 +179,8 @@ public final class Offer extends Kudosable<DaoOffer> {
         return getDao().getAmount();
     }
 
-    public PageIterable<Milestone> getMilestonees() {
-        return new MilestoneList(getDao().getMilestonees());
+    public PageIterable<Milestone> getMilestones() {
+        return new MilestoneList(getDao().getMilestones());
     }
 
     public Date getExpirationDate() {

@@ -304,7 +304,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 final HtmlDiv offerRightBottomColumn = new HtmlDiv("offer_right_bottom_column");
                 {
                     // Lots
-                    final PageIterable<Milestone> lots = offer.getMilestonees();
+                    final PageIterable<Milestone> lots = offer.getMilestones();
                     if (lots.size() == 1) {
                         final Milestone lot = lots.iterator().next();
 

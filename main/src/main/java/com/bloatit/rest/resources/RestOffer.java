@@ -163,11 +163,11 @@ public class RestOffer extends RestElement<Offer> {
     }
 
     /**
-     * @see com.bloatit.model.Offer#getMilestonees()
+     * @see com.bloatit.model.Offer#getMilestones()
      */
     @XmlElement
-    public RestMilestoneList getMilestonees() {
-        return new RestMilestoneList(model.getMilestonees());
+    public RestMilestoneList getMilestones() {
+        return new RestMilestoneList(model.getMilestones());
     }
 
     /**
