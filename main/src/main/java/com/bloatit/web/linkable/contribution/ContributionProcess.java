@@ -117,6 +117,10 @@ public class ContributionProcess extends PaymentProcess {
             locked = true;
         }
     }
+    
+    public void setLock(final boolean islocked) {
+        locked = islocked;
+    }
 
     @Override
     public Url endSubProcess(final WebProcess subProcess) {
