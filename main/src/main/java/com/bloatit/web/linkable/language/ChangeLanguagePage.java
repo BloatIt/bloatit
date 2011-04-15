@@ -41,6 +41,7 @@ import java.util.Map.Entry;
 
 @ParamContainer("language/change")
 public class ChangeLanguagePage extends MasterPage {
+
     private final ChangeLanguagePageUrl url;
 
     public ChangeLanguagePage(final ChangeLanguagePageUrl url) {
@@ -74,16 +75,11 @@ public class ChangeLanguagePage extends MasterPage {
         form.add(new HtmlSubmit("Change language"));
 
         //Link map
-
         HtmlDiv linkMap = new HtmlDiv("language_link_map");
-        
-
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             final ChangeLanguageActionUrl langagueChangeAction = new ChangeLanguageActionUrl();
             langagueChangeAction.setLanguage(langEntry.getValue().getCode());
             linkMap.add(langagueChangeAction.getHtmlLink(langEntry.getValue().getName()));
-
-            
         }
 
         master.add(linkMap);
@@ -108,5 +104,4 @@ public class ChangeLanguagePage extends MasterPage {
     public boolean isStable() {
         return false;
     }
-
 }

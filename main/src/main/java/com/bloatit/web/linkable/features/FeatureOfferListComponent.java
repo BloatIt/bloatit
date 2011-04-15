@@ -214,7 +214,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
         }
     }
 
-    public static class OfferBlock extends HtmlDiv {
+    public static final class OfferBlock extends HtmlDiv {
 
         private final Offer offer;
 
@@ -239,7 +239,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         offerPriceBlock.add(priceLabel);
 
                         final HtmlSpan price = new HtmlSpan("offer_block_price");
-                        price.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString());
+                        price.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getDefaultString());
                         offerPriceBlock.add(price);
                     }
                     offerRightTopColumn.add(offerPriceBlock);
@@ -344,7 +344,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                     offerLotPriceBlock.add(priceLabel);
 
                                     final HtmlSpan price = new HtmlSpan("offer_block_price_lot");
-                                    price.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getLocaleString());
+                                    price.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getDefaultString());
                                     offerLotPriceBlock.add(price);
                                 }
                                 lotBlock.add(offerLotPriceBlock);
