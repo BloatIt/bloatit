@@ -118,7 +118,7 @@ public final class CheckContributionPage extends CreateUserContentPage {
     }
 
     public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
-        final HtmlTitleBlock group = new HtmlTitleBlock("Check contribution", 1);
+        final HtmlTitleBlock group = new HtmlTitleBlock(tr("Check contribution"), 1);
 
         final Feature feature = process.getFeature();
 

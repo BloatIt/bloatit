@@ -103,7 +103,7 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
     }
 
     public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
-        final HtmlTitleBlock group = new HtmlTitleBlock("Check contribution", 1);
+        final HtmlTitleBlock group = new HtmlTitleBlock(tr("Final check"), 1);
         BigDecimal account;
         try {
             account = getAccount(member).getAmount();
