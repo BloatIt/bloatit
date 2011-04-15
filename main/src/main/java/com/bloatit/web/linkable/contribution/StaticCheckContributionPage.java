@@ -37,13 +37,14 @@ import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.SideBarFeatureBlock;
+import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -55,6 +56,7 @@ import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
+import com.bloatit.web.url.UnlockActionUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
@@ -250,12 +252,7 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
                     throw new ShallNotPassException(e);
                 }
             }
-            final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
-            final UrlParameter<Boolean, Boolean> unlockParameter = checkContributionPageUrl.getUnlockParameter().clone();
-            unlockParameter.setValue(true);
-            session.addParameter(unlockParameter);
-            checkContributionPageUrl.setPreload(process.getAmountToCharge());
-            payBlock.add(checkContributionPageUrl.getHtmlLink(Context.tr("edit")));
+            payBlock.add(createUnlockedReturnUrl().getHtmlLink(Context.tr("edit")));
             payBlock.add(payContributionLink);
 
         }
@@ -380,13 +377,16 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
         return tr("You must be logged to contribute");
     }
 
-    @Override
-    protected Breadcrumb createBreadcrumb() {
-        return StaticCheckContributionPage.generateBreadcrumb(process.getFeature(), process);
+    private Url createUnlockedReturnUrl() {
+        return new UnlockActionUrl(process);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
-        final Breadcrumb breadcrumb = CheckContributionPage.generateBreadcrumb(feature, process, true);
+    @Override
+    protected Breadcrumb createBreadcrumb() {
+        final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(process.getFeature());
+        final CheckContributionActionUrl returnUrl = new CheckContributionActionUrl(process);
+        returnUrl.setAmount(process.getAmount());
+        breadcrumb.pushLink(createUnlockedReturnUrl().getHtmlLink(tr("Contribute - Check")));
         breadcrumb.pushLink(new CheckContributionPageUrl(process).getHtmlLink(tr("Final check")));
         return breadcrumb;
     }

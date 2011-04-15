@@ -39,18 +39,15 @@ import com.bloatit.web.url.ContributePageUrl;
 @ParamContainer("action/contribute/check")
 public final class CheckContributionAction extends UserContentAction {
 
-    public static final String AMOUNT_CODE = "contributionAmount";
-    public static final String COMMENT_CODE = "comment";
-
     @RequestParam
     private final ContributionProcess process;
 
-    @RequestParam(name = COMMENT_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     @ParamConstraint(max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
     @Optional
     private final String comment;
 
-    @RequestParam(name = AMOUNT_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
                      max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
                      precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))

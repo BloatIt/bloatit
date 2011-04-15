@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -76,15 +75,14 @@ public final class CheckContributionPage extends CreateUserContentPage {
 
     @Optional("false")
     @RequestParam(name = "show_fees_detail")
-    private final Boolean showFeesDetails;
+    private Boolean showFeesDetails;
 
-    @Optional("false")
-    @RequestParam(role=Role.SESSION)
-    private final Boolean unlock;
-
-    @Optional("0")
-    @RequestParam
-    private final BigDecimal preload;
+    @Optional
+    @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
+    @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
+                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+    private BigDecimal preload;
 
     public CheckContributionPage(final CheckContributionPageUrl url) {
         super(url, new CheckContributionActionUrl(url.getProcess()));
@@ -92,18 +90,21 @@ public final class CheckContributionPage extends CreateUserContentPage {
         process = url.getProcess();
         showFeesDetails = url.getShowFeesDetails();
         preload = url.getPreload();
-        unlock = url.getUnlock();
-        if (process != null && unlock != null && unlock != false) {
-            process.setLock(false);
-        }
     }
 
     @Override
     public void processErrors() throws RedirectException {
-        addNotifications(url.getMessages());
         if (url.getMessages().hasMessage()) {
-            session.notifyList(url.getMessages());
-            throw new RedirectException(Context.getSession().pickPreferredPage());
+            if (url.getProcessParameter().getMessages().isEmpty()) {
+                if (!url.getShowFeesDetailsParameter().getMessages().isEmpty()) {
+                    showFeesDetails = false;
+                }
+                if (!url.getPreloadParameter().getMessages().isEmpty()) {
+                    preload = process.getAmountToCharge() != null ? process.getAmountToCharge() : BigDecimal.ZERO;
+                }
+            } else {
+                throw new RedirectException(Context.getSession().pickPreferredPage());
+            }
         }
     }
 
@@ -447,7 +448,11 @@ public final class CheckContributionPage extends CreateUserContentPage {
             final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_field");
 
             final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
-            moneyField.setDefaultValue(process.getAmountToCharge().toPlainString());
+            if (process.getAmountToCharge() == null) {
+                moneyField.setDefaultValue("0");
+            } else {
+                moneyField.setDefaultValue(process.getAmountToCharge().toPlainString());
+            }
 
             final HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
 
@@ -502,13 +507,8 @@ public final class CheckContributionPage extends CreateUserContentPage {
     }
 
     public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
-        return generateBreadcrumb(feature, process, false);
-    }
-
-    public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process, final boolean unlock) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
         final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
-        checkContributionPageUrl.setUnlock(unlock);
         breadcrumb.pushLink(checkContributionPageUrl.getHtmlLink(tr("Contribute - Check")));
         return breadcrumb;
     }

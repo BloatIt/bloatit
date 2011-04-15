@@ -31,6 +31,7 @@ import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributionAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
+import com.bloatit.web.linkable.contribution.UnlockAction;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -160,6 +161,7 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
+import com.bloatit.web.url.UnlockActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 public class BloatitWebServer extends WebProcessor {
@@ -400,6 +402,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(ChangeLanguageActionUrl.getName())) {
             return new ChangeLanguageAction(new ChangeLanguageActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(UnlockActionUrl.getName())) {
+            return new UnlockAction(new UnlockActionUrl(params, session.getParameters()));
         }
 
         // Process
