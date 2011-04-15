@@ -2,6 +2,8 @@
 .normal_feature_summary {
     .box;
     padding : 10px;
+    position:relative; //to make work the position absolute of the .feature_summary_state
+    
 
     .feature_summary_top{
         margin-bottom:5px;
@@ -146,7 +148,7 @@
 
     .feature_summary_details {
         text-align: right;
-        margin-right: 150px;
+        margin-right: 15px;
         font-size: 0.8em;
         color: @light_text_color;
         a {
@@ -192,6 +194,13 @@
             font-size: 0.7em;
             
         }
+    }
+    
+    .feature_summary_state {
+        position: absolute;
+        top: 20px;
+        right: -30px;
+        
     }
 
 }

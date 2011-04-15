@@ -2,7 +2,7 @@
 
 .feature_summary {
     .box;
-    
+    position:relative; //to make work the position absolute of the .feature_summary_state
     padding : 10px;
 
 
@@ -55,35 +55,12 @@
         .progress_text {
             font-size: 1.1em;
         }
-        
-        .feature_summary_progress_and_state {
-            .display-box;
-            width:100%;
-            .box-align(center);
-
-            
-            .feature_summary_progress {
-                .box-flex;  
-            }
-            
-            .feature_summary_state {
-                margin-top: -20px;
-                width: 100px;
-
-                //.transform(5deg);
-                //.transition;
-            }
-            
-            .feature_summary_state:hover {
-                //.transform(20deg,1.1);
-            }
-        }
     }
     
     .feature_summary_share_button {
         
         vertical-align : bottom;
-        width:50px;
+        width:80px;
     }
 
 
@@ -99,6 +76,13 @@
         width:100%;
         display:block;
 
+    }
+    
+    .feature_summary_state {
+        position: absolute;
+        top: 70px;
+        right: 40px;
+        
     }
 }
 
@@ -163,6 +147,7 @@
     text-align: center;
     font-size: 0.7em;
 }
+
 
 
 
