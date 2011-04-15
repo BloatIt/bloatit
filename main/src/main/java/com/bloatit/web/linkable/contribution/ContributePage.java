@@ -15,6 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -44,8 +45,8 @@ import com.bloatit.web.url.ContributePageUrl;
  */
 @ParamContainer("contribute")
 public final class ContributePage extends CreateUserContentPage {
+    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @RequestParam
     private final ContributionProcess process;
 
     private final ContributePageUrl url;
@@ -58,10 +59,8 @@ public final class ContributePage extends CreateUserContentPage {
 
     @Override
     public void processErrors() throws RedirectException {
-        addNotifications(url.getMessages());
         if (url.getMessages().hasMessage()) {
-            session.notifyList(url.getMessages());
-            throw new RedirectException(Context.getSession().pickPreferredPage());
+            throw new PageNotFoundException();
         }
     }
 

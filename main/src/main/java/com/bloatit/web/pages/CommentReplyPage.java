@@ -16,8 +16,11 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -47,7 +50,8 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
     private final CommentReplyPageUrl url;
 
-    @RequestParam(name = "target")
+    @RequestParam(name = "target", conversionErrorMsg = @tr("I cannot find the comment number: ''%value''."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a comment number."))
     private final Comment targetComment;
 
     public CommentReplyPage(final CommentReplyPageUrl url) {
@@ -58,7 +62,9 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
     @Override
     public void processErrors() throws RedirectException {
-        session.notifyList(url.getMessages());
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
     }
 
     @Override
@@ -70,7 +76,11 @@ public final class CommentReplyPage extends CreateUserContentPage {
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
         // as team
-        addAsTeamField(form, loggedUser, UserTeamRight.TALK, Context.tr("In the name of"), Context.tr("Write this comment in the name of this group."));
+        addAsTeamField(form,
+                       loggedUser,
+                       UserTeamRight.TALK,
+                       Context.tr("In the name of"),
+                       Context.tr("Write this comment in the name of this group."));
 
         // Comment text
         final FieldData commentData = commentCommentActionUrl.getCommentParameter().pickFieldData();
@@ -81,10 +91,10 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
         // as team
         addAddAttachmentField(form,
-                             Context.tr("Join a file"),
-                             Context.tr("Optional. If you join a file you have to add description."),
-                             Context.tr("Describe the file"),
-                             Context.tr("You need to add a short description of the file if you add one."));
+                              Context.tr("Join a file"),
+                              Context.tr("Optional. If you join a file you have to add description."),
+                              Context.tr("Describe the file"),
+                              Context.tr("You need to add a short description of the file if you add one."));
 
         // submit
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));

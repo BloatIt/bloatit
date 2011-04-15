@@ -29,11 +29,11 @@ import com.bloatit.web.url.DocumentationPageUrl;
  * </p>
  */
 @ParamContainer("documentation")
-public class DocumentationPage extends MasterPage {
+public final class DocumentationPage extends MasterPage {
 
-    private final static String DOC_TARGET = "doc";
     private final static String DEFAULT_DOC = "home";
-    @RequestParam(name = DOC_TARGET)
+    
+    @RequestParam(name = "doc")
     @Optional(DEFAULT_DOC)
     private final String docTarget;
     private final DocumentationPageUrl url;
@@ -51,11 +51,8 @@ public class DocumentationPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-
         final TwoColumnLayout layout = new TwoColumnLayout(url);
-
         final BoxLayout box = new BoxLayout();
-
         final HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
         if (!docRenderer.isExists()) {
             throw new PageNotFoundException();
@@ -63,7 +60,6 @@ public class DocumentationPage extends MasterPage {
 
         box.add(docRenderer);
         layout.addLeft(box);
-
         return layout;
     }
 
@@ -77,7 +73,6 @@ public class DocumentationPage extends MasterPage {
         if (docTarget.equals(DEFAULT_DOC)) {
             return DocumentationPage.generateBreadcrumb();
         }
-
         return DocumentationPage.generateBreadcrumbPage(docTarget);
     }
 

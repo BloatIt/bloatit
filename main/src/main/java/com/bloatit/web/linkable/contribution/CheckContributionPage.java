@@ -68,24 +68,22 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
 @ParamContainer("contribute/check")
 public final class CheckContributionPage extends CreateUserContentPage {
 
-    @RequestParam
-    @ParamConstraint(optionalErrorMsg =
-    @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
-    private final CheckContributionPageUrl url;
+
     @Optional("false")
     @RequestParam(name = "show_fees_detail")
     private Boolean showFeesDetails;
+
     @Optional
-    @RequestParam(conversionErrorMsg =
-    @tr("The amount to load on your account must be a positive integer."))
-    @ParamConstraint(min = "0", minErrorMsg =
-    @tr("You must specify a positive value."), //
-    max = "100000", maxErrorMsg =
-    @tr("We cannot accept such a generous offer."),//
-    precision = 0, precisionErrorMsg =
-    @tr("Please do not use cents."))
+    @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
+    @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
+                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
+
+    private final CheckContributionPageUrl url;
 
     public CheckContributionPage(final CheckContributionPageUrl url) {
         super(url, new CheckContributionActionUrl(url.getProcess()));
@@ -137,8 +135,6 @@ public final class CheckContributionPage extends CreateUserContentPage {
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
 
-
-
         return group;
     }
 
@@ -156,7 +152,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
                     final HtmlDiv changeLine = new HtmlDiv("change_line");
                     {
 
-                        changeLine.add(new MoneyVariationBlock(actor.getInternalAccount().getAmount(), actor.getInternalAccount().getAmount().subtract(process.getAmount())));
+                        changeLine.add(new MoneyVariationBlock(actor.getInternalAccount().getAmount(), actor.getInternalAccount()
+                                                                                                            .getAmount()
+                                                                                                            .subtract(process.getAmount())));
                         changeLine.add(MembersTools.getMemberAvatar(actor));
                         authorContributionSummary.add(changeLine);
                         authorContributionSummary.add(new HtmlDefineParagraph(tr("Author: "), actor.getDisplayName()));
@@ -182,7 +180,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
         {
             final ContributionActionUrl contributionActionUrl = new ContributionActionUrl(process);
             final HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Contribute {0}",
-                                                                                          Context.getLocalizator().getCurrency(process.getAmount()).getDefaultString()));
+                                                                                          Context.getLocalizator()
+                                                                                                 .getCurrency(process.getAmount())
+                                                                                                 .getDefaultString()));
             confirmContributionLink.setCssClass("button");
 
             if (process.getTeam() != null) {
@@ -271,7 +271,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
             final HtmlDiv subtotal = new HtmlDiv("quotation_total_line");
             {
                 subtotal.add(new HtmlDiv("label").addText(tr("Subtotal TTC")));
-                subtotal.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.subTotalTTCEntry.getValue()).getDecimalDefaultString()));
+                subtotal.add(new HtmlDiv("money").addText(Context.getLocalizator()
+                                                                 .getCurrency(quotation.subTotalTTCEntry.getValue())
+                                                                 .getDecimalDefaultString()));
             }
             totalsLines.add(subtotal);
 
@@ -302,7 +304,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
             final HtmlDiv elveosCommission = new HtmlDiv("quotation_total_line_details");
             {
                 elveosCommission.add(new HtmlDiv("label").addText(tr("Elveos's commission")));
-                elveosCommission.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.commission.getValue()).getDecimalDefaultString()));
+                elveosCommission.add(new HtmlDiv("money").addText(Context.getLocalizator()
+                                                                         .getCurrency(quotation.commission.getValue())
+                                                                         .getDecimalDefaultString()));
 
             }
             feesDetail.add(elveosCommission);
@@ -337,7 +341,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
             final HtmlDiv totalTTC = new HtmlDiv("quotation_total_line_total");
             {
                 totalTTC.add(new HtmlDiv("label").addText(tr("Total TTC")));
-                totalTTC.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.totalTTC.getValue()).getDecimalDefaultString()));
+                totalTTC.add(new HtmlDiv("money").addText(Context.getLocalizator()
+                                                                 .getCurrency(quotation.totalTTC.getValue())
+                                                                 .getDecimalDefaultString()));
             }
             totalsLines.add(totalTTC);
 
@@ -350,7 +356,8 @@ public final class CheckContributionPage extends CreateUserContentPage {
             payContributionLink.setCssClass("button");
             if (process.getTeam() != null) {
                 try {
-                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),"use_account"));
+                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
+                                                   "use_account"));
                 } catch (final UnauthorizedOperationException e) {
                     throw new ShallNotPassException(e);
                 }
@@ -370,24 +377,33 @@ public final class CheckContributionPage extends CreateUserContentPage {
 
             add(SoftwaresTools.getSoftwareLogoSmall(contribution.getFeature().getSoftware()));
 
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(contribution.getFeature().getContribution()).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(contribution.getFeature().getContribution())
+                                                                          .getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
                                                                                                  "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(contribution.getFeature().getContribution().add(contribution.getAmount())).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(contribution.getFeature()
+                                                                                                   .getContribution()
+                                                                                                   .add(contribution.getAmount()))
+                                                                          .getDefaultString()));
 
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Contribution")));
             add(new HtmlDiv("quotation_detail_line_description").addText(FeaturesTools.getTitle(contribution.getFeature())));
 
             final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator().getCurrency(contribution.getAmount()).getDecimalDefaultString()));
+            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
+                                                                                             .getCurrency(contribution.getAmount())
+                                                                                             .getDecimalDefaultString()));
 
             // Modify contribution button
             final ContributePageUrl contributePageUrl = new ContributePageUrl(contribution);
             final HtmlLink modifyContributionLink = contributePageUrl.getHtmlLink(tr("modify"));
-            //final HtmlLink deleteContributionLink = contributePageUrl.getHtmlLink(tr("delete"));
+            // final HtmlLink deleteContributionLink =
+            // contributePageUrl.getHtmlLink(tr("delete"));
             // TODO: real delete button
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_modify").add(modifyContributionLink)/*.addText(" - ").add(deleteContributionLink)*/);
+            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_modify").add(modifyContributionLink));
 
             add(amountBlock);
 
@@ -401,7 +417,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
 
             add(MembersTools.getMemberAvatarSmall(actor));
 
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(actor.getInternalAccount().getAmount()).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(actor.getInternalAccount().getAmount())
+                                                                          .getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
                                                                                                  "money up")));
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
@@ -410,7 +428,11 @@ public final class CheckContributionPage extends CreateUserContentPage {
 
             final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator().getCurrency(actor.getInternalAccount().getAmount().negate()).getDecimalDefaultString()));
+            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
+                                                                                             .getCurrency(actor.getInternalAccount()
+                                                                                                               .getAmount()
+                                                                                                               .negate())
+                                                                                             .getDecimalDefaultString()));
 
             add(amountBlock);
         }
@@ -427,7 +449,9 @@ public final class CheckContributionPage extends CreateUserContentPage {
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
                                                                                                  "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(process.getAmountToCharge()).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(process.getAmountToCharge())
+                                                                          .getDefaultString()));
 
             add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
             add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));

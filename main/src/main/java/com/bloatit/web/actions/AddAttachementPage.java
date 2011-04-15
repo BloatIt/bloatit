@@ -15,8 +15,10 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -37,7 +39,8 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 public final class AddAttachementPage extends CreateUserContentPage {
 
     @SuppressWarnings("rawtypes")
-    @RequestParam(name = "user_content")
+    @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value''."))
+     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
     UserContentInterface userContent;
 
     private final AddAttachementPageUrl url;
@@ -60,15 +63,14 @@ public final class AddAttachementPage extends CreateUserContentPage {
 
     @Override
     public void processErrors() throws RedirectException {
-        // TODO we should process the errors here.
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
     }
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws PageNotFoundException {
-        addNotifications(url.getMessages());
-        if (!url.getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
+
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarUserContentBlock(userContent));
 
@@ -82,11 +84,15 @@ public final class AddAttachementPage extends CreateUserContentPage {
         final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachment"), 1);
         final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(userContent);
         final HtmlForm form = new HtmlForm(formUrl.urlString());
-        
+
         form.enableFileUpload();
-        addAddAttachmentField(form, tr("Attached file"), tr("Mandatory"), Context.tr("Attachment description"), tr("You must attach a file. Maximum size is 3MB"));
+        addAddAttachmentField(form,
+                              tr("Attached file"),
+                              tr("Mandatory"),
+                              Context.tr("Attachment description"),
+                              tr("You must attach a file. Maximum size is 3MB"));
         form.add(new HtmlSubmit(tr("Submit")));
-        
+
         group.add(title);
         title.add(form);
         return group;

@@ -48,9 +48,6 @@ public final class MetaBugEditPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-
-        // TODO: why not add this message on all pages ?
-        addNotifications(url.getMessages());
         if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
         }

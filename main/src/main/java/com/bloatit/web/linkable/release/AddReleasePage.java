@@ -14,8 +14,11 @@ package com.bloatit.web.linkable.release;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -43,7 +46,8 @@ public final class AddReleasePage extends CreateUserContentPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam
+    @RequestParam(conversionErrorMsg = @tr("I cannot find the milestone number: ''%value''."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a milestone number."))
     Milestone milestone;
     private final AddReleasePageUrl url;
 
@@ -65,16 +69,16 @@ public final class AddReleasePage extends CreateUserContentPage {
 
     @Override
     public void processErrors() throws RedirectException {
-        // TODO we should process the errors here.
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
     }
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
-
         layout.addLeft(generateReleaseCreationForm());
-
         return layout;
     }
 

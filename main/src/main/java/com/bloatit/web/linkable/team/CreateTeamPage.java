@@ -27,7 +27,7 @@ import com.bloatit.web.url.CreateTeamPageUrl;
  * </p>
  */
 @ParamContainer("team/create")
-public class CreateTeamPage extends MasterPage {
+public final class CreateTeamPage extends MasterPage {
     private final CreateTeamPageUrl url;
 
     public CreateTeamPage(final CreateTeamPageUrl url) {

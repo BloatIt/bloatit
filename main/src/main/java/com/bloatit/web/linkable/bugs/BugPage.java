@@ -45,10 +45,8 @@ import com.bloatit.web.url.ModifyBugPageUrl;
 @ParamContainer("feature/bug")
 public final class BugPage extends MasterPage {
 
-    public static final String BUG_FIELD_NAME = "id";
-
-    @ParamConstraint(optionalErrorMsg = @tr("The id of the bug is incorrect or missing"))
-    @RequestParam(name = BUG_FIELD_NAME)
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value''."))
     private final Bug bug;
 
     private final BugPageUrl url;
@@ -61,7 +59,6 @@ public final class BugPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        session.notifyList(url.getMessages());
         if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }

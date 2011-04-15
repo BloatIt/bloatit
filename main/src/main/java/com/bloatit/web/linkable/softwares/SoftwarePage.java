@@ -40,10 +40,8 @@ import com.bloatit.web.url.SoftwarePageUrl;
 @ParamContainer("software")
 public final class SoftwarePage extends MasterPage {
 
-    public static final String SOFTWARE_FIELD_NAME = "id";
-
-    @ParamConstraint(optionalErrorMsg = @tr("The id of the software is incorrect or missing"))
-    @RequestParam(name = SOFTWARE_FIELD_NAME)
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a software number."))
+    @RequestParam(name = "id",  conversionErrorMsg = @tr("I cannot find the software number: ''%value''."))
     private final Software software;
 
     private final SoftwarePageUrl url;
@@ -56,8 +54,7 @@ public final class SoftwarePage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        session.notifyList(url.getMessages());
-        if (url.getMessages().hasMessage()) {
+        if (!url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
