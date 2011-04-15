@@ -28,10 +28,10 @@ public class KudosableAuthorBlocck extends UserContentAuthorBlock {
                 if (vote == 0) {
                     commentPopularity.addText(" (");
 
-                    // Usefull
+                    // Useful
                     final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(kudosable, true);
                     final HtmlLink usefullLink = usefullUrl.getHtmlLink(tr("Useful"));
-                    usefullLink.setCssClass("Useful");
+                    usefullLink.setCssClass("useful");
 
                     // Useless
                     final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(kudosable, false);
