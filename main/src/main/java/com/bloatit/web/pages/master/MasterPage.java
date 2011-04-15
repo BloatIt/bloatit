@@ -36,7 +36,6 @@ public abstract class MasterPage extends GenericPage {
     // -----------------------------------------------------------------------
     // Template method pattern: Abstract methods
     // -----------------------------------------------------------------------
-
     protected abstract HtmlElement createBodyContent() throws RedirectException;
 
     protected abstract String createPageTitle();
@@ -44,11 +43,9 @@ public abstract class MasterPage extends GenericPage {
     protected abstract Breadcrumb createBreadcrumb();
 
     // protected abstract HtmlElement addNotifications();
-
     // -----------------------------------------------------------------------
     // Template method pattern: Implementation
     // -----------------------------------------------------------------------
-
     @Override
     protected final void createPageContent(final HtmlGenericElement body) throws RedirectException {
         final HtmlBranch header = new HtmlDiv("header").setId("header");
@@ -100,9 +97,7 @@ public abstract class MasterPage extends GenericPage {
         final HtmlImage logoImage = new HtmlImage(new Image(WebConfiguration.getImgLogo()), tr("elveos.org logo"));
         logoImage.setCssClass("logo_elveos");
 
-
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
-
 
         final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
         logoTextDiv.addText(tr("the cooperative platform for free software funding"));

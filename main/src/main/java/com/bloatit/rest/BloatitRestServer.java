@@ -96,7 +96,7 @@ public class BloatitRestServer extends RestServer {
             put("translations", RestTranslation.class);
         }
     };
-    private final Class<?>[] classes = new Class<?>[]{RestAuthenticate.class,
+    private final Class<?>[] classes = new Class<?>[]{ RestAuthenticate.class,
                                                       RestMember.class,
                                                       RestBankTransaction.class,
                                                       RestMilestone.class,
