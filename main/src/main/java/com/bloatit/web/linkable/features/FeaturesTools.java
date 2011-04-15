@@ -105,10 +105,6 @@ public class FeaturesTools {
         return generateProgress(feature, false, BigDecimal.ZERO);
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, final boolean slim) throws UnauthorizedOperationException {
-        return generateProgress(feature, slim, BigDecimal.ZERO);
-    }
-
     /**
      * @throws UnauthorizedOperationException
      */
@@ -148,11 +144,18 @@ public class FeaturesTools {
             }
 
             String barLabel = "";
+            
             if(feature.getFeatureState() == FeatureState.DEVELOPPING) {
                 barLabel = Context.tr("In developement");
             }
 
-            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel,
+            String styleSuffix = null;
+            if(feature.getFeatureState() == FeatureState.FINISHED) {
+                styleSuffix = "success";
+            }
+
+
+            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel, styleSuffix,
                                                                     cappedProgressValue - myProgressValue,
                                                                     cappedProgressValue,
                                                                     cappedProgressValue + futureProgressValue);

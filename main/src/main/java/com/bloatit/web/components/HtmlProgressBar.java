@@ -17,11 +17,11 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 public class HtmlProgressBar extends HtmlDiv {
 
     public HtmlProgressBar(final float... progressList) {
-        this(null, progressList);
+        this(null, null, progressList);
     }
 
-    public HtmlProgressBar(final String label, final float... progressList) {
-        super("progress_bar_block");
+    public HtmlProgressBar(final String label, final String styleSuffix, final float... progressList) {
+        super("progress_bar_block"+ (styleSuffix != null ? "_"+styleSuffix: ""));
 
         
         add(new HtmlDiv("progress_bar_background"));
