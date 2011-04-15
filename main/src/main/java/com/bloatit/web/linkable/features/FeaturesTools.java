@@ -1,5 +1,6 @@
 package com.bloatit.web.linkable.features;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.math.BigDecimal;
@@ -88,13 +89,15 @@ public class FeaturesTools {
             master = new HtmlSpan("feature_complete_title");
         }
         master.setCssClass("feature_title");
-        master.add(SoftwaresTools.getSoftwareLink(feature.getSoftware()));
-        master.addText(" – ");
+
         if (isTitle) {
             master.addText(getTitle(feature));
         } else {
             master.add(new FeaturePageUrl(feature).getHtmlLink(getTitle(feature)));
         }
+        HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(feature.getSoftware());
+        HtmlMixedText mixed = new HtmlMixedText(Context.tr(" (<0:software:>)"), softwareLink);
+        master.add(mixed);
         return master;
     }
 
@@ -144,7 +147,12 @@ public class FeaturesTools {
                 cappedProgressValue = FeatureImplementation.PROGRESSION_PERCENT - futureProgressValue;
             }
 
-            final HtmlProgressBar progressBar = new HtmlProgressBar(slim,
+            String barLabel = "";
+            if(feature.getFeatureState() == FeatureState.DEVELOPPING) {
+                barLabel = Context.tr("In developement");
+            }
+
+            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel,
                                                                     cappedProgressValue - myProgressValue,
                                                                     cappedProgressValue,
                                                                     cappedProgressValue + futureProgressValue);

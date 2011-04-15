@@ -37,3 +37,4 @@ log-*
 # vim temp files
 .*.swp
 main/nb-configuration.xml
+main/src/main/java/hibernate.cfg.xml

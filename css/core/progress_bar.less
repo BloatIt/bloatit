@@ -5,14 +5,13 @@
     width:80%;
 }
 
-.progress_bar_background, .progress_bar_background_slim {
+.progress_bar_background {
     display:block;
-   // .rounded_corners(7px);
     padding:0;
     margin:0;
     height:16px;
-    border: 1px solid @default_background_color;
-    background: @default_background_color;
+    background: @progress_background_color;
+    .horizontal-gradient(@progress_background_color_dark, @progress_background_color_light); 
     padding:0;
     margin-bottom:0px;
     width:100%;
@@ -20,51 +19,44 @@
 
 }
 
-.progress_bar_border, .progress_bar_border_slim {
-    //margin-left: 50px;
-    //margin-right: 50px;
+.progress_bar_label {
     display:block;
-   // .rounded_corners(7px);
 
+    font-size: 11px;
+    color: @progress_label_color;
+    text-align: center;
     height:16px;
-    border: 1px solid @progress_border_color;
-    background: transparent;
+
     padding:0;
     margin:0;
-    margin-left:-1px;
    
-    margin-top: -18px;
+    margin-top: -15px;
     width:100%;
 }
 
 
-.progress_bar_state_1,  .progress_bar_state_slim_1, .progress_bar_state_2,  .progress_bar_state_slim_2, .progress_bar_state_3,  .progress_bar_state_slim_3 {
+.progress_bar_state_1, .progress_bar_state_2, .progress_bar_state_3 {
     display:block;
-    
-    
-    //.rounded_corners(7px);
-    height:18px;
+    height:16px;
     padding:0;
     margin:0;
-
-     margin-top: -18px;
-    
+    margin-top: -16px;
 }
 
 
-.progress_bar_state_1,  .progress_bar_state_slim_1 {
+.progress_bar_state_1 {
 
     background: @progress_color;
     .horizontal-gradient(@progress_color_dark, @progress_color_light);    
 }
 
-.progress_bar_state_2,  .progress_bar_state_slim_2 {
+.progress_bar_state_2 {
 
     background: @progress_color_my;
     .horizontal-gradient(@progress_color_my_dark, @progress_color_my_light);    
 }
 
-.progress_bar_state_3,  .progress_bar_state_slim_3 {
+.progress_bar_state_3{
 
     background: @progress_color_future;
     .horizontal-gradient(@progress_color_future_dark, @progress_color_future_light);    

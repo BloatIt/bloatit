@@ -53,9 +53,11 @@ public abstract class MasterPage extends GenericPage {
         final HtmlBranch headerContent = new HtmlDiv("header_content").setId("header_content");
         header.add(headerContent);
         header.add(new HtmlClearer());
-
-        headerContent.add(generateLogo());
+        
         headerContent.add(new SessionBar());
+        headerContent.add(generateLogo());
+
+        
 
         body.add(new Menu());
 

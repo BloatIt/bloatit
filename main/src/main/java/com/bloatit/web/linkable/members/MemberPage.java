@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -144,7 +145,7 @@ public final class MemberPage extends MasterPage {
     }
 
     private HtmlElement generateMemberPageMain() {
-        final HtmlDiv master = new HtmlDiv("member");
+        final HtmlDiv master = new HtmlDiv("member_page");
 
         // Link to change account settings
         final HtmlDiv modify = new HtmlDiv("float_right");
@@ -153,19 +154,22 @@ public final class MemberPage extends MasterPage {
 
         // Title
         final String title = (myPage) ? Context.tr("My page") : Context.tr("Member page");
-        final HtmlTitleBlock main = new HtmlTitleBlock(title, 1);
+        final HtmlTitleBlock tBlock = new HtmlTitleBlock(title, 1);
+        master.add(tBlock);
+
+        HtmlDiv main = new HtmlDiv("member");
         master.add(main);
+
+        // Member ID card
+        final HtmlDiv memberId = new HtmlDiv("member_id");
 
         // Avatar
         final HtmlDiv avatarDiv = new HtmlDiv("float_left");
         avatarDiv.add(MembersTools.getMemberAvatar(member));
-        main.add(avatarDiv);
-
-        // Member ID card
-        final HtmlDiv memberId = new HtmlDiv("member_id");
+        memberId.add(avatarDiv);
         main.add(memberId);
-        try {
 
+        try {
             final HtmlList memberIdList = new HtmlList();
             memberId.add(memberIdList);
 
@@ -214,17 +218,18 @@ public final class MemberPage extends MasterPage {
         main.add(new HtmlClearer());
 
         // Displaying list of user recent activity
-        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
-        main.add(recentActivity);
 
         final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
-        recentActivity.add(recent);
+        main.add(recent);
+
+        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
+        recent.add(recentActivity);
 
         final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
         final MemberPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
         feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getPagedActivityUrl());
-        recent.add(feed);
+        recentActivity.add(feed);
 
         return master;
     }
@@ -241,65 +246,22 @@ public final class MemberPage extends MasterPage {
         public XmlNode generate(final UserContent<? extends DaoUserContent> content) {
             return content.accept(new AbstractModelClassVisitor<HtmlElement>() {
                 @Override
+                public HtmlElement visit(final Translation model) {
+                    // TODO: After implementing correct translation stuff, do
+                    // something in here
+                    return new HtmlParagraph("translation");
+                }
+
+                @Override
+                public HtmlElement visit(final Kudos model) {
+                    return new HtmlParagraph("kudos");
+                }
+
+                @Override
                 public HtmlElement visit(final Contribution model) {
                     HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
                     HtmlMixedText mixedText = new HtmlMixedText(Context.tr("<0::Contributed>"), contribSpan);
                     return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
-                }
-
-                @Override
-                public HtmlElement visit(Comment model) {
-                    final HtmlDiv feedBox = new HtmlDiv("feed_box");
-                    String contentType = "";
-                    if (model.getParentType() == ParentType.COMMENT) {
-                        try {
-                            final MemberPageUrl memberPageUrl = new MemberPageUrl(model.getParentComment().getMember());
-                            final HtmlLink htmlLink = memberPageUrl.getHtmlLink(model.getParentComment().getMember().getDisplayName());
-                            final String tr = Context.tr("{0} Replied to comment from <0:comment author:> on: ", generateDate(model));
-                            final HtmlMixedText mixedText = new HtmlMixedText(tr, htmlLink);
-                            feedBox.add(mixedText);
-                        } catch (final UnauthorizedOperationException e) {
-                            throw new ShallNotPassException("Error while generating activity feed", e);
-                        }
-                        Comment c = model;
-                        while (c.getParentType() == ParentType.COMMENT) {
-                            c = c.getParentComment();
-                        }
-                        model = c;
-                    } else {
-                        contentType = generateDate(model) + Context.tr("Commented on : ");
-                        feedBox.addText(contentType);
-                    }
-
-                    final HtmlDiv targetBox = new HtmlDiv("feed_target");
-                    feedBox.add(targetBox);
-
-                    switch (model.getParentType()) {
-                        case BUG:
-                            final HtmlLink htmlLink = new BugPageUrl(model.getParentBug()).getHtmlLink();
-                            final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("A <0:bug title:bug> in feature: "), htmlLink);
-                            targetBox.add(mixedText);
-                            final XmlNode f = generateFeature(model.getParentBug().getFeature());
-                            targetBox.add(f);
-                        case COMMENT:
-                            // Shouldn't happen
-                            break;
-                        case FEATURE:
-                            targetBox.add(generateFeature(model.getParentFeature()));
-                            break;
-                        case RELEASE:
-                            // No comment on releases
-                            break;
-                    }
-                    return feedBox;
-                }
-
-                private HtmlBranch generateFeature(final Feature feature) {
-                    try {
-                        return FeaturesTools.generateFeatureTitle(feature);
-                    } catch (final UnauthorizedOperationException e) {
-                        throw new ShallNotPassException("Error when generating feature box", e);
-                    }
                 }
 
                 @Override
@@ -325,73 +287,121 @@ public final class MemberPage extends MasterPage {
 
                 @Override
                 public HtmlElement visit(final Bug model) {
-                    final HtmlDiv feedBox = new HtmlDiv("feed_box");
-                    final HtmlLink htmlLink = new BugPageUrl(model).getHtmlLink(model.getTitle());
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Reported bug (<0:bug title:>) on feature: "), htmlLink);
-                    final String contentType = generateDate(model);
-                    feedBox.addText(contentType);
-                    feedBox.add(mixedText);
-                    final HtmlDiv targetBox = new HtmlDiv("feed_target");
-                    feedBox.add(targetBox);
-                    targetBox.add(generateFeature(model.getFeature()));
-                    return feedBox;
+                    HtmlSpan bugSpan = new HtmlSpan("feed_bug");
+                    HtmlLink bugUrl = new BugPageUrl(model).getHtmlLink(model.getTitle());
+                    bugUrl.setCssClass("bug_link");
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Reported <0::bug> (<1::>)"), bugSpan, bugUrl);
+                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
                 }
 
                 @Override
                 public HtmlElement visit(final FileMetadata model) {
-                    final HtmlDiv feedBox = new HtmlDiv("feed_box");
-                    final String contentType = generateDate(model) + Context.tr("Uploaded a file: ");
-                    feedBox.addText(contentType);
-                    final HtmlDiv targetBox = new HtmlDiv("feed_target");
-                    feedBox.add(targetBox);
-                    targetBox.add(new FileResourceUrl(model).getHtmlLink(model.getFileName()));
-                    return feedBox;
+                    HtmlSpan fileSpan = new HtmlSpan("feed_file");
+                    HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Uploaded a <0::file>"), fileSpan);
+                    HtmlLink htmlLink = new FileResourceUrl(model).getHtmlLink(model.getFileName());
+                    HtmlElement secondLine = generateFeedSecondLine(Context.tr("File: "), htmlLink);
+                    return generateFeedStructure(mixedText, secondLine, model);
+                    // return generateFeatureFeedStructure(mixedText,
+                    // model.getFeature(), model);
                 }
 
                 @Override
-                public HtmlElement visit(final Kudos model) {
-                    return new PlaceHolderElement();
-                }
+                public HtmlElement visit(Comment model) {
+                    HtmlSpan commentSpan = new HtmlSpan("feed_comment");
+                    HtmlMixedText mixedText;
 
-                @Override
-                public HtmlElement visit(final Translation model) {
-                    // TODO: After implementing correct translation stuff, do
-                    // something in here
+                    if (model.getParentType() == ParentType.COMMENT) {
+                        Member commenter = model.getParentComment().getMember();
+                        HtmlLink commenterUrl;
+                        try {
+                            commenterUrl = new MemberPageUrl(commenter).getHtmlLink(commenter.getDisplayName());
+                        } catch (UnauthorizedOperationException e) {
+                            throw new ShallNotPassException("Cannot access member display name.", e);
+                        }
+                        mixedText = new HtmlMixedText(Context.tr("Replied to a <0::comment> (from <1::>)"), commentSpan, commenterUrl);
+
+                        while (model.getParentType() == ParentType.COMMENT) {
+                            model = model.getParentComment();
+                        }
+
+                    } else {
+                        mixedText = new HtmlMixedText(Context.tr("<0::Commented>"), commentSpan);
+                    }
+
+                    switch (model.getParentType()) {
+                        case BUG:
+                            HtmlLink link = new BugPageUrl(model.getParentBug()).getHtmlLink(model.getParentBug().getTitle());
+                            HtmlElement secondLine = generateFeedSecondLine(Context.tr("Bug: "), link);
+                            return generateFeedStructure(mixedText, secondLine, model);
+                        case FEATURE:
+                            return generateFeatureFeedStructure(mixedText, model.getParentFeature(), model);
+                        case COMMENT:
+                        case RELEASE:
+                            // Nothing to do here
+                            break;
+                    }
                     return new PlaceHolderElement();
                 }
             });
         }
     }
 
-    protected HtmlElement generateFeedSecondLine(String item, HtmlElement target) {
+    /**
+     * Generates a second line of a feed
+     * 
+     * @param item the String to display at the start of the second line
+     * @param target the element to display after <code>item</code>
+     * @return the element to add as a second line
+     */
+    private HtmlElement generateFeedSecondLine(String item, HtmlElement target) {
         return new HtmlDefineParagraph(item, target);
     }
 
-    protected HtmlElement
-            generateFeatureFeedStructure(HtmlElement firstLine, Feature feature, UserContentInterface<? extends DaoUserContent> content) {
+    /**
+     * Generates a complete structure of a feed for elements that have a feature
+     * on their second line
+     * <p>
+     * This is a convenience method for
+     * {@link #generateFeedStructure(HtmlElement, HtmlElement, UserContentInterface)}
+     * that avoids having to create the feature second line
+     * </p>
+     * 
+     * @param firstLine the element to show on the first line
+     * @param feature the <code>feature</code> to display on the second line
+     * @param content the UserContent that originates everything, so we can get
+     *            its creation date
+     * @return the element to add in the feed
+     */
+    private HtmlElement generateFeatureFeedStructure(HtmlElement firstLine, Feature feature, UserContentInterface<? extends DaoUserContent> content) {
         PlaceHolderElement ph = new PlaceHolderElement();
         try {
-            ph.add(generateFeedSecondLine(Context.tr("Feature"), FeaturesTools.generateFeatureTitle(feature)));
+            ph.add(generateFeedSecondLine(Context.tr("Feature: "), FeaturesTools.generateFeatureTitle(feature)));
         } catch (UnauthorizedOperationException e) {
             throw new ShallNotPassException("Cannot access some feature information.", e);
         }
         return generateFeedStructure(firstLine, ph, content);
     }
 
-    protected HtmlElement
-            generateFeedStructure(HtmlElement firstLine, HtmlElement secondLine, UserContentInterface<? extends DaoUserContent> content) {
+    /**
+     * Creates a complete feed item to add to the feed
+     * 
+     * @param firstLine the first line of the feed item
+     * @param secondLine the second line of the feed item
+     * @param content the UserContent that originates everything, so we can get
+     *            its creation date
+     * @return the element to add in the feed
+     */
+    private HtmlElement generateFeedStructure(HtmlElement firstLine, HtmlElement secondLine, UserContentInterface<? extends DaoUserContent> content) {
         HtmlDiv master = new HtmlDiv("feed_item");
         master.add(new HtmlDiv("feed_item_title").add(firstLine));
-        master.add(new HtmlDiv("feed_item_description").add(secondLine));
+        HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");
+        master.add(secondAndThirdLine);
+        secondAndThirdLine.add(new HtmlDiv("feed_item_description").add(secondLine));
         HtmlBranch dateBox = new HtmlDiv("feed_item_date");
-        master.add(dateBox);
+        secondAndThirdLine.add(dateBox);
         String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
         dateBox.addText(dateString);
         return master;
-    }
-
-    protected String generateDate(final UserContentInterface<? extends DaoUserContent> content) {
-        return "[" + Context.getLocalizator().getDate(content.getCreationDate()).toString() + "] ";
     }
 
     private XmlNode generateAvatarChangeForm() {
