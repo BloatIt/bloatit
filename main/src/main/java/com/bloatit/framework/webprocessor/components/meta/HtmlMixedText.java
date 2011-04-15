@@ -17,14 +17,19 @@ package com.bloatit.framework.webprocessor.components.meta;
  */
 public class HtmlMixedText extends HtmlBranch {
 
-    public HtmlMixedText(final String content, final HtmlBranch... parameters) {
+    public HtmlMixedText(String content, final HtmlBranch... parameters) {
+        content = " " + content; // Handle the cast where it starts by a tag
         final String[] split = content.split("<[0-9]+(:[^>]+)*>");
         int index = 0;
-        
+
         for (final String string : split) {
-            add(new XmlText(string));
+            if (index == 0) {
+                add(new XmlText(string.substring(1, string.length())));
+            } else {
+                add(new XmlText(string));
+            }
             index += string.length();
-            
+
             // If it not the end, replace a tag
             final int startIndex = content.indexOf("<", index);
             if (startIndex != -1) {

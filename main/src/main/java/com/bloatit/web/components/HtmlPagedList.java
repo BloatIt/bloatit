@@ -17,6 +17,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
@@ -27,8 +28,8 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.url.HtmlPagedListUrl;
 
 @ParamContainer(value = "pagedList", isComponent = true)
-public class HtmlPagedList<T> extends HtmlList {
-
+public class HtmlPagedList<T> extends HtmlDiv{
+    
     private static final int NB_PAGES_RIGHT = 4;
     private static final int NB_PAGES_CENTER = 3;
     private static final int NB_PAGES_LEFT = 4;
@@ -51,7 +52,7 @@ public class HtmlPagedList<T> extends HtmlList {
      * Do not forget to clone the Url !!!
      */
     public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Url url2, final HtmlPagedListUrl url) {
-        super();
+        super("paged_list");
         this.currentPage = url.getCurrentPage();
         this.pageSize = url.getPageSize();
         this.currentUrl = url2;
@@ -65,9 +66,12 @@ public class HtmlPagedList<T> extends HtmlList {
             add(generateLinksBar());
         }
 
+        HtmlList items = new HtmlList();
+        items.setCssClass("items_list");
         for (final T item : itemList) {
-            add(itemRenderer.generate(item));
+            items.add(itemRenderer.generate(item));
         }
+        add(items);
 
         if (pageCount > 1) {
             add(generateLinksBar());
@@ -75,31 +79,24 @@ public class HtmlPagedList<T> extends HtmlList {
     }
 
     private HtmlElement generateLinksBar() {
-
-        final HtmlSpan span = new HtmlSpan();
-
+        final HtmlSpan span = new HtmlSpan("pages_list");
         if (currentPage > 1) {
             span.add(generateLink(currentPage - 1, tr("Previous")));
         }
-
         // first page
         span.add(generateLink(1));
-
         if (currentPage - NB_PAGES_RIGHT > 1) {
             span.addText("…");
         }
-
         // center pages
         for (int i = currentPage - NB_PAGES_CENTER; i < currentPage + NB_PAGES_CENTER; i++) {
             if (i > 1 && i < pageCount) {
                 span.add(generateLink(i));
             }
         }
-
         if (currentPage + NB_PAGES_LEFT < pageCount) {
             span.addText("…");
         }
-
         // Last page
         span.add(generateLink(pageCount));
 
