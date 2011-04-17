@@ -54,7 +54,7 @@ public final class SoftwarePage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        if (!url.getMessages().hasMessage()) {
+        if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
