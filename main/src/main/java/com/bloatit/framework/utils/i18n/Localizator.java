@@ -48,9 +48,6 @@ public final class Localizator {
     private static Map<String, LanguageDescriptor> availableLanguages = Collections.unmodifiableMap(initLanguageList());
     private static Date availableLanguagesReload;
 
-    private Locale locale;
-    private I18n i18n;
-
     // translations cache
     private static final Map<Locale, I18n> localesCache = Collections.synchronizedMap(new HashMap<Locale, I18n>());
 
@@ -61,15 +58,21 @@ public final class Localizator {
         Locale.setDefault(new Locale("en", "US"));
     }
 
-    public Localizator(final String urlLang, final List<String> browserLangs) {
-        this.locale = inferLocale(urlLang, browserLangs);
+    private Locale locale;
+    private I18n i18n;
 
+    public Localizator(final Locale language) {
+        this.locale = language;
         if (localesCache.containsKey(locale)) {
             this.i18n = localesCache.get(locale);
         } else {
             this.i18n = I18nFactory.getI18n(Localizator.class, "i18n.Messages", locale);
             localesCache.put(locale, i18n);
         }
+    }
+
+    public Localizator(final String urlLang, final List<String> browserLangs) {
+        this(inferLocale(urlLang, browserLangs));
     }
 
     /**
@@ -150,7 +153,7 @@ public final class Localizator {
      * @see #trn(String, String, long, Object...)
      * @see org.slf4j.helpers.MessageFormatter
      */
-    public String tr(String toTranslate, final Object... parameters) {
+    public String tr(final String toTranslate, final Object... parameters) {
         return correctTr(i18n.tr(toTranslate, parameters));
     }
 
@@ -252,7 +255,7 @@ public final class Localizator {
      * @param translation the translated string
      * @return the string ready to be inputed in Html
      */
-    private String correctTr(String translation) {
+    private String correctTr(final String translation) {
         return translation.replaceAll("&nbsp;", " ");
     }
 
@@ -409,7 +412,7 @@ public final class Localizator {
     /**
      * Infers the locale based on various parameters
      */
-    private Locale inferLocale(final String urlLang, final List<String> browserLangs) {
+    private static Locale inferLocale(final String urlLang, final List<String> browserLangs) {
         Locale locale = null;
 
         if (urlLang != null && !urlLang.equals("default")) {
@@ -469,7 +472,7 @@ public final class Localizator {
      * 
      * @return the favorite user locale
      */
-    private Locale browserLocaleHeuristic(final List<String> browserLangs) {
+    private static Locale browserLocaleHeuristic(final List<String> browserLangs) {
         Locale currentLocale = null;
         float currentWeigth = 0;
         Locale favLanguage = null;

@@ -1,0 +1,12 @@
+Dear ${member},
+
+We are pleased to announce that your payment ${total_amount} to http://elveos.org has been validated.
+You have successfuly credited your elveos account with ${credited}.
+
+If you have any clame do not hesitate to contact us at contact@elveos.org
+Please specify your order reference: ${reference}
+
+We thank you for your trust,
+
+The elveos Team.
+

@@ -5,8 +5,6 @@ import java.math.BigDecimal;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.mailsender.Mail;
-import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.framework.webprocessor.PaymentProcess;
 import com.bloatit.framework.webprocessor.WebProcess;
@@ -26,6 +24,8 @@ import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.web.mails.ElveosMail;
+import com.bloatit.web.mails.ElveosMail.ChargingAccountSuccess;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
@@ -126,18 +126,13 @@ public class PaylineProcess extends WebProcess {
 
                 success = true;
                 // Notify the user:
-                session.notifyGood(Context.tr("Your account has been credited with {0}",
-                                              Context.getLocalizator().getCurrency(BankTransaction.getByToken(token).getValue()).getLocaleString()));
-                final String title = Context.tr("Accepted payment on elveos.org");
-                final String memberName = session.getAuthToken().getMember().getDisplayName();
-                final String content = Context.tr("Dear {0}, \nWe are pleased to announce that your payment {1} to http://elveos.org has been validated \nWe thank you for your trust.",
-                                                  memberName,
-                                                  Context.getLocalizator()
-                                                         .getCurrency(BankTransaction.getByToken(token).getValuePaid())
-                                                         .getLocaleString());
-                final String email = session.getAuthToken().getMember().getEmail();
-                final String mailSenderID = "payline-process";
-                MailServer.getInstance().send(new Mail(email, title, content, mailSenderID));
+                final BankTransaction bankTransaction = BankTransaction.getByToken(token);
+                final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getLocaleString();
+                session.notifyGood(Context.tr("Your account has been credited with {0}", valueStr));
+                // By mail
+                final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getLocaleString();
+                final ChargingAccountSuccess mail = new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
+                mail.sendMail(session.getAuthToken().getMember(), "payline-process");
             } else {
                 payline.cancelPayement(token);
                 Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
@@ -146,9 +141,6 @@ public class PaylineProcess extends WebProcess {
         } catch (final TokenNotfoundException e) {
             Log.web().fatal("Token not found.", e);
             session.notifyBad("Payment canceled. Reason: Internal error. Please report the bug.");
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyBad("I cannot send the mail due to unexpected error. Please report this bug.");
-            throw new ShallNotPassException(e);
         }
     }
 
