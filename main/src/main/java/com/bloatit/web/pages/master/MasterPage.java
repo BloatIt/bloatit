@@ -50,7 +50,21 @@ public abstract class MasterPage extends Page {
     // -----------------------------------------------------------------------
     @Override
     protected final HtmlElement createBody() throws RedirectException {
-        final HtmlGenericElement body = createBodyElement();
+        return doCreateBody(createBodyContent());
+    }
+
+    @Override
+    protected final HtmlElement createBodyOnParameterError() throws RedirectException {
+        return doCreateBody(createBodyContentOnParameterError());
+    }
+
+    private HtmlElement doCreateBody(final HtmlElement bodyContent) throws RedirectException {
+        final HtmlGenericElement body = new HtmlGenericElement("body");
+        body.addCustomJs(FrameworkConfiguration.getJsJquery());
+        body.addCustomJs(FrameworkConfiguration.getJsJquery());
+        body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
+        body.addCustomJs(FrameworkConfiguration.getJsFlexie());
+
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);
         final HtmlBranch headerContent = new HtmlDiv("header_content").setId("header_content");
@@ -73,28 +87,11 @@ public abstract class MasterPage extends Page {
         content.add(notificationBlock);
 
         // Template method pattern.
-        content.add(createBodyContent());
+        content.add(bodyContent);
 
         body.add(new Footer());
 
         breacrumbPlaceHolder.add(createBreadcrumb().toHtmlElement());
-        return body;
-    }
-
-    @Override
-    protected final HtmlElement createBodyOnParameterError() throws RedirectException {
-        final HtmlGenericElement body = createBodyElement();
-        body.add(createBodyContentOnParameterError());
-        return body;
-
-    }
-
-    private HtmlGenericElement createBodyElement() {
-        final HtmlGenericElement body = new HtmlGenericElement("body");
-        body.addCustomJs(FrameworkConfiguration.getJsJquery());
-        body.addCustomJs(FrameworkConfiguration.getJsJquery());
-        body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
-        body.addCustomJs(FrameworkConfiguration.getJsFlexie());
         return body;
     }
 
