@@ -80,7 +80,7 @@ import com.bloatit.web.url.MessageListPageUrl;
 @ParamContainer("account")
 public final class AccountPage extends LoggedPage {
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
+    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
     @Optional
     private final Team team;
 

@@ -26,8 +26,8 @@ msgid "The id of the resource is incorrect or missing"
 msgstr "L'id de la ressource est manquante ou incorrecte"
 
 #: com/bloatit/web/actions/AddAttachementPage.java:40
-msgid "I cannot find the content number: ''%value''."
-msgstr "Je ne peux pas trouver le contenu numéro: ''%value''."
+msgid "I cannot find the content number: ''%value%''."
+msgstr "Je ne peux pas trouver le contenu numéro: ''%value%''."
 
 #: com/bloatit/web/actions/AddAttachementPage.java:41
 msgid "You have to specify a content on which join the file."
@@ -222,8 +222,8 @@ msgid "more details..."
 msgstr "plus de détails..."
 
 #: com/bloatit/web/linkable/release/AddReleasePage.java:47
-msgid "I cannot find the milestone number: ''%value''."
-msgstr "Je ne peux pas trouver le lot numéro: ''%value''."
+msgid "I cannot find the milestone number: ''%value%''."
+msgstr "Je ne peux pas trouver le lot numéro: ''%value%''."
 
 #: com/bloatit/web/linkable/release/AddReleasePage.java:48
 msgid "You have to specify a milestone number."
@@ -282,8 +282,8 @@ msgid "You have to specify a release number."
 msgstr "Vous devez spécifier un numéro de livraison."
 
 #: com/bloatit/web/linkable/release/ReleasePage.java:42
-msgid "I cannot find the release number: ''%value''."
-msgstr "Je ne peux pas trouver la livraison numéro: ''%value''."
+msgid "I cannot find the release number: ''%value%''."
+msgstr "Je ne peux pas trouver la livraison numéro: ''%value%''."
 
 #: com/bloatit/web/linkable/release/ReleasePage.java:58
 #: com/bloatit/web/linkable/release/ReleasePage.java:81
@@ -380,8 +380,8 @@ msgstr "Vous devez indiquer la langue de la description."
 
 #: com/bloatit/web/linkable/bugs/ModifyBugPage.java:48
 #: com/bloatit/web/linkable/bugs/BugPage.java:48
-msgid "I cannot find the bug number: ''%value''."
-msgstr "Je ne peux pas trouver le bug numéro: ''%value''."
+msgid "I cannot find the bug number: ''%value%''."
+msgstr "Je ne peux pas trouver le bug numéro: ''%value%''."
 
 #: com/bloatit/web/linkable/bugs/ModifyBugPage.java:49
 #: com/bloatit/web/linkable/bugs/BugPage.java:47
@@ -606,8 +606,8 @@ msgid "You have to specify a software number."
 msgstr "Vous devez spécifier un numéro de logiciel."
 
 #: com/bloatit/web/linkable/softwares/SoftwarePage.java:43
-msgid "I cannot find the software number: ''%value''."
-msgstr "Je ne peux pas trouver le logiciel numéro: ''%value''."
+msgid "I cannot find the software number: ''%value%''."
+msgstr "Je ne peux pas trouver le logiciel numéro: ''%value%''."
 
 #: com/bloatit/web/linkable/softwares/SoftwarePage.java:87
 msgid "Software - "
@@ -673,8 +673,8 @@ msgstr "Vous devez être connecté pour ajouter un logiciel."
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:51
 #: com/bloatit/web/linkable/features/FeaturePage.java:37
-msgid "I cannot find the feature number: ''%value''."
-msgstr "Je ne peux pas trouver la demande numéro: ''%value''."
+msgid "I cannot find the feature number: ''%value%''."
+msgstr "Je ne peux pas trouver la demande numéro: ''%value%''."
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:52
 msgid "The feature id is not optional !"
@@ -805,12 +805,12 @@ msgstr "La valeur pour le champ \"prix\" est manquante ou invalide."
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:67
 #: com/bloatit/web/linkable/offer/OfferAction.java:73
-msgid "''%param'' is a percent, and must be greater or equal to 0."
-msgstr "\"%param\" est un pourcentage, et doit être supérieur ou égal à 0."
+msgid "''%paramName%'' is a percent, and must be greater or equal to 0."
+msgstr "\"%paramName%\" est un pourcentage, et doit être supérieur ou égal à 0."
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:68
 #: com/bloatit/web/linkable/offer/OfferAction.java:74
-msgid "''%param'' is a percent, and must be lesser or equal to 100."
+msgid "''%paramName%'' is a percent, and must be lesser or equal to 100."
 msgstr "\"%\" param est un pourcentage est doit être inférieur ou égal à 100."
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:124
@@ -1103,8 +1103,8 @@ msgstr "Membres"
 #: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:38
 #: com/bloatit/web/linkable/team/JoinTeamPage.java:26
 #: com/bloatit/web/linkable/team/TeamPage.java:61
-msgid "I cannot find the team number: ''%value''."
-msgstr "Je ne peux pas trouver l'équipe numéro: ''%value''."
+msgid "I cannot find the team number: ''%value%''."
+msgstr "Je ne peux pas trouver l'équipe numéro: ''%value%''."
 
 #: com/bloatit/web/linkable/money/AccountPage.java:97
 #: com/bloatit/web/linkable/money/AccountPage.java:410
@@ -1272,8 +1272,8 @@ msgid "You have to specify a member number."
 msgstr "Vous devez spécifier un numéro de membre."
 
 #: com/bloatit/web/linkable/members/MemberPage.java:94
-msgid "I cannot find the member number: ''%value''."
-msgstr "Je ne peux pas trouver le membre numéro: ''%value''."
+msgid "I cannot find the member number: ''%value%''."
+msgstr "Je ne peux pas trouver le membre numéro: ''%value%''."
 
 #: com/bloatit/web/linkable/members/MemberPage.java:117
 msgid "View my private messages"
@@ -1746,8 +1746,8 @@ msgstr "Contribuer"
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:248
 msgid "You are a developer and want to be paid to achieve this request?"
 msgstr ""
-"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette "
-"demande ?"
+"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette demande "
+"?"
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:268
 #, java-format
@@ -1763,8 +1763,8 @@ msgid ""
 "An offer has already been made on this feature. However, you can <0::make an "
 "alternative offer>."
 msgstr ""
-"Une offre a déjà été faite sur cette demande. Vous pouvez cependant <0::"
-"créer une offre alternative>."
+"Une offre a déjà été faite sur cette demande. Vous pouvez cependant "
+"<0::créer une offre alternative>."
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:291
 msgid "There is no release yet."
@@ -2319,7 +2319,7 @@ msgstr ""
 msgid "Number of characters for contact has to be inferior to 300"
 msgstr ""
 "Le nombre de caractères pour les informations de contact doit être inférieur "
-"à 30"
+"à 300"
 
 #: com/bloatit/web/linkable/team/CreateTeamAction.java:45
 msgid "Number of characters for description has to be superior to 5"
@@ -2597,8 +2597,8 @@ msgid ""
 "We thank you for your trust."
 msgstr ""
 "Cher {0},\n"
-"Nous sommes heureux de vous annoncer que votre paiement {1} à http://elveos."
-"org a été validé.\n"
+"Nous sommes heureux de vous annoncer que votre paiement {1} à "
+"http://elveos.org a été validé.\n"
 "Nous vous remercions de votre confiance."
 
 #: com/bloatit/web/linkable/contribution/ContributionProcess.java:141
@@ -3262,16 +3262,16 @@ msgid ""
 "Content is available under the Creative Commons Attribution (<0::CC-by>) "
 "License."
 msgstr ""
-"Le contenu est disponible sous la licence Creative Commons Attribution (<0::"
-"CC-by>)."
+"Le contenu est disponible sous la licence Creative Commons Attribution "
+"(<0::CC-by>)."
 
 #: com/bloatit/web/pages/master/Footer.java:46
 msgid ""
-"Elveos, elveos.org and the elveos logo are registered trademark of the <0::"
-"Linkeos> SAS."
+"Elveos, elveos.org and the elveos logo are registered trademark of the "
+"<0::Linkeos> SAS."
 msgstr ""
-"Elveos, elveos.org et le logo d'elveos son des marques appartenant à <0::"
-"Linkeos> SAS."
+"Elveos, elveos.org et le logo d'elveos son des marques appartenant à "
+"<0::Linkeos> SAS."
 
 #: com/bloatit/web/pages/master/Menu.java:23
 msgid "Feature requests"
@@ -3304,7 +3304,7 @@ msgstr "elveos.org logo"
 
 #: com/bloatit/web/pages/master/MasterPage.java:123
 msgid "the cooperative platform for free software funding"
-msgstr "la platforme de financement coopératid pour les logiciels libres"
+msgstr "la platforme de financement coopératif pour les logiciels libres"
 
 #: com/bloatit/web/pages/TestPage.java:55
 msgid "Html testing page"
@@ -3419,8 +3419,8 @@ msgid "Reply"
 msgstr "Répondre"
 
 #: com/bloatit/web/pages/CommentReplyPage.java:52
-msgid "I cannot find the comment number: ''%value''."
-msgstr "Je ne peux pas trouver le commentaire numéro: ''%value''."
+msgid "I cannot find the comment number: ''%value%''."
+msgstr "Je ne peux pas trouver le commentaire numéro: ''%value%''."
 
 #: com/bloatit/web/pages/CommentReplyPage.java:53
 msgid "You have to specify a comment number."

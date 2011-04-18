@@ -1,5 +1,7 @@
 package com.bloatit.framework.webprocessor.annotations;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 
 public class Message {
@@ -10,12 +12,12 @@ public class Message {
     private final String message;
     private final What what;
 
-    public Message(final String message, final What what, final String name, final String value) {
+    public Message(final String message, final What what, Map<String,String> formatMap) {
         super();
         if (what == null || message == null) {
             throw new NullPointerException();
         }
-        this.message = extractErrorMessage(message, name, value);
+        this.message = extractErrorMessage(message, formatMap);
         this.what = what;
     }
 
@@ -24,13 +26,16 @@ public class Message {
         this.what = What.UNKNOWN;
     }
 
-    private String extractErrorMessage(final String aMessage, final String name, final String value) {
-        String errorMsg = aMessage.replaceAll("%param", Matcher.quoteReplacement(name));
-        if (!value.isEmpty()) {
-            errorMsg = errorMsg.replaceAll("%value", Matcher.quoteReplacement(value));
-        } else {
-            errorMsg = errorMsg.replaceAll("%value", "null");
+    private String extractErrorMessage(final String aMessage, Map<String,String> formatMap) {
+        String errorMsg = aMessage;
+        for(Entry<String,String> formatter: formatMap.entrySet()) {
+            if(!formatter.getValue().isEmpty()) {
+                errorMsg = errorMsg.replaceAll(formatter.getKey(), Matcher.quoteReplacement(formatter.getValue()));
+            } else {
+                errorMsg = errorMsg.replaceAll(formatter.getKey(), "null");
+            }
         }
+
         return errorMsg;
     }
 

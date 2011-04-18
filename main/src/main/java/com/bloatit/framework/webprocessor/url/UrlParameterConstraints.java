@@ -11,6 +11,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 public class UrlParameterConstraints<U> {
 
     static class Param<T> {
+
         private final T value;
         private final String error;
 
@@ -28,7 +29,6 @@ public class UrlParameterConstraints<U> {
             return Context.tr(error);
         }
     }
-
     private final Param<Integer> min;
     private final boolean isMinExclusive;
     private final Param<Integer> max;
@@ -38,6 +38,7 @@ public class UrlParameterConstraints<U> {
     private final Param<Integer> length;
 
     private enum ConstraintError {
+
         MIN_ERROR, MAX_ERROR, OPTIONAL_ERROR, PRECISION_ERROR, LENGTH_ERROR
     }
 
@@ -70,17 +71,18 @@ public class UrlParameterConstraints<U> {
     public UrlParameterConstraints(final boolean optional) {
         this.isMinExclusive = false;
         this.isMaxExclusive = false;
-        this.min = new Param<Integer>(ParamConstraint.DEFAULT_MIN, "min constraint violation (%value) invalid for parameter %param.");
-        this.max = new Param<Integer>(ParamConstraint.DEFAULT_MAX, "max constraint violation (%value) invalidfor parameter %param.");
-        this.optional = new Param<Boolean>(optional, "optional constraint violation (%value) invalid for parameter %param.");
+        this.min = new Param<Integer>(ParamConstraint.DEFAULT_MIN, "min constraint violation (%value) invalid for parameter %paramName%.");
+        this.max = new Param<Integer>(ParamConstraint.DEFAULT_MAX, "max constraint violation (%value) invalid for parameter %paramName%.");
+        this.optional = new Param<Boolean>(optional, "optional constraint violation (%value) invalid for parameter %paramName%.");
         this.precision = new Param<Integer>(ParamConstraint.DEFAULT_PRECISION,
-                                            "precision constraint violation (%value) invalid for parameter %param.");
-        this.length = new Param<Integer>(ParamConstraint.DEFAULT_LENGTH, "length constraint violation (%value) invalid for parameter %param.");
+                                            "precision constraint violation (%value) invalid for parameter %paramName%.");
+        this.length = new Param<Integer>(ParamConstraint.DEFAULT_LENGTH, "length constraint violation (%value) invalid for parameter %paramName%.");
     }
 
     @SuppressWarnings("unchecked")
     public void computeConstraints(final U value, final Class<U> valueClass, final Messages messages, final String name, final String strValue) {
-        @SuppressWarnings("rawtypes") ComputeConstraint computeConstraint;
+        @SuppressWarnings("rawtypes")
+        ComputeConstraint computeConstraint;
         if (valueClass.equals(Integer.class)) {
             computeConstraint = new ComputeIntegerConstraint<Integer>((UrlParameterConstraints<Integer>) this);
         } else if (valueClass.equals(BigDecimal.class)) {
@@ -90,28 +92,27 @@ public class UrlParameterConstraints<U> {
         } else {
             computeConstraint = new ComputeEverythingConstraint((UrlParameterConstraints<Object>) this);
         }
-        updateMessages(computeConstraint.getConstraintErrors(value), messages, name, strValue);
-    }
-
-    private void updateMessages(final EnumSet<ConstraintError> enumSet, final Messages messages, final String name, final String strValue) {
-        if (enumSet.contains(ConstraintError.MIN_ERROR)) {
-            messages.add(new Message(min.getError(), What.MIN_ERROR, name, strValue));
+        final EnumSet constraintErrors = computeConstraint.getConstraintErrors(value);
+        
+        if (constraintErrors.contains(ConstraintError.MIN_ERROR)) {
+            messages.add(new Message(min.getError(), What.MIN_ERROR, computeConstraint.formatMinConstraint(name, value, strValue)));
         }
-        if (enumSet.contains(ConstraintError.MAX_ERROR)) {
-            messages.add(new Message(max.getError(), What.MAX_ERROR, name, strValue));
+        if (constraintErrors.contains(ConstraintError.MAX_ERROR)) {
+            messages.add(new Message(max.getError(), What.MAX_ERROR, computeConstraint.formatMaxConstraint(name,value, strValue)));
         }
-        if (enumSet.contains(ConstraintError.LENGTH_ERROR)) {
-            messages.add(new Message(length.getError(), What.LENGTH_ERROR, name, strValue));
+        if (constraintErrors.contains(ConstraintError.LENGTH_ERROR)) {
+            messages.add(new Message(length.getError(), What.LENGTH_ERROR, computeConstraint.formatLengthConstraint(name,value, strValue)));
         }
-        if (enumSet.contains(ConstraintError.OPTIONAL_ERROR)) {
-            messages.add(new Message(optional.getError(), What.OPTIONAL_ERROR, name, strValue));
+        if (constraintErrors.contains(ConstraintError.OPTIONAL_ERROR)) {
+            messages.add(new Message(optional.getError(), What.OPTIONAL_ERROR, computeConstraint.formatOptionalConstraint(name,value, strValue)));
         }
-        if (enumSet.contains(ConstraintError.PRECISION_ERROR)) {
-            messages.add(new Message(precision.getError(), What.PRECISION_ERROR, name, strValue));
+        if (constraintErrors.contains(ConstraintError.PRECISION_ERROR)) {
+            messages.add(new Message(precision.getError(), What.PRECISION_ERROR, computeConstraint.formatPrecisionConstraint(name,value, strValue)));
         }
     }
 
-    static abstract class ComputeConstraint<T> {
+    private static abstract class ComputeConstraint<T> {
+
         protected final UrlParameterConstraints<T> constraints;
 
         public ComputeConstraint(final UrlParameterConstraints<T> constraints) {
@@ -158,9 +159,41 @@ public class UrlParameterConstraints<U> {
         public abstract boolean triggerPrecisionConstraint(final T value);
 
         public abstract boolean triggerMaxConstraint(final T value);
+
+
+        public GenericMessageFormater formatMinConstraint(String name, final T value, String strValue) {
+            GenericMessageFormater formatter = new GenericMessageFormater(name, strValue);
+            formatter.put("%constraint%", String.valueOf(constraints.getMin()));
+            return formatter;
+        }
+
+        public GenericMessageFormater formatMaxConstraint(String name, final T value, String strValue) {
+            GenericMessageFormater formatter = new GenericMessageFormater(name, strValue);
+            formatter.put("%constraint%", String.valueOf(constraints.getMax()));
+            return formatter;
+        }
+
+        public GenericMessageFormater formatLengthConstraint(String name, final T value, String strValue) {
+            GenericMessageFormater formatter = new GenericMessageFormater(name, strValue);
+            formatter.put("%constraint%", String.valueOf(constraints.getLength()));
+            return formatter;
+        }
+
+        public GenericMessageFormater formatPrecisionConstraint(String name, final T value, String strValue) {
+            GenericMessageFormater formatter = new GenericMessageFormater(name, strValue);
+            formatter.put("%constraint%", String.valueOf(constraints.getPrecision()));
+            return formatter;
+        }
+
+        public GenericMessageFormater formatOptionalConstraint(String name, final T value, String strValue) {
+            return new GenericMessageFormater(name, strValue);
+        }
+
+        
     }
 
-    static class ComputeStringConstraint extends ComputeConstraint<String> {
+    private static class ComputeStringConstraint extends ComputeConstraint<String> {
+
         public ComputeStringConstraint(final UrlParameterConstraints<String> constraints) {
             super(constraints);
         }
@@ -190,9 +223,26 @@ public class UrlParameterConstraints<U> {
         public boolean triggerLengthConstraint(final String value) {
             return value.length() == constraints.getLength();
         }
+
+        @Override
+        public GenericMessageFormater formatMaxConstraint(String name, String value, String strValue) {
+            final GenericMessageFormater formatter = super.formatMaxConstraint(name, value, strValue);
+            formatter.put("%valueLength%", String.valueOf(value.length()));
+            return formatter;
+        }
+
+        @Override
+        public GenericMessageFormater formatMinConstraint(String name, String value, String strValue) {
+            final GenericMessageFormater formatter = super.formatMinConstraint(name, value, strValue);
+            formatter.put("%valueLength%", String.valueOf(value.length()));
+            return formatter;
+        }
+
+
     }
 
-    static class ComputeIntegerConstraint<T extends Comparable<Integer>> extends ComputeConstraint<T> {
+    private static class ComputeIntegerConstraint<T extends Comparable<Integer>> extends ComputeConstraint<T> {
+
         public ComputeIntegerConstraint(final UrlParameterConstraints<T> constraints) {
             super(constraints);
         }
@@ -224,7 +274,8 @@ public class UrlParameterConstraints<U> {
         }
     }
 
-    static class ComputeBigdecimalConstraint extends ComputeConstraint<BigDecimal> {
+    private static class ComputeBigdecimalConstraint extends ComputeConstraint<BigDecimal> {
+
         public ComputeBigdecimalConstraint(final UrlParameterConstraints<BigDecimal> constraints) {
             super(constraints);
         }
@@ -256,7 +307,8 @@ public class UrlParameterConstraints<U> {
         }
     }
 
-    static class ComputeEverythingConstraint extends ComputeConstraint<Object> {
+    private static class ComputeEverythingConstraint extends ComputeConstraint<Object> {
+
         public ComputeEverythingConstraint(final UrlParameterConstraints<Object> constraints) {
             super(constraints);
         }

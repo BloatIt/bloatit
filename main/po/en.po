@@ -25,7 +25,7 @@ msgid "The id of the resource is incorrect or missing"
 msgstr ""
 
 #: com/bloatit/web/actions/AddAttachementPage.java:40
-msgid "I cannot find the content number: ''%value''."
+msgid "I cannot find the content number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/actions/AddAttachementPage.java:41
@@ -219,7 +219,7 @@ msgid "more details..."
 msgstr ""
 
 #: com/bloatit/web/linkable/release/AddReleasePage.java:47
-msgid "I cannot find the milestone number: ''%value''."
+msgid "I cannot find the milestone number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/linkable/release/AddReleasePage.java:48
@@ -279,7 +279,7 @@ msgid "You have to specify a release number."
 msgstr ""
 
 #: com/bloatit/web/linkable/release/ReleasePage.java:42
-msgid "I cannot find the release number: ''%value''."
+msgid "I cannot find the release number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/linkable/release/ReleasePage.java:58
@@ -377,7 +377,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ModifyBugPage.java:48
 #: com/bloatit/web/linkable/bugs/BugPage.java:48
-msgid "I cannot find the bug number: ''%value''."
+msgid "I cannot find the bug number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ModifyBugPage.java:49
@@ -600,7 +600,7 @@ msgid "You have to specify a software number."
 msgstr ""
 
 #: com/bloatit/web/linkable/softwares/SoftwarePage.java:43
-msgid "I cannot find the software number: ''%value''."
+msgid "I cannot find the software number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/linkable/softwares/SoftwarePage.java:87
@@ -665,7 +665,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:51
 #: com/bloatit/web/linkable/features/FeaturePage.java:37
-msgid "I cannot find the feature number: ''%value''."
+msgid "I cannot find the feature number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:52
@@ -780,12 +780,12 @@ msgstr ""
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:67
 #: com/bloatit/web/linkable/offer/OfferAction.java:73
-msgid "''%param'' is a percent, and must be greater or equal to 0."
+msgid "''%paramName%'' is a percent, and must be greater or equal to 0."
 msgstr ""
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:68
 #: com/bloatit/web/linkable/offer/OfferAction.java:74
-msgid "''%param'' is a percent, and must be lesser or equal to 100."
+msgid "''%paramName%'' is a percent, and must be lesser or equal to 100."
 msgstr ""
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:124
@@ -1059,7 +1059,7 @@ msgstr ""
 #: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:38
 #: com/bloatit/web/linkable/team/JoinTeamPage.java:26
 #: com/bloatit/web/linkable/team/TeamPage.java:61
-msgid "I cannot find the team number: ''%value''."
+msgid "I cannot find the team number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/linkable/money/AccountPage.java:97
@@ -1215,7 +1215,7 @@ msgid "You have to specify a member number."
 msgstr ""
 
 #: com/bloatit/web/linkable/members/MemberPage.java:94
-msgid "I cannot find the member number: ''%value''."
+msgid "I cannot find the member number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/linkable/members/MemberPage.java:117
@@ -3210,7 +3210,7 @@ msgid "Reply"
 msgstr ""
 
 #: com/bloatit/web/pages/CommentReplyPage.java:52
-msgid "I cannot find the comment number: ''%value''."
+msgid "I cannot find the comment number: ''%value%''."
 msgstr ""
 
 #: com/bloatit/web/pages/CommentReplyPage.java:53
