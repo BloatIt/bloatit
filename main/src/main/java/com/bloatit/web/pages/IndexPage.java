@@ -27,7 +27,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.Contribution;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.ContributionManager;
@@ -136,7 +135,7 @@ public final class IndexPage extends MasterPage {
         leftSummary.add(summaryBox);
 
         // Feature count
-        HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ", FeatureManager.getFeatureCount()));
+        HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requested, ", FeatureManager.getFeatureCount()));
         summaryBox.add(featureCount);
 
         // Contribution amount
@@ -146,7 +145,7 @@ public final class IndexPage extends MasterPage {
         summaryBox.add(contributionRaised);
 
         // Count of offers
-        HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Offers, ", OfferManager.getOfferCount()));
+        HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Offers of development, ", OfferManager.getOfferCount()));
         summaryBox.add(offerCount);
 
         // Count of releases
