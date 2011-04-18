@@ -55,7 +55,7 @@ public final class ContributionAction extends UserContentAction {
             process.getFeature().addContribution(process.getAmount(), process.getComment());
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
                                                                                                   .getCurrency(process.getAmount())
-                                                                                                  .getLocaleString()));
+                                                                                                  .getLocaleSymbol()));
             // if (amountToCharge.compareTo(BigDecimal.ZERO) > 0) {
             // Context.getSession().notifyGood(tr("Your account has been credited."));
             // }

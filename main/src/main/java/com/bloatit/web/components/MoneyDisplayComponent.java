@@ -31,7 +31,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
      * @param link <i>true</i> if the component should link to the user account
      *            page, <i>false</i> otherwise.
      */
-    public MoneyDisplayComponent(final BigDecimal amount, boolean link) {
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link) {
         super();
 
         // Display user money in euro
@@ -54,7 +54,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
             final HtmlBranch localeMoney = new HtmlSpan();
             localeMoney.setCssClass("locale_money");
 
-            localeMoney.addText(cl.getLocaleString());
+            localeMoney.addText(cl.getLocaleSymbol());
             money.add(localeMoney);
         }
         add(money);
