@@ -179,7 +179,7 @@ public final class Localizator {
      * @see #tr(String)
      */
     public String trn(final String singular, final String plural, final long amount) {
-        return correctTr(i18n.trn(singular, correctTr(plural), amount));
+        return correctTr(i18n.trn(singular, plural, amount));
     }
 
     /**
@@ -215,7 +215,7 @@ public final class Localizator {
      * @see org.slf4j.helpers.MessageFormatter
      */
     public String trn(final String singular, final String plural, final long amount, final Object... parameters) {
-        return correctTr(i18n.trn(singular, correctTr(plural), amount, parameters));
+        return correctTr(i18n.trn(singular, plural, amount, parameters));
     }
 
     /**
