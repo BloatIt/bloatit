@@ -29,25 +29,25 @@ import com.bloatit.web.url.SignUpPageUrl;
 @ParamContainer("member/dosignup")
 public final class SignUpAction extends Action {
     @RequestParam(name = "bloatit_login", role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Login is mandatory."),//
+    @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
                      min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
                      max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15."))
     private final String login;
 
     @RequestParam(name = "bloatit_password", role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password is mandatory."),//
+    @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
                      min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
                      max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
     private final String password;
 
     @RequestParam(name = "bloatit_password_check", role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password confirmation is mandatory."),//
+    @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
                      min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
                      max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
     private final String passwordCheck;
 
     @RequestParam(name = "bloatit_email", role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Email is mandatory."),//
+    @ParamConstraint(optionalErrorMsg = @tr("Email cannot be blank."),//
                      min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5."),//
                      max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30."))
     private final String email;
