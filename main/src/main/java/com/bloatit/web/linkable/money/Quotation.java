@@ -130,10 +130,12 @@ public class Quotation extends QuotationEntry {
     }
 
     public static String padding(String output) {
+        StringBuilder o = new StringBuilder();
+        o.append(output);
         while (output.length() < 40) {
-            output += " ";
+            o.append(" ");
         }
-        return output;
+        return o.toString();
     }
 
     public interface QuotationVisitor {

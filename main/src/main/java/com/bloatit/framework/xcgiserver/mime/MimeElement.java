@@ -206,21 +206,21 @@ public class MimeElement {
 
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (final Entry<String, String> headerField : header.entrySet()) {
-            result += "[" + headerField.getKey() + "]: " + headerField.getValue() + "\n";
+            result.append("[" + headerField.getKey() + "]: " + headerField.getValue() + "\n");
         }
         if (isFile()) {
-            result += "[FILE]: " + destination.getAbsolutePath() + "\n";
+            result.append("[FILE]: " + destination.getAbsolutePath() + "\n");
         } else {
             try {
                 final InputStream is = getContent();
                 while (is.available() > 0) {
                     final char c = (char) ((byte) is.read() & 0xff);
-                    result += c;
+                    result.append(c);
                 }
-                result += '\n';
+                result.append('\n');
             } catch (final FileNotFoundException e) {
                 e.printStackTrace();
             } catch (final IOException e) {
@@ -228,7 +228,7 @@ public class MimeElement {
             }
         }
 
-        return result;
+        return result.toString();
     }
 
     /**

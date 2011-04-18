@@ -212,19 +212,19 @@ public abstract class RestServer implements XcgiProcessor {
 
                 if (result == null) {
                     // ERROR Case
-                    String request = "";
-                    String ignored = "";
+                    StringBuilder request = new StringBuilder();
+                    StringBuilder ignored = new StringBuilder();
                     int j = 0;
                     for (final String s : pathInfo) {
                         if (j <= i) {
-                            request += s + '/';
+                            request.append(s).append('/');
                         } else {
-                            ignored += s + '/';
+                            ignored.append(s).append('/');
                         }
                         j++;
                     }
-                    throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request: [" + requestMethod + " " + request
-                            + "]. Ignored end of request: [" + ignored + "]");
+                    throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request: [" + requestMethod + " " + request.toString()
+                            + "]. Ignored end of request: [" + ignored.toString() + "]");
                 }
             } else {
                 result = invokeMethod(requestMethod, result, pathString, parameters);

@@ -45,24 +45,23 @@ public class JsShowHide {
             final HtmlGenericElement scriptElement = new HtmlGenericElement("script");
 
             final String effectCall = "toggle( \"blind\")";
+            StringBuilder script = new StringBuilder();
 
-            String script = "$(function() {\n" + "        function runEffect() {\n";
-
-            for (final HtmlBranch listener : listeners) {
-                script += "          $( \"#" + listener.getId() + "\" )." + effectCall + ";\n";
-            }
-            script += "        }\n";
-
-            script += "        $( \"#" + actuator.getId() + "\" ).click(function() {\n" + "            runEffect();\n"
-                    + "            return false;\n" + "        });\n";
+            script.append("$(function() {\n" + "        function runEffect() {\n");
 
             for (final HtmlBranch listener : listeners) {
-                script += "$( \"#" + listener.getId() + "\" ).hide();\n";
+                script.append("          $( \"#" + listener.getId() + "\" )." + effectCall + ";\n");
             }
+            script.append("        }\n");
+            script.append("        $( \"#" + actuator.getId() + "\" ).click(function() {\n" + "            runEffect();\n"
+                    + "            return false;\n" + "        });\n");
 
-            script += "    });";
-
-            scriptElement.add(new XmlText(script));
+            for (final HtmlBranch listener : listeners) {
+                script.append("$( \"#" + listener.getId() + "\" ).hide();\n");
+            }
+            
+            script.append("    });");
+            scriptElement.add(new XmlText(script.toString()));
 
             actuator.add(scriptElement);
         }

@@ -256,7 +256,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public void acceptInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
+        if (!invitation.getReciever().getId().equals(getAuthToken().getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
         tryAccess(new MemberRight.SendInvitation(), Action.DELETE);
@@ -281,7 +281,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public void refuseInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
+        if (!invitation.getReciever().getId().equals(getAuthToken().getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
         tryAccess(new MemberRight.SendInvitation(), Action.DELETE);

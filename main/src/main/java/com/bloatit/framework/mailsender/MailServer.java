@@ -63,7 +63,7 @@ public class MailServer extends Thread {
     private boolean stop;
     private long numberOfTries;
 
-    private static MailServer instance;
+    private static volatile MailServer instance;
 
     private MailServer() {
         // disactivating CTOR

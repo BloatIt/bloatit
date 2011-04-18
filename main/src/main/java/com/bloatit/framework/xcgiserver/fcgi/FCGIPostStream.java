@@ -39,11 +39,7 @@ public class FCGIPostStream extends InputStream {
     public int read() throws IOException {
         final byte[] b = new byte[1];
         if (read(b) == 1) {
-            final int plop = (0x000000FF & (b[0]));
-            if (plop == -1) {
-                System.err.println("blabla");
-            }
-            return plop;
+            return (0x000000FF & (b[0]));
         }
         return -1;
     }

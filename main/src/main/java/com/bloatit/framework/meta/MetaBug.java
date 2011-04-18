@@ -39,6 +39,7 @@ public class MetaBug {
         final byte[] buffer = new byte[(int) file.length()];
         final BufferedInputStream f = new BufferedInputStream(new FileInputStream(file));
         f.read(buffer);
+        f.close();
         return new String(buffer);
     }
 

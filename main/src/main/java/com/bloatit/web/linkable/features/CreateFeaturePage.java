@@ -196,7 +196,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     /**
      * Class use to display softwares in a dropdown html element
      */
-    class SoftwareElement implements DropDownElement {
+    private static class SoftwareElement implements DropDownElement {
 
         private final String name;
         private final String code;

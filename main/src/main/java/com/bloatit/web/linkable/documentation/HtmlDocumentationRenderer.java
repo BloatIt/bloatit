@@ -129,7 +129,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
     /**
      * Nested class used as a key to cache parsed content
      */
-    private class MarkdownDocumentationMarker {
+    private static class MarkdownDocumentationMarker {
         public String path;
 
         @Override
@@ -172,7 +172,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
     /**
      * Nested class used as a MapEntry.value to cache parsed markdown content
      */
-    private class MarkdownDocumentationContent {
+    private static class MarkdownDocumentationContent {
         public Date savedDate;
         public String htmlString;
 
