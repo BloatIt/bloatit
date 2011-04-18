@@ -24,6 +24,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.IndexPage;
@@ -54,8 +55,10 @@ public final class LoginPage extends MasterPage {
     private HtmlElement generateSignUpPageMain() {
         final HtmlDiv master = new HtmlDiv();
         {
+            final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
             final LoginActionUrl loginActionUrl = new LoginActionUrl();
             final HtmlForm loginForm = new HtmlForm(loginActionUrl.urlString());
+            loginTitle.add(loginForm);
 
             // Login field
             final FieldData loginData = loginActionUrl.getLoginParameter().pickFieldData();
@@ -71,13 +74,14 @@ public final class LoginPage extends MasterPage {
 
             loginForm.add(loginInput);
             loginForm.add(passwordInput);
-            loginForm.add(submitButton);
 
-            final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
-            loginTitle.add(loginForm);
+            HtmlDiv loginOrSignUpDiv = new HtmlDiv("login_or_signup");
+            loginForm.add(loginOrSignUpDiv);
 
+            loginOrSignUpDiv.add(submitButton);
+            loginOrSignUpDiv.add(new SignUpPageUrl().getHtmlLink(Context.tr("Sign up")));
+            
             master.add(loginTitle);
-            master.add(new HtmlParagraph().add(new SignUpPageUrl().getHtmlLink(Context.tr("No account ? Sign-up now."))));
             master.add(new HtmlParagraph().add(new PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
         }
         return master;

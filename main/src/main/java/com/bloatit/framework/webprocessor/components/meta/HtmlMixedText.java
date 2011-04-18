@@ -17,7 +17,7 @@ package com.bloatit.framework.webprocessor.components.meta;
  */
 public class HtmlMixedText extends HtmlBranch {
 
-    public HtmlMixedText(String content, final HtmlBranch... parameters) {
+    public HtmlMixedText(String content, final HtmlElement... parameters) {
         content = " " + content; // Handle the cast where it starts by a tag
         final String[] split = content.split("<[0-9]+(:[^>]+)*>");
         int index = 0;
@@ -40,7 +40,7 @@ public class HtmlMixedText extends HtmlBranch {
         }
     }
 
-    public void parseTag(final String tag, final HtmlBranch parameters[]) {
+    public void parseTag(final String tag, final HtmlElement parameters[]) {
         final String[] split = tag.split(":");
 
         if (split.length < 1) {
@@ -55,10 +55,12 @@ public class HtmlMixedText extends HtmlBranch {
             return;
         }
 
-        final HtmlBranch node = (HtmlBranch) parameters[paramIndex].clone();
 
-        if (split.length >= 3) {
-            node.addText(split[2]);
+
+        final HtmlElement node = parameters[paramIndex];
+
+        if (split.length >= 3 && node instanceof HtmlBranch) {
+            ((HtmlBranch) node).addText(split[2]);
         }
 
         add(node);
