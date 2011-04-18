@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
+import com.bloatit.model.feature.PendingState;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
@@ -45,7 +46,7 @@ public final class ModifyBugAction extends Action {
     @RequestParam(name = BUG_REASON, role = Role.POST)
     @Optional
     @ParamConstraint(max = "120", maxErrorMsg = @tr("The reason must be 120 chars length max."), //
-                     min = "0")
+    min = "0")
     private final String reason;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
@@ -83,8 +84,8 @@ public final class ModifyBugAction extends Action {
             return doProcessErrors();
         }
 
-        if (state.getState() == BugState.PENDING) {
-            session.notifyBad(Context.tr("You can set a bug to the pending state."));
+        if (state.getState() == BugState.PENDING && currentState != BugState.PENDING) {
+            session.notifyBad(Context.tr("You cannot set a bug to the pending state."));
             return doProcessErrors();
         }
 
