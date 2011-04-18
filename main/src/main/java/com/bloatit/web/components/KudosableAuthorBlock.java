@@ -9,16 +9,16 @@ import com.bloatit.model.KudosableInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 
-public class KudosableAuthorBlocck extends UserContentAuthorBlock {
+public class KudosableAuthorBlock extends UserContentAuthorBlock {
 
-    public KudosableAuthorBlocck(final KudosableInterface<?> kudosable) {
+    public KudosableAuthorBlock(final KudosableInterface<?> kudosable) {
         super(kudosable);
 
         add(new HtmlText(" – "));
 
         // ////////////////////
         // Popularity
-        final HtmlSpan commentPopularity = new HtmlSpan("comment_populatity");
+        final HtmlSpan commentPopularity = new HtmlSpan("kudosable_popularity");
         {
 
             commentPopularity.addText(tr("Popularity: {0}", HtmlTools.compressKarma(kudosable.getPopularity())));

@@ -30,8 +30,11 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.Query;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -45,6 +48,14 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           cacheable=true,
+                           name = "contribution.getMoneyRaised",
+                           query = "SELECT sum(amount) FROM DaoContribution")
+                       }
+             )
+// @formatter:on
 public class DaoContribution extends DaoUserContent {
     protected static final int COMMENT_MAX_LENGTH = 140;
 
@@ -290,5 +301,10 @@ public class DaoContribution extends DaoUserContent {
             return false;
         }
         return true;
+    }
+
+    public static BigDecimal getMoneyRaised() {
+        final Query q = SessionManager.getNamedQuery("contribution.getMoneyRaised");
+        return (BigDecimal) q.uniqueResult();
     }
 }

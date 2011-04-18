@@ -86,7 +86,7 @@ migratingDB() {
     _classpath="$_classpath:/home/$_user/jars/dom4j-1.6.1.jar"
     _classpath="$_classpath:/home/$_user/jars/postgresql-8.4-701.jdbc4.jar"
     _classpath="$_classpath:/home/$_user/jars/slf4j-api-1.6.1.jar"
-    _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.5.8.jar"
+    _classpath="$_classpath:/home/$_user/jars/slf4j-log4j12-1.6.0.jar"
 
     log_date "Migrating the DB." 
 

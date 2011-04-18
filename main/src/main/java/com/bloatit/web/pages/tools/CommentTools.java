@@ -14,7 +14,7 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRendere
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.web.components.KudosableAuthorBlocck;
+import com.bloatit.web.components.KudosableAuthorBlock;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
@@ -47,7 +47,7 @@ public class CommentTools {
                 commentBlock.add(attachmentPara);
             }
 
-            commentBlock.add(new KudosableAuthorBlocck(comment));
+            commentBlock.add(new KudosableAuthorBlock(comment));
             commentBlock.add(new HtmlClearer());
 
             // Display child elements

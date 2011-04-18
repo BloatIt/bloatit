@@ -18,6 +18,8 @@
  */
 package com.bloatit.model.managers;
 
+import java.math.BigDecimal;
+
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
@@ -46,4 +48,7 @@ public class ContributionManager {
         return new ContributionList(DBRequests.getAll(DaoContribution.class));
     }
 
+    public static BigDecimal getMoneyRaised() {
+        return DaoContribution.getMoneyRaised();
+    }
 }

@@ -21,13 +21,21 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
+import com.bloatit.model.managers.OfferManager;
+import com.bloatit.model.managers.ReleaseManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -38,6 +46,9 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
+/**
+ * Index of elveos website
+ */
 @ParamContainer("index")
 public final class IndexPage extends MasterPage {
 
@@ -65,7 +76,9 @@ public final class IndexPage extends MasterPage {
         element.add(globalDescription);
 
         final TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
+        element.add(twoColumnLayout);
 
+        // List of features
         final HtmlDiv featureList = new HtmlDiv("feature_list");
         {
             final int featureCount = 6;
@@ -113,32 +126,35 @@ public final class IndexPage extends MasterPage {
         twoColumnLayout.addLeft(featureList);
 
         // Display of a button to create a feature
-        final SideBarElementLayout createBox = new SideBarElementLayout();
-        final HtmlDiv createDiv = new HtmlDiv("feature_create");
-        final HtmlLink link = new HtmlLink(new CreateFeaturePageUrl().urlString(), createDiv);
-        { // Box to hold feature creating button content
-            final HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgIdea()), Context.tr("Request a feature"));
-            img.setCssClass("feature_create_img");
-            createDiv.add(img);
-            final HtmlDiv createTextDiv = new HtmlDiv("feature_create_text_box");
-            { // Box to hold text of the button
-                final HtmlDiv createTextDiv2 = new HtmlDiv("feature_create_text");
-                createTextDiv.add(createTextDiv2);
-                createTextDiv2.addText(Context.tr("Request a feature"));
-            }
-            createDiv.add(createTextDiv);
-        }
-        createBox.add(link);
-
-        // twoColumnLayout.addRight(createBox);
-        twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), WebConfiguration.getImgIdea()));
+        twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
 
         // Display of a summary of all website activity since creation
-        final SideBarElementLayout summaryBox = new SideBarElementLayout();
-        twoColumnLayout.addRight(summaryBox);
+        final SideBarElementLayout leftSummary = new SideBarElementLayout();
+        twoColumnLayout.addRight(leftSummary);
+        final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
+        leftSummary.add(summaryBox);
 
+        // Feature count
+        final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ", FeatureManager.getFeatureCount()));
+        summaryBox.add(featureCount);
+
+        // Contribution amount
+        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(ContributionManager.getMoneyRaised(), false);
+        final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
+        final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
+        summaryBox.add(contributionRaised);
+
+        // Count of offers
+        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Offers, ", OfferManager.getOfferCount()));
+        summaryBox.add(offerCount);
+
+        // Count of releases
+        final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Releases", ReleaseManager.getReleaseCount()));
+        summaryBox.add(releaseCount);
+
+        // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-        element.add(twoColumnLayout);
+
         return element;
     }
 

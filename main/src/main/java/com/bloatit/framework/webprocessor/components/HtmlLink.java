@@ -17,7 +17,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 /**
- * Class to create htmllinks (<a href="...">plop</a>)
+ * Class to create htmllinks ({@code<a href="...">plop</a>})
  */
 public class HtmlLink extends HtmlBranch {
 

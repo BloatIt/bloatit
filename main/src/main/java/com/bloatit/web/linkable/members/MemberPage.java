@@ -71,6 +71,7 @@ import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -113,11 +114,11 @@ public final class MemberPage extends MasterPage {
 
         // Buttons private message & invite in team
         if (myPage) {
-            layout.addRight(new SideBarButton(Context.tr("View my private messages"), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("View my team invitations"), WebConfiguration.getImgTeam()));
+            layout.addRight(new SideBarButton(Context.tr("View my private messages"), new MessageListPageUrl(), WebConfiguration.getImgMessage()));
+            layout.addRight(new SideBarButton(Context.tr("View my team invitations"), new MessageListPageUrl(), WebConfiguration.getImgTeam()));
         } else {
-            layout.addRight(new SideBarButton(Context.tr("Send a private message"), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("Invite to join a team"), WebConfiguration.getImgTeam()));
+            layout.addRight(new SideBarButton(Context.tr("Send a private message"), new MessageListPageUrl(), WebConfiguration.getImgMessage()));
+            layout.addRight(new SideBarButton(Context.tr("Invite to join a team"), new MessageListPageUrl(), WebConfiguration.getImgTeam()));
         }
 
         // Adding list of teams

@@ -8,7 +8,7 @@ package com.bloatit.framework.webprocessor.components.meta;
  * The main use is to insert link in a translated text flow. The text must
  * contains tag like that:
  * </p>
- * <code>Hello, you can <0:follow this link:comment>.</code>
+ * <pre>Hello, you can <0:follow this link:comment>.</pre>
  * <p>
  * In this exemple <0:follow this link> will be replaced by the parameters at
  * the index 0. The second field is is a comment, the text . If a third text
@@ -62,7 +62,5 @@ public class HtmlMixedText extends HtmlBranch {
         }
 
         add(node);
-
     }
-
 }

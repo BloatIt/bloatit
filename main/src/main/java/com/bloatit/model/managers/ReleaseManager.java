@@ -35,4 +35,8 @@ public class ReleaseManager {
         return new ReleaseList(DBRequests.getAll(DaoRelease.class));
     }
 
+    public static Object getReleaseCount() {
+        return DBRequests.count(DaoRelease.class);
+    }
+
 }

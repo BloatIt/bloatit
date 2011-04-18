@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-15 23:03+0200\n"
+"POT-Creation-Date: 2011-04-15 23:25+0200\n"
 "PO-Revision-Date: 2011-04-07 00:58+0200\n"
 "Last-Translator: Yoann Plénet <yoann@linkeos.com>\n"
 "Language-Team: French\n"
@@ -144,7 +144,7 @@ msgid "You have to specify a comment number."
 msgstr ""
 
 #: com/bloatit/web/pages/CommentReplyPage.java:74
-#: com/bloatit/web/pages/CommentReplyPage.java:116
+#: com/bloatit/web/pages/CommentReplyPage.java:112
 msgid "Reply to a comment"
 msgstr ""
 
@@ -163,28 +163,8 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-#: com/bloatit/web/pages/CommentReplyPage.java:94
-#: com/bloatit/web/linkable/bugs/BugPage.java:118
-#: com/bloatit/web/linkable/bugs/ReportBugPage.java:150
-#: com/bloatit/web/linkable/usercontent/CreateCommentForm.java:39
-msgid "Join a file"
-msgstr ""
-
-#: com/bloatit/web/pages/CommentReplyPage.java:95
-msgid "Optional. If you join a file you have to add description."
-msgstr ""
-
 #: com/bloatit/web/pages/CommentReplyPage.java:96
-#: com/bloatit/web/linkable/usercontent/CreateCommentForm.java:41
-msgid "Describe the file"
-msgstr ""
-
-#: com/bloatit/web/pages/CommentReplyPage.java:97
-msgid "You need to add a short description of the file if you add one."
-msgstr ""
-
-#: com/bloatit/web/pages/CommentReplyPage.java:100
-#: com/bloatit/web/actions/AddAttachementPage.java:94
+#: com/bloatit/web/actions/AddAttachementPage.java:89
 #: com/bloatit/web/linkable/admin/ConfigurationAdminPage.java:75
 #: com/bloatit/web/linkable/members/MemberPage.java:422
 #: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:98
@@ -193,11 +173,11 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: com/bloatit/web/pages/CommentReplyPage.java:111
+#: com/bloatit/web/pages/CommentReplyPage.java:107
 msgid "you must be logged in to comment."
 msgstr ""
 
-#: com/bloatit/web/pages/CommentReplyPage.java:148
+#: com/bloatit/web/pages/CommentReplyPage.java:144
 #, java-format
 msgid "Reply to {0}''s comment"
 msgstr ""
@@ -321,7 +301,7 @@ msgstr ""
 
 #: com/bloatit/web/pages/master/Footer.java:33
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:103
-#: com/bloatit/web/linkable/bugs/ReportBugPage.java:181
+#: com/bloatit/web/linkable/bugs/ReportBugPage.java:177
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:306
 msgid "Report a bug"
 msgstr ""
@@ -509,46 +489,28 @@ msgstr ""
 msgid "You must be logged in to report a bug."
 msgstr ""
 
-#: com/bloatit/web/actions/AddAttachementPage.java:42
+#: com/bloatit/web/actions/AddAttachementPage.java:41
 msgid "I cannot find the content number: ''%value''."
 msgstr ""
 
-#: com/bloatit/web/actions/AddAttachementPage.java:43
+#: com/bloatit/web/actions/AddAttachementPage.java:42
 msgid "You have to specify a content on which join the file."
 msgstr ""
 
-#: com/bloatit/web/actions/AddAttachementPage.java:56
+#: com/bloatit/web/actions/AddAttachementPage.java:55
 msgid "Add an attachment to the release"
 msgstr ""
 
-#: com/bloatit/web/actions/AddAttachementPage.java:84
+#: com/bloatit/web/actions/AddAttachementPage.java:83
 msgid "Add a new attachment"
 msgstr ""
 
-#: com/bloatit/web/actions/AddAttachementPage.java:90
-#: com/bloatit/web/linkable/release/AddReleasePage.java:120
-msgid "Attached file"
-msgstr ""
-
-#: com/bloatit/web/actions/AddAttachementPage.java:91
-msgid "Mandatory"
-msgstr ""
-
-#: com/bloatit/web/actions/AddAttachementPage.java:92
-#: com/bloatit/web/linkable/bugs/BugPage.java:120
-msgid "Attachment description"
-msgstr ""
-
-#: com/bloatit/web/actions/AddAttachementPage.java:93
-msgid "You must attach a file. Maximum size is 3MB"
-msgstr ""
-
-#: com/bloatit/web/actions/AddAttachementPage.java:108
+#: com/bloatit/web/actions/AddAttachementPage.java:103
 #: com/bloatit/web/linkable/release/ReleasePage.java:78
 msgid "Add an attachment"
 msgstr ""
 
-#: com/bloatit/web/actions/AddAttachementPage.java:114
+#: com/bloatit/web/actions/AddAttachementPage.java:109
 msgid "You must be logged to add a new attachment."
 msgstr ""
 
@@ -585,19 +547,10 @@ msgid "Bug - No bug"
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/BugPage.java:119
-msgid ""
-"Optional. If attach a file, you must add an attachment description. Max 2go."
-msgstr ""
-
-#: com/bloatit/web/linkable/bugs/BugPage.java:121
-msgid "Need only if you add an attachment."
-msgstr ""
-
-#: com/bloatit/web/linkable/bugs/BugPage.java:123
 msgid "Add attachment"
 msgstr ""
 
-#: com/bloatit/web/linkable/bugs/BugPage.java:135
+#: com/bloatit/web/linkable/bugs/BugPage.java:131
 msgid "Bug #"
 msgstr ""
 
@@ -741,25 +694,11 @@ msgid "Level of the bug."
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ReportBugPage.java:151
-msgid ""
-"Optional. If attach a file, you must add an attachment description. Max 3MB."
-msgstr ""
-
-#: com/bloatit/web/linkable/bugs/ReportBugPage.java:152
-#: com/bloatit/web/linkable/release/AddReleasePage.java:122
-msgid "File description"
-msgstr ""
-
-#: com/bloatit/web/linkable/bugs/ReportBugPage.java:153
-msgid "You need to add a file description only if you add an attachment."
-msgstr ""
-
-#: com/bloatit/web/linkable/bugs/ReportBugPage.java:155
 #: com/bloatit/web/linkable/meta/bugreport/SideBarBugReportBlock.java:38
 msgid "Report the bug"
 msgstr ""
 
-#: com/bloatit/web/linkable/bugs/ReportBugPage.java:170
+#: com/bloatit/web/linkable/bugs/ReportBugPage.java:166
 msgid "You must be logged to report a new bug."
 msgstr ""
 
@@ -1275,8 +1214,8 @@ msgid "Language of the descriptions."
 msgstr ""
 
 #: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:130
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:180
-#: com/bloatit/web/linkable/release/AddReleasePage.java:125
+#: com/bloatit/web/linkable/features/CreateFeaturePage.java:176
+#: com/bloatit/web/linkable/release/AddReleasePage.java:121
 msgid "submit"
 msgstr ""
 
@@ -1946,6 +1885,23 @@ msgid ""
 "An error prevented us from displaying you some information. Please notify us."
 msgstr ""
 
+#: com/bloatit/web/linkable/usercontent/AttachmentField.java:14
+msgid "Join a file"
+msgstr ""
+
+#: com/bloatit/web/linkable/usercontent/AttachmentField.java:15
+#, java-format
+msgid "Max size {0}. When you join a file, you have to add a description."
+msgstr ""
+
+#: com/bloatit/web/linkable/usercontent/AttachmentField.java:16
+msgid "File description"
+msgstr ""
+
+#: com/bloatit/web/linkable/usercontent/AttachmentField.java:17
+msgid "Input a short description of the file you want to upload."
+msgstr ""
+
 #: com/bloatit/web/linkable/usercontent/UserContentAction.java:106
 #: com/bloatit/web/linkable/usercontent/UserContentAction.java:129
 msgid "You are not allowed to do this action in the name of a team."
@@ -1974,14 +1930,6 @@ msgid "Write this comment in the name of this team."
 msgstr ""
 
 #: com/bloatit/web/linkable/usercontent/CreateCommentForm.java:40
-msgid "You have to add a description if you join a file."
-msgstr ""
-
-#: com/bloatit/web/linkable/usercontent/CreateCommentForm.java:42
-msgid "If you join a file you have to describe it."
-msgstr ""
-
-#: com/bloatit/web/linkable/usercontent/CreateCommentForm.java:44
 msgid "Submit comment"
 msgstr ""
 
@@ -2458,7 +2406,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:403
 #: com/bloatit/web/linkable/release/AddReleasePage.java:62
-#: com/bloatit/web/linkable/release/AddReleasePage.java:140
+#: com/bloatit/web/linkable/release/AddReleasePage.java:136
 msgid "Add a release"
 msgstr ""
 
@@ -2538,27 +2486,11 @@ msgstr ""
 msgid "The language of the description you just wrote."
 msgstr ""
 
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:174
-msgid "join a file"
-msgstr ""
-
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:175
-msgid "You can join a file on this feature description if you need to."
-msgstr ""
-
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:176
-msgid "file description"
-msgstr ""
-
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:177
-msgid "If you join a file you have to input a short description of this file."
-msgstr ""
-
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:197
+#: com/bloatit/web/linkable/features/CreateFeaturePage.java:193
 msgid "You must be logged to create a new feature."
 msgstr ""
 
-#: com/bloatit/web/linkable/features/CreateFeaturePage.java:232
+#: com/bloatit/web/linkable/features/CreateFeaturePage.java:228
 msgid "Create a feature"
 msgstr ""
 
@@ -2966,15 +2898,7 @@ msgstr ""
 msgid "Enter a short comment on your release."
 msgstr ""
 
-#: com/bloatit/web/linkable/release/AddReleasePage.java:121
-msgid "Add here a file for your release."
-msgstr ""
-
-#: com/bloatit/web/linkable/release/AddReleasePage.java:123
-msgid "Add a little description of the file."
-msgstr ""
-
-#: com/bloatit/web/linkable/release/AddReleasePage.java:147
+#: com/bloatit/web/linkable/release/AddReleasePage.java:143
 msgid "You must be logged to add a new release."
 msgstr ""
 
@@ -3049,7 +2973,7 @@ msgstr ""
 #: com/bloatit/web/linkable/login/LogoutAction.java:61
 msgid ""
 "You should log in before you log out ... Note : if you log in using the form "
-"below, you'll be immediatly logged out (yes this is a stupid behavior, but "
+"below, you'll be immediately logged out (yes this is a stupid behavior, but "
 "we try to use generic code... sometimes generic means stupid ;)"
 msgstr ""
 
@@ -3106,7 +3030,7 @@ msgid "Sign-in"
 msgstr ""
 
 #: com/bloatit/web/linkable/login/LoginPage.java:65
-msgid "Note: This field is not case sensitive"
+msgid "This field is not case sensitive"
 msgstr ""
 
 #: com/bloatit/web/linkable/login/LoginPage.java:79
