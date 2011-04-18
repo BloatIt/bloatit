@@ -30,13 +30,18 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
+import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
 @ParamContainer("login")
 public final class LoginPage extends MasterPage {
+
+
     private final LoginPageUrl url;
 
     public LoginPage(final LoginPageUrl url) {
@@ -48,6 +53,8 @@ public final class LoginPage extends MasterPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
+
+        layout.addRight(new RecoverPasswordSideBarElement());
 
         return layout;
     }
@@ -106,5 +113,15 @@ public final class LoginPage extends MasterPage {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(trc("Login (verb)", "Login")));
         return breadcrumb;
+    }
+
+
+    private static class RecoverPasswordSideBarElement extends TitleSideBarElementLayout {
+
+        public RecoverPasswordSideBarElement() {
+            setTitle(Context.tr("Recover your password"));
+        
+            add(new HtmlMixedText(Context.tr("You can recover you password use the <0::password recovery form>."), new PageNotFoundUrl().getHtmlLink()));
+        }
     }
 }

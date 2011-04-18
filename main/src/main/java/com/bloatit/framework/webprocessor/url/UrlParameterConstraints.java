@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Message.What;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public class UrlParameterConstraints<U> {
 
@@ -24,7 +25,7 @@ public class UrlParameterConstraints<U> {
         }
 
         public final String getError() {
-            return error;
+            return Context.tr(error);
         }
     }
 
