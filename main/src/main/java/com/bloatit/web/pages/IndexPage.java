@@ -145,7 +145,7 @@ public final class IndexPage extends MasterPage {
         summaryBox.add(contributionRaised);
 
         // Count of offers
-        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Offers, ", OfferManager.getOfferCount()));
+        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ", OfferManager.getOfferCount()));
         summaryBox.add(offerCount);
 
         // Count of releases

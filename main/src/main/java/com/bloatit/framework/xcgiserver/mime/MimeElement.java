@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeBase64Decoder;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeBinaryDecoder;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeDecoder;
@@ -206,21 +207,21 @@ public class MimeElement {
 
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (final Entry<String, String> headerField : header.entrySet()) {
-            result += "[" + headerField.getKey() + "]: " + headerField.getValue() + "\n";
+            result.append("[" + headerField.getKey() + "]: " + headerField.getValue() + "\n");
         }
         if (isFile()) {
-            result += "[FILE]: " + destination.getAbsolutePath() + "\n";
+            result.append("[FILE]: " + destination.getAbsolutePath() + "\n");
         } else {
             try {
                 final InputStream is = getContent();
                 while (is.available() > 0) {
                     final char c = (char) ((byte) is.read() & 0xff);
-                    result += c;
+                    result.append(c);
                 }
-                result += '\n';
+                result.append('\n');
             } catch (final FileNotFoundException e) {
                 e.printStackTrace();
             } catch (final IOException e) {
@@ -228,7 +229,7 @@ public class MimeElement {
             }
         }
 
-        return result;
+        return result.toString();
     }
 
     /**
@@ -293,7 +294,9 @@ public class MimeElement {
                 contentOutput = new DecodingOuputStream(nonFileInput, decoder);
             } else {
                 final File uploadedFileDir = new File(fileSavingDirectory);
-                uploadedFileDir.mkdirs();
+                if (!uploadedFileDir.mkdirs()) {
+                    throw new BadProgrammerException("Couldn't create directory " + uploadedFileDir.getCanonicalPath());
+                }
                 destination = new File(fileSavingDirectory + nameGen.generateName(getHeaderField(FILE_NAME)));
                 try {
                     final FileOutputStream fos = new FileOutputStream(destination);

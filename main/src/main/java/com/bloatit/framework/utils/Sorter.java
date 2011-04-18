@@ -49,9 +49,20 @@ public class Sorter<T, U extends Comparable<U>> {
             return sortKey;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int compareTo(final SortEntry o) {
             return sortKey.compareTo(o.getSortKey());
+        }
+
+        @SuppressWarnings("unchecked")
+        public boolean equals(Object o) {
+            if (o == null || o.getClass() != getClass()) {
+                return false;
+            }
+            return compareTo((SortEntry) o) == 0;
         }
     }
 

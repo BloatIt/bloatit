@@ -67,7 +67,7 @@ public final class AddReleaseAction extends UserContentAction {
 
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("Failed to create the release."));
-            new ShallNotPassException("Fail to create a release.", e);
+            throw new ShallNotPassException("Fail to create a release.", e);
         }
         return session.pickPreferredPage();
     }

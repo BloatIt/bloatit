@@ -226,8 +226,10 @@ public final class AccountPage extends LoggedPage {
                     break;
                 case FINISHED:
                     statusString = tr("Success");
+                    break;
                 case DISCARDED:
                     statusString = tr("Failed");
+                    break;
                 case PENDING:
                 case PREPARING:
                     statusString = tr("Funding");

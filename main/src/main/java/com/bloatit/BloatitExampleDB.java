@@ -1,6 +1,8 @@
 package com.bloatit;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -199,7 +201,11 @@ public class BloatitExampleDB {
 
         final String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
         twoSubtitlesInVlcFeature.authenticate(new AuthToken(rataxes));
-        final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"), rataxesOfferDescription, rataxes.getLocale(), DateUtils.tomorrow(), 0);
+        final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
+                                                                     rataxesOfferDescription,
+                                                                     rataxes.getLocale(),
+                                                                     DateUtils.tomorrow(),
+                                                                     0);
 
         rataxesOffer.authenticate(new AuthToken(chogall));
         rataxesOffer.voteUp();
@@ -278,7 +284,7 @@ public class BloatitExampleDB {
                               "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
                               elephantman.getLocale(),
                               Level.MINOR);
-        
+
         firstMilestone.authenticate(new AuthToken(yoann));
         firstMilestone.addBug("Fichier de conf système manquant",
                               "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
@@ -422,7 +428,7 @@ public class BloatitExampleDB {
     }
 
     public static void main(final String[] args) throws UnauthorizedOperationException, NotEnoughMoneyException {
-        System.out.println("Begin database generation");
+        System.out.println("Begining database generation");
         new BloatitExampleDB();
         System.out.println("Database generation ended");
         System.exit(0);

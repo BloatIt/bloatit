@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 public class MetaBug {
     private final String id;
@@ -32,13 +33,16 @@ public class MetaBug {
 
     public void delete() {
         final File file = new File(FrameworkConfiguration.getMetaBugsDirStorage() + "/" + id);
-        file.renameTo(new File(FrameworkConfiguration.getMetaBugsDirStorage() + "/" + id + "-deleted"));
+        if (!file.renameTo(new File(FrameworkConfiguration.getMetaBugsDirStorage() + "/" + id + "-deleted"))) {
+            throw new BadProgrammerException("Couldn't move treated bug");
+        }
     }
 
     public static String fileToString(final File file) throws IOException {
         final byte[] buffer = new byte[(int) file.length()];
         final BufferedInputStream f = new BufferedInputStream(new FileInputStream(file));
         f.read(buffer);
+        f.close();
         return new String(buffer);
     }
 

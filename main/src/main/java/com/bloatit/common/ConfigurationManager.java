@@ -83,10 +83,11 @@ public class ConfigurationManager {
             }
         }
 
-        FileInputStream fis;
+        FileInputStream fis = null;
+        InputStreamReader isr = null;
         try {
             fis = new FileInputStream(f);
-            final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
+            isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
             final Properties props = new EncryptableProperties(encryptor);
             props.load(isr);
             return new PropertiesRetriever(props, new Date(f.lastModified()));
@@ -94,6 +95,14 @@ public class ConfigurationManager {
             throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
         } catch (final IOException e) {
             throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
+        } finally{
+            if(isr != null){
+                try {
+                    isr.close();
+                } catch (IOException e) {
+                    throw new BadProgrammerException("Stream crashed when closing ... This is bad");
+                }
+            }
         }
     }
 

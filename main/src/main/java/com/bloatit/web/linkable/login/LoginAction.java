@@ -18,6 +18,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.managers.LoginManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.LoginActionUrl;
@@ -79,5 +80,10 @@ public final class LoginAction extends Action {
     @Override
     protected void transmitParameters() {
         session.addParameter(url.getLoginParameter());
+        final UrlParameter<String, String> passwordParameter = url.getPasswordParameter().clone();
+        if(passwordParameter.getValue() != null) {
+            passwordParameter.setValue("");
+        }
+        session.addParameter(passwordParameter);
     }
 }

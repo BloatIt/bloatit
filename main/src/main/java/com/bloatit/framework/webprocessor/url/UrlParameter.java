@@ -113,6 +113,7 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
+
     @SuppressWarnings("unchecked")
     private void setValueFromHttpParameter(final HttpParameter httpParam) {
         conversionError = false;

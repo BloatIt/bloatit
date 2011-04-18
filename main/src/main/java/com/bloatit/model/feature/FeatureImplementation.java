@@ -237,7 +237,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
         tryAccess(new FeatureRight.Offer(), Action.DELETE);
-        if (getDao().getSelectedOffer().getId() == offer.getId()) {
+        if (getDao().getSelectedOffer().getId() != null && getDao().getSelectedOffer().getId().equals(offer.getId())) {
             getDao().computeSelectedOffer();
         }
         getDao().removeOffer(offer.getDao());
@@ -266,6 +266,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public void unSelectOffer(final Offer offer) {
         if (offer.equals(getSelectedOfferUnprotected())) {
+            // FIXME: null risque de causer un crash
             setSelectedOffer(null);
             getDao().computeSelectedOffer();
         }

@@ -21,6 +21,7 @@ import javax.mail.internet.MimeMessage;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 /**
  * <p>
@@ -63,7 +64,7 @@ public class MailServer extends Thread {
     private boolean stop;
     private long numberOfTries;
 
-    private static MailServer instance;
+    private static volatile MailServer instance;
 
     private MailServer() {
         // disactivating CTOR
@@ -158,7 +159,9 @@ public class MailServer extends Thread {
 
             // Save the mail into the temporary mail directory
             createWipDirectory();
-            mailOutput.createNewFile();
+            if (!mailOutput.createNewFile()) {
+                throw new BadProgrammerException("Couldn't create file " + mailOutput.getCanonicalPath());
+            }
             final FileOutputStream mailWriter = new FileOutputStream(mailOutput);
 
             // Add the mail in the 'to send' list
@@ -242,7 +245,9 @@ public class MailServer extends Thread {
                 final Message message = new MimeMessage(session, mailRead);
                 Transport.send(message);
 
-                mailFile.renameTo(outputFile);
+                if (!mailFile.renameTo(outputFile)) {
+                    throw new BadProgrammerException("Couldn't move sent mail");
+                }
                 Log.mail().trace("Mail sent " + mailFileName);
                 resetRetries();
             } catch (final InterruptedException e) {
@@ -316,7 +321,10 @@ public class MailServer extends Thread {
     private final void createWipDirectory() {
         final File wipDir = new File(WIP_MAIL_DIRECTORY);
         if (!wipDir.exists()) {
-            wipDir.mkdirs();
+            if (!wipDir.mkdirs()) {
+                throw new BadProgrammerException("Couldn't create directory " + SENT_MAIL_DIRECTORY);
+            }
+
             Log.mail().info("Created directory " + WIP_MAIL_DIRECTORY);
         }
     }
@@ -327,7 +335,9 @@ public class MailServer extends Thread {
     private final void createSentDirectory() {
         final File sentDir = new File(SENT_MAIL_DIRECTORY);
         if (!sentDir.exists()) {
-            sentDir.mkdirs();
+            if (!sentDir.mkdirs()) {
+                throw new BadProgrammerException("Couldn't create directory " + SENT_MAIL_DIRECTORY);
+            }
             Log.mail().info("Created directory " + SENT_MAIL_DIRECTORY);
         }
     }
