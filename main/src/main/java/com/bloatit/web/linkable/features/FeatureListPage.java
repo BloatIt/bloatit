@@ -91,7 +91,6 @@ public final class FeatureListPage extends MasterPage {
         // Div feature_search_block
         final HtmlDiv featureSearchBlock = new HtmlDiv("feature_search_block");
         {
-
             final FeatureListPageUrl formUrl = url.clone();
             formUrl.setSearchString("");
             final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
@@ -140,12 +139,15 @@ public final class FeatureListPage extends MasterPage {
 
             final HtmlDiv featureSort = new HtmlDiv("feature_sort");
             {
-                final FeatureListPageUrl relevanceSortUrl = url.clone();
-                relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
-                final HtmlLink relevanceSort = relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
-                if (sort.equals(SORT_BY_RELEVANCE)) {
-                    relevanceSort.setCssClass("selected");
-                }
+                // XXX : someday create all these crap
+                
+                // final FeatureListPageUrl relevanceSortUrl = url.clone();
+                // relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
+                // final HtmlLink relevanceSort =
+                // relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
+                // if (sort.equals(SORT_BY_RELEVANCE)) {
+                // relevanceSort.setCssClass("selected");
+                // }
 
                 final FeatureListPageUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
@@ -161,12 +163,13 @@ public final class FeatureListPage extends MasterPage {
                     contributionSort.setCssClass("selected");
                 }
 
-                final FeatureListPageUrl progressSortUrl = url.clone();
-                progressSortUrl.setSort(SORT_BY_PROGRESS);
-                final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
-                if (sort.equals(SORT_BY_PROGRESS)) {
-                    progressSort.setCssClass("selected");
-                }
+                // final FeatureListPageUrl progressSortUrl = url.clone();
+                // progressSortUrl.setSort(SORT_BY_PROGRESS);
+                // final HtmlLink progressSort =
+                // progressSortUrl.getHtmlLink(Context.tr("progress"));
+                // if (sort.equals(SORT_BY_PROGRESS)) {
+                // progressSort.setCssClass("selected");
+                // }
 
                 final FeatureListPageUrl creationDateSortUrl = url.clone();
                 creationDateSortUrl.setSort(SORT_BY_CREATION_DATE);
@@ -175,25 +178,26 @@ public final class FeatureListPage extends MasterPage {
                     creationDateSort.setCssClass("selected");
                 }
 
-                final FeatureListPageUrl expirationDateSortUrl = url.clone();
-                expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
-                final HtmlLink expirationDateSort = expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
-                if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
-                    expirationDateSort.setCssClass("selected");
-                }
+                // final FeatureListPageUrl expirationDateSortUrl = url.clone();
+                // expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
+                // final HtmlLink expirationDateSort =
+                // expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
+                // if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
+                // expirationDateSort.setCssClass("selected");
+                // }
 
                 featureSort.addText(Context.tr("Sort by: "));
                 featureSort.add(popularitySort);
                 featureSort.addText(" – ");
-                featureSort.add(relevanceSort);
-                featureSort.addText(" – ");
+                // featureSort.add(relevanceSort);
+                // featureSort.addText(" – ");
                 featureSort.add(contributionSort);
                 featureSort.addText(" – ");
-                featureSort.add(progressSort);
-                featureSort.addText(" – ");
+                // featureSort.add(progressSort);
+                // featureSort.addText(" – ");
                 featureSort.add(creationDateSort);
-                featureSort.addText(" – ");
-                featureSort.add(expirationDateSort);
+                // featureSort.addText(" – ");
+                // featureSort.add(expirationDateSort);
 
             }
             featureSearchBlock.add(featureSort);

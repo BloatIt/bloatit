@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 19:06+0200\n"
+"POT-Creation-Date: 2011-04-18 19:18+0200\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -1657,76 +1657,64 @@ msgstr[1] "{0} bugs"
 msgid "failed"
 msgstr "échec"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:102
+#: com/bloatit/web/linkable/features/FeatureListPage.java:101
 msgctxt "Search (verb)"
 msgid "Search a feature"
 msgstr "Rechercher une demande"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:113
+#: com/bloatit/web/linkable/features/FeatureListPage.java:112
 msgid "all"
 msgstr "toutes"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:120
+#: com/bloatit/web/linkable/features/FeatureListPage.java:119
 msgid "in progress"
 msgstr "actives"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:127
+#: com/bloatit/web/linkable/features/FeatureListPage.java:126
 msgid "finished"
 msgstr "terminées"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:132
+#: com/bloatit/web/linkable/features/FeatureListPage.java:131
 msgid "Filter: "
-msgstr "Filtre :"
+msgstr "Filtre : "
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:145
-msgid "relevance"
-msgstr "pertinence"
-
-#: com/bloatit/web/linkable/features/FeatureListPage.java:152
+#: com/bloatit/web/linkable/features/FeatureListPage.java:154
 #: com/bloatit/web/linkable/admin/KudosableAdminPage.java:138
 msgid "popularity"
 msgstr "popularité"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:159
+#: com/bloatit/web/linkable/features/FeatureListPage.java:161
 #: com/bloatit/web/linkable/admin/FeatureAdminPage.java:156
 msgid "contribution"
 msgstr "contribution"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:166
-msgid "progress"
-msgstr "avancement"
-
-#: com/bloatit/web/linkable/features/FeatureListPage.java:173
+#: com/bloatit/web/linkable/features/FeatureListPage.java:176
 msgid "creation date"
 msgstr "date de création"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:180
-msgid "expiration date"
-msgstr "date d'expiration"
-
-#: com/bloatit/web/linkable/features/FeatureListPage.java:185
+#: com/bloatit/web/linkable/features/FeatureListPage.java:189
 msgid "Sort by: "
-msgstr "Trier par :"
+msgstr "Trier par : "
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:225
+#: com/bloatit/web/linkable/features/FeatureListPage.java:229
 msgid "If you have an feature or a need about a free software, you can "
 msgstr ""
 "Si vous avez une demande ou un besoin concernant un logiciel libre, vous "
 "pouvez "
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:226
+#: com/bloatit/web/linkable/features/FeatureListPage.java:230
 msgid "submit a new feature"
 msgstr "proposer une nouvelle demande"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:243
+#: com/bloatit/web/linkable/features/FeatureListPage.java:247
 msgid "No result"
 msgstr "Aucun résultat"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:252
+#: com/bloatit/web/linkable/features/FeatureListPage.java:256
 msgid "View features - search features"
 msgstr "Voir les demandes - Rechercher des demandes"
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:308
+#: com/bloatit/web/linkable/features/FeatureListPage.java:312
 msgid "Features"
 msgstr "Demandes"
 
@@ -1758,8 +1746,8 @@ msgstr "Contribuer"
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:248
 msgid "You are a developer and want to be paid to achieve this request?"
 msgstr ""
-"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette demande "
-"?"
+"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette "
+"demande ?"
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:268
 #, java-format
@@ -1775,8 +1763,8 @@ msgid ""
 "An offer has already been made on this feature. However, you can <0::make an "
 "alternative offer>."
 msgstr ""
-"Une offre a déjà été faite sur cette demande. Vous pouvez cependant "
-"<0::créer une offre alternative>."
+"Une offre a déjà été faite sur cette demande. Vous pouvez cependant <0::"
+"créer une offre alternative>."
 
 #: com/bloatit/web/linkable/features/FeatureSummaryComponent.java:291
 msgid "There is no release yet."
@@ -1965,6 +1953,7 @@ msgstr[1] "Anciennes offres ({0})"
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:181
 msgid "These offers have not been selected and will never be developed."
 msgstr ""
+"Ces offres n'ont pas été sélectionnées et ne seront jamais développées."
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:237
 msgid "Total price: "
@@ -2608,8 +2597,8 @@ msgid ""
 "We thank you for your trust."
 msgstr ""
 "Cher {0},\n"
-"Nous sommes heureux de vous annoncer que votre paiement {1} à "
-"http://elveos.org a été validé.\n"
+"Nous sommes heureux de vous annoncer que votre paiement {1} à http://elveos."
+"org a été validé.\n"
 "Nous vous remercions de votre confiance."
 
 #: com/bloatit/web/linkable/contribution/ContributionProcess.java:141
@@ -3273,16 +3262,16 @@ msgid ""
 "Content is available under the Creative Commons Attribution (<0::CC-by>) "
 "License."
 msgstr ""
-"Le contenu est disponible sous la licence Creative Commons Attribution "
-"(<0::CC-by>)."
+"Le contenu est disponible sous la licence Creative Commons Attribution (<0::"
+"CC-by>)."
 
 #: com/bloatit/web/pages/master/Footer.java:46
 msgid ""
-"Elveos, elveos.org and the elveos logo are registered trademark of the "
-"<0::Linkeos> SAS."
+"Elveos, elveos.org and the elveos logo are registered trademark of the <0::"
+"Linkeos> SAS."
 msgstr ""
-"Elveos, elveos.org et le logo d'elveos son des marques appartenant à "
-"<0::Linkeos> SAS."
+"Elveos, elveos.org et le logo d'elveos son des marques appartenant à <0::"
+"Linkeos> SAS."
 
 #: com/bloatit/web/pages/master/Menu.java:23
 msgid "Feature requests"
@@ -3542,6 +3531,15 @@ msgid "{0} millisecond"
 msgid_plural "{0} milliseconds"
 msgstr[0] "{0} milliseconde"
 msgstr[1] "{0} millisecondes"
+
+#~ msgid "relevance"
+#~ msgstr "pertinence"
+
+#~ msgid "progress"
+#~ msgstr "avancement"
+
+#~ msgid "expiration date"
+#~ msgstr "date d'expiration"
 
 #~ msgid "Login cannot be blank."
 #~ msgstr "Le champ login ne peut être vide."
