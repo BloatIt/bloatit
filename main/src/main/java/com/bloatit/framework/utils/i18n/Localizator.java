@@ -118,7 +118,7 @@ public final class Localizator {
      * @return the translated string
      */
     public String tr(final String toTranslate) {
-        return i18n.tr(toTranslate);
+        return correctTr(i18n.tr(toTranslate));
     }
 
     /**
@@ -150,8 +150,8 @@ public final class Localizator {
      * @see #trn(String, String, long, Object...)
      * @see org.slf4j.helpers.MessageFormatter
      */
-    public String tr(final String toTranslate, final Object... parameters) {
-        return i18n.tr(toTranslate, parameters);
+    public String tr(String toTranslate, final Object... parameters) {
+        return correctTr(i18n.tr(toTranslate, parameters));
     }
 
     /**
@@ -179,7 +179,7 @@ public final class Localizator {
      * @see #tr(String)
      */
     public String trn(final String singular, final String plural, final long amount) {
-        return i18n.trn(singular, plural, amount);
+        return correctTr(i18n.trn(singular, correctTr(plural), amount));
     }
 
     /**
@@ -215,7 +215,7 @@ public final class Localizator {
      * @see org.slf4j.helpers.MessageFormatter
      */
     public String trn(final String singular, final String plural, final long amount, final Object... parameters) {
-        return i18n.trn(singular, plural, amount, parameters);
+        return correctTr(i18n.trn(singular, correctTr(plural), amount, parameters));
     }
 
     /**
@@ -243,7 +243,17 @@ public final class Localizator {
      *         <code>text</code> otherwise
      */
     public String trc(final String context, final String text) {
-        return i18n.trc(context, text);
+        return correctTr(i18n.trc(context, text));
+    }
+
+    /**
+     * Correctes the translated string and make it ready for html
+     * 
+     * @param translation the translated string
+     * @return the string ready to be inputed in Html
+     */
+    private String correctTr(String translation) {
+        return translation.replaceAll("&nbsp;", " ");
     }
 
     /**

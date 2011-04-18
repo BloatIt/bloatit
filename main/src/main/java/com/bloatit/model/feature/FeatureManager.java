@@ -54,6 +54,10 @@ public final class FeatureManager {
         return getFeatureImplementationById(id);
     }
 
+    public static int getFeatureCount(){
+        return DBRequests.count(DaoFeature.class);
+    }
+    
     /**
      * Gets the featureImplementation by id.
      * 

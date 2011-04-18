@@ -21,13 +21,22 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Contribution;
 import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
+import com.bloatit.model.managers.OfferManager;
+import com.bloatit.model.managers.ReleaseManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
+import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -68,6 +77,7 @@ public final class IndexPage extends MasterPage {
         element.add(globalDescription);
 
         final TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
+        element.add(twoColumnLayout);
 
         // List of features
         final HtmlDiv featureList = new HtmlDiv("feature_list");
@@ -120,12 +130,32 @@ public final class IndexPage extends MasterPage {
         twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
 
         // Display of a summary of all website activity since creation
-        final SideBarElementLayout summaryBox = new SideBarElementLayout();
+        final SideBarElementLayout leftSummary = new SideBarElementLayout();
+        twoColumnLayout.addRight(leftSummary);
+        HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
+        leftSummary.add(summaryBox);
 
-        twoColumnLayout.addRight(summaryBox);
+        // Feature count
+        HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ", FeatureManager.getFeatureCount()));
+        summaryBox.add(featureCount);
 
+        // Contribution amount
+        MoneyDisplayComponent mdc = new MoneyDisplayComponent(ContributionManager.getMoneyRaised(), false);
+        HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
+        HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
+        summaryBox.add(contributionRaised);
+
+        // Count of offers
+        HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Offers, ", OfferManager.getOfferCount()));
+        summaryBox.add(offerCount);
+
+        // Count of releases
+        HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Releases", ReleaseManager.getReleaseCount()));
+        summaryBox.add(releaseCount);
+
+        // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-        element.add(twoColumnLayout);
+
         return element;
     }
 

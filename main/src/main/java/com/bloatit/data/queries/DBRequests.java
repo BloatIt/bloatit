@@ -100,7 +100,7 @@ public class DBRequests {
                                      .createQuery("select count(*) from " + meta.getEntityName())
                                      .uniqueResult()).intValue();
     }
-
+    
     public static PageIterable<DaoFeature> featuresOrderByPopularity() {
         return featuresOrderBy("popularity");
     }
