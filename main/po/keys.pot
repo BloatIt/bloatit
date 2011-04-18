@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 19:06+0200\n"
+"POT-Creation-Date: 2011-04-18 19:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1567,74 +1567,62 @@ msgstr[1] ""
 msgid "failed"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:102
+#: com/bloatit/web/linkable/features/FeatureListPage.java:101
 msgctxt "Search (verb)"
 msgid "Search a feature"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:113
+#: com/bloatit/web/linkable/features/FeatureListPage.java:112
 msgid "all"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:120
+#: com/bloatit/web/linkable/features/FeatureListPage.java:119
 msgid "in progress"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:127
+#: com/bloatit/web/linkable/features/FeatureListPage.java:126
 msgid "finished"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:132
+#: com/bloatit/web/linkable/features/FeatureListPage.java:131
 msgid "Filter: "
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:145
-msgid "relevance"
-msgstr ""
-
-#: com/bloatit/web/linkable/features/FeatureListPage.java:152
+#: com/bloatit/web/linkable/features/FeatureListPage.java:154
 #: com/bloatit/web/linkable/admin/KudosableAdminPage.java:138
 msgid "popularity"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:159
+#: com/bloatit/web/linkable/features/FeatureListPage.java:161
 #: com/bloatit/web/linkable/admin/FeatureAdminPage.java:156
 msgid "contribution"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:166
-msgid "progress"
-msgstr ""
-
-#: com/bloatit/web/linkable/features/FeatureListPage.java:173
+#: com/bloatit/web/linkable/features/FeatureListPage.java:176
 msgid "creation date"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:180
-msgid "expiration date"
-msgstr ""
-
-#: com/bloatit/web/linkable/features/FeatureListPage.java:185
+#: com/bloatit/web/linkable/features/FeatureListPage.java:189
 msgid "Sort by: "
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:225
+#: com/bloatit/web/linkable/features/FeatureListPage.java:229
 msgid "If you have an feature or a need about a free software, you can "
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:226
+#: com/bloatit/web/linkable/features/FeatureListPage.java:230
 msgid "submit a new feature"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:243
+#: com/bloatit/web/linkable/features/FeatureListPage.java:247
 msgid "No result"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:252
+#: com/bloatit/web/linkable/features/FeatureListPage.java:256
 msgid "View features - search features"
 msgstr ""
 
-#: com/bloatit/web/linkable/features/FeatureListPage.java:308
+#: com/bloatit/web/linkable/features/FeatureListPage.java:312
 msgid "Features"
 msgstr ""
 
