@@ -54,7 +54,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
             final HtmlBranch localeMoney = new HtmlSpan();
             localeMoney.setCssClass("locale_money");
 
-            localeMoney.addText(cl.getLocaleSymbol());
+            localeMoney.addText(cl.getLocaleString());
             money.add(localeMoney);
         }
         add(money);

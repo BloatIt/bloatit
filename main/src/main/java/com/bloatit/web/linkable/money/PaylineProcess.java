@@ -127,8 +127,8 @@ public class PaylineProcess extends WebProcess {
                 success = true;
                 // Notify the user:
                 final BankTransaction bankTransaction = BankTransaction.getByToken(token);
-                final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getLocaleSymbol();
-                final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getLocaleSymbol();
+                final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getDefaultString();
+                final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getDefaultString();
                 session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
                 // By mail
                 final ChargingAccountSuccess mail = new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
