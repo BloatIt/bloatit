@@ -107,7 +107,7 @@ public abstract class Page implements Linkable {
             bodyContent = createBodyOnParameterError();
         } else {
             // Abstract method cf: template method pattern
-            bodyContent = createBodyOnParameterError();
+            bodyContent = createBody();
         }
 
         page.add(new XmlText("<!DOCTYPE html>"));
