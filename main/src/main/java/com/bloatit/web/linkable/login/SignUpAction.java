@@ -16,6 +16,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.url.MemberActivationActionUrl;
@@ -125,9 +126,27 @@ public final class SignUpAction extends Action {
     protected void transmitParameters() {
         session.addParameter(url.getEmailParameter());
         session.addParameter(url.getLoginParameter());
-        session.addParameter(url.getPasswordParameter());
+        final UrlParameter<String, String> passwordParameter = url.getPasswordParameter().clone();
+        if(passwordParameter.getValue() != null) {
+            if(passwordParameter.getValue().length() > 4) {
+                passwordParameter.setValue("xxxx");
+            } else {
+                passwordParameter.setValue("");
+            }
+        }
+        session.addParameter(passwordParameter);
+        
+        final UrlParameter<String, String> passwordCheckParameter = url.getPasswordCheckParameter().clone();
+        if(passwordCheckParameter.getValue() != null) {
+            if(passwordCheckParameter.getValue().length() > 4) {
+                passwordCheckParameter.setValue("xxxx");
+            } else {
+                passwordCheckParameter.setValue("");
+            }
+        }
+        session.addParameter(passwordCheckParameter);
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        session.addParameter(url.getPasswordCheckParameter());
+        
     }
 }

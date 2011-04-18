@@ -65,6 +65,7 @@ public final class LoginPage extends MasterPage {
             loginInput.setComment(Context.tr("This field is not case sensitive"));
             // passwordField
             final HtmlPasswordField passwordInput = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
+            passwordInput.addErrorMessages(loginActionUrl.getPasswordParameter().pickFieldData().getErrorMessages());
             // Submit
             final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
 
