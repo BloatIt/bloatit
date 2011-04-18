@@ -4,15 +4,10 @@ import com.bloatit.common.CommonConfiguration;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.UrlString;
-import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
-import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
-import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
-import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
 
 public class Footer extends HtmlDiv {
@@ -23,10 +18,9 @@ public class Footer extends HtmlDiv {
 
         final HtmlDiv footerBlock = new HtmlDiv("footer_block", "footer_block");
 
-
         final HtmlDiv linkBlock = new HtmlDiv("link_block", "link_block");
         {
-            
+
             linkBlock.add(new HtmlDiv("footer_link").add(new SiteMapPageUrl().getHtmlLink(Context.tr("Site map"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language"))));
             addDocumentationFooterLink(linkBlock, "contribute", Context.tr("Contribute"));
@@ -41,8 +35,6 @@ public class Footer extends HtmlDiv {
 
         final HtmlDiv licenceBlock = new HtmlDiv("licence_block", "licence_block");
         {
-
-
 
             licenceBlock.add(new HtmlDiv("agpl_block").add(new HtmlMixedText(Context.tr("This website use Bloatit framework, and is under <0::GNU Affero General Public Licence v3>."),
                                                                              new UrlString("http://www.gnu.org/licenses/agpl.html").getHtmlLink())));
@@ -60,7 +52,7 @@ public class Footer extends HtmlDiv {
     }
 
     private void addDocumentationFooterLink(final HtmlDiv linkBlock, final String docPage, final String label) {
-        DocumentationPageUrl doc = new DocumentationPageUrl();
+        final DocumentationPageUrl doc = new DocumentationPageUrl();
         doc.setDocTarget(docPage);
         linkBlock.add(new HtmlDiv("footer_link").add(doc.getHtmlLink(label)));
     }

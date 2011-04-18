@@ -6,7 +6,6 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -44,13 +43,6 @@ public class SendTeamInvitationPage extends LoggedPage {
         super(url);
         this.url = url;
         this.team = url.getTeam();
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        if (!url.getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
     }
 
     @Override

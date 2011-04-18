@@ -86,15 +86,6 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
     }
 
     @Override
-    public void processErrors() throws RedirectException {
-        addNotifications(url.getMessages());
-        if (url.getMessages().hasMessage()) {
-            session.notifyList(url.getMessages());
-            throw new RedirectException(Context.getSession().pickPreferredPage());
-        }
-    }
-
-    @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
@@ -112,8 +103,6 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
-
-        
 
         return group;
     }
@@ -250,10 +239,12 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
             payContributionLink.setCssClass("button");
 
             payBlock.add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated."), "debug"))
-                    .add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123."), "debug"));
+                    .add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123."),
+                                           "debug"));
             if (process.getTeam() != null) {
                 try {
-                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),"use_account"));
+                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
+                                                   "use_account"));
                 } catch (final UnauthorizedOperationException e) {
                     throw new ShallNotPassException(e);
                 }
@@ -301,7 +292,9 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
 
             add(MembersTools.getMemberAvatarSmall(actor));
 
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(actor.getInternalAccount().getAmount()).getDefaultString()));
+            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
+                                                                          .getCurrency(actor.getInternalAccount().getAmount())
+                                                                          .getDefaultString()));
             add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
                                                                                                  "money up")));
             add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
@@ -311,7 +304,9 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
             final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                             .getCurrency(actor.getInternalAccount().getAmount().negate())
+                                                                                             .getCurrency(actor.getInternalAccount()
+                                                                                                               .getAmount()
+                                                                                                               .negate())
                                                                                              .getDecimalDefaultString()));
 
             add(amountBlock);
@@ -397,4 +392,5 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
         breadcrumb.pushLink(new CheckContributionPageUrl(process).getHtmlLink(tr("Final check")));
         return breadcrumb;
     }
+
 }

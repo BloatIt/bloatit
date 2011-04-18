@@ -16,6 +16,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.url.MemberActivationActionUrl;
@@ -29,26 +30,26 @@ import com.bloatit.web.url.SignUpPageUrl;
 public final class SignUpAction extends Action {
     @RequestParam(name = "bloatit_login", role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15."))
+                     min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
+                     max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15."))
     private final String login;
 
     @RequestParam(name = "bloatit_password", role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
+                     min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
+                     max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
     private final String password;
 
     @RequestParam(name = "bloatit_password_check", role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Password confirmation cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
+                     min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
+                     max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
     private final String passwordCheck;
 
     @RequestParam(name = "bloatit_email", role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Email cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5."),//
-    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30."))
+                     min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5."),//
+                     max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30."))
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
@@ -125,9 +126,27 @@ public final class SignUpAction extends Action {
     protected void transmitParameters() {
         session.addParameter(url.getEmailParameter());
         session.addParameter(url.getLoginParameter());
-        session.addParameter(url.getPasswordParameter());
+        final UrlParameter<String, String> passwordParameter = url.getPasswordParameter().clone();
+        if(passwordParameter.getValue() != null) {
+            if(passwordParameter.getValue().length() > 4) {
+                passwordParameter.setValue("xxxx");
+            } else {
+                passwordParameter.setValue("");
+            }
+        }
+        session.addParameter(passwordParameter);
+        
+        final UrlParameter<String, String> passwordCheckParameter = url.getPasswordCheckParameter().clone();
+        if(passwordCheckParameter.getValue() != null) {
+            if(passwordCheckParameter.getValue().length() > 4) {
+                passwordCheckParameter.setValue("xxxx");
+            } else {
+                passwordCheckParameter.setValue("");
+            }
+        }
+        session.addParameter(passwordCheckParameter);
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        session.addParameter(url.getPasswordCheckParameter());
+        
     }
 }

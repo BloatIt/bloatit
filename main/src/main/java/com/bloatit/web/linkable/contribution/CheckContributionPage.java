@@ -94,7 +94,7 @@ public final class CheckContributionPage extends CreateUserContentPage {
     }
 
     @Override
-    public void processErrors() throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getShowFeesDetailsParameter().getMessages().isEmpty()) {
@@ -107,6 +107,7 @@ public final class CheckContributionPage extends CreateUserContentPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
+        return createBodyContent();
     }
 
     @Override

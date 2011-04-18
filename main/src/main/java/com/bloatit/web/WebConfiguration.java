@@ -199,5 +199,4 @@ public class WebConfiguration extends ReloadableConfiguration {
         configuration.loadConfiguration();
     }
 
-
 }

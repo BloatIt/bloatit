@@ -1,6 +1,5 @@
 package com.bloatit.framework.webprocessor.components.meta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
@@ -84,19 +83,19 @@ public abstract class HtmlElement extends XmlElement {
     public abstract boolean selfClosable();
 
     /**
-     * This method should be overriden by any components needing some special
+     * This method should be overridden by any components needing some special
      * css files.
      * 
-     * @return the list of custom Css files needed by this component or null if
-     *         no special js is needed
+     * @return the list of custom css files needed by this component or null if
+     *         no special css is needed
      */
     @Override
     protected List<String> getCustomCss() {
-        return new ArrayList<String>();
+        return null;
     }
 
     /**
-     * This method should be overriden by any components needing some special
+     * This method should be overridden by any components needing some special
      * javascript files.
      * 
      * @return the list of custom js file needed by this component or null if no

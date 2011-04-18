@@ -3,7 +3,6 @@ package com.bloatit.web.linkable.admin;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoKudosable;
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -32,11 +31,6 @@ public final class KudosableAdminPageImplementation extends
     @Override
     public boolean isStable() {
         return true;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        session.notifyList(url.getMessages());
     }
 
     @Override

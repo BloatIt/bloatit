@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -58,13 +57,6 @@ public final class ContributePage extends CreateUserContentPage {
     }
 
     @Override
-    public void processErrors() throws RedirectException {
-        if (url.getMessages().hasMessage()) {
-            throw new PageNotFoundException();
-        }
-    }
-
-    @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateContributeForm(loggedUser));
@@ -88,14 +80,14 @@ public final class ContributePage extends CreateUserContentPage {
             contribInput.setDefaultValue(process.getAmount().toPlainString());
         }
         contribInput.addErrorMessages(amountData.getErrorMessages());
-        contribInput.setComment(Context.tr("The minimun is 1€. Don't use cents."));
+        contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents."));
 
         // Input field : As team
         addAsTeamField(contribForm,
-                      me,
-                      UserTeamRight.BANK,
-                      tr("In the name of"),
-                      tr("Talk in the name of this team and use its money to make a contribution."));
+                       me,
+                       UserTeamRight.BANK,
+                       tr("In the name of"),
+                       tr("Talk in the name of this team and use its money to make a contribution."));
 
         // Input field : comment
         final FieldData commentData = formActionUrl.getCommentParameter().pickFieldData();

@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -64,11 +63,6 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     @Override
     public boolean isStable() {
         return false;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        // TODO maybe we should process the errors.
     }
 
     @Override

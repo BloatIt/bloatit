@@ -21,9 +21,8 @@ public class HtmlProgressBar extends HtmlDiv {
     }
 
     public HtmlProgressBar(final String label, final String styleSuffix, final float... progressList) {
-        super("progress_bar_block"+ (styleSuffix != null ? "_"+styleSuffix: ""));
+        super("progress_bar_block" + (styleSuffix != null ? "_" + styleSuffix : ""));
 
-        
         add(new HtmlDiv("progress_bar_background"));
 
         int progressIndex = progressList.length;
@@ -43,7 +42,7 @@ public class HtmlProgressBar extends HtmlDiv {
             progressIndex--;
         }
 
-        if(label != null) {
+        if (label != null) {
             add(new HtmlDiv("progress_bar_label").addText(label));
         }
 

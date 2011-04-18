@@ -15,9 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -83,13 +81,6 @@ public final class MakeOfferPage extends CreateUserContentPage {
     }
 
     @Override
-    public void processErrors() throws RedirectException {
-        if (!url.getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
-    }
-
-    @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateOfferForm(loggedUser));
@@ -127,10 +118,10 @@ public final class MakeOfferPage extends CreateUserContentPage {
 
         // asTeam
         addAsTeamField(offerForm,
-                      me,
-                      UserTeamRight.TALK,
-                      Context.tr("In the name of "),
-                      Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
+                       me,
+                       UserTeamRight.TALK,
+                       Context.tr("In the name of "),
+                       Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
 
         // Date field
         final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
@@ -149,8 +140,8 @@ public final class MakeOfferPage extends CreateUserContentPage {
 
         // locale
         addLanguageField(offerForm, //
-                        Context.tr("description langue"), //
-                        Context.tr("The language in which you have maid the description."));
+                         Context.tr("description langue"), //
+                         Context.tr("The language in which you have maid the description."));
 
         // days before validation
         final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();

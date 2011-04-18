@@ -1,8 +1,8 @@
 package com.bloatit.web.components;
 
-import com.bloatit.data.DaoFeature.FeatureState;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -40,16 +40,19 @@ public class IndexFeatureBlock extends HtmlDiv {
             indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature()).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
                                                3));
 
-            indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), SoftwaresTools.getSoftwareLink(highlightFeature.getFeature().getSoftware())));
+            indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "),
+                                                         SoftwaresTools.getSoftwareLink(highlightFeature.getFeature().getSoftware())));
 
-            //Generate progess bar and text
+            // Generate progess bar and text
             indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature()));
 
             indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 
-            if(highlightFeature.getFeature().getFeatureState() == FeatureState.FINISHED) {
-                final HtmlImage sucessImage = new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator().getLanguageCode())), tr("success"));
-                HtmlDiv sucessImageBlock = new HtmlDiv("successImageBlock");
+            if (highlightFeature.getFeature().getFeatureState() == FeatureState.FINISHED) {
+                final HtmlImage sucessImage = new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(Context.getLocalizator()
+                                                                                                                        .getLanguageCode())),
+                                                            tr("success"));
+                final HtmlDiv sucessImageBlock = new HtmlDiv("successImageBlock");
                 sucessImageBlock.add(sucessImage);
                 indexBodyElement.add(sucessImageBlock);
             }

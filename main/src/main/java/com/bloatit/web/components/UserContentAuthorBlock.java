@@ -16,7 +16,7 @@ import com.bloatit.web.url.MemberPageUrl;
 
 public class UserContentAuthorBlock extends HtmlDiv {
 
-    private HtmlDiv commentInfo;
+    private final HtmlDiv commentInfo;
 
     public UserContentAuthorBlock(final UserContentInterface<?> content) {
         super("usercontent_infos");

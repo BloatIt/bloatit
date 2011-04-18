@@ -29,6 +29,10 @@ public abstract class Url implements Cloneable {
         this.name = other.name;
         this.anchor = other.anchor;
     }
+    
+    public boolean hasError() {
+        return !getMessages().isEmpty();
+    }
 
     public abstract boolean isAction();
 

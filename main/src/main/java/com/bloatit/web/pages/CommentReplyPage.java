@@ -16,7 +16,6 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -58,13 +57,6 @@ public final class CommentReplyPage extends CreateUserContentPage {
         super(url, new CreateCommentActionUrl(url.getTargetComment()));
         this.url = url;
         this.targetComment = url.getTargetComment();
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        if (!url.getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
     }
 
     @Override

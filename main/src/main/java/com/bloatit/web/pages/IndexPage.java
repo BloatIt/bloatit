@@ -131,25 +131,25 @@ public final class IndexPage extends MasterPage {
         // Display of a summary of all website activity since creation
         final SideBarElementLayout leftSummary = new SideBarElementLayout();
         twoColumnLayout.addRight(leftSummary);
-        HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
+        final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
         leftSummary.add(summaryBox);
 
         // Feature count
-        HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requested, ", FeatureManager.getFeatureCount()));
+        final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ", FeatureManager.getFeatureCount()));
         summaryBox.add(featureCount);
 
         // Contribution amount
-        MoneyDisplayComponent mdc = new MoneyDisplayComponent(ContributionManager.getMoneyRaised(), false);
-        HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
-        HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
+        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(ContributionManager.getMoneyRaised(), false);
+        final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
+        final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
         summaryBox.add(contributionRaised);
 
         // Count of offers
-        HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Offers of development, ", OfferManager.getOfferCount()));
+        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ", OfferManager.getOfferCount()));
         summaryBox.add(offerCount);
 
         // Count of releases
-        HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Releases", ReleaseManager.getReleaseCount()));
+        final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Releases", ReleaseManager.getReleaseCount()));
         summaryBox.add(releaseCount);
 
         // Adding doc

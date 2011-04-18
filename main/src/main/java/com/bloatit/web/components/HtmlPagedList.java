@@ -28,8 +28,8 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.url.HtmlPagedListUrl;
 
 @ParamContainer(value = "pagedList", isComponent = true)
-public class HtmlPagedList<T> extends HtmlDiv{
-    
+public class HtmlPagedList<T> extends HtmlDiv {
+
     private static final int NB_PAGES_RIGHT = 4;
     private static final int NB_PAGES_CENTER = 3;
     private static final int NB_PAGES_LEFT = 4;
@@ -66,7 +66,7 @@ public class HtmlPagedList<T> extends HtmlDiv{
             add(generateLinksBar());
         }
 
-        HtmlList items = new HtmlList();
+        final HtmlList items = new HtmlList();
         items.setCssClass("items_list");
         for (final T item : itemList) {
             items.add(itemRenderer.generate(item));

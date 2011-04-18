@@ -33,7 +33,7 @@ public final class CreateTeamAction extends LoggedAction {
 
     @RequestParam(name = LOGIN_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters team name has to be superior to 4"),//
-    max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to 50"))
+                     max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to 50"))
     private final String login;
 
     @RequestParam(name = CONTACT_CODE, role = Role.POST)
@@ -43,7 +43,7 @@ public final class CreateTeamAction extends LoggedAction {
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to 5"),//
-    max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to 5000"))
+                     max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to 5000"))
     private final String description;
 
     @RequestParam(name = RIGHTS_CODE, role = Role.POST)

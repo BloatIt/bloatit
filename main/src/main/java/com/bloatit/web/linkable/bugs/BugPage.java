@@ -14,7 +14,6 @@ package com.bloatit.web.linkable.bugs;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -59,10 +58,6 @@ public final class BugPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        if (url.getMessages().hasMessage()) {
-            throw new PageNotFoundException();
-        }
-
         final HtmlDiv box = new HtmlDiv("padding_box");
 
         HtmlTitle bugTitle;
@@ -132,5 +127,4 @@ public final class BugPage extends MasterPage {
 
         return breadcrumb;
     }
-
 }

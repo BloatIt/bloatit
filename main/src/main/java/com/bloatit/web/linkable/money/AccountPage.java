@@ -23,7 +23,6 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
@@ -35,6 +34,7 @@ import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -80,9 +80,9 @@ import com.bloatit.web.url.MessageListPageUrl;
 @ParamContainer("account")
 public final class AccountPage extends LoggedPage {
 
-    @RequestParam
+    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
     @Optional
-    private Team team;
+    private final Team team;
 
     private final AccountPageUrl url;
 
@@ -105,11 +105,6 @@ public final class AccountPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to show your account informations.");
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        // TODO we should process the errors.
     }
 
     @Override

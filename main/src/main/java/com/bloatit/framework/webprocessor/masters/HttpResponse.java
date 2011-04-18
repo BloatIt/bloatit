@@ -17,6 +17,7 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.restprocessor.RestResource;
 import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.writers.IndentedHtmlStream;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 import com.bloatit.framework.webprocessor.components.writers.SimpleHtmlStream;
@@ -120,7 +121,7 @@ public final class HttpResponse {
         return new IndentedHtmlStream(outputStream);
     }
 
-    public void writePage(final Page page) throws IOException {
+    public void writePage(final HtmlElement page) throws IOException {
         writeCookies();
 
         writeLine("Vary: Accept-Encoding");

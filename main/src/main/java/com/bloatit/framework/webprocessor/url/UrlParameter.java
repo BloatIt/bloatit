@@ -113,6 +113,7 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
+
     @SuppressWarnings("unchecked")
     private void setValueFromHttpParameter(final HttpParameter httpParam) {
         conversionError = false;
@@ -152,7 +153,11 @@ public class UrlParameter<T, U> extends UrlNode {
     public Iterator<UrlNode> iterator() {
         return Collections.EMPTY_LIST.iterator();
     }
-
+    
+    public boolean hasError() {
+        return !getMessages().isEmpty();
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public Messages getMessages() {

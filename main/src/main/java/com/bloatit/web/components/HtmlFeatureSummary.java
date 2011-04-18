@@ -150,7 +150,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             {
 
                 featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature));
-                
+
                 featureSummaryBottomCenter.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryBottomCenter.add(FeaturesTools.generateState(feature));
             }

@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -60,11 +59,6 @@ public final class AddSoftwarePage extends LoggedPage {
     @Override
     public boolean isStable() {
         return false;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        // TODO we should process the errors here.
     }
 
     @Override

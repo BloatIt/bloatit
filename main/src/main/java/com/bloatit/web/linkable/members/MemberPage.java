@@ -21,7 +21,6 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -110,9 +109,6 @@ public final class MemberPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        if (!url.getMemberParameter().getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
 

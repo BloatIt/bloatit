@@ -16,7 +16,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -80,9 +79,6 @@ public final class FeaturePage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        if (!url.getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
         // The feature page is composed of 3 parts:
         // - The summary
         // - The tab panel
@@ -179,5 +175,4 @@ public final class FeaturePage extends MasterPage {
 
         return FeaturePage.generateBreadcrumb(feature);
     }
-
 }

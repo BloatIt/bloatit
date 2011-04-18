@@ -19,8 +19,6 @@ public class HtmlDefineParagraph extends HtmlParagraph {
         add(new HtmlSpan("define_key").addText(key));
         add(body);
 
-
-
     }
 
     public XmlNode addCssClass(final String css) {
