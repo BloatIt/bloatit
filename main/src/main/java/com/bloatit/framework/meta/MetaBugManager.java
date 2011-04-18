@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 
 public class MetaBugManager {
 
@@ -21,7 +22,9 @@ public class MetaBugManager {
         dirFile.mkdirs();
         final File bugReportFile = new File(dir + "/" + UUID.randomUUID().toString());
         try {
-            bugReportFile.createNewFile();
+            if (!bugReportFile.createNewFile()) {
+                throw new BadProgrammerException("Couldn't create bug report file " + bugReportFile.getCanonicalPath());
+            }
             final FileOutputStream fileStream = new FileOutputStream(bugReportFile);
             fileStream.write(bugReport.getBytes());
             fileStream.close();

@@ -104,8 +104,8 @@ public class FeaturesTools {
     /**
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv
-            generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount)
+            throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 
@@ -256,7 +256,7 @@ public class FeaturesTools {
             featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(Context.trn("{0} comment",
                                                                                  "{0} comments",
                                                                                  commentsCount,
-                                                                                 new Long(commentsCount))));
+                                                                                 Long.valueOf((commentsCount)))));
             featureSummaryDetails.addText(" – ");
             featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
             featureSummaryDetails.addText(" – ");
@@ -273,7 +273,7 @@ public class FeaturesTools {
                     bugsFeatureUrl.setAnchor("feature_tab_pane");
 
                     featureSummaryDetails.addText(" – ");
-                    featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} bug", "{0} bugs", bugCount, new Integer(bugCount))));
+                    featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} bug", "{0} bugs", bugCount, Integer.valueOf(bugCount))));
                 }
             }
 

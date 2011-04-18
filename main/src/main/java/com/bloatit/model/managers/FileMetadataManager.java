@@ -27,6 +27,7 @@ import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
@@ -89,9 +90,11 @@ public final class FileMetadataManager {
      * Make sure there is a directory to store the files.
      */
     private static final void createWipDirectory() {
-        final File stroreDir = new File(FILE_STORAGE_DIRECTORY);
-        if (!stroreDir.exists()) {
-            stroreDir.mkdirs();
+        final File storeDir = new File(FILE_STORAGE_DIRECTORY);
+        if (!storeDir.exists()) {
+            if(!storeDir.mkdirs()){
+                throw new BadProgrammerException("Couldn't create file " + FILE_STORAGE_DIRECTORY);
+            }
             Log.model().info("Created directory " + FILE_STORAGE_DIRECTORY);
         }
     }
