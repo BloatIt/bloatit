@@ -3,7 +3,6 @@ package com.bloatit.web.components;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
