@@ -1561,11 +1561,6 @@
 					manager.redo();
 				};
 
-				var helpButton = createButton("wmd-help-button");
-				helpButton.isHelp = true;
-				setupButton(helpButton, true);
-				buttonRow.appendChild(helpButton);
-
 				var helpAnchor = document.createElement("a");
 				helpAnchor.href = wmd_options.helpLink;
 				helpAnchor.target = wmd_options.helpTarget;

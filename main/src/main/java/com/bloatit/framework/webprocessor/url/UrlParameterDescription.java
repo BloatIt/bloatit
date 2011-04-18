@@ -1,6 +1,7 @@
 package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public final class UrlParameterDescription<U> {
 
@@ -50,7 +51,7 @@ public final class UrlParameterDescription<U> {
     }
 
     public final String getConversionErrorMsg() {
-        return conversionErrorMsg;
+        return Context.tr(conversionErrorMsg);
     }
 
     public boolean isOptional() {
