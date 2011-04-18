@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.linkable.admin;
 
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -54,11 +53,6 @@ public class AdminHomePage extends AdminPage {
     }
 
     @Override
-    public void processErrors() throws RedirectException {
-        // TODO do something here.
-    }
-
-    @Override
     protected String createPageTitle() {
         return Context.tr("Administration home page");
     }
@@ -75,5 +69,4 @@ public class AdminHomePage extends AdminPage {
     public boolean isStable() {
         return true;
     }
-
 }

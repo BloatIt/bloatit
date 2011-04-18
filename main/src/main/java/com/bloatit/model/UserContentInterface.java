@@ -71,6 +71,7 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
      * 
      * @return the as team
      */
+    @Override
     Team getAsTeam();
 
     boolean isDeleted() throws UnauthorizedOperationException;

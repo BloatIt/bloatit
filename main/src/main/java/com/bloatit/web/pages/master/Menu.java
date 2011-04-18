@@ -20,31 +20,28 @@ public class Menu extends HtmlDiv {
 
         final HtmlDiv mainMenu = new HtmlDiv("main_menu", "main_menu");
 
-        HtmlLink featureList = new FeatureListPageUrl().getHtmlLink(Context.tr("Feature requests"));
+        final HtmlLink featureList = new FeatureListPageUrl().getHtmlLink(Context.tr("Feature requests"));
 
-        HtmlLink newFeature = new CreateFeaturePageUrl().getHtmlLink(Context.tr("New request"));
+        new CreateFeaturePageUrl().getHtmlLink(Context.tr("New request"));
 
-        HtmlLink softwareList = new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares"));
-        DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl();
+        final HtmlLink softwareList = new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares"));
+        final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl();
         brainstormDocPage.setDocTarget("brainstorm");
-        HtmlLink brainstormList = brainstormDocPage.getHtmlLink(Context.tr("Brainstorms"));
-        HtmlLink teamList = new TeamsPageUrl().getHtmlLink(Context.tr("Teams"));
-        HtmlLink memberList = new MembersListPageUrl().getHtmlLink(Context.tr("Members"));
+        final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(Context.tr("Brainstorms"));
+        final HtmlLink teamList = new TeamsPageUrl().getHtmlLink(Context.tr("Teams"));
+        final HtmlLink memberList = new MembersListPageUrl().getHtmlLink(Context.tr("Members"));
 
-
-
-        HtmlSpan separator = new HtmlSpan("separator");
+        final HtmlSpan separator = new HtmlSpan("separator");
 
         separator.addText("–");
 
-        HtmlDiv featureAndBrainStormMenu = new HtmlDiv("menu_item");
+        final HtmlDiv featureAndBrainStormMenu = new HtmlDiv("menu_item");
         featureAndBrainStormMenu.add(featureList);
         featureAndBrainStormMenu.add(separator);
         featureAndBrainStormMenu.add(brainstormList);
         mainMenu.add(featureAndBrainStormMenu);
 
-
-        HtmlDiv teamAndMemberMenu = new HtmlDiv("menu_item");
+        final HtmlDiv teamAndMemberMenu = new HtmlDiv("menu_item");
         teamAndMemberMenu.add(teamList);
         teamAndMemberMenu.add(separator);
         teamAndMemberMenu.add(memberList);

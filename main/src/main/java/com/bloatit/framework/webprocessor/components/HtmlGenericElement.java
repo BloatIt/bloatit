@@ -12,6 +12,9 @@
 
 package com.bloatit.framework.webprocessor.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 
 /**
@@ -35,6 +38,8 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
  * </p>
  */
 public class HtmlGenericElement extends HtmlBranch {
+    private List<String> customCss = new ArrayList<String>();
+    private List<String> customJs = new ArrayList<String>();
 
     public HtmlGenericElement(final String tag) {
         super(tag);
@@ -43,4 +48,24 @@ public class HtmlGenericElement extends HtmlBranch {
     public HtmlGenericElement() {
         super();
     }
+
+    @Override
+    protected List<String> getCustomCss() {
+        // TODO Auto-generated method stub
+        return customCss;
+    }
+
+    @Override
+    protected List<String> getCustomJs() {
+        return customJs;
+    }
+
+    public void addCustomCss(final String css) {
+        customCss.add(css);
+    }
+
+    public void addCustomJs(final String js) {
+        customCss.add(js);
+    }
+
 }

@@ -17,7 +17,6 @@ import java.util.Locale;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -41,7 +40,7 @@ import com.bloatit.web.url.SoftwarePageUrl;
 public final class SoftwarePage extends MasterPage {
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a software number."))
-    @RequestParam(name = "id",  conversionErrorMsg = @tr("I cannot find the software number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the software number: ''%value''."))
     private final Software software;
 
     private final SoftwarePageUrl url;
@@ -54,9 +53,6 @@ public final class SoftwarePage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        if (url.getMessages().hasMessage()) {
-            throw new PageNotFoundException();
-        }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         try {

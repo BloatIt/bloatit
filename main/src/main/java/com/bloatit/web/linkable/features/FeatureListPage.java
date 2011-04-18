@@ -313,5 +313,4 @@ public final class FeatureListPage extends MasterPage {
     protected Breadcrumb createBreadcrumb() {
         return FeatureListPage.generateBreadcrumb();
     }
-
 }

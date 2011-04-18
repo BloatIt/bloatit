@@ -51,7 +51,6 @@ public final class SoftwareListPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);

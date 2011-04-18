@@ -3,7 +3,6 @@ package com.bloatit.web.linkable.admin;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.model.UserContent;
@@ -30,11 +29,6 @@ public class UserContentAdminPageImplementation extends
     @Override
     public final boolean isStable() {
         return true;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        session.notifyList(url.getMessages());
     }
 
     @Override

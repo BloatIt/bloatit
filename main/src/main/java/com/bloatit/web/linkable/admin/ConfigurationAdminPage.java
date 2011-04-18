@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.bloatit.common.ReloadableConfiguration;
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.datetime.TimeRenderer;
 import com.bloatit.framework.utils.datetime.TimeRenderer.TimeBase;
@@ -75,11 +74,6 @@ public class ConfigurationAdminPage extends AdminPage {
         form.add(new HtmlSubmit(Context.tr("Submit")));
 
         return master;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        // TODO do something here.
     }
 
     @Override

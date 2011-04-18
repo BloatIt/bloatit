@@ -2,12 +2,10 @@ package com.bloatit.web.pages.master;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -17,12 +15,12 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.GenericPage;
+import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
 
-public abstract class MasterPage extends GenericPage {
+public abstract class MasterPage extends Page {
 
     private HtmlBranch notifications;
     private final HtmlDiv notificationBlock;
@@ -42,22 +40,25 @@ public abstract class MasterPage extends GenericPage {
 
     protected abstract Breadcrumb createBreadcrumb();
 
-    // protected abstract HtmlElement addNotifications();
+    // There is a default behavior here. You can overload it.
+    protected HtmlElement createBodyContentOnParameterError() throws RedirectException {
+        throw new PageNotFoundException();
+    }
+
     // -----------------------------------------------------------------------
     // Template method pattern: Implementation
     // -----------------------------------------------------------------------
     @Override
-    protected final void createPageContent(final HtmlGenericElement body) throws RedirectException {
+    protected final HtmlElement createBody() throws RedirectException {
+        final HtmlGenericElement body = createBodyElement();
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);
         final HtmlBranch headerContent = new HtmlDiv("header_content").setId("header_content");
         header.add(headerContent);
         header.add(new HtmlClearer());
-        
+
         headerContent.add(new SessionBar());
         headerContent.add(generateLogo());
-
-        
 
         body.add(new Menu());
 
@@ -70,11 +71,31 @@ public abstract class MasterPage extends GenericPage {
         final PlaceHolderElement breacrumbPlaceHolder = new PlaceHolderElement();
         content.add(breacrumbPlaceHolder);
         content.add(notificationBlock);
+
+        // Template method pattern.
         content.add(createBodyContent());
 
         body.add(new Footer());
 
         breacrumbPlaceHolder.add(createBreadcrumb().toHtmlElement());
+        return body;
+    }
+
+    @Override
+    protected final HtmlElement createBodyOnParameterError() throws RedirectException {
+        final HtmlGenericElement body = createBodyElement();
+        body.add(createBodyContentOnParameterError());
+        return body;
+
+    }
+
+    private HtmlGenericElement createBodyElement() {
+        final HtmlGenericElement body = new HtmlGenericElement("body");
+        body.addCustomJs(FrameworkConfiguration.getJsJquery());
+        body.addCustomJs(FrameworkConfiguration.getJsJquery());
+        body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
+        body.addCustomJs(FrameworkConfiguration.getJsFlexie());
+        return body;
     }
 
     @Override
@@ -107,16 +128,5 @@ public abstract class MasterPage extends GenericPage {
         logoDiv.add(logoTextDiv);
 
         return logoDiv;
-    }
-
-    @Override
-    protected List<String> getCustomJs() {
-        final List<String> customJsList = new ArrayList<String>();
-        customJsList.add(FrameworkConfiguration.getJsJquery());
-        customJsList.add(FrameworkConfiguration.getJsJquery());
-        customJsList.add(FrameworkConfiguration.getJsSelectivizr());
-        customJsList.add(FrameworkConfiguration.getJsFlexie());
-
-        return customJsList;
     }
 }

@@ -74,14 +74,14 @@ public final class ChangeLanguagePage extends MasterPage {
 
         form.add(new HtmlSubmit("Change language"));
 
-        //Link map
+        // Link map
         final HtmlDiv linkMap = new HtmlDiv("language_link_map");
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             final ChangeLanguageActionUrl langagueChangeAction = new ChangeLanguageActionUrl();
             langagueChangeAction.setLanguage(langEntry.getValue().getCode());
             linkMap.add(langagueChangeAction.getHtmlLink(langEntry.getValue().getName()));
         }
-        
+
         master.add(linkMap);
         return master;
     }

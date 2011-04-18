@@ -1,16 +1,15 @@
 package com.bloatit.web.linkable.features;
 
-import com.bloatit.data.DaoFeature.FeatureState;
 import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -21,12 +20,9 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Offer;
-import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.WebConfiguration;
@@ -81,7 +77,7 @@ public class FeaturesTools {
      * @throws UnauthorizedOperationException when some operation cannot be
      *             accessed
      */
-    public static HtmlBranch generateFeatureTitle(final Feature feature, boolean isTitle) throws UnauthorizedOperationException {
+    public static HtmlBranch generateFeatureTitle(final Feature feature, final boolean isTitle) throws UnauthorizedOperationException {
         HtmlBranch master;
         if (isTitle) {
             master = new HtmlTitle(1);
@@ -95,8 +91,8 @@ public class FeaturesTools {
         } else {
             master.add(new FeaturePageUrl(feature).getHtmlLink(getTitle(feature)));
         }
-        HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(feature.getSoftware());
-        HtmlMixedText mixed = new HtmlMixedText(Context.tr(" (<0:software:>)"), softwareLink);
+        final HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(feature.getSoftware());
+        final HtmlMixedText mixed = new HtmlMixedText(Context.tr(" (<0:software:>)"), softwareLink);
         master.add(mixed);
         return master;
     }
@@ -108,8 +104,8 @@ public class FeaturesTools {
     /**
      * @throws UnauthorizedOperationException
      */
-    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount)
-            throws UnauthorizedOperationException {
+    public static HtmlDiv
+            generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 
@@ -154,8 +150,8 @@ public class FeaturesTools {
                 styleSuffix = "success";
             }
 
-
-            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel, styleSuffix,
+            final HtmlProgressBar progressBar = new HtmlProgressBar(barLabel,
+                                                                    styleSuffix,
                                                                     cappedProgressValue - myProgressValue,
                                                                     cappedProgressValue,
                                                                     cappedProgressValue + futureProgressValue);
@@ -239,7 +235,7 @@ public class FeaturesTools {
         final HtmlDiv featureSummaryDetails = new HtmlDiv("feature_summary_details");
         {
 
-            final PageIterable<Comment> comments = feature.getComments();
+            feature.getComments();
             final Long commentsCount = feature.getCommentsCount();
 
             final int offersCount = feature.getOffers().size();
@@ -288,7 +284,7 @@ public class FeaturesTools {
     public static HtmlElement generateState(final Feature feature) {
         // Progress state
 
-        HtmlDiv progressState = new HtmlDiv("feature_summary_state");
+        final HtmlDiv progressState = new HtmlDiv("feature_summary_state");
 
         final String languageCode = Context.getLocalizator().getLanguageCode();
         switch (feature.getFeatureState()) {

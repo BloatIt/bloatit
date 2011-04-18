@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -47,11 +46,6 @@ public final class AccountChargingPage extends LoggedPage {
     @Override
     public boolean isStable() {
         return false;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        // TODO we must process the errors.
     }
 
     @Override

@@ -55,7 +55,7 @@ public final class ChangeAvatarAction extends UserContentAction {
         // TODO create a member.canAccessAvatar.
         return NO_ERROR;
     }
-    
+
     @Override
     protected boolean verifyFile(final String filename) {
         final FileConstraintChecker fcc = new FileConstraintChecker(filename);

@@ -44,7 +44,7 @@ public final class AddAttachementAction extends UserContentAction {
         this.url = url;
         this.userContent = url.getUserContent();
     }
-    
+
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         propagateAttachedFileIfPossible(userContent);

@@ -52,7 +52,7 @@ public final class Description extends Identifiable<DaoDescription> {
     /**
      * Create a Description. If you are looking for a way to create a new
      * description see
-     * {@link Feature#addOffer(Member, java.math.BigDecimal, String, Locale, java.util.Date, int)}
+     * {@link Feature#addOffer(java.math.BigDecimal, String, Locale, java.util.Date, int)}
      * 
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.

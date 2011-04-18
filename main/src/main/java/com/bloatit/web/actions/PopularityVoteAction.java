@@ -52,7 +52,6 @@ public final class PopularityVoteAction extends LoggedAction {
         this.url = url;
         this.targetKudosable = url.getTargetKudosable();
         this.voteUp = url.getVoteUp();
-        session.notifyList(url.getMessages());
     }
 
     @Override

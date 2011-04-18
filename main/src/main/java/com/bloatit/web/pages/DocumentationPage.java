@@ -32,7 +32,7 @@ import com.bloatit.web.url.DocumentationPageUrl;
 public final class DocumentationPage extends MasterPage {
 
     private final static String DEFAULT_DOC = "home";
-    
+
     @RequestParam(name = "doc")
     @Optional(DEFAULT_DOC)
     private final String docTarget;

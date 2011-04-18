@@ -10,7 +10,7 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 
 public class SideBarButton extends SideBarElementLayout {
     private final HtmlLink link;
-    
+
     public SideBarButton(final String text, final String imgUri) {
         // Display of a button to create a feature
         final SideBarElementLayout createBox = new SideBarElementLayout();

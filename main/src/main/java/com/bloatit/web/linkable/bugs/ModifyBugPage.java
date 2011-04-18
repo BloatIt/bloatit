@@ -15,8 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -66,13 +64,6 @@ public final class ModifyBugPage extends LoggedPage {
     @Override
     public boolean isStable() {
         return false;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        if (!url.getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
     }
 
     @Override

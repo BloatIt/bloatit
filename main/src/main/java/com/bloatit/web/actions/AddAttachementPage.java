@@ -13,7 +13,6 @@ package com.bloatit.web.actions;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -58,13 +57,6 @@ public final class AddAttachementPage extends CreateUserContentPage {
     @Override
     public boolean isStable() {
         return false;
-    }
-
-    @Override
-    public void processErrors() throws RedirectException {
-        if (!url.getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
     }
 
     @Override

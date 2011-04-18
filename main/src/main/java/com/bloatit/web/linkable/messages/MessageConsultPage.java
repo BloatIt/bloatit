@@ -18,11 +18,6 @@ public final class MessageConsultPage extends LoggedPage {
     }
 
     @Override
-    public void processErrors() throws RedirectException {
-        // TODO maybe we should process the errors here..
-    }
-
-    @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         throw new NotImplementedException();
     }
@@ -46,5 +41,4 @@ public final class MessageConsultPage extends LoggedPage {
     protected Breadcrumb createBreadcrumb() {
         throw new NotImplementedException();
     }
-
 }

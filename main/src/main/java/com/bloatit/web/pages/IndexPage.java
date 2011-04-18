@@ -21,7 +21,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
-import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -66,7 +65,6 @@ public final class IndexPage extends MasterPage {
         element.add(globalDescription);
 
         final TwoColumnLayout twoColumnLayout = new TwoColumnLayout(true, url);
-        
 
         final HtmlDiv featureList = new HtmlDiv("feature_list");
         {
@@ -111,7 +109,6 @@ public final class IndexPage extends MasterPage {
                 featureList.add(featureListRow);
             }
         }
-
 
         twoColumnLayout.addLeft(featureList);
 

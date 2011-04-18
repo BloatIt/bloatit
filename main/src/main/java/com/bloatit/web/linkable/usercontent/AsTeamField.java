@@ -15,11 +15,7 @@ import com.bloatit.web.url.UserContentActionUrl;
 
 public class AsTeamField extends PlaceHolderElement {
 
-    public AsTeamField(final UserContentActionUrl targetUrl,
-                        final Member me,
-                        final UserTeamRight right,
-                        final String label,
-                        final String comment) {
+    public AsTeamField(final UserContentActionUrl targetUrl, final Member me, final UserTeamRight right, final String label, final String comment) {
         super();
         if (me != null && me.canAccessTeams(Action.READ)) {
             try {

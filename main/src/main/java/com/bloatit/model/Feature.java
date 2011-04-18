@@ -58,7 +58,7 @@ public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
      *            the getter, WRITE for the SETTER etc.)
      * @return true if you can access the <code>Offer</code> property.
      * @see #getOffers()
-     * @see #addOffer(Member, BigDecimal, String, Locale, Date, int)
+     * @see #addOffer(BigDecimal, String, Locale, Date, int)
      */
     boolean canAccessOffer(final Action action);
 

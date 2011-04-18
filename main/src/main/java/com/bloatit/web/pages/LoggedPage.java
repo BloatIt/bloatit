@@ -31,20 +31,8 @@ import com.bloatit.web.url.LoginPageUrl;
  */
 public abstract class LoggedPage extends MasterPage {
 
-    /**
-     * <p>
-     * The URL of this page
-     * </p>
-     * <p>
-     * Note it is private as not usable by children classes that need to get a
-     * subclass of URL.
-     * </p>
-     */
-    private final Url meUrl;
-
     protected LoggedPage(final Url url) {
         super(url);
-        this.meUrl = url;
     }
 
     /**
@@ -56,12 +44,11 @@ public abstract class LoggedPage extends MasterPage {
      */
     @Override
     protected final HtmlElement createBodyContent() throws RedirectException {
-        processErrors();
         if (session.isLogged()) {
             return createRestrictedContent(session.getAuthToken().getMember());
         }
         session.notifyBad(getRefusalReason());
-        session.setTargetPage(meUrl);
+        session.setTargetPage(getUrl());
         throw new RedirectException(new LoginPageUrl());
     }
 
@@ -100,12 +87,4 @@ public abstract class LoggedPage extends MasterPage {
      * @return a String indicating to the user why he cannot access this page
      */
     public abstract String getRefusalReason();
-
-    /**
-     * Call first to verify the there is url errors.
-     * 
-     * @throws RedirectException
-     */
-    public abstract void processErrors() throws RedirectException;
-
 }

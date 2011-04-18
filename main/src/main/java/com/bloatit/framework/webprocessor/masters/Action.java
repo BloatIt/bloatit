@@ -58,7 +58,7 @@ public abstract class Action implements Linkable {
     }
 
     public final Url process() {
-        if (!actionUrl.getMessages().isEmpty()) {
+        if (actionUrl.hasError()) {
             session.notifyList(actionUrl.getMessages());
             transmitParameters();
             return doProcessErrors();

@@ -45,7 +45,7 @@ public final class ModifyBugAction extends Action {
     @RequestParam(name = BUG_REASON, role = Role.POST)
     @Optional
     @ParamConstraint(max = "120", maxErrorMsg = @tr("The reason must be 120 chars length max."), //
-    min = "0")
+                     min = "0")
     private final String reason;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))

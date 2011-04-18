@@ -11,7 +11,7 @@ import com.bloatit.web.url.UnlockActionUrl;
 
 @ParamContainer("contribution/unlock")
 public class UnlockAction extends LoggedAction {
-    
+
     @RequestParam
     private final ContributionProcess process;
 

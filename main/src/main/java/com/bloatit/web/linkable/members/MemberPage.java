@@ -21,7 +21,6 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -109,9 +108,6 @@ public final class MemberPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        if (!url.getMemberParameter().getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
 
@@ -376,7 +372,9 @@ public final class MemberPage extends MasterPage {
      *            its creation date
      * @return the element to add in the feed
      */
-    private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine, final Feature feature, final UserContentInterface<? extends DaoUserContent> content) {
+    private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine,
+                                                     final Feature feature,
+                                                     final UserContentInterface<? extends DaoUserContent> content) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         try {
             ph.add(generateFeedSecondLine(Context.tr("Feature: "), FeaturesTools.generateFeatureTitle(feature)));
@@ -395,7 +393,9 @@ public final class MemberPage extends MasterPage {
      *            its creation date
      * @return the element to add in the feed
      */
-    private HtmlElement generateFeedStructure(final HtmlElement firstLine, final HtmlElement secondLine, final UserContentInterface<? extends DaoUserContent> content) {
+    private HtmlElement generateFeedStructure(final HtmlElement firstLine,
+                                              final HtmlElement secondLine,
+                                              final UserContentInterface<? extends DaoUserContent> content) {
         final HtmlDiv master = new HtmlDiv("feed_item");
         master.add(new HtmlDiv("feed_item_title").add(firstLine));
         final HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");

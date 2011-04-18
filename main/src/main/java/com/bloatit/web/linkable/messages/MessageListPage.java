@@ -38,11 +38,6 @@ public final class MessageListPage extends LoggedPage {
     }
 
     @Override
-    public void processErrors() throws RedirectException {
-        session.notifyList(url.getMessages());
-    }
-
-    @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 

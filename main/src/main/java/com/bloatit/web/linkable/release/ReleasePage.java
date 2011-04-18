@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -38,11 +37,11 @@ import com.bloatit.web.url.ReleasePageUrl;
 
 @ParamContainer("release")
 public final class ReleasePage extends MasterPage {
-    
+
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a release number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the release number: ''%value''."))
     private final Release release;
-    
+
     private final ReleasePageUrl url;
 
     public ReleasePage(final ReleasePageUrl url) {
@@ -53,9 +52,6 @@ public final class ReleasePage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        if (url.getReleaseParameter().getMessages().isEmpty()) {
-            throw new PageNotFoundException();
-        }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarFeatureBlock(release.getFeature()));
 

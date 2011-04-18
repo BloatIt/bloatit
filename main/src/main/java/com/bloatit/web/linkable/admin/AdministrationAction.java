@@ -83,7 +83,7 @@ public class AdministrationAction extends AdminAction {
                     case SET_FEATURE_IN_DEVELOPMENT:
                         final Feature feature = (Feature) content;
                         if (feature.getSelectedOffer() == null || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
-                            session.notifyBad("There is no offer or not enough money. So no developement state for id: " + feature.getId()+".");
+                            session.notifyBad("There is no offer or not enough money. So no developement state for id: " + feature.getId() + ".");
                         } else {
                             feature.setFeatureState(FeatureState.DEVELOPPING);
                         }

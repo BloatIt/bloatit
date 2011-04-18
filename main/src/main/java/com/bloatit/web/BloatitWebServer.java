@@ -57,7 +57,6 @@ import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.AccountPage;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
-import com.bloatit.web.linkable.money.PaylinePage;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
@@ -143,7 +142,6 @@ import com.bloatit.web.url.ModifyBugPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
-import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -219,9 +217,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(SignUpPageUrl.getName())) {
             return new SignUpPage(new SignUpPageUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(PaylinePageUrl.getName())) {
-            return new PaylinePage(new PaylinePageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(CommentReplyPageUrl.getName())) {
             return new CommentReplyPage(new CommentReplyPageUrl(params, session.getParameters()));

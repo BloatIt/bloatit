@@ -15,7 +15,7 @@ import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream
  * </p>
  */
 public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
-
+    
     @Override
     public XmlNode clone() {
         throw new NotImplementedException();
@@ -31,7 +31,7 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
     public abstract void write(QueryResponseStream txt);
 
     /**
-     * This method should be overriden by any components needing some special
+     * This method should be overridden by any components needing some special
      * css files.
      * 
      * @return the list of custom Css files needed by this component or null if
@@ -40,7 +40,7 @@ public abstract class XmlNode implements Iterable<XmlNode>, Cloneable {
     protected abstract List<String> getCustomCss();
 
     /**
-     * This method should be overriden by any components needing some special
+     * This method should be overridden by any components needing some special
      * javascript files.
      * 
      * @return the list of custom js file needed by this component or null if no
