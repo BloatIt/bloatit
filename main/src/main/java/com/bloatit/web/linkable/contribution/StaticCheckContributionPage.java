@@ -232,7 +232,7 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
 
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
-            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(process, actor);
+            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(actor, process);
 
             final HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
                                                                                   Context.getLocalizator()
