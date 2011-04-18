@@ -72,6 +72,7 @@ import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -117,11 +118,11 @@ public final class MemberPage extends MasterPage {
 
         // Buttons private message & invite in team
         if (myPage) {
-            layout.addRight(new SideBarButton(Context.tr("View my private messages"), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("View my team invitations"), WebConfiguration.getImgTeam()));
+            layout.addRight(new SideBarButton(Context.tr("View my private messages"), new MessageListPageUrl(), WebConfiguration.getImgMessage()));
+            layout.addRight(new SideBarButton(Context.tr("View my team invitations"), new MessageListPageUrl(), WebConfiguration.getImgTeam()));
         } else {
-            layout.addRight(new SideBarButton(Context.tr("Send a private message"), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("Invite to join a team"), WebConfiguration.getImgTeam()));
+            layout.addRight(new SideBarButton(Context.tr("Send a private message"), new MessageListPageUrl(), WebConfiguration.getImgMessage()));
+            layout.addRight(new SideBarButton(Context.tr("Invite to join a team"), new MessageListPageUrl(), WebConfiguration.getImgTeam()));
         }
 
         // Adding list of teams
@@ -376,7 +377,9 @@ public final class MemberPage extends MasterPage {
      *            its creation date
      * @return the element to add in the feed
      */
-    private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine, final Feature feature, final UserContentInterface<? extends DaoUserContent> content) {
+    private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine,
+                                                     final Feature feature,
+                                                     final UserContentInterface<? extends DaoUserContent> content) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         try {
             ph.add(generateFeedSecondLine(Context.tr("Feature: "), FeaturesTools.generateFeatureTitle(feature)));
@@ -395,7 +398,9 @@ public final class MemberPage extends MasterPage {
      *            its creation date
      * @return the element to add in the feed
      */
-    private HtmlElement generateFeedStructure(final HtmlElement firstLine, final HtmlElement secondLine, final UserContentInterface<? extends DaoUserContent> content) {
+    private HtmlElement generateFeedStructure(final HtmlElement firstLine,
+                                              final HtmlElement secondLine,
+                                              final UserContentInterface<? extends DaoUserContent> content) {
         final HtmlDiv master = new HtmlDiv("feed_item");
         master.add(new HtmlDiv("feed_item_title").add(firstLine));
         final HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");

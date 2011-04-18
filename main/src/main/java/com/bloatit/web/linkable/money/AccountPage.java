@@ -50,6 +50,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
@@ -69,6 +70,7 @@ import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.MessageListPageUrl;
 
 /**
  * <p>
@@ -424,7 +426,8 @@ public final class AccountPage extends LoggedPage {
             setTitle(tr("Load account"));
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
-            add(new SideBarButton(tr("Charge your account"), WebConfiguration.getImgAccountCharge()).asElement());
+            // TODO good URL
+            add(new SideBarButton(tr("Charge your account"), new PageNotFoundUrl(), WebConfiguration.getImgAccountCharge()).asElement());
             add(new HtmlDefineParagraph(tr("Note: "),
                                         tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
@@ -436,7 +439,8 @@ public final class AccountPage extends LoggedPage {
             setTitle(tr("Withdraw money"));
 
             add(new HtmlParagraph(tr("You can withdraw money from you elveos account and get a bank transfer to your personal bank account using the following link:")));
-            add(new SideBarButton(tr("Withdraw money"), WebConfiguration.getImgAccountWithdraw()).asElement());
+            // TODO good URL
+            add(new SideBarButton(tr("Withdraw money"), new PageNotFoundUrl(), WebConfiguration.getImgAccountWithdraw()).asElement());
             add(new HtmlDefineParagraph(tr("Note: "),
                                         tr("Note : Do not withdraw money if you are planning to contribute to a project in the future, this will prevent you from paying our commission again later.\n"
                                                 + "Oh, and by the way, we don't like when you withdraw money, not because it costs us money (it does but well that's OK), but because you could as well use this money to contribute to other open source projects.")));
