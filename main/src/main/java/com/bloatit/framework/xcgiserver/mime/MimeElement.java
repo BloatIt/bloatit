@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeBase64Decoder;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeBinaryDecoder;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeDecoder;
@@ -293,7 +294,9 @@ public class MimeElement {
                 contentOutput = new DecodingOuputStream(nonFileInput, decoder);
             } else {
                 final File uploadedFileDir = new File(fileSavingDirectory);
-                uploadedFileDir.mkdirs();
+                if (!uploadedFileDir.mkdirs()) {
+                    throw new BadProgrammerException("Couldn't create directory " + uploadedFileDir.getCanonicalPath());
+                }
                 destination = new File(fileSavingDirectory + nameGen.generateName(getHeaderField(FILE_NAME)));
                 try {
                     final FileOutputStream fos = new FileOutputStream(destination);

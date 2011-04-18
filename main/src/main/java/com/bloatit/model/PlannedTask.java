@@ -86,7 +86,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     }
 
     private void remove(final PlannedTask task) {
-        tasks.remove(task);
+        tasks.remove(task); //FIXME: remove will remove nothing (PlannedTask is not an id)
         task.cancel();
     }
 

@@ -115,6 +115,7 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 Log.framework().trace("Using cache for documentation file " + path);
                 add(new HtmlDiv("markdown_block").add(new XmlText(mdc.htmlString)));
             }
+            fis.close();
             return true;
 
         } catch (final FileNotFoundException e) {
