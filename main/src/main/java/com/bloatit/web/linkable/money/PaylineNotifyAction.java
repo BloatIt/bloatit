@@ -6,9 +6,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.Payline;
-import com.bloatit.model.Payline.Reponse;
-import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 
@@ -32,23 +29,10 @@ public final class PaylineNotifyAction extends Action {
     @Override
     public Url doProcess() {
         Log.web().info("Get a payline notification: " + token);
-        final Payline payline = new Payline();
-        try {
-            final Reponse paymentDetails = payline.getPaymentDetails(token);
-            if (paymentDetails.isAccepted()) {
-                payline.validatePayment(token);
-                process.setSuccessful();
-            } else {
-                payline.cancelPayement(token);
-                session.notifyBad("Your payment is refused.");
-                Log.web().warn("Payment is not accepted: " + token);
-            }
-        } catch (final TokenNotfoundException e) {
-            Log.web().error("Token not found ! ", e);
-        }
-
-        final Url target = process.getParentProcess().endSubProcess(process);
-        process.close();
+        
+        process.validatePayment(token);
+        
+        final Url target = process.close();
         if (target != null) {
             return target;
         }

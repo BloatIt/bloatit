@@ -56,6 +56,25 @@ public final class ContributionAction extends UserContentAction {
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
                                                                                                   .getCurrency(process.getAmount())
                                                                                                   .getLocaleString()));
+            // if (amountToCharge.compareTo(BigDecimal.ZERO) > 0) {
+            // Context.getSession().notifyGood(tr("Your account has been credited."));
+            // }
+            // try {
+            // final String title =
+            // Context.tr("Accepted payment on elveos.org");
+            // final String memberName =
+            // session.getAuthToken().getMember().getDisplayName();
+            // final String content =
+            // Context.tr("Dear {0}, \nWe are pleased to announce that your payment {1} to http://elveos.org has been validated \nWe thank you for your trust.",
+            // memberName,
+            // Context.getLocalizator().getCurrency(amountToCharge).getLocaleString());
+            // sendMail(title, content);
+            // } catch (final UnauthorizedOperationException e) {
+            // session.notifyError(Context.tr("An error prevented us from sending you a mail. Please notify us."));
+            // throw new
+            // ShallNotPassException("Cannot access connecter user email.");
+            // }
+            //
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());
             featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             process.close();
@@ -66,6 +85,9 @@ public final class ContributionAction extends UserContentAction {
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
             return new ContributionProcessUrl(process.getFeature());
+        } catch (final RuntimeException e) {
+            process.close();
+            throw e;
         }
     }
 
