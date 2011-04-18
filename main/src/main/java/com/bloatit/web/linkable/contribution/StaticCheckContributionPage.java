@@ -98,12 +98,14 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
         BigDecimal account;
         try {
             account = getAccount(member).getAmount();
+            if (process.getAmount().compareTo(account) <= 0) {
+                throw new RedirectException(new CheckContributionPageUrl(process));
+            }
             generateNoMoneyContent(group, getActor(member), account);
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
-
         return group;
     }
 

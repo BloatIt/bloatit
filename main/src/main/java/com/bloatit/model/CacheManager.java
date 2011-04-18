@@ -19,6 +19,8 @@ package com.bloatit.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.LazyInitializationException;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoIdentifiable;
 
@@ -85,8 +87,12 @@ public final class CacheManager {
      */
     @SuppressWarnings("rawtypes")
     public static Identifiable get(final DaoIdentifiable identifiable) {
-        Log.cache().trace("Get from model cache: " + identifiable.getId());
-        return UniqueThreadCache.getCurrentCache().get(identifiable.getId());
+        try {
+            Log.cache().trace("Get from model cache: " + identifiable.getId());
+            return UniqueThreadCache.getCurrentCache().get(identifiable.getId());
+        } catch (final LazyInitializationException e) {
+            return null;
+        }
     }
 
 }

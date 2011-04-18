@@ -46,7 +46,7 @@ public class AccountChargingProcess extends WebProcess {
     }
 
     @Override
-    public void load() {
+    public void doLoad() {
         // TODO Do nothing ?
     }
 }

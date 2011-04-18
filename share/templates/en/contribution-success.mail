@@ -1,0 +1,8 @@
+Dear ${member},
+
+Your contribution of ${amount} has been validated for the feature request named:
+${feature_name}
+
+Thank you for your trust,
+
+The elveos team.
