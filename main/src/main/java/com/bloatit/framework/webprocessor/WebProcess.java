@@ -1,6 +1,5 @@
 package com.bloatit.framework.webprocessor;
 
-import java.math.BigDecimal;
 
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
@@ -9,6 +8,8 @@ import com.bloatit.framework.webprocessor.url.Url;
 public abstract class WebProcess extends Action {
 
     private final String processId;
+    
+    private WebProcess father;
 
     public WebProcess(final Url url) {
         super(url);
@@ -19,31 +20,43 @@ public abstract class WebProcess extends Action {
         return processId;
     }
 
+    public void addChildProcess(final WebProcess child) {
+        child.father = this;
+        child.notifyChildAdded(child);
+    }
+    
+    public WebProcess getFather() {
+        return father;
+    }
+
+    public void load() {
+        if (father != null) {
+            father.load();
+        }
+        doLoad();
+    }
+
     /**
      * Call after session extraction. Used to reload database objects TODO:
      * verify if this is thread safe
      */
-    public abstract void load();
+    protected abstract void doLoad();
 
-    public void close() {
+    public Url close() {
         Context.getSession().destroyWebProcess(this);
-    }
-
-    public void beginSubProcess(@SuppressWarnings("unused") final WebProcess subProcess) {
-        // Implement me in subclass if you wish.
-    }
-
-    public Url endSubProcess(@SuppressWarnings("unused") final WebProcess subProcess) {
+        if (father != null) {
+            return father.notifyChildClosed(this);
+        }
         return null;
     }
 
-    public static abstract class PaymentProcess extends WebProcess {
+    protected void notifyChildAdded(@SuppressWarnings("unused") final WebProcess subProcess) {
+        // Implement me in subclass if you wish.
+    }
 
-        public PaymentProcess(final Url url) {
-            super(url);
-        }
-
-        public abstract BigDecimal getAmountToPay();
+    protected Url notifyChildClosed(@SuppressWarnings("unused") final WebProcess subProcess) {
+        // Implement me in subclass if you wish.
+        return null;
     }
 
     @Override

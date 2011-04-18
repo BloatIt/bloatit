@@ -27,7 +27,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -150,13 +149,11 @@ public class DaoBankTransaction extends DaoIdentifiable {
                                                       final BigDecimal value,
                                                       final BigDecimal valuePayed,
                                                       final String orderReference) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, valuePayed, orderReference);
         try {
-            session.save(bankTransaction);
+            SessionManager.getSessionFactory().getCurrentSession().save(bankTransaction);
         } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().getTransaction().rollback();
             throw e;
         }
         return bankTransaction;
@@ -200,7 +197,6 @@ public class DaoBankTransaction extends DaoIdentifiable {
             this.state = State.AUTHORIZED;
         }
     }
-
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the
      * external to the internal account.
@@ -209,12 +205,16 @@ public class DaoBankTransaction extends DaoIdentifiable {
      */
     public boolean setValidated() {
         if (this.state != State.AUTHORIZED) {
+            Log.data().fatal("Cannot VALIDATE bankTransaction: " + getId() + "; state should be AUTHORIZED but was: " + state);
             return false;
         }
         this.modificationDate = new Date();
         try {
-            DaoTransaction.createAndPersist(this.author.getInternalAccount(), this.author.getExternalAccount(), getValue().negate());
+            final DaoTransaction transaction = DaoTransaction.createAndPersist(this.author.getInternalAccount(),
+                                                                               this.author.getExternalAccount(),
+                                                                               getValue().negate());
             this.state = State.VALIDATED;
+            Log.data().info("Banktransaction: " + getId() + " VALIDATED. transaction_id: " + transaction.getId());
             return true;
         } catch (final NotEnoughMoneyException e) {
             Log.data().fatal("Error when trying to validate a bankTransaction.", e);

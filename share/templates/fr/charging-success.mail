@@ -1,0 +1,11 @@
+${member},
+
+Nous avons le plaisire de vous annoucer que votre payement de ${total_amount} à http://elveos.org/ a été validé.
+Vous avez rechargé votre compte elveos de ${credited} avec succès. 
+
+Si vous avez une reclamation n'hesitez pas à nous contacter à contact@elveos.org
+Pensez à rappeler le numero de reference de cette commande : ${reference}
+
+Merci de votre confiance,
+
+L'équipe elveos.
