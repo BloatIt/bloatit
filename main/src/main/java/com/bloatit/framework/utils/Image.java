@@ -12,11 +12,15 @@
 
 package com.bloatit.framework.utils;
 
+import com.bloatit.model.FileMetadata;
+
 /**
  * A container for images in the bloatit website
  */
 public class Image {
-    private final String identifier;
+    private String identifier;
+    private FileMetadata metadata;
+    
 
     /**
      * Creates an image with a default image type local
@@ -25,9 +29,12 @@ public class Image {
      */
     public Image(final String identifier) {
         this.identifier = identifier;
-
     }
 
+    public Image(final FileMetadata metadata){
+        this.metadata = metadata;
+    }
+    
     /**
      * Gives the identifier of the image. - If the image is local, its
      * identifier is its unique name on the bloatit server. - If the image is
@@ -39,6 +46,15 @@ public class Image {
      * @return the identifier of the image
      */
     public final String getIdentifier() {
+        if(metadata != null){
+            return metadata.getUrl();
+        }
         return this.identifier;
     }
+
+    public FileMetadata getMetadata() {
+        return metadata;
+    }
+    
+    
 }

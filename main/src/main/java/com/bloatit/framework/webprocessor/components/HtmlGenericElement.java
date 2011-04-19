@@ -65,7 +65,7 @@ public class HtmlGenericElement extends HtmlBranch {
     }
 
     public void addCustomJs(final String js) {
-        customCss.add(js);
+        customJs.add(js);
     }
 
 }

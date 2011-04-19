@@ -2,7 +2,9 @@ package com.bloatit.web.pages.master;
 
 import com.bloatit.common.CommonConfiguration;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
@@ -47,7 +49,6 @@ public class Footer extends HtmlDiv {
                                                                                 new UrlString("http://linkeos.com").getHtmlLink())));
         }
         footerBlock.add(licenceBlock);
-
         add(footerBlock);
     }
 
@@ -56,5 +57,4 @@ public class Footer extends HtmlDiv {
         doc.setDocTarget(docPage);
         linkBlock.add(new HtmlDiv("footer_link").add(doc.getHtmlLink(label)));
     }
-
 }

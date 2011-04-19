@@ -36,7 +36,7 @@ public class TeamTools {
         if (team.getAvatar() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Team avatar"), "avatar"));
         } else {
-            final FileResourceUrl imageUrl = new FileResourceUrl(team.getAvatar());
+            final FileResourceUrl imageUrl = new FileResourceUrl(team.getAvatar().getMetadata());
             avatarDiv.add(new HtmlImage(imageUrl, tr("Team avatar"), "avatar"));
         }
 

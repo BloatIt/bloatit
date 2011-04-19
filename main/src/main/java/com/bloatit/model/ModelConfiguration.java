@@ -31,6 +31,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableTranslationTurnPending;
     private int kudosableMinInfluenceToUnkudos;
     private int kudosableMinInfluenceToKudos;
+    private String bloatitLibravatarURI;
 
     private ModelConfiguration() {
         super();
@@ -140,6 +141,10 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.kudosableMinInfluenceToKudos;
     }
 
+    public static String getLibravatarURI() {
+        return configuration.bloatitLibravatarURI;
+    }
+
     protected void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
 
@@ -174,6 +179,8 @@ public class ModelConfiguration extends ReloadableConfiguration {
 
         kudosableMinInfluenceToUnkudos = properties.getInt("kudosable.min_influence_unkudos", 1);
         kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
+
+        bloatitLibravatarURI = properties.getString("bloatit.libravatar.uri");
     }
 
     @Override

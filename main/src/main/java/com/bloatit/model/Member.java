@@ -16,12 +16,16 @@
 //
 package com.bloatit.model;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
+import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoMember;
@@ -29,9 +33,11 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.SecuredHash;
 import com.bloatit.framework.webprocessor.context.User;
@@ -520,8 +526,23 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     @Override
-    public FileMetadata getAvatar() {
-        return FileMetadata.create(getDao().getAvatar());
+    public Image getAvatar() {
+        DaoFileMetadata avatar = getDao().getAvatar();
+        if (avatar != null) {
+            return new Image(FileMetadata.create(avatar));
+        }
+        String libravatar = null;
+        libravatar = libravatar(getDao().getContact().toLowerCase().trim());
+        if (libravatar == null) {
+            return null;
+        }
+        return new Image(libravatar);
+    }
+
+    private String libravatar(String email) {
+        String digest = DigestUtils.md5Hex(email.toLowerCase());
+//        return "http://cdn.libravatar.org/avatar/" + digest + "?d=http://elveos.org/resources/commons/img/none.png&s=64";
+        return digest;
     }
 
     public void setAvatar(final FileMetadata fileImage) {

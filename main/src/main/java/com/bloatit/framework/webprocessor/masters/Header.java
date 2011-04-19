@@ -2,9 +2,11 @@ package com.bloatit.framework.webprocessor.masters;
 
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ModelConfiguration;
 import com.bloatit.web.WebConfiguration;
 
 public final class Header extends HtmlElement {
@@ -30,8 +32,6 @@ public final class Header extends HtmlElement {
         };
         metaKeywords.addAttribute("keywords", Context.tr("free software funding, open-source, bulk purchases"));
 
-
-
         final HtmlBranch link = new HtmlGenericElement("link") {
 
             @Override
@@ -55,12 +55,24 @@ public final class Header extends HtmlElement {
         jsPh = new PlaceHolderElement();
         add(jsPh);
 
+        String liburi = ModelConfiguration.getLibravatarURI();
+
+        HtmlScript js = new HtmlScript();
+        js.append("$(document).ready(function(){");
+        js.append("$(\".libravatar\").each(function() {");
+        js.append("var digest = $(this).attr(\"libravatar\");");
+        js.append("var uri = \""+liburi+"\" + digest + \"?s=64&d=http://elveos.org/resources/commons/img/none.png\";");
+        js.append("$(this).attr(\"src\", uri);");
+        js.append("});");
+        js.append("});");
+        add(js);
+
         add(new HtmlGenericElement("title").addText(title));
     }
 
     /**
      * Adds a new css link to the page
-     *
+     * 
      * @param css the string describing the name of the css
      */
     public void addCss(final String css) {
@@ -86,7 +98,7 @@ public final class Header extends HtmlElement {
      * <li>Absolute URI (http://host.com/script.js), and will be left as is.
      * Absolute URI MUST start with http:// or https://</li>
      * </p>
-     *
+     * 
      * @param js a string describing the URI of the js link, either relative to
      *            the application or absolute (and starting with http://)
      */
