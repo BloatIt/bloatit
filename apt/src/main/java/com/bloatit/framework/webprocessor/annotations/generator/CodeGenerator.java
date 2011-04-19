@@ -21,6 +21,7 @@ public class CodeGenerator {
             clazz.setExtends(desc.getFather().getClassName());
         }
 
+        // TODO make me final
         clazz.addAttribute(desc.getComponent().getClassName(), "component");
 
         final Method staticGetName = clazz.addMethod("String", "getName");
@@ -33,6 +34,7 @@ public class CodeGenerator {
         if (desc.getFather() != null) {
             constructor.addLine("super(params, session);");
         }
+        constructor.addLine("this.component = new " + desc.getComponent().getClassName() + "(params, session);");
 
         final Method copyConstructor = clazz.addConstructor();
         copyConstructor.addParameter(clazz.getName(), "other");
@@ -101,7 +103,7 @@ public class CodeGenerator {
             setter.addLine("this.component." + setterName + "(other);");
         }
 
-        for (final UrlComponentDescription subComponent : desc.getComponent().getSubComponents()) {
+        for (final ComponentDescription subComponent : desc.getComponent().getSubComponents()) {
             final String getParameterName = "get" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url";
             final Method getParameter = clazz.addMethod(subComponent.getClassName(), getParameterName);
             getParameter.addLine("return this.component." + getParameterName + "();");
@@ -115,7 +117,7 @@ public class CodeGenerator {
         return clazz;
     }
 
-    public Clazz generateComponentClass(final UrlComponentDescription desc) {
+    public Clazz generateComponentClass(final ComponentDescription desc) {
         final Clazz clazz = new Generator.Clazz(desc.getClassName(), "com.bloatit.web.url");
         clazz.setExtends("UrlComponent");
 
@@ -213,7 +215,7 @@ public class CodeGenerator {
             clone.addLine("other." + param.getAttributeName() + " = this." + param.getAttributeName() + ".clone();");
         }
 
-        for (final UrlComponentDescription subComponent : desc.getSubComponents()) {
+        for (final ComponentDescription subComponent : desc.getSubComponents()) {
             final String subComponentName = Utils.toCamelCase(subComponent.getClassName(), false);
             clazz.addAttribute(subComponent.getClassName(), subComponentName, //
                                "get" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url", //

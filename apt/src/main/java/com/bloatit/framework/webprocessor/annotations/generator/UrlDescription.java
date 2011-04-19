@@ -12,9 +12,9 @@ public class UrlDescription {
     private UrlDescription father;
     private final String className;
     private final boolean isAction;
-    private final UrlComponentDescription component;
+    private final ComponentDescription component;
 
-    public UrlDescription(final UrlComponentDescription component, final Element element, final ParamContainer container, final boolean isAction) {
+    public UrlDescription(final ComponentDescription component, final Element element, final ParamContainer container, final boolean isAction) {
         this.isAction = isAction;
         this.component = component;
         className = element.getSimpleName().toString() + "Url";
@@ -32,7 +32,7 @@ public class UrlDescription {
         return className;
     }
 
-    public final UrlComponentDescription getComponent() {
+    public final ComponentDescription getComponent() {
         return component;
     }
 

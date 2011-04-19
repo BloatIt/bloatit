@@ -34,7 +34,7 @@ import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class ParamContainerProcessor extends AbstractProcessor {
 
-    private Map<Element, UrlComponentDescription> components = new HashMap<Element, UrlComponentDescription>();
+    private Map<Element, ComponentDescription> components = new HashMap<Element, ComponentDescription>();
     private Map<Element, UrlDescription> urls = new HashMap<Element, UrlDescription>();
 
     @Override
@@ -51,21 +51,21 @@ public class ParamContainerProcessor extends AbstractProcessor {
             }
         }
 
-        for (final Entry<Element, UrlComponentDescription> entry : components.entrySet()) {
+        for (final Entry<Element, ComponentDescription> entry : components.entrySet()) {
             createFile(new CodeGenerator().generateComponentClass(entry.getValue()));
         }
         for (final Entry<Element, UrlDescription> entry : urls.entrySet()) {
             createFile(new CodeGenerator().generateUrlClass(entry.getValue()));
         }
 
-        return true;
+        return false;
     }
 
     private void createFile(final Clazz clazz) {
         BufferedWriter out = null;
         try {
-            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + clazz.getName());
-            final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(clazz.getName());
+            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + clazz.getQualifiedName());
+            final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(clazz.getQualifiedName());
             out = new BufferedWriter(classFile.openWriter());
             out.write(clazz.toString());
 
@@ -90,24 +90,24 @@ public class ParamContainerProcessor extends AbstractProcessor {
         parseAParamContainer(element, null, null, urlChild);
     }
 
-    private void parseAParamContainer(final Element element, final Element fromAttribute, final UrlComponentDescription father) {
+    private void parseAParamContainer(final Element element, final Element fromAttribute, final ComponentDescription father) {
         parseAParamContainer(element, fromAttribute, father, null);
     }
 
     private void parseAParamContainer(final Element element,
                                       final Element fromAttribute,
-                                      final UrlComponentDescription father,
+                                      final ComponentDescription father,
                                       final UrlDescription urlChild) {
         final ParamContainer paramContainer = element.getAnnotation(ParamContainer.class);
         if (paramContainer == null) {
             return;
         }
 
-        final UrlComponentDescription component;
+        final ComponentDescription component;
         if (fromAttribute != null) {
-            component = new UrlComponentDescription(element, paramContainer, fromAttribute.getSimpleName().toString());
+            component = new ComponentDescription(element, paramContainer, fromAttribute.getSimpleName().toString());
         } else {
-            component = new UrlComponentDescription(element, paramContainer, null);
+            component = new ComponentDescription(element, paramContainer, null);
         }
         components.put(element, component);
         if (father != null) {
@@ -181,7 +181,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
     }
 
-    private void parseARequestParam(final UrlComponentDescription component, final Element attribute) {
+    private void parseARequestParam(final ComponentDescription component, final Element attribute) {
         final RequestParam requestParam = attribute.getAnnotation(RequestParam.class);
         final Optional optional = attribute.getAnnotation(Optional.class);
 
@@ -190,7 +190,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
     }
 
-    private void parseEnclosedParamContainer(final UrlComponentDescription component, final Element attribute) {
+    private void parseEnclosedParamContainer(final ComponentDescription component, final Element attribute) {
         if (attribute.getAnnotation(RequestParam.class) == null) {
             // Find if the type of the attribute has a ParamContainer annotation
             final TypeKindVisitor6<Element, Integer> vs = new TypeKindVisitor6<Element, Integer>() {

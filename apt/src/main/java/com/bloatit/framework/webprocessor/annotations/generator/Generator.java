@@ -63,9 +63,16 @@ public class Generator {
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             if (override) {
-                sb.append("@Override\n");
+                sb.append("    @Override\n");
             }
-            sb.append(modifier.getName()).append(" ").append(staticFinal).append(" ").append(type).append(" ").append(name).append("(");
+            sb.append("    ").append(modifier.getName()).append(" ");
+            if (!staticFinal.isEmpty()) {
+                sb.append(staticFinal).append(" ");
+            }
+            sb.append(type).append(" ").append(name).append("(");
+            if (content.toString().isEmpty()) {
+                addLine("// Generator: Empty block !");
+            }
             for (int i = 0; i < parameters.size(); ++i) {
                 final Parameter param = parameters.get(i);
                 sb.append(param.type).append(" ").append(param.name);
@@ -75,7 +82,7 @@ public class Generator {
             }
             sb.append(") {\n");
             sb.append(content);
-            sb.append("}\n\n");
+            sb.append("    }\n");
             return sb.toString();
         }
 
@@ -266,6 +273,10 @@ public class Generator {
 
         public String getName() {
             return className;
+        }
+
+        public String getQualifiedName() {
+            return packageName + "." + className;
         }
 
     }
