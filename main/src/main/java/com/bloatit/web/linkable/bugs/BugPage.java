@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.bugs;
 
+import com.bloatit.data.DaoBug.BugState;
+import com.bloatit.data.DaoBug.Level;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
@@ -41,6 +43,8 @@ import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
+import java.util.HashMap;
+import java.util.Map;
 
 @ParamContainer("feature/bug")
 public final class BugPage extends MasterPage {
@@ -69,8 +73,8 @@ public final class BugPage extends MasterPage {
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
         layout.addLeft(bugTitle);
 
-        layout.addLeft(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()))));
-        layout.addLeft(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()))));
+        layout.addLeft(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()).getDisplayName())));
+        layout.addLeft(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()).getDisplayName())));
 
         layout.addLeft(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
 
@@ -90,10 +94,34 @@ public final class BugPage extends MasterPage {
             layout.addLeft(generateNewAttachementForm());
         }
 
-        layout.addLeft(CommentTools.generateCommentList(bug.getComments()));
+
+
+
+        layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
         layout.addLeft(new CreateCommentForm(new CreateCommentActionUrl(bug)));
 
         return layout;
+    }
+
+
+    private Map<String, String> generateBugFormatMap() {
+        Map<String,String> formatMap = new HashMap<String, String>();
+
+        formatMap.put("%REASON%", tr("Reason: "));
+        formatMap.put("%LEVEL%", tr("Level: "));
+        formatMap.put("%STATE%", tr("State: "));
+
+        formatMap.put("%FATAL%", BindedLevel.getBindedLevel(Level.FATAL).getDisplayName());
+        formatMap.put("%MAJOR%", BindedLevel.getBindedLevel(Level.MAJOR).getDisplayName());
+        formatMap.put("%MINOR%", BindedLevel.getBindedLevel(Level.MINOR).getDisplayName());
+
+        formatMap.put("%PENDING%", BindedState.getBindedState(BugState.PENDING).getDisplayName());
+        formatMap.put("%DEVELOPING%", BindedState.getBindedState(BugState.DEVELOPING).getDisplayName());
+        formatMap.put("%RESOLVED%", BindedState.getBindedState(BugState.RESOLVED).getDisplayName());
+
+
+
+        return formatMap;
     }
 
     @Override

@@ -250,7 +250,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * Adds a default value to the object object.
      * </p>
-     * 
+     * The corresponding element must have been added
      * @param value the Object representing the default value
      */
     public final void setDefaultValue(final String value) {
