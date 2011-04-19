@@ -21,7 +21,7 @@ import com.bloatit.web.url.FileResourceUrl;
 
 public class CommentTools {
 
-    public static XmlNode generateCommentList(final PageIterable<Comment> comments) {
+    public static HtmlElement generateCommentList(final PageIterable<Comment> comments) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         for (final Comment comment : comments) {
             ph.add(generateComment(comment, false));

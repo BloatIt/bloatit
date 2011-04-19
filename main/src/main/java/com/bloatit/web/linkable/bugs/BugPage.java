@@ -34,6 +34,7 @@ import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateCommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.BugPageUrl;
@@ -58,19 +59,23 @@ public final class BugPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        final HtmlDiv box = new HtmlDiv("padding_box");
+        
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+
+
+        
 
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
-        box.add(bugTitle);
+        layout.addLeft(bugTitle);
 
-        box.add(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()))));
-        box.add(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()))));
+        layout.addLeft(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()))));
+        layout.addLeft(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()))));
 
-        box.add(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
+        layout.addLeft(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
 
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
-        box.add(description);
+        layout.addLeft(description);
 
         // Attachments
 
@@ -78,17 +83,17 @@ public final class BugPage extends MasterPage {
             final HtmlParagraph attachmentPara = new HtmlParagraph();
             attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
             attachmentPara.addText(tr(": ") + attachment.getShortDescription());
-            box.add(attachmentPara);
+            layout.addLeft(attachmentPara);
         }
 
         if (bug.isOwner()) {
-            box.add(generateNewAttachementForm());
+            layout.addLeft(generateNewAttachementForm());
         }
 
-        box.add(CommentTools.generateCommentList(bug.getComments()));
-        box.add(new CreateCommentForm(new CreateCommentActionUrl(bug)));
+        layout.addLeft(CommentTools.generateCommentList(bug.getComments()));
+        layout.addLeft(new CreateCommentForm(new CreateCommentActionUrl(bug)));
 
-        return box;
+        return layout;
     }
 
     @Override
@@ -104,7 +109,7 @@ public final class BugPage extends MasterPage {
         return true;
     }
 
-    private XmlNode generateNewAttachementForm() {
+    private HtmlElement generateNewAttachementForm() {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
         addAttachementForm.enableFileUpload();
