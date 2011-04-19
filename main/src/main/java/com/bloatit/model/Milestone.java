@@ -281,6 +281,11 @@ public class Milestone extends Identifiable<DaoMilestone> {
         return getDao().getMinorBugsPercent();
     }
 
+
+    public final int getSecondBeforeValidation() {
+        return getDao().getSecondBeforeValidation();
+    }
+
     /**
      * Gets the expiration date.
      * 

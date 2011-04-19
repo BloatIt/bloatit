@@ -1,5 +1,6 @@
 package com.bloatit.framework.webprocessor.components.advanced;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 

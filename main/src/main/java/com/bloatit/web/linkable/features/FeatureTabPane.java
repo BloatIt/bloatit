@@ -114,7 +114,6 @@ public final class FeatureTabPane extends HtmlPageComponent {
         }
 
         add(tabPane);
-
     }
 
     private XmlNode generateDescriptionTabContent(final Feature feature) {
