@@ -179,6 +179,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
+        layout.addRight(new SideBarDocumentationBlock("cc_by"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
