@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.linkable.bugs;
 
+import com.bloatit.data.DaoBug.BugState;
+import com.bloatit.data.DaoBug.Level;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
@@ -34,12 +36,15 @@ import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateCommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
+import java.util.HashMap;
+import java.util.Map;
 
 @ParamContainer("feature/bug")
 public final class BugPage extends MasterPage {
@@ -58,19 +63,23 @@ public final class BugPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        final HtmlDiv box = new HtmlDiv("padding_box");
+        
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+
+
+        
 
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
-        box.add(bugTitle);
+        layout.addLeft(bugTitle);
 
-        box.add(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()))));
-        box.add(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()))));
+        layout.addLeft(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()).getDisplayName())));
+        layout.addLeft(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()).getDisplayName())));
 
-        box.add(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
+        layout.addLeft(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
 
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
-        box.add(description);
+        layout.addLeft(description);
 
         // Attachments
 
@@ -78,17 +87,41 @@ public final class BugPage extends MasterPage {
             final HtmlParagraph attachmentPara = new HtmlParagraph();
             attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
             attachmentPara.addText(tr(": ") + attachment.getShortDescription());
-            box.add(attachmentPara);
+            layout.addLeft(attachmentPara);
         }
 
         if (bug.isOwner()) {
-            box.add(generateNewAttachementForm());
+            layout.addLeft(generateNewAttachementForm());
         }
 
-        box.add(CommentTools.generateCommentList(bug.getComments()));
-        box.add(new CreateCommentForm(new CreateCommentActionUrl(bug)));
 
-        return box;
+
+
+        layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
+        layout.addLeft(new CreateCommentForm(new CreateCommentActionUrl(bug)));
+
+        return layout;
+    }
+
+
+    private Map<String, String> generateBugFormatMap() {
+        Map<String,String> formatMap = new HashMap<String, String>();
+
+        formatMap.put("%REASON%", tr("Reason: "));
+        formatMap.put("%LEVEL%", tr("Level: "));
+        formatMap.put("%STATE%", tr("State: "));
+
+        formatMap.put("%FATAL%", BindedLevel.getBindedLevel(Level.FATAL).getDisplayName());
+        formatMap.put("%MAJOR%", BindedLevel.getBindedLevel(Level.MAJOR).getDisplayName());
+        formatMap.put("%MINOR%", BindedLevel.getBindedLevel(Level.MINOR).getDisplayName());
+
+        formatMap.put("%PENDING%", BindedState.getBindedState(BugState.PENDING).getDisplayName());
+        formatMap.put("%DEVELOPING%", BindedState.getBindedState(BugState.DEVELOPING).getDisplayName());
+        formatMap.put("%RESOLVED%", BindedState.getBindedState(BugState.RESOLVED).getDisplayName());
+
+
+
+        return formatMap;
     }
 
     @Override
@@ -104,7 +137,7 @@ public final class BugPage extends MasterPage {
         return true;
     }
 
-    private XmlNode generateNewAttachementForm() {
+    private HtmlElement generateNewAttachementForm() {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
         addAttachementForm.enableFileUpload();
