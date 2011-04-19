@@ -33,9 +33,12 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureList;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFeatureSummary;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -139,8 +142,8 @@ public final class FeatureListPage extends MasterPage {
 
             final HtmlDiv featureSort = new HtmlDiv("feature_sort");
             {
-                // XXX : someday create all these crap
-                
+                // XXX : Do not delete the following comments
+
                 // final FeatureListPageUrl relevanceSortUrl = url.clone();
                 // relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
                 // final HtmlLink relevanceSort =
@@ -163,6 +166,8 @@ public final class FeatureListPage extends MasterPage {
                     contributionSort.setCssClass("selected");
                 }
 
+                // XXX : Do not delete the following comments
+
                 // final FeatureListPageUrl progressSortUrl = url.clone();
                 // progressSortUrl.setSort(SORT_BY_PROGRESS);
                 // final HtmlLink progressSort =
@@ -177,6 +182,8 @@ public final class FeatureListPage extends MasterPage {
                 if (sort.equals(SORT_BY_CREATION_DATE)) {
                     creationDateSort.setCssClass("selected");
                 }
+
+                // XXX : Do not delete the following comments
 
                 // final FeatureListPageUrl expirationDateSortUrl = url.clone();
                 // expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
@@ -234,6 +241,7 @@ public final class FeatureListPage extends MasterPage {
         }
         layout.addLeft(featureSearchBlock);
 
+        ///////////////
         // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
@@ -248,6 +256,12 @@ public final class FeatureListPage extends MasterPage {
             }
             layout.addLeft(noResultBlock);
         }
+
+        ////////////
+        // Right bar
+        layout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
+        layout.addRight(new SideBarDocumentationBlock("feature"));
+
         return layout;
     }
 

@@ -22,12 +22,14 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
+import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class FeaturesTools {
@@ -238,32 +240,53 @@ public class FeaturesTools {
             feature.getComments();
             final Long commentsCount = feature.getCommentsCount();
 
-            final int offersCount = feature.getOffers().size();
-
             final int contributionsCount = feature.getContributions().size();
 
             final FeaturePageUrl commentsFeatureUrl = new FeaturePageUrl(feature);
             commentsFeatureUrl.setAnchor("comments_block");
 
-            final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature);
-            offersFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
-            offersFeatureUrl.setAnchor("feature_tab_pane");
-
             final FeaturePageUrl contributionsFeatureUrl = new FeaturePageUrl(feature);
             contributionsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             contributionsFeatureUrl.setAnchor("feature_tab_pane");
 
-            featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(Context.trn("{0} comment",
-                                                                                 "{0} comments",
-                                                                                 commentsCount,
-                                                                                 Long.valueOf((commentsCount)))));
+            String trn = Context.trn("{0} comment", "{0} comments", commentsCount, Long.valueOf((commentsCount)));
+            featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(trn));
+            if (feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
+                // PENDING or PREPARING we add the number of offers
+                final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature);
+                offersFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+                offersFeatureUrl.setAnchor("feature_tab_pane");
+
+                final int offersCount = feature.getOffers().size();
+                featureSummaryDetails.addText(" – ");
+                featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, offersCount)));
+
+            } else if (feature.getFeatureState() == FeatureState.DEVELOPPING) {
+                // DEVELOPPING we add bug count and release count
+                final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature);
+                bugsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+                bugsFeatureUrl.setAnchor("feature_tab_pane");
+
+                final int bugCount = feature.getOpenBugs().size();
+                featureSummaryDetails.addText(" – ");
+                featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} open bug", "{0} open bugs", bugCount, bugCount)));
+
+                // TODO: go to the correct page
+                final FeaturePageUrl releasesFeatureUrl = new FeaturePageUrl(feature);
+                releasesFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+                releasesFeatureUrl.setAnchor("feature_tab_pane");
+
+                int releaseCount = 0;
+                for (Milestone m : feature.getValidatedOffer().getMilestones()) {
+                    releaseCount += m.getReleases().size();
+                }
+                featureSummaryDetails.addText(" – ");
+                featureSummaryDetails.add(releasesFeatureUrl.getHtmlLink(Context.trn("{0} release", "{0} releases", releaseCount, releaseCount)));
+            }
             featureSummaryDetails.addText(" – ");
-            featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
-            featureSummaryDetails.addText(" – ");
-            featureSummaryDetails.add(contributionsFeatureUrl.getHtmlLink(Context.trn("{0} contribution",
-                                                                                      "{0} contributions",
-                                                                                      contributionsCount,
-                                                                                      new Integer(contributionsCount))));
+            String trn2 = Context.trn("{0} contribution", "{0} contributions", contributionsCount, contributionsCount);
+            featureSummaryDetails.add(contributionsFeatureUrl.getHtmlLink(trn2));
+
             if (showBugs) {
                 final int bugCount = feature.getOpenBugs().size();
                 if (bugCount > 0) {
