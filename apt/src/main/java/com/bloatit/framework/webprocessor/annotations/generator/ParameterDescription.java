@@ -1,22 +1,19 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
-import java.lang.annotation.Annotation;
-
 import javax.lang.model.element.Element;
 
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
-import com.bloatit.framework.webprocessor.annotations.tr;
 
 class ParameterDescription {
 
     // Name of the parameter.
-    private final String name;
+    private final String attributeName;
 
     // Values for creating the parameters.
-    private final String attributeName;
+    private final String name;
     private final String typeOrTemplateType;
     private final String typeWithoutTemplateSimple;
     private final String typeWithoutTemplate;
@@ -28,12 +25,12 @@ class ParameterDescription {
     private final ParamConstraint constraints;
 
     public ParameterDescription(final Element element, final RequestParam container, final ParamConstraint constraints, final Optional optional) {
-        name = computeName(container.name(), element.getSimpleName().toString(), container.role(), Utils.getDeclaredName(element));
+        attributeName = element.getSimpleName().toString();
 
+        name = computeName(container.name(), element.getSimpleName().toString(), container.role(), Utils.getDeclaredName(element));
         typeOrTemplateType = getTypeOrTemplate(element);
         typeWithoutTemplate = getTypeWithoutTemplate(element);
         typeWithoutTemplateSimple = getTypeWithoutTemplateSimple(element);
-        attributeName = element.getSimpleName().toString();
         role = container.role();
         suggestedValue = container.suggestedValue();
         conversionErrorMsg = container.conversionErrorMsg().value();
@@ -44,7 +41,7 @@ class ParameterDescription {
             isOptional = false;
             defaultValue = null;
         }
-        this.constraints = (constraints != null ? constraints : new defaultParamConstraint());
+        this.constraints = constraints;
     }
 
     private String computeName(final String annotationName, final String javaName, final Role role, final String className) {
@@ -86,11 +83,15 @@ class ParameterDescription {
         return typeOrTemplateType;
     }
 
-    public final String getName() {
-        return name;
+//    public final String getName() {
+//        return name;
+//    }
+    
+    public final String getAttributeName() {
+        return attributeName;
     }
 
-    public final String getAttributeNameStr() {
+    public final String getNameStr() {
         return Utils.getStr(attributeName);
     }
 
@@ -128,88 +129,51 @@ class ParameterDescription {
         return isOptional;
     }
 
-    public final ParamConstraint getConstraints() {
-        return constraints;
+    public final ParamConstraintBinder getConstraints() {
+        return new ParamConstraintBinder(constraints);
     }
 
-    private static final class defaultParamConstraint implements ParamConstraint {
-        private final class TrImp implements tr {
-            private final String value;
+    public static final class ParamConstraintBinder {
+        public final boolean minIsExclusive;
+        public final String min;
+        public final String minErrorMsg;
+        public final boolean maxIsExclusive;
+        public final String max;
+        public final String maxErrorMsg;
+        public final String optionalErrorMsg;
+        public final int precision;
+        public final String precisionErrorMsg;
+        public final int length;
+        public final String LengthErrorMsg;
 
-            public TrImp(final String value) {
-                this.value = value;
+        public ParamConstraintBinder(final ParamConstraint constraint) {
+            if (constraint != null) {
+                minIsExclusive = constraint.minIsExclusive();
+                min = constraint.min();
+                minErrorMsg = Utils.getStr(constraint.minErrorMsg().value());
+                maxIsExclusive = constraint.maxIsExclusive();
+                max = constraint.max();
+                maxErrorMsg = Utils.getStr(constraint.maxErrorMsg().value());
+                optionalErrorMsg = Utils.getStr(constraint.optionalErrorMsg().value());
+                precision = constraint.precision();
+                precisionErrorMsg = Utils.getStr(constraint.precisionErrorMsg().value());
+                length = constraint.length();
+                LengthErrorMsg = Utils.getStr(constraint.LengthErrorMsg().value());
+            } else {
+                minIsExclusive = false;
+                min = ParamConstraint.DEFAULT_MIN_STR;
+                minErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
+                maxIsExclusive = false;
+                max = ParamConstraint.DEFAULT_MAX_STR;
+                maxErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
+                optionalErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
+                precision = ParamConstraint.DEFAULT_PRECISION;
+                precisionErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
+                length = ParamConstraint.DEFAULT_LENGTH;
+                LengthErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
             }
-
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return null;
-            }
-
-            @Override
-            public String value() {
-                return value;
-            }
         }
 
-        @Override
-        public Class<? extends Annotation> annotationType() {
-            return null;
-        }
-
-        @Override
-        public tr precisionErrorMsg() {
-            return new TrImp(DEFAULT_ERROR_MSG);
-        }
-
-        @Override
-        public int precision() {
-            return DEFAULT_PRECISION;
-        }
-
-        @Override
-        public tr optionalErrorMsg() {
-            return new TrImp(DEFAULT_ERROR_MSG);
-        }
-
-        @Override
-        public boolean minIsExclusive() {
-            return false;
-        }
-
-        @Override
-        public tr minErrorMsg() {
-            return new TrImp(DEFAULT_ERROR_MSG);
-        }
-
-        @Override
-        public String min() {
-            return DEFAULT_MIN_STR;
-        }
-
-        @Override
-        public boolean maxIsExclusive() {
-            return false;
-        }
-
-        @Override
-        public tr maxErrorMsg() {
-            return new TrImp(DEFAULT_ERROR_MSG);
-        }
-
-        @Override
-        public String max() {
-            return DEFAULT_MAX_STR;
-        }
-
-        @Override
-        public int length() {
-            return Integer.MAX_VALUE;
-        }
-
-        @Override
-        public tr LengthErrorMsg() {
-            return new TrImp(DEFAULT_ERROR_MSG);
-        }
     }
 
 }

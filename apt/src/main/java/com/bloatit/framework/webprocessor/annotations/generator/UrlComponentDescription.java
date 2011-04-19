@@ -43,7 +43,7 @@ public class UrlComponentDescription {
     }
 
     public void addParameter(final ParameterDescription description) {
-        parameters.put(description.getName(), description);
+        parameters.put(description.getAttributeName(), description);
     }
 
     public boolean hasUrlParameter() {
