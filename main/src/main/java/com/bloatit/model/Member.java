@@ -16,9 +16,6 @@
 //
 package com.bloatit.model;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Locale;
 import java.util.Set;
 
@@ -33,7 +30,6 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
@@ -541,7 +537,8 @@ public final class Member extends Actor<DaoMember> implements User {
 
     private String libravatar(String email) {
         String digest = DigestUtils.md5Hex(email.toLowerCase());
-//        return "http://cdn.libravatar.org/avatar/" + digest + "?d=http://elveos.org/resources/commons/img/none.png&s=64";
+        // return "http://cdn.libravatar.org/avatar/" + digest +
+        // "?d=http://elveos.org/resources/commons/img/none.png&s=64";
         return digest;
     }
 
@@ -553,5 +550,17 @@ public final class Member extends Actor<DaoMember> implements User {
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
+    }
+
+    /**
+     * Checks if an inputed password matches the user password
+     * 
+     * @param password the password to match
+     * @return <i>true</i> if the inputed password matches the password in the
+     *         database, <i>false</i> otherwise
+     */
+    public boolean checkPassword(String password) {
+        final String digestedPassword = SecuredHash.calculateHash(password, getDao().getSalt());
+        return getDao().passwordEquals(digestedPassword);
     }
 }

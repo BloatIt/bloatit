@@ -294,9 +294,7 @@ public class MimeElement {
                 contentOutput = new DecodingOuputStream(nonFileInput, decoder);
             } else {
                 final File uploadedFileDir = new File(fileSavingDirectory);
-                if (!uploadedFileDir.mkdirs()) {
-                    throw new BadProgrammerException("Couldn't create directory " + uploadedFileDir.getCanonicalPath());
-                }
+                uploadedFileDir.mkdirs();
                 destination = new File(fileSavingDirectory + nameGen.generateName(getHeaderField(FILE_NAME)));
                 try {
                     final FileOutputStream fos = new FileOutputStream(destination);

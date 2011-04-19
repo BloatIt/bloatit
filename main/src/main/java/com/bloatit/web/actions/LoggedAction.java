@@ -59,12 +59,20 @@ public abstract class LoggedAction extends Action {
         return NO_ERROR;
     }
 
+    /**
+     * Called before creating the page, used to check if there are additional
+     * errors that can't be spotted by Url.
+     * 
+     * @param me the logged member
+     * @return {@value Action#NO_ERROR} if there is no error, an Url to the page
+     *         to handle errors otherwise
+     */
     protected abstract Url doCheckRightsAndEverything(Member me);
 
     /**
      * Called when user is correctly authentified
      * 
-     * @param me TODO
+     * @param me the currently logged user
      */
     protected abstract Url doProcessRestricted(Member me);
 
@@ -81,5 +89,4 @@ public abstract class LoggedAction extends Action {
      *         couldn't access the page
      */
     protected abstract String getRefusalReason();
-
 }
