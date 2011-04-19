@@ -1,0 +1,12 @@
+What is a team ?
+===============
+
+Teams are place where people sharing a similar interest or role can regroup.
+
+The main role of teams is to offer a way for a member of the team to act on the behalf of the team. This action can be used :
+
+ * When making an offer: in this case, when the offer is complete, the money will be given to the team instead of the developer
+ * When posting a comment: allowing someone to take an "official stand" from the team
+ * When creating a feature: indicating the team wants the feature to be created.
+
+Teams can have a link with a physical team, such as groups creating software (linux_kernel_devs for example) or it can have no link with physical team (ubuntu_users for example) and can just gather people sharing common interest.

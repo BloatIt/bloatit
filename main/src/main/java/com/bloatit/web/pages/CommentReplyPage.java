@@ -31,12 +31,15 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Member;
 import com.bloatit.web.linkable.bugs.BugPage;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.release.ReleasePage;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
+import com.sun.jdi.connect.LaunchingConnector;
 
 /**
  * Page that hosts the form used to reply to an existing comment
@@ -61,7 +64,16 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
-        final HtmlDiv box = new HtmlDiv("padding_box");
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final HtmlDiv box = new HtmlDiv();
+
+        // ///////////
+        // RIGHT BAR
+        layout.addRight(new SideBarDocumentationBlock("cc_by"));
+
+        // //////////
+        // PAGE CORE
+        layout.addLeft(box);
 
         final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
         final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(targetComment);
@@ -91,7 +103,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         box.add(title);
         box.add(form);
 
-        return box;
+        return layout;
     }
 
     @Override

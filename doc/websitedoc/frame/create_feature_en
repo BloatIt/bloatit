@@ -1,10 +1,7 @@
-Documentation home
-==================
+What is a feature request ?
+===========================
 
-Welcome to the elveos documentation page!!!
+A feature request indicates a feature missing from a software. You should request a new feature when:
 
-[an example](/en/documentation/doc-home "Title")
-
-plop
- 
-![Presentation of elveos](/resources/docimg/elveos-presentation.png)
+* You use a software and need a new feature.
+* You develop / maintaint a software and wish to finance the development of a new feature.

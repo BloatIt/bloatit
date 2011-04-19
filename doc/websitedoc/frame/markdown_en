@@ -1,10 +1,27 @@
-Documentation home
-==================
+Markdown cheat sheet
+====================
 
-Welcome to the elveos documentation page!!!
+[Full markdown documentation](/en/documentation/markdown)
+<dl>
+<dt>2 spaces at the end of line</dt>
+<dd>force a line break</dd>
+<dt>**bold**</dt>
+<dd><strong>bold</strong></dd>
+<dt>_italic_</dt>
+<dd><em>italic</em></dd>
+<dt>> quote </dt>
+<dd><blockquote>quote</blockquote></dd>
+<dt>[link](/en/documentation/markdown)</dt>
+<dd><a href="documentation/markdown">link</a></dd>
+<dt>#Section title#</dt>
+<dd><h1>Section title</h1></dd>
+<dt>##Subtitle##</dt>
+<dd><h2>Subtitle</h2></dd>
+<dt>* Bullet point <br/>
+    * Another element</dt>
+<dd><ul><li>Bullet point</li><li>Another element</li></ul></dd>
+</dl>  
 
-[an example](/en/documentation/doc-home "Title")
 
-plop
- 
-![Presentation of elveos](/resources/docimg/elveos-presentation.png)
+
+
