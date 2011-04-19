@@ -76,7 +76,7 @@ public class ActorRight extends RightManager {
      * The Class DateCreation is a {@link Private} accessor for the DateCreation
      * property.
      */
-    public static class DateCreation extends Private {
+    public static class DateCreation extends Public {
         // nothing this is just a rename.
     }
 }
