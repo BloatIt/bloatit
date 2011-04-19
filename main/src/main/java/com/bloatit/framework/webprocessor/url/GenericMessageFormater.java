@@ -14,8 +14,8 @@ import org.hibernate.mapping.Map;
 public class GenericMessageFormater extends HashMap<String, String>{
     
     GenericMessageFormater(String paramName, String value) {
-        put("%paramName%%", paramName);
-        put("%value%%", value);
+        put("%paramName%", paramName);
+        put("%value%", value);
     }
 
 }
