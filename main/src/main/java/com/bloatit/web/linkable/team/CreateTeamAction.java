@@ -27,21 +27,21 @@ public final class CreateTeamAction extends LoggedAction {
     public final static String PUBLIC = "PUBLIC";
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters team name has to be superior to %constraint% but your text is %valueLength% long."),//
-                     max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to %constraint%."),//
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters team name has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to %constraint% your text is %valueLength% characters long."),//
                      optionalErrorMsg = @tr("You forgot to write a team name"))
     private final String login;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for contact has to be superior to %constraint% but your text is %valueLength% long."),//
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for contact has to be superior to %constraint% but your text is %valueLength% characters long."),//
             max = "300", maxErrorMsg = @tr("Number of characters for contact has to be inferior to %constraint%."),//
             optionalErrorMsg = @tr("You forgot to write a specification"))
     @Optional
     private final String contact;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to %constraint%."),//
-                     max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint%."),//
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
                      optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
