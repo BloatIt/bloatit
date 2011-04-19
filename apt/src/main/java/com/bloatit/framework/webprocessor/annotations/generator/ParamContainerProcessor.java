@@ -3,6 +3,7 @@ package com.bloatit.framework.webprocessor.annotations.generator;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,16 +38,18 @@ public class ParamContainerProcessor extends AbstractProcessor {
     private Map<Element, ComponentDescription> components = new HashMap<Element, ComponentDescription>();
     private Map<Element, UrlDescription> urls = new HashMap<Element, UrlDescription>();
 
+    private Set<String> classAlreadyWritten = new HashSet<String>();
+
+    boolean hasBeenProcessesed = false;
+
     @Override
-    public boolean process(final Set<? extends TypeElement> typeElements, final RoundEnvironment env) {
+    public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment env) {
         this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Annotation processing...");
 
-        for (final TypeElement typeElement : typeElements) {
+        for (final TypeElement typeElement : annotations) {
             for (final Element element : env.getElementsAnnotatedWith(typeElement)) {
-                try {
+                if (element.getAnnotation(ParamContainer.class) != null) {
                     parseAParamContainer(element);
-                } catch (final Exception e) {
-                    e.printStackTrace();
                 }
             }
         }
@@ -58,17 +61,20 @@ public class ParamContainerProcessor extends AbstractProcessor {
             createFile(new CodeGenerator().generateUrlClass(entry.getValue()));
         }
 
-        return false;
+        return true;
     }
 
     private void createFile(final Clazz clazz) {
+        if (classAlreadyWritten.contains(clazz.getQualifiedName())) {
+            return;
+        }
         BufferedWriter out = null;
         try {
             this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + clazz.getQualifiedName());
             final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(clazz.getQualifiedName());
             out = new BufferedWriter(classFile.openWriter());
             out.write(clazz.toString());
-
+            classAlreadyWritten.add(clazz.getQualifiedName());
         } catch (final Exception e) {
             this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
         } finally {
