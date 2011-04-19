@@ -23,6 +23,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.datetime.TimeRenderer;
+import com.bloatit.framework.utils.datetime.TimeRenderer.TimeBase;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -33,6 +34,7 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
@@ -46,6 +48,7 @@ import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.members.MembersTools;
+import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -330,6 +333,10 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         generateAddReleaseLink(lot, offerRightBottomColumn);
 
                         generateReleaseList(lot, offerRightBottomColumn);
+
+                        // Validation details
+                        generateValidationDetails(lot, offerRightBottomColumn);
+                    
                     } else {
                         int i = 0;
                         for (final Milestone lot : lots) {
@@ -372,10 +379,15 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                 generateAddReleaseLink(lot, lotBlock);
 
                                 generateReleaseList(lot, lotBlock);
+
+                                // Validation details
+                                generateValidationDetails(lot, lotBlock);
                             }
                             offerRightBottomColumn.add(lotBlock);
                         }
                     }
+
+                    
                 }
                 offerBottomBlock.add(offerRightBottomColumn);
             }
@@ -396,6 +408,41 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 lotBlock.add(list);
             }
         }
+
+        public void generateValidationDetails(final Milestone lot, final HtmlDiv lotBlock) {
+
+            final JsShowHide showHideValidationDetails = new JsShowHide(false);
+            showHideValidationDetails.setHasFallback(false);
+
+
+            HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("show validation details"));
+            showHideLink.setCssClass("fake_link");
+            showHideValidationDetails.addActuator(showHideLink);
+            lotBlock.add(showHideLink);
+
+            final HtmlDiv validationDetailsDiv = new HtmlDiv();
+
+            final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(Context.tr("Minimun time for validation: "), new TimeRenderer(lot.getSecondBeforeValidation()*DateUtils.MILLISECOND_PER_SECOND).renderRange(TimeBase.DAY, FormatStyle.MEDIUM));
+            validationDetailsDiv.add(timeBeforeValidationPara);
+
+            final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "), String.valueOf(lot.getFatalBugsPercent())+"%");
+            validationDetailsDiv.add(fatalBugPourcentPara);
+
+            final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "), String.valueOf(lot.getMajorBugsPercent())+"%");
+            validationDetailsDiv.add(majorBugPourcentPara);
+
+            final HtmlDefineParagraph minorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no minor bug: "), String.valueOf(lot.getMinorBugsPercent())+"%");
+            validationDetailsDiv.add(minorBugPourcentPara);
+
+            
+            lotBlock.add(validationDetailsDiv);
+
+            showHideValidationDetails.addListener(validationDetailsDiv);
+            showHideValidationDetails.apply();
+        }
+
+
+
 
         public void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
             if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {

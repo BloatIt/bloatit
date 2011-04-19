@@ -51,6 +51,8 @@ import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * A DaoMilestone is a part of a DaoOffer.
@@ -100,7 +102,7 @@ public class DaoMilestone extends DaoIdentifiable {
     @Basic(optional = false)
     @Field(index = Index.UN_TOKENIZED, store = Store.YES)
     @DateBridge(resolution = Resolution.DAY)
-    @Column(updatable = false)
+    @Column(updatable = false)    
     private Date expirationDate;
 
     @Basic(optional = false)
@@ -338,6 +340,10 @@ public class DaoMilestone extends DaoIdentifiable {
         return new QueryCollection<DaoBug>("milestone.getBugs.byStateLevel").setEntity("this", this)
                                                                             .setParameter("level", level)
                                                                             .setParameter("state", state);
+    }
+
+    public int getSecondBeforeValidation() {
+        return secondBeforeValidation;
     }
 
     public PageIterable<DaoRelease> getReleases() {

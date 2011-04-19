@@ -99,6 +99,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Linked software
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
+        softwareInput.addDropDownElement("", tr("No software"));
         for (final Software software : SoftwareManager.getAll()) {
             try {
                 softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
@@ -107,6 +108,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                 throw new ShallNotPassException("User cannot access software information", e);
             }
         }
+        
         // TODO: set the default value to "select a software"
         createFeatureForm.add(softwareInput);
 
@@ -177,6 +179,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
         // RightColunm
         layout.addRight(new SideBarDocumentationBlock("create_feature"));
+        layout.addRight(new SideBarDocumentationBlock("cc_by"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
@@ -185,30 +188,6 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     @Override
     public String getRefusalReason() {
         return tr("You must be logged to create a new feature.");
-    }
-
-    /**
-     * Class use to display softwares in a dropdown html element
-     */
-    private static class SoftwareElement implements DropDownElement {
-
-        private final String name;
-        private final String code;
-
-        public SoftwareElement(final Software software) throws UnauthorizedOperationException {
-            name = software.getName();
-            code = String.valueOf(software.getId());
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getCode() {
-            return code;
-        }
     }
 
     @Override

@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -65,7 +66,8 @@ public final class AddSoftwarePage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateFeatureCreationForm());
-
+        layout.addRight(new SideBarDocumentationBlock("cc_by"));
+        layout.addRight(new SideBarDocumentationBlock("software"));
         return layout;
     }
 

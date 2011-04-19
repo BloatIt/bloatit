@@ -1,9 +1,8 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.data.queries.DaoAbstractQuery.Comparator;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public enum DisplayableComparator implements Displayable {
     EQUAL(tr("Equal")), //
@@ -16,7 +15,7 @@ public enum DisplayableComparator implements Displayable {
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return Context.tr(displayName);
     }
 
     private DisplayableComparator(final String displayName) {
@@ -29,5 +28,10 @@ public enum DisplayableComparator implements Displayable {
 
     public static Comparator getComparator(final DisplayableComparator cmp) {
         return Enum.valueOf(Comparator.class, cmp.name());
+    }
+
+    //Fake tr
+    private static String tr(String fake) {
+        return fake;
     }
 }

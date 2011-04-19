@@ -26,27 +26,26 @@ public final class CreateTeamAction extends LoggedAction {
     public final static String PROTECTED = "PROTECTED";
     public final static String PUBLIC = "PUBLIC";
 
-    public static final String LOGIN_CODE = "bloatit_login";
-    public static final String CONTACT_CODE = "bloatit_email";
-    public static final String RIGHTS_CODE = "bloatit_team_rights";
-    public static final String DESCRIPTION_CODE = "bloatit_team_description";
-
-    @RequestParam(name = LOGIN_CODE, role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters team name has to be superior to 4"),//
-                     max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to 50"))
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters team name has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to %constraint% your text is %valueLength% characters long."),//
+                     optionalErrorMsg = @tr("You forgot to write a team name"))
     private final String login;
 
-    @RequestParam(name = CONTACT_CODE, role = Role.POST)
-    @ParamConstraint(max = "300", maxErrorMsg = @tr("Number of characters for contact has to be inferior to 300"))
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for contact has to be superior to %constraint% but your text is %valueLength% characters long."),//
+            max = "300", maxErrorMsg = @tr("Number of characters for contact has to be inferior to %constraint%."),//
+            optionalErrorMsg = @tr("You forgot to write a specification"))
     @Optional
     private final String contact;
 
-    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to 5"),//
-                     max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to 5000"))
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
+                     optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
-    @RequestParam(name = RIGHTS_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final String right;
 
     private final CreateTeamActionUrl url;

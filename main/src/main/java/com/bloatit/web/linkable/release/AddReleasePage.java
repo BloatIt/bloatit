@@ -44,7 +44,7 @@ public final class AddReleasePage extends CreateUserContentPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the milestone number: ''%value''."))
+    @RequestParam(conversionErrorMsg = @tr("I cannot find the milestone number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a milestone number."))
     private final Milestone milestone;
     private final AddReleasePageUrl url;

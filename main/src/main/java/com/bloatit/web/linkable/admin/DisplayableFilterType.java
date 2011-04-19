@@ -1,8 +1,8 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public enum DisplayableFilterType implements Displayable {
     NO_FILTER(tr("No filter")), //
@@ -13,10 +13,15 @@ public enum DisplayableFilterType implements Displayable {
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return Context.tr(displayName);
     }
 
     private DisplayableFilterType(final String displayName) {
         this.displayName = displayName;
+    }
+
+    //Fake tr
+    private static String tr(String fake) {
+        return fake;
     }
 }

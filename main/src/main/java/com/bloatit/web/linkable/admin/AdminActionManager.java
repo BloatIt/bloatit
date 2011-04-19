@@ -1,14 +1,14 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import java.util.EnumSet;
 
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public class AdminActionManager {
 
     public enum Action implements Displayable {
+
         DELETE(tr("delete")), //
         RESTORE(tr("restore")), //
 
@@ -24,7 +24,6 @@ public class AdminActionManager {
         VALIDATE_BATCH(tr("Validate milestone if possible")), //
         FORCE_VALIDATE_BATCH(tr("Validate milestone --force !")), //
         ;
-
         private final String displayName;
 
         Action(final String displayName) {
@@ -33,7 +32,12 @@ public class AdminActionManager {
 
         @Override
         public String getDisplayName() {
-            return displayName;
+            return Context.tr(displayName);
+        }
+
+        //Fake tr
+        private static String tr(String fake) {
+            return fake;
         }
     }
 
@@ -52,5 +56,4 @@ public class AdminActionManager {
     public EnumSet<Action> milestoneActions() {
         return EnumSet.range(Action.VALIDATE_BATCH, Action.FORCE_VALIDATE_BATCH);
     }
-
 }

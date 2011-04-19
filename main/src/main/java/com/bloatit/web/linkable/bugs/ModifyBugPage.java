@@ -45,7 +45,7 @@ public final class ModifyBugPage extends LoggedPage {
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_LINES = 5;
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
     private final Bug bug;
     private final ModifyBugPageUrl url;
@@ -87,20 +87,29 @@ public final class ModifyBugPage extends LoggedPage {
         final FieldData levelFieldData = doModifyUrl.getLevelParameter().pickFieldData();
         final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("New Level"));
         levelInput.addErrorMessages(levelFieldData.getErrorMessages());
-        // TODO: IMPORTANT set the current value as default value
-        levelInput.setDefaultValue(levelFieldData.getSuggestedValue());
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
-        levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel())));
+        String suggestedLevel = levelFieldData.getSuggestedValue();
+        if(suggestedLevel != null) {
+            levelInput.setDefaultValue(suggestedLevel);
+        } else {
+            levelInput.setDefaultValue(BindedLevel.getBindedLevel(bug.getErrorLevel()).getLevel().toString());
+        }
+        levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel()).getDisplayName()));
         modifyBugForm.add(levelInput);
 
         // State
         final FieldData stateFieldData = doModifyUrl.getStateParameter().pickFieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateFieldData.getName(), Context.tr("New state"));
-        stateInput.addErrorMessages(stateFieldData.getErrorMessages());
-        // TODO: IMPORTANT set the current value as default value
-        stateInput.setDefaultValue(stateFieldData.getSuggestedValue());
         stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
-        stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState())));
+        stateInput.addErrorMessages(stateFieldData.getErrorMessages());
+        String suggestedState = stateFieldData.getSuggestedValue();
+        if(suggestedState != null) {
+            stateInput.setDefaultValue(suggestedState);
+        } else {
+            stateInput.setDefaultValue(BindedState.getBindedState(bug.getState()).getState().toString());
+        }
+        
+        stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState()).getDisplayName()));
         modifyBugForm.add(stateInput);
 
         // Create the fields that will describe the reason of bug change
@@ -111,7 +120,7 @@ public final class ModifyBugPage extends LoggedPage {
                                                                BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS);
         descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
         descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug."));
+        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug modification."));
         modifyBugForm.add(descriptionInput);
 
         modifyBugForm.add(new HtmlSubmit(Context.tr("Modify the bug")));

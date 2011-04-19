@@ -1,13 +1,17 @@
-What is a feature ?
-===================
-A feature request is a place where 
+Feature Request ?
+===========================
+Feature requests are created when a user needs something with an open source software. In the request,
+user will explain his needs, and his requirements.
 
-Contribution
-============
+Other elveos users are then invited to **contribute** on the feature request, until enough money is raised. 
 
+A developer will then be able to **create an offer** to develop the feature.
 
+Features states
+---------------
+During its life, a feature has various states: 
 
-Offer
-=====
-
-
+ * Funding, the initial state. Lasts until enough money is raised.
+ * Offer validation, a short time span allowing contributors to accept or refuse an offer to develop
+ * In development, until the request is fully developed (this phase includes validation)
+ * Success, when the validation happened successfully

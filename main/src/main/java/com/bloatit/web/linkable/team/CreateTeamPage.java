@@ -40,6 +40,7 @@ public final class CreateTeamPage extends MasterPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("create_team"));
+        layout.addRight(new SideBarDocumentationBlock("cc_by"));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 

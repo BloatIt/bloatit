@@ -264,8 +264,8 @@ public final class Localizator {
      * Finds all available languages for the system
      * <p>
      * <p>
-     * Returns a map with [<language english name>:[<language local
-     * name><language ISO code>]] Example : [French:[Français,fr]] or
+     * Returns a map with [{@code<language english name>}:[{@code<language local
+     * name>, <language ISO code>}]] Example : [French:[Français,fr]] or
      * [English:[English,en]]
      * </p>
      * 

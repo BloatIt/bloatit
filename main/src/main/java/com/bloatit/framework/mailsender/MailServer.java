@@ -116,7 +116,7 @@ public class MailServer extends Thread {
      * @throws MailFatalError when the mail server cannot be created (i.e. :
      *             directories to store mails can't be created)
      */
-    public static MailServer getInstance() {
+    public synchronized static MailServer getInstance() {
         if (instance == null) {
             instance = new MailServer();
         }

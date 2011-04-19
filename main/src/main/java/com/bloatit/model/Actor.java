@@ -20,6 +20,7 @@ import java.util.Date;
 
 import com.bloatit.data.DaoActor;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
 import com.bloatit.model.right.Action;
@@ -216,7 +217,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     public abstract String getDisplayName() throws UnauthorizedOperationException;
     
-    public abstract FileMetadata getAvatar();
+    public abstract Image getAvatar();
 
     /*
      * (non-Javadoc)

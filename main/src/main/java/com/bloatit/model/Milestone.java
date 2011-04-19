@@ -109,7 +109,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * @throws UnauthorizedOperationException
      */
     public Bug addBug(final String title, final String description, final Locale locale, final Level errorLevel)
-                                                                                                                throws UnauthorizedOperationException {
+            throws UnauthorizedOperationException {
         final Bug bug = new Bug(getAuthToken().getMember(), getAuthToken().getAsTeam(), this, title, description, locale, errorLevel);
         getDao().addBug(bug.getDao());
         return bug;
@@ -131,9 +131,8 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * 
      * @throws UnauthorizedOperationException
      */
-    public Release
-            addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
-                                                                                                                    throws UnauthorizedOperationException {
+    public Release addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
+            throws UnauthorizedOperationException {
         final Release release = new Release(getOffer().getMember(), getAuthToken().getAsTeam(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
@@ -282,6 +281,11 @@ public class Milestone extends Identifiable<DaoMilestone> {
         return getDao().getMinorBugsPercent();
     }
 
+
+    public final int getSecondBeforeValidation() {
+        return getDao().getSecondBeforeValidation();
+    }
+
     /**
      * Gets the expiration date.
      * 
@@ -328,7 +332,8 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
         final int order = 1;
         while (iterator.hasNext()) {
-            if (iterator.next().getId() != null && iterator.next().getId().equals(getDao().getId())) {
+            Integer id = iterator.next().getId();
+            if (id != null && id.equals(getDao().getId())) {
                 return order;
             }
         }

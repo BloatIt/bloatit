@@ -46,6 +46,8 @@ import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
+import com.bloatit.web.linkable.members.ModifyMemberAction;
+import com.bloatit.web.linkable.members.ModifyMemberPage;
 import com.bloatit.web.linkable.messages.MessageListPage;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugDeleteAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugEditPage;
@@ -139,6 +141,8 @@ import com.bloatit.web.url.MetaReportBugActionUrl;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
+import com.bloatit.web.url.ModifyMemberActionUrl;
+import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
@@ -299,6 +303,9 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(AccountPageUrl.getName())) {
             return new AccountPage(new AccountPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ModifyMemberPageUrl.getName())) {
+            return new ModifyMemberPage(new ModifyMemberPageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -401,6 +408,10 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(UnlockActionUrl.getName())) {
             return new UnlockAction(new UnlockActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ModifyMemberActionUrl.getName())) {
+            return new ModifyMemberAction(new ModifyMemberActionUrl(params, session.getParameters()));
+        }
+
 
         // Process
         if (pageCode.equals(ContributionProcessUrl.getName())) {

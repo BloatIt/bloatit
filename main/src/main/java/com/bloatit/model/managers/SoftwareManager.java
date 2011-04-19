@@ -27,6 +27,8 @@ import com.bloatit.model.lists.SoftwareList;
  */
 public final class SoftwareManager {
 
+
+
     /**
      * Desactivated constructor on utility class.
      */
@@ -51,5 +53,13 @@ public final class SoftwareManager {
      */
     public static PageIterable<Software> getAll() {
         return new SoftwareList(DBRequests.getAll(DaoSoftware.class));
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Software getDefaultSoftware() {
+        return Software.create(DaoSoftware.getByName("no-software"));
     }
 }

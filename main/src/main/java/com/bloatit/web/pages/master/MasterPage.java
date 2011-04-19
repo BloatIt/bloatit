@@ -61,7 +61,7 @@ public abstract class MasterPage extends Page {
     private HtmlElement doCreateBody(final HtmlElement bodyContent) throws RedirectException {
         final HtmlGenericElement body = new HtmlGenericElement("body");
         body.addCustomJs(FrameworkConfiguration.getJsJquery());
-        body.addCustomJs(FrameworkConfiguration.getJsJquery());
+        body.addCustomJs(FrameworkConfiguration.getJsJqueryUi());
         body.addCustomJs(FrameworkConfiguration.getJsSelectivizr());
         body.addCustomJs(FrameworkConfiguration.getJsFlexie());
 

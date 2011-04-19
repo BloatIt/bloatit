@@ -1,9 +1,8 @@
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public enum BindedLevel implements Displayable {
     FATAL(Level.FATAL, tr("FATAL")), MAJOR(Level.MAJOR, tr("MAJOR")), MINOR(Level.MINOR, tr("MINOR"));
@@ -22,11 +21,16 @@ public enum BindedLevel implements Displayable {
 
     @Override
     public String getDisplayName() {
-        return label;
+        return Context.tr(label);
     }
 
     public Level getLevel() {
         return level;
+    }
+
+    //Fake tr
+    private static String tr(String fake) {
+        return fake;
     }
 
 }

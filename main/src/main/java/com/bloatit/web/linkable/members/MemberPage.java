@@ -34,10 +34,6 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
-import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
@@ -68,10 +64,10 @@ import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.BugPageUrl;
-import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MessageListPageUrl;
+import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -91,7 +87,7 @@ public final class MemberPage extends MasterPage {
     private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a member number."))
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
 
     private boolean myPage;
@@ -148,10 +144,12 @@ public final class MemberPage extends MasterPage {
     private HtmlElement generateMemberPageMain() {
         final HtmlDiv master = new HtmlDiv("member_page");
 
-        // Link to change account settings
-        final HtmlDiv modify = new HtmlDiv("float_right");
-        master.add(modify);
-        modify.addText(Context.tr("Change account settings"));
+        if (myPage) {
+            // Link to change account settings
+            final HtmlDiv modify = new HtmlDiv("float_right");
+            master.add(modify);
+            modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change account settings")));
+        }
 
         // Title
         final String title = (myPage) ? Context.tr("My page") : Context.tr("Member page");
@@ -183,7 +181,11 @@ public final class MemberPage extends MasterPage {
                 // Fullname
                 final HtmlSpan fullname = new HtmlSpan("id_category");
                 fullname.addText(Context.tr("Fullname: "));
-                memberIdList.add(new PlaceHolderElement().add(fullname).addText(member.getFullname()));
+                if (member.getFullname() != null) {
+                    memberIdList.add(new PlaceHolderElement().add(fullname).addText(member.getFullname()));
+                } else {
+                    memberIdList.add(new PlaceHolderElement().add(fullname));
+                }
 
                 // Email
                 final HtmlSpan email = new HtmlSpan("id_category");
@@ -407,23 +409,6 @@ public final class MemberPage extends MasterPage {
         final String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
         dateBox.addText(dateString);
         return master;
-    }
-
-    private XmlNode generateAvatarChangeForm() {
-        final ChangeAvatarActionUrl changeAvatarActionUrl = new ChangeAvatarActionUrl(member);
-        final HtmlForm changeAvatarForm = new HtmlForm(changeAvatarActionUrl.urlString());
-        changeAvatarForm.enableFileUpload();
-
-        // File
-        final FieldData avatarField = changeAvatarActionUrl.getAttachmentParameter().pickFieldData();
-        final HtmlFileInput avatarInput = new HtmlFileInput(avatarField.getName(), Context.tr("Avatar image file"));
-        avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
-        changeAvatarForm.add(avatarInput);
-
-        final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
-        changeAvatarForm.add(submit);
-
-        return changeAvatarForm;
     }
 
     @Override

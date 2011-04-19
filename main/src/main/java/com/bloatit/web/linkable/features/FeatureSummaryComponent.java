@@ -157,7 +157,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
                         final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')", Context.tr("+ Share"));
-                        featureSummaryShare.add(showHideShareBlock);
+                        // TODO: envalbe share button
+                        //featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
 
@@ -286,10 +287,14 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         if (!feature.getSelectedOffer().hasRelease()) {
             final Date releaseDate = feature.getSelectedOffer().getCurrentMilestone().getExpirationDate();
 
-            final String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.SHORT);
+            final String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.LONG);
 
             element.add(new HtmlParagraph(tr("There is no release yet.")));
-            element.add(new HtmlParagraph(tr("Next release is scheduled for {0}.", date)));
+            if(DateUtils.isInTheFuture(releaseDate)) {
+                element.add(new HtmlParagraph(tr("Next release is scheduled for {0}.", date)));
+            } else {
+                element.add(new HtmlParagraph(tr("Next release was scheduled for {0}.", date)));
+            }
 
         } else {
             final int releaseCount = feature.getSelectedOffer().getCurrentMilestone().getReleases().size();
@@ -319,8 +324,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         final Actor<?> author = feature.getSelectedOffer().getAuthor();
         final HtmlLink authorLink = new HtmlAuthorLink(feature.getSelectedOffer());
         element.add(new HtmlDiv("float_left").add(MembersTools.getMemberAvatar(author)));
-
-        element.add(new HtmlParagraph(tr("This feature is currently in development.")));
 
         element.add(new HtmlParagraph(new HtmlMixedText(tr("This feature is developed by <0>."), authorLink)));
 

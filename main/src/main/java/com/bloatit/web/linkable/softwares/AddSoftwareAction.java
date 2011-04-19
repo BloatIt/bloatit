@@ -54,8 +54,8 @@ public final class AddSoftwareAction extends LoggedAction {
     private final String shortDescription;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint
-    @Optional
+    @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."),
+                     optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
     @RequestParam(name = SOFTWARE_NAME_CODE, role = Role.POST)

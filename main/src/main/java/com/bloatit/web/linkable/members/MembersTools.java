@@ -23,8 +23,18 @@ public class MembersTools {
                 avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Team avatar"), "avatar"));
             }
         } else {
-            final FileResourceUrl imageUrl = new FileResourceUrl(actor.getAvatar());
-            avatarDiv.add(new HtmlImage(imageUrl, tr("Member avatar"), "avatar"));
+            Image avatar = actor.getAvatar();
+            if (avatar.getMetadata() != null) {
+                final FileResourceUrl imageUrl = new FileResourceUrl(avatar.getMetadata());
+                avatarDiv.add(new HtmlImage(imageUrl, tr("Member avatar"), "avatar"));
+            } else {
+                HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar");
+                img.addAttribute("libravatar", avatar.getIdentifier());
+                img.setCssClass("libravatar");
+                avatarDiv.add(img);
+                // avatarDiv.add(new HtmlImage(avatar, tr("Member avatar"),
+                // "avatar"));
+            }
         }
 
         return avatarDiv;
@@ -36,7 +46,7 @@ public class MembersTools {
         if (actor.getAvatar() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar_small"));
         } else {
-            final FileResourceUrl imageUrl = new FileResourceUrl(actor.getAvatar());
+            final FileResourceUrl imageUrl = new FileResourceUrl(actor.getAvatar().getMetadata());
             avatarDiv.add(new HtmlImage(imageUrl, tr("Member avatar"), "avatar_small"));
         }
 

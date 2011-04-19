@@ -6,6 +6,7 @@ import java.util.List;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 
@@ -15,9 +16,16 @@ public class JsShowHide {
     private final List<HtmlBranch> listeners = new ArrayList<HtmlBranch>();
     private final RandomString rng = new RandomString(10);
     private final boolean state;
+    private boolean hasFallback;
+
+
+    public void setHasFallback(boolean b) {
+        this.hasFallback = b;
+    }
 
     public JsShowHide(final boolean state) {
         this.state = state;
+        this.hasFallback = true;
     }
 
     public void addActuator(final HtmlBranch actuator) {
@@ -33,7 +41,7 @@ public class JsShowHide {
 
     public void apply() {
 
-        if (!state) {
+        if (!state && hasFallback) {
             for (final HtmlBranch listener : listeners) {
                 listener.addAttribute("style", "display: none;");
             }
@@ -42,10 +50,9 @@ public class JsShowHide {
         prepareIds();
 
         for (final HtmlBranch actuator : actuators) {
-            final HtmlGenericElement scriptElement = new HtmlGenericElement("script");
 
             final String effectCall = "toggle( \"blind\")";
-            StringBuilder script = new StringBuilder();
+            HtmlScript script = new HtmlScript();
 
             script.append("$(function() {\n" + "        function runEffect() {\n");
 
@@ -61,9 +68,8 @@ public class JsShowHide {
             }
             
             script.append("    });");
-            scriptElement.add(new XmlText(script.toString()));
 
-            actuator.add(scriptElement);
+            actuator.add(script);
         }
 
     }
@@ -96,5 +102,7 @@ public class JsShowHide {
 
         });
     }
+
+
 
 }

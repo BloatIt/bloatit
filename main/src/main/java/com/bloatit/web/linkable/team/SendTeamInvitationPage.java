@@ -35,7 +35,7 @@ public class SendTeamInvitationPage extends LoggedPage {
     @SuppressWarnings("unused")
     private final SendTeamInvitationPageUrl url;
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
+    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team team;
 
