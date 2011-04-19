@@ -1,13 +1,17 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
+import java.lang.annotation.Annotation;
+
 import javax.lang.model.element.Element;
 
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 
 class ParameterDescription {
+
     // Name of the parameter.
     private final String name;
 
@@ -24,12 +28,12 @@ class ParameterDescription {
     private final ParamConstraint constraints;
 
     public ParameterDescription(final Element element, final RequestParam container, final ParamConstraint constraints, final Optional optional) {
-        typeOrTemplateType = getType(element);
         name = computeName(container.name(), element.getSimpleName().toString(), container.role(), Utils.getDeclaredName(element));
 
-        typeWithoutTemplate = getSecureType(element);
+        typeOrTemplateType = getTypeOrTemplate(element);
+        typeWithoutTemplate = getTypeWithoutTemplate(element);
+        typeWithoutTemplateSimple = getTypeWithoutTemplateSimple(element);
         attributeName = element.getSimpleName().toString();
-        typeWithoutTemplateSimple = getConversionType(element);
         role = container.role();
         suggestedValue = container.suggestedValue();
         conversionErrorMsg = container.conversionErrorMsg().value();
@@ -40,7 +44,7 @@ class ParameterDescription {
             isOptional = false;
             defaultValue = null;
         }
-        this.constraints = constraints;
+        this.constraints = (constraints != null ? constraints : new defaultParamConstraint());
     }
 
     private String computeName(final String annotationName, final String javaName, final Role role, final String className) {
@@ -53,11 +57,11 @@ class ParameterDescription {
         return annotationName;
     }
 
-    private String getSecureType(final Element attribute) {
+    private String getTypeWithoutTemplate(final Element attribute) {
         return attribute.asType().toString().replaceAll("\\<.*\\>", "");
     }
 
-    private String getConversionType(final Element attribute) {
+    private String getTypeOrTemplate(final Element attribute) {
         String string = attribute.asType().toString().replaceAll("\\<.*\\>", "");
 
         // TODO use inherit from collection
@@ -67,10 +71,10 @@ class ParameterDescription {
             final int stop = string.lastIndexOf(">");
             return string.substring(start, stop);
         }
-        return getType(attribute);
+        return getTypeWithoutTemplate(attribute);
     }
 
-    private String getType(final Element attribute) {
+    private String getTypeWithoutTemplateSimple(final Element attribute) {
         return attribute.asType().toString().replaceAll("\\<.*\\>", "").replaceAll(".*\\.", "").replace(">", "");
     }
 
@@ -97,6 +101,7 @@ class ParameterDescription {
     public final String getRole() {
         return "Role." + role.name();
     }
+
     public final Role getRealRole() {
         return role;
     }
@@ -125,6 +130,86 @@ class ParameterDescription {
 
     public final ParamConstraint getConstraints() {
         return constraints;
+    }
+
+    private static final class defaultParamConstraint implements ParamConstraint {
+        private final class TrImp implements tr {
+            private final String value;
+
+            public TrImp(final String value) {
+                this.value = value;
+            }
+
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return null;
+            }
+
+            @Override
+            public String value() {
+                return value;
+            }
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return null;
+        }
+
+        @Override
+        public tr precisionErrorMsg() {
+            return new TrImp(DEFAULT_ERROR_MSG);
+        }
+
+        @Override
+        public int precision() {
+            return DEFAULT_PRECISION;
+        }
+
+        @Override
+        public tr optionalErrorMsg() {
+            return new TrImp(DEFAULT_ERROR_MSG);
+        }
+
+        @Override
+        public boolean minIsExclusive() {
+            return false;
+        }
+
+        @Override
+        public tr minErrorMsg() {
+            return new TrImp(DEFAULT_ERROR_MSG);
+        }
+
+        @Override
+        public String min() {
+            return DEFAULT_MIN_STR;
+        }
+
+        @Override
+        public boolean maxIsExclusive() {
+            return false;
+        }
+
+        @Override
+        public tr maxErrorMsg() {
+            return new TrImp(DEFAULT_ERROR_MSG);
+        }
+
+        @Override
+        public String max() {
+            return DEFAULT_MAX_STR;
+        }
+
+        @Override
+        public int length() {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public tr LengthErrorMsg() {
+            return new TrImp(DEFAULT_ERROR_MSG);
+        }
     }
 
 }

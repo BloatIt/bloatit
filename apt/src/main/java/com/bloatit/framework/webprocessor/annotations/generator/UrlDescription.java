@@ -41,6 +41,16 @@ public class UrlDescription {
         return isAction;
     }
 
+    
+    public List<ParameterDescription> getFathersConstructorParameters() {
+        final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
+        if (father!=null) {
+            parameters.addAll(father.getFathersConstructorParameters());
+            parameters.addAll(father.getConstructorParameters());
+        }
+        return parameters;
+    }
+    
     public List<ParameterDescription> getConstructorParameters() {
         final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
         for (final Entry<String, ParameterDescription> ent : component.getParameters().entrySet()) {

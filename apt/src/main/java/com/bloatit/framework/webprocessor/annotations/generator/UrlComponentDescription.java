@@ -1,6 +1,8 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -14,6 +16,7 @@ public class UrlComponentDescription {
     private final String className;
     private final boolean isComponent;
     private final String componentName;
+    private final List<UrlComponentDescription> children = new ArrayList<UrlComponentDescription>();
 
     private final Map<String, ParameterDescription> parameters = new HashMap<String, ParameterDescription>();
 
@@ -50,6 +53,10 @@ public class UrlComponentDescription {
             }
         }
         return false;
+    }
+
+    public void addSubComponent(final UrlComponentDescription child) {
+        children.add(child);
     }
 
 }

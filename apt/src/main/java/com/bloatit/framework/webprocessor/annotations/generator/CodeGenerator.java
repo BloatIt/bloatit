@@ -2,6 +2,7 @@ package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.util.Map.Entry;
 
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Attribute;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Method;
@@ -10,7 +11,7 @@ import com.bloatit.framework.webprocessor.annotations.generator.Generator.Modifi
 
 public class CodeGenerator {
 
-    public String generateUrlClass(final UrlDescription desc) {
+    public Clazz generateUrlClass(final UrlDescription desc) {
         final Clazz clazz = new Generator.Clazz(desc.getClassName(), "com.bloatit.web.url");
         clazz.addImport("com.bloatit.framework.utils.parameters.*");
         clazz.addImport("com.bloatit.framework.webprocessor.url.*");
@@ -33,7 +34,7 @@ public class CodeGenerator {
         sharedConstructor.addParameter("Parameters", "params");
         sharedConstructor.addParameter("SessionParameters", "session");
         sharedConstructor.addLine("super();");
-        sharedConstructor.addLine("component = new AdministrationActionUrlComponent(params, session);");
+        sharedConstructor.addLine("component = new " + desc.getComponent().getClassName() + "(params, session);");
 
         final Method constructor = clazz.addConstructor();
         constructor.addParameter("Parameters", "params");
@@ -47,19 +48,17 @@ public class CodeGenerator {
 
         final Method generatedConstructor = clazz.addConstructor();
         final MethodCall superMethod = new MethodCall("super");
-        if (desc.getFather() != null) {
-            for (final ParameterDescription paramDesc : desc.getFather().getConstructorParameters()) {
-                generatedConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getName());
-                superMethod.addParameter(paramDesc.getName());
-            }
+        for (final ParameterDescription paramDesc : desc.getFathersConstructorParameters()) {
+            generatedConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getName());
+            superMethod.addParameter(paramDesc.getName());
         }
         final MethodCall componentConstruction = new MethodCall(desc.getComponent().getClassName());
         for (final ParameterDescription paramDesc : desc.getConstructorParameters()) {
             generatedConstructor.addParameter(paramDesc.getTypeOrTemplateType(), paramDesc.getName());
             componentConstruction.addParameter(paramDesc.getName());
         }
-        generatedConstructor.addLine(superMethod);
-        generatedConstructor.addLine("component = new " + componentConstruction);
+        generatedConstructor.addLine(superMethod + ";");
+        generatedConstructor.addLine("component = new " + componentConstruction + ";");
 
         final Method isAction = clazz.addMethod("boolean", "isAction");
         isAction.setOverride();
@@ -69,10 +68,10 @@ public class CodeGenerator {
         getCode.setOverride();
         getCode.addLine("return getName();");
 
-        final Method doConstructUtl = clazz.addMethod("void", "doConstructUtl");
-        doConstructUtl.setOverride();
-        doConstructUtl.addParameter("StringBuilder", "sb");
-        doConstructUtl.addLine("component.constructUrl(sb);");
+        final Method doConstructUrl = clazz.addMethod("void", "doConstructUrl");
+        doConstructUrl.setOverride();
+        doConstructUrl.addParameter("StringBuilder", "sb");
+        doConstructUrl.addLine("component.constructUrl(sb);");
 
         final Method doGetStringParameters = clazz.addMethod("void", "doGetStringParameters");
         doGetStringParameters.setOverride();
@@ -91,7 +90,7 @@ public class CodeGenerator {
 
         final Method clone = clazz.addMethod(clazz.getName(), "clone");
         clone.setOverride();
-        clone.addLine("return new AdministrationActionUrl(this);");
+        clone.addLine("return new " + clazz.getName() + "(this);");
 
         for (final Entry<String, ParameterDescription> entry : desc.getComponent().getParameters().entrySet()) {
             final ParameterDescription param = entry.getValue();
@@ -108,15 +107,15 @@ public class CodeGenerator {
             final String setterName = "set" + Utils.toCamelCase(param.getName(), true);
             final Method setter = clazz.addMethod("void", setterName);
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
-            setter.addLine("return this.component." + setterName + "(other);");
+            setter.addLine("this.component." + setterName + "(other);");
         }
 
-        return clazz.toString();
+        return clazz;
     }
 
-    public String generateComponentClass(final UrlComponentDescription desc) {
+    public Clazz generateComponentClass(final UrlComponentDescription desc) {
         final Clazz clazz = new Generator.Clazz(desc.getClassName(), "com.bloatit.web.url");
-        clazz.setExtends("AccountChargingPageUrlComponent");
+        clazz.setExtends("UrlComponent");
 
         clazz.addImport("com.bloatit.framework.webprocessor.annotations.RequestParam.Role");
         clazz.addImport("com.bloatit.framework.webprocessor.annotations.RequestParam");
@@ -138,11 +137,19 @@ public class CodeGenerator {
 
         final Method defaultConstructor = clazz.addConstructor();
         defaultConstructor.addLine("super();");
-        defaultConstructor.addLine("parseSessionParameters(session);");
-        defaultConstructor.addLine("parseParameters(params);");
-        defaultConstructor.setModifier(Modifier.PRIVATE);
-        // if (desc.hasUrlParameter()) {
-        // }
+        if (desc.hasUrlParameter()) {
+            defaultConstructor.setModifier(Modifier.PRIVATE);
+
+            final Method generatedConstructor = clazz.addConstructor();
+            for (final Entry<String, ParameterDescription> entry : desc.getParameters().entrySet()) {
+                final ParameterDescription param = entry.getValue();
+                if (param.getRealRole() == Role.GET && !param.isOptional()) {
+                    generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getName());
+                    generatedConstructor.addLine("this.set" + Utils.toCamelCase(param.getName(), true) + "(param.getName());");
+                }
+            }
+
+        }
 
         final Method doRegister = clazz.addMethod("void", "doRegister");
         doRegister.setOverride();
@@ -158,15 +165,15 @@ public class CodeGenerator {
                                                            "get" + Utils.toCamelCase(param.getName(), true) + "Parameter",
                                                            null);
 
-            final MethodCall newParamDescription = new Generator.MethodCall("UrlParameterDescription" + template);
+            final MethodCall newParamDescription = new Generator.MethodCall("UrlParameterDescription<" + param.getTypeWithoutTemplate() + ">");
             newParamDescription.addParameter(param.getAttributeNameStr());
-            newParamDescription.addParameter(param.getTypeWithoutTemplate());
+            newParamDescription.addParameter(param.getTypeWithoutTemplate() + ".class");
             newParamDescription.addParameter(param.getRole());
             newParamDescription.addParameter(param.getDefaultValueStr());
             newParamDescription.addParameter(param.getSuggestedValueStr());
             newParamDescription.addParameter(param.getConversionErrorMsgStr());
             newParamDescription.addParameter(param.isOptional() ? "true" : "false");
-            final MethodCall newParamConstraints = new Generator.MethodCall("UrlParameterConstraints" + template);
+            final MethodCall newParamConstraints = new Generator.MethodCall("UrlParameterConstraints<" + param.getTypeWithoutTemplate() + ">");
             newParamConstraints.addParameter(param.getConstraints().min());
             newParamConstraints.addParameter(param.getConstraints().minIsExclusive() ? "true" : "false");
             newParamConstraints.addParameter(param.getConstraints().max());
@@ -174,12 +181,12 @@ public class CodeGenerator {
             newParamConstraints.addParameter(param.isOptional() ? "true" : "false");
             newParamConstraints.addParameter(String.valueOf(param.getConstraints().precision()));
             newParamConstraints.addParameter(String.valueOf(param.getConstraints().length()));
-            newParamConstraints.addParameter(param.getConstraints().minErrorMsg().value());
-            newParamConstraints.addParameter(param.getConstraints().maxErrorMsg().value());
-            newParamConstraints.addParameter(param.getConstraints().optionalErrorMsg().value());
-            newParamConstraints.addParameter(param.getConstraints().precisionErrorMsg().value());
-            newParamConstraints.addParameter(param.getConstraints().LengthErrorMsg().value());
-            final MethodCall newParam = new Generator.MethodCall(param.getTypeOrTemplateType());
+            newParamConstraints.addParameter(Utils.getStr(param.getConstraints().minErrorMsg().value()));
+            newParamConstraints.addParameter(Utils.getStr(param.getConstraints().maxErrorMsg().value()));
+            newParamConstraints.addParameter(Utils.getStr(param.getConstraints().optionalErrorMsg().value()));
+            newParamConstraints.addParameter(Utils.getStr(param.getConstraints().precisionErrorMsg().value()));
+            newParamConstraints.addParameter(Utils.getStr(param.getConstraints().LengthErrorMsg().value()));
+            final MethodCall newParam = new Generator.MethodCall("UrlParameter" + template);
             if (param.getTypeOrTemplateType().equals(param.getTypeWithoutTemplate())) {
                 newParam.addParameter("null");
             } else {
@@ -195,16 +202,17 @@ public class CodeGenerator {
             getter.addLine("return this." + param.getName() + ".getValue();");
 
             // Value Setter
-            final Method setter = clazz.addMethod("UrlParameter" + template, "set" + Utils.toCamelCase(param.getName(), true));
+            final Method setter = clazz.addMethod("void", "set" + Utils.toCamelCase(param.getName(), true));
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
-            setter.addLine("return this." + param.getName() + ".setValue(other);");
+            setter.addLine("this." + param.getName() + ".setValue(other);");
 
             doRegister.addLine("register(" + param.getName() + ");");
 
             clone.addLine("other." + param.getName() + " = this." + param.getName() + ".clone();");
+            clone.addLine("return other;");
         }
 
-        return clazz.toString();
+        return clazz;
     }
 
 }

@@ -65,7 +65,7 @@ public class Generator {
             if (override) {
                 sb.append("@Override\n");
             }
-            sb.append(modifier.getName()).append(" ").append(staticFinal).append(type).append(" ").append(name).append("(");
+            sb.append(modifier.getName()).append(" ").append(staticFinal).append(" ").append(type).append(" ").append(name).append("(");
             for (int i = 0; i < parameters.size(); ++i) {
                 final Parameter param = parameters.get(i);
                 sb.append(param.type).append(" ").append(param.name);
@@ -73,7 +73,7 @@ public class Generator {
                     sb.append(", ");
                 }
             }
-            sb.append("{\n");
+            sb.append(") {\n");
             sb.append(content);
             sb.append("}\n\n");
             return sb.toString();
@@ -108,7 +108,7 @@ public class Generator {
                     sb.append(", ");
                 }
             }
-            sb.append(";");
+            sb.append(")");
             return sb.toString();
         }
     }
@@ -200,12 +200,10 @@ public class Generator {
         }
 
         public void addImport(final String importLine) {
-            imports.append(importLine).append("\n");
+            imports.append("import ").append(importLine).append(";\n");
         }
 
         public Attribute addAttribute(final String type, final String name) {
-            final Attribute attribute = new Attribute(type, name);
-            attributes.add(attribute);
             return addAttribute(type, name, null, null);
         }
 
@@ -240,8 +238,6 @@ public class Generator {
                 sb.append(" extends ").append(extendsClass);
             }
 
-            sb.append(" {\n");
-
             for (int i = 0; i < implementsClass.size(); ++i) {
                 if (i == 0) {
                     sb.append(" implements ");
@@ -251,6 +247,8 @@ public class Generator {
                     sb.append(", ");
                 }
             }
+
+            sb.append(" {\n");
 
             for (final Attribute attribute : attributes) {
                 sb.append(attribute);
