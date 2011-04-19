@@ -1,9 +1,8 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.Set;
 
 import javax.lang.model.element.Element;
@@ -19,7 +18,7 @@ public class UrlComponentDescription {
     private final String codeName;
     private final Set<UrlComponentDescription> children = new HashSet<UrlComponentDescription>();
 
-    private final Map<String, ParameterDescription> parameters = new HashMap<String, ParameterDescription>();
+    private final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
 
     public UrlComponentDescription(final Element element, final ParamContainer container, final String attributeName) {
         className = element.getSimpleName().toString() + "UrlComponent";
@@ -47,17 +46,17 @@ public class UrlComponentDescription {
         return Utils.getStr(codeName);
     }
 
-    public final Map<String, ParameterDescription> getParameters() {
+    public final List<ParameterDescription> getParameters() {
         return parameters;
     }
 
     public void addParameter(final ParameterDescription description) {
-        parameters.put(description.getAttributeName(), description);
+        parameters.add( description);
     }
 
     public boolean hasUrlParameter() {
-        for (final Entry<String, ParameterDescription> ent : parameters.entrySet()) {
-            if (!ent.getValue().isOptional() && ent.getValue().getRealRole() == Role.GET) {
+        for (final ParameterDescription param : parameters) {
+            if (!param.isOptional() && param.getRealRole() == Role.GET) {
                 return true;
             }
         }

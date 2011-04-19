@@ -1,7 +1,5 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
-import java.util.Map.Entry;
-
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Attribute;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
@@ -87,9 +85,7 @@ public class CodeGenerator {
         clone.setOverride();
         clone.addLine("return new " + clazz.getName() + "(this);");
 
-        for (final Entry<String, ParameterDescription> entry : desc.getComponent().getParameters().entrySet()) {
-            final ParameterDescription param = entry.getValue();
-
+        for (final ParameterDescription param : desc.getComponent().getParameters()) {
             final String getterName = "get" + Utils.toCamelCase(param.getAttributeName(), true);
             final Method getter = clazz.addMethod(param.getTypeWithoutTemplate(), getterName);
             getter.addLine("return this.component." + getterName + "();");
@@ -106,11 +102,11 @@ public class CodeGenerator {
         }
 
         for (final UrlComponentDescription subComponent : desc.getComponent().getSubComponents()) {
-            final String getParameterName = "get" + Utils.toCamelCase(subComponent.getAttributeName(), true);
+            final String getParameterName = "get" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url";
             final Method getParameter = clazz.addMethod(subComponent.getClassName(), getParameterName);
             getParameter.addLine("return this.component." + getParameterName + "();");
 
-            final String setterName = "set" + Utils.toCamelCase(subComponent.getAttributeName(), true);
+            final String setterName = "set" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url";
             final Method setter = clazz.addMethod("void", setterName);
             setter.addParameter(subComponent.getClassName(), "other");
             setter.addLine("this.component." + setterName + "(other);");
@@ -148,8 +144,7 @@ public class CodeGenerator {
             defaultConstructor.setModifier(Modifier.PRIVATE);
 
             final Method generatedConstructor = clazz.addConstructor();
-            for (final Entry<String, ParameterDescription> entry : desc.getParameters().entrySet()) {
-                final ParameterDescription param = entry.getValue();
+            for (final ParameterDescription param : desc.getParameters()) {
                 if (param.getRealRole() == Role.GET && !param.isOptional()) {
                     generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
                     generatedConstructor.addLine("this.set" + Utils.toCamelCase(param.getAttributeName(), true) + "(" + param.getAttributeName()
@@ -165,8 +160,7 @@ public class CodeGenerator {
         final Method clone = clazz.addMethod(clazz.getName(), "clone");
         clone.addLine(clazz.getName() + " other = new " + clazz.getName() + "();");
 
-        for (final Entry<String, ParameterDescription> entry : desc.getParameters().entrySet()) {
-            final ParameterDescription param = entry.getValue();
+        for (final ParameterDescription param : desc.getParameters()) {
             final String template = "<" + param.getTypeWithoutTemplate() + ", " + param.getTypeOrTemplateType() + ">";
             final Attribute attribute = clazz.addAttribute("UrlParameter" + template,
                                                            param.getAttributeName(),
@@ -221,8 +215,9 @@ public class CodeGenerator {
 
         for (final UrlComponentDescription subComponent : desc.getSubComponents()) {
             final String subComponentName = Utils.toCamelCase(subComponent.getClassName(), false);
-            clazz.addAttribute(subComponent.getClassName(), subComponentName, "get" + Utils.toCamelCase(subComponent.getAttributeName(), true), "set"
-                    + Utils.toCamelCase(subComponent.getAttributeName(), true));
+            clazz.addAttribute(subComponent.getClassName(), subComponentName, //
+                               "get" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url", //
+                               "set" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url");
 
             doRegister.addLine("register(" + subComponentName + ");");
             clone.addLine("other." + subComponentName + " = this." + subComponentName + ".clone();");

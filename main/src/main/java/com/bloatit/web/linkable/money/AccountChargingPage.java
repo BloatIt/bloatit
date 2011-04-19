@@ -230,7 +230,7 @@ public final class AccountChargingPage extends QuotationPage {
                 lines.add(new HtmlPrepaidLine(actor));
             }
             
-            final CheckContributionPageUrl recalculateUrl = url.clone();
+            final AccountChargingPageUrl recalculateUrl = url.clone();
             recalculateUrl.setPreload(null);
             lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, recalculateUrl));
         } catch (final UnauthorizedOperationException e) {

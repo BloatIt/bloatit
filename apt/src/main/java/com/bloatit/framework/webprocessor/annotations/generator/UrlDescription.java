@@ -2,7 +2,6 @@ package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.lang.model.element.Element;
 
@@ -53,9 +52,9 @@ public class UrlDescription {
     
     public List<ParameterDescription> getConstructorParameters() {
         final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
-        for (final Entry<String, ParameterDescription> ent : component.getParameters().entrySet()) {
-            if (!ent.getValue().isOptional() && ent.getValue().getRealRole() == Role.GET) {
-                parameters.add(ent.getValue());
+        for (final ParameterDescription params : component.getParameters()) {
+            if (!params.isOptional() && params.getRealRole() == Role.GET) {
+                parameters.add(params);
             }
         }
         return parameters;
