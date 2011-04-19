@@ -39,7 +39,6 @@
 								<!-- list of processors to use -->
 								<processor>com.bloatit.framework.webprocessor.annotations.generator.ParamContainerProcessor</processor>
 							</processors>
-							<outputDirectory>${basedir}/src/main/java/</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
