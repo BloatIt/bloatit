@@ -327,7 +327,8 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
         final int order = 1;
         while (iterator.hasNext()) {
-            if (iterator.next().getId().equals(getDao().getId())) {
+            Integer id = iterator.next().getId();
+            if (id != null && id.equals(getDao().getId())) {
                 return order;
             }
         }
