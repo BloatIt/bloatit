@@ -120,7 +120,7 @@ public final class ModifyBugPage extends LoggedPage {
                                                                BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS);
         descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
         descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug."));
+        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug modification."));
         modifyBugForm.add(descriptionInput);
 
         modifyBugForm.add(new HtmlSubmit(Context.tr("Modify the bug")));
