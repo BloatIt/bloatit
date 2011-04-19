@@ -94,7 +94,7 @@ public final class ModifyBugPage extends LoggedPage {
         } else {
             levelInput.setDefaultValue(BindedLevel.getBindedLevel(bug.getErrorLevel()).getLevel().toString());
         }
-        levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel())));
+        levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel()).getDisplayName()));
         modifyBugForm.add(levelInput);
 
         // State
@@ -109,7 +109,7 @@ public final class ModifyBugPage extends LoggedPage {
             stateInput.setDefaultValue(BindedState.getBindedState(bug.getState()).getState().toString());
         }
         
-        stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState())));
+        stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState()).getDisplayName()));
         modifyBugForm.add(stateInput);
 
         // Create the fields that will describe the reason of bug change
@@ -120,7 +120,7 @@ public final class ModifyBugPage extends LoggedPage {
                                                                BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS);
         descriptionInput.addErrorMessages(descriptionFieldData.getErrorMessages());
         descriptionInput.setDefaultValue(descriptionFieldData.getSuggestedValue());
-        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug."));
+        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug modification."));
         modifyBugForm.add(descriptionInput);
 
         modifyBugForm.add(new HtmlSubmit(Context.tr("Modify the bug")));

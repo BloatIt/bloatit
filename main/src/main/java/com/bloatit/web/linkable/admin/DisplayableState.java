@@ -1,9 +1,9 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public enum DisplayableState implements Displayable {
     NO_FILTER(tr("No filter")), //
@@ -16,7 +16,7 @@ public enum DisplayableState implements Displayable {
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return Context.tr(displayName);
     }
 
     private DisplayableState(final String displayName) {
@@ -25,5 +25,10 @@ public enum DisplayableState implements Displayable {
 
     public static PopularityState getState(final DisplayableState cmp) {
         return Enum.valueOf(PopularityState.class, cmp.name());
+    }
+
+    //Fake tr
+    private static String tr(String fake) {
+        return fake;
     }
 }

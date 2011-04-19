@@ -1,6 +1,5 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.EnumSet;
 
@@ -39,11 +38,16 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
         @Override
         public String getDisplayName() {
-            return displayName;
+            return Context.tr(displayName);
         }
 
         private OrderByUserContent(final String displayName) {
             this.displayName = displayName;
+        }
+
+        //Fake tr
+        private static String tr(String fake) {
+            return fake;
         }
     }
 
@@ -100,7 +104,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         groupAsTeam.setDefaultValue(groupAsTeamData.getSuggestedValue());
         groupAsTeam.addErrorMessages(groupAsTeamData.getErrorMessages());
         groupAsTeam.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
-        groupAsTeam.setLabel(tr("Filter by Content created as a group"));
+        groupAsTeam.setLabel(Context.tr("Filter by Content created as a group"));
         filterForm.add(groupAsTeam);
     }
 
@@ -110,7 +114,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         groupFile.setDefaultValue(groupFileData.getSuggestedValue());
         groupFile.addErrorMessages(groupFileData.getErrorMessages());
         groupFile.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
-        groupFile.setLabel(tr("Filter by Content with file"));
+        groupFile.setLabel(Context.tr("Filter by Content with file"));
         filterForm.add(groupFile);
     }
 
@@ -120,13 +124,13 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         groupDeleted.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupDeleted.setDefaultValue(groupDeletedData.getSuggestedValue());
         groupDeleted.addErrorMessages(groupDeletedData.getErrorMessages());
-        groupDeleted.setLabel(tr("Filter by deleted content"));
+        groupDeleted.setLabel(Context.tr("Filter by deleted content"));
         filterForm.add(groupDeleted);
     }
 
     @Override
     protected void addTypeColumn(final HtmlGenericTableModel<V> tableModel) {
-        tableModel.addColumn(tr("Type"), new StringColumnGenerator<V>() {
+        tableModel.addColumn(Context.tr("Type"), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
                 return element.getClass().getSimpleName();
@@ -136,7 +140,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
     protected void addIsDeletedColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
         clonedUrl.setOrderByStr("isDeleted");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Deleted")), new StringColumnGenerator<V>() {
+        tableModel.addColumn(clonedUrl.getHtmlLink(Context.tr("Deleted")), new StringColumnGenerator<V>() {
             @SuppressWarnings("synthetic-access")
             @Override
             public String getStringBody(final V element) {
@@ -151,7 +155,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     }
 
     protected void addNbFilesColumn(final HtmlGenericTableModel<V> tableModel) {
-        tableModel.addColumn(tr("Nb files"), new StringColumnGenerator<V>() {
+        tableModel.addColumn(Context.tr("Nb files"), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
                 return String.valueOf(element.getFiles().size());
@@ -161,7 +165,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
     protected void addCreationDateColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
         clonedUrl.setOrderByStr("creationDate");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Creation date")), new StringColumnGenerator<V>() {
+        tableModel.addColumn(clonedUrl.getHtmlLink(Context.tr("Creation date")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
                 return Context.getLocalizator().getDate(element.getCreationDate()).toString(FormatStyle.MEDIUM);
@@ -171,7 +175,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
     protected void addAsTeamColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
         clonedUrl.setOrderByStr("asTeam");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("asTeam")), new StringColumnGenerator<V>() {
+        tableModel.addColumn(clonedUrl.getHtmlLink(Context.tr("asTeam")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
                 try {
@@ -190,7 +194,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     protected UserContentAdminPageUrl addAuthorColumn(final HtmlGenericTableModel<V> tableModel) {
         final UserContentAdminPageUrl clonedUrl = url.clone();
         clonedUrl.setOrderByStr("m.login");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Author")), new StringColumnGenerator<V>() {
+        tableModel.addColumn(clonedUrl.getHtmlLink(Context.tr("Author")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
                 try {

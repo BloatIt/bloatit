@@ -1,9 +1,8 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public enum DisplayableMilestoneState implements Displayable {
     NOT_SELECTED(tr("<select>")), //
@@ -17,7 +16,7 @@ public enum DisplayableMilestoneState implements Displayable {
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return Context.tr(displayName);
     }
 
     private DisplayableMilestoneState(final String displayName) {
@@ -30,5 +29,10 @@ public enum DisplayableMilestoneState implements Displayable {
 
     public static MilestoneState getState(final DisplayableMilestoneState cmp) {
         return Enum.valueOf(MilestoneState.class, cmp.name());
+    }
+
+    //Fake tr
+    private static String tr(String fake) {
+        return fake;
     }
 }
