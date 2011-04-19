@@ -124,15 +124,20 @@ public abstract class UserContentAction extends LoggedAction {
                 return doProcessErrors();
             }
         }
-        if (team != null) {
-            if (!team.hasTeamPrivilege(right)) {
-                session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
-                transmitParameters();
-                return doProcessErrors();
+        try {
+            if (team != null) {
+                if (!team.hasTeamPrivilege(right)) {
+                    session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
+                    transmitParameters();
+                    return doProcessErrors();
+                }
+                session.getAuthToken().setAsTeam(team);
             }
-            session.getAuthToken().setAsTeam(team);
+            return doDoProcessRestricted(me, team);
+        } finally {
+            session.getAuthToken().setAsTeam(null);
+
         }
-        return doDoProcessRestricted(me, team);
     }
 
     // TODO correct me.
