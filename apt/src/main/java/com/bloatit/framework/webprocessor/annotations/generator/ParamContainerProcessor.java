@@ -41,27 +41,29 @@ public class ParamContainerProcessor extends AbstractProcessor {
     public boolean process(final Set<? extends TypeElement> typeElements, final RoundEnvironment env) {
         this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Annotation processing...");
 
-//        File rootFolder = new File("main/src/main/java/com/bloatit/web/url/");
-//        if (!rootFolder.exists()) {
-//            rootFolder = new File("src/main/java/com/bloatit/web/url/");
-//        }
-//        if (rootFolder.exists()) {
-//            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
-//                                                          "Cannot find the Url directory. You may have to remove the file by yourself.");
-//            for (final File urlFile : rootFolder.listFiles()) {
-//                try {
-//                    this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Deleting: " + urlFile.getCanonicalPath());
-//                } catch (final IOException e) {
-//                    e.printStackTrace();
-//                }
-//                urlFile.delete();
-//            }
-//        }
+        // File rootFolder = new
+        // File("main/src/main/java/com/bloatit/web/url/");
+        // if (!rootFolder.exists()) {
+        // rootFolder = new File("src/main/java/com/bloatit/web/url/");
+        // }
+        // if (rootFolder.exists()) {
+        // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
+        // "Cannot find the Url directory. You may have to remove the file by yourself.");
+        // for (final File urlFile : rootFolder.listFiles()) {
+        // try {
+        // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
+        // "Deleting: " + urlFile.getCanonicalPath());
+        // } catch (final IOException e) {
+        // e.printStackTrace();
+        // }
+        // urlFile.delete();
+        // }
+        // }
 
         for (final TypeElement typeElement : typeElements) {
             for (final Element element : env.getElementsAnnotatedWith(typeElement)) {
                 try {
-                    parseAParamContainer(element, null, null);
+                    parseAParamContainer(element);
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
@@ -99,7 +101,22 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
     }
 
-    private void parseAParamContainer(final Element element, final UrlComponentDescription father, final UrlDescription urlChild) {
+    private void parseAParamContainer(final Element element) {
+        parseAParamContainer(element, null, null, null);
+    }
+
+    private void parseAParamContainer(final Element element, final UrlDescription urlChild) {
+        parseAParamContainer(element, null, null, urlChild);
+    }
+
+    private void parseAParamContainer(final Element element, final Element fromAttribute, final UrlComponentDescription father) {
+        parseAParamContainer(element, fromAttribute, father, null);
+    }
+
+    private void parseAParamContainer(final Element element,
+                                      final Element fromAttribute,
+                                      final UrlComponentDescription father,
+                                      final UrlDescription urlChild) {
         final ParamContainer paramContainer = element.getAnnotation(ParamContainer.class);
         if (paramContainer == null) {
             return;
@@ -107,20 +124,21 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
         final UrlComponentDescription component;
         final UrlDescription url;
-        if (components.containsKey(element)) {
-            component = components.get(element);
-            url = urls.get(element);
-        } else if (!paramContainer.isComponent()) {
-            url = new UrlDescription(element, paramContainer, isAction(element));
-            urls.put(element, url);
-            component = url.getComponent();
-            components.put(element, component);
-
-            parseSuperClass(element, url);
+        if (fromAttribute != null) {
+            component = new UrlComponentDescription(element, paramContainer, fromAttribute.getSimpleName().toString());
         } else {
-            component = new UrlComponentDescription(element, paramContainer);
-            url = null;
-            components.put(element, component);
+            component = new UrlComponentDescription(element, paramContainer, null);
+        }
+        url = new UrlDescription(component, element, paramContainer, isAction(element));
+        urls.put(element, url);
+        components.put(element, component);
+        parseSuperClass(element, url);
+
+        if (urlChild != null) {
+            urlChild.setFather(url);
+        }
+        if (father != null) {
+            father.addSubComponent(component);
         }
 
         for (final Element enclosed : element.getEnclosedElements()) {
@@ -128,12 +146,6 @@ public class ParamContainerProcessor extends AbstractProcessor {
             parseEnclosedParamContainer(component, enclosed);
         }
 
-        if (url != null && urlChild != null) {
-            urlChild.setFather(url);
-        }
-        if (component != null && father != null) {
-            father.addSubComponent(component);
-        }
     }
 
     private boolean isAction(final Element element) {
@@ -183,7 +195,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         };
         final Element superElement = element.asType().accept(vs, this.processingEnv);
         if (superElement != null && superElement.getAnnotation(ParamContainer.class) != null) {
-            parseAParamContainer(superElement, null, urlDescription);
+            parseAParamContainer(superElement, urlDescription);
         }
     }
 
@@ -201,19 +213,15 @@ public class ParamContainerProcessor extends AbstractProcessor {
     private void parseEnclosedParamContainer(final UrlComponentDescription component, final Element attribute) {
         if (attribute.getAnnotation(RequestParam.class) == null) {
             // Find if the type of the attribute has a ParamContainer annotation
-            final TypeKindVisitor6<ParamContainer, Integer> vs = new TypeKindVisitor6<ParamContainer, Integer>() {
+            final TypeKindVisitor6<Element, Integer> vs = new TypeKindVisitor6<Element, Integer>() {
                 @Override
-                public ParamContainer visitDeclared(final DeclaredType t, final Integer p) {
-                    return t.asElement().getAnnotation(ParamContainer.class);
+                public Element visitDeclared(final DeclaredType t, final Integer p) {
+                    return t.asElement();
                 }
             };
-            final ParamContainer paramContainer = attribute.asType().accept(vs, 0);
-
-            if (paramContainer != null) {
-                parseAParamContainer(attribute, component, null);
-                // paramContainer.addComponentAndGetterSetter(getSecureType(attribute),
-                // attribute.getSimpleName().toString());
-                // paramContainer.registerComponent(attribute.getSimpleName().toString());
+            final Element newElement = attribute.asType().accept(vs, 0);
+            if (newElement != null && newElement.getAnnotation(ParamContainer.class) != null) {
+                parseAParamContainer(newElement, attribute, component);
             }
         }
     }

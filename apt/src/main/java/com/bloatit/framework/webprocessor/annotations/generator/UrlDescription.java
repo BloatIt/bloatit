@@ -15,9 +15,9 @@ public class UrlDescription {
     private final boolean isAction;
     private final UrlComponentDescription component;
 
-    public UrlDescription(final Element element, final ParamContainer container, final boolean isAction) {
+    public UrlDescription(final UrlComponentDescription component, final Element element, final ParamContainer container, final boolean isAction) {
         this.isAction = isAction;
-        component = new UrlComponentDescription(element, container);
+        this.component = component;
         className = element.getSimpleName().toString() + "Url";
     }
 

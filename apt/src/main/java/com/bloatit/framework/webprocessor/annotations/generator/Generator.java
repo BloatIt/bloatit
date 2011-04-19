@@ -217,7 +217,7 @@ public class Generator {
                 methods.add(getter);
             }
             if (setterName != null) {
-                final Method setter = new Method(type, setterName);
+                final Method setter = new Method("void", setterName);
                 setter.addParameter(type, "other");
                 setter.addLine("this." + name + " = other;\n");
                 methods.add(setter);

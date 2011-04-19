@@ -1,10 +1,10 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.lang.model.element.Element;
 
@@ -14,16 +14,18 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 public class UrlComponentDescription {
 
     private final String className;
+    private final String attributeName;
     private final boolean isComponent;
-    private final String componentName;
-    private final List<UrlComponentDescription> children = new ArrayList<UrlComponentDescription>();
+    private final String codeName;
+    private final Set<UrlComponentDescription> children = new HashSet<UrlComponentDescription>();
 
     private final Map<String, ParameterDescription> parameters = new HashMap<String, ParameterDescription>();
 
-    public UrlComponentDescription(final Element element, final ParamContainer container) {
+    public UrlComponentDescription(final Element element, final ParamContainer container, final String attributeName) {
         className = element.getSimpleName().toString() + "UrlComponent";
         isComponent = container.isComponent();
-        componentName = container.value();
+        codeName = container.value();
+        this.attributeName = attributeName;
     }
 
     public final String getClassName() {
@@ -33,9 +35,16 @@ public class UrlComponentDescription {
     public final boolean isComponent() {
         return isComponent;
     }
+    
+    public final String getAttributeName() {
+        if (attributeName == null) {
+            throw new RuntimeException();
+        }
+        return attributeName;
+    }
 
-    public final String getComponentNameStr() {
-        return Utils.getStr(componentName);
+    public final String getCodeNameStr() {
+        return Utils.getStr(codeName);
     }
 
     public final Map<String, ParameterDescription> getParameters() {
@@ -57,6 +66,10 @@ public class UrlComponentDescription {
 
     public void addSubComponent(final UrlComponentDescription child) {
         children.add(child);
+    }
+
+    public Set<UrlComponentDescription> getSubComponents() {
+        return children;
     }
 
 }

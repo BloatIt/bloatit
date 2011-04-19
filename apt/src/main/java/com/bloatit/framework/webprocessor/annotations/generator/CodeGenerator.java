@@ -27,7 +27,7 @@ public class CodeGenerator {
 
         final Method staticGetName = clazz.addMethod("String", "getName");
         staticGetName.setStaticFinal("static");
-        staticGetName.addLine("return " + desc.getComponent().getComponentNameStr() + ";");
+        staticGetName.addLine("return " + desc.getComponent().getCodeNameStr() + ";");
 
         final Method constructor = clazz.addConstructor();
         constructor.addParameter("Parameters", "params");
@@ -102,6 +102,17 @@ public class CodeGenerator {
             final String setterName = "set" + Utils.toCamelCase(param.getAttributeName(), true);
             final Method setter = clazz.addMethod("void", setterName);
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
+            setter.addLine("this.component." + setterName + "(other);");
+        }
+
+        for (final UrlComponentDescription subComponent : desc.getComponent().getSubComponents()) {
+            final String getParameterName = "get" + Utils.toCamelCase(subComponent.getAttributeName(), true);
+            final Method getParameter = clazz.addMethod(subComponent.getClassName(), getParameterName);
+            getParameter.addLine("return this.component." + getParameterName + "();");
+
+            final String setterName = "set" + Utils.toCamelCase(subComponent.getAttributeName(), true);
+            final Method setter = clazz.addMethod("void", setterName);
+            setter.addParameter(subComponent.getClassName(), "other");
             setter.addLine("this.component." + setterName + "(other);");
         }
 
@@ -206,6 +217,16 @@ public class CodeGenerator {
             doRegister.addLine("register(" + param.getAttributeName() + ");");
 
             clone.addLine("other." + param.getAttributeName() + " = this." + param.getAttributeName() + ".clone();");
+        }
+
+        for (final UrlComponentDescription subComponent : desc.getSubComponents()) {
+            final String subComponentName = Utils.toCamelCase(subComponent.getClassName(), false);
+            clazz.addAttribute(subComponent.getClassName(), subComponentName, "get" + Utils.toCamelCase(subComponent.getAttributeName(), true), "set"
+                    + Utils.toCamelCase(subComponent.getAttributeName(), true));
+
+            doRegister.addLine("register(" + subComponentName + ");");
+            clone.addLine("other." + subComponentName + " = this." + subComponentName + ".clone();");
+
         }
         clone.addLine("return other;");
 

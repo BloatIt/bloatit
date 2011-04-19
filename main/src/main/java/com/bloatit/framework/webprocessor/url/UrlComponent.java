@@ -40,7 +40,7 @@ public abstract class UrlComponent extends UrlNode {
     protected final void register(final UrlNode node) {
         nodes.add(node);
     }
-
+    
     private final void registerIfNotAlreadyDone() {
         if (!isRegistered) {
             doRegister();
