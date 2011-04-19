@@ -12,7 +12,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.components.TeamListRenderer;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
@@ -42,6 +44,8 @@ public final class TeamsPage extends MasterPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
+
+        layout.addRight(new SideBarButton(Context.tr("Create a team"), new CreateTeamPageUrl(), WebConfiguration.getImgTeam()));
         layout.addRight(new SideBarDocumentationBlock("describe_team"));
 
         return layout;

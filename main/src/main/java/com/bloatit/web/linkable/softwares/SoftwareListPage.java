@@ -29,6 +29,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -67,6 +68,8 @@ public final class SoftwareListPage extends MasterPage {
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
+        
+        layout.addRight(new SideBarDocumentationBlock("software"));
 
         return layout;
     }
