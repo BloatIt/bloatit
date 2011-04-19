@@ -45,7 +45,7 @@ import com.bloatit.web.url.ModifyBugPageUrl;
 public final class BugPage extends MasterPage {
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
     private final Bug bug;
 
     private final BugPageUrl url;

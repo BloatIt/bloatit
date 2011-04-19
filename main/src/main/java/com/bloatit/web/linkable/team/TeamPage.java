@@ -58,7 +58,7 @@ import com.bloatit.web.url.TeamPageUrl;
 public final class TeamPage extends MasterPage {
     private final TeamPageUrl url;
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team targetTeam;
 

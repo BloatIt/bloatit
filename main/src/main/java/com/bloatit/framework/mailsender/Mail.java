@@ -23,7 +23,7 @@ public class Mail {
      * </code>
      * </p>
      * 
-     * @param to the email addresse of the receiver of the mail
+     * @param to the email address of the receiver of the mail
      * @param title the title of the email
      * @param content the text content of the email
      * @param mailSenderID a unique identifier to the mail (recommended : the

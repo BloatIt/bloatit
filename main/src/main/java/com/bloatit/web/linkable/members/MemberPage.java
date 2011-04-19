@@ -91,7 +91,7 @@ public final class MemberPage extends MasterPage {
     private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a member number."))
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
 
     private boolean myPage;

@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.features;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -60,6 +61,10 @@ public final class FeatureContributorsComponent extends HtmlDiv {
 
                 // TODO: generate contribution graph
 
+                // Display contribution list
+                final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
+                contributorsBlock.add(table);
+
                 // Display contribution stats
                 if (contributionCount > 0) {
                     final String contributionMeanValue = Context.getLocalizator()
@@ -79,10 +84,10 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                     contributorsBlock.add(statTable);
                 }
 
-                final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
-                contributorsBlock.add(table);
 
-                contributorsBlock.add(new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute")));
+                if(feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
+                    contributorsBlock.add(new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute")));
+                }
 
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);

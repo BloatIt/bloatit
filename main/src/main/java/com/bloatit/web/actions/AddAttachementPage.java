@@ -37,7 +37,7 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 public final class AddAttachementPage extends CreateUserContentPage {
 
     @SuppressWarnings("rawtypes")
-    @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value''."))
+    @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
     UserContentInterface userContent;
 

@@ -163,7 +163,8 @@ public class UrlParameter<T, U> extends UrlNode {
     public Messages getMessages() {
         final Messages messages = new Messages();
         if (conversionError) {
-            final Message message = new Message(getConversionErrorMsg(), What.CONVERSION_ERROR, getName(), getStringValue());
+
+            final Message message = new Message(getConversionErrorMsg(), What.CONVERSION_ERROR, new GenericMessageFormater(getName(), getStringValue()));
             messages.add(message);
         } else if (constraints != null) {
             constraints.computeConstraints((U) getValue(), getValueClass(), messages, getName(), getStringValue());

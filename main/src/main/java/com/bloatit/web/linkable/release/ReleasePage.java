@@ -39,7 +39,7 @@ import com.bloatit.web.url.ReleasePageUrl;
 public final class ReleasePage extends MasterPage {
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a release number."))
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the release number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the release number: ''%value%''."))
     private final Release release;
 
     private final ReleasePageUrl url;

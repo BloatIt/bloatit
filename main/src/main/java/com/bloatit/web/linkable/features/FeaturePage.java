@@ -34,7 +34,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("feature")
 public final class FeaturePage extends MasterPage {
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the feature number: ''%value''."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the feature number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a feature number."))
     private final Feature feature;
 

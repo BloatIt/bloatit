@@ -64,14 +64,14 @@ public final class OfferAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
-                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+    @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
+                     max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
-                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+    @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
+                     max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentMajor;
 
     @RequestParam(role = Role.POST, suggestedValue = "true")

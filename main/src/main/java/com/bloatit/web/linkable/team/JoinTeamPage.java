@@ -23,7 +23,7 @@ import com.bloatit.web.url.JoinTeamPageUrl;
 public final class JoinTeamPage extends LoggedPage {
     private JoinTeamPageUrl url;
 
-    @RequestParam(name = "target", conversionErrorMsg = @tr("I cannot find the team number: ''%value''."))
+    @RequestParam(name = "target", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private Team targetTeam;
 
