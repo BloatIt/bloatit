@@ -1,9 +1,8 @@
 package com.bloatit.web.linkable.admin;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public enum DisplayableFeatureState implements Displayable {
     NO_FILTER(tr("No filter")), //
@@ -19,7 +18,7 @@ public enum DisplayableFeatureState implements Displayable {
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return Context.tr(displayName);
     }
 
     private DisplayableFeatureState(final String displayName) {
@@ -32,5 +31,10 @@ public enum DisplayableFeatureState implements Displayable {
 
     public static DisplayableFeatureState getFeatureState(final FeatureState cmp) {
         return Enum.valueOf(DisplayableFeatureState.class, cmp.name());
+    }
+
+    //Fake tr
+    private static String tr(String fake) {
+        return fake;
     }
 }

@@ -1,9 +1,9 @@
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
+import com.bloatit.framework.webprocessor.context.Context;
 
 public enum BindedState implements Displayable {
     PENDING(BugState.PENDING, tr("PENDING")), DEVELOPING(BugState.DEVELOPING, tr("DEVELOPING")), RESOLVED(BugState.RESOLVED, tr("RESOLVED"));
@@ -22,11 +22,16 @@ public enum BindedState implements Displayable {
 
     @Override
     public String getDisplayName() {
-        return label;
+        return Context.tr(label);
     }
 
     public BugState getState() {
         return state;
+    }
+    
+    //Fake tr
+    private static String tr(String fake) {
+        return fake;
     }
 
 }
