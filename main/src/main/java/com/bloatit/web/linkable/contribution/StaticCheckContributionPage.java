@@ -20,10 +20,11 @@ import javax.mail.IllegalWriteException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlLink;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -31,7 +32,6 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
-import com.bloatit.model.Team;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -40,7 +40,7 @@ import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
-import com.bloatit.web.url.UnlockActionUrl;
+import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
@@ -48,11 +48,16 @@ import com.bloatit.web.url.UnlockActionUrl;
 @ParamContainer("contribute/staticcheck")
 public final class StaticCheckContributionPage extends QuotationPage {
 
+    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    private final ContributionProcess process;
+
     private final StaticCheckContributionPageUrl url;
 
     public StaticCheckContributionPage(final StaticCheckContributionPageUrl url) {
         super(url, new CheckContributionActionUrl(url.getProcess()));
         this.url = url;
+        process = url.getProcess();
     }
 
     @Override
@@ -120,31 +125,11 @@ public final class StaticCheckContributionPage extends QuotationPage {
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
         summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
-        summary.add(new HtmlPayBlock(quotation, process.getTeam(), new PaylineProcessUrl(actor, process), new UnlockActionUrl(process)));
+        summary.add(new HtmlPayBlock(quotation,
+                                     process.getTeam(),
+                                     new PaylineProcessUrl(actor, process),
+                                     new UnlockContributionProcessActionUrl(process)));
         group.add(summary);
-    }
-
-    public static class HtmlPayBlock extends HtmlDiv {
-        public HtmlPayBlock(final StandardQuotation quotation, final Team team, final Url paymentUrl, final Url returnUrl) {
-            super("pay_actions");
-            final HtmlLink payContributionLink = paymentUrl.getHtmlLink(tr("Pay {0}",
-                                                                           Context.getLocalizator()
-                                                                                  .getCurrency(quotation.totalTTC.getValue())
-                                                                                  .getDecimalDefaultString()));
-            payContributionLink.setCssClass("button");
-
-            add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated."), "debug")).add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123."),
-                                                                                                                                                         "debug"));
-            if (team != null) {
-                try {
-                    add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", team.getLogin()), "use_account"));
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException(e);
-                }
-            }
-            add(returnUrl.getHtmlLink(Context.tr("edit")));
-            add(payContributionLink);
-        }
     }
 
     @Override
@@ -163,7 +148,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
     }
 
     private Url createUnlockedReturnUrl() {
-        return new UnlockActionUrl(process);
+        return new UnlockContributionProcessActionUrl(process);
     }
 
     @Override

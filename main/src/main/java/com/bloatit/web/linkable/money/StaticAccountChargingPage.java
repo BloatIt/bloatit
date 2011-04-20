@@ -15,72 +15,53 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
-import javax.mail.IllegalWriteException;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlLink;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
+import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
+import com.bloatit.web.linkable.contribution.HtmlPayBlock;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
+import com.bloatit.web.linkable.contribution.MoneyVariationBlock;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
+import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
+import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer("account/charging")
-public final class AccountChargingPage extends QuotationPage {
+@ParamContainer("account/charging/check")
+public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
+    private final StaticAccountChargingPageUrl url;
 
-    @Optional
-    @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
-    @ParamConstraint(min = "1", minErrorMsg = @tr("You must specify a positive value."), //
-                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
-    private BigDecimal preload;
-
-    private final AccountChargingPageUrl url;
-
-    public AccountChargingPage(final AccountChargingPageUrl url) {
+    public StaticAccountChargingPage(final StaticAccountChargingPageUrl url) {
         super(url, null);
         this.url = url;
-        preload = url.getPreload();
         process = url.getProcess();
-    }
-
-    @Override
-    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
-        if (url.getMessages().hasMessage()) {
-            if (url.getProcessParameter().getMessages().isEmpty()) {
-                if (!url.getPreloadParameter().getMessages().isEmpty()) {
-                    preload = process.getAmountToCharge() != null ? process.getAmountToCharge() : BigDecimal.ZERO;
-                }
-            } else {
-                throw new RedirectException(Context.getSession().pickPreferredPage());
-            }
-        }
-        return createBodyContent();
     }
 
     @Override
@@ -95,12 +76,12 @@ public final class AccountChargingPage extends QuotationPage {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             try {
-                group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getLogin()), 1);
+                group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getLogin()), 1);
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
             }
         } else {
-            group = new HtmlTitleBlock(tr("Charge your account"), 1);
+            group = new HtmlTitleBlock(tr("Validate your account charging"), 1);
         }
         BigDecimal account;
         try {
@@ -110,6 +91,7 @@ public final class AccountChargingPage extends QuotationPage {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
+
         return group;
     }
 
@@ -121,58 +103,47 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
-        if (process.isLocked()) {
-            session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
-        }
-        try {
-            if (!process.getAmountToCharge().equals(preload) && preload != null) {
-                process.setAmountToCharge(preload);
-                process.setAmountToPay(preload);
-            }
-            if (process.getAmountToCharge().equals(BigDecimal.ZERO)) {
-                process.setAmountToCharge(BigDecimal.ONE);
-                process.setAmountToPay(BigDecimal.ONE);
-            }
-        } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
-        }
-
         // Total
-        final StandardQuotation quotation = new StandardQuotation(process.getAmountToPay());
+        final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
 
         final HtmlDiv lines = new HtmlDiv("quotation_details_lines");
-        final AccountChargingPageUrl recalculateUrl = url.clone();
-        recalculateUrl.setPreload(null);
-        lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, recalculateUrl));
-
-        // Pay block
-        final HtmlDiv payBlock = new HtmlDiv("pay_actions");
-        {
-            final HtmlLink payContributionLink = new StaticAccountChargingPageUrl(process).getHtmlLink(tr("Validate"));
-            payContributionLink.setCssClass("button");
-            if (process.getTeam() != null) {
-                try {
-                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
-                                                   "use_account"));
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException(e);
-                }
-            }
-            payBlock.add(payContributionLink);
-        }
-
+        lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, null));
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
         summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
-        summary.add(payBlock);
+        summary.add(new HtmlPayBlock(quotation,
+                                     process.getTeam(),
+                                     new PaylineProcessUrl(actor, process),
+                                     new UnlockAccountChargingProcessActionUrl(process)));
         group.add(summary);
 
     }
 
+    public HtmlDiv generateFeatureSummary(final Feature feature) {
+        final HtmlDiv featureContributionSummary = new HtmlDiv("feature_contribution_summary");
+        {
+            featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
+
+            try {
+                final HtmlDiv changeLine = new HtmlDiv("change_line");
+                {
+                    changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                    changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmountToCharge())));
+                }
+                featureContributionSummary.add(changeLine);
+                featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
+            } catch (final UnauthorizedOperationException e) {
+                session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+                throw new ShallNotPassException("User cannot access user information", e);
+            }
+        }
+        return featureContributionSummary;
+    }
+
     @Override
     protected String createPageTitle() {
-        return tr("Charge your account");
+        return tr("Contribute to a feature - check");
     }
 
     @Override
@@ -182,7 +153,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to charge your account");
+        return tr("You must be logged to contribute");
     }
 
     @Override
@@ -193,12 +164,14 @@ public final class AccountChargingPage extends QuotationPage {
     public static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
         final Breadcrumb breadcrumb;
         if (asTeam != null) {
-            breadcrumb = AccountPage.generateBreadcrumb(asTeam);
+            breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, process);
         } else {
             breadcrumb = AccountPage.generateBreadcrumb(member);
         }
         final AccountChargingPageUrl url = new AccountChargingPageUrl(process);
-        breadcrumb.pushLink(url.getHtmlLink(tr("Charging")));
+
+        breadcrumb.pushLink(new UnlockAccountChargingProcessActionUrl(process).getHtmlLink(tr("Charging")));
+        breadcrumb.pushLink(url.getHtmlLink(tr("Validation")));
         return breadcrumb;
     }
 }

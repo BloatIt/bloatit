@@ -148,60 +148,74 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException if the authenticated user is not
      *             <code>ADMIN</code> of <code>team</code>
      */
-    public void setTeamRole(final Team team, final TeamRole newRole) throws UnauthorizedOperationException, MemberNotInTeamException {
+    /*public void setTeamRole(final Team team, final TeamRole newRole) throws UnauthorizedOperationException, MemberNotInTeamException {
         if (!isInTeam(team)) {
             throw new MemberNotInTeamException();
         }
 
         tryAccess(new MemberRight.TeamList(), Action.WRITE);
         setTeamRoleUnprotected(team, newRole);
-    }
+    }*/
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public Set<UserTeamRight> getTeamRights(final Team g) {
-        return getDao().getTeamRights(g.getDao());
-    }
 
-    public void addTeamRight(final Team aTeam, final UserTeamRight aRight) {
-        getDao().addTeamRight(aTeam.getDao(), aRight);
-    }
-
-    public void removeTeamRight(final Team aTeam, final UserTeamRight removeRight) {
-        getDao().removeTeamRight(aTeam.getDao(), removeRight);
-    }
-
-    public boolean canInTeam(final Team aTeam, final UserTeamRight aRight) {
+    public boolean hasTeamRight(final Team aTeam, final UserTeamRight aRight) {
         if (getTeamRights(aTeam) == null) {
             return false;
         }
         return getTeamRights(aTeam).contains(aRight);
     }
 
-    public boolean canConsult(final Team aTeam) {
-        return canInTeam(aTeam, UserTeamRight.CONSULT);
+
+    public Set<UserTeamRight> getTeamRights(final Team g) {
+        return getDao().getTeamRights(g.getDao());
     }
 
-    public boolean canTalk(final Team aTeam) {
-        return canInTeam(aTeam, UserTeamRight.TALK);
+    public boolean hasConsultTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.CONSULT);
     }
 
-    public boolean canInvite(final Team aTeam) {
-        return canInTeam(aTeam, UserTeamRight.INVITE);
+    public boolean hasTalkTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.TALK);
     }
 
-    public boolean canModify(final Team aTeam) {
-        return canInTeam(aTeam, UserTeamRight.MODIFY);
+    public boolean hasInviteTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.INVITE);
     }
 
-    public boolean canPromote(final Team aTeam) {
-        return canInTeam(aTeam, UserTeamRight.PROMOTE);
+    public boolean hasModifyTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.MODIFY);
     }
 
-    public boolean canBank(final Team aTeam) {
-        return canInTeam(aTeam, UserTeamRight.BANK);
+    public boolean hasPromoteTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.PROMOTE);
+    }
+
+    public boolean hasBankTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.BANK);
+    }
+
+    public boolean canBeKickFromTeam(final Team aTeam, final Member actor) {
+        if(actor == null) {
+            return false;
+        }
+
+        if(this.equals(actor)) {
+            if(hasPromoteTeamRight(aTeam)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        if(!actor.hasPromoteTeamRight(aTeam)) {
+            return false;
+        }
+
+        return true;
     }
 
     // / END TEAM RIGHTS
@@ -213,11 +227,11 @@ public final class Member extends Actor<DaoMember> implements User {
      * @param team the team to add rights to the user
      * @param newRight the new new role of the user
      */
-    protected void setTeamRoleUnprotected(final Team team, final TeamRole newRole) {
+    /*protected void setTeamRoleUnprotected(final Team team, final TeamRole newRole) {
         for (final UserTeamRight r : newRole.getRights()) {
             getDao().addTeamRight(team.getDao(), r);
         }
-    }
+    }*/
 
     /**
      * Adds a user to a team without checking if the team is Public or not
@@ -237,7 +251,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public void sendInvitation(final Member member, final Team team) throws UnauthorizedOperationException {
-        if(!canInvite(team)) {
+        if(!hasInviteTeamRight(team)) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_SEND_NO_RIGHT);
         }
         DaoJoinTeamInvitation.createAndPersist(getDao(), member.getDao(), team.getDao());
@@ -290,9 +304,11 @@ public final class Member extends Actor<DaoMember> implements User {
      * @param team is the team from which the user will be removed.
      * @throws UnauthorizedOperationException
      */
-    public void removeFromTeam(final Team team) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.TeamList(), Action.DELETE);
-        getDao().removeFromTeam(team.getDao());
+    public void kickFromTeam(final Team aTeam, final Member actor)throws UnauthorizedOperationException {
+        if(!canBeKickFromTeam(aTeam, actor)) {
+            throw new UnauthorizedOperationException(SpecialCode.TEAM_PROMOTE_RIGHT_MISSING);
+        }
+        getDao().removeFromTeam(aTeam.getDao());
     }
 
     /**
@@ -495,13 +511,13 @@ public final class Member extends Actor<DaoMember> implements User {
      *         Note the set can be empty if the member has no preset role
      *         (standard member).
      */
-    protected TeamRole getRoleUnprotected(final Team team) {
+    /*protected TeamRole getRoleUnprotected(final Team team) {
         final Set<UserTeamRight> memberStatus = team.getDao().getUserTeamRight(getDao());
         if (memberStatus != null) {
             return new TeamRole(memberStatus);
         }
         return null;
-    }
+    }*/
 
     protected boolean isInTeamUnprotected(final Team team) {
         return getDao().isInTeam(team.getDao());

@@ -1,4 +1,4 @@
-package com.bloatit.web.linkable.contribution;
+package com.bloatit.web.linkable.money;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -6,16 +6,16 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.CheckContributionPageUrl;
-import com.bloatit.web.url.UnlockActionUrl;
+import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 
-@ParamContainer("contribution/unlock")
-public class UnlockAction extends LoggedAction {
+@ParamContainer("account/charging/unlock")
+public final class UnlockAccountChargingProcessAction extends LoggedAction {
 
     @RequestParam
-    private final ContributionProcess process;
+    private final AccountChargingProcess process;
 
-    public UnlockAction(final UnlockActionUrl url) {
+    public UnlockAccountChargingProcessAction(final UnlockAccountChargingProcessActionUrl url) {
         super(url);
         process = url.getProcess();
     }
@@ -28,7 +28,7 @@ public class UnlockAction extends LoggedAction {
     @Override
     protected Url doProcessRestricted(final Member me) {
         process.setLock(false);
-        return new CheckContributionPageUrl(process);
+        return new AccountChargingPageUrl(process);
     }
 
     @Override

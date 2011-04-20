@@ -29,7 +29,7 @@ public abstract class UrlNode implements Iterable<UrlNode>, Cloneable {
      */
     protected abstract void constructUrl(final StringBuilder sb);
 
-    protected abstract void getStringParameters(Parameters parameters);
+    protected abstract void getParametersAsStrings(Parameters parameters);
 
     @Deprecated
     public abstract void addParameter(String name, String value);

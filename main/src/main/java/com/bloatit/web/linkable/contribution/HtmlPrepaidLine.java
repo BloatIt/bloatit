@@ -22,10 +22,10 @@ public class HtmlPrepaidLine extends HtmlDiv {
 
         add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
                                                                       .getCurrency(actor.getInternalAccount().getAmount())
-                                                                      .getDefaultString()));
+                                                                      .getSimpleEuroString()));
         add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
                                                                                              "money up")));
-        add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
+        add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getSimpleEuroString()));
 
         add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Prepaid from internal account")));
 
@@ -35,7 +35,7 @@ public class HtmlPrepaidLine extends HtmlDiv {
                                                                                          .getCurrency(actor.getInternalAccount()
                                                                                                            .getAmount()
                                                                                                            .negate())
-                                                                                         .getDecimalDefaultString()));
+                                                                                         .getTwoDecimalEuroString()));
 
         add(amountBlock);
     }

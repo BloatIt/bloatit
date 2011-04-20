@@ -30,7 +30,7 @@ import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributionAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
-import com.bloatit.web.linkable.contribution.UnlockAction;
+import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -65,6 +65,8 @@ import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
+import com.bloatit.web.linkable.money.StaticAccountChargingPage;
+import com.bloatit.web.linkable.money.UnlockAccountChargingProcessAction;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.AddReleaseAction;
@@ -167,11 +169,13 @@ import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
+import com.bloatit.web.url.StaticAccountChargingPageUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
-import com.bloatit.web.url.UnlockActionUrl;
+import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
+import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 public class BloatitWebServer extends WebProcessor {
@@ -421,8 +425,14 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ChangeLanguageActionUrl.getName())) {
             return new ChangeLanguageAction(new ChangeLanguageActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(UnlockActionUrl.getName())) {
-            return new UnlockAction(new UnlockActionUrl(params, session.getParameters()));
+        if (pageCode.equals(UnlockAccountChargingProcessActionUrl.getName())) {
+            return new UnlockAccountChargingProcessAction(new UnlockAccountChargingProcessActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(UnlockContributionProcessActionUrl.getName())) {
+            return new UnlockContributionProcessAction(new UnlockContributionProcessActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(StaticAccountChargingPageUrl.getName())) {
+            return new StaticAccountChargingPage(new StaticAccountChargingPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ModifyMemberActionUrl.getName())) {
             return new ModifyMemberAction(new ModifyMemberActionUrl(params, session.getParameters()));

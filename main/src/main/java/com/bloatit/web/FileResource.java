@@ -35,6 +35,7 @@ public final class FileResource extends Resource {
 
     public FileResource(final FileResourceUrl url) {
         this.file = url.getFile();
+        
     }
 
     @Override

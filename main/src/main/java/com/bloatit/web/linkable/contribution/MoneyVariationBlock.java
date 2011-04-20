@@ -39,12 +39,12 @@ public class MoneyVariationBlock extends HtmlDiv {
             diffId = "equal";
         }
 
-        add(new HtmlDiv("money_variation_before_" + beforeId).addText(Context.getLocalizator().getCurrency(before).getDefaultString()));
+        add(new HtmlDiv("money_variation_before_" + beforeId).addText(Context.getLocalizator().getCurrency(before).getSimpleEuroString()));
         add(new HtmlDiv().setCssClass("money_variation_image").add(new HtmlImage(new Image(imageUri), imageId)));
         final HtmlDiv afterBlock = new HtmlDiv("money_variation_after_" + afterId);
-        afterBlock.addText(Context.getLocalizator().getCurrency(after).getDefaultString());
+        afterBlock.addText(Context.getLocalizator().getCurrency(after).getSimpleEuroString());
         afterBlock.add(new HtmlDiv("money_diff_" + diffId).addText((diffId.equals("up") ? "+" : "")
-                + Context.getLocalizator().getCurrency(after.subtract(before)).getDefaultString()));
+                + Context.getLocalizator().getCurrency(after.subtract(before)).getSimpleEuroString()));
         add(afterBlock);
     }
 

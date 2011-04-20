@@ -49,7 +49,7 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     }
 
     @Override
-    protected void doGetStringParameters(final Parameters parameters) {
+    protected void doGetParametersAsStrings(final Parameters parameters) {
         // Do nothing. There is no parameter.
     }
 }

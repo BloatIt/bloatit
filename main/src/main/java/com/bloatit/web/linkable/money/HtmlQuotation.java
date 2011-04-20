@@ -36,7 +36,7 @@ public class HtmlQuotation extends HtmlDiv {
 
             final HtmlDiv line = new HtmlDiv("quotation_line_" + level);
             line.add(new HtmlDiv("quotation_label").addText(entry.getLabel()));
-            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getDecimalDefaultString()));
+            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getTwoDecimalEuroString()));
             add(line);
 
             if (!entry.isClosed()) {
@@ -53,7 +53,7 @@ public class HtmlQuotation extends HtmlDiv {
 
             final HtmlDiv line = new HtmlDiv("quotation_line_" + level);
             line.add(new HtmlDiv("quotation_label").addText(entry.getLabel()));
-            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getDecimalDefaultString()));
+            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getTwoDecimalEuroString()));
             add(line);
 
             if (!entry.isClosed()) {
@@ -70,7 +70,7 @@ public class HtmlQuotation extends HtmlDiv {
 
             final HtmlDiv line = new HtmlDiv("quotation_line_" + level);
             line.add(new HtmlDiv("quotation_label").addText(entry.getLabel()));
-            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getDecimalDefaultString()));
+            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getTwoDecimalEuroString()));
             add(line);
 
             if (!entry.isClosed()) {
@@ -86,7 +86,7 @@ public class HtmlQuotation extends HtmlDiv {
 
             final HtmlDiv line = new HtmlDiv("quotation_line_" + level);
             line.add(new HtmlDiv("quotation_label").addText(entry.getLabel()));
-            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getDecimalDefaultString()));
+            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getTwoDecimalEuroString()));
             add(line);
 
             if (!entry.isClosed()) {
@@ -102,7 +102,7 @@ public class HtmlQuotation extends HtmlDiv {
 
             final HtmlDiv line = new HtmlDiv("quotation_line_" + level);
             line.add(new HtmlDiv("quotation_label").addText(entry.getLabel()));
-            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getDecimalDefaultString()));
+            line.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(entry.getValue()).getTwoDecimalEuroString()));
             add(line);
 
             if (!entry.isClosed()) {
@@ -125,7 +125,7 @@ public class HtmlQuotation extends HtmlDiv {
 
             final HtmlDiv totalLine = new HtmlDiv("quotation_line_" + level);
             totalLine.add(new HtmlDiv("quotation_total_label").addText(tr("Total to pay")));
-            totalLine.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(quotation.getValue()).getDecimalDefaultString()));
+            totalLine.add(new HtmlDiv("quotation_money").addText(Context.getLocalizator().getCurrency(quotation.getValue()).getTwoDecimalEuroString()));
             add(totalLine);
         }
     }

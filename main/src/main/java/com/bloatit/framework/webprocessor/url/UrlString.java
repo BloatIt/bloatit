@@ -47,7 +47,7 @@ public class UrlString extends Url {
     }
 
     @Override
-    protected void doGetStringParameters(final Parameters parameters) {
+    protected void doGetParametersAsStrings(final Parameters parameters) {
         // nothing to do. There are no parameters.
     }
 

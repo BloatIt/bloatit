@@ -22,7 +22,7 @@ public class HtmlTotalSummary extends HtmlDiv {
             subtotal.add(new HtmlDiv("label").addText(tr("Subtotal TTC")));
             subtotal.add(new HtmlDiv("money").addText(Context.getLocalizator()
                                                              .getCurrency(quotation.subTotalTTCEntry.getValue())
-                                                             .getDecimalDefaultString()));
+                                                             .getTwoDecimalEuroString()));
         }
         add(subtotal);
 
@@ -37,7 +37,7 @@ public class HtmlTotalSummary extends HtmlDiv {
             detailSpan.add(showDetailLink);
 
             feesHT.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees HT <0::>"), detailSpan)));
-            feesHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getDecimalDefaultString()));
+            feesHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getTwoDecimalEuroString()));
 
         }
         add(feesHT);
@@ -46,7 +46,7 @@ public class HtmlTotalSummary extends HtmlDiv {
         final HtmlDiv feesBank = new HtmlDiv("quotation_total_line_details");
         {
             feesBank.add(new HtmlDiv("label").addText(tr("Bank fees")));
-            feesBank.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getDecimalDefaultString()));
+            feesBank.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getTwoDecimalEuroString()));
         }
         feesDetail.add(feesBank);
 
@@ -55,7 +55,7 @@ public class HtmlTotalSummary extends HtmlDiv {
             elveosCommission.add(new HtmlDiv("label").addText(tr("Elveos's commission")));
             elveosCommission.add(new HtmlDiv("money").addText(Context.getLocalizator()
                                                                      .getCurrency(quotation.commission.getValue())
-                                                                     .getDecimalDefaultString()));
+                                                                     .getTwoDecimalEuroString()));
 
         }
         feesDetail.add(elveosCommission);
@@ -73,17 +73,17 @@ public class HtmlTotalSummary extends HtmlDiv {
             final HtmlSpan detailSpan = new HtmlSpan("details");
             detailSpan.addText(tr("({0}% + {1})",
                                   Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
-                                  Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getDecimalDefaultString()));
+                                  Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getTwoDecimalEuroString()));
 
             feesTTC.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees TTC <0::>"), detailSpan)));
-            feesTTC.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getDecimalDefaultString()));
+            feesTTC.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getTwoDecimalEuroString()));
         }
         add(feesTTC);
 
         final HtmlDiv totalHT = new HtmlDiv("quotation_total_line_ht");
         {
             totalHT.add(new HtmlDiv("label").addText(tr("Total HT")));
-            totalHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getDecimalDefaultString()));
+            totalHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getTwoDecimalEuroString()));
         }
         add(totalHT);
 
@@ -92,7 +92,7 @@ public class HtmlTotalSummary extends HtmlDiv {
             totalTTC.add(new HtmlDiv("label").addText(tr("Total TTC")));
             totalTTC.add(new HtmlDiv("money").addText(Context.getLocalizator()
                                                              .getCurrency(quotation.totalTTC.getValue())
-                                                             .getDecimalDefaultString()));
+                                                             .getTwoDecimalEuroString()));
         }
         add(totalTTC);
 

@@ -11,14 +11,14 @@
  */
 package com.bloatit.web.linkable.meta.bugreport;
 
-import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.meta.MetaBug;
 import com.bloatit.framework.meta.MetaBugManager;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Member;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 
@@ -26,7 +26,7 @@ import com.bloatit.web.url.MetaBugsListPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("meta/bug/dodelete")
-public final class MetaBugDeleteAction extends Action {
+public final class MetaBugDeleteAction extends LoggedAction {
 
     @RequestParam
     private final String bugId;
@@ -42,12 +42,7 @@ public final class MetaBugDeleteAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        if (!session.isLogged()) {
-            session.notifyError(Context.tr("You must be logged to delete a bug."));
-            throw new MeanUserException("The user try to delete a bug without been logged.");
-        }
-
+    protected Url doProcessRestricted(final Member me) {
         final MetaBug bug = MetaBugManager.getById(bugId);
         if (bug != null) {
             bug.delete();
@@ -59,17 +54,23 @@ public final class MetaBugDeleteAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
-        return session.getLastVisitedPage();
+    protected Url doCheckRightsAndEverything(final Member me) {
+        return NO_ERROR;
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
-        return NO_ERROR; // Nothing else to check
+    protected String getRefusalReason() {
+        return Context.tr("You have to be logged in to delete a metaBug");
+    }
+
+    @Override
+    protected Url doProcessErrors() {
+        return session.getLastVisitedPage();
     }
 
     @Override
     protected void transmitParameters() {
         // Nothing to transmit. only get parameters.
     }
+
 }
