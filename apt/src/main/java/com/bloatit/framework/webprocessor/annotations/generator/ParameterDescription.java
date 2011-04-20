@@ -21,6 +21,7 @@ class ParameterDescription extends Description {
     private final String defaultValue;
     private final String suggestedValue;
     private final String conversionErrorMsg;
+    private final String generateFrom;
     private final boolean isOptional;
     private final ParamConstraint constraints;
 
@@ -32,11 +33,16 @@ class ParameterDescription extends Description {
         typeWithoutTemplate = getTypeWithoutTemplate(element);
         typeWithoutTemplateSimple = getTypeWithoutTemplateSimple(element);
         role = container.role();
-        suggestedValue = container.suggestedValue();
+        suggestedValue = container.suggestedValue().equals(RequestParam.DEFAULT_SUGGESTED_VALUE) ? null : container.suggestedValue();
         conversionErrorMsg = container.conversionErrorMsg().value();
+        if (!container.generatedFrom().isEmpty()) {
+            generateFrom = container.generatedFrom();
+        } else {
+            generateFrom = null;
+        }
         if (optional != null) {
             isOptional = true;
-            defaultValue = optional.value();
+            defaultValue = optional.value().equals(Optional.DEFAULT_DEFAULT_VALUE) ? null : optional.value();
         } else {
             isOptional = false;
             defaultValue = null;
@@ -108,9 +114,6 @@ class ParameterDescription extends Description {
     }
 
     public final String getSuggestedValueStr() {
-        if (suggestedValue.equals(RequestParam.DEFAULT_SUGGESTED_VALUE)) {
-            return "RequestParam.DEFAULT_SUGGESTED_VALUE";
-        }
         return Utils.getStr(suggestedValue);
     }
 
@@ -123,6 +126,10 @@ class ParameterDescription extends Description {
 
     public final boolean isOptional() {
         return isOptional;
+    }
+
+    public String getGenerateFrom() {
+        return generateFrom;
     }
 
     public final ParamConstraintBinder getConstraints() {

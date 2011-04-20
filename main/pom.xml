@@ -7,7 +7,8 @@
 	<name>BloatIt</name>
 	<url>http://maven.apache.org</url>
 
-	<properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>3.6.1.Final</hibernate.version>
 	</properties>
 

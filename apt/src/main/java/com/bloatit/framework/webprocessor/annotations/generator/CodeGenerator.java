@@ -131,6 +131,10 @@ public class CodeGenerator {
         clazz.addImport("com.bloatit.framework.webprocessor.url.Loaders.*");
         clazz.addImport("java.util.ArrayList");
 
+        final Method constructor = clazz.addConstructor();
+        constructor.addParameter("Parameters", "params");
+        constructor.addParameter("SessionParameters", "session");
+
         final Method generatedConstructor = clazz.addConstructor();
         for (final ParameterDescription param : desc.getUrlParameters()) {
             generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
@@ -146,11 +150,15 @@ public class CodeGenerator {
 
         for (final ParameterDescription param : desc.getParameters()) {
             final String template = "<" + param.getTypeWithoutTemplate() + ", " + param.getTypeOrTemplateType() + ">";
-            final Attribute attribute = clazz.addAttribute("UrlParameter" + template,
-                                                           param.getAttributeName(),
-                                                           "get" + Utils.toCamelCase(param.getAttributeName(), true) + "Parameter",
-                                                           null);
 
+            // Attribute
+            final Attribute attribute = clazz.addAttribute("UrlParameter" + template, param.getAttributeName());
+
+            // Getter
+            final Method getter = clazz.addMethod("UrlParameter" + template, "get" + Utils.toCamelCase(param.getAttributeName(), true) + "Parameter");
+            getter.addLine("return this." + param.getAttributeName() + ";");
+
+            // Static equals ( = new UrlParameter ...)
             final MethodCall newParamDescription = new Generator.MethodCall("UrlParameterDescription<" + param.getTypeOrTemplateType() + ">");
             newParamDescription.addParameter(param.getNameStr());
             newParamDescription.addParameter(param.getTypeOrTemplateType() + ".class");
@@ -184,23 +192,27 @@ public class CodeGenerator {
             attribute.setStaticEquals("new " + newParam);
 
             // Value getter
-            final Method getter = clazz.addMethod(param.getTypeWithoutTemplate(), "get" + Utils.toCamelCase(param.getAttributeName(), true));
-            getter.addLine("return this." + param.getAttributeName() + ".getValue();");
+            final Method valueGetter = clazz.addMethod(param.getTypeWithoutTemplate(), "get" + Utils.toCamelCase(param.getAttributeName(), true));
+            valueGetter.addLine("return this." + param.getAttributeName() + ".getValue();");
 
             // Value Setter
             final Method setter = clazz.addMethod("void", "set" + Utils.toCamelCase(param.getAttributeName(), true));
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
             setter.addLine("this." + param.getAttributeName() + ".setValue(other);");
+            for (final ParameterDescription generatedParam : desc.getParameterGeneratedFromMe(param)) {
+                setter.addLine("try {");
+                setter.addLine("    title.setValue(" + param.getAttributeName() + ".getValue().get"
+                        + Utils.toCamelCase(generatedParam.getAttributeName(), true) + "());");
+                setter.addLine("} catch (final Exception e) {");
+                setter.addLine("    Log.framework().warn(\"Error in pretty value generation.\", e);");
+                setter.addLine("}");
+            }
 
             doRegister.addLine("register(" + param.getAttributeName() + ");");
 
             clone.addLine("other." + param.getAttributeName() + " = this." + param.getAttributeName() + ".clone();");
         }
 
-        final Method constructor = clazz.addConstructor();
-        constructor.addParameter("Parameters", "params");
-        constructor.addParameter("SessionParameters", "session");
-        
         for (final ComponentDescription subComponent : desc.getSubComponents()) {
             final String subComponentName = Utils.toCamelCase(subComponent.getClassName(), false);
 
@@ -226,7 +238,7 @@ public class CodeGenerator {
             }
             generatedConstructor.addLine("this." + subComponentName + " = new " + subcomponentConstruction + ";");
         }
-        
+
         constructor.addLine("parseSessionParameters(session);");
         constructor.addLine("parseParameters(params);");
 

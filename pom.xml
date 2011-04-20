@@ -5,6 +5,10 @@
 	<version>1.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
 	<scm>
         <url>https://gitorious.org/bloatit</url>
 		<connection>scm:git:git://gitorious.org/bloatit/bloatit.git</connection>

@@ -68,6 +68,9 @@ public class UrlParameter<T, U> extends UrlNode {
 
     public String getStringValue() {
         if (strValue != null && !strValue.isEmpty()) {
+            if (getRole() == Role.PRETTY) {
+                return makeStringPretty(strValue);
+            }
             return strValue;
         }
         if (value != null && getRole() == Role.PRETTY) {
@@ -113,7 +116,6 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
-
     @SuppressWarnings("unchecked")
     private void setValueFromHttpParameter(final HttpParameter httpParam) {
         conversionError = false;
@@ -153,18 +155,19 @@ public class UrlParameter<T, U> extends UrlNode {
     public Iterator<UrlNode> iterator() {
         return Collections.EMPTY_LIST.iterator();
     }
-    
+
     public boolean hasError() {
         return !getMessages().isEmpty();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public Messages getMessages() {
         final Messages messages = new Messages();
         if (conversionError) {
 
-            final Message message = new Message(getConversionErrorMsg(), What.CONVERSION_ERROR, new GenericMessageFormater(getName(), getStringValue()));
+            final Message message = new Message(getConversionErrorMsg(), What.CONVERSION_ERROR, new GenericMessageFormater(getName(),
+                                                                                                                           getStringValue()));
             messages.add(message);
         } else if (constraints != null) {
             constraints.computeConstraints((U) getValue(), getValueClass(), messages, getName(), getStringValue());
@@ -258,7 +261,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         *
+         * 
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
