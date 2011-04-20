@@ -31,7 +31,7 @@ import com.bloatit.web.url.LoginPageUrl;
  */
 public abstract class LoggedPage extends MasterPage {
 
-    protected LoggedPage(final Url url) {
+    public LoggedPage(final Url url) {
         super(url);
     }
 

@@ -3,14 +3,8 @@
  */
 package com.bloatit.web.linkable.login;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Locale;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
@@ -34,8 +28,6 @@ import com.bloatit.web.url.SignUpPageUrl;
  */
 @ParamContainer("member/dosignup")
 public final class SignUpAction extends Action {
-    private static final int AVATAR_MAX_SIZE = 64;
-
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
     min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
