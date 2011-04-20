@@ -43,6 +43,7 @@ import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -173,7 +174,7 @@ public final class TeamPage extends MasterPage {
         final HtmlCachedMarkdownRenderer hcmr = new HtmlCachedMarkdownRenderer(targetTeam.getDescription());
         description.add(hcmr);
 
-        // Group informations
+        // Bank informations
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
@@ -184,10 +185,12 @@ public final class TeamPage extends MasterPage {
 
                     // Account balance
                     MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount());
+                    AccountPageUrl accountPageUrl = new AccountPageUrl();
+                    accountPageUrl.setTeam(targetTeam);
                     HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                  amount,
-                                                                                                                 new PageNotFoundUrl().getHtmlLink())));
+                                                                                                                 accountPageUrl.getHtmlLink())));
                     bankInformationsList.add(accountBalanceItem);
 
                 }
