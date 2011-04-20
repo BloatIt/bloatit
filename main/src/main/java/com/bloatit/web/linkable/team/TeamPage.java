@@ -124,6 +124,7 @@ public final class TeamPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv();
         targetTeam.authenticate(session.getAuthToken());
 
+
         Member me = null;
         if (session.getAuthToken() != null) {
             me = session.getAuthToken().getMember();
@@ -222,6 +223,7 @@ public final class TeamPage extends MasterPage {
 
         final PageIterable<Member> members = targetTeam.getMembers();
         final HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
+        membersTable.setCssClass("members_table");
         memberTitle.add(membersTable);
 
         return master;
@@ -334,16 +336,53 @@ public final class TeamPage extends MasterPage {
             if (member.canInTeam(targetTeam, right)) {
                 if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
                     final PlaceHolderElement ph = new PlaceHolderElement();
-                    ph.add(new HtmlImage(new Image(WebConfiguration.getImgValidIcon()), Context.tr("OK"), "team_can"));
-                    ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
+                    if(right == UserTeamRight.CONSULT) {
+                        if(member.equals(connectedMember)) {
+                            ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Leave")));
+                        } else {
+                            ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Kick")));
+                        }
+
+                    } else {
+                        ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
+                    }
                     return ph;
                 }
-                return new HtmlImage(new Image(WebConfiguration.getImgValidIcon()), Context.tr("OK"), "team_can");
             } else if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
-                return new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Promote"));
+                return new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Grant"));
             }
             return new HtmlText("");
         }
+
+        @Override
+        public String getColumnCss(int column) {
+            switch (column) {
+                case 0: // Name
+                    return "name";
+                case CONSULT:
+                    return getUserRightStyle(UserTeamRight.CONSULT);
+                case TALK:
+                    return getUserRightStyle(UserTeamRight.TALK);
+                case MODIFY:
+                    return getUserRightStyle(UserTeamRight.MODIFY);
+                case INVITE:
+                    return getUserRightStyle(UserTeamRight.INVITE);
+                case PROMOTE:
+                    return getUserRightStyle(UserTeamRight.PROMOTE);
+                case BANK:
+                    return getUserRightStyle(UserTeamRight.BANK);
+                default:
+                    return "";
+            }
+        }
+
+        private String getUserRightStyle(final UserTeamRight right) {
+            if (member.canInTeam(targetTeam, right)) {
+                return "can";
+            }
+            return "";
+        }
+
 
         @Override
         public boolean next() {
