@@ -1,5 +1,6 @@
 package com.bloatit.model;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
@@ -113,6 +114,7 @@ public class GenericConstructor {
             return DaoUserContent.class;
         }
 
+        Log.model().error("Dao class not found for class: " + clazz.getCanonicalName());
         return null;
     }
 }

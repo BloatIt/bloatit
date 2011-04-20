@@ -4,7 +4,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.pages.IndexPage;
@@ -43,7 +43,7 @@ public class UserContentAdminPageImplementation extends
     }
 
     @Override
-    protected void addFormFilters(final HtmlForm form) {
+    protected void addFormFilters(final HtmlBranch form) {
         addIsDeletedFilter(form, url);
         addHasFileFilter(form, url);
         addAsTeamFilter(form, url);

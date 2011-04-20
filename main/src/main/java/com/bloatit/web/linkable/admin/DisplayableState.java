@@ -6,7 +6,7 @@ import com.bloatit.framework.webprocessor.components.form.Displayable;
 import com.bloatit.framework.webprocessor.context.Context;
 
 public enum DisplayableState implements Displayable {
-    NO_FILTER(tr("No filter")), //
+    NO_FILTER(tr("<select>")), //
     VALIDATED(tr("Validate")), //
     PENDING(tr("Pending")), //
     HIDDEN(tr("Hidden")), //
@@ -28,7 +28,7 @@ public enum DisplayableState implements Displayable {
     }
 
     //Fake tr
-    private static String tr(String fake) {
+    private static String tr(final String fake) {
         return fake;
     }
 }

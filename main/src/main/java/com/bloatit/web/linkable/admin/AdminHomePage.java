@@ -20,6 +20,7 @@ package com.bloatit.web.linkable.admin;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -28,6 +29,10 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
+import com.bloatit.web.url.FeatureAdminPageUrl;
+import com.bloatit.web.url.KudosableAdminPageUrl;
+import com.bloatit.web.url.MilestoneAdminPageUrl;
+import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/home")
 public class AdminHomePage extends AdminPage {
@@ -42,13 +47,18 @@ public class AdminHomePage extends AdminPage {
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateAdminHome());
-        // layout.addRight(new SideBarDocumentationBlock("markdown"));
         return layout;
     }
 
     private HtmlElement generateAdminHome() {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Administration home page"), 1);
-        master.add(new ConfigurationAdminPageUrl().getHtmlLink("Manage configuration files"));
+        final HtmlList list = new HtmlList();
+        master.add(list);
+        list.add(new ConfigurationAdminPageUrl().getHtmlLink("Manage configuration files"));
+        list.add(new MilestoneAdminPageUrl().getHtmlLink("Milestones"));
+        list.add(new UserContentAdminPageUrl().getHtmlLink("User content"));
+        list.add(new KudosableAdminPageUrl().getHtmlLink("Kudosables"));
+        list.add(new FeatureAdminPageUrl().getHtmlLink("Feature"));
         return master;
     }
 

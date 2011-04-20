@@ -77,16 +77,16 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
 
     public final void generateFilterForm(final HtmlForm filterForm) {
         final UserContentAdminPageUrl url = new UserContentAdminPageUrl();
-        // order by
-        final HtmlFormBlock blockOrder = new HtmlFormBlock("Order by");
-        filterForm.add(blockOrder);
-        blockOrder.add(new HtmlCheckbox(url.getAscParameter().pickFieldData().getName(), tr("Asc"), LabelPosition.BEFORE));
-
+        final HtmlFormBlock block = new HtmlFormBlock("Filters");
+        filterForm.add(block);
         // extends
-        addFormFilters(filterForm);
+        addFormFilters(block);
 
+        // order by
+        block.add(new HtmlCheckbox(url.getAscParameter().pickFieldData().getName(), tr("Asc"), LabelPosition.BEFORE));
+        
         // submit
-        filterForm.add(new HtmlSubmit(tr("Filter")));
+        block.add(new HtmlSubmit(tr("Filter")));
     }
 
     public final void generateTable(final HtmlForm actionForm) {
@@ -125,20 +125,21 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         // add the action drop down
         final HtmlRadioButtonGroup group = new HtmlRadioButtonGroup("actions");
         final HtmlFormBlock block = new HtmlFormBlock("actions");
-        actionForm.add(block.add(group));
+        actionForm.add(block);
+        block.add(group);
         final HtmlDropDown dropDown = new HtmlDropDown("action");
-        actionForm.add(dropDown);
+        block.add(dropDown);
         addActions(dropDown, block);
 
         // add the submit button
-        actionForm.add(new HtmlSubmit(tr("Validate")));
+        block.add(new HtmlSubmit(tr("Validate")));
     }
 
     protected abstract void addActions(final HtmlDropDown dropDown, final HtmlBranch actionGroup);
 
     protected abstract void addColumns(HtmlGenericTableModel<V> tableModel);
 
-    protected abstract void addFormFilters(HtmlForm form);
+    protected abstract void addFormFilters(HtmlBranch form);
 
     protected T getFactory() {
         return factory;

@@ -13,7 +13,6 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableMo
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.model.Feature;
 import com.bloatit.model.admin.FeatureAdminListFactory;
@@ -95,7 +94,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
     }
 
     @Override
-    protected void addFormFilters(final HtmlForm form) {
+    protected void addFormFilters(final HtmlBranch form) {
 
         addAsTeamFilter(form, url);
         addIsDeletedFilter(form, url);

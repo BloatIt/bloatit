@@ -5,7 +5,7 @@ import com.bloatit.framework.webprocessor.components.form.Displayable;
 import com.bloatit.framework.webprocessor.context.Context;
 
 public enum DisplayableFilterType implements Displayable {
-    NO_FILTER(tr("No filter")), //
+    NO_FILTER(tr("<select>")), //
     WITH(tr("With")), //
     WITHOUT(tr("Without"));
 
@@ -21,7 +21,7 @@ public enum DisplayableFilterType implements Displayable {
     }
 
     //Fake tr
-    private static String tr(String fake) {
+    private static String tr(final String fake) {
         return fake;
     }
 }

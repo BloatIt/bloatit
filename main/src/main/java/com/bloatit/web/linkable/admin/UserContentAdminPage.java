@@ -15,7 +15,6 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableMo
 import com.bloatit.framework.webprocessor.components.form.Displayable;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Team;
@@ -46,7 +45,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         }
 
         //Fake tr
-        private static String tr(String fake) {
+        private static String tr(final String fake) {
             return fake;
         }
     }
@@ -98,7 +97,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         }
     }
 
-    protected void addAsTeamFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
+    protected void addAsTeamFilter(final HtmlBranch filterForm, final UserContentAdminPageUrl url) {
         final FieldData groupAsTeamData = url.getFilterTeamParameter().pickFieldData();
         final HtmlDropDown groupAsTeam = new HtmlDropDown(groupAsTeamData.getName());
         groupAsTeam.setDefaultValue(groupAsTeamData.getSuggestedValue());
@@ -108,7 +107,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         filterForm.add(groupAsTeam);
     }
 
-    protected void addHasFileFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
+    protected void addHasFileFilter(final HtmlBranch filterForm, final UserContentAdminPageUrl url) {
         final FieldData groupFileData = url.getFilterFileParameter().pickFieldData();
         final HtmlDropDown groupFile = new HtmlDropDown(groupFileData.getName());
         groupFile.setDefaultValue(groupFileData.getSuggestedValue());
@@ -118,7 +117,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         filterForm.add(groupFile);
     }
 
-    protected void addIsDeletedFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
+    protected void addIsDeletedFilter(final HtmlBranch filterForm, final UserContentAdminPageUrl url) {
         final FieldData groupDeletedData = url.getFilterDeletedParameter().pickFieldData();
         final HtmlDropDown groupDeleted = new HtmlDropDown(groupDeletedData.getName());
         groupDeleted.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
@@ -217,7 +216,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     protected abstract void addColumns(HtmlGenericTableModel<V> tableModel);
 
     @Override
-    protected abstract void addFormFilters(HtmlForm form);
+    protected abstract void addFormFilters(HtmlBranch form);
 
     @Override
     protected T getFactory() {

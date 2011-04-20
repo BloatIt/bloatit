@@ -15,7 +15,6 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableMo
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -32,9 +31,11 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     private final Boolean orderByPopularity;
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional
     private final Integer popularity;
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional("EQUAL")
     private final DisplayableComparator popularityComparator;
 
     @RequestParam(role = RequestParam.Role.POST)
@@ -42,6 +43,7 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     private final DisplayableFilterType filterLoked;
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional
     private final DisplayableState popularityState;
 
     private final KudosableAdminPageUrl url;
@@ -123,7 +125,7 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
         doAddActions(dropDown, group);
     }
 
-    protected void addPopularityStateFilter(final HtmlForm form) {
+    protected void addPopularityStateFilter(final HtmlBranch form) {
         final FieldData stateData = url.getPopularityStateParameter().pickFieldData();
         final HtmlDropDown state = new HtmlDropDown(stateData.getName());
         state.setDefaultValue(stateData.getSuggestedValue());
@@ -134,7 +136,7 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
         form.add(state);
     }
 
-    protected void addPopularityFilter(final HtmlForm form) {
+    protected void addPopularityFilter(final HtmlBranch form) {
         final HtmlTextField popularity = new HtmlTextField(url.getPopularityParameter().getName(), tr("popularity"));
         popularity.setDefaultValue(url.getPopularityParameter().getStringValue());
 

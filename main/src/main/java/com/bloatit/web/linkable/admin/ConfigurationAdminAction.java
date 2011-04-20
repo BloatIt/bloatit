@@ -31,7 +31,7 @@ import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
 @ParamContainer("admin/doConfigure")
 public class ConfigurationAdminAction extends AdminAction {
-    @RequestParam(role = Role.POST)
+    @RequestParam(name = "toReload", role = Role.POST)
     private final List<String> toReload;
 
     @SuppressWarnings("unchecked")

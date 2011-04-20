@@ -61,16 +61,15 @@ public class ConfigurationAdminPage extends AdminPage {
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateConfAdmin());
-
-        // layout.addRight(new SideBarDocumentationBlock("markdown"));
         return layout;
     }
 
     private HtmlElement generateConfAdmin() {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Administrate configurations"), 1);
-        final HtmlForm form = new HtmlForm(new ConfigurationAdminActionUrl().urlString());
+        final ConfigurationAdminActionUrl targetUrl = new ConfigurationAdminActionUrl();
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
-        form.add(new HtmlTable(new ConfigurationTableModel(ReloadableConfiguration.getConfigurations())));
+        form.add(new HtmlTable(new ConfigurationTableModel(ReloadableConfiguration.getConfigurations(), targetUrl)));
         form.add(new HtmlSubmit(Context.tr("Submit")));
 
         return master;
@@ -102,9 +101,11 @@ public class ConfigurationAdminPage extends AdminPage {
         private static final int NAME = 0;
         private static final int DATE = 1;
         private static final int ACTION = 2;
+        private final ConfigurationAdminActionUrl targetUrl;
 
-        public ConfigurationTableModel(final Set<ReloadableConfiguration> configurations) {
+        public ConfigurationTableModel(final Set<ReloadableConfiguration> configurations, final ConfigurationAdminActionUrl targetUrl) {
             this.configurations = configurations;
+            this.targetUrl = targetUrl;
             iterator = configurations.iterator();
         }
 
@@ -136,7 +137,7 @@ public class ConfigurationAdminPage extends AdminPage {
                     final long millis = new Date().getTime() - configuration.getLastReload().getTime();
                     return new HtmlText(new TimeRenderer(millis).renderRange(TimeBase.DAY, FormatStyle.MEDIUM));
                 case ACTION:
-                    final HtmlCheckbox box = new HtmlCheckbox("toReload", LabelPosition.AFTER);
+                    final HtmlCheckbox box = new HtmlCheckbox(targetUrl.getToReloadParameter().pickFieldData().getName(), LabelPosition.AFTER);
                     box.addAttribute("value", configuration.getName());
                     return box;
                 default:

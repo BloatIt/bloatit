@@ -16,7 +16,6 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableMo
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -63,7 +62,7 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
     }
 
     @Override
-    protected void addFormFilters(final HtmlForm form) {
+    protected void addFormFilters(final HtmlBranch form) {
 
         final FieldData stateData = url.getMilestoneStateParameter().pickFieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateData.getName());

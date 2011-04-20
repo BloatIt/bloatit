@@ -4,14 +4,15 @@ import java.util.List;
 
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.url.Loaders;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
@@ -27,7 +28,7 @@ public class AdministrationAction extends AdminAction {
 
     @SuppressWarnings("rawtypes")
     @RequestParam(name = "id", role = Role.POST)
-    private final List<Identifiable> contents;
+    private final List<Integer> contents;
 
     @RequestParam(name = "action", role = Role.POST)
     private final AdminActionManager.Action action;
@@ -51,37 +52,38 @@ public class AdministrationAction extends AdminAction {
     @Override
     public Url doProcessAdmin() {
         try {
-            for (final Identifiable<?> content : contents) {
+            for (final Integer content : contents) {
+                final String id = String.valueOf(content);
 
                 switch (action) {
                     case DELETE:
-                        ((UserContent<?>) content).delete();
+                        Loaders.fromStr(UserContent.class, id).delete();
                         break;
                     case RESTORE:
-                        ((UserContent<?>) content).restore();
+                        Loaders.fromStr(UserContent.class, id).restore();
                         break;
                     case LOCK:
-                        ((Kudosable<?>) content).lockPopularity();
+                        Loaders.fromStr(Kudosable.class, id).lockPopularity();
                         break;
                     case UNLOCK:
-                        ((Kudosable<?>) content).unlockPopularity();
+                        Loaders.fromStr(Kudosable.class, id).unlockPopularity();
                         break;
                     case SETSTATE:
                         if (stateToSet != null && stateToSet != DisplayableState.NO_FILTER) {
-                            ((Kudosable<?>) content).setState(DisplayableState.getState(stateToSet));
+                            Loaders.fromStr(Kudosable.class, id).setState(DisplayableState.getState(stateToSet));
                         }
                         break;
                     case SET_VALIDATION_DATE:
                         session.notifyBad("SetValidationDate not implemented yet.");
                         break;
                     case UPDATE_DEVELOPMENT_STATE:
-                        ((Feature) content).updateDevelopmentState();
+                        Loaders.fromStr(Feature.class, id).updateDevelopmentState();
                         break;
                     case COMPUTE_SELECTED_OFFER:
-                        ((Feature) content).computeSelectedOffer();
+                        Loaders.fromStr(Feature.class, id).computeSelectedOffer();
                         break;
                     case SET_FEATURE_IN_DEVELOPMENT:
-                        final Feature feature = (Feature) content;
+                        final Feature feature = Loaders.fromStr(Feature.class, id);
                         if (feature.getSelectedOffer() == null || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
                             session.notifyBad("There is no offer or not enough money. So no developement state for id: " + feature.getId() + ".");
                         } else {
@@ -89,10 +91,10 @@ public class AdministrationAction extends AdminAction {
                         }
                         break;
                     case VALIDATE_BATCH:
-                        ((Milestone) content).validate();
+                        Loaders.fromStr(Milestone.class, id).validate();
                         break;
                     case FORCE_VALIDATE_BATCH:
-                        ((Milestone) content).forceValidate();
+                        Loaders.fromStr(Milestone.class, id).forceValidate();
                         break;
                     default:
                         break;
@@ -101,6 +103,8 @@ public class AdministrationAction extends AdminAction {
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(getRefusalReason());
             return new LoginPageUrl();
+        } catch (final ConversionErrorException e) {
+            session.notifyError(e.getMessage());
         }
         return session.pickPreferredPage();
     }
