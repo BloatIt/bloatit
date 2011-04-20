@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 
@@ -38,9 +39,12 @@ public abstract class UrlComponent extends UrlNode {
     }
 
     protected final void register(final UrlNode node) {
+        if (node == null) {
+            throw new BadProgrammerException("Node musn't be null !");
+        }
         nodes.add(node);
     }
-
+    
     private final void registerIfNotAlreadyDone() {
         if (!isRegistered) {
             doRegister();

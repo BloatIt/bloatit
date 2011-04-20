@@ -20,38 +20,21 @@ import javax.mail.IllegalWriteException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
-import com.bloatit.framework.webprocessor.components.HtmlSpan;
-import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
-import com.bloatit.model.Feature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
-import com.bloatit.model.Payline;
-import com.bloatit.web.WebConfiguration;
+import com.bloatit.model.Team;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.features.FeaturesTools;
-import com.bloatit.web.linkable.members.MembersTools;
-import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
@@ -63,30 +46,20 @@ import com.bloatit.web.url.UnlockActionUrl;
  * A page that hosts the form used to check the contribution on a Feature
  */
 @ParamContainer("contribute/staticcheck")
-public final class StaticCheckContributionPage extends CreateUserContentPage {
-
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    private final ContributionProcess process;
+public final class StaticCheckContributionPage extends QuotationPage {
 
     private final StaticCheckContributionPageUrl url;
-
-    @Optional("false")
-    @RequestParam(name = "show_fees_detail")
-    private final Boolean showFeesDetails;
 
     public StaticCheckContributionPage(final StaticCheckContributionPageUrl url) {
         super(url, new CheckContributionActionUrl(url.getProcess()));
         this.url = url;
-        process = url.getProcess();
-        showFeesDetails = url.getShowFeesDetails();
-        if (process != null) {
-            process.setLock(true);
-        }
     }
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+        if (process != null) {
+            process.setLock(true);
+        }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
         layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
@@ -124,7 +97,6 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
         // Total
         final BigDecimal missingAmount = process.getAmount().subtract(account).add(process.getAmountToCharge());
         final StandardQuotation quotation = new StandardQuotation(missingAmount);
-
         try {
             if (!process.getAmountToPay().equals(quotation.subTotalTTCEntry.getValue())) {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
@@ -133,242 +105,51 @@ public final class StaticCheckContributionPage extends CreateUserContentPage {
             session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
 
-        // Contribution
-        final HtmlDiv detailsLines = new HtmlDiv("quotation_details_lines");
+        final HtmlDiv lines = new HtmlDiv("quotation_details_lines");
         try {
-            detailsLines.add(new HtmlContributionLine(process));
+            lines.add(new HtmlContributionLine(process.getFeature(), process.getAmount(), null));
             if (actor.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
-                detailsLines.add(new HtmlPrepaidLine(actor));
+                lines.add(new HtmlPrepaidLine(actor));
             }
-            detailsLines.add(new HtmlChargeAccountLine(actor));
+            lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, null));
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
+        group.add(lines);
 
-        final HtmlDiv totalsLines = new HtmlDiv("quotation_totals_lines");
-        {
+        final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlPayBlock(quotation, process.getTeam(), new PaylineProcessUrl(actor, process), new UnlockActionUrl(process)));
+        group.add(summary);
+    }
 
-            final HtmlDiv subtotal = new HtmlDiv("quotation_total_line");
-            {
-                subtotal.add(new HtmlDiv("label").addText(tr("Subtotal TTC")));
-                subtotal.add(new HtmlDiv("money").addText(Context.getLocalizator()
-                                                                 .getCurrency(quotation.subTotalTTCEntry.getValue())
-                                                                 .getDecimalDefaultString()));
-            }
-            totalsLines.add(subtotal);
-
-            final StaticCheckContributionPageUrl showDetailUrl = url.clone();
-            showDetailUrl.setShowFeesDetails(!showFeesDetails);
-            final HtmlLink showDetailLink = showDetailUrl.getHtmlLink(tr("fees details"));
-
-            final HtmlDiv feesHT = new HtmlDiv("quotation_total_line_ht");
-            {
-
-                final HtmlSpan detailSpan = new HtmlSpan("details");
-                detailSpan.add(showDetailLink);
-
-                feesHT.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees HT <0::>"), detailSpan)));
-                feesHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getDecimalDefaultString()));
-
-            }
-            totalsLines.add(feesHT);
-            // Fee details
-            final HtmlDiv feesDetail = new HtmlDiv("quotation_total_line_details_block");
-            final HtmlDiv feesBank = new HtmlDiv("quotation_total_line_details");
-            {
-                feesBank.add(new HtmlDiv("label").addText(tr("Bank fees")));
-                feesBank.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getDecimalDefaultString()));
-            }
-            feesDetail.add(feesBank);
-
-            final HtmlDiv elveosCommission = new HtmlDiv("quotation_total_line_details");
-            {
-                elveosCommission.add(new HtmlDiv("label").addText(tr("Elveos's commission")));
-                elveosCommission.add(new HtmlDiv("money").addText(Context.getLocalizator()
-                                                                         .getCurrency(quotation.commission.getValue())
-                                                                         .getDecimalDefaultString()));
-
-            }
-            feesDetail.add(elveosCommission);
-            totalsLines.add(feesDetail);
-
-            // Add show/hide template
-            final JsShowHide showHideFees = new JsShowHide(showFeesDetails);
-            showHideFees.addActuator(showDetailLink);
-            showHideFees.addListener(feesDetail);
-            showHideFees.apply();
-
-            final HtmlDiv feesTTC = new HtmlDiv("quotation_total_line");
-            {
-
-                final HtmlSpan detailSpan = new HtmlSpan("details");
-                detailSpan.addText(tr("({0}% + {1})",
-                                      Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
-                                      Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getDecimalDefaultString()));
-
-                feesTTC.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees TTC <0::>"), detailSpan)));
-                feesTTC.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getDecimalDefaultString()));
-            }
-            totalsLines.add(feesTTC);
-
-            final HtmlDiv totalHT = new HtmlDiv("quotation_total_line_ht");
-            {
-                totalHT.add(new HtmlDiv("label").addText(tr("Total HT")));
-                totalHT.add(new HtmlDiv("money").addText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getDecimalDefaultString()));
-            }
-            totalsLines.add(totalHT);
-
-            final HtmlDiv totalTTC = new HtmlDiv("quotation_total_line_total");
-            {
-                totalTTC.add(new HtmlDiv("label").addText(tr("Total TTC")));
-                totalTTC.add(new HtmlDiv("money").addText(Context.getLocalizator()
-                                                                 .getCurrency(quotation.totalTTC.getValue())
-                                                                 .getDecimalDefaultString()));
-            }
-            totalsLines.add(totalTTC);
-
-        }
-
-        final HtmlDiv payBlock = new HtmlDiv("pay_actions");
-        {
-            final PaylineProcessUrl paylineProcessUrl = new PaylineProcessUrl(actor, process);
-
-            final HtmlLink payContributionLink = paylineProcessUrl.getHtmlLink(tr("Pay {0}",
-                                                                                  Context.getLocalizator()
-                                                                                         .getCurrency(quotation.totalTTC.getValue())
-                                                                                         .getDecimalDefaultString()));
+    public static class HtmlPayBlock extends HtmlDiv {
+        public HtmlPayBlock(final StandardQuotation quotation, final Team team, final Url paymentUrl, final Url returnUrl) {
+            super("pay_actions");
+            final HtmlLink payContributionLink = paymentUrl.getHtmlLink(tr("Pay {0}",
+                                                                           Context.getLocalizator()
+                                                                                  .getCurrency(quotation.totalTTC.getValue())
+                                                                                  .getDecimalDefaultString()));
             payContributionLink.setCssClass("button");
 
-            payBlock.add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated."), "debug"))
-                    .add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123."),
-                                           "debug"));
-            if (process.getTeam() != null) {
+            add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated."), "debug")).add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123."),
+                                                                                                                                                         "debug"));
+            if (team != null) {
                 try {
-                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
-                                                   "use_account"));
+                    add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", team.getLogin()), "use_account"));
                 } catch (final UnauthorizedOperationException e) {
                     throw new ShallNotPassException(e);
                 }
             }
-            payBlock.add(createUnlockedReturnUrl().getHtmlLink(Context.tr("edit")));
-            payBlock.add(payContributionLink);
-
+            add(returnUrl.getHtmlLink(Context.tr("edit")));
+            add(payContributionLink);
         }
-        group.add(detailsLines);
-        group.add(new HtmlDiv("quotation_totals_lines_block").add(totalsLines).add(payBlock));
-    }
-
-    public static class HtmlContributionLine extends HtmlDiv {
-
-        public HtmlContributionLine(final ContributionProcess contribution) throws UnauthorizedOperationException {
-            super("quotation_detail_line");
-            add(SoftwaresTools.getSoftwareLogoSmall(contribution.getFeature().getSoftware()));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
-                                                                          .getCurrency(contribution.getFeature().getContribution())
-                                                                          .getDefaultString()));
-            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
-                                                                                                 "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
-                                                                          .getCurrency(contribution.getFeature()
-                                                                                                   .getContribution()
-                                                                                                   .add(contribution.getAmount()))
-                                                                          .getDefaultString()));
-
-            add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Contribution")));
-            add(new HtmlDiv("quotation_detail_line_description").addText(FeaturesTools.getTitle(contribution.getFeature())));
-
-            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
-
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                             .getCurrency(contribution.getAmount())
-                                                                                             .getDecimalDefaultString()));
-            add(amountBlock);
-        }
-    }
-
-    public static class HtmlPrepaidLine extends HtmlDiv {
-
-        public HtmlPrepaidLine(final Actor<?> actor) throws UnauthorizedOperationException {
-            super("quotation_detail_line");
-
-            add(MembersTools.getMemberAvatarSmall(actor));
-
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
-                                                                          .getCurrency(actor.getInternalAccount().getAmount())
-                                                                          .getDefaultString()));
-            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
-                                                                                                 "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
-
-            add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Prepaid from internal account")));
-
-            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
-
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                             .getCurrency(actor.getInternalAccount()
-                                                                                                               .getAmount()
-                                                                                                               .negate())
-                                                                                             .getDecimalDefaultString()));
-
-            add(amountBlock);
-        }
-    }
-
-    public class HtmlChargeAccountLine extends HtmlDiv {
-
-        @SuppressWarnings("synthetic-access")
-        public HtmlChargeAccountLine(final Actor<?> actor) throws UnauthorizedOperationException {
-            super("quotation_detail_line");
-
-            add(MembersTools.getMemberAvatarSmall(actor));
-
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getDefaultString()));
-            add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
-                                                                                                 "money up")));
-            add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
-                                                                          .getCurrency(process.getAmountToCharge())
-                                                                          .getDefaultString()));
-
-            add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
-            add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
-
-            final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
-
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                             .getCurrency(process.getAmountToCharge())
-                                                                                             .getDecimalDefaultString()));
-
-            add(amountBlock);
-
-        }
-    }
-
-    public HtmlDiv generateFeatureSummary(final Feature feature) {
-        final HtmlDiv featureContributionSummary = new HtmlDiv("feature_contribution_summary");
-        {
-            featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
-
-            try {
-                final HtmlDiv changeLine = new HtmlDiv("change_line");
-                {
-
-                    changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
-                    changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
-                }
-                featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
-                throw new ShallNotPassException("User cannot access user information", e);
-            }
-        }
-        return featureContributionSummary;
     }
 
     @Override
     protected String createPageTitle() {
-        return tr("Contribute to a feature - check");
+        return tr("Contribute to a feature - final check");
     }
 
     @Override
