@@ -73,14 +73,14 @@ public final class SignUpAction extends Action {
 
     @Override
     protected final Url doProcess() {
-        if (!password.equals(passwordCheck)) {
+        if (!password.trim().equals(passwordCheck.trim())) {
             transmitParameters();
             session.notifyError("Password doesn't match confirmation.");
             return new SignUpPageUrl();
         }
 
         final Locale locale = new Locale(lang, country);
-        final Member m = new Member(login, password, email, locale);
+        final Member m = new Member(login.trim(), password.trim(), email.trim(), locale);
         final String activationKey = m.getActivationKey();
         final MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
@@ -94,7 +94,6 @@ public final class SignUpAction extends Action {
         session.notifyGood(Context.tr("Account created, you will receive a mail to activate it."));
         return session.pickPreferredPage();
     }
-
 
     @Override
     protected final Url doProcessErrors() {

@@ -266,7 +266,6 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public void unSelectOffer(final Offer offer) {
         if (offer.equals(getSelectedOfferUnprotected())) {
-            // FIXME: null risque de causer un crash
             setSelectedOffer(null);
             getDao().computeSelectedOffer();
         }
