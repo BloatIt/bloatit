@@ -132,8 +132,6 @@ public final class TeamPage extends MasterPage {
             }
         }
 
-        // Avatar
-        master.add(new HtmlDiv("float_right").add(TeamTools.getTeamAvatar(targetTeam)));
 
         // Title and team type
         HtmlTitleBlock titleBlock;
@@ -143,6 +141,11 @@ public final class TeamPage extends MasterPage {
             throw new ShallNotPassException("Not allowed to see team name in team page, should not happen", e);
         }
         master.add(titleBlock);
+
+
+        // Avatar
+        titleBlock.add(new HtmlDiv("float_left").add(TeamTools.getTeamAvatar(targetTeam)));
+
 
         // Description
         final HtmlTitleBlock description = new HtmlTitleBlock(Context.tr("Description"), 2);
@@ -176,12 +179,12 @@ public final class TeamPage extends MasterPage {
 
             // Features count
             int featuresCount = getFeatureCount();
-            HtmlListItem numberOfFeaturesItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Involved in features: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)",featuresCount), new PageNotFoundUrl().getHtmlLink())));
+            HtmlListItem numberOfFeaturesItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Involved in features: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), new PageNotFoundUrl().getHtmlLink())));
             informationsList.add(numberOfFeaturesItem);
         }
-       
+
         // Group informations
-        if(targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
+        if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
                 titleBlock.add(bankInformations);
@@ -191,7 +194,7 @@ public final class TeamPage extends MasterPage {
 
                     // Account balance
                     MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount());
-                    HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "), new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"), amount ,new PageNotFoundUrl().getHtmlLink())));
+                    HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "), new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"), amount, new PageNotFoundUrl().getHtmlLink())));
                     informationsList.add(accountBalanceItem);
 
                 }
@@ -202,79 +205,19 @@ public final class TeamPage extends MasterPage {
         }
 
 
-        //title.add();
-
-        // Link to join if needed
-//        if (me != null && !me.isInTeam(targetTeam)) {
-//            if (targetTeam.isPublic()) {
-//                final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this team"));
-//                title.add(joinLink);
-//            } else {
-//                title.add(new HtmlParagraph().addText("Send a request to join team"));
-//            }
-//        }
-
-
-
-//
-//
-//        HtmlBranch financial;
-//        if (targetTeam.canGetInternalAccount() && targetTeam.canGetInternalAccount()) {
-//            financial = new HtmlTitleBlock(Context.tr("Team financial information"), 2);
-//        } else {
-//            financial = new PlaceHolderElement();
-//        }
-//        titleBlock.add(financial);
-//
-//        // External account
-//        if (targetTeam.canGetExternalAccount()) {
-//            try {
-//                final ExternalAccount exAccount = targetTeam.getExternalAccount();
-//                exAccount.authenticate(session.getAuthToken());
-//                final HtmlTitleBlock external = new HtmlTitleBlock(Context.tr("Team's external account"), 3);
-//                financial.add(external);
-//                final HtmlList exAccountInfo = new HtmlList();
-//                external.add(exAccountInfo);
-//
-//                if (exAccount.canAccessAmount()) {
-//                    exAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(exAccount.getAmount()).getDefaultString()));
-//                }
-//                if (exAccount.canAccessBankCode()) {
-//                    exAccountInfo.add(Context.tr("Bank code: {0}", exAccount.getBankCode()));
-//                }
-//            } catch (final UnauthorizedOperationException e) {
-//                // Should never happen
-//                Log.web().error("Cannot access to bank external account, I checked just before tho", e);
-//            }
-//        }
-//
-//        // Internal account
-//        if (targetTeam.canGetInternalAccount()) {
-//            try {
-//                final InternalAccount inAccount = targetTeam.getInternalAccount();
-//                inAccount.authenticate(session.getAuthToken());
-//                final HtmlTitleBlock internal = new HtmlTitleBlock(Context.tr("Team's internal account"), 3);
-//                financial.add(internal);
-//                final HtmlList inAccountInfo = new HtmlList();
-//                internal.add(inAccountInfo);
-//
-//                if (inAccount.canAccessAmount()) {
-//                    inAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(inAccount.getAmount()).getDefaultString()));
-//                }
-//            } catch (final UnauthorizedOperationException e) {
-//                // Should never happen
-//                Log.web().error("Cannot access to bank internal account, I checked just before tho", e);
-//            }
-//        }
-
         // Members
-        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);
+        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", targetTeam.getMembers().size()), 2);
         titleBlock.add(memberTitle);
 
-        if (me != null && me.isInTeam(targetTeam) && me.canSendInvitation(targetTeam)) {
+        if (me != null && me.isInTeam(targetTeam) && me.canInvite(targetTeam)) {
             final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(targetTeam);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
+        }
+
+        if (targetTeam.isPublic() && me != null && !me.isInTeam(targetTeam)) {
+            final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this team"));
+            memberTitle.add(joinLink);
         }
 
         final PageIterable<Member> members = targetTeam.getMembers();

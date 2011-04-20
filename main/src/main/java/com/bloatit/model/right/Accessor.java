@@ -50,7 +50,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
  * 
  * @see RightManager
  */
-public abstract class Accessor {
+public abstract class Accessor<T extends RestrictedInterface> {
 
     /**
      * Can is the method you have to implement in the template method pattern.
@@ -63,7 +63,7 @@ public abstract class Accessor {
      * @return true, if we have the right to access the RestrictedObject, false
      *         otherwise.
      */
-    protected abstract boolean can(RestrictedInterface object, Action action);
+    protected abstract boolean can(T object, Action action);
 
     /**
      * CanAccess call the abstract {@link #can(RestrictedInterface, Action)}
@@ -76,7 +76,7 @@ public abstract class Accessor {
      * @return true, if we have the right to access the RestrictedObject, false
      *         otherwise.
      */
-    public final boolean canAccess(final RestrictedInterface object, final Action action) {
+    public final boolean canAccess(final T object, final Action action) {
         if (object.hasUserPrivilege(Role.ADMIN)) {
             Log.model().trace("Admin access");
             return true;
@@ -94,7 +94,7 @@ public abstract class Accessor {
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
      */
-    public final void tryAccess(final RestrictedInterface object, final Action action) throws UnauthorizedOperationException {
+    public final void tryAccess(final T object, final Action action) throws UnauthorizedOperationException {
         if (!canAccess(object, action)) {
             throw new UnauthorizedOperationException(action);
         }

@@ -18,7 +18,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * Action used to accept or refuse team invitations
  * </p>
  */
-@ParamContainer("team/dojoin")
+@ParamContainer("team/doacceptinvitation")
 public final class HandleJoinTeamInvitationAction extends LoggedAction {
     @RequestParam()
     private final JoinTeamInvitation invite;
