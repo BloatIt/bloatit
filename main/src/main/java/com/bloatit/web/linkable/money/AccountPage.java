@@ -129,7 +129,7 @@ public final class AccountPage extends LoggedPage {
             layout.addLeft(accountPage);
 
             layout.addRight(new SideBarDocumentationBlock("internal_account"));
-            layout.addRight(new SideBarLoadAccountBlock());
+            layout.addRight(new SideBarLoadAccountBlock(team));
             layout.addRight(new SideBarWithdrawMoneyBlock());
 
             return layout;
@@ -419,12 +419,14 @@ public final class AccountPage extends LoggedPage {
 
     public static class SideBarLoadAccountBlock extends TitleSideBarElementLayout {
 
-        SideBarLoadAccountBlock() {
+        SideBarLoadAccountBlock(final Team asTeam) {
             setTitle(tr("Load account"));
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
             // TODO good URL
-            add(new SideBarButton(tr("Charge your account"), new AccountChargingProcessUrl(), WebConfiguration.getImgAccountCharge()).asElement());
+            final AccountChargingProcessUrl chargingAccountUrl = new AccountChargingProcessUrl();
+            chargingAccountUrl.setTeam(asTeam);
+            add(new SideBarButton(tr("Charge your account"), chargingAccountUrl, WebConfiguration.getImgAccountCharge()).asElement());
             add(new HtmlDefineParagraph(tr("Note: "),
                                         tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }

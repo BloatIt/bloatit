@@ -28,23 +28,17 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
-import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
-import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
-import com.bloatit.web.linkable.contribution.MoneyVariationBlock;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
-import com.bloatit.web.linkable.features.FeaturesTools;
-import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
@@ -98,7 +92,7 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
-        final HtmlTitleBlock group = new HtmlTitleBlock(tr("Check contribution"), 1);
+        final HtmlTitleBlock group = new HtmlTitleBlock(tr("Charge your account"), 1);
         BigDecimal account;
         try {
             account = getActor(member).getInternalAccount().getAmount();
@@ -107,7 +101,6 @@ public final class AccountChargingPage extends QuotationPage {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
-
         return group;
     }
 
@@ -164,31 +157,9 @@ public final class AccountChargingPage extends QuotationPage {
 
     }
 
-    public HtmlDiv generateFeatureSummary(final Feature feature) {
-        final HtmlDiv featureContributionSummary = new HtmlDiv("feature_contribution_summary");
-        {
-            featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
-
-            try {
-                final HtmlDiv changeLine = new HtmlDiv("change_line");
-                {
-
-                    changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
-                    changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmountToCharge())));
-                }
-                featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
-                throw new ShallNotPassException("User cannot access user information", e);
-            }
-        }
-        return featureContributionSummary;
-    }
-
     @Override
     protected String createPageTitle() {
-        return tr("Contribute to a feature - check");
+        return tr("Charge your account");
     }
 
     @Override
@@ -198,7 +169,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to contribute");
+        return tr("You must be logged to charge your account");
     }
 
     @Override

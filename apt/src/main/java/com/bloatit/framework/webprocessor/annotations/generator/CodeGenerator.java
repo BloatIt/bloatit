@@ -53,9 +53,11 @@ public class CodeGenerator {
         generatedConstructor.addLine(superMethod + ";");
         generatedConstructor.addLine("component = new " + componentConstruction + ";");
 
-        final Method isAction = clazz.addMethod("boolean", "isAction");
-        isAction.setOverride();
-        isAction.addLine("return " + (desc.isAction() ? "true;" : "false;"));
+        if (desc.getFather() == null) {
+            final Method isAction = clazz.addMethod("boolean", "isAction");
+            isAction.setOverride();
+            isAction.addLine("return " + (desc.isAction() ? "true;" : "false;"));
+        }
 
         final Method getCode = clazz.addMethod("String", "getCode");
         getCode.setOverride();
@@ -64,17 +66,26 @@ public class CodeGenerator {
         final Method doConstructUrl = clazz.addMethod("void", "doConstructUrl");
         doConstructUrl.setOverride();
         doConstructUrl.addParameter("StringBuilder", "sb");
+        if (desc.getFather() != null) {
+            doConstructUrl.addLine("super.doConstructUrl(sb);");
+        }
         doConstructUrl.addLine("component.constructUrl(sb);");
 
         final Method doGetStringParameters = clazz.addMethod("void", "doGetParametersAsStrings");
         doGetStringParameters.setOverride();
         doGetStringParameters.addParameter("Parameters", "parameters");
+        if (desc.getFather() != null) {
+            doGetStringParameters.addLine("super.doGetParametersAsStrings(parameters);");
+        }
         doGetStringParameters.addLine("component.getParametersAsStrings(parameters);");
 
         final Method addParameter = clazz.addMethod("void", "addParameter");
         addParameter.setOverride();
         addParameter.addParameter("String", "key");
         addParameter.addParameter("String", "value");
+        if (desc.getFather() != null) {
+            addParameter.addLine("super.addParameter(key, value);");
+        }
         addParameter.addLine("component.addParameter(key, value);");
 
         final Method getMessages = clazz.addMethod("Messages", "getMessages");

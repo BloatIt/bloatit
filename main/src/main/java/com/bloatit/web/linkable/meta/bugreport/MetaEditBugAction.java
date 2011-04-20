@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.meta.bugreport;
 
 import java.io.IOException;
 
-import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.meta.MetaBugManager;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -21,8 +20,9 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Member;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 import com.bloatit.web.url.MetaEditBugActionUrl;
 
@@ -30,7 +30,7 @@ import com.bloatit.web.url.MetaEditBugActionUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("meta/bug/doedit")
-public final class MetaEditBugAction extends Action {
+public final class MetaEditBugAction extends LoggedAction {
 
     public static final String BUG_DESCRIPTION = "bug_description";
 
@@ -54,12 +54,7 @@ public final class MetaEditBugAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        if (!session.isLogged()) {
-            session.notifyError(Context.tr("You must be logged to edit a bug."));
-            throw new MeanUserException("The user try to edit a bug without been logged.");
-        }
-
+    protected Url doProcessRestricted(final Member me) {
         try {
             MetaBugManager.getById(bugId).update(description);
             session.notifyGood("Bug updated.");
@@ -80,12 +75,17 @@ public final class MetaEditBugAction extends Action {
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
-        return NO_ERROR; // Nothing else to check
+    protected void transmitParameters() {
+        // nothing
     }
 
     @Override
-    protected void transmitParameters() {
-        // nothing
+    protected Url doCheckRightsAndEverything(final Member me) {
+        return NO_ERROR;
+    }
+
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You have to be logged in to edit a metabug.");
     }
 }

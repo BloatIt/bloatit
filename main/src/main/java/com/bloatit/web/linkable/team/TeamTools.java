@@ -24,6 +24,7 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.FileResourceUrl;
@@ -36,8 +37,13 @@ public class TeamTools {
         if (team.getAvatar() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Team avatar"), "avatar"));
         } else {
-            final FileResourceUrl imageUrl = new FileResourceUrl(team.getAvatar().getMetadata());
-            avatarDiv.add(new HtmlImage(imageUrl, tr("Team avatar"), "avatar"));
+            final FileMetadata avatarFile = team.getAvatar().getMetadata();
+            if (avatarFile != null) {
+                final FileResourceUrl imageUrl = new FileResourceUrl(avatarFile);
+                avatarDiv.add(new HtmlImage(imageUrl, tr("Team avatar"), "avatar"));
+            } else {
+                // TODO a fallback
+            }
         }
 
         return avatarDiv;
