@@ -3078,7 +3078,7 @@ msgstr "Vous n'êtes pas autorisé en envoyer des invitations pour cette équipe
 #: com/bloatit/web/linkable/team/SendTeamInvitationAction.java:53
 #, java-format
 msgid "Invitation sent to {0} for team {0}."
-msgstr "Invitation envoyé à {0} pour l'équipe {0}."
+msgstr "Invitation envoyé à {0} pour l''équipe {0}."
 
 #: com/bloatit/web/linkable/team/SendTeamInvitationAction.java:55
 msgid ""
