@@ -10,7 +10,6 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -18,7 +17,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlListItem;
@@ -27,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTableModel;
-import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
@@ -35,15 +32,11 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.model.ExternalAccount;
-import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
-import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.MasterPage;
@@ -55,7 +48,6 @@ import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
-import java.math.BigDecimal;
 
 /**
  * <p>
@@ -66,10 +58,8 @@ import java.math.BigDecimal;
 public final class TeamPage extends MasterPage {
 
     private final TeamPageUrl url;
-    @RequestParam(name = "id", conversionErrorMsg =
-    @tr("I cannot find the team number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg =
-    @tr("You have to specify a team number."))
+    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
+    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team targetTeam;
 
     public TeamPage(final TeamPageUrl url) {
@@ -124,7 +114,6 @@ public final class TeamPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv();
         targetTeam.authenticate(session.getAuthToken());
 
-
         Member me = null;
         if (session.getAuthToken() != null) {
             me = session.getAuthToken().getMember();
@@ -132,7 +121,6 @@ public final class TeamPage extends MasterPage {
                 me.authenticate(session.getAuthToken());
             }
         }
-
 
         // Title and team type
         HtmlTitleBlock titleBlock;
@@ -143,10 +131,41 @@ public final class TeamPage extends MasterPage {
         }
         master.add(titleBlock);
 
-
         // Avatar
         titleBlock.add(new HtmlDiv("float_left").add(TeamTools.getTeamAvatar(targetTeam)));
 
+        // Group informations
+
+        HtmlList informationsList = new HtmlList();
+
+        // Visibility
+
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (targetTeam.isPublic() ? Context.tr("Public")
+                                                             : Context.tr("Private"))));
+
+        // Creation date
+        try {
+            informationsList.add(new HtmlDefineParagraph(Context.tr("Creation date: "),
+                                                                                     Context.getLocalizator()
+                                                                                            .getDate(targetTeam.getDateCreation())
+                                                                                            .toString(FormatStyle.LONG)));
+        } catch (final UnauthorizedOperationException e) {
+            // Should never happen
+            Log.web().error("Not allowed to see team creation date in team page, should not happen", e);
+        }
+
+        // Member count
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "),
+                                                                                    String.valueOf(targetTeam.getMembers().size())));
+
+        // Features count
+        int featuresCount = getFeatureCount();
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Involved in features: "),
+                                                                                     new HtmlMixedText(Context.tr("{0} (<0::see details>)",
+                                                                                                                  featuresCount),
+                                                                                                       new PageNotFoundUrl().getHtmlLink())));
+
+        titleBlock.add(informationsList);
 
         // Description
         final HtmlTitleBlock description = new HtmlTitleBlock(Context.tr("Description"), 2);
@@ -155,48 +174,21 @@ public final class TeamPage extends MasterPage {
         description.add(hcmr);
 
         // Group informations
-        final HtmlTitleBlock groupInformations = new HtmlTitleBlock(Context.tr("Group informations"), 2);
-        titleBlock.add(groupInformations);
-        {
-            HtmlList informationsList = new HtmlList();
-            groupInformations.add(informationsList);
-
-            // Visibility
-            HtmlListItem visibitityItem = new HtmlListItem(new HtmlParagraph().addText((targetTeam.isPublic() ? Context.tr("Public team") : Context.tr("Private team"))));
-            informationsList.add(visibitityItem);
-
-            // Creation date
-            try {
-                HtmlListItem creationDateItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Creation date: "), Context.getLocalizator().getDate(targetTeam.getDateCreation()).toString(FormatStyle.LONG)));
-                informationsList.add(creationDateItem);
-            } catch (final UnauthorizedOperationException e) {
-                // Should never happen
-                Log.web().error("Not allowed to see team creation date in team page, should not happen", e);
-            }
-
-            // Member count
-            HtmlListItem numberOfMembersItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(targetTeam.getMembers().size())));
-            informationsList.add(numberOfMembersItem);
-
-            // Features count
-            int featuresCount = getFeatureCount();
-            HtmlListItem numberOfFeaturesItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Involved in features: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), new PageNotFoundUrl().getHtmlLink())));
-            informationsList.add(numberOfFeaturesItem);
-        }
-
-        // Group informations
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
                 titleBlock.add(bankInformations);
                 {
-                    HtmlList informationsList = new HtmlList();
-                    bankInformations.add(informationsList);
+                    HtmlList bankInformationsList = new HtmlList();
+                    bankInformations.add(bankInformationsList);
 
                     // Account balance
                     MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount());
-                    HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "), new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"), amount, new PageNotFoundUrl().getHtmlLink())));
-                    informationsList.add(accountBalanceItem);
+                    HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
+                                                                                               new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
+                                                                                                                 amount,
+                                                                                                                 new PageNotFoundUrl().getHtmlLink())));
+                    bankInformationsList.add(accountBalanceItem);
 
                 }
             } catch (final UnauthorizedOperationException e) {
@@ -204,7 +196,6 @@ public final class TeamPage extends MasterPage {
                 Log.web().error("Cannot access to bank informations, should not happen", e);
             }
         }
-
 
         // Members
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", targetTeam.getMembers().size()), 2);
@@ -247,7 +238,7 @@ public final class TeamPage extends MasterPage {
     }
 
     private int getFeatureCount() {
-        //TODO: real work
+        // TODO: real work
         return 3;
     }
 
@@ -336,8 +327,8 @@ public final class TeamPage extends MasterPage {
             if (member.canInTeam(targetTeam, right)) {
                 if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
                     final PlaceHolderElement ph = new PlaceHolderElement();
-                    if(right == UserTeamRight.CONSULT) {
-                        if(member.equals(connectedMember)) {
+                    if (right == UserTeamRight.CONSULT) {
+                        if (member.equals(connectedMember)) {
                             ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Leave")));
                         } else {
                             ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Kick")));
@@ -382,7 +373,6 @@ public final class TeamPage extends MasterPage {
             }
             return "";
         }
-
 
         @Override
         public boolean next() {
