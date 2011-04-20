@@ -65,7 +65,8 @@ public class ComponentDescription extends ClassDescription {
     }
 
     /**
-     * @return All the parameters of this component + the parameters of all the subComponents.
+     * @return All the parameters of this component + the parameters of all the
+     *         subComponents.
      */
     public final List<ParameterDescription> getAllUrlParameters() {
         final List<ParameterDescription> urlParameters = new ArrayList<ParameterDescription>();
@@ -86,6 +87,16 @@ public class ComponentDescription extends ClassDescription {
 
     public Set<ComponentDescription> getSubComponents() {
         return children;
+    }
+
+    public List<ParameterDescription> getParameterGeneratedFromMe(final ParameterDescription me) {
+        final List<ParameterDescription> returnParams = new ArrayList<ParameterDescription>();
+        for (final ParameterDescription param : parameters) {
+            if (param.getGenerateFrom() != null && param.getGenerateFrom().equals(me.getAttributeName())) {
+                returnParams.add(param);
+            }
+        }
+        return returnParams;
     }
 
 }

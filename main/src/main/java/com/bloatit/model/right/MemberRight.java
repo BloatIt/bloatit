@@ -18,7 +18,6 @@ package com.bloatit.model.right;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.Member;
-import com.bloatit.model.Team;
 
 /**
  * The Class MemberRight store the properties accessor for the {@link Member}
@@ -46,33 +45,6 @@ public class MemberRight extends RightManager {
         }
     }
 
-    // Delete for accept/refuse
-    // write to create a new
-    /**
-     * The Class SendInvitation is an accessor for the SendInvitation property.
-     */
-    public static class SendInvitation extends Accessor<Member> {
-        private final Team team;
-
-
-        public SendInvitation(Team team) {
-            this.team = team;
-
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
-         * RestrictedInterface , com.bloatit.model.right.Action)
-         */
-        @Override
-        protected final boolean can(final Member role, final Action action) {
-            boolean returnValue = false;
-            returnValue = role.canInTeam(team, UserTeamRight.INVITE) && (action == Action.WRITE);
-            returnValue = returnValue || ownerCanRead(role, action) || ownerCanDelete(role, action);
-            return returnValue;
-        }
-    }
 
     /**
      * The Class Karma is a {@link Public} accessor for the Karma property.
