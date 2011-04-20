@@ -4,7 +4,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -21,14 +20,14 @@ import com.bloatit.web.linkable.members.MembersTools;
 
 public class HtmlChargeAccountLine extends HtmlDiv {
 
-    public HtmlChargeAccountLine(final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) throws UnauthorizedOperationException {
+    public HtmlChargeAccountLine(final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
         super("quotation_detail_line");
         final Localizator localizator = Context.getLocalizator();
 
         add(MembersTools.getMemberAvatarSmall(actor));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(BigDecimal.ZERO).getDefaultString()));
+        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(BigDecimal.ZERO).getSimpleEuroString()));
         add(new HtmlDiv("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up")));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(amountToCharge).getDefaultString()));
+        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(amountToCharge).getSimpleEuroString()));
 
         add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
         add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
@@ -37,7 +36,7 @@ public class HtmlChargeAccountLine extends HtmlDiv {
         if (recalculateTargetForm == null) {
             amountBlock = new HtmlDiv("quotation_detail_line_amount");
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amountToCharge)
-                                                                                                 .getDecimalDefaultString()));
+                                                                                                 .getTwoDecimalEuroString()));
         } else {
             amountBlock = new HtmlDiv("quotation_detail_line_field");
             final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.GET);

@@ -70,6 +70,16 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final String getEmail() throws UnauthorizedOperationException {
         tryAccess(new ActorRight.Email(), Action.READ);
+        return getEmailUnprotected();
+    }
+
+    /**
+     * Gets the email without checking if the user has right to.
+     * 
+     * @return the email
+     * @see DaoActor#getContact()
+     */
+    public final String getEmailUnprotected() {
         return getDao().getContact();
     }
 
@@ -216,7 +226,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     public abstract PageIterable<Contribution> getContributions() throws UnauthorizedOperationException;
 
     public abstract String getDisplayName() throws UnauthorizedOperationException;
-    
+
     public abstract Image getAvatar();
 
     /*

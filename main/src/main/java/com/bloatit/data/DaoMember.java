@@ -62,11 +62,15 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
 @NamedQueries(value = { @NamedQuery(
                            name = "member.byLogin",
                            query = "FROM DaoMember WHERE login = :login"),
+                           
                        @NamedQuery(
                            name = "member.byLoginPassword",
                            query = "FROM DaoMember WHERE login = :login AND password = :password"),
 
-
+                       @NamedQuery(
+                           name = "member.byEmail",
+                           query = "FROM DaoMember WHERE email = :email"),
+                                   
                        @NamedQuery(
                            name = "member.getReceivedInvitations.byStateTeam",
                            query = "FROM DaoJoinTeamInvitation " +
@@ -227,6 +231,24 @@ public class DaoMember extends DaoActor {
                                   .add(Restrictions.like("password", password));
 
         return (DaoMember) q.uniqueResult();
+    }
+
+    /**
+     * Finds a DaoMember using its email
+     * 
+     * @param email the email of the member
+     * @return the member matching <code>email</code> or <i>null</i> if not
+     *         found
+     */
+    public static DaoMember getByEmail(String email) {
+        if (email == null) {
+            return null;
+        }
+
+        final Query q = SessionManager.getNamedQuery("member.byEmail");
+        q.setString("email", email);
+        return (DaoMember) q.uniqueResult();
+
     }
 
     // ======================================================================

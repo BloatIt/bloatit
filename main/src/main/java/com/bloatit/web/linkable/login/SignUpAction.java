@@ -3,14 +3,8 @@
  */
 package com.bloatit.web.linkable.login;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Locale;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
@@ -34,8 +28,6 @@ import com.bloatit.web.url.SignUpPageUrl;
  */
 @ParamContainer("member/dosignup")
 public final class SignUpAction extends Action {
-    private static final int AVATAR_MAX_SIZE = 64;
-
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
     min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
@@ -49,9 +41,9 @@ public final class SignUpAction extends Action {
     private final String password;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
+    @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."),//
+    min = "4", minErrorMsg = @tr("Number of characters for password check has to be superior to 4."),//
+    max = "15", maxErrorMsg = @tr("Number of characters for password check has to be inferior to 15."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
@@ -81,14 +73,14 @@ public final class SignUpAction extends Action {
 
     @Override
     protected final Url doProcess() {
-        if (!password.equals(passwordCheck)) {
+        if (!password.trim().equals(passwordCheck.trim())) {
             transmitParameters();
             session.notifyError("Password doesn't match confirmation.");
             return new SignUpPageUrl();
         }
 
         final Locale locale = new Locale(lang, country);
-        final Member m = new Member(login, password, email, locale);
+        final Member m = new Member(login.trim(), password.trim(), email.trim(), locale);
         final String activationKey = m.getActivationKey();
         final MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
@@ -102,7 +94,6 @@ public final class SignUpAction extends Action {
         session.notifyGood(Context.tr("Account created, you will receive a mail to activate it."));
         return session.pickPreferredPage();
     }
-
 
     @Override
     protected final Url doProcessErrors() {

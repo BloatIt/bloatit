@@ -25,23 +25,19 @@ public class UrlParameter<T, U> extends UrlNode {
     private String strValue;
     private boolean conversionError;
 
+    @SuppressWarnings("unchecked")
     public UrlParameter(final T value, final UrlParameterDescription<U> description, final UrlParameterConstraints<U> constraints) {
         setValue(value); // Also set the defaultValue;
         this.description = description;
         this.constraints = constraints;
         this.conversionError = false;
         if (description.getDefaultValue() != null && value == null) {
-            setValueFromString(description.getDefaultValue());
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void setValueFromString(final String strValue) {
-        try {
-            this.value = (T) Loaders.fromStr(getValueClass(), strValue);
-            this.strValue = strValue;
-        } catch (final ConversionErrorException e) {
-            Log.framework().fatal("conversion error ! Make sure the default value is correct.", e);
+            try {
+                this.value = (T) Loaders.fromStr(getValueClass(), description.getDefaultValue());
+                this.strValue = description.getDefaultValue();
+            } catch (final ConversionErrorException e) {
+                throw new BadProgrammerException("conversion error ! Make sure the default value is correct.", e);
+            }
         }
     }
 
@@ -103,6 +99,18 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     public final void setValue(final T value) {
+        setValueUnprotected(value);
+        final Messages messages = getMessages();
+        if (messages.hasMessage()) {
+            final StringBuilder sb = new StringBuilder();
+            for (final Message message : messages) {
+                sb.append(message.getMessage()).append(" [").append(value).append("] && ");
+            }
+            throw new BadProgrammerException(sb.toString());
+        }
+    }
+
+    private final void setValueUnprotected(final T value) {
         this.value = value;
         try {
             strValue = toString(value);
@@ -134,7 +142,7 @@ public class UrlParameter<T, U> extends UrlNode {
                 // TODO make sure this is working
                 strValue = httpParam.getSimpleValue();
                 if (value == null || getValueClass().isAssignableFrom(value.getClass())) {
-                    setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
+                    setValueUnprotected((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
                 } else {
                     throw new BadProgrammerException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
                             + " You are trying to convert a parameter using the wrong loader class.");
@@ -186,7 +194,7 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     @Override
-    protected void getStringParameters(final Parameters parameters) {
+    protected void getParametersAsStrings(final Parameters parameters) {
         final String stringValue = getStringValue();
         if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {

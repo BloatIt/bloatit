@@ -10,7 +10,6 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CreateCommentAction;
-import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
@@ -31,7 +30,7 @@ import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributionAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
-import com.bloatit.web.linkable.contribution.UnlockAction;
+import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -41,6 +40,11 @@ import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
+import com.bloatit.web.linkable.login.MemberActivationAction;
+import com.bloatit.web.linkable.login.LostPasswordAction;
+import com.bloatit.web.linkable.login.LostPasswordPage;
+import com.bloatit.web.linkable.login.RecoverPasswordAction;
+import com.bloatit.web.linkable.login.RecoverPasswordPage;
 import com.bloatit.web.linkable.login.SignUpAction;
 import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
@@ -61,6 +65,8 @@ import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
+import com.bloatit.web.linkable.money.StaticAccountChargingPage;
+import com.bloatit.web.linkable.money.UnlockAccountChargingProcessAction;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.AddReleaseAction;
@@ -149,9 +155,13 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
+import com.bloatit.web.url.LostPasswordActionUrl;
+import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
+import com.bloatit.web.url.RecoverPasswordActionUrl;
+import com.bloatit.web.url.RecoverPasswordPageUrl;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.SignUpActionUrl;
@@ -159,11 +169,13 @@ import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
+import com.bloatit.web.url.StaticAccountChargingPageUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
-import com.bloatit.web.url.UnlockActionUrl;
+import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
+import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 public class BloatitWebServer extends WebProcessor {
@@ -306,8 +318,16 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ModifyMemberPageUrl.getName())) {
             return new ModifyMemberPage(new ModifyMemberPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(LostPasswordPageUrl.getName())) {
+            return new LostPasswordPage(new LostPasswordPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(RecoverPasswordPageUrl.getName())) {
+            return new RecoverPasswordPage(new RecoverPasswordPageUrl(params, session.getParameters()));
+        }
 
+        // ////////
         // Actions
+        // ////////
         if (pageCode.equals(LoginActionUrl.getName())) {
             return new LoginAction(new LoginActionUrl(params, session.getParameters()));
         }
@@ -405,15 +425,29 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ChangeLanguageActionUrl.getName())) {
             return new ChangeLanguageAction(new ChangeLanguageActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(UnlockActionUrl.getName())) {
-            return new UnlockAction(new UnlockActionUrl(params, session.getParameters()));
+        if (pageCode.equals(UnlockAccountChargingProcessActionUrl.getName())) {
+            return new UnlockAccountChargingProcessAction(new UnlockAccountChargingProcessActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(UnlockContributionProcessActionUrl.getName())) {
+            return new UnlockContributionProcessAction(new UnlockContributionProcessActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(StaticAccountChargingPageUrl.getName())) {
+            return new StaticAccountChargingPage(new StaticAccountChargingPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ModifyMemberActionUrl.getName())) {
             return new ModifyMemberAction(new ModifyMemberActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(LostPasswordActionUrl.getName())) {
+            return new LostPasswordAction(new LostPasswordActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(RecoverPasswordActionUrl.getName())) {
+            return new RecoverPasswordAction(new RecoverPasswordActionUrl(params, session.getParameters()));
+        }
 
 
+        // ////////
         // Process
+        // ////////
         if (pageCode.equals(ContributionProcessUrl.getName())) {
             return new ContributionProcess(new ContributionProcessUrl(params, session.getParameters()));
         }

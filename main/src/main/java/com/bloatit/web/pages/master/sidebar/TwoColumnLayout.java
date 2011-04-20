@@ -3,9 +3,10 @@ package com.bloatit.web.pages.master.sidebar;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 import com.bloatit.framework.webprocessor.url.Url;
 
-public class TwoColumnLayout extends HtmlDiv {
+public class TwoColumnLayout extends HtmlLeaf {
 
     private final HtmlDiv leftColumn;
     private final HtmlDiv rightColumn;
@@ -22,7 +23,11 @@ public class TwoColumnLayout extends HtmlDiv {
      *            <i>false</i> otherwise
      */
     public TwoColumnLayout(final boolean box, final Url url) {
-        super("two_column");
+        super();
+
+        HtmlDiv master = new HtmlDiv("two_column");
+        add(master);
+
         final HtmlDiv leftColumnBlock = new HtmlDiv((box ? "left_column_block" : "left_column_block_without_box"));
         final HtmlDiv rightColumnBlock = new HtmlDiv("right_column_block");
         leftColumn = new HtmlDiv((box ? "left_column" : "left_column_without_box"));
@@ -33,9 +38,9 @@ public class TwoColumnLayout extends HtmlDiv {
 
         leftColumnBlock.add(leftColumn);
         rightColumnBlock.add(rightColumn);
-        add(leftColumnBlock);
-        add(rightColumnBlock);
-        add(new HtmlClearer());
+        master.add(leftColumnBlock);
+        master.add(rightColumnBlock);
+        master.add(new HtmlClearer());
     }
 
     /**

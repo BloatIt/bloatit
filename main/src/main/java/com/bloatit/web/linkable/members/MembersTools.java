@@ -23,12 +23,12 @@ public class MembersTools {
                 avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Team avatar"), "avatar"));
             }
         } else {
-            Image avatar = actor.getAvatar();
+            final Image avatar = actor.getAvatar();
             if (avatar.getMetadata() != null) {
                 final FileResourceUrl imageUrl = new FileResourceUrl(avatar.getMetadata());
                 avatarDiv.add(new HtmlImage(imageUrl, tr("Member avatar"), "avatar"));
             } else {
-                HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar");
+                final HtmlImage img = new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar");
                 img.addAttribute("libravatar", avatar.getIdentifier());
                 img.setCssClass("libravatar");
                 avatarDiv.add(img);
@@ -43,7 +43,7 @@ public class MembersTools {
     public static HtmlElement getMemberAvatarSmall(final Actor<?> actor) {
 
         final HtmlDiv avatarDiv = new HtmlDiv("avatar_small_block");
-        if (actor.getAvatar() == null) {
+        if (actor.getAvatar() == null || actor.getAvatar().getMetadata() == null) {
             avatarDiv.add(new HtmlImage(new Image(WebConfiguration.getImgNoAvatar()), tr("Member avatar"), "avatar_small"));
         } else {
             final FileResourceUrl imageUrl = new FileResourceUrl(actor.getAvatar().getMetadata());

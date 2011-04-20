@@ -183,7 +183,7 @@ public class FeaturesTools {
             CurrencyLocale currency;
             try {
                 currency = Context.getLocalizator().getCurrency(feature.getContribution());
-                amount.addText(currency.getDefaultString());
+                amount.addText(currency.getSimpleEuroString());
             } catch (final UnauthorizedOperationException e) {
                 Context.getSession().notifyError(Context.tr("An error prevented us from displaying contribution amount. Please notify us."));
                 throw new ShallNotPassException("User cannot access contribution amount", e);
@@ -204,13 +204,13 @@ public class FeaturesTools {
             amountCurrency = Context.getLocalizator().getCurrency(feature.getContribution());
             final HtmlSpan amount = new HtmlSpan();
             amount.setCssClass(IMPORTANT_CSS_CLASS);
-            amount.addText(amountCurrency.getDefaultString());
+            amount.addText(amountCurrency.getSimpleEuroString());
 
             // Target
             final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
             final HtmlSpan target = new HtmlSpan();
             target.setCssClass(IMPORTANT_CSS_CLASS);
-            target.addText(targetCurrency.getDefaultString());
+            target.addText(targetCurrency.getSimpleEuroString());
 
             // Progress
             final HtmlSpan progress = new HtmlSpan();

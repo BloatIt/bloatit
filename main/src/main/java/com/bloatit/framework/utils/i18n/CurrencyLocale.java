@@ -127,7 +127,7 @@ public final class CurrencyLocale {
      * @return a String representing the <code>amount</code> of money in the
      *         application default currency
      */
-    public String getDefaultString() {
+    public String getSimpleEuroString() {
         return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
@@ -148,7 +148,7 @@ public final class CurrencyLocale {
      * @return a String representing the <code>amount</code> of money in the
      *         application default currency
      */
-    public String getDecimalDefaultString() {
+    public String getTwoDecimalEuroString() {
         return this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 

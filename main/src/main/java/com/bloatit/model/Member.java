@@ -57,6 +57,8 @@ public final class Member extends Actor<DaoMember> implements User {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     private static final int PASSWORD_SALT_LENGTH = 50;
+    private static final String RESET_SALT = "GSQISUDHOI1232193IOSDJHOQIOOISQJD";
+    private static final String ACTIVATE_SALT = "1Z9UI901IE09II90I31JD091J09DJ01KPO";
 
     private static final class MyCreator extends Creator<DaoMember, Member> {
         @SuppressWarnings("synthetic-access")
@@ -309,8 +311,24 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().removeFromTeam(aTeam.getDao());
     }
 
+    /**
+     * Updates user password with right checking
+     * 
+     * @param password the new password
+     * @throws UnauthorizedOperationException when the logged user cannot modify
+     *             the password
+     */
     public void setPassword(final String password) throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Password(), Action.WRITE);
+        setPasswordUnprotected(password);
+    }
+
+    /**
+     * Updates user password without checking rights
+     * 
+     * @param password the new password
+     */
+    public void setPasswordUnprotected(final String password) {
         getDao().setPassword(SecuredHash.calculateHash(password, getDao().getSalt()));
     }
 
@@ -426,6 +444,16 @@ public final class Member extends Actor<DaoMember> implements User {
         return getLocaleUnprotected();
     }
 
+    public Locale getLocaleUnprotected() {
+        return getDao().getLocale();
+    }
+
+    public Locale getLocale() throws UnauthorizedOperationException {
+        // TODO delete one of those methods
+        tryAccess(new MemberRight.Locale(), Action.READ);
+        return getDao().getLocale();
+    }
+
     public String getFullname() throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Name(), Action.READ);
         return getDao().getFullname();
@@ -434,15 +462,6 @@ public final class Member extends Actor<DaoMember> implements User {
     public void setFullname(final String fullname) throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Name(), Action.WRITE);
         getDao().setFullname(fullname);
-    }
-
-    public Locale getLocaleUnprotected() {
-        return getDao().getLocale();
-    }
-
-    public Locale getLocale() throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Locale(), Action.READ);
-        return getDao().getLocale();
     }
 
     public PageIterable<Feature> getFeatures(final boolean asMemberOnly) {
@@ -523,7 +542,13 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public String getActivationKey() {
         final DaoMember m = getDao();
-        final String digest = "" + m.getId() + m.getContact() + m.getFullname() + m.getPassword();
+        final String digest = "" + m.getId() + m.getContact() + m.getFullname() + m.getPassword() + m.getSalt() + ACTIVATE_SALT;
+        return DigestUtils.sha256Hex(digest);
+    }
+
+    public String getResetKey() {
+        final DaoMember m = getDao();
+        final String digest = "" + m.getId() + m.getContact() + m.getFullname() + m.getPassword() + m.getSalt() + RESET_SALT;
         return DigestUtils.sha256Hex(digest);
     }
 

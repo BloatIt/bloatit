@@ -31,10 +31,10 @@ public abstract class UrlComponent extends UrlNode {
     }
 
     @Override
-    public final void getStringParameters(final Parameters parameters) {
+    public final void getParametersAsStrings(final Parameters parameters) {
         registerIfNotAlreadyDone();
         for (final UrlNode node : this) {
-            node.getStringParameters(parameters);
+            node.getParametersAsStrings(parameters);
         }
     }
 

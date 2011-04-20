@@ -54,6 +54,10 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
  */
 @ParamContainer("contribute/check")
 public final class CheckContributionPage extends QuotationPage {
+    
+    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    private final ContributionProcess process;
 
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
@@ -68,6 +72,7 @@ public final class CheckContributionPage extends QuotationPage {
         super(url, new CheckContributionActionUrl(url.getProcess()));
         this.url = url;
         preload = url.getPreload();
+        process = url.getProcess();
     }
 
     @Override
@@ -157,7 +162,7 @@ public final class CheckContributionPage extends QuotationPage {
             final HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Contribute {0}",
                                                                                           Context.getLocalizator()
                                                                                                  .getCurrency(process.getAmount())
-                                                                                                 .getDefaultString()));
+                                                                                                 .getSimpleEuroString()));
             confirmContributionLink.setCssClass("button");
 
             if (process.getTeam() != null) {
