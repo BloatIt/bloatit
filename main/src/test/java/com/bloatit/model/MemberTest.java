@@ -33,13 +33,13 @@ public class MemberTest extends ModelTestUnit {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
-        yo.removeFromTeam(TeamManager.getByName("b219"));
+        yo.kickFromTeam(TeamManager.getByName("b219"), yo);
         assertFalse(yo.isInTeam(TeamManager.getByName("b219")));
 
         try {
             yo.authenticate(fredAuthToken);
             // A user can only remove himself from a group.
-            yo.removeFromTeam(TeamManager.getByName("b219"));
+            yo.kickFromTeam(TeamManager.getByName("b219"), fredAuthToken.getMember());
             fail();
         } catch (final Exception e) {
             assertTrue(true);

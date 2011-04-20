@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class DaoTeamRight extends DaoIdentifiable {
 
     public enum UserTeamRight {
-        CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK,
+        CONSULT, TALK, INVITE, MODIFY, BANK, PROMOTE
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

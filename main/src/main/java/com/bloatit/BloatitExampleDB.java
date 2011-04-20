@@ -1,8 +1,6 @@
 package com.bloatit;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -385,7 +383,7 @@ public class BloatitExampleDB {
 
     /**
      * Work only if the money is available
-     * 
+     *
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {

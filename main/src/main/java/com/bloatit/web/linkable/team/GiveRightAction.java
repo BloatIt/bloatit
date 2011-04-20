@@ -20,6 +20,7 @@ package com.bloatit.web.linkable.team;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -64,26 +65,52 @@ public final class GiveRightAction extends LoggedAction {
 
     @Override
     protected Url doCheckRightsAndEverything(final Member me) {
-        if (!me.equals(targetMember) && !me.canPromote(targetTeam)) {
-            try {
-                session.notifyBad(Context.tr("You are not allowed to promote people in the team: {0}.", targetTeam.getLogin()));
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug.");
-                throw new ShallNotPassException("Cannot display a team name", e);
+        if (right == UserTeamRight.CONSULT && !give) {
+            if (!targetMember.canBeKickFromTeam(targetTeam, me)) {
+                session.notifyBad(Context.tr("You are not allowed to remove people in the team"));
+                throw new ShallNotPassException("Cannot display a team name");
             }
-            return new TeamPageUrl(targetTeam);
+        } else {
+            if (!targetTeam.canChangeRight(me, targetMember, right, give)) {
+                try {
+                    session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", targetTeam.getLogin()));
+                } catch (final UnauthorizedOperationException e) {
+                    session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug.");
+                    throw new ShallNotPassException("Cannot display a team name", e);
+                }
+                return new TeamPageUrl(targetTeam);
+            }
         }
         return NO_ERROR;
     }
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        if (give) {
-            targetMember.addTeamRight(targetTeam, right);
+
+        if (right == UserTeamRight.CONSULT && !give) {
+            // Remove member from team
+            try {
+                targetMember.kickFromTeam(targetTeam, me);
+            } catch (UnauthorizedOperationException e) {
+                session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
+                throw new ShallNotPassException("Cannot remove a member from a team", e);
+            }
         } else {
-            targetMember.removeTeamRight(targetTeam, right);
+            try {
+                targetTeam.changeRight(me, targetMember, right, give);
+            } catch (UnauthorizedOperationException e) {
+                waitingForJava7(e);
+            } catch (MemberNotInTeamException e) {
+                waitingForJava7(e);
+            }
         }
+
         return new TeamPageUrl(targetTeam);
+    }
+
+    public void waitingForJava7(Exception e) {
+        session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
+        throw new ShallNotPassException("Cannot remove a member from a team", e);
     }
 
     @Override
