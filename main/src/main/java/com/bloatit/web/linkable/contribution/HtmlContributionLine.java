@@ -23,14 +23,14 @@ public class HtmlContributionLine extends HtmlDiv {
         final Localizator localizator = Context.getLocalizator();
 
         add(SoftwaresTools.getSoftwareLogoSmall(feature.getSoftware()));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(feature.getContribution()).getDefaultString()));
+        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(feature.getContribution()).getSimpleEuroString()));
         add(new HtmlDiv("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up")));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(feature.getContribution().add(amount)).getDefaultString()));
+        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(feature.getContribution().add(amount)).getSimpleEuroString()));
         add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Contribution")));
         add(new HtmlDiv("quotation_detail_line_description").addText(FeaturesTools.getTitle(feature)));
 
         final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
-        amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amount).getDecimalDefaultString()));
+        amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amount).getTwoDecimalEuroString()));
         
         // Modify contribution button
         if (editUrl != null) {

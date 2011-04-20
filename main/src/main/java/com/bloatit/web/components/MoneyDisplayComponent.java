@@ -39,7 +39,7 @@ public class MoneyDisplayComponent extends HtmlSpan {
         euroMoney.setCssClass("euro_money");
 
         final CurrencyLocale cl = Context.getLocalizator().getCurrency(amount);
-        euroMoney.add(new HtmlText(cl.getDefaultString()));
+        euroMoney.add(new HtmlText(cl.getSimpleEuroString()));
 
         HtmlBranch money;
         if (link) {

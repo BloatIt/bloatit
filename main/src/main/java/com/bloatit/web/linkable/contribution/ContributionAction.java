@@ -55,7 +55,7 @@ public final class ContributionAction extends UserContentAction {
             process.getFeature().addContribution(process.getAmount(), process.getComment());
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
                                                                                                   .getCurrency(process.getAmount())
-                                                                                                  .getDefaultString()));
+                                                                                                  .getSimpleEuroString()));
             
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());
             featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);

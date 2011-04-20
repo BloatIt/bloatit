@@ -70,12 +70,12 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                     final String contributionMeanValue = Context.getLocalizator()
                                                                 .getCurrency(feature.getContribution().divide(new BigDecimal(contributionCount),
                                                                                                               RoundingMode.HALF_EVEN))
-                                                                .getDefaultString();
-                    final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getDefaultString();
-                    final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getDefaultString();
+                                                                .getSimpleEuroString();
+                    final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getSimpleEuroString();
+                    final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getSimpleEuroString();
                     final String contributionMedianValue = Context.getLocalizator()
                                                                   .getCurrency(computeMedian(feature.getContributions()))
-                                                                  .getDefaultString();
+                                                                  .getSimpleEuroString();
 
                     final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
                                                                                              contributionMaxValue,
@@ -189,7 +189,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                         break;
                     case 1:
                         // TODO: align money at right in CSS
-                        value = Context.getLocalizator().getCurrency(contribution.getAmount()).getDefaultString();
+                        value = Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString();
                         break;
                     case 2:
                         value = Context.getLocalizator().getDate(contribution.getCreationDate()).toString(FormatStyle.MEDIUM);

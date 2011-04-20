@@ -68,9 +68,9 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 
 /**
  * <p>
@@ -150,7 +150,7 @@ public final class AccountPage extends LoggedPage {
         final HtmlDiv soldeAmount = new HtmlDiv("solde_amount");
 
         try {
-            soldeAmount.addText(Context.getLocalizator().getCurrency(loggedUser.getInternalAccount().getAmount()).getDefaultString());
+            soldeAmount.addText(Context.getLocalizator().getCurrency(loggedUser.getInternalAccount().getAmount()).getSimpleEuroString());
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Right error.", e);
         }
@@ -171,7 +171,7 @@ public final class AccountPage extends LoggedPage {
                 sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
             }
             for (final BankTransaction bankTransaction : bankTransactions) {
-                if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) > 0) {
+                if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) >= 0) {
 
                     if (bankTransaction.getState() == State.VALIDATED) {
                         sorter.add(new ChargeAccountLine(bankTransaction), bankTransaction.getModificationDate());
@@ -267,7 +267,7 @@ public final class AccountPage extends LoggedPage {
             final HtmlDiv description = new HtmlDiv("description");
             description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
                                                                                .getCurrency(bankTransaction.getValuePaid())
-                                                                               .getDecimalDefaultString()));
+                                                                               .getTwoDecimalEuroString()));
             return description;
         }
 
@@ -384,7 +384,7 @@ public final class AccountPage extends LoggedPage {
         @Override
         public XmlNode getBody() {
             final HtmlDiv moneyCell = new HtmlDiv();
-            String amountString = Context.getLocalizator().getCurrency(amount).getDefaultString();
+            String amountString = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
             if (amount.compareTo(BigDecimal.ZERO) > 0) {
                 amountString = "+" + amountString;
                 moneyCell.setCssClass("money_up");
@@ -424,7 +424,7 @@ public final class AccountPage extends LoggedPage {
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
             // TODO good URL
-            add(new SideBarButton(tr("Charge your account"), new PageNotFoundUrl(), WebConfiguration.getImgAccountCharge()).asElement());
+            add(new SideBarButton(tr("Charge your account"), new AccountChargingProcessUrl(), WebConfiguration.getImgAccountCharge()).asElement());
             add(new HtmlDefineParagraph(tr("Note: "),
                                         tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
