@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bloatit</groupId>
 	<artifactId>BloatIt</artifactId>
@@ -7,8 +8,8 @@
 	<name>BloatIt</name>
 	<url>http://maven.apache.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>3.6.1.Final</hibernate.version>
 	</properties>
 
@@ -286,10 +287,12 @@
 
 
 	<pluginRepositories>
+	
 		<pluginRepository>
 			<id>gettext-commons-site</id>
 			<url>http://gettext-commons.googlecode.com/svn/maven-repository</url>
 		</pluginRepository>
+		
 		<pluginRepository>
 			<id>jboss-public-repository-group</id>
 			<name>JBoss Public Maven Repository Group</name>
@@ -324,11 +327,7 @@
 				<updatePolicy>never</updatePolicy>
 			</releases>
 		</pluginRepository>
-
-
+		
 	</pluginRepositories>
-
-
-
-
+	
 </project>
