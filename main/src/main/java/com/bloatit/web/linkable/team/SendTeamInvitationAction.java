@@ -38,7 +38,7 @@ public final class SendTeamInvitationAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        if (!me.canInvite(team)) {
+        if (!me.hasInviteTeamRight(team)) {
             session.notifyBad(Context.tr("You are not allowed to send invitations for this team."));
             return session.getLastVisitedPage();
         }

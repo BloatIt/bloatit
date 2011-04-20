@@ -117,7 +117,12 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You tried to do an action reserved for the admin.
          */
-        ADMIN_ONLY
+        ADMIN_ONLY,
+
+        /**
+         * You tried to remove a member from a team with having the right
+         */
+        TEAM_PROMOTE_RIGHT_MISSING
 
     }
 

@@ -2730,7 +2730,7 @@ msgstr "Créer une équipe"
 #, java-format
 msgid "You are not allowed to promote people in the team: {0}."
 msgstr ""
-"Vous n'avez pas l'autorisation de promouvoir quelqu'un au sein de cette "
+"Vous n''avez pas l''autorisation de promouvoir quelqu''un au sein de cette "
 "équipe : {0}."
 
 #: com/bloatit/web/linkable/team/GiveRightAction.java:96

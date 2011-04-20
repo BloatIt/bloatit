@@ -204,7 +204,7 @@ public final class TeamPage extends MasterPage {
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", targetTeam.getMembers().size()), 2);
         titleBlock.add(memberTitle);
 
-        if (me != null && me.isInTeam(targetTeam) && me.canInvite(targetTeam)) {
+        if(me != null && me.hasInviteTeamRight(targetTeam)) {
             final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(targetTeam);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
@@ -258,8 +258,8 @@ public final class TeamPage extends MasterPage {
         private static final int TALK = 2;
         private static final int MODIFY = 3;
         private static final int INVITE = 4;
-        private static final int PROMOTE = 5;
-        private static final int BANK = 6;
+        private static final int BANK = 5;
+        private static final int PROMOTE = 6;
 
         public MyTableModel(final PageIterable<Member> members) {
             this.members = members;
@@ -290,10 +290,10 @@ public final class TeamPage extends MasterPage {
                     return new HtmlText(Context.tr("Modify"));
                 case INVITE:
                     return new HtmlText(Context.tr("Invite"));
-                case PROMOTE:
-                    return new HtmlText(Context.tr("Promote"));
                 case BANK:
                     return new HtmlText(Context.tr("Bank"));
+                case PROMOTE:
+                    return new HtmlText(Context.tr("Promote"));
                 default:
                     return new HtmlText("");
             }
@@ -327,25 +327,26 @@ public final class TeamPage extends MasterPage {
         }
 
         private XmlNode getUserRightStatus(final UserTeamRight right) {
-            if (member.canInTeam(targetTeam, right)) {
-                if (connectedMember != null && (connectedMember.canPromote(targetTeam) || connectedMember.equals(member))) {
-                    final PlaceHolderElement ph = new PlaceHolderElement();
-                    if (right == UserTeamRight.CONSULT) {
-                        if (member.equals(connectedMember)) {
-                            ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Leave")));
-                        } else {
-                            ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Kick")));
-                        }
 
+            final PlaceHolderElement ph = new PlaceHolderElement();
+
+            if(right == UserTeamRight.CONSULT) {
+                if(member.canBeKickFromTeam(targetTeam, connectedMember)) {
+                    if (member.equals(connectedMember)) {
+                        ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Leave")));
                     } else {
-                        ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
+                        ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Kick")));
                     }
-                    return ph;
                 }
-            } else if (connectedMember != null && connectedMember.canPromote(targetTeam)) {
-                return new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Grant"));
+            } else {
+                if(targetTeam.canChangeRight(connectedMember, member, right, true)) {
+                    ph.add(new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Grant")));
+                } else if(targetTeam.canChangeRight(connectedMember, member, right, false)) {
+                    ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
+                }
             }
-            return new HtmlText("");
+
+            return ph;
         }
 
         @Override
@@ -371,7 +372,7 @@ public final class TeamPage extends MasterPage {
         }
 
         private String getUserRightStyle(final UserTeamRight right) {
-            if (member.canInTeam(targetTeam, right)) {
+            if (member.hasTeamRight(targetTeam, right)) {
                 return "can";
             }
             return "";

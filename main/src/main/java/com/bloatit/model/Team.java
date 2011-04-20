@@ -22,7 +22,9 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
@@ -30,7 +32,7 @@ import com.bloatit.model.lists.MemberList;
 
 /**
  * This is a team ... There are member in it.
- * 
+ *
  * @see DaoTeam
  */
 public final class Team extends Actor<DaoTeam> {
@@ -56,7 +58,7 @@ public final class Team extends Actor<DaoTeam> {
      * <p>
      * Creates a new team
      * </p>
-     * 
+     *
      * @param login the displayed name of the team
      * @param contact a string with various means to contact the team
      * @param description a textual description of the team
@@ -67,7 +69,14 @@ public final class Team extends Actor<DaoTeam> {
     public Team(final String login, final String contact, final String description, final Right right, final Member author) {
         super(DaoTeam.createAndPersiste(login, contact, description, right));
         author.addToTeamUnprotected(this);
-        author.setTeamRoleUnprotected(this, TeamRole.ADMIN);
+
+        //Give all rights
+        changeRightUnprotected(author, UserTeamRight.CONSULT, true);
+        changeRightUnprotected(author, UserTeamRight.BANK, true);
+        changeRightUnprotected(author, UserTeamRight.INVITE, true);
+        changeRightUnprotected(author, UserTeamRight.MODIFY, true);
+        changeRightUnprotected(author, UserTeamRight.PROMOTE, true);
+        changeRightUnprotected(author, UserTeamRight.TALK, true);
     }
 
     private Team(final DaoTeam dao) {
@@ -103,7 +112,7 @@ public final class Team extends Actor<DaoTeam> {
 
     /**
      * Indicates wheter the team is public or not
-     * 
+     *
      * @return <code>true</code> if the team is public, <code>false</code>
      *         otherwise
      */
@@ -162,4 +171,49 @@ public final class Team extends Actor<DaoTeam> {
         }
         return EnumSet.noneOf(UserTeamRight.class);
     }
+
+    public boolean canChangeRight(Member admin, Member target, UserTeamRight right, boolean give) {
+        if(admin == null) {
+            return false;
+        }
+
+        if(target.equals(admin) && admin.hasPromoteTeamRight(this)) {
+            return false;
+        }
+
+        if(!target.isInTeam(this)) {
+            return false;
+        }
+
+        if(!admin.hasPromoteTeamRight(this)) {
+            return false;
+        }
+
+        if(!(target.hasTeamRight(this, right) ^ give)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void changeRight(Member admin, Member target, UserTeamRight right, boolean give) throws UnauthorizedOperationException, MemberNotInTeamException {
+        if(!canChangeRight(admin, target, right, give)) {
+            throw new UnauthorizedOperationException(SpecialCode.TEAM_PROMOTE_RIGHT_MISSING);
+        }
+
+        if(!target.isInTeam(this)) {
+            throw new MemberNotInTeamException();
+        }
+
+        changeRightUnprotected(target, right, give);
+    }
+
+    private void changeRightUnprotected(Member target, UserTeamRight right, boolean give) {
+        if(give) {
+            target.getDao().addTeamRight(this.getDao(), right);
+        } else {
+            target.getDao().removeTeamRight(this.getDao(), right);
+        }
+    }
+
 }

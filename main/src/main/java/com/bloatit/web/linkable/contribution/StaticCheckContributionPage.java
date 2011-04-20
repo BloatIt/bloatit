@@ -40,7 +40,6 @@ import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
-import com.bloatit.web.url.UnlockActionUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 
 /**
@@ -149,7 +148,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
     }
 
     private Url createUnlockedReturnUrl() {
-        return new UnlockActionUrl(process);
+        return new UnlockContributionProcessActionUrl(process);
     }
 
     @Override
