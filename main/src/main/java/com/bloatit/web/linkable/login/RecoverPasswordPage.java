@@ -1,9 +1,9 @@
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -50,14 +50,15 @@ public class RecoverPasswordPage extends MasterPage {
         Member member = MemberManager.getMemberByLogin(login);
 
         if (member == null || !member.getResetKey().equals(resetKey)) {
-            throw new MeanUserException("Please do not try to change poor users password.");
+            session.notifyBad(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
+            throw new PageNotFoundException();
         }
 
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        
+
         HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
         layout.addLeft(master);
-        
+
         RecoverPasswordActionUrl targetUrl;
         try {
             targetUrl = new RecoverPasswordActionUrl(resetKey, member.getLogin());

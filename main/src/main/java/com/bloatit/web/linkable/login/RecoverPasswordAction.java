@@ -1,6 +1,5 @@
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.StringUtils;
@@ -11,6 +10,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
@@ -72,7 +72,8 @@ public class RecoverPasswordAction extends Action {
     @Override
     protected Url doProcessErrors() {
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(resetKey)) {
-            throw new MeanUserException("Stop trying to modify poor user password.");
+            session.notifyBad(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
+            return new PageNotFoundUrl();
         }
         return new RecoverPasswordPageUrl(resetKey, login);
     }
@@ -80,12 +81,13 @@ public class RecoverPasswordAction extends Action {
     @Override
     protected Url checkRightsAndEverything() {
         if (!newPassword.equals(checkNewPassword)) {
-            session.notifyBad("Password doesn't match confirmation.");
+            session.notifyBad(Context.tr("Password doesn't match confirmation."));
             return new RecoverPasswordPageUrl(resetKey, login);
         }
         member = MemberManager.getMemberByLogin(login);
         if (member == null || !member.getResetKey().equals(resetKey)) {
-            throw new MeanUserException("Stop trying to modify poor user password.");
+            session.notifyBad(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
+            return new PageNotFoundUrl();
         }
         return NO_ERROR;
     }
