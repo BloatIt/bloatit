@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -34,11 +33,11 @@ import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
 @ParamContainer("login")
 public final class LoginPage extends MasterPage {
-
 
     private final LoginPageUrl url;
 
@@ -56,14 +55,6 @@ public final class LoginPage extends MasterPage {
 
         return layout;
     }
-
-    private static class RecoverPasswordSideBarElement extends TitleSideBarElementLayout {
-        public RecoverPasswordSideBarElement() {
-            setTitle(Context.tr("Recover your password"));
-            add(new HtmlMixedText(Context.tr("You can recover you password use the <0::password recovery form>."), new PageNotFoundUrl().getHtmlLink()));
-        }
-    }
-
 
     private HtmlElement generateSignUpPageMain() {
         final HtmlDiv master = new HtmlDiv();
@@ -93,11 +84,19 @@ public final class LoginPage extends MasterPage {
 
             loginOrSignUpDiv.add(submitButton);
             loginOrSignUpDiv.add(new SignUpPageUrl().getHtmlLink(Context.tr("Sign up")));
-            
+
             master.add(loginTitle);
-            master.add(new HtmlParagraph().add(new PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
+            master.add(new HtmlParagraph().add(new LostPasswordPageUrl().getHtmlLink(Context.tr("Password lost ?"))));
         }
         return master;
+    }
+
+    private static class RecoverPasswordSideBarElement extends TitleSideBarElementLayout {
+        public RecoverPasswordSideBarElement() {
+            setTitle(Context.tr("Recover your password"));
+            add(new HtmlMixedText(Context.tr("You can recover you password use the <0::password recovery form>."),
+                                  new LostPasswordPageUrl().getHtmlLink()));
+        }
     }
 
     @Override

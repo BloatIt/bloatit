@@ -41,9 +41,9 @@ public final class SignUpAction extends Action {
     private final String password;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
+    @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."),//
+    min = "4", minErrorMsg = @tr("Number of characters for password check has to be superior to 4."),//
+    max = "15", maxErrorMsg = @tr("Number of characters for password check has to be inferior to 15."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)

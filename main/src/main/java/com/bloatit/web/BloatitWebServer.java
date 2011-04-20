@@ -10,7 +10,6 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CreateCommentAction;
-import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
@@ -41,6 +40,9 @@ import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
+import com.bloatit.web.linkable.login.MemberActivationAction;
+import com.bloatit.web.linkable.login.LostPasswordAction;
+import com.bloatit.web.linkable.login.LostPasswordPage;
 import com.bloatit.web.linkable.login.RecoverPasswordAction;
 import com.bloatit.web.linkable.login.RecoverPasswordPage;
 import com.bloatit.web.linkable.login.SignUpAction;
@@ -151,11 +153,13 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.RecoverPasswordActionUrl;
-import com.bloatit.web.url.RecoverPasswordPageUrl;
+import com.bloatit.web.url.LostPasswordActionUrl;
+import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
+import com.bloatit.web.url.RecoverPasswordActionUrl;
+import com.bloatit.web.url.RecoverPasswordPageUrl;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.SignUpActionUrl;
@@ -310,6 +314,9 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ModifyMemberPageUrl.getName())) {
             return new ModifyMemberPage(new ModifyMemberPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(LostPasswordPageUrl.getName())) {
+            return new LostPasswordPage(new LostPasswordPageUrl(params, session.getParameters()));
+        }
         if (pageCode.equals(RecoverPasswordPageUrl.getName())) {
             return new RecoverPasswordPage(new RecoverPasswordPageUrl(params, session.getParameters()));
         }
@@ -420,9 +427,13 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ModifyMemberActionUrl.getName())) {
             return new ModifyMemberAction(new ModifyMemberActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(LostPasswordActionUrl.getName())) {
+            return new LostPasswordAction(new LostPasswordActionUrl(params, session.getParameters()));
+        }
         if (pageCode.equals(RecoverPasswordActionUrl.getName())) {
             return new RecoverPasswordAction(new RecoverPasswordActionUrl(params, session.getParameters()));
         }
+
 
         // ////////
         // Process

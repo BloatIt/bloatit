@@ -2,37 +2,79 @@ package com.bloatit.web.linkable.login;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.framework.exceptions.highlevel.MeanUserException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
+import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
+import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
 
-@ParamContainer("password/recover")
+@ParamContainer("password/reset")
 public class RecoverPasswordPage extends MasterPage {
     private final RecoverPasswordPageUrl url;
+
+    @RequestParam(role = Role.GET)
+    private final String resetKey;
+
+    @RequestParam(role = Role.GET)
+    private final String login;
 
     public RecoverPasswordPage(RecoverPasswordPageUrl url) {
         super(url);
         this.url = url;
+        this.resetKey = url.getResetKey();
+        this.login = url.getLogin();
     }
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        TwoColumnLayout layout = new TwoColumnLayout(url);
-        
-        
-        
+        Member member = MemberManager.getMemberByLogin(login);
+
+        if (member == null || !member.getResetKey().equals(resetKey)) {
+            throw new MeanUserException("Please do not try to change poor users password.");
+        }
+
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        RecoverPasswordActionUrl targetUrl;
+        try {
+            targetUrl = new RecoverPasswordActionUrl(resetKey, member.getLogin());
+        } catch (UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Error recovering member login.", e);
+        }
+        HtmlForm form = new HtmlForm(targetUrl.urlString());
+        layout.addLeft(form);
+
+        FieldData passwFieldData = targetUrl.getNewPasswordParameter().pickFieldData();
+        HtmlPasswordField passInput = new HtmlPasswordField(passwFieldData.getName(), Context.tr("New password"));
+        form.add(passInput);
+
+        FieldData checkFieldData = targetUrl.getCheckNewPasswordParameter().pickFieldData();
+        HtmlPasswordField checkInput = new HtmlPasswordField(checkFieldData.getName(), Context.tr("Reenter password"));
+        form.add(checkInput);
+
+        form.add(new HtmlSubmit(Context.tr("Reset password")));
+
         return layout;
     }
 
     @Override
     protected String createPageTitle() {
-        return Context.tr("Recover password");
+        return Context.tr("Reset password");
     }
 
     @Override
@@ -42,7 +84,7 @@ public class RecoverPasswordPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = LoginPage.generateBreadcrumb();
-        breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(tr("Recover password")));
+        breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(tr("Reset password")));
         return breadcrumb;
     }
 
