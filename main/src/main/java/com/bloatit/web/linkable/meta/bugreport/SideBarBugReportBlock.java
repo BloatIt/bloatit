@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.meta.bugreport;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -21,8 +22,9 @@ public class SideBarBugReportBlock extends TitleSideBarElementLayout {
 
         final HtmlParagraph bugDetail = new HtmlParagraph();
 
-        bugDetail.add(new HtmlMixedText(tr("You can use the <0::bug report> system to report any problem on elveos.org website."),
-                                        new MetaBugsListPageUrl().getHtmlLink()));
+        HtmlLink htmlLink = new MetaBugsListPageUrl().getHtmlLink();
+        htmlLink.setNoFollow();
+        bugDetail.add(new HtmlMixedText(tr("You can use the <0::bug report> system to report any problem on elveos.org website."), htmlLink));
 
         add(bugDetail);
 

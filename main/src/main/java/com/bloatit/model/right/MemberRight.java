@@ -18,6 +18,7 @@ package com.bloatit.model.right;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.Member;
+import com.bloatit.model.Team;
 
 /**
  * The Class MemberRight store the properties accessor for the {@link Member}
@@ -50,7 +51,14 @@ public class MemberRight extends RightManager {
     /**
      * The Class SendInvitation is an accessor for the SendInvitation property.
      */
-    public static class SendInvitation extends Accessor {
+    public static class SendInvitation extends Accessor<Member> {
+        private final Team team;
+
+
+        public SendInvitation(Team team) {
+            this.team = team;
+
+        }
 
         /*
          * (non-Javadoc)
@@ -58,9 +66,9 @@ public class MemberRight extends RightManager {
          * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
+        protected final boolean can(final Member role, final Action action) {
             boolean returnValue = false;
-            returnValue = role.hasTeamPrivilege(UserTeamRight.INVITE) && (action == Action.WRITE);
+            returnValue = role.canInTeam(team, UserTeamRight.INVITE) && (action == Action.WRITE);
             returnValue = returnValue || ownerCanRead(role, action) || ownerCanDelete(role, action);
             return returnValue;
         }

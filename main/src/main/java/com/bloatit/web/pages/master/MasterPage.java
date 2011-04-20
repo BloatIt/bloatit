@@ -2,6 +2,9 @@ package com.bloatit.web.pages.master;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
@@ -15,6 +18,8 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.masters.Header;
+import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.WebConfiguration;
@@ -95,6 +100,20 @@ public abstract class MasterPage extends Page {
         return body;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Defines a generic description that should work for almost all pages, but
+     * should be overloaded anyway
+     * </p>
+     */
+    @Override
+    protected String getPageDescription() {
+        return Context.tr("Elveos is a platform where people gather to finance the development of open source software. "
+                + "Elveos offers a streamlined process for the user, from the description of his needs, to the validation of the project ; "
+                + "Elveos also guarantees that when you decide to fund a project, you will either get what you asked, or be reimbursed.");
+    }
+
     @Override
     protected final String getTitle() {
         return "Elveos – " + createPageTitle();
@@ -107,6 +126,11 @@ public abstract class MasterPage extends Page {
             notificationBlock.add(notifications);
         }
         notifications.add(note);
+    }
+
+    @Override
+    protected Set<Robot> getRobots() {
+        return new HashSet<Header.Robot>();
     }
 
     private HtmlElement generateLogo() {

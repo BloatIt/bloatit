@@ -113,16 +113,6 @@ public final class Member extends Actor<DaoMember> implements User {
         return canAccess(new MemberRight.TeamList(), action);
     }
 
-    /**
-     * Tells if a user can access the property "invite".
-     * 
-     * @param team the team in which you want to invite somebody
-     * @return true if you can invite/accept/refuse.
-     */
-    public boolean canSendInvitation(final Team team) {
-        return canAccess(new MemberRight.SendInvitation(), Action.WRITE);
-    }
-
     public boolean canGetKarma() {
         return canAccess(new MemberRight.Karma(), Action.READ);
     }
@@ -245,7 +235,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public void sendInvitation(final Member member, final Team team) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.SendInvitation(), Action.WRITE);
+        tryAccess(new MemberRight.SendInvitation(team), Action.WRITE);
         DaoJoinTeamInvitation.createAndPersist(getDao(), member.getDao(), team.getDao());
     }
 
@@ -261,7 +251,7 @@ public final class Member extends Actor<DaoMember> implements User {
         if (!invitation.getReciever().getId().equals(getAuthToken().getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
-        tryAccess(new MemberRight.SendInvitation(), Action.DELETE);
+        tryAccess(new MemberRight.SendInvitation(invitation.getTeam()), Action.DELETE);
 
         // Accept the invitation
         invitation.accept();
@@ -286,7 +276,7 @@ public final class Member extends Actor<DaoMember> implements User {
         if (!invitation.getReciever().getId().equals(getAuthToken().getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
-        tryAccess(new MemberRight.SendInvitation(), Action.DELETE);
+        tryAccess(new MemberRight.SendInvitation(invitation.getTeam()), Action.DELETE);
         invitation.refuse();
     }
 

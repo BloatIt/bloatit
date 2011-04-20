@@ -1,5 +1,8 @@
 package com.bloatit.framework.webprocessor.masters;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
@@ -8,14 +11,38 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ModelConfiguration;
 import com.bloatit.web.WebConfiguration;
+import com.sun.tools.javac.util.List;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 public final class Header extends HtmlElement {
+    /**
+     * Indicates the various possible elements for robot
+     */
+    public enum Robot {
+        //  @formatter:off
+        NO_INDEX("noindex"), NO_FOLLOW("nofollow"), INDEX("index"), FOLLOW("follow"), ALL("all"), 
+        NONE("none"), NO_SNIPPET("nosnippet"), NO_ARCHIVE("noarchive"), NO_ODP("noodp");
+        // @formatter:on
+
+        private String robot;
+
+        private Robot(String robot) {
+            this.robot = robot;
+        }
+
+        public String toString() {
+            return robot;
+        }
+    }
+
     private final PlaceHolderElement cssPh;
     private final PlaceHolderElement jsPh;
 
-    public Header(final String title) {
+    public Header(final String title, String description, Set<Robot> robots) {
         super("head");
 
+        // Additiong of charset
         final HtmlBranch metaCharset = new HtmlGenericElement("meta") {
             @Override
             public boolean selfClosable() {
@@ -23,7 +50,9 @@ public final class Header extends HtmlElement {
             }
         };
         metaCharset.addAttribute("charset", "UTF-8");
+        add(metaCharset);
 
+        // Addition of keywords
         final HtmlBranch metaKeywords = new HtmlGenericElement("meta") {
             @Override
             public boolean selfClosable() {
@@ -31,42 +60,73 @@ public final class Header extends HtmlElement {
             }
         };
         metaKeywords.addAttribute("keywords", Context.tr("free software funding, open-source, bulk purchases"));
+        add(metaKeywords);
 
-        final HtmlBranch link = new HtmlGenericElement("link") {
-
+        // Addition of page description
+        final HtmlBranch metaDescription = new HtmlGenericElement("meta") {
             @Override
             public boolean selfClosable() {
                 return true;
             }
+        };
+        metaDescription.addAttribute("name", "description");
+        metaDescription.addAttribute("content", description);
+        add(metaDescription);
 
+        // Robot markup
+        if (robots != null && robots.size() > 0) {
+            final HtmlBranch metaRobots = new HtmlGenericElement("meta") {
+                @Override
+                public boolean selfClosable() {
+                    return true;
+                }
+            };
+            metaRobots.addAttribute("name", "robots");
+            StringBuilder content = new StringBuilder();
+            for (Robot robot : robots) {
+                if (content.length() > 0) {
+                    content.append(',');
+                }
+                content.append(robot);
+            }
+            metaRobots.addAttribute("content", content.toString());
+            add(metaRobots);
+        }
+
+        // Adds link to website CSS css
+        final HtmlBranch link = new HtmlGenericElement("link") {
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
         };
         link.addAttribute("rel", "stylesheet");
         link.addAttribute("href", WebConfiguration.getCss());
         link.addAttribute("type", "text/css");
         link.addAttribute("media", "handheld, all");
-
-        add(metaCharset);
-        add(metaKeywords);
         add(link);
 
+        // Place for custome page CSS if needed
         cssPh = new PlaceHolderElement();
         add(cssPh);
 
+        // Place for custome page Javascript, if needed
         jsPh = new PlaceHolderElement();
         add(jsPh);
 
+        // Javascript to handle libravatar
         String liburi = ModelConfiguration.getLibravatarURI();
-
         HtmlScript js = new HtmlScript();
         js.append("$(document).ready(function(){");
         js.append("$(\".libravatar\").each(function() {");
         js.append("var digest = $(this).attr(\"libravatar\");");
-        js.append("var uri = \""+liburi+"\" + digest + \"?s=64&d=http://elveos.org/resources/commons/img/none.png\";");
+        js.append("var uri = \"" + liburi + "\" + digest + \"?s=64&d=http://elveos.org/resources/commons/img/none.png\";");
         js.append("$(this).attr(\"src\", uri);");
         js.append("});");
         js.append("});");
         add(js);
 
+        // Page title
         add(new HtmlGenericElement("title").addText(title));
     }
 
