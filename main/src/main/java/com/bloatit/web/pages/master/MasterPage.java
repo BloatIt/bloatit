@@ -95,6 +95,20 @@ public abstract class MasterPage extends Page {
         return body;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Defines a generic description that should work for almost all pages, but
+     * should be overloaded anyway
+     * </p>
+     */
+    @Override
+    protected String getPageDescription() {
+        return Context.tr("Elveos is a platform where people gather to finance the development of open source software. "
+                + "Elveos offers a streamlined process for the user, from the description of his needs, to the validation of the project ; "
+                + "Elveos also guarantees that when you decide to fund a project, you will either get what you asked, or be reimbursed.");
+    }
+
     @Override
     protected final String getTitle() {
         return "Elveos – " + createPageTitle();

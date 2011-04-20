@@ -47,7 +47,7 @@ public abstract class Page implements Linkable {
         }
         return getClass().getName().toLowerCase(Locale.ENGLISH);
     }
-    
+
     public final Url getUrl() {
         return thisUrl;
     }
@@ -86,7 +86,18 @@ public abstract class Page implements Linkable {
      */
     protected abstract HtmlElement createBodyOnParameterError() throws RedirectException;
 
+    /**
+     * Adds a user notification
+     */
     protected abstract void addNotification(final HtmlNotification note);
+
+    /**
+     * A method that returns the description of the page as inserted inside the
+     * {@code <meta name="description">} tag in page header.
+     * 
+     * @return the string describing the page
+     */
+    protected abstract String getPageDescription();
 
     // -----------------------------------------------------------------------
     // Template method pattern: procedure.
@@ -115,7 +126,7 @@ public abstract class Page implements Linkable {
         final HtmlBranch html = new HtmlGenericElement("html");
         page.add(html);
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-        pageHeader = new Header(getTitle());
+        pageHeader = new Header(getTitle(), getPageDescription());
         html.add(pageHeader);
 
         html.add(bodyContent);

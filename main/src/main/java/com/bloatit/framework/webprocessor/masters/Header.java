@@ -13,9 +13,10 @@ public final class Header extends HtmlElement {
     private final PlaceHolderElement cssPh;
     private final PlaceHolderElement jsPh;
 
-    public Header(final String title) {
+    public Header(final String title, String description) {
         super("head");
 
+        // Additiong of charset
         final HtmlBranch metaCharset = new HtmlGenericElement("meta") {
             @Override
             public boolean selfClosable() {
@@ -24,6 +25,7 @@ public final class Header extends HtmlElement {
         };
         metaCharset.addAttribute("charset", "UTF-8");
 
+        // Addition of keywords
         final HtmlBranch metaKeywords = new HtmlGenericElement("meta") {
             @Override
             public boolean selfClosable() {
@@ -32,13 +34,22 @@ public final class Header extends HtmlElement {
         };
         metaKeywords.addAttribute("keywords", Context.tr("free software funding, open-source, bulk purchases"));
 
-        final HtmlBranch link = new HtmlGenericElement("link") {
-
+        // Addition of page description
+        final HtmlBranch metaDescription = new HtmlGenericElement("meta") {
             @Override
             public boolean selfClosable() {
                 return true;
             }
+        };
+        metaDescription.addAttribute("name", "description");
+        metaDescription.addAttribute("content", description);
 
+        // Adds link to css
+        final HtmlBranch link = new HtmlGenericElement("link") {
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
         };
         link.addAttribute("rel", "stylesheet");
         link.addAttribute("href", WebConfiguration.getCss());
@@ -55,13 +66,13 @@ public final class Header extends HtmlElement {
         jsPh = new PlaceHolderElement();
         add(jsPh);
 
+        // Javascript to handle libravatar
         String liburi = ModelConfiguration.getLibravatarURI();
-
         HtmlScript js = new HtmlScript();
         js.append("$(document).ready(function(){");
         js.append("$(\".libravatar\").each(function() {");
         js.append("var digest = $(this).attr(\"libravatar\");");
-        js.append("var uri = \""+liburi+"\" + digest + \"?s=64&d=http://elveos.org/resources/commons/img/none.png\";");
+        js.append("var uri = \"" + liburi + "\" + digest + \"?s=64&d=http://elveos.org/resources/commons/img/none.png\";");
         js.append("$(this).attr(\"src\", uri);");
         js.append("});");
         js.append("});");
