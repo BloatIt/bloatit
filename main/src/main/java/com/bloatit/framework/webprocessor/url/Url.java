@@ -14,19 +14,18 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
  */
 public abstract class Url implements Cloneable {
 
-    private final String name;
     private String anchor = null;
 
-    /**
-     * Create a Url using its name.
-     */
+    @Deprecated
     protected Url(final String name) {
         super();
-        this.name = name;
+    }
+    
+    protected Url() {
+        super();
     }
 
     protected Url(final Url other) {
-        this.name = other.name;
         this.anchor = other.anchor;
     }
     
@@ -62,7 +61,7 @@ public abstract class Url implements Cloneable {
         if (Context.getSession() != null) {
             sb.append("/").append(Context.getLocalizator().getCode());
         }
-        sb.append("/").append(name);
+        sb.append("/").append(getCode());
         doConstructUrl(sb);
         if (anchor != null) {
             sb.append("#").append(anchor);

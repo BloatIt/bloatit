@@ -2,7 +2,11 @@ package com.bloatit.framework.webprocessor.annotations.generator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -13,17 +17,8 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.ErrorType;
-import javax.lang.model.type.ExecutableType;
-import javax.lang.model.type.NoType;
-import javax.lang.model.type.NullType;
-import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
-import javax.lang.model.type.TypeVisitor;
-import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.ElementScanner6;
 import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.TypeKindVisitor6;
@@ -34,78 +29,117 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 
 @SupportedAnnotationTypes("com.bloatit.framework.webprocessor.annotations.ParamContainer")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class ParamContainerProcessor extends AbstractProcessor {
 
+    private Map<Element, ComponentDescription> components = new HashMap<Element, ComponentDescription>();
+    private Map<Element, UrlDescription> urls = new HashMap<Element, UrlDescription>();
+
+    private Set<String> classAlreadyWritten = new HashSet<String>();
+
+    boolean hasBeenProcessesed = false;
+
     @Override
-    public boolean process(final Set<? extends TypeElement> typeElements, final RoundEnvironment env) {
+    public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment env) {
         this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Annotation processing...");
 
-        for (final TypeElement typeElement : typeElements) {
+        for (final TypeElement typeElement : annotations) {
             for (final Element element : env.getElementsAnnotatedWith(typeElement)) {
-                try {
+                if (element.getAnnotation(ParamContainer.class) != null) {
                     parseAParamContainer(element);
-                } catch (final Exception e) {
-                    e.printStackTrace();
                 }
             }
         }
-        return false;
+
+        for (final Entry<Element, ComponentDescription> entry : components.entrySet()) {
+            createFile(new CodeGenerator().generateComponentClass(entry.getValue()));
+        }
+        for (final Entry<Element, UrlDescription> entry : urls.entrySet()) {
+            createFile(new CodeGenerator().generateUrlClass(entry.getValue()));
+        }
+
+        return true;
     }
 
-    private void parseAParamContainer(final Element element) throws IOException {
-        final ParamContainer paramContainer = element.getAnnotation(ParamContainer.class);
-
-        final String urlClassName = element.getSimpleName().toString();
-        JavaGenerator generator;
-        if (paramContainer.isComponent()) {
-            generator = new UrlComponentClassGenerator(urlClassName, "");
-        } else {
-            generator = new UrlComponentClassGenerator(urlClassName, paramContainer.value());
+    private void createFile(final Clazz clazz) {
+        if (classAlreadyWritten.contains(clazz.getQualifiedName())) {
+            return;
         }
-
-        generator.setIsAction(isAction(element));
-
-        addParameterForSuperClass(element, generator);
-
-        for (final Element enclosed : element.getEnclosedElements()) {
-            parseAnAttribute(generator, enclosed);
-        }
-
         BufferedWriter out = null;
-        BufferedWriter outUrl = null;
         try {
-            // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
-            // "writing " + generator.getClassName());
-            final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(generator.getClassName());
+            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + clazz.getQualifiedName());
+            final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(clazz.getQualifiedName());
             out = new BufferedWriter(classFile.openWriter());
-            out.write(generator.generateComponentUrlClass());
-
-            if (!paramContainer.isComponent()) {
-                // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
-                // "writing " + generator.getUrlClassName());
-                final JavaFileObject urlClassFile = this.processingEnv.getFiler().createSourceFile(generator.getUrlClassName());
-                outUrl = new BufferedWriter(urlClassFile.openWriter());
-                outUrl.write(generator.generateUrlClass());
-            }
-
+            out.write(clazz.toString());
+            classAlreadyWritten.add(clazz.getQualifiedName());
         } catch (final Exception e) {
             this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
         } finally {
             if (out != null) {
-                out.close();
-            }
-            if (outUrl != null) {
-                outUrl.close();
+                try {
+                    out.close();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    private boolean isAction(final Element element) {
+    private void parseAParamContainer(final Element element) {
+        parseAParamContainer(element, null, null, null);
+    }
 
+    private void parseAParamContainer(final Element element, final UrlDescription urlChild) {
+        parseAParamContainer(element, null, null, urlChild);
+    }
+
+    private void parseAParamContainer(final Element element, final Element fromAttribute, final ComponentDescription father) {
+        parseAParamContainer(element, fromAttribute, father, null);
+    }
+
+    private void parseAParamContainer(final Element element,
+                                      final Element fromAttribute,
+                                      final ComponentDescription father,
+                                      final UrlDescription urlChild) {
+        final ParamContainer paramContainer = element.getAnnotation(ParamContainer.class);
+        if (paramContainer == null) {
+            return;
+        }
+
+        final ComponentDescription component;
+        if (fromAttribute != null) {
+            component = new ComponentDescription(element, paramContainer, fromAttribute.getSimpleName().toString());
+        } else {
+            component = new ComponentDescription(element, paramContainer, null);
+        }
+        components.put(element, component);
+        if (father != null) {
+            father.addSubComponent(component);
+        }
+
+        if (!paramContainer.isComponent()) {
+            final UrlDescription url = new UrlDescription(component, element, paramContainer, isAction(element));
+            urls.put(element, url);
+            parseSuperClass(element, url);
+            if (urlChild != null) {
+                urlChild.setFather(url);
+            }
+        }
+
+        for (final Element enclosed : element.getEnclosedElements()) {
+            parseARequestParam(component, enclosed);
+            parseEnclosedParamContainer(component, enclosed);
+        }
+
+    }
+
+    private boolean isAction(final Element element) {
+        if (element == null) {
+            return false;
+        }
         if (element.getSimpleName().toString().equals("Action")) {
             return true;
         }
@@ -115,80 +149,28 @@ public class ParamContainerProcessor extends AbstractProcessor {
             @Override
             public Boolean visitType(final TypeElement e, final Object p) {
                 return isAction(e.getSuperclass());
-
             }
         }, false);
 
     }
 
     private boolean isAction(final TypeMirror type) {
-
-        return type.accept(new TypeVisitor<Boolean, Object>() {
-
-            @Override
-            public Boolean visit(final TypeMirror t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visit(final TypeMirror t) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitPrimitive(final PrimitiveType t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitNull(final NullType t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitArray(final ArrayType t, final Object p) {
-                return false;
-            }
+        if (type == null) {
+            return false;
+        }
+        final Boolean accept = type.accept(new TypeKindVisitor6<Boolean, Object>() {
 
             @Override
             public Boolean visitDeclared(final DeclaredType t, final Object p) {
                 return isAction(t.asElement());
             }
-
-            @Override
-            public Boolean visitError(final ErrorType t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitTypeVariable(final TypeVariable t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitWildcard(final WildcardType t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitExecutable(final ExecutableType t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitNoType(final NoType t, final Object p) {
-                return false;
-            }
-
-            @Override
-            public Boolean visitUnknown(final TypeMirror t, final Object p) {
-                return false;
-            }
         }, null);
+
+        return accept != null && accept;
 
     }
 
-    private void addParameterForSuperClass(final Element element, final JavaGenerator generator) {
+    private void parseSuperClass(final Element element, final UrlDescription urlDescription) {
         final SimpleTypeVisitor6<Element, ProcessingEnvironment> vs = new SimpleTypeVisitor6<Element, ProcessingEnvironment>() {
             @Override
             public Element visitDeclared(final DeclaredType t, final ProcessingEnvironment p) {
@@ -201,99 +183,33 @@ public class ParamContainerProcessor extends AbstractProcessor {
         };
         final Element superElement = element.asType().accept(vs, this.processingEnv);
         if (superElement != null && superElement.getAnnotation(ParamContainer.class) != null) {
-            generator.setUrlSuperClass(getSecureType(superElement) + "Url");
+            parseAParamContainer(superElement, urlDescription);
         }
     }
 
-    private void parseAnAttribute(final JavaGenerator generator, final Element attribute) {
-
-        final RequestParam parm = attribute.getAnnotation(RequestParam.class);
+    private void parseARequestParam(final ComponentDescription component, final Element attribute) {
+        final RequestParam requestParam = attribute.getAnnotation(RequestParam.class);
         final Optional optional = attribute.getAnnotation(Optional.class);
-        String defaultValue = optional != null ? optional.value() : null;
-        if (Optional.DEFAULT_DEFAULT_VALUE.equals(defaultValue)) {
-            defaultValue = null;
+
+        if (requestParam != null) {
+            component.addParameter(new ParameterDescription(attribute, requestParam, attribute.getAnnotation(ParamConstraint.class), optional));
         }
+    }
 
-        // Its a simple param
-        if (parm != null) {
-            final String attributeName = attribute.getSimpleName().toString();
-            String attributeUrlString;
-            if (parm.name().isEmpty()) {
-                if (parm.role() == Role.POST || parm.role() == Role.SESSION) {
-                    // Find if the type of the attribute has a ParamContainer
-                    // annotation
-                    final TypeKindVisitor6<String, Integer> vs = new TypeKindVisitor6<String, Integer>() {
-                        @Override
-                        public String visitDeclared(final DeclaredType t, final Integer p) {
-                            return t.asElement().getSimpleName().toString();
-                        }
-                    };
-                    final String className = attribute.getEnclosingElement().asType().accept(vs, null);
-                    attributeUrlString = className.toLowerCase() + "_" + attribute.getSimpleName().toString().toLowerCase();
-                } else {
-                    attributeUrlString = attribute.getSimpleName().toString();
-                }
-            } else {
-                attributeUrlString = parm.name();
-            }
-            final String suggestedValue = RequestParam.DEFAULT_SUGGESTED_VALUE.equals(parm.suggestedValue()) ? null : parm.suggestedValue();
-
-            if (parm.generatedFrom().isEmpty()) {
-                generator.addAttribute(getType(attribute), //
-                                       getConversionType(attribute), //
-                                       attributeUrlString, //
-                                       defaultValue, //
-                                       suggestedValue, //
-                                       attributeName, //
-                                       parm.role(), //
-                                       parm.conversionErrorMsg().value(), //
-                                       attribute.getAnnotation(ParamConstraint.class),
-                                       optional != null);
-                generator.addGetterSetter(getType(attribute), getConversionType(attribute), attributeName);
-                if (optional == null && (parm.role() == Role.GET)) {
-                    generator.addConstructorParameter(getType(attribute), attributeName);
-                }
-                generator.registerAttribute(attributeName);
-            } else {
-                generator.addAutoGeneratingGetter(getType(attribute), attributeName, parm.generatedFrom());
-            }
-
-            // Its not a param but it could be a ParamContainer.
-        } else {
-
+    private void parseEnclosedParamContainer(final ComponentDescription component, final Element attribute) {
+        if (attribute.getAnnotation(RequestParam.class) == null) {
             // Find if the type of the attribute has a ParamContainer annotation
-            final TypeKindVisitor6<ParamContainer, Integer> vs = new TypeKindVisitor6<ParamContainer, Integer>() {
+            final TypeKindVisitor6<Element, Integer> vs = new TypeKindVisitor6<Element, Integer>() {
                 @Override
-                public ParamContainer visitDeclared(final DeclaredType t, final Integer p) {
-                    return t.asElement().getAnnotation(ParamContainer.class);
+                public Element visitDeclared(final DeclaredType t, final Integer p) {
+                    return t.asElement();
                 }
             };
-            final ParamContainer component = attribute.asType().accept(vs, 0);
-
-            if (component != null) {
-                generator.addComponentAndGetterSetter(getSecureType(attribute), attribute.getSimpleName().toString());
-                generator.registerComponent(attribute.getSimpleName().toString());
+            final Element newElement = attribute.asType().accept(vs, 0);
+            if (newElement != null && newElement.getAnnotation(ParamContainer.class) != null) {
+                parseAParamContainer(newElement, attribute, component);
             }
         }
-    }
-
-    private String getSecureType(final Element attribute) {
-        return attribute.asType().toString().replaceAll("\\<.*\\>", "").replaceAll(".*\\.", "").replace(">", "");
-    }
-
-    private String getType(final Element attribute) {
-        return attribute.asType().toString().replaceAll("\\<.*\\>", "");
-    }
-
-    private String getConversionType(final Element attribute) {
-        String string = attribute.asType().toString().replaceAll("\\<.*\\>", "");
-        if (string.endsWith("List")) {
-            string = attribute.asType().toString();
-            final int start = string.indexOf("<") + 1;
-            final int stop = string.lastIndexOf(">");
-            return string.substring(start, stop);
-        }
-        return getType(attribute);
     }
 
     // try {

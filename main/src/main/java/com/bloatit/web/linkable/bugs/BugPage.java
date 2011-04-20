@@ -11,22 +11,23 @@
  */
 package com.bloatit.web.linkable.bugs;
 
-import com.bloatit.data.DaoBug.BugState;
-import com.bloatit.data.DaoBug.Level;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.bloatit.data.DaoBug.BugState;
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
@@ -43,8 +44,6 @@ import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
-import java.util.HashMap;
-import java.util.Map;
 
 @ParamContainer("feature/bug")
 public final class BugPage extends MasterPage {
@@ -64,7 +63,7 @@ public final class BugPage extends MasterPage {
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
         
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
 
         
@@ -105,7 +104,7 @@ public final class BugPage extends MasterPage {
 
 
     private Map<String, String> generateBugFormatMap() {
-        Map<String,String> formatMap = new HashMap<String, String>();
+        final Map<String,String> formatMap = new HashMap<String, String>();
 
         formatMap.put("%REASON%", tr("Reason: "));
         formatMap.put("%LEVEL%", tr("Level: "));

@@ -31,7 +31,7 @@ import com.bloatit.model.Translation;
 import com.bloatit.web.components.UserContentAuthorBlock;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.FeatureTabPaneUrl;
+import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
@@ -50,12 +50,12 @@ public final class FeatureTabPane extends HtmlPageComponent {
     @SuppressWarnings("unused")
     private FeatureContributorsComponent contribution;
 
-    public FeatureTabPane(final FeatureTabPaneUrl url, final Feature feature) {
+    public FeatureTabPane(final FeatureTabPaneUrlComponent url, final Feature feature) {
         super();
         activeTabKey = url.getActiveTabKey();
 
         final FeaturePageUrl featureUrl = new FeaturePageUrl(feature);
-        featureUrl.setFeatureTabPaneUrl(new FeatureTabPaneUrl());
+        featureUrl.setFeatureTabPaneUrl(new FeatureTabPaneUrlComponent());
 
         // Create tab pane
         final HtmlTabBlock tabPane = new HtmlTabBlock(FEATURE_TAB_PANE, activeTabKey, featureUrl);

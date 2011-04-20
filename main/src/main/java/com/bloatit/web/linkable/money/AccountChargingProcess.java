@@ -7,8 +7,8 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
+import com.bloatit.web.url.LoginPageUrl;
 
 @ParamContainer("account/charging/process")
 public class AccountChargingProcess extends WebProcess {
@@ -37,7 +37,7 @@ public class AccountChargingProcess extends WebProcess {
 
     @Override
     protected Url doProcess() {
-        return new AccountChargingPageUrl(this);
+        return new LoginPageUrl();
     }
 
     @Override

@@ -120,7 +120,7 @@ public class PaylineProcess extends WebProcess {
                 payline.validatePayment(token);
 
                 // The payline process is critical. We must be sure the DB is
-                // update right NOW!
+                // updated right NOW!
                 ModelAccessor.close();
                 ModelAccessor.open();
 

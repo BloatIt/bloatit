@@ -62,7 +62,7 @@ public final class AddSoftwareAction extends LoggedAction {
     @ParamConstraint(max = "100",
                      maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
                      min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."),
-                     optionalErrorMsg = @tr("The software name is requiered."))
+                     optionalErrorMsg = @tr("The software name is required."))
     private final String softwareName;
 
     @Optional
