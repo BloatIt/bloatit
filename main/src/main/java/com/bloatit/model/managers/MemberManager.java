@@ -50,6 +50,14 @@ public final class MemberManager {
         return Member.create(daoMember);
     }
 
+    public static Member getMemberByEmail(String email) {
+        final DaoMember daoMember = DaoMember.getByEmail(email);
+        if(daoMember == null){
+            return null;
+        }
+        return Member.create(daoMember);
+    }
+
     /**
      * Tells if a Login exists.
      *

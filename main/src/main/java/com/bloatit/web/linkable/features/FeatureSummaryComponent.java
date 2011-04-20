@@ -210,12 +210,11 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     case DEVELOPPING:
                         actionsButtons.add(new HtmlDiv("report_bug_block").add(generateDevelopingLeftActions()));
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
-
                         break;
                     case FINISHED:
                         actionsButtons.add(new HtmlDiv("report_bug_block").add(generateFinishedAction()));
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
-                        // FIXME NO BREAK ?????????????????????????,
+                        break;
                     case DISCARDED:
                         // TODO
                         // actionsButtons.add(new

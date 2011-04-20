@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-20 12:04+0200\n"
+"POT-Creation-Date: 2011-04-20 17:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,7 @@ msgid "Add a new attachment"
 msgstr ""
 
 #: com/bloatit/web/actions/AddAttachementPage.java:81
+#: com/bloatit/web/linkable/login/LostPasswordPage.java:42
 #: com/bloatit/web/linkable/login/SignUpPage.java:114
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:137
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:105
@@ -89,22 +90,6 @@ msgstr ""
 
 #: com/bloatit/web/actions/PopularityVoteAction.java:104
 msgid "You can't vote for yourself!"
-msgstr ""
-
-#: com/bloatit/web/actions/MemberActivationAction.java:69
-msgid "Activation sucess, you are now logged."
-msgstr ""
-
-#: com/bloatit/web/actions/MemberActivationAction.java:72
-msgid "Wrong activation key for this member."
-msgstr ""
-
-#: com/bloatit/web/actions/MemberActivationAction.java:75
-msgid "No activation is necessary for this member."
-msgstr ""
-
-#: com/bloatit/web/actions/MemberActivationAction.java:78
-msgid "Activation impossible on a no existing member."
 msgstr ""
 
 #: com/bloatit/web/actions/AddAttachementAction.java:36
@@ -434,7 +419,7 @@ msgid "You must be logged to modify a bug."
 msgstr ""
 
 #: com/bloatit/web/linkable/bugs/ModifyBugPage.java:152
-#: com/bloatit/web/linkable/team/TeamPage.java:296
+#: com/bloatit/web/linkable/team/TeamPage.java:290
 msgid "Modify"
 msgstr ""
 
@@ -726,7 +711,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:136
 #: com/bloatit/web/linkable/features/FeatureTabPane.java:64
-#: com/bloatit/web/linkable/team/TeamPage.java:152
+#: com/bloatit/web/linkable/team/TeamPage.java:172
 msgid "Description"
 msgstr ""
 
@@ -837,87 +822,159 @@ msgid ""
 "we try to use generic code... sometimes generic means stupid ;)"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:65
-#: com/bloatit/web/linkable/login/LoginPage.java:80
-#: com/bloatit/web/linkable/login/LoginPage.java:99
-#: com/bloatit/web/linkable/login/LoginPage.java:114
+#: com/bloatit/web/linkable/login/LostPasswordPage.java:38
+msgid "Enter your email"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/LostPasswordPage.java:48
+#: com/bloatit/web/linkable/login/LostPasswordPage.java:58
+msgid "Recover password"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordAction.java:34
+#: com/bloatit/web/linkable/login/SignUpAction.java:38
+msgid "Password cannot be blank."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordAction.java:35
+msgid "Number of characters for password has to be superior to %constraint%."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordAction.java:36
+msgid "Number of characters for password has to be inferior to %constraint%."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordAction.java:40
+#: com/bloatit/web/linkable/login/SignUpAction.java:44
+msgid "Password check cannot be blank."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordAction.java:41
+msgid ""
+"Number of characters for password check has to be superior to %constraint%."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordAction.java:42
+msgid ""
+"Number of characters for password check has to be inferior to %constraint%."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordAction.java:62
+msgid "Password reset successful, you are now logged."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordPage.java:63
+#: com/bloatit/web/linkable/members/ModifyMemberPage.java:88
+msgid "New password"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordPage.java:67
+msgid "Reenter password"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/RecoverPasswordPage.java:70
+#: com/bloatit/web/linkable/login/RecoverPasswordPage.java:77
+#: com/bloatit/web/linkable/login/RecoverPasswordPage.java:87
+msgid "Reset password"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/LostPasswordAction.java:52
+msgid "Elveos password recovery"
+msgstr ""
+
+#: com/bloatit/web/linkable/login/LostPasswordAction.java:63
+#, java-format
+msgid ""
+"A mail with the process to reset your password has been sent to {0}. Please "
+"check your mailbox."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/LostPasswordAction.java:71
+msgid "No account match this email address. Please input another one."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/LoginPage.java:62
+#: com/bloatit/web/linkable/login/LoginPage.java:77
+#: com/bloatit/web/linkable/login/LoginPage.java:104
+#: com/bloatit/web/linkable/login/LoginPage.java:119
 #: com/bloatit/web/pages/master/SessionBar.java:65
 msgctxt "Login (verb)"
 msgid "Login"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:72
+#: com/bloatit/web/linkable/login/LoginPage.java:69
 #: com/bloatit/web/linkable/login/SignUpPage.java:71
 msgctxt "Login (noun)"
 msgid "Login"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:75
+#: com/bloatit/web/linkable/login/LoginPage.java:72
 msgid "This field is not case sensitive"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:77
+#: com/bloatit/web/linkable/login/LoginPage.java:74
 #: com/bloatit/web/linkable/login/SignUpPage.java:79
 msgid "Password"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:89
+#: com/bloatit/web/linkable/login/LoginPage.java:86
 #: com/bloatit/web/linkable/login/SignUpPage.java:64
 msgid "Sign up"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:92
+#: com/bloatit/web/linkable/login/LoginPage.java:89
 msgid "Password lost ?"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:122
+#: com/bloatit/web/linkable/login/LoginPage.java:96
 msgid "Recover your password"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/LoginPage.java:124
+#: com/bloatit/web/linkable/login/LoginPage.java:97
 msgid "You can recover you password use the <0::password recovery form>."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:40
+#: com/bloatit/web/linkable/login/SignUpAction.java:32
 msgid "Login cannot be blank."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:41
+#: com/bloatit/web/linkable/login/SignUpAction.java:33
 msgid "Number of characters for login has to be superior to 4."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:42
+#: com/bloatit/web/linkable/login/SignUpAction.java:34
 msgid "Number of characters for login has to be inferior to 15."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:46
-#: com/bloatit/web/linkable/login/SignUpAction.java:52
-msgid "Password cannot be blank."
-msgstr ""
-
-#: com/bloatit/web/linkable/login/SignUpAction.java:47
-#: com/bloatit/web/linkable/login/SignUpAction.java:53
+#: com/bloatit/web/linkable/login/SignUpAction.java:39
 msgid "Number of characters for password has to be superior to 4."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:48
-#: com/bloatit/web/linkable/login/SignUpAction.java:54
+#: com/bloatit/web/linkable/login/SignUpAction.java:40
 msgid "Number of characters for password has to be inferior to 15."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:58
+#: com/bloatit/web/linkable/login/SignUpAction.java:45
+msgid "Number of characters for password check has to be superior to 4."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpAction.java:46
+msgid "Number of characters for password check has to be inferior to 15."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpAction.java:50
 msgid "Email cannot be blank."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:59
+#: com/bloatit/web/linkable/login/SignUpAction.java:51
 msgid "Number of characters for email has to be superior to 5."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:60
+#: com/bloatit/web/linkable/login/SignUpAction.java:52
 msgid "Number of characters for email address has to be inferior to 30."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:95
+#: com/bloatit/web/linkable/login/SignUpAction.java:87
 #, java-format
 msgid ""
 "Your Elveos.org account ''{0}'' was created. Please click on the following "
@@ -926,27 +983,43 @@ msgid ""
 " {1}"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:99
+#: com/bloatit/web/linkable/login/SignUpAction.java:91
 msgid "Elveos.org account activation"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:102
+#: com/bloatit/web/linkable/login/SignUpAction.java:94
 msgid "Account created, you will receive a mail to activate it."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:115
+#: com/bloatit/web/linkable/login/SignUpAction.java:107
 #, java-format
 msgid "Login ''{0}''already used. Find another login"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:120
+#: com/bloatit/web/linkable/login/SignUpAction.java:112
 #, java-format
 msgid "Email ''{0}''already used. Find another email or use your old account !"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpAction.java:126
+#: com/bloatit/web/linkable/login/SignUpAction.java:118
 #, java-format
 msgid "Invalid email address : {0}."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/MemberActivationAction.java:68
+msgid "Activation sucess, you are now logged."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/MemberActivationAction.java:71
+msgid "Wrong activation key for this member."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/MemberActivationAction.java:74
+msgid "No activation is necessary for this member."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/MemberActivationAction.java:77
+msgid "Activation impossible on a no existing member."
 msgstr ""
 
 #: com/bloatit/web/linkable/login/SignUpPage.java:73
@@ -1079,7 +1152,7 @@ msgstr ""
 #: com/bloatit/web/linkable/money/AccountPage.java:83
 #: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:38
 #: com/bloatit/web/linkable/team/JoinTeamPage.java:26
-#: com/bloatit/web/linkable/team/TeamPage.java:70
+#: com/bloatit/web/linkable/team/TeamPage.java:62
 msgid "I cannot find the team number: ''%value%''."
 msgstr ""
 
@@ -1407,10 +1480,6 @@ msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:82
 msgid "This is useful only if you intend to change your password."
-msgstr ""
-
-#: com/bloatit/web/linkable/members/ModifyMemberPage.java:88
-msgid "New password"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:95
@@ -2454,6 +2523,7 @@ msgid "Type of the team : "
 msgstr ""
 
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:100
+#: com/bloatit/web/linkable/team/TeamPage.java:144
 msgid "Public"
 msgstr ""
 
@@ -2481,7 +2551,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:39
 #: com/bloatit/web/linkable/team/JoinTeamPage.java:27
-#: com/bloatit/web/linkable/team/TeamPage.java:72
+#: com/bloatit/web/linkable/team/TeamPage.java:63
 msgid "You have to specify a team number."
 msgstr ""
 
@@ -2601,115 +2671,111 @@ msgstr ""
 msgid "Join team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:92
+#: com/bloatit/web/linkable/team/TeamPage.java:83
 msgid "Consult team information"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:103
+#: com/bloatit/web/linkable/team/TeamPage.java:94
 #, java-format
 msgid "How to contact {0}?"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:105
+#: com/bloatit/web/linkable/team/TeamPage.java:96
 msgid ""
 "Oops, an error prevented us from showing you team name, please notify us."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:158
-msgid "Group informations"
+#: com/bloatit/web/linkable/team/TeamPage.java:144
+msgid "Visibility: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:165
-msgid "Public team"
+#: com/bloatit/web/linkable/team/TeamPage.java:145
+msgid "Private"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:165
-msgid "Private team"
-msgstr ""
-
-#: com/bloatit/web/linkable/team/TeamPage.java:170
+#: com/bloatit/web/linkable/team/TeamPage.java:149
 msgid "Creation date: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:178
+#: com/bloatit/web/linkable/team/TeamPage.java:159
 msgid "Number of members: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:183
+#: com/bloatit/web/linkable/team/TeamPage.java:164
 msgid "Involved in features: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:183
+#: com/bloatit/web/linkable/team/TeamPage.java:165
 #, java-format
 msgid "{0} (<0::see details>)"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:190
+#: com/bloatit/web/linkable/team/TeamPage.java:180
 msgid "Bank informations"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:198
+#: com/bloatit/web/linkable/team/TeamPage.java:190
 msgid "Account balance: "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:198
+#: com/bloatit/web/linkable/team/TeamPage.java:191
 msgid "<0:amount (1000€):> (<1::view details>)"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:210
+#: com/bloatit/web/linkable/team/TeamPage.java:204
 #, java-format
 msgid "Members ({0})"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:215
+#: com/bloatit/web/linkable/team/TeamPage.java:209
 msgid "Invite a member to this team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:220
+#: com/bloatit/web/linkable/team/TeamPage.java:214
 msgid "Join this team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:243
+#: com/bloatit/web/linkable/team/TeamPage.java:237
 msgid "Unknown team"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:286
+#: com/bloatit/web/linkable/team/TeamPage.java:280
 msgid "Member name"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:292
+#: com/bloatit/web/linkable/team/TeamPage.java:286
 msgid "Consult"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:294
+#: com/bloatit/web/linkable/team/TeamPage.java:288
 msgid "Talk"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:298
+#: com/bloatit/web/linkable/team/TeamPage.java:292
 msgid "Invite"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:300
+#: com/bloatit/web/linkable/team/TeamPage.java:294
 msgid "Promote"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:302
+#: com/bloatit/web/linkable/team/TeamPage.java:296
 msgid "Bank"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:341
+#: com/bloatit/web/linkable/team/TeamPage.java:335
 msgid "Leave"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:343
+#: com/bloatit/web/linkable/team/TeamPage.java:337
 msgid "Kick"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:347
+#: com/bloatit/web/linkable/team/TeamPage.java:341
 msgid "Remove"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/TeamPage.java:352
+#: com/bloatit/web/linkable/team/TeamPage.java:346
 msgid "Grant"
 msgstr ""
 

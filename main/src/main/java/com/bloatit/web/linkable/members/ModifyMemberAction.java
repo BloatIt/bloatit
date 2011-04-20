@@ -2,14 +2,12 @@ package com.bloatit.web.linkable.members;
 
 import static com.bloatit.framework.utils.StringUtils.isEmpty;
 
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.FileConstraintChecker;
-import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -68,6 +66,7 @@ public class ModifyMemberAction extends LoggedAction {
     @Optional
     private final String avatarFileName;
 
+    @SuppressWarnings("unused")
     @RequestParam(name = "avatar/contenttype", role = Role.POST)
     @Optional
     private final String avatarContentType;
@@ -102,23 +101,23 @@ public class ModifyMemberAction extends LoggedAction {
     protected Url doProcessRestricted(Member me) {
         try {
             // PASSWORD
-            if (password != null && !password.isEmpty() && me.checkPassword(currentPassword) && !me.checkPassword(password)) {
+            if (password != null && !password.trim().isEmpty() && me.checkPassword(currentPassword.trim()) && !me.checkPassword(password.trim())) {
                 session.notifyGood(Context.tr("Password updated."));
-                me.setPassword(password);
+                me.setPassword(password.trim());
             }
 
             // EMAIL
-            if (email != null && !email.isEmpty() && !email.equals(me.getEmail())) {
+            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail())) {
                 session.notifyGood(Context.tr("Email updated."));
-                me.setEmail(email);
+                me.setEmail(email.trim());
             }
 
             // FULLNAME
             if (deleteFullName != null && deleteFullName.booleanValue()) {
                 me.setFullname(null);
-            } else if (fullname != null && !fullname.isEmpty() && !fullname.equals(me.getFullname())) {
+            } else if (fullname != null && !fullname.trim().isEmpty() && !fullname.equals(me.getFullname())) {
                 session.notifyGood(Context.tr("Fullname updated."));
-                me.setFullname(fullname);
+                me.setFullname(fullname.trim());
             }
 
             // LANGUAGE

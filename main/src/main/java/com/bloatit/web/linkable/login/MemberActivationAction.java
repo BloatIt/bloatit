@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.actions;
+package com.bloatit.web.linkable.login;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -59,7 +59,6 @@ public final class MemberActivationAction extends Action {
         final Url to = new IndexPageUrl();
 
         if (member != null) {
-
             if (member.getActivationState() == ActivationState.VALIDATING) {
                 if (key.equals(member.getActivationKey())) {
                     member.activate();
