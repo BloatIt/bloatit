@@ -70,7 +70,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Create a new member using its Dao version.
-     *
+     * 
      * @param dao a DaoMember
      * @return the new member or null if dao is null.
      */
@@ -106,7 +106,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * Tells if a user can access the team property. You have to unlock this
      * Member using the {@link Member#authenticate(AuthToken)} method.
-     *
+     * 
      * @param action can be read/write/delete. for example use READ to know if
      *            you can use {@link Member#getTeams()}.
      * @return true if you can use the method.
@@ -141,26 +141,24 @@ public final class Member extends Actor<DaoMember> implements User {
      * <p>
      * Gives some new rights to a user in a teams
      * </p>
-     *
+     * 
      * @param newRole the new role of the user
      * @throws MemberNotInTeamException when <code>this</code> is not part of
      *             <code>team</code>
      * @throws UnauthorizedOperationException if the authenticated user is not
      *             <code>ADMIN</code> of <code>team</code>
      */
-    /*public void setTeamRole(final Team team, final TeamRole newRole) throws UnauthorizedOperationException, MemberNotInTeamException {
-        if (!isInTeam(team)) {
-            throw new MemberNotInTeamException();
-        }
-
-        tryAccess(new MemberRight.TeamList(), Action.WRITE);
-        setTeamRoleUnprotected(team, newRole);
-    }*/
+    /*
+     * public void setTeamRole(final Team team, final TeamRole newRole) throws
+     * UnauthorizedOperationException, MemberNotInTeamException { if
+     * (!isInTeam(team)) { throw new MemberNotInTeamException(); } tryAccess(new
+     * MemberRight.TeamList(), Action.WRITE); setTeamRoleUnprotected(team,
+     * newRole); }
+     */
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
-
 
     public boolean hasTeamRight(final Team aTeam, final UserTeamRight aRight) {
         if (getTeamRights(aTeam) == null) {
@@ -168,7 +166,6 @@ public final class Member extends Actor<DaoMember> implements User {
         }
         return getTeamRights(aTeam).contains(aRight);
     }
-
 
     public Set<UserTeamRight> getTeamRights(final Team g) {
         return getDao().getTeamRights(g.getDao());
@@ -199,19 +196,19 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public boolean canBeKickFromTeam(final Team aTeam, final Member actor) {
-        if(actor == null) {
+        if (actor == null) {
             return false;
         }
 
-        if(this.equals(actor)) {
-            if(hasPromoteTeamRight(aTeam)) {
+        if (this.equals(actor)) {
+            if (hasPromoteTeamRight(aTeam)) {
                 return false;
             }
 
             return true;
         }
 
-        if(!actor.hasPromoteTeamRight(aTeam)) {
+        if (!actor.hasPromoteTeamRight(aTeam)) {
             return false;
         }
 
@@ -223,19 +220,19 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * Give some right to the user to a team without checking if the user can
      * get these rights
-     *
+     * 
      * @param team the team to add rights to the user
      * @param newRight the new new role of the user
      */
-    /*protected void setTeamRoleUnprotected(final Team team, final TeamRole newRole) {
-        for (final UserTeamRight r : newRole.getRights()) {
-            getDao().addTeamRight(team.getDao(), r);
-        }
-    }*/
+    /*
+     * protected void setTeamRoleUnprotected(final Team team, final TeamRole
+     * newRole) { for (final UserTeamRight r : newRole.getRights()) {
+     * getDao().addTeamRight(team.getDao(), r); } }
+     */
 
     /**
      * Adds a user to a team without checking if the team is Public or not
-     *
+     * 
      * @param team the team to which the user will be added
      */
     protected void addToTeamUnprotected(final Team team) {
@@ -245,13 +242,13 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To invite a member into a team you have to have the WRITE right on the
      * "invite" property.
-     *
+     * 
      * @param member The member you want to invite
      * @param team The team in which you invite a member.
      * @throws UnauthorizedOperationException
      */
     public void sendInvitation(final Member member, final Team team) throws UnauthorizedOperationException {
-        if(!hasInviteTeamRight(team)) {
+        if (!hasInviteTeamRight(team)) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_SEND_NO_RIGHT);
         }
         DaoJoinTeamInvitation.createAndPersist(getDao(), member.getDao(), team.getDao());
@@ -259,32 +256,36 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * To accept an invitation you must have the DELETED right on the "invite"
-     * property. If the invitation is not in PENDING state then nothing is done.
-     *
+     * property. If the invitation is not in PENDING state then nothing is done,
+     * and <i>false</i> is returned.
+     * 
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
+     * @return true if the invitation is accepted, false if there is an error.
      * @throws UnauthorizedOperationException
      */
-    public void acceptInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
+    public boolean acceptInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
         if (!invitation.getReciever().getId().equals(getAuthToken().getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
 
         // Accept the invitation
-        invitation.accept();
-
-        // discard all other invitation to join the same team
-        final Team team = invitation.getTeam();
-        final PageIterable<JoinTeamInvitation> receivedInvitation = this.getReceivedInvitation(State.PENDING, team);
-        for (final JoinTeamInvitation invite : receivedInvitation) {
-            invite.discard();
+        if (invitation.accept()) {
+            // discard all other invitation to join the same team
+            final Team team = invitation.getTeam();
+            final PageIterable<JoinTeamInvitation> receivedInvitation = this.getReceivedInvitation(State.PENDING, team);
+            for (final JoinTeamInvitation invite : receivedInvitation) {
+                invite.discard();
+            }
+            return true;
         }
+        return false;
     }
 
     /**
      * To refuse an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done.
-     *
+     * 
      * @param invitation the authenticate member must be receiver of the
      *            invitation.
      * @throws UnauthorizedOperationException
@@ -300,12 +301,12 @@ public final class Member extends Actor<DaoMember> implements User {
      * To remove this member from a team you have to have the DELETED right on
      * the "team" property. If the member is not in the "team", nothing is done.
      * (Although it should be considered as an error and will be logged)
-     *
+     * 
      * @param team is the team from which the user will be removed.
      * @throws UnauthorizedOperationException
      */
-    public void kickFromTeam(final Team aTeam, final Member actor)throws UnauthorizedOperationException {
-        if(!canBeKickFromTeam(aTeam, actor)) {
+    public void kickFromTeam(final Team aTeam, final Member actor) throws UnauthorizedOperationException {
+        if (!canBeKickFromTeam(aTeam, actor)) {
             throw new UnauthorizedOperationException(SpecialCode.TEAM_PROMOTE_RIGHT_MISSING);
         }
         getDao().removeFromTeam(aTeam.getDao());
@@ -349,7 +350,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * To add a user into a public team, you have to make sure you can access
      * the teams with the {@link Action#WRITE} action.
-     *
+     * 
      * @param team must be a public team.
      * @throws UnauthorizedOperationException if the authenticated member do not
      *             have the right to use this methods.
@@ -393,7 +394,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * To get the teams you have the have the READ right on the "team" property.
-     *
+     * 
      * @return all the team in which this member is.
      * @throws UnauthorizedOperationException
      */
@@ -501,7 +502,7 @@ public final class Member extends Actor<DaoMember> implements User {
     /**
      * Returns the status of the member in a given <code>team</code> <<<<<<<
      * Updated upstream
-     *
+     * 
      * @param team the team in which we want to know member status =======
      * @param team the team in which we want to know member status >>>>>>>
      *            Stashed changes
@@ -511,13 +512,12 @@ public final class Member extends Actor<DaoMember> implements User {
      *         Note the set can be empty if the member has no preset role
      *         (standard member).
      */
-    /*protected TeamRole getRoleUnprotected(final Team team) {
-        final Set<UserTeamRight> memberStatus = team.getDao().getUserTeamRight(getDao());
-        if (memberStatus != null) {
-            return new TeamRole(memberStatus);
-        }
-        return null;
-    }*/
+    /*
+     * protected TeamRole getRoleUnprotected(final Team team) { final
+     * Set<UserTeamRight> memberStatus =
+     * team.getDao().getUserTeamRight(getDao()); if (memberStatus != null) {
+     * return new TeamRole(memberStatus); } return null; }
+     */
 
     protected boolean isInTeamUnprotected(final Team team) {
         return getDao().isInTeam(team.getDao());
@@ -554,7 +554,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     @Override
     public Image getAvatar() {
-        DaoFileMetadata avatar = getDao().getAvatar();
+        final DaoFileMetadata avatar = getDao().getAvatar();
         if (avatar != null) {
             return new Image(FileMetadata.create(avatar));
         }
@@ -566,8 +566,8 @@ public final class Member extends Actor<DaoMember> implements User {
         return new Image(libravatar);
     }
 
-    private String libravatar(String email) {
-        String digest = DigestUtils.md5Hex(email.toLowerCase());
+    private String libravatar(final String email) {
+        final String digest = DigestUtils.md5Hex(email.toLowerCase());
         // return "http://cdn.libravatar.org/avatar/" + digest +
         // "?d=http://elveos.org/resources/commons/img/none.png&s=64";
         return digest;
@@ -585,12 +585,12 @@ public final class Member extends Actor<DaoMember> implements User {
 
     /**
      * Checks if an inputed password matches the user password
-     *
+     * 
      * @param password the password to match
      * @return <i>true</i> if the inputed password matches the password in the
      *         database, <i>false</i> otherwise
      */
-    public boolean checkPassword(String password) {
+    public boolean checkPassword(final String password) {
         final String digestedPassword = SecuredHash.calculateHash(password, getDao().getSalt());
         return getDao().passwordEquals(digestedPassword);
     }

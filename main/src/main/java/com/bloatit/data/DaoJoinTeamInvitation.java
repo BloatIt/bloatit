@@ -142,12 +142,15 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
     /**
      * Set the state to accepted and add the receiver into the list of members
      * of this.team. If the state is not PENDING then do nothing.
+     * @return <i>true</i> if it is accepted. False otherwise.
      */
-    public void accept() {
+    public boolean accept() {
         if (this.state == State.PENDING) {
             this.receiver.addToTeam(this.team);
             this.state = State.ACCEPTED;
+            return true;
         }
+        return false;
     }
 
     /**

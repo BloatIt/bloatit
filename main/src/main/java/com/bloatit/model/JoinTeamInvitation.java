@@ -60,10 +60,11 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
     }
 
     /**
+     * @return <i>true</i> if accepted, <i>false</i> otherwise.
      * @see DaoJoinTeamInvitation#accept()
      */
-    protected void accept() {
-        getDao().accept();
+    protected boolean accept() {
+        return getDao().accept();
     }
 
     /**
