@@ -35,7 +35,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
  * </p>
  * For example you could create an {@link Accessor} on the Fullname property
  * like this:
- * 
+ *
  * <pre>
  * class MemberCanAccessFullname extends {@link Accessor} {
  *     &#064;Override
@@ -44,39 +44,39 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
  *     }
  * }
  * </pre>
- * 
+ *
  * There are some useful functions and code organization to manage the creation
  * of Accessor classes see {@link RightManager}.
- * 
+ *
  * @see RightManager
  */
-public abstract class Accessor<T extends RestrictedInterface> {
+public abstract class Accessor {
 
     /**
      * Can is the method you have to implement in the template method pattern.
      * It is used in the {@link #canAccess(RestrictedObject, Action)} and
      * {@link #tryAccess(RestrictedObject, Action)} methods
-     * 
+     *
      * @param object is the object on which we want to do the
      *            <code>action</code>
      * @param action is the action.
      * @return true, if we have the right to access the RestrictedObject, false
      *         otherwise.
      */
-    protected abstract boolean can(T object, Action action);
+    protected abstract boolean can(RestrictedInterface object, Action action);
 
     /**
      * CanAccess call the abstract {@link #can(RestrictedInterface, Action)}
      * method to know if the user has the right to access the
      * <code>object</code>.
-     * 
+     *
      * @param object is the object on which we want to do the
      *            <code>action</code>
      * @param action is the action.
      * @return true, if we have the right to access the RestrictedObject, false
      *         otherwise.
      */
-    public final boolean canAccess(final T object, final Action action) {
+    public final boolean canAccess(final RestrictedInterface object, final Action action) {
         if (object.hasUserPrivilege(Role.ADMIN)) {
             Log.model().trace("Admin access");
             return true;
@@ -87,14 +87,14 @@ public abstract class Accessor<T extends RestrictedInterface> {
     /**
      * Throws an {@link UnauthorizedOperationException} if the
      * {@link #can(RestrictedInterface, Action)} return false.
-     * 
+     *
      * @param object is the object on which we want to do the
      *            <code>action</code>
      * @param action is the action.
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
      */
-    public final void tryAccess(final T object, final Action action) throws UnauthorizedOperationException {
+    public final void tryAccess(final RestrictedInterface object, final Action action) throws UnauthorizedOperationException {
         if (!canAccess(object, action)) {
             throw new UnauthorizedOperationException(action);
         }
