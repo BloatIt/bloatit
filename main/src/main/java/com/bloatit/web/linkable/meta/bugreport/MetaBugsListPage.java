@@ -13,7 +13,9 @@ package com.bloatit.web.linkable.meta.bugreport;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.meta.MetaBug;
@@ -23,6 +25,8 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
+import com.bloatit.framework.webprocessor.masters.Header;
+import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -74,6 +78,13 @@ public final class MetaBugsListPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    @Override
+    protected Set<Robot> getRobots() {
+        Set<Robot> robots = new HashSet<Header.Robot>();
+        robots.add(Robot.NO_INDEX);
+        return robots;
     }
 
     @Override

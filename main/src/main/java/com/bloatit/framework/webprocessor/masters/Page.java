@@ -2,6 +2,7 @@ package com.bloatit.framework.webprocessor.masters;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Set;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
@@ -19,6 +20,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.url.Messages;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.pages.master.HtmlNotification;
@@ -99,6 +101,14 @@ public abstract class Page implements Linkable {
      */
     protected abstract String getPageDescription();
 
+    /**
+     * A method that returns the list of page specific robots information
+     * inserted inside the {@code <meta name="robots>} tag in page header.
+     * 
+     * @return the list of keywords 
+     */
+    protected abstract Set<Robot> getRobots();
+
     // -----------------------------------------------------------------------
     // Template method pattern: procedure.
     // -----------------------------------------------------------------------
@@ -126,7 +136,7 @@ public abstract class Page implements Linkable {
         final HtmlBranch html = new HtmlGenericElement("html");
         page.add(html);
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-        pageHeader = new Header(getTitle(), getPageDescription());
+        pageHeader = new Header(getTitle(), getPageDescription(), getRobots());
         html.add(pageHeader);
 
         html.add(bodyContent);
