@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface ParamConstraint {
 
-    public static final String DEFAULT_MIN_STR = "Integer.MAX_VALUE";
+    public static final String DEFAULT_MIN_STR = "Integer.MIN_VALUE";
     // WARNING !! Do not use Integer here !!
     public static final int DEFAULT_MIN = Integer.MIN_VALUE;
     public static final String DEFAULT_MAX_STR = "Integer.MAX_VALUE";
     public static final int DEFAULT_MAX = Integer.MAX_VALUE;
-    public static final String DEFAULT_ERROR_MSG = "Error ! value (%value) invalid for parameter %param.";
+    public static final String DEFAULT_ERROR_MSG = "Error ! value (%value%) invalid for parameter %paramName%.";
     public static final int DEFAULT_PRECISION = Integer.MAX_VALUE;
     public static final boolean DEFAULT_OPTIONAL = false;
     public static final int DEFAULT_LENGTH = Integer.MAX_VALUE;

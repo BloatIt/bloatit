@@ -1,11 +1,9 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
-import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Attribute;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Method;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.MethodCall;
-import com.bloatit.framework.webprocessor.annotations.generator.Generator.Modifier;
 
 public class CodeGenerator {
 
@@ -133,34 +131,18 @@ public class CodeGenerator {
         clazz.addImport("com.bloatit.framework.webprocessor.url.Loaders.*");
         clazz.addImport("java.util.ArrayList");
 
-        final Method constructor = clazz.addConstructor();
-        constructor.addParameter("Parameters", "params");
-        constructor.addParameter("SessionParameters", "session");
-        constructor.addLine("this();");
-        constructor.addLine("parseSessionParameters(session);");
-        constructor.addLine("parseParameters(params);");
-
-        final Method defaultConstructor = clazz.addConstructor();
-        defaultConstructor.addLine("super();");
-        if (desc.hasUrlParameter()) {
-            defaultConstructor.setModifier(Modifier.PRIVATE);
-
-            final Method generatedConstructor = clazz.addConstructor();
-            for (final ParameterDescription param : desc.getParameters()) {
-                if (param.getRealRole() == Role.GET && !param.isOptional()) {
-                    generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
-                    generatedConstructor.addLine("this.set" + Utils.toCamelCase(param.getAttributeName(), true) + "(" + param.getAttributeName()
-                            + ");");
-                }
-            }
-
+        final Method generatedConstructor = clazz.addConstructor();
+        for (final ParameterDescription param : desc.getUrlParameters()) {
+            generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
+            generatedConstructor.addLine("this.set" + Utils.toCamelCase(param.getAttributeName(), true) + "(" + param.getAttributeName() + ");");
         }
 
         final Method doRegister = clazz.addMethod("void", "doRegister");
         doRegister.setOverride();
 
         final Method clone = clazz.addMethod(clazz.getName(), "clone");
-        clone.addLine(clazz.getName() + " other = new " + clazz.getName() + "();");
+        clone.setOverride();
+        clone.addLine(clazz.getName() + " other = new " + clazz.getName() + "((Parameters) null, (SessionParameters) null);");
 
         for (final ParameterDescription param : desc.getParameters()) {
             final String template = "<" + param.getTypeWithoutTemplate() + ", " + param.getTypeOrTemplateType() + ">";
@@ -215,16 +197,39 @@ public class CodeGenerator {
             clone.addLine("other." + param.getAttributeName() + " = this." + param.getAttributeName() + ".clone();");
         }
 
+        final Method constructor = clazz.addConstructor();
+        constructor.addParameter("Parameters", "params");
+        constructor.addParameter("SessionParameters", "session");
+        
         for (final ComponentDescription subComponent : desc.getSubComponents()) {
             final String subComponentName = Utils.toCamelCase(subComponent.getClassName(), false);
+
+            // Add an attribute
             clazz.addAttribute(subComponent.getClassName(), subComponentName, //
                                "get" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url", //
                                "set" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url");
 
+            // register it
             doRegister.addLine("register(" + subComponentName + ");");
+
+            // add it to the clone method
             clone.addLine("other." + subComponentName + " = this." + subComponentName + ".clone();");
 
+            // Construct it
+            constructor.addLine("this." + subComponentName + " = new " + subComponent.getClassName() + "(params, session);");
+
+            final MethodCall subcomponentConstruction = new MethodCall(subComponent.getClassName());
+            for (final ParameterDescription subParameters : subComponent.getAllUrlParameters()) {
+                final String parameterName = subParameters.getAttributeName() + subComponent.getClassName();
+                generatedConstructor.addParameter(subParameters.getTypeWithoutTemplate(), parameterName);
+                subcomponentConstruction.addParameter(parameterName);
+            }
+            generatedConstructor.addLine("this." + subComponentName + " = new " + subcomponentConstruction + ";");
         }
+        
+        constructor.addLine("parseSessionParameters(session);");
+        constructor.addLine("parseParameters(params);");
+
         clone.addLine("return other;");
 
         return clazz;

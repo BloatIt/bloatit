@@ -8,7 +8,7 @@ import javax.lang.model.element.Element;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
-public class UrlDescription {
+public class UrlDescription extends ClassDescription{
     private UrlDescription father;
     private final String className;
     private final boolean isAction;

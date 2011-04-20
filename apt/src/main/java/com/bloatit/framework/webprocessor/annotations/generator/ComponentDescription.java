@@ -10,7 +10,7 @@ import javax.lang.model.element.Element;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
-public class ComponentDescription {
+public class ComponentDescription extends ClassDescription {
 
     private final String className;
     private final String attributeName;
@@ -34,7 +34,7 @@ public class ComponentDescription {
     public final boolean isComponent() {
         return isComponent;
     }
-    
+
     public final String getAttributeName() {
         if (attributeName == null) {
             throw new RuntimeException();
@@ -50,17 +50,34 @@ public class ComponentDescription {
         return parameters;
     }
 
-    public void addParameter(final ParameterDescription description) {
-        parameters.add( description);
+    public boolean hasUrlParameter() {
+        return getUrlParameters().size() > 0 || getAllUrlParameters().size() > 0;
     }
 
-    public boolean hasUrlParameter() {
+    public final List<ParameterDescription> getUrlParameters() {
+        final List<ParameterDescription> urlParameters = new ArrayList<ParameterDescription>();
         for (final ParameterDescription param : parameters) {
-            if (!param.isOptional() && param.getRealRole() == Role.GET) {
-                return true;
+            if (param.getRealRole() == Role.GET && !param.isOptional()) {
+                urlParameters.add(param);
             }
         }
-        return false;
+        return urlParameters;
+    }
+
+    /**
+     * @return All the parameters of this component + the parameters of all the subComponents.
+     */
+    public final List<ParameterDescription> getAllUrlParameters() {
+        final List<ParameterDescription> urlParameters = new ArrayList<ParameterDescription>();
+        urlParameters.addAll(getUrlParameters());
+        for (final ComponentDescription child : children) {
+            urlParameters.addAll(child.getUrlParameters());
+        }
+        return urlParameters;
+    }
+
+    public void addParameter(final ParameterDescription description) {
+        parameters.add(description);
     }
 
     public void addSubComponent(final ComponentDescription child) {

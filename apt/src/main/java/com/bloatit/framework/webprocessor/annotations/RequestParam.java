@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface RequestParam {
 
     static public final String DEFAULT_SUGGESTED_VALUE = "42!$%*/;19901481602plqsdjcjuh$*ù^88a71599aABCD";
-    static public final String DEFAULT_ERROR_MSG = "Error: invalid value (%value) for parameter %param";
+    static public final String DEFAULT_ERROR_MSG = "Error: invalid value (%value%) for parameter %paramName%";
 
     public enum Role {
         POST, GET, PRETTY, SESSION , POSTGET

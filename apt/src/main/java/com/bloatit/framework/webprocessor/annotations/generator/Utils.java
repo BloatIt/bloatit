@@ -7,6 +7,9 @@ import javax.lang.model.util.TypeKindVisitor6;
 public class Utils {
 
     public static String getStr(final String str) {
+        if (str == null) {
+            return "null";
+        }
         return "\"" + str + "\"";
     }
 

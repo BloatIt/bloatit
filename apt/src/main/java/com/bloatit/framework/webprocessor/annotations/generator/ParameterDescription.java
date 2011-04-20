@@ -7,7 +7,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
-class ParameterDescription {
+class ParameterDescription extends Description {
 
     // Name of the parameter.
     private final String attributeName;
@@ -83,16 +83,12 @@ class ParameterDescription {
         return typeOrTemplateType;
     }
 
-//    public final String getName() {
-//        return name;
-//    }
-    
     public final String getAttributeName() {
         return attributeName;
     }
 
     public final String getNameStr() {
-        return Utils.getStr(attributeName);
+        return Utils.getStr(name);
     }
 
     public final String getTypeWithoutTemplateSimple() {
