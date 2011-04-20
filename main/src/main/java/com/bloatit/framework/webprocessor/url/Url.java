@@ -39,7 +39,7 @@ public abstract class Url implements Cloneable {
 
     protected abstract void doConstructUrl(StringBuilder sb);
 
-    protected abstract void doGetStringParameters(Parameters parameters);
+    protected abstract void doGetParametersAsStrings(Parameters parameters);
 
     public abstract void addParameter(String key, String value);
 
@@ -72,7 +72,7 @@ public abstract class Url implements Cloneable {
     public Parameters getStringParameters() {
 
         final Parameters parameters = new Parameters();
-        doGetStringParameters(parameters);
+        doGetParametersAsStrings(parameters);
         return parameters;
     }
 

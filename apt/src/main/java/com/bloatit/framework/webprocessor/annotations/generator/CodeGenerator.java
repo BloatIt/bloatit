@@ -66,10 +66,10 @@ public class CodeGenerator {
         doConstructUrl.addParameter("StringBuilder", "sb");
         doConstructUrl.addLine("component.constructUrl(sb);");
 
-        final Method doGetStringParameters = clazz.addMethod("void", "doGetStringParameters");
+        final Method doGetStringParameters = clazz.addMethod("void", "doGetParametersAsStrings");
         doGetStringParameters.setOverride();
         doGetStringParameters.addParameter("Parameters", "parameters");
-        doGetStringParameters.addLine("component.getStringParameters(parameters);");
+        doGetStringParameters.addLine("component.getParametersAsStrings(parameters);");
 
         final Method addParameter = clazz.addMethod("void", "addParameter");
         addParameter.setOverride();
@@ -79,7 +79,13 @@ public class CodeGenerator {
 
         final Method getMessages = clazz.addMethod("Messages", "getMessages");
         getMessages.setOverride();
-        getMessages.addLine("return this.component.getMessages();");
+        if (desc.getFather() != null) {
+            getMessages.addLine("final Messages messages = super.getMessages();");
+            getMessages.addLine("messages.addAll(this.component.getMessages());");
+            getMessages.addLine("return messages;");
+        } else {
+            getMessages.addLine("return this.component.getMessages();");
+        }
 
         final Method clone = clazz.addMethod(clazz.getName(), "clone");
         clone.setOverride();

@@ -186,7 +186,7 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     @Override
-    protected void getStringParameters(final Parameters parameters) {
+    protected void getParametersAsStrings(final Parameters parameters) {
         final String stringValue = getStringValue();
         if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
