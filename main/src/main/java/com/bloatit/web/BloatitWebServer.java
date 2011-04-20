@@ -41,6 +41,8 @@ import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
+import com.bloatit.web.linkable.login.RecoverPasswordAction;
+import com.bloatit.web.linkable.login.RecoverPasswordPage;
 import com.bloatit.web.linkable.login.SignUpAction;
 import com.bloatit.web.linkable.login.SignUpPage;
 import com.bloatit.web.linkable.members.ChangeAvatarAction;
@@ -149,6 +151,8 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
+import com.bloatit.web.url.RecoverPasswordActionUrl;
+import com.bloatit.web.url.RecoverPasswordPageUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
@@ -306,8 +310,13 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ModifyMemberPageUrl.getName())) {
             return new ModifyMemberPage(new ModifyMemberPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(RecoverPasswordPageUrl.getName())) {
+            return new RecoverPasswordPage(new RecoverPasswordPageUrl(params, session.getParameters()));
+        }
 
+        // ////////
         // Actions
+        // ////////
         if (pageCode.equals(LoginActionUrl.getName())) {
             return new LoginAction(new LoginActionUrl(params, session.getParameters()));
         }
@@ -411,9 +420,13 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ModifyMemberActionUrl.getName())) {
             return new ModifyMemberAction(new ModifyMemberActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(RecoverPasswordActionUrl.getName())) {
+            return new RecoverPasswordAction(new RecoverPasswordActionUrl(params, session.getParameters()));
+        }
 
-
+        // ////////
         // Process
+        // ////////
         if (pageCode.equals(ContributionProcessUrl.getName())) {
             return new ContributionProcess(new ContributionProcessUrl(params, session.getParameters()));
         }
