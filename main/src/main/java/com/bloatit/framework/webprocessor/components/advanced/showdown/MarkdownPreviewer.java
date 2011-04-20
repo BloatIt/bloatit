@@ -4,7 +4,7 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
-import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -14,10 +14,10 @@ public class MarkdownPreviewer extends HtmlLeaf {
 
     public MarkdownPreviewer(final MarkdownEditor source) {
         HtmlDiv previewer = new HtmlDiv("md_previewer");
-        HtmlTitle htmlTitle = new HtmlTitle(2);
-        previewer.add(htmlTitle);
+        HtmlSpan mdTitle = new HtmlSpan("title");
+        previewer.add(mdTitle);
 
-        htmlTitle.addText(Context.tr("Markdown preview"));
+        mdTitle.addText(Context.tr("Markdown preview"));
         add(previewer);
 
         this.output = new HtmlDiv("md_preview");
