@@ -17,13 +17,11 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
-import com.bloatit.model.Team;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.MessageListPageUrl;
-import com.bloatit.web.url.SendTeamInvitationPageUrl;
 
 /**
  * A plain list of messages received by the user
@@ -47,9 +45,6 @@ public final class MessageListPage extends LoggedPage {
         // Generating links to team invites
         final HtmlTitleBlock teamInvites = new HtmlTitleBlock(Context.tr("Team invites"), 2);
         main.add(teamInvites);
-
-        final HtmlLink inviteToTeam = new HtmlLink(new SendTeamInvitationPageUrl((Team) null).urlString(), "Invite people to your team");
-        teamInvites.add(new HtmlParagraph().add(inviteToTeam));
 
         final Member me = session.getAuthToken().getMember();
         final PageIterable<JoinTeamInvitation> invitations = me.getReceivedInvitation(State.PENDING);

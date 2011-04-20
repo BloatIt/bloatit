@@ -5,15 +5,14 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -22,6 +21,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 
@@ -47,54 +47,30 @@ public class SendTeamInvitationPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
-        final HtmlDiv master = new HtmlDiv("padding_box");
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final HtmlDiv left = new HtmlDiv();
+        layout.addLeft(left);
 
-        final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl();
+        final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl(team);
         final HtmlForm form = new HtmlForm(target.urlString());
-        master.add(form);
-
+        left.add(form);
         final Member me = session.getAuthToken().getMember();
         me.authenticate(session.getAuthToken());
-
-        try {
-            if (team == null) {
-                final HtmlDropDown teamInput = new HtmlDropDown(SendTeamInvitationAction.TEAM_JOIN_CODE, Context.tr("Select team"));
-                form.add(teamInput);
-                PageIterable<Team> teams;
-                teams = me.getTeams();
-                for (final Team g : teams) {
-                    try {
-                        teamInput.addDropDownElement(g.getId().toString(), g.getLogin());
-                    } catch (final UnauthorizedOperationException e) {
-                        e.printStackTrace();
-                    }
+        final FieldData fieldData = target.getReceiverParameter().pickFieldData();
+        final HtmlDropDown receiverInput = new HtmlDropDown(fieldData.getName(), Context.tr("Select a member"));
+        form.add(receiverInput);
+        for (final Member m : MemberManager.getAll()) {
+            try {
+                if (!m.equals(me)) {
+                    receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
                 }
-            } else {
-                final HtmlHidden hiddenTeam = new HtmlHidden(SendTeamInvitationAction.TEAM_JOIN_CODE, team.getId().toString());
-                form.add(hiddenTeam);
+            } catch (final UnauthorizedOperationException e) {
+                // TODO
+                throw new ShallNotPassException(e);
             }
-
-            final HtmlDropDown receiverInput = new HtmlDropDown(SendTeamInvitationAction.RECEIVER_CODE, Context.tr("Select team"));
-            form.add(receiverInput);
-            for (final Member m : MemberManager.getAll()) {
-                try {
-                    if (!m.equals(me)) {
-                        receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
-                    }
-                } catch (final UnauthorizedOperationException e) {
-                    // TODO
-                    throw new ShallNotPassException(e);
-                }
-            }
-
-            form.add(new HtmlSubmit(Context.tr("Submit")));
-
-            return master;
-
-        } catch (final UnauthorizedOperationException e1) {
-            // TODO
-            throw new ShallNotPassException(e1);
         }
+        form.add(new HtmlSubmit(Context.tr("Submit")));
+        return layout ;
     }
 
     @Override
@@ -119,9 +95,7 @@ public class SendTeamInvitationPage extends LoggedPage {
 
     public static Breadcrumb generateBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
-
         breadcrumb.pushLink(new SendTeamInvitationPageUrl(team).getHtmlLink(tr("Send team invitation")));
-
         return breadcrumb;
     }
 }

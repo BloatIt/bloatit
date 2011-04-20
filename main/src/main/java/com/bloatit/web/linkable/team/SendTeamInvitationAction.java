@@ -1,7 +1,5 @@
 package com.bloatit.web.linkable.team;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -21,13 +19,10 @@ import com.bloatit.web.url.SendTeamInvitationActionUrl;
  */
 @ParamContainer("invitation/dosend")
 public final class SendTeamInvitationAction extends LoggedAction {
-    public final static String TEAM_JOIN_CODE = "bloatit_join_team";
-    public final static String RECEIVER_CODE = "bloatit_join_receiver";
-
-    @RequestParam(name = TEAM_JOIN_CODE, role = Role.POST)
+    @RequestParam
     private final Team team;
 
-    @RequestParam(name = RECEIVER_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final Member receiver;
 
     // keep it for consistency
@@ -50,9 +45,9 @@ public final class SendTeamInvitationAction extends LoggedAction {
 
         try {
             me.sendInvitation(receiver, team);
-            session.notifyGood(Context.tr("Invitation sent to {0} for team {0}.", receiver.getDisplayName(), team.getLogin()));
+            session.notifyGood(Context.tr("Invitation sent to {0} for team {1}.", receiver.getDisplayName(), team.getLogin()));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("Oops, an error prevented us from sendint this invitaton. Please notify us of the bug."));
+            session.notifyBad(Context.tr("Oops, an error prevented us from sending this invitation. Please notify us of the bug."));
             throw new ShallNotPassException("User couldn't send a team invitation, while he should be able to", e);
         }
         return session.getLastVisitedPage();
@@ -75,6 +70,6 @@ public final class SendTeamInvitationAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        throw new NotImplementedException();
+        session.addParameter(url.getReceiverParameter());
     }
 }
