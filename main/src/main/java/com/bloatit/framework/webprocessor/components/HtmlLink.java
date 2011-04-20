@@ -71,4 +71,11 @@ public class HtmlLink extends HtmlBranch {
     public HtmlLink clone() {
         return new HtmlLink(this);
     }
+
+    /**
+     * Convenience method to set the link as no follow
+     */
+    public void setNoFollow() {
+        addAttribute("rel", "nofollow");
+    }
 }
