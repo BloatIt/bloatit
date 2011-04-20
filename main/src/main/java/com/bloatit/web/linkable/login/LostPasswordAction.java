@@ -22,6 +22,12 @@ import com.bloatit.web.url.LostPasswordActionUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
 
+/**
+ * Action part of the password recovery process.
+ * <p>
+ * This action is used after {@link LostPasswordPage}
+ * </p>
+ */
 @ParamContainer("password/dorecover")
 public class LostPasswordAction extends Action {
     private final LostPasswordActionUrl url;

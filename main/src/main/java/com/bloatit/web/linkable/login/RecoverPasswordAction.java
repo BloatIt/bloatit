@@ -18,6 +18,12 @@ import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
 
+/**
+ * Action part of the password recovery process.
+ * <p>
+ * This action is used after {@link RecoverPasswordPage}
+ * </p>
+ */
 @ParamContainer("password/doreset")
 public class RecoverPasswordAction extends Action {
     private final RecoverPasswordActionUrl url;

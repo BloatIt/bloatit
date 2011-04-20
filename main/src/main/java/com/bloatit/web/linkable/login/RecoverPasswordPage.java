@@ -1,7 +1,5 @@
 package com.bloatit.web.linkable.login;
 
-import static com.bloatit.framework.webprocessor.context.Context.tr;
-
 import com.bloatit.framework.exceptions.highlevel.MeanUserException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
@@ -9,6 +7,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
@@ -20,10 +19,15 @@ import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
 
+/**
+ * Page part of the password recovery process.
+ * <p>
+ * This page is displayed after the user clicked on the link in his email.
+ * </p>
+ */
 @ParamContainer("password/reset")
 public class RecoverPasswordPage extends MasterPage {
     private final RecoverPasswordPageUrl url;
@@ -50,6 +54,10 @@ public class RecoverPasswordPage extends MasterPage {
         }
 
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        
+        HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
+        layout.addLeft(master);
+        
         RecoverPasswordActionUrl targetUrl;
         try {
             targetUrl = new RecoverPasswordActionUrl(resetKey, member.getLogin());
@@ -57,7 +65,7 @@ public class RecoverPasswordPage extends MasterPage {
             throw new ShallNotPassException("Error recovering member login.", e);
         }
         HtmlForm form = new HtmlForm(targetUrl.urlString());
-        layout.addLeft(form);
+        master.add(form);
 
         FieldData passwFieldData = targetUrl.getNewPasswordParameter().pickFieldData();
         HtmlPasswordField passInput = new HtmlPasswordField(passwFieldData.getName(), Context.tr("New password"));
@@ -84,7 +92,6 @@ public class RecoverPasswordPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = LoginPage.generateBreadcrumb();
-        breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(tr("Reset password")));
         return breadcrumb;
     }
 
