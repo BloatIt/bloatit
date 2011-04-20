@@ -55,7 +55,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
-    @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
+    @ParamConstraint(min = "1", minErrorMsg = @tr("You must specify a positive value."), //
                      max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
                      precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
@@ -92,7 +92,16 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
-        final HtmlTitleBlock group = new HtmlTitleBlock(tr("Charge your account"), 1);
+        final HtmlTitleBlock group;
+        if (process.getTeam() != null) {
+            try {
+                group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getLogin()), 1);
+            } catch (final UnauthorizedOperationException e) {
+                throw new ShallNotPassException(e);
+            }
+        } else {
+            group = new HtmlTitleBlock(tr("Charge your account"), 1);
+        }
         BigDecimal account;
         try {
             account = getActor(member).getInternalAccount().getAmount();
@@ -119,6 +128,10 @@ public final class AccountChargingPage extends QuotationPage {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
                 process.setAmountToPay(preload);
+            }
+            if (process.getAmountToCharge().equals(BigDecimal.ZERO)) {
+                process.setAmountToCharge(BigDecimal.ONE);
+                process.setAmountToPay(BigDecimal.ONE);
             }
         } catch (final IllegalWriteException e) {
             session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));

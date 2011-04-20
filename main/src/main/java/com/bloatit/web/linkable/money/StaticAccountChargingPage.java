@@ -73,7 +73,16 @@ public final class StaticAccountChargingPage extends QuotationPage {
     }
 
     public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
-        final HtmlTitleBlock group = new HtmlTitleBlock(tr("Check contribution"), 1);
+        final HtmlTitleBlock group;
+        if (process.getTeam() != null) {
+            try {
+                group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getLogin()), 1);
+            } catch (final UnauthorizedOperationException e) {
+                throw new ShallNotPassException(e);
+            }
+        } else {
+            group = new HtmlTitleBlock(tr("Validate your account charging"), 1);
+        }
         BigDecimal account;
         try {
             account = getActor(member).getInternalAccount().getAmount();

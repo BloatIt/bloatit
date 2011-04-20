@@ -11,6 +11,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.linkable.money.PaylineProcess;
+import com.bloatit.web.url.PaymentProcessUrl;
 
 @ParamContainer("paymentprocess")
 public abstract class PaymentProcess extends WebProcess {
@@ -23,8 +24,9 @@ public abstract class PaymentProcess extends WebProcess {
     private BigDecimal amountToCharge = new BigDecimal("0");
     private boolean locked = false;
 
-    public PaymentProcess(final Url url) {
+    public PaymentProcess(final PaymentProcessUrl url) {
         super(url);
+        team = url.getTeam();
     }
 
     @Override
