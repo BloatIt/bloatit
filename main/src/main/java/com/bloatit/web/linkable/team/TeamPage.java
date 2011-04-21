@@ -265,8 +265,8 @@ public final class TeamPage extends MasterPage {
         private Visitor visitor;
         private static final int CONSULT = 1;
         private static final int TALK = 2;
-        private static final int MODIFY = 3;
-        private static final int INVITE = 4;
+        private static final int MODIFY = 4;
+        private static final int INVITE = 3;
         private static final int BANK = 5;
         private static final int PROMOTE = 6;
 
