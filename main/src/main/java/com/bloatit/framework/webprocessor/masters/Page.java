@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
+import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.url.Messages;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.pages.master.HtmlNotification;
@@ -40,6 +41,7 @@ public abstract class Page implements Linkable {
 
     @Override
     public final void writeToHttp(final HttpResponse response, final WebProcessor server) throws RedirectException, IOException {
+        response.setStatus(getResponseStatus());
         response.writePage(create());
     }
 
@@ -59,6 +61,13 @@ public abstract class Page implements Linkable {
     // -----------------------------------------------------------------------
 
     public abstract boolean isStable();
+
+    /**
+     * Indicates the status of the page
+     * 
+     * @return a status code matching the real status of the response
+     */
+    protected abstract StatusCode getResponseStatus();
 
     /**
      * This method is called only if {@link #createBody()} and
@@ -105,7 +114,7 @@ public abstract class Page implements Linkable {
      * A method that returns the list of page specific robots information
      * inserted inside the {@code <meta name="robots>} tag in page header.
      * 
-     * @return the list of keywords 
+     * @return the list of keywords
      */
     protected abstract Set<Robot> getRobots();
 

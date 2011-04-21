@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -59,9 +60,8 @@ public class MailServer extends Thread {
 
     private Session session;
     private LinkedBlockingQueue<String> mailsFileName;
-    private Semaphore stopMutex;
 
-    private boolean stop;
+    private AtomicBoolean stop;
     private long numberOfTries;
 
     private static volatile MailServer instance;
@@ -80,8 +80,7 @@ public class MailServer extends Thread {
      */
     public void initialize() {
         mailsFileName = new LinkedBlockingQueue<String>();
-        stopMutex = new Semaphore(1);
-        stop = false;
+        stop = new AtomicBoolean(false);
         numberOfTries = 0;
 
         handleUnsent();
@@ -208,14 +207,8 @@ public class MailServer extends Thread {
      */
     public void quickStop() {
         Log.mail().trace("Requested to stop now");
-        try {
-            stopMutex.acquire();
-            stop = true;
-            stopMutex.release();
-            getInstance().interrupt();
-        } catch (final InterruptedException e) {
-            e.printStackTrace();
-        }
+        stop.set(true);
+        getInstance().interrupt();
     }
 
     /**
@@ -252,22 +245,11 @@ public class MailServer extends Thread {
                 resetRetries();
             } catch (final InterruptedException e) {
                 // Happens when waiting on the queue
-                try {
-                    stopMutex.acquire();
-                    try {
-
-                        if (stop) {
-                            Log.mail().info("Shutting down NOW. " + mailsFileName.size() + " messages not handled");
-                            return;
-                        }
-                        Log.mail().error("Received an interruption without being asked to shutdown. Ignoring.", e);
-                    } finally {
-                        stopMutex.release();
-                    }
-                } catch (final InterruptedException e1) {
-                    Log.mail().fatal("Interrupted while trying to get the mutex. Shutting down", e1);
+                if (stop.get()) {
+                    Log.mail().info("Shutting down NOW. " + mailsFileName.size() + " messages not handled");
                     return;
                 }
+                Log.mail().error("Received an interruption without being asked to shutdown. Ignoring.", e);
             } catch (final MessagingException e) {
                 // Happens when trying to send the mail
                 final long waitTime = timeToRetry();
