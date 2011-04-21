@@ -18,6 +18,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
@@ -44,6 +45,11 @@ public class PageNotFound extends MasterPage {
         final HtmlTitle errorTitle = new HtmlTitle(Context.tr("Page not found"), 2);
         box.add(errorTitle);
         return box;
+    }
+    
+    @Override
+    protected StatusCode getResponseStatus() {
+        return StatusCode.ERROR_404_NOT_FOUND;
     }
 
     @Override

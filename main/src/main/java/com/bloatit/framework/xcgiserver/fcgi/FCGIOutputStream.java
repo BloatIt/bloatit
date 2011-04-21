@@ -46,7 +46,6 @@ public class FCGIOutputStream extends OutputStream {
         waitBuffer = new ByteArrayOutputStream(WAIT_BUFFER_SIZE);
 
         this.prepareStream = new DataOutputStream(prepareBuffer);
-
     }
 
     @Override
@@ -76,11 +75,8 @@ public class FCGIOutputStream extends OutputStream {
     }
 
     private void writeBytes(final byte[] b, final int off, final int len) throws IOException {
-
         int wroteLen = 0;
-
         while (wroteLen < len) {
-
             final int currentOffset = off + wroteLen;
             final int lenToWrite = len - wroteLen;
 
@@ -96,7 +92,6 @@ public class FCGIOutputStream extends OutputStream {
                     wroteLen += leftSize;
                 }
             }
-
             sendStdoutRecordIfNeeded();
         }
 
@@ -113,7 +108,6 @@ public class FCGIOutputStream extends OutputStream {
         if (waitBuffer.size() > 0) {
             sendRecordHeader(FCGIParser.FCGI_STDOUT, waitBuffer.size());
             prepareStream.write(waitBuffer.toByteArray(), 0, waitBuffer.size());
-
             flushRecord();
         }
     }
@@ -121,7 +115,6 @@ public class FCGIOutputStream extends OutputStream {
     private void flushRecord() throws IOException {
         // Write record in the socket
         outputStream.write(prepareBuffer.toByteArray());
-
         prepareBuffer.reset();
         waitBuffer.reset();
     }
@@ -139,7 +132,6 @@ public class FCGIOutputStream extends OutputStream {
         prepareStream.writeByte(0);
         // Reserved
         prepareStream.writeByte(0);
-
     }
 
     private void sendEndRecord() throws IOException {
@@ -157,7 +149,5 @@ public class FCGIOutputStream extends OutputStream {
         prepareStream.writeByte(0);
 
         flushRecord();
-
     }
-
 }
