@@ -10,8 +10,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="633.38531"
-   height="240.94643"
+   width="630.30011"
+   height="186.08344"
    id="svg3216"
    version="1.1"
    inkscape:version="0.48.0 r9654"
@@ -83,18 +83,6 @@
          style="stop-color:#0e8a9b;stop-opacity:1;"
          offset="1"
          id="stop4184" />
-    </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient3763">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop3765" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop3767" />
     </linearGradient>
     <radialGradient
        inkscape:collect="always"
@@ -195,15 +183,6 @@
          offset="1"
          id="stop4994" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3763"
-       id="linearGradient4211"
-       gradientUnits="userSpaceOnUse"
-       x1="99.828247"
-       y1="299.13171"
-       x2="580.30225"
-       y2="299.13171" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3793-6-5"
@@ -237,6 +216,27 @@
        fx="-16.162443"
        fy="370.50922"
        r="77.449844" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3763-3"
+       id="linearGradient5795"
+       gradientUnits="userSpaceOnUse"
+       x1="99.828247"
+       y1="299.13171"
+       x2="580.30225"
+       y2="299.13171" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3763-3">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3765-2" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop3767-5" />
+    </linearGradient>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -245,17 +245,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.9899495"
-     inkscape:cx="744.78197"
-     inkscape:cy="-22.60119"
+     inkscape:zoom="0.7"
+     inkscape:cx="449.63562"
+     inkscape:cy="58.29962"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1155"
-     inkscape:window-x="0"
+     inkscape:window-width="958"
+     inkscape:window-height="439"
+     inkscape:window-x="960"
      inkscape:window-y="19"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -276,7 +276,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -284,69 +284,7 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-11.783714,-277.0954)">
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4193"
-       style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#00526c;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
-       transform="matrix(1.2011789,0,0,1.2011789,37.30975,26.06351)"
-       inkscape:export-filename="/home/fred/projets/bloatit/www/resources/img/logo_elveos.png"
-       inkscape:export-xdpi="21.309999"
-       inkscape:export-ydpi="21.309999"><flowRegion
-         id="flowRegion4195"
-         style="fill:url(#linearGradient4211);fill-opacity:1"><rect
-           id="rect4197"
-           width="625.71429"
-           height="214.28572"
-           x="87.14286"
-           y="208.07646"
-           style="fill:#00526c;fill-opacity:1" /></flowRegion><flowPara
-         id="flowPara4199"
-         style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:0px;fill:#00526c;fill-opacity:1;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">Elveos</flowPara></flowRoot>    <g
-       transform="matrix(0.73744016,0.67541248,-0.67541248,0.73744016,126.10024,136.51482)"
-       id="g4201"
-       inkscape:export-filename="/home/fred/projets/bloatit/www/resources/img/logo_elveos.png"
-       inkscape:export-xdpi="21.309999"
-       inkscape:export-ydpi="21.309999">
-      <path
-         sodipodi:nodetypes="cccccccc"
-         inkscape:connector-curvature="0"
-         id="path4203"
-         d="m 70,222.36218 0,-70 -15,5 25,-40 25,40 -15,-5 0,70 z"
-         style="fill:#00526c;fill-opacity:1;stroke:none" />
-      <path
-         sodipodi:type="arc"
-         style="fill:#00526c;fill-opacity:1;stroke:none"
-         id="path4205"
-         sodipodi:cx="155"
-         sodipodi:cy="324.86218"
-         sodipodi:rx="60"
-         sodipodi:ry="57.5"
-         d="m 214.99641,325.49082 c -0.36228,31.75447 -27.51727,57.21511 -60.65238,56.86793 -33.1351,-0.34719 -59.702725,-26.37073 -59.340444,-58.1252 0.362281,-31.75448 27.517274,-57.21512 60.652384,-56.86793 33.12606,0.34709 59.69008,26.35706 59.34069,58.103"
-         sodipodi:start="0.01093302"
-         sodipodi:end="6.2937322"
-         sodipodi:open="true"
-         transform="matrix(1,0,0,1.0434782,-24.996414,-116.62443)" />
-      <path
-         sodipodi:type="arc"
-         style="fill:url(#radialGradient4213);fill-opacity:1;stroke:none"
-         id="path4207"
-         sodipodi:cx="-16.162441"
-         sodipodi:cy="370.50922"
-         sodipodi:rx="64.649765"
-         sodipodi:ry="61.619305"
-         d="m 48.48346,371.18289 c -0.390357,34.02937 -29.649759,61.31401 -65.352704,60.94195 -35.702946,-0.37206 -64.329455,-28.25993 -63.939098,-62.2893 0.390356,-34.02936 29.649758,-61.314 65.352704,-60.94195 35.693198,0.37196 64.315834,28.24529 63.939366,62.26551"
-         sodipodi:start="0.01093302"
-         sodipodi:end="6.2937322"
-         sodipodi:open="true"
-         transform="matrix(-0.61793825,0,0,-0.64914719,120.06305,462.8772)" />
-      <path
-         style="fill:#00526c;fill-opacity:1;stroke:none"
-         d="m 190,222.36218 0,70 15,-5 -25,40 -25,-40 15,5 0,-70 z"
-         id="path4209"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccccccc" />
-    </g>
+     transform="translate(-12.933653,-331.95838)">
     <text
        xml:space="preserve"
        style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
@@ -359,5 +297,36 @@
          x="454.23053"
          y="517.68182"
          style="font-size:60px;fill:#800000">BETA</tspan></text>
-  </g>
+    <g
+       id="g3080">
+      <path
+         id="path5777"
+         transform="translate(12.933653,331.95838)"
+         d="M 72.25 0 C 71.031972 -0.013783892 69.793416 0.01406225 68.5625 0.0625 C 29.173186 1.612508 -1.4875083 34.798182 0.0625 74.1875 C 1.6125083 113.57682 34.798186 144.23751 74.1875 142.6875 L 74.21875 142.6875 C 113.59671 141.12271 144.23709 107.94106 142.6875 68.5625 C 141.18593 30.404098 110.00886 0.42730066 72.25 0 z M 72.0625 8.8125 C 101.23988 9.1404269 125.34156 32.26968 126.5 61.71875 C 127.69581 92.11779 103.96863 117.73934 73.53125 118.9375 C 43.093871 120.13566 17.445812 96.46154 16.25 66.0625 C 15.054515 35.67176 38.758895 10.053319 69.1875 8.84375 L 69.21875 8.84375 C 70.169918 8.8063075 71.121294 8.8019217 72.0625 8.8125 z "
+         style="fill:#00526c;fill-opacity:1;stroke:none" />
+      <path
+         style="fill:#00526c;fill-opacity:1;stroke:none"
+         d="M 60.649611,447.03937 C 29.254755,430.88434 17.441494,422.35394 27.894718,398.9119 c 10.453224,-23.44209 52.533043,3.22233 64.950356,-42.1496 3.014677,34.14335 -18.650865,36.89793 -28.559161,49.41578 -8.064693,12.33114 -2.569655,26.80943 7.386768,35.7777 7.515141,6.76923 37.029899,13.86485 57.126209,-13.55171 2.25383,4.09593 -32.356105,33.26406 -36.810093,33.60889 -7.800357,0.60391 -23.926626,-10.23794 -31.339186,-14.97359 z"
+         id="path5781"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="czccscsc" />
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5783"
+       style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#00526c;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       transform="matrix(1.1259988,0,0,1.1259988,73.419561,63.771247)"
+       inkscape:export-filename="/home/fred/projets/bloatit/www/resources/img/logo_elveos.png"
+       inkscape:export-xdpi="21.309999"
+       inkscape:export-ydpi="21.309999"><flowRegion
+         id="flowRegion5785"
+         style="fill:url(#linearGradient5795);fill-opacity:1"><rect
+           id="rect5787"
+           width="625.71429"
+           height="214.28572"
+           x="87.14286"
+           y="208.07646"
+           style="fill:#00526c;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara5789"
+         style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:0px;fill:#00526c;fill-opacity:1;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">Elveos</flowPara></flowRoot>  </g>
 </svg>

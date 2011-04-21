@@ -1,8 +1,8 @@
 package com.bloatit.framework.webprocessor.masters;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
@@ -11,9 +11,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ModelConfiguration;
 import com.bloatit.web.WebConfiguration;
-import com.sun.tools.javac.util.List;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 public final class Header extends HtmlElement {
     /**
@@ -21,7 +18,7 @@ public final class Header extends HtmlElement {
      */
     public enum Robot {
         //  @formatter:off
-        NO_INDEX("noindex"), NO_FOLLOW("nofollow"), INDEX("index"), FOLLOW("follow"), ALL("all"), 
+        NO_INDEX("noindex"), NO_FOLLOW("nofollow"), INDEX("index"), FOLLOW("follow"), ALL("all"),
         NONE("none"), NO_SNIPPET("nosnippet"), NO_ARCHIVE("noarchive"), NO_ODP("noodp");
         // @formatter:on
 
@@ -31,6 +28,7 @@ public final class Header extends HtmlElement {
             this.robot = robot;
         }
 
+        @Override
         public String toString() {
             return robot;
         }
@@ -93,6 +91,17 @@ public final class Header extends HtmlElement {
             add(metaRobots);
         }
 
+        final HtmlBranch favicon = new HtmlGenericElement("link") {
+            @Override
+            public boolean selfClosable() {
+                return true;
+            }
+        };
+        favicon.addAttribute("rel", "icon");
+        favicon.addAttribute("href", FrameworkConfiguration.getImgFavicon());
+        favicon.addAttribute("type", "image/png");
+        add(favicon);
+
         // Adds link to website CSS css
         final HtmlBranch link = new HtmlGenericElement("link") {
             @Override
@@ -132,7 +141,7 @@ public final class Header extends HtmlElement {
 
     /**
      * Adds a new css link to the page
-     * 
+     *
      * @param css the string describing the name of the css
      */
     public void addCss(final String css) {
@@ -158,7 +167,7 @@ public final class Header extends HtmlElement {
      * <li>Absolute URI (http://host.com/script.js), and will be left as is.
      * Absolute URI MUST start with http:// or https://</li>
      * </p>
-     * 
+     *
      * @param js a string describing the URI of the js link, either relative to
      *            the application or absolute (and starting with http://)
      */
