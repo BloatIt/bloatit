@@ -351,7 +351,7 @@ public final class MemberPage extends MasterPage {
 
     /**
      * Generates a second line of a feed
-     * 
+     *
      * @param item the String to display at the start of the second line
      * @param target the element to display after <code>item</code>
      * @return the element to add as a second line
@@ -368,7 +368,7 @@ public final class MemberPage extends MasterPage {
      * {@link #generateFeedStructure(HtmlElement, HtmlElement, UserContentInterface)}
      * that avoids having to create the feature second line
      * </p>
-     * 
+     *
      * @param firstLine the element to show on the first line
      * @param feature the <code>feature</code> to display on the second line
      * @param content the UserContent that originates everything, so we can get
@@ -389,7 +389,7 @@ public final class MemberPage extends MasterPage {
 
     /**
      * Creates a complete feed item to add to the feed
-     * 
+     *
      * @param firstLine the first line of the feed item
      * @param secondLine the second line of the feed item
      * @param content the UserContent that originates everything, so we can get

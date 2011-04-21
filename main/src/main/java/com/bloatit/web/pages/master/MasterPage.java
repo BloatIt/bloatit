@@ -20,6 +20,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
+import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.WebConfiguration;
@@ -56,6 +57,18 @@ public abstract class MasterPage extends Page {
     @Override
     protected final HtmlElement createBody() throws RedirectException {
         return doCreateBody(createBodyContent());
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Returns a default OK (200) status. <br />
+     * Override to return an error.
+     * </p>
+     */
+    @Override
+    protected StatusCode getResponseStatus() {
+        return StatusCode.OK_200;
     }
 
     @Override

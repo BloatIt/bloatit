@@ -87,13 +87,13 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     private void automaticAuthentication() {
         final Session session = Context.getSession();
-        if (token == null && session != null && session.getAuthToken() != null) {
+        if (token == null && session != null && session.isLogged()) {
             authenticate(session.getAuthToken());
         }
     }
 
     private void updateRights() {
-        if (token == null) {
+        if (token == null || token.isAnonymous()) {
             Log.model().debug("Try to authenticate with a null token.");
             owningState = OwningState.NOBODY;
             return;
@@ -127,7 +127,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Check if an authenticated user can talk as the creator of this content.
-     * 
+     *
      * @return true if the authenticate user is the owner (and no group has
      *         created this content) or if he has the right to TALK. False
      *         otherwise.
@@ -183,7 +183,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Return true if this content is mine (I am the author).
-     * 
+     *
      * @param member is the person that wish to know if the content is his.
      * @return true if <code>member</code> is the author of <code>this</code>,
      *         false otherwise.
@@ -193,7 +193,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
     /**
      * Calculate my team rights. This method is redefined in
      * {@link UserContent#calculateMyTeamRights(Member)}.
-     * 
+     *
      * @param member the member
      * @return the enum set
      */
@@ -203,7 +203,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Gets the auth token.
-     * 
+     *
      * @return the auth token
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
@@ -218,7 +218,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Gets the auth token unprotected.
-     * 
+     *
      * @return the auth token unprotected
      */
     protected final AuthToken getAuthTokenUnprotected() {
@@ -228,7 +228,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Can access.
-     * 
+     *
      * @param accessor the accessor
      * @param action the action
      * @return true, if successful
@@ -239,7 +239,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Try access.
-     * 
+     *
      * @param accessor the accessor
      * @param action the action
      * @throws UnauthorizedOperationException the unauthorized operation

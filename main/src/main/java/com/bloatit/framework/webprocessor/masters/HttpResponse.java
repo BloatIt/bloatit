@@ -30,30 +30,35 @@ public final class HttpResponse {
      * Describes the error level
      */
     public enum StatusCode {
-        OK_200("200"), //
-        ERROR_301_MOVED_PERMANENTLY("301"), //
-        ERROR_302_FOUND("302"), //
-        ERROR_401_UNAUTHORIZED("401"), //
-        ERROR_403_FORBIDDEN("403"), //
-        ERROR_404_NOT_FOUND("404"), //
-        ERROR_405_METHOD_NOT_ALLOWED("405"), //
-        ERROR_500_INTERNAL_SERVER_ERROR("500"), //
-        ERROR_501_NOT_IMPLEMENTED("501"), //
-        ERROR_503_SERVICE_UNAVAILABLE("503");//
+        OK_200("200", "OK"), //
+        ERROR_301_MOVED_PERMANENTLY("301", "Moved Permanently"), //
+        ERROR_302_FOUND("302", "Found"), //
+        ERROR_401_UNAUTHORIZED("401", "Unauthorized"), //
+        ERROR_403_FORBIDDEN("403", "Forbidden"), //
+        ERROR_404_NOT_FOUND("404", "Not Found"), //
+        ERROR_405_METHOD_NOT_ALLOWED("405", "Method not allowed"), //
+        ERROR_500_INTERNAL_SERVER_ERROR("500", "Internal Server Error"), //
+        ERROR_501_NOT_IMPLEMENTED("501", "Not Implemented"), //
+        ERROR_503_SERVICE_UNAVAILABLE("503", "Service Unavailable");//
 
-        private String code;
+        private final String code;
+        private final String message;
 
-        StatusCode(final String code) {
+        StatusCode(final String code, String message) {
             this.code = code;
+            this.message = message;
         }
 
         public String getCode() {
             return code;
         }
+
+        public String toString() {
+            return code + " " + message;
+        }
     }
 
     private final OutputStream output;
-    // TODO use me ;)
     private StatusCode status = StatusCode.OK_200;
     private final SimpleDateFormat httpDateformat;
 
@@ -61,7 +66,6 @@ public final class HttpResponse {
 
     // TODO: use write line in all file
     public HttpResponse(final OutputStream output, final HttpHeader header) throws IOException {
-
         httpDateformat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         httpDateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
@@ -70,7 +74,6 @@ public final class HttpResponse {
         }
 
         this.output = output;
-
     }
 
     /**
@@ -87,8 +90,12 @@ public final class HttpResponse {
         this.status = status;
     }
 
+    /**
+     * Writes an exception to the page
+     */
     public void writeException(final Exception e) {
         final StringBuilder display = new StringBuilder();
+        display.append("Status: " + StatusCode.ERROR_500_INTERNAL_SERVER_ERROR);
         display.append("Content-type: text/plain\r\n\r\n");
         display.append(e.toString());
         display.append(" :\n");
@@ -122,8 +129,8 @@ public final class HttpResponse {
     }
 
     public void writePage(final HtmlElement page) throws IOException {
+        writeLine("Status: " + status);
         writeCookies();
-
         writeLine("Vary: Accept-Encoding");
         writeLine("Content-Type: text/html");
         writeLine("Accept-Ranges: bytes");
@@ -153,7 +160,6 @@ public final class HttpResponse {
     }
 
     public void writeResource(final String path, final long size, final String fileName) throws IOException {
-
         writeLine("Content-Disposition: inline; filename=" + fileName);
         writeLine("Vary: Accept-Encoding");
         // writeLine("Cache-Control: max-age=31104000");

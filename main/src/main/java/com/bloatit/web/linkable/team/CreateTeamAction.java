@@ -76,7 +76,7 @@ public final class CreateTeamAction extends LoggedAction {
             transmitParameters();
             return new CreateTeamPageUrl();
         }
-        final Team newTeam = new Team(login, contact, description, teamRight, session.getAuthToken().getMember());
+        final Team newTeam = new Team(login, contact, description, teamRight, me);
 
         return new TeamPageUrl(newTeam);
     }

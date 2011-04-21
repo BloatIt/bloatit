@@ -36,7 +36,7 @@ public final class MessageListPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member me) throws RedirectException {
         final HtmlDiv master = new HtmlDiv("padding_box");
 
         final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Elveos private messages"), 1);
@@ -46,7 +46,6 @@ public final class MessageListPage extends LoggedPage {
         final HtmlTitleBlock teamInvites = new HtmlTitleBlock(Context.tr("Team invites"), 2);
         main.add(teamInvites);
 
-        final Member me = session.getAuthToken().getMember();
         final PageIterable<JoinTeamInvitation> invitations = me.getReceivedInvitation(State.PENDING);
         for (final JoinTeamInvitation invitation : invitations) {
             final HtmlParagraph p = new HtmlParagraph();
