@@ -127,9 +127,11 @@ public abstract class DaoActor extends DaoIdentifiable {
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
      * 
-     * @param login is the login or name of this actor. It must be non null, and
-     *            unique.
+     * @param login is the login or name of this actor. It must be non null,
+     *            unique, longer than 2 chars and do not contains space chars
+     *            ("[^\\p{Space}]+").
      * @throws NonOptionalParameterException if login or mail is null.
+     * @throws MalformedArgumentException if the login is to small or contain space chars.
      */
     protected DaoActor(final String login) {
         super();
@@ -137,12 +139,12 @@ public abstract class DaoActor extends DaoIdentifiable {
             throw new NonOptionalParameterException("login cannot be null");
         }
         if (login.length() < 3) {
-            throw new NonOptionalParameterException("login length must be > 2");
+            throw new MalformedArgumentException("login length must be > 2");
         }
         if (!login.matches("[^\\p{Space}]+")) {
             throw new MalformedArgumentException("The login cannot contain space characters.");
         }
-        
+
         this.dateCreation = new Date();
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);

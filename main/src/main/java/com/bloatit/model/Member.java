@@ -22,7 +22,9 @@ import java.util.Set;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
+import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFileMetadata;
+import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoMember;
@@ -30,7 +32,9 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.Image;
@@ -79,6 +83,16 @@ public final class Member extends Actor<DaoMember> implements User {
         return new MyCreator().create(dao);
     }
 
+    /**
+     * Create a new DaoActor. Initialize the creation date to now. Create a new
+     * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
+     * 
+     * @param login is the login or name of this actor. It must be non null,
+     *            unique, longer than 2 chars and do not contains space chars
+     *            ("[^\\p{Space}]+").
+     * @throws NonOptionalParameterException if login or mail is null.
+     * @throws MalformedArgumentException if the login is to small or contain space chars.
+     */
     private static DaoMember createDaoMember(final String login, final String password, final String email, final Locale locale) {
         final String salt = RandomStringUtils.randomAscii(PASSWORD_SALT_LENGTH);
         final String passwd = SecuredHash.calculateHash(password, salt);
