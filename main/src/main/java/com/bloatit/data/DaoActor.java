@@ -39,9 +39,9 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -127,20 +127,24 @@ public abstract class DaoActor extends DaoIdentifiable {
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
      * 
-     * @param login is the login or name of this actor. It must be non null, and
-     *            unique.
+     * @param login is the login or name of this actor. It must be non null,
+     *            unique, longer than 2 chars and do not contains space chars
+     *            ("[^\\p{Space}]+").
      * @throws NonOptionalParameterException if login or mail is null.
+     * @throws MalformedArgumentException if the login is to small or contain space chars.
      */
     protected DaoActor(final String login) {
         super();
         if (login == null) {
-            Log.data().fatal("Login null!");
-            throw new NonOptionalParameterException();
+            throw new NonOptionalParameterException("login cannot be null");
         }
-        if (login.isEmpty()) {
-            Log.data().fatal("Login empty!");
-            throw new NonOptionalParameterException("login cannot be empty");
+        if (login.length() < 3) {
+            throw new MalformedArgumentException("login length must be > 2");
         }
+        if (!login.matches("[^\\p{Space}]+")) {
+            throw new MalformedArgumentException("The login cannot contain space characters.");
+        }
+
         this.dateCreation = new Date();
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);

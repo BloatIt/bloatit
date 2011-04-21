@@ -57,17 +57,7 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
     public abstract boolean canAccessAsTeam(final Team asTeam);
 
     /**
-     * Sets the as team. The author is saying that he is creating this content
-     * in the name of the team <code>asTeam</code>.
-     * 
-     * @param asTeam the new as team
-     * @throws UnauthorizedOperationException
-     */
-    void setAsTeam(final Team asTeam) throws UnauthorizedOperationException;
-
-    /**
-     * Gets the as team. Can (may) be null. See {@link #setAsTeam(Team)} for
-     * more information on this property.
+     * Gets the as team. Can (may) be null.
      * 
      * @return the as team
      */
