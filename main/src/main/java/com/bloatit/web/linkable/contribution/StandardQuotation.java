@@ -56,7 +56,7 @@ public class StandardQuotation {
         final QuotationAmountEntry fixBankFee = new QuotationAmountEntry("Fix fee", null, new BigDecimal(fixBank));
 
         final QuotationPercentEntry variableBankFee = new QuotationPercentEntry("Variable fee",
-                                                                                "" + Float.valueOf(variableBank) * 100 + "%",
+                                                                                "" + Float.valueOf(variableBank).floatValue() * 100 + "%",
                                                                                 quotation,
                                                                                 new BigDecimal(variableBank));
         bank.addEntry(variableBankFee);

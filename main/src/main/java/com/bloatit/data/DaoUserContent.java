@@ -70,7 +70,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private Date creationDate;
 
     @Basic(optional = false)
-    private Boolean isDeleted;
+    private boolean isDeleted;
 
     @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -128,7 +128,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return new MappedList<DaoFileMetadata>(this.files);
     }
 
-    public Boolean isDeleted() {
+    public boolean isDeleted() {
         return this.isDeleted;
     }
 

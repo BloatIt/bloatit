@@ -85,6 +85,10 @@ public final class SoftwareListPage extends MasterPage {
     }
 
     private class SoftwareRenderer implements HtmlRenderer<Software> {
+        
+        public SoftwareRenderer() {
+            super();
+        }
 
         @Override
         public XmlNode generate(final Software software) {

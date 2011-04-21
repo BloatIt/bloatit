@@ -57,22 +57,24 @@ public class Sorter<T, U extends Comparable<U>> {
             return sortKey.compareTo(o.getSortKey());
         }
 
+        @Override
         @SuppressWarnings("unchecked")
-        public boolean equals(Object o) {
+        public boolean equals(final Object o) {
             if (o == null || o.getClass() != getClass()) {
                 return false;
             }
             return compareTo((SortEntry) o) == 0;
         }
+
+
     }
 
     private class SortEntryComparator implements Comparator<SortEntry> {
 
         private final Order order;
 
-        private SortEntryComparator(final Order order) {
+        SortEntryComparator(final Order order) {
             this.order = order;
-
         }
 
         @Override

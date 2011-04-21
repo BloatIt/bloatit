@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.webprocessor.context.Context;
 
 /**
@@ -84,7 +85,7 @@ public class FileConstraintChecker {
      */
     public boolean isImage() {
         if (isImage != null) {
-            return isImage;
+            return isImage.booleanValue();
         }
         if (!file.exists()) {
             return false;
@@ -98,10 +99,10 @@ public class FileConstraintChecker {
                 isImage = false;
             }
         } catch (final IOException e) {
-            e.printStackTrace();
+            Log.framework().error("",e);
             isImage = false;
         }
-        return isImage;
+        return isImage != null && isImage.booleanValue();
     }
 
     /**

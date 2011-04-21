@@ -463,7 +463,7 @@ public class BloatitWebServer extends WebProcessor {
             return new FileResource(new FileResourceUrl(params, session.getParameters()));
         }
 
-        return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));
+        return new PageNotFound(new PageNotFoundUrl());
     }
 
     @Override

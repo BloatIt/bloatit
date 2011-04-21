@@ -46,23 +46,14 @@ public class MemberTest extends ModelTestUnit {
         }
     }
 
-    public void testInviteIntoProtectedGroup() throws UnauthorizedOperationException {
+    public void testInviteIntoProtectedGroup() {
         final User yo = MemberManager.getMemberByLogin("Yo");
-        final User fred = MemberManager.getMemberByLogin("Fred");
-        // TODO
-        // yo.authenticate(yoAuthToken);
-        // yo.sendInvitation(fred, GroupManager.getByName("other"));
-        // assertFalse(fred.isInGroup(GroupManager.getByName("other")));
-        //
-        // fred.authenticate(fredAuthToken);
-        // fred.acceptInvitation(GroupManager.getInvitation(GroupManager.getByName("other"),
-        // fred));
-        // assertTrue(fred.isInGroup(GroupManager.getByName("other")));
+        MemberManager.getMemberByLogin("Fred");
     }
 
-    public void testInviteIntoProtectedAndRefuseGroup() throws UnauthorizedOperationException {
-        final User yo = MemberManager.getMemberByLogin("Yo");
-        final User fred = MemberManager.getMemberByLogin("Fred");
+    public void testInviteIntoProtectedAndRefuseGroup() {
+        MemberManager.getMemberByLogin("Yo");
+        MemberManager.getMemberByLogin("Fred");
 
         // TODO
         // yo.authenticate(yoAuthToken);

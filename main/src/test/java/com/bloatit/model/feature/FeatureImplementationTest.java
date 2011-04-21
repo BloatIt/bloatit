@@ -392,34 +392,35 @@ public class FeatureImplementationTest extends ModelTestUnit {
         return feature;
     }
 
-    public void testFinishedDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        // final Feature feature =
-        // createFeatureAddOffer120AddContribution120BeginDev();
-        //
-        // try {
-        // feature.getSelectedOffer().;
-        // fail();
-        // } catch (final UnauthorizedOperationException e) {
-        // assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED,
-        // e.getCode());
-        // }
-        //
-        // try {
-        // feature.authenticate(yoAuthToken);
-        // feature.releaseCurrentMilestone();
-        // fail();
-        // } catch (final UnauthorizedOperationException e) {
-        // assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_FEATURE,
-        // e.getCode());
-        // }
-        //
-        // feature.authenticate(tomAuthToken);
-        // feature.releaseCurrentMilestone();
-        //
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertEquals(120, feature.getContribution().intValue());
-        // TODO
-    }
+    // public void testFinishedDevelopment() throws NotEnoughMoneyException,
+    // UnauthorizedOperationException {
+    // final Feature feature =
+    // createFeatureAddOffer120AddContribution120BeginDev();
+    //
+    // try {
+    // feature.getSelectedOffer().;
+    // fail();
+    // } catch (final UnauthorizedOperationException e) {
+    // assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED,
+    // e.getCode());
+    // }
+    //
+    // try {
+    // feature.authenticate(yoAuthToken);
+    // feature.releaseCurrentMilestone();
+    // fail();
+    // } catch (final UnauthorizedOperationException e) {
+    // assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_FEATURE,
+    // e.getCode());
+    // }
+    //
+    // feature.authenticate(tomAuthToken);
+    // feature.releaseCurrentMilestone();
+    //
+    // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+    // assertEquals(120, feature.getContribution().intValue());
+    // TODO
+    // }
 
     public void testOfferWithALotOfMilestone() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Feature feature = createFeatureByThomas();

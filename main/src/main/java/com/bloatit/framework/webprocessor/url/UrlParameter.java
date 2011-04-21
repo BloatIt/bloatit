@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.parameters.HttpParameter;
@@ -72,16 +71,7 @@ public class UrlParameter<T, U> extends UrlNode {
         if (value != null && getRole() == Role.PRETTY) {
             return makeStringPretty(String.class.cast(value));
         }
-        try {
-            return toString(value);
-        } catch (final ConversionErrorException e) {
-            if (value != null) {
-                Log.framework().warn("Error converting user input, from " + value.getClass().getSimpleName() + " to string.", e);
-            } else {
-                Log.framework().warn("Error converting user input, from null to string.", e);
-            }
-            return "";
-        }
+        return toString(value);
     }
 
     private String makeStringPretty(final String theValue) {
@@ -112,16 +102,7 @@ public class UrlParameter<T, U> extends UrlNode {
 
     private final void setValueUnprotected(final T value) {
         this.value = value;
-        try {
-            strValue = toString(value);
-        } catch (final ConversionErrorException e) {
-            if (value != null) {
-                Log.framework().warn("Error converting user input, from " + value.getClass().getSimpleName() + " to string.", e);
-            } else {
-                Log.framework().warn("Error converting user input, from null to string.", e);
-            }
-            this.strValue = "";
-        }
+        strValue = toString(value);
     }
 
     @SuppressWarnings("unchecked")
@@ -205,7 +186,7 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     @SuppressWarnings("unchecked")
-    private String toString(final T value) throws ConversionErrorException {
+    private String toString(final T value) {
         // If it is a list then it's a list of parameters.
         if (value instanceof List) {
             final StringBuilder sb = new StringBuilder();

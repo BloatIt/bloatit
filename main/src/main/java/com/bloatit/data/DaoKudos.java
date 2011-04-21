@@ -32,7 +32,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * is an internal storing class. You should never have to use it in other
  * package.
  * 
- * @see DaoKudosable#addKudos(DaoMember, int)
+ * @see DaoKudosable#addKudos(DaoMember, DaoTeam, int)
  */
 @Entity
 @Cacheable

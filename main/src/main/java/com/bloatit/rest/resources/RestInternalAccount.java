@@ -33,7 +33,6 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.managers.InternalAccountManager;
 import com.bloatit.rest.adapters.DateAdapter;
@@ -145,7 +144,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * @see com.bloatit.model.InternalAccount#getBlocked()
      */
     @XmlElement
-    public BigDecimal getBlocked() throws RestException {
+    public BigDecimal getBlocked() {
         try {
             return model.getBlocked();
         } catch (final UnauthorizedOperationException e) {
@@ -160,7 +159,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
-    public Date getCreationDate() throws RestException {
+    public Date getCreationDate() {
         try {
             return model.getCreationDate();
         } catch (final UnauthorizedOperationException e) {
@@ -174,7 +173,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * @see com.bloatit.model.Account#getAmount()
      */
     @XmlElement
-    public BigDecimal getAmount() throws RestException {
+    public BigDecimal getAmount() {
         try {
             return model.getAmount();
         } catch (final UnauthorizedOperationException e) {
@@ -188,7 +187,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * @see com.bloatit.model.Account#getTransactions()
      */
     @XmlElement
-    public RestTransactionList getTransactions() throws RestException {
+    public RestTransactionList getTransactions() {
         try {
             return new RestTransactionList(model.getTransactions());
         } catch (final UnauthorizedOperationException e) {
@@ -203,7 +202,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
-    public Date getLastModificationDate() throws RestException {
+    public Date getLastModificationDate() {
         try {
             return model.getLastModificationDate();
         } catch (final UnauthorizedOperationException e) {

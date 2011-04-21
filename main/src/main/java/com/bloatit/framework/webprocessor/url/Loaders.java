@@ -30,16 +30,12 @@ public final class Loaders {
         // desactivate ctor
     }
 
-    public static <T> String toStr(final T obj) throws ConversionErrorException {
+    public static <T> String toStr(final T obj) {
         if (obj == null) {
             return "";
         }
-        try {
-            @SuppressWarnings("unchecked") final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
-            return loader.toString(obj);
-        } catch (final ConversionErrorException e) {
-            throw e;
-        }
+        @SuppressWarnings("unchecked") final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
+        return loader.toString(obj);
     }
 
     public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException {
@@ -54,8 +50,8 @@ public final class Loaders {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "synthetic-access", "cast", "rawtypes" })
-    static <T> Loader<T> getLoader(final Class<T> theClass) throws ConversionErrorException {
+    @SuppressWarnings({ "unchecked", "synthetic-access", "rawtypes" })
+    static <T> Loader<T> getLoader(final Class<T> theClass) {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();
         }
@@ -63,7 +59,7 @@ public final class Loaders {
             return (Loader<T>) new ToByte();
         }
         if (theClass.isEnum()) {
-            return (Loader<T>) new ToEnum(theClass);
+            return new ToEnum(theClass);
         }
         if (theClass.equals(Short.class)) {
             return (Loader<T>) new ToShort();
@@ -102,10 +98,10 @@ public final class Loaders {
             return (Loader<T>) new ToBloatitDate();
         }
         if (IdentifiableInterface.class.isAssignableFrom(theClass)) {
-            return (Loader<T>) new ToIdentifiable(theClass);
+            return new ToIdentifiable(theClass);
         }
         if (WebProcess.class.isAssignableFrom(theClass)) {
-            return (Loader<T>) new ToWebProcess();
+            return new ToWebProcess();
         }
         throw new NotImplementedException("Cannot find a conversion class for: " + theClass);
     }
@@ -224,7 +220,7 @@ public final class Loaders {
     private static class ToCharacter extends Loader<Character> {
         @Override
         public Character fromString(final String data) {
-            return data.charAt(0);
+            return new Character(data.charAt(0));
         }
     }
 

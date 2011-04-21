@@ -185,11 +185,9 @@ public final class HtmlFeatureSummary extends HtmlDiv {
         if (image != null) {
             final FileResourceUrl imageUrl = new FileResourceUrl(image);
             return new HtmlImage(imageUrl, image.getShortDescription(), "software_image");
-        } else {
-            // TODO: add a fallback image
-            return new PlaceHolderElement();
         }
-
+        // TODO: add a fallback image
+        return new PlaceHolderElement();
     }
 
     /**

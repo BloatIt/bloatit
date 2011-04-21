@@ -1,15 +1,10 @@
 package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.framework.utils.parameters.Parameters;
-import com.bloatit.framework.utils.parameters.SessionParameters;
 
 public final class PageNotFoundUrl extends Url implements Cloneable {
     public static String getName() {
         return "pagenotfound";
-    }
-
-    public PageNotFoundUrl(final Parameters params, final SessionParameters session) {
-        this();
     }
 
     public PageNotFoundUrl() {

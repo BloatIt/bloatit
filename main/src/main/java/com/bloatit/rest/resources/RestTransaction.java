@@ -34,7 +34,6 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.model.Transaction;
 import com.bloatit.model.managers.TransactionManager;
 import com.bloatit.rest.adapters.DateAdapter;
@@ -146,7 +145,7 @@ public class RestTransaction extends RestElement<Transaction> {
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
-    public Date getCreationDate() throws RestException {
+    public Date getCreationDate() {
         try {
             return model.getCreationDate();
         } catch (final UnauthorizedOperationException e) {
@@ -160,7 +159,7 @@ public class RestTransaction extends RestElement<Transaction> {
      * @see com.bloatit.model.Transaction#getAmount()
      */
     @XmlAttribute
-    public BigDecimal getAmount() throws RestException {
+    public BigDecimal getAmount() {
         try {
             return model.getAmount();
         } catch (final UnauthorizedOperationException e) {
@@ -175,7 +174,7 @@ public class RestTransaction extends RestElement<Transaction> {
      */
     @XmlElement
     @XmlIDREF
-    public RestInternalAccount getFrom() throws RestException {
+    public RestInternalAccount getFrom() {
         try {
             return new RestInternalAccount(model.getFrom());
         } catch (final UnauthorizedOperationException e) {

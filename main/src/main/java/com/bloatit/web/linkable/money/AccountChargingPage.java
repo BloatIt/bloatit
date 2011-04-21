@@ -91,7 +91,7 @@ public final class AccountChargingPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
+    public HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             try {
@@ -105,7 +105,7 @@ public final class AccountChargingPage extends QuotationPage {
         BigDecimal account;
         try {
             account = getActor(member).getInternalAccount().getAmount();
-            generateNoMoneyContent(group, getActor(member), account);
+            generateNoMoneyContent(group, getActor(member));
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
@@ -120,7 +120,7 @@ public final class AccountChargingPage extends QuotationPage {
         return member;
     }
 
-    private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
+    private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) {
         if (process.isLocked()) {
             session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
         }

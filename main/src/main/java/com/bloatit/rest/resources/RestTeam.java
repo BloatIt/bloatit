@@ -33,7 +33,6 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.rest.adapters.DateAdapter;
@@ -169,7 +168,7 @@ public class RestTeam extends RestElement<Team> {
      * @see com.bloatit.model.Actor#getLogin()
      */
     @XmlAttribute
-    public String getName() throws RestException {
+    public String getName() {
         try {
             return model.getLogin();
         } catch (final UnauthorizedOperationException e) {
@@ -183,7 +182,7 @@ public class RestTeam extends RestElement<Team> {
      * @see com.bloatit.model.Actor#getInternalAccount()
      */
     @XmlElement
-    public RestInternalAccount getInternalAccount() throws RestException {
+    public RestInternalAccount getInternalAccount() {
         try {
             return new RestInternalAccount(model.getInternalAccount());
         } catch (final UnauthorizedOperationException e) {
@@ -197,7 +196,7 @@ public class RestTeam extends RestElement<Team> {
      * @see com.bloatit.model.Actor#getExternalAccount()
      */
     @XmlElement
-    public RestExternalAccount getExternalAccount() throws RestException {
+    public RestExternalAccount getExternalAccount() {
         try {
             return new RestExternalAccount(model.getExternalAccount());
         } catch (final UnauthorizedOperationException e) {
@@ -208,7 +207,7 @@ public class RestTeam extends RestElement<Team> {
     }
 
     @XmlAttribute
-    public String getContacts() throws RestException {
+    public String getContacts() {
         try {
             return model.getContact();
         } catch (final UnauthorizedOperationException e) {
@@ -223,7 +222,7 @@ public class RestTeam extends RestElement<Team> {
      */
     @XmlAttribute(name = "creationdate")
     @XmlJavaTypeAdapter(DateAdapter.class)
-    public Date getDateCreation() throws RestException {
+    public Date getDateCreation() {
         try {
             return model.getDateCreation();
         } catch (final UnauthorizedOperationException e) {

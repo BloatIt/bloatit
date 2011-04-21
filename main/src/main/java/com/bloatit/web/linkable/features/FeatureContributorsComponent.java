@@ -35,14 +35,13 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
 import com.bloatit.web.url.ContributionProcessUrl;
-import com.bloatit.web.url.FeatureContributorsComponentUrlComponent;
 
 @ParamContainer(value = "FeatureContributorsComponent", isComponent = true)
 public final class FeatureContributorsComponent extends HtmlDiv {
 
     private final Feature feature;
 
-    public FeatureContributorsComponent(final FeatureContributorsComponentUrlComponent url, final Feature feature) {
+    public FeatureContributorsComponent(final Feature feature) {
         super();
         this.feature = feature;
         add(produce());

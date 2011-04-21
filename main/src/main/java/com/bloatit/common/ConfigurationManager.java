@@ -95,11 +95,11 @@ public class ConfigurationManager {
             throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
         } catch (final IOException e) {
             throw new BadProgrammerException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
-        } finally{
-            if(isr != null){
+        } finally {
+            if (isr != null) {
                 try {
                     isr.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new BadProgrammerException("Stream crashed when closing ... This is bad");
                 }
             }
@@ -161,44 +161,44 @@ public class ConfigurationManager {
             throw new NoSuchElementException("Cannot find property: " + key);
         }
 
-        public int getInt(final String key, final int defaultValue) {
-            return getSome(key, defaultValue, Integer.class);
+        public int getInt(final String key, final Integer defaultValue) {
+            return getSome(key, defaultValue, Integer.class).intValue();
         }
 
         public int getInt(final String key) {
-            return getSome(key, Integer.class);
+            return getSome(key, Integer.class).intValue();
         }
 
-        public Long getLong(final String key, final Long defaultValue) {
-            return getSome(key, defaultValue, Long.class);
+        public long getLong(final String key, final Long defaultValue) {
+            return getSome(key, defaultValue, Long.class).longValue();
         }
 
-        public Long getLong(final String key) {
-            return getSome(key, Long.class);
+        public long getLong(final String key) {
+            return getSome(key, Long.class).longValue();
         }
 
-        public Short getShort(final String key, final Short defaultValue) {
-            return getSome(key, defaultValue, Short.class);
+        public short getShort(final String key, final Short defaultValue) {
+            return getSome(key, defaultValue, Short.class).shortValue();
         }
 
-        public Short getShort(final String key) {
-            return getSome(key, Short.class);
+        public short getShort(final String key) {
+            return getSome(key, Short.class).shortValue();
         }
 
-        public Byte getByte(final String key, final Byte defaultValue) {
-            return getSome(key, defaultValue, Byte.class);
+        public byte getByte(final String key, final Byte defaultValue) {
+            return getSome(key, defaultValue, Byte.class).byteValue();
         }
 
-        public Byte getByte(final String key) {
-            return getSome(key, Byte.class);
+        public byte getByte(final String key) {
+            return getSome(key, Byte.class).byteValue();
         }
 
-        public Boolean getBoolean(final String key, final Boolean defaultValue) {
-            return getSome(key, defaultValue, Boolean.class);
+        public boolean getBoolean(final String key, final Boolean defaultValue) {
+            return getSome(key, defaultValue, Boolean.class).booleanValue();
         }
 
-        public Boolean getBoolean(final String key) {
-            return getSome(key, Boolean.class);
+        public boolean getBoolean(final String key) {
+            return getSome(key, Boolean.class).booleanValue();
         }
 
         public BigDecimal getBigDecimal(final String key, final BigDecimal defaultValue) {
@@ -209,12 +209,12 @@ public class ConfigurationManager {
             return getSome(key, BigDecimal.class);
         }
 
-        public Character getCharacter(final String key, final Character defaultValue) {
-            return getSome(key, defaultValue, Character.class);
+        public char getCharacter(final String key, final Character defaultValue) {
+            return getSome(key, defaultValue, Character.class).charValue();
         }
 
-        public Character getCharacter(final String key) {
-            return getSome(key, Character.class);
+        public char getCharacter(final String key) {
+            return getSome(key, Character.class).charValue();
         }
 
         public Date getDate(final String key, final Date defaultValue) {
@@ -225,20 +225,20 @@ public class ConfigurationManager {
             return getSome(key, Date.class);
         }
 
-        public Double getDouble(final String key, final Double defaultValue) {
-            return getSome(key, defaultValue, Double.class);
+        public double getDouble(final String key, final Double defaultValue) {
+            return getSome(key, defaultValue, Double.class).doubleValue();
         }
 
-        public Double getDouble(final String key) {
-            return getSome(key, Double.class);
+        public double getDouble(final String key) {
+            return getSome(key, Double.class).doubleValue();
         }
 
-        public Float getFloat(final String key, final Float defaultValue) {
-            return getSome(key, defaultValue, Float.class);
+        public float getFloat(final String key, final Float defaultValue) {
+            return getSome(key, defaultValue, Float.class).floatValue();
         }
 
-        public Float getFloat(final String key) {
-            return getSome(key, Float.class);
+        public float getFloat(final String key) {
+            return getSome(key, Float.class).floatValue();
         }
 
         public String getString(final String key, final String defaultValue) {

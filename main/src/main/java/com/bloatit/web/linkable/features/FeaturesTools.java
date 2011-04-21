@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -248,7 +250,7 @@ public class FeaturesTools {
             contributionsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             contributionsFeatureUrl.setAnchor("feature_tab_pane");
 
-            String trn = Context.trn("{0} comment", "{0} comments", commentsCount, Long.valueOf((commentsCount)));
+            final String trn = Context.trn("{0} comment", "{0} comments", commentsCount, Long.valueOf((commentsCount)));
             featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(trn));
             if (feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
                 // PENDING or PREPARING we add the number of offers
@@ -276,14 +278,14 @@ public class FeaturesTools {
                 releasesFeatureUrl.setAnchor("feature_tab_pane");
 
                 int releaseCount = 0;
-                for (Milestone m : feature.getValidatedOffer().getMilestones()) {
+                for (final Milestone m : feature.getValidatedOffer().getMilestones()) {
                     releaseCount += m.getReleases().size();
                 }
                 featureSummaryDetails.addText(" – ");
                 featureSummaryDetails.add(releasesFeatureUrl.getHtmlLink(Context.trn("{0} release", "{0} releases", releaseCount, releaseCount)));
             }
             featureSummaryDetails.addText(" – ");
-            String trn2 = Context.trn("{0} contribution", "{0} contributions", contributionsCount, contributionsCount);
+            final String trn2 = Context.trn("{0} contribution", "{0} contributions", contributionsCount, contributionsCount);
             featureSummaryDetails.add(contributionsFeatureUrl.getHtmlLink(trn2));
 
             if (showBugs) {
@@ -310,6 +312,10 @@ public class FeaturesTools {
 
         final String languageCode = Context.getLocalizator().getLanguageCode();
         switch (feature.getFeatureState()) {
+            case DEVELOPPING:
+            case PENDING:
+            case PREPARING:
+                throw new NotImplementedException();
             case FINISHED:
                 progressState.add(new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(languageCode)), Context.tr("success")));
                 return progressState;

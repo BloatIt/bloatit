@@ -83,10 +83,10 @@ public class HtmlTools {
      * @return the compressed String to display
      */
     public static String compressKarma(final long karma) {
-        final Double abs_karma = new Double(Math.abs(karma));
+        final double abs_karma = new Double(Math.abs(karma)).doubleValue();
         String result = "";
         if (abs_karma < THOUSAND) {
-            result = cutNumber(abs_karma.toString());
+            result = cutNumber(String.valueOf(abs_karma));
         } else if (abs_karma < MILLION) {
             result = cutNumber(Double.toString(abs_karma / THOUSAND).toString()) + "K";
         } else if (abs_karma < BILLION) {
