@@ -97,15 +97,15 @@ public final class TeamPage extends MasterPage {
     private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
         try {
-            contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getLogin()));
+            contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("Oops, an error prevented us from showing you team name, please notify us."));
             throw new ShallNotPassException("Couldn't display team name", e);
         }
 
-        if (targetTeam.canAccessEmail(Action.READ)) {
+        if (targetTeam.canAccessContact(Action.READ)) {
             try {
-                contacts.add(new HtmlParagraph().addText(targetTeam.getEmail()));
+                contacts.add(new HtmlParagraph().addText(targetTeam.getContact()));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyBad("An error prevented us from showing you team contact information. Please notify us.");
                 throw new ShallNotPassException("User can't see team contact information while he should", e);
@@ -121,8 +121,7 @@ public final class TeamPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv();
         targetTeam.authenticate(session.getAuthToken());
 
-        Visitor me = session.getAuthToken().getVisitor();
-
+        final Visitor me = session.getAuthToken().getVisitor();
 
         if (me.hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
@@ -130,7 +129,6 @@ public final class TeamPage extends MasterPage {
             master.add(modify);
             modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change team settings")));
         }
-
 
         // Title and team type
         HtmlTitleBlock titleBlock;
@@ -145,35 +143,37 @@ public final class TeamPage extends MasterPage {
         titleBlock.add(new HtmlDiv("float_left").add(TeamTools.getTeamAvatar(targetTeam)));
 
         // Group informations
+        final HtmlList informationsList = new HtmlList();
 
-        HtmlList informationsList = new HtmlList();
-
+        try {
+            // display name
+            informationsList.add(new HtmlDefineParagraph(Context.tr("Displayed Name: "), targetTeam.getDisplayName()));
+        } catch (final UnauthorizedOperationException e1) {
+            // Should never happen
+            Log.web().error("Not allowed to see team display name in team page, should not happen", e1);
+        }
         // Visibility
-
         informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (targetTeam.isPublic() ? Context.tr("Public")
-                                                             : Context.tr("Private"))));
+                : Context.tr("Private"))));
 
         // Creation date
         try {
-            informationsList.add(new HtmlDefineParagraph(Context.tr("Creation date: "),
-                                                                                     Context.getLocalizator()
-                                                                                            .getDate(targetTeam.getDateCreation())
-                                                                                            .toString(FormatStyle.LONG)));
+            informationsList.add(new HtmlDefineParagraph(Context.tr("Creation date: "), Context.getLocalizator()
+                                                                                               .getDate(targetTeam.getDateCreation())
+                                                                                               .toString(FormatStyle.LONG)));
         } catch (final UnauthorizedOperationException e) {
             // Should never happen
             Log.web().error("Not allowed to see team creation date in team page, should not happen", e);
         }
 
         // Member count
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "),
-                                                                                    String.valueOf(targetTeam.getMembers().size())));
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(targetTeam.getMembers().size())));
 
         // Features count
-        int featuresCount = getFeatureCount();
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Involved in features: "),
-                                                                                     new HtmlMixedText(Context.tr("{0} (<0::see details>)",
-                                                                                                                  featuresCount),
-                                                                                                       new PageNotFoundUrl().getHtmlLink())));
+        final int featuresCount = getFeatureCount();
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Involved in features: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)",
+                                                                                                                        featuresCount),
+                                                                                                             new PageNotFoundUrl().getHtmlLink())));
 
         titleBlock.add(informationsList);
 
@@ -189,17 +189,17 @@ public final class TeamPage extends MasterPage {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
                 titleBlock.add(bankInformations);
                 {
-                    HtmlList bankInformationsList = new HtmlList();
+                    final HtmlList bankInformationsList = new HtmlList();
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam);
-                    AccountPageUrl accountPageUrl = new AccountPageUrl();
+                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam);
+                    final AccountPageUrl accountPageUrl = new AccountPageUrl();
                     accountPageUrl.setTeam(targetTeam);
-                    HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
-                                                                                               new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
-                                                                                                                 amount,
-                                                                                                                 accountPageUrl.getHtmlLink())));
+                    final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
+                                                                                                     new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
+                                                                                                                       amount,
+                                                                                                                       accountPageUrl.getHtmlLink())));
                     bankInformationsList.add(accountBalanceItem);
 
                 }
@@ -213,7 +213,7 @@ public final class TeamPage extends MasterPage {
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", targetTeam.getMembers().size()), 2);
         titleBlock.add(memberTitle);
 
-        if(me.hasInviteTeamRight(targetTeam)) {
+        if (me.hasInviteTeamRight(targetTeam)) {
             final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(targetTeam);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
@@ -241,7 +241,7 @@ public final class TeamPage extends MasterPage {
         final Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
 
         try {
-            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
+            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getDisplayName()));
         } catch (final UnauthorizedOperationException e) {
             breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
         }
@@ -339,8 +339,8 @@ public final class TeamPage extends MasterPage {
 
             final PlaceHolderElement ph = new PlaceHolderElement();
 
-            if(right == UserTeamRight.CONSULT) {
-                if(member.canBeKickFromTeam(targetTeam, visitor.getMember())) {
+            if (right == UserTeamRight.CONSULT) {
+                if (member.canBeKickFromTeam(targetTeam, visitor.getMember())) {
                     if (member.equals(visitor)) {
                         ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Leave")));
                     } else {
@@ -348,9 +348,9 @@ public final class TeamPage extends MasterPage {
                     }
                 }
             } else {
-                if(targetTeam.canChangeRight(visitor.getMember(), member, right, true)) {
+                if (targetTeam.canChangeRight(visitor.getMember(), member, right, true)) {
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Grant")));
-                } else if(targetTeam.canChangeRight(visitor.getMember(), member, right, false)) {
+                } else if (targetTeam.canChangeRight(visitor.getMember(), member, right, false)) {
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
                 }
             }
@@ -359,7 +359,7 @@ public final class TeamPage extends MasterPage {
         }
 
         @Override
-        public String getColumnCss(int column) {
+        public String getColumnCss(final int column) {
             switch (column) {
                 case 0: // Name
                     return "name";

@@ -207,13 +207,10 @@ public class RestTeam extends RestElement<Team> {
         }
     }
 
-    /**
-     * @see com.bloatit.model.Actor#getEmail()
-     */
     @XmlAttribute
     public String getContacts() throws RestException {
         try {
-            return model.getEmail();
+            return model.getContact();
         } catch (final UnauthorizedOperationException e) {
             return null; // throw new
                          // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,

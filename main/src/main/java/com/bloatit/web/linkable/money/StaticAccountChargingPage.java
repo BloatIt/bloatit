@@ -76,7 +76,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             try {
-                group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getLogin()), 1);
+                group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getDisplayName()), 1);
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
             }

@@ -60,6 +60,13 @@ public class MemberRight extends RightManager {
     public static class Password extends Private {
         // nothing this is just a rename.
     }
+    
+    /**
+     * The Class Email is a {@link Private} accessor for the Email property.
+     */
+    public static class Email extends Private {
+        // nothing this is just a rename.
+    }
 
     /**
      * The Class Locale is a {@link Private} accessor for the Locale property.

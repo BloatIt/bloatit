@@ -27,7 +27,7 @@ public class TeamListRenderer implements HtmlRenderer<Team> {
 
             final HtmlDiv textBox = new HtmlDiv("team_text");
             HtmlLink htmlLink;
-            htmlLink = teamUrl.getHtmlLink(team.getLogin());
+            htmlLink = teamUrl.getHtmlLink(team.getDisplayName());
 
             textBox.add(htmlLink);
             box.add(textBox);

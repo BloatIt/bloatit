@@ -278,7 +278,5 @@ public class Generator {
         public String getQualifiedName() {
             return packageName + "." + className;
         }
-
     }
-
 }

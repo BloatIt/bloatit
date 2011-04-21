@@ -46,56 +46,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * Tells if a user can access the <code>Email</code> property. You have to
-     * unlock this Actor using the {@link Actor#authenticate(AuthToken)} method.
-     * 
-     * @param action can be read/write/delete. for example use <code>READ</code>
-     *            to know if you can use {@link Member#getTeams()}.
-     * @return true if you can access the parameter <code>Email</code>.
-     * @see Actor#getEmail()
-     * @see Actor#setEmail(String)
-     * @see Actor#authenticate(AuthToken)
-     */
-    public final boolean canAccessEmail(final Action action) {
-        return canAccess(new ActorRight.Email(), action);
-    }
-
-    /**
-     * Gets the email.
-     * 
-     * @return the email
-     * @throws UnauthorizedOperationException if you don't have the
-     *             <code>READ</code> right on the <code>Email</code> property
-     * @see DaoActor#getContact()
-     */
-    public final String getEmail() throws UnauthorizedOperationException {
-        tryAccess(new ActorRight.Email(), Action.READ);
-        return getEmailUnprotected();
-    }
-
-    /**
-     * Gets the email without checking if the user has right to.
-     * 
-     * @return the email
-     * @see DaoActor#getContact()
-     */
-    public final String getEmailUnprotected() {
-        return getDao().getContact();
-    }
-
-    /**
-     * Sets the email.
-     * 
-     * @param email the new email
-     * @throws UnauthorizedOperationException if you don't have the
-     *             <code>WRITE</code> right on the <code>Email</code> property
-     */
-    public final void setEmail(final String email) throws UnauthorizedOperationException {
-        tryAccess(new ActorRight.Email(), Action.WRITE);
-        getDao().setContact(email);
-    }
-
-    /**
      * Gets the login with no right protection.
      * 
      * @return the login
@@ -109,7 +59,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * 
      * @return true if you have the <code>READ</code> right on the Login
      *         property.
-     * @see Actor#getEmail()
      * @see Actor#authenticate(AuthToken)
      */
     public final boolean canAccessLogin() {

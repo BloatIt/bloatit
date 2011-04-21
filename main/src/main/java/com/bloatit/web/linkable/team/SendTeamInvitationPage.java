@@ -60,7 +60,7 @@ public class SendTeamInvitationPage extends LoggedPage {
         for (final Member m : MemberManager.getAll()) {
             try {
                 if (!m.equals(me)) {
-                    receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
+                    receiverInput.addDropDownElement(m.getId().toString(), m.getDisplayName());
                 }
             } catch (final UnauthorizedOperationException e) {
                 // TODO

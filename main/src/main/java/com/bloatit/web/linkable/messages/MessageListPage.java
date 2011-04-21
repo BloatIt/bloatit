@@ -50,7 +50,7 @@ public final class MessageListPage extends LoggedPage {
         for (final JoinTeamInvitation invitation : invitations) {
             final HtmlParagraph p = new HtmlParagraph();
             try {
-                p.addText("Received an invitation to team '" + invitation.getTeam().getLogin() + "' from: '"
+                p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
                         + invitation.getSender().getDisplayName() + "'");
 
                 final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));

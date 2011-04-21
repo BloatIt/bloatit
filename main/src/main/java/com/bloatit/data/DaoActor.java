@@ -151,18 +151,6 @@ public abstract class DaoActor extends DaoIdentifiable {
         this.externalAccount = new DaoExternalAccount(this);
     }
 
-    /**
-     * @return the email of this actor.
-     */
-    public abstract String getContact();
-
-    /**
-     * No check is performed on the correctness of the new email.
-     * 
-     * @param email the new email.
-     */
-    public abstract void setContact(String email);
-
     // ======================================================================
     // Getters.
     // ======================================================================

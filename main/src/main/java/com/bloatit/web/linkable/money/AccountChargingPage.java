@@ -95,7 +95,7 @@ public final class AccountChargingPage extends QuotationPage {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             try {
-                group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getLogin()), 1);
+                group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getDisplayName()), 1);
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
             }

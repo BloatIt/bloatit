@@ -53,9 +53,9 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
 
             try {
                 if (me.acceptInvitation(invite)) {
-                    session.notifyGood(Context.tr("You are now a member of team ''{0}''.", g.getLogin()));
+                    session.notifyGood(Context.tr("You are now a member of team ''{0}''.", g.getDisplayName()));
                 } else {
-                    session.notifyBad(Context.tr("You cannot join the team ''{0}'', maybe you already have discarded this invitation.", g.getLogin()));
+                    session.notifyBad(Context.tr("You cannot join the team ''{0}'', maybe you already have discarded this invitation.", g.getDisplayName()));
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen

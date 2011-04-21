@@ -31,7 +31,7 @@ public class DaoMemberCreationTest extends TestCase {
         SessionManager.beginWorkUnit();
         final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
 
-        assertEquals(theMember.getContact(), "tom@gmail.com");
+        assertEquals(theMember.getEmail(), "tom@gmail.com");
         assertEquals(theMember.getFullname(), "");
         assertEquals(theMember.getLogin(), "Thomas");
         assertEquals(theMember.getPassword(), "password");
@@ -41,8 +41,8 @@ public class DaoMemberCreationTest extends TestCase {
 
         theMember.setFullname("Thomas Guyard");
         assertEquals(theMember.getFullname(), "Thomas Guyard");
-        theMember.setContact("Test@nowhere.com");
-        assertEquals(theMember.getContact(), "Test@nowhere.com");
+        theMember.setEmail("Test@nowhere.com");
+        assertEquals(theMember.getEmail(), "Test@nowhere.com");
         theMember.setPassword("Hello");
         assertEquals(theMember.getPassword(), "Hello");
         theMember.setRole(Role.ADMIN);
