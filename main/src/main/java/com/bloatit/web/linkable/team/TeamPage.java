@@ -35,6 +35,7 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.visitor.Visitor;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
@@ -49,6 +50,7 @@ import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -119,13 +121,16 @@ public final class TeamPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv();
         targetTeam.authenticate(session.getAuthToken());
 
-        Member me = null;
-        if (session.getAuthToken() != null) {
-            me = session.getAuthToken().getMember();
-            if (me != null) {
-                me.authenticate(session.getAuthToken());
-            }
+        Visitor me = session.getAuthToken().getVisitor();
+
+
+        if (me.hasModifyTeamRight(targetTeam)) {
+            // Link to change account settings
+            final HtmlDiv modify = new HtmlDiv("float_right");
+            master.add(modify);
+            modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change team settings")));
         }
+
 
         // Title and team type
         HtmlTitleBlock titleBlock;
@@ -208,13 +213,13 @@ public final class TeamPage extends MasterPage {
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", targetTeam.getMembers().size()), 2);
         titleBlock.add(memberTitle);
 
-        if(me != null && me.hasInviteTeamRight(targetTeam)) {
+        if(me.hasInviteTeamRight(targetTeam)) {
             final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(targetTeam);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
         }
 
-        if (targetTeam.isPublic() && me != null && !me.isInTeam(targetTeam)) {
+        if (targetTeam.isPublic() && !me.isInTeam(targetTeam)) {
             final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this team"));
             memberTitle.add(joinLink);
         }
@@ -257,7 +262,7 @@ public final class TeamPage extends MasterPage {
         private final PageIterable<Member> members;
         private Member member;
         private Iterator<Member> iterator;
-        private Member connectedMember;
+        private Visitor visitor;
         private static final int CONSULT = 1;
         private static final int TALK = 2;
         private static final int MODIFY = 3;
@@ -268,7 +273,7 @@ public final class TeamPage extends MasterPage {
         public MyTableModel(final PageIterable<Member> members) {
             this.members = members;
             if (session.getAuthToken() != null) {
-                this.connectedMember = session.getAuthToken().getMember();
+                this.visitor = session.getAuthToken().getVisitor();
             }
             iterator = members.iterator();
         }
@@ -335,17 +340,17 @@ public final class TeamPage extends MasterPage {
             final PlaceHolderElement ph = new PlaceHolderElement();
 
             if(right == UserTeamRight.CONSULT) {
-                if(member.canBeKickFromTeam(targetTeam, connectedMember)) {
-                    if (member.equals(connectedMember)) {
+                if(member.canBeKickFromTeam(targetTeam, visitor.getMember())) {
+                    if (member.equals(visitor)) {
                         ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Leave")));
                     } else {
                         ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Kick")));
                     }
                 }
             } else {
-                if(targetTeam.canChangeRight(connectedMember, member, right, true)) {
+                if(targetTeam.canChangeRight(visitor.getMember(), member, right, true)) {
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Grant")));
-                } else if(targetTeam.canChangeRight(connectedMember, member, right, false)) {
+                } else if(targetTeam.canChangeRight(visitor.getMember(), member, right, false)) {
                     ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
                 }
             }

@@ -411,8 +411,8 @@ public final class AccountPage extends LoggedPage {
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member loggerUser) {
-        final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(loggerUser);
+    public static Breadcrumb generateBreadcrumb(final Member member) {
+        final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
         breadcrumb.pushLink(new AccountPageUrl().getHtmlLink(tr("Account informations")));
         return breadcrumb;
     }

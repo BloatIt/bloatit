@@ -77,7 +77,7 @@ public final class Localizator {
 
     /**
      * Returns the Locale for the localizator
-     * 
+     *
      * @return the locale
      */
     public Locale getLocale() {
@@ -86,7 +86,7 @@ public final class Localizator {
 
     /**
      * Shortcut for getLangyageCode()
-     * 
+     *
      * @see #getLanguageCode()
      */
     public String getCode() {
@@ -116,7 +116,7 @@ public final class Localizator {
      * language. Every user-visible string in the program must be wrapped into
      * this function
      * </p>
-     * 
+     *
      * @param toTranslate the string to translate
      * @return the translated string
      */
@@ -144,7 +144,7 @@ public final class Localizator {
      * </p>
      * For more examples see :
      * {@link "http://code.google.com/p/gettext-commons/wiki/Tutorial"} </p>
-     * 
+     *
      * @param toTranslate the String to translate
      * @param parameters the list of parameters that will be inserted into the
      *            string
@@ -172,7 +172,7 @@ public final class Localizator {
      * print "Copied files."</code>
      * </p>
      * </p>
-     * 
+     *
      * @param singular The singular version of the displayed string
      * @param plural the plural version of the displayed string
      * @param amount the <i>amount</i> of elements, 0 or 1 will be singular, >1
@@ -204,7 +204,7 @@ public final class Localizator {
      * For more examples see :
      * {@link "http://code.google.com/p/gettext-commons/wiki/Tutorial"}
      * </p>
-     * 
+     *
      * @param singular The singular string
      * @param plural the plural string
      * @param amount the <i>amount</i> of elements, 0 or 1 will be singular, >1
@@ -238,7 +238,7 @@ public final class Localizator {
      * For more examples see :
      * {@link "http://code.google.com/p/gettext-commons/wiki/Tutorial"}
      * </p>
-     * 
+     *
      * @param context the context of the text to be translated
      * @param text the ambiguous key message in the source locale
      * @return <code>text</code> if the locale of the underlying resource bundle
@@ -251,7 +251,7 @@ public final class Localizator {
 
     /**
      * Correctes the translated string and make it ready for html
-     * 
+     *
      * @param translation the translated string
      * @return the string ready to be inputed in Html
      */
@@ -268,7 +268,7 @@ public final class Localizator {
      * name>, <language ISO code>}]] Example : [French:[Français,fr]] or
      * [English:[English,en]]
      * </p>
-     * 
+     *
      * @return a list with all the language descriptors
      */
     public static Map<String, LanguageDescriptor> getAvailableLanguages() {
@@ -343,7 +343,7 @@ public final class Localizator {
      * Gets the date pattern that matches the current user language in
      * <i>SHORT</i> format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy
      * if locale is english.
-     * 
+     *
      * @return a String representing the date pattern
      */
     public String getShortDatePattern() {
@@ -353,7 +353,7 @@ public final class Localizator {
     /**
      * Gets the date pattern that matches the current user language in any
      * format
-     * 
+     *
      * @param format the format
      * @return the date pattern
      */
@@ -418,7 +418,7 @@ public final class Localizator {
         if (urlLang != null && !urlLang.equals("default")) {
             // Default language
             String country;
-            if (Context.getSession().getAuthToken() != null) {
+            if (Context.getSession().isLogged()) {
                 final User user = Context.getSession().getAuthToken().getMember();
                 country = user.getUserLocale().getCountry();
             } else {
@@ -440,7 +440,7 @@ public final class Localizator {
 
         } else {
             // Other cases
-            if (Context.getSession().getAuthToken() != null) {
+            if (Context.getSession().isLogged()) {
                 final User user = Context.getSession().getAuthToken().getMember();
                 locale = user.getUserLocale();
             } else {
@@ -469,7 +469,7 @@ public final class Localizator {
      * preference will be used, and country will be set as US. If no language is
      * set, the locale will be set using DEFAULT_LOCALE (currently en_US).
      * </p>
-     * 
+     *
      * @return the favorite user locale
      */
     private static Locale browserLocaleHeuristic(final List<String> browserLangs) {

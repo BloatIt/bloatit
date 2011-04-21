@@ -259,7 +259,7 @@ public final class Payline extends RestrictedObject {
 
     /**
      * Return a unique ref.
-     * 
+     *
      * @param member
      * @return
      */
@@ -267,11 +267,11 @@ public final class Payline extends RestrictedObject {
         final StringBuilder ref = new StringBuilder();
         // It is a payline action
         ref.append("PAYLINE-");
-        
+
         // Add the member id
         ref.append(member.getId());
         ref.append("-");
-        
+
         PageIterable<BankTransaction> bankTransaction;
         try {
             // Add the last bankTransaction + 1
@@ -281,7 +281,7 @@ public final class Payline extends RestrictedObject {
             } else {
                 ref.append(bankTransaction.iterator().next().getId() + 1);
             }
-            
+
             // Add a random string to ensure uniqueness.
             ref.append("-").append(RandomStringUtils.randomAlphabetic(5));
         } catch (final UnauthorizedOperationException e) {
