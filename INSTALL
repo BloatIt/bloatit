@@ -9,7 +9,10 @@ to 'www' folder in bloatit.
 Example:
 server.document-root       = "/home/fred/projets/bloatit/www"
 
+## MODIFY lighttpd.conf :
 Uncomment 'mod_rewrite' in 'server.modules'
+
+Add line : server.error-handler-404  = "/en/pagenotfound" 
 
 Create a symbolic link of '.../deployment/files/fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/

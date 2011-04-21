@@ -15,18 +15,24 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.IndexPageUrl;
 
 public class PageNotFound extends MasterPage {
+    private PageNotFoundUrl url;
 
-    public PageNotFound(final PageNotFoundUrl pageNotFoundUrl) {
-        super(pageNotFoundUrl);
+    public PageNotFound(final PageNotFoundUrl url) {
+        super(url);
+        this.url = url;
     }
 
     @Override
@@ -41,12 +47,28 @@ public class PageNotFound extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        final HtmlDiv box = new HtmlDiv("padding_box");
-        final HtmlTitle errorTitle = new HtmlTitle(Context.tr("Page not found"), 2);
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final HtmlDiv box = new HtmlDiv("page_not_found");
+        layout.addLeft(box);
+
+        final HtmlTitle errorTitle = new HtmlTitle(Context.tr("Page not found"), 1);
         box.add(errorTitle);
-        return box;
+
+        final HtmlParagraph error = new HtmlParagraph();
+        String tr = Context.tr("The page you are looking for is not here. Maybe you can try heading back to the <0::Home page>.");
+        HtmlMixedText mixed = new HtmlMixedText(tr, new IndexPageUrl().getHtmlLink());
+        error.add(mixed);
+        box.add(error);
+
+        final HtmlParagraph bug = new HtmlParagraph();
+        String tr2 = Context.tr("If you ended up here because of a bug, please report it using the box on the right of the screen.");
+        HtmlMixedText mixedExplain = new HtmlMixedText(tr2, new IndexPageUrl().getHtmlLink());
+        bug.add(mixedExplain);
+        box.add(bug);
+
+        return layout;
     }
-    
+
     @Override
     protected StatusCode getResponseStatus() {
         return StatusCode.ERROR_404_NOT_FOUND;
