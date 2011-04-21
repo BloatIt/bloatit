@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -315,7 +313,7 @@ public class FeaturesTools {
             case DEVELOPPING:
             case PENDING:
             case PREPARING:
-                throw new NotImplementedException();
+                break;
             case FINISHED:
                 progressState.add(new HtmlImage(new Image(WebConfiguration.getImgFeatureStateSuccess(languageCode)), Context.tr("success")));
                 return progressState;
