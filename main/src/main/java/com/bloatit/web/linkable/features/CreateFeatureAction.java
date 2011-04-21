@@ -81,7 +81,7 @@ public final class CreateFeatureAction extends UserContentAction {
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
 
-        Software softwareToUse = (software==null? SoftwareManager.getDefaultSoftware(): software);
+        final Software softwareToUse = (software==null? SoftwareManager.getDefaultSoftware(): software);
         if(softwareToUse == null) {
             //The default software do not exist
             session.notifyError(Context.tr("The default software doesn't exist. Impossible to create the feature."));
@@ -89,7 +89,6 @@ public final class CreateFeatureAction extends UserContentAction {
         }
 
         final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, softwareToUse);
-        propagateAsTeamIfPossible(feature);
         propagateAttachedFileIfPossible(feature);
         return new FeaturePageUrl(feature);
     }

@@ -62,7 +62,6 @@ public final class CreateCommentAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         try {
             final Comment newComment = commentable.addComment(comment);
-            propagateAsTeamIfPossible(newComment);
             propagateAttachedFileIfPossible(newComment);
             session.notifyGood(Context.tr("Your comment has been added."));
         } catch (final UnauthorizedOperationException e) {

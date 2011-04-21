@@ -30,26 +30,26 @@ import com.bloatit.web.url.SignUpPageUrl;
 public final class SignUpAction extends Action {
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15."))
+                     min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4."),//
+                     max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15."))
     private final String login;
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
+                     min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4."),//
+                     max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15."))
     private final String password;
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for password check has to be superior to 4."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password check has to be inferior to 15."))
+                     min = "4", minErrorMsg = @tr("Number of characters for password check has to be superior to 4."),//
+                     max = "15", maxErrorMsg = @tr("Number of characters for password check has to be inferior to 15."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Email cannot be blank."),//
-    min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5."),//
-    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30."))
+                     min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5."),//
+                     max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30."))
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
@@ -63,24 +63,24 @@ public final class SignUpAction extends Action {
     public SignUpAction(final SignUpActionUrl url) {
         super(url);
         this.url = url;
-        this.login = url.getLogin();
+        this.login = url.getLogin().trim();
         this.password = url.getPassword();
         this.passwordCheck = url.getPasswordCheck();
-        this.email = url.getEmail();
+        this.email = url.getEmail().trim();
         this.lang = url.getLang();
         this.country = url.getCountry();
     }
 
     @Override
     protected final Url doProcess() {
-        if (!password.trim().equals(passwordCheck.trim())) {
+        if (!password.equals(passwordCheck)) {
             transmitParameters();
             session.notifyError("Password doesn't match confirmation.");
             return new SignUpPageUrl();
         }
 
         final Locale locale = new Locale(lang, country);
-        final Member m = new Member(login.trim(), password.trim(), email.trim(), locale);
+        final Member m = new Member(login, password, email, locale);
         final String activationKey = m.getActivationKey();
         final MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
@@ -106,15 +106,21 @@ public final class SignUpAction extends Action {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
             return doProcessErrors();
         }
-
         if (MemberManager.emailExists(email)) {
             session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
             return doProcessErrors();
         }
+        if (!MailUtils.isValidEmail(email)) {
+            session.notifyError(Context.tr("Invalid email address: {0}.", email));
+            return doProcessErrors();
+        }
+        if (login.length() < 3) {
+            session.notifyError(Context.tr("Invalid login: {0}. Make sure it's more than 2 character long.", login));
+            return doProcessErrors();
 
-        final String userEmail = email.trim();
-        if (!MailUtils.isValidEmail(userEmail)) {
-            session.notifyError(Context.tr("Invalid email address : {0}.", userEmail));
+        }
+        if (!login.matches("[^\\p{Space}]+")) {
+            session.notifyError(Context.tr("Invalid login: {0}. Make sure it doesn't contain space characters.", login));
             return doProcessErrors();
         }
         return NO_ERROR;

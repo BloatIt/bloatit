@@ -12,17 +12,6 @@ public class DaoUserContentTest extends TestCase {
         assertEquals(yo, feature.getMember());
     }
 
-    public void testSetAsGroup() {
-        feature.setAsTeam(b219);
-    }
-
-    public void testGetAsGroup() {
-        assertNull(feature.getAsTeam());
-        feature.setAsTeam(b219);
-        assertEquals(b219, feature.getAsTeam());
-
-    }
-
     private DaoMember yo;
     private DaoMember tom;
     private DaoMember fred;

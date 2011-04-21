@@ -74,7 +74,6 @@ public final class ReportBugAction extends UserContentAction {
         Bug bug;
         try {
             bug = milestone.addBug(title, description, getLocale(), level.getLevel());
-            propagateAsTeamIfPossible(bug);
             propagateAttachedFileIfPossible(bug);
             return new BugPageUrl(bug);
         } catch (final UnauthorizedOperationException e) {
