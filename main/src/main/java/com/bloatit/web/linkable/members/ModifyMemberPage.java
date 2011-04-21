@@ -7,6 +7,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
@@ -39,11 +40,16 @@ public class ModifyMemberPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
-        TwoColumnLayout master = new TwoColumnLayout(true, url);
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl();
+        
+        HtmlTitle title = new HtmlTitle(1);
+        title.addText(Context.tr("Change account settings"));
+        layout.addLeft(title);
+        
         HtmlForm form = new HtmlForm(targetUrl.urlString());
-        master.addLeft(form);
+        layout.addLeft(form);
         form.enableFileUpload();
 
         try {
@@ -140,9 +146,9 @@ public class ModifyMemberPage extends LoggedPage {
             throw new ShallNotPassException("Couldn't access logged member information", e);
         }
 
-        master.addRight(new SideBarDocumentationBlock("modify_member"));
+        layout.addRight(new SideBarDocumentationBlock("modify_member"));
 
-        return master;
+        return layout;
     }
 
     @Override
