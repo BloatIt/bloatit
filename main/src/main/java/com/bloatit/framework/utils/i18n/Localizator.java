@@ -19,6 +19,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.User;
 
 // TODO break dependency to Member.
@@ -60,6 +61,7 @@ public final class Localizator {
 
     private Locale locale;
     private I18n i18n;
+    private List<String> browserLangs;
 
     public Localizator(final Locale language) {
         this.locale = language;
@@ -73,6 +75,7 @@ public final class Localizator {
 
     public Localizator(final String urlLang, final List<String> browserLangs) {
         this(inferLocale(urlLang, browserLangs));
+        this.browserLangs = browserLangs;
     }
 
     /**
@@ -404,8 +407,26 @@ public final class Localizator {
         this.i18n = localesCache.get(locale);
     }
 
+    /**
+     * Force the locale to a specific locale
+     */
     public void forceLanguage(final Locale language) {
         locale = new Locale(language.getLanguage(), locale.getCountry());
+        this.i18n = localesCache.get(locale);
+    }
+
+    /**
+     * Forces a language reset
+     * <p>
+     * Language reset ignores the language selected in the URI
+     * </p>
+     */
+    public void forceLanguageReset() {
+        if (Context.getSession().isLogged()) {
+            forceMemberChoice();
+            return;
+        }
+        locale = browserLocaleHeuristic(browserLangs);
         this.i18n = localesCache.get(locale);
     }
 
