@@ -184,7 +184,7 @@ public final class TeamPage extends MasterPage {
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount());
+                    MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam);
                     AccountPageUrl accountPageUrl = new AccountPageUrl();
                     accountPageUrl.setTeam(targetTeam);
                     HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),

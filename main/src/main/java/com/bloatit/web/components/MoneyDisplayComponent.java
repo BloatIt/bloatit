@@ -7,6 +7,7 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Team;
 import com.bloatit.web.url.AccountPageUrl;
 
 /**
@@ -16,7 +17,7 @@ import com.bloatit.web.url.AccountPageUrl;
 public class MoneyDisplayComponent extends HtmlSpan {
     /**
      * Creates a money display component with a link to user account page
-     * 
+     *
      * @param amount the amount of money to display (in euro)
      */
     public MoneyDisplayComponent(final BigDecimal amount) {
@@ -26,12 +27,24 @@ public class MoneyDisplayComponent extends HtmlSpan {
     /**
      * Creates a money display component with or without a link to user account
      * page
-     * 
+     *
      * @param amount the amount of money to display (in euro)
      * @param link <i>true</i> if the component should link to the user account
-     *            page, <i>false</i> otherwise.
      */
     public MoneyDisplayComponent(final BigDecimal amount, final boolean link) {
+        this(amount, link, null);
+    }
+
+    /**
+     * Creates a money display component with or without a link to user or team
+     * account page
+     *
+     * @param amount the amount of money to display (in euro)
+     * @param link <i>true</i> if the component should link to the user account
+     * @param teamAccount if not null, the link will point to the account page
+     *            of the team page, <i>false</i> otherwise.
+     */
+    public MoneyDisplayComponent(final BigDecimal amount, final boolean link, Team teamAccount) {
         super();
 
         // Display user money in euro
@@ -43,7 +56,11 @@ public class MoneyDisplayComponent extends HtmlSpan {
 
         HtmlBranch money;
         if (link) {
-            money = new AccountPageUrl().getHtmlLink(euroMoney);
+            AccountPageUrl accountPageUrl = new AccountPageUrl();
+            if (teamAccount != null) {
+                accountPageUrl.setTeam(teamAccount);
+            }
+            money = accountPageUrl.getHtmlLink(euroMoney);
             money.setCssClass("money");
         } else {
             money = new HtmlSpan("money").add(euroMoney);
