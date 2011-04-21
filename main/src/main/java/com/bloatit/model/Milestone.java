@@ -37,7 +37,7 @@ import com.bloatit.model.lists.ListBinder;
 /**
  * A milestone is a part of an offer. Simple offers are only composed of one
  * milestone.
- * 
+ *
  * @author Thomas Guyard
  */
 public class Milestone extends Identifiable<DaoMilestone> {
@@ -68,7 +68,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * Check the cache, if a corresponding Milestone exist return it, otherwise
      * create a new one using its dao representation. If the dao == null return
      * null;
-     * 
+     *
      * @param dao the dao
      * @return the milestone or null if the dao == null
      * @see Creator
@@ -80,7 +80,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Instantiates a new milestone.
-     * 
+     *
      * @param dao the dao
      */
     private Milestone(final DaoMilestone dao) {
@@ -89,7 +89,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Update major fatal percent.
-     * 
+     *
      * @param fatalPercent the fatal percent
      * @param majorPercent the major percent
      * @see com.bloatit.data.DaoMilestone#updateMajorFatalPercent(int, int)
@@ -100,7 +100,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Adds the bug.
-     * 
+     *
      * @param title the title of the bug
      * @param description the description
      * @param locale the locale in which it is written
@@ -128,7 +128,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * To finish the dev state of this milestone you have to validate this
      * milestone (done by {@link Offer#validateCurrentMilestone(boolean)}).
      * </p>
-     * 
+     *
      * @throws UnauthorizedOperationException
      */
     public Release addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
@@ -156,7 +156,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Validate the milestone after it has been relreased.
-     * 
+     *
      * @return true, if successful
      * @see com.bloatit.data.DaoMilestone#validate(boolean)
      */
@@ -167,7 +167,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
     /**
      * Force validate the milestone after it has been released even if there are
      * bugs left.
-     * 
+     *
      * @return true, if successful
      * @see com.bloatit.data.DaoMilestone#validate(boolean)
      */
@@ -177,7 +177,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Tells if an admin should validate this milestone part.
-     * 
+     *
      * @param level the level corresponding to the part we want to validate.
      * @return true, if we should do it, false otherwise.
      * @see com.bloatit.data.DaoMilestone#shouldValidatePart(com.bloatit.data.DaoBug.Level)
@@ -197,7 +197,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the non resolved bugs.
-     * 
+     *
      * @param level the level
      * @return the non resolved bugs for the level <code>level</code>.
      * @see com.bloatit.data.DaoMilestone#getNonResolvedBugs(com.bloatit.data.DaoBug.Level)
@@ -208,7 +208,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the bugs on a specific <code>level</code>.
-     * 
+     *
      * @param level the level
      * @return the bugs that are at <code>level</code>.
      * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.Level)
@@ -219,7 +219,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the bugs on a specific state.
-     * 
+     *
      * @param state the state
      * @return the bugs
      * @see com.bloatit.data.DaoMilestone#getBugs(com.bloatit.data.DaoBug.BugState)
@@ -230,7 +230,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the bugs on a specific <code>level</code> and <code>state</code>.
-     * 
+     *
      * @param level the level
      * @param state the state
      * @return the bugs
@@ -243,7 +243,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the release date.
-     * 
+     *
      * @return the release date
      * @see com.bloatit.data.DaoMilestone#getReleasedDate()
      */
@@ -253,7 +253,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the fatal bugs percent.
-     * 
+     *
      * @return the fatal bugs percent
      * @see com.bloatit.data.DaoMilestone#getFatalBugsPercent()
      */
@@ -263,7 +263,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the major bugs percent.
-     * 
+     *
      * @return the major bugs percent
      * @see com.bloatit.data.DaoMilestone#getMajorBugsPercent()
      */
@@ -273,7 +273,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the minor bugs percent.
-     * 
+     *
      * @return the minor bugs percent
      * @see com.bloatit.data.DaoMilestone#getMinorBugsPercent()
      */
@@ -288,7 +288,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the expiration date.
-     * 
+     *
      * @return the expiration date
      */
     public Date getExpirationDate() {
@@ -297,7 +297,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the amount.
-     * 
+     *
      * @return the amount
      */
     public BigDecimal getAmount() {
@@ -306,7 +306,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the title.
-     * 
+     *
      * @return the title
      */
     public String getTitle() {
@@ -315,7 +315,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the description.
-     * 
+     *
      * @return the description
      */
     public String getDescription() {
@@ -324,7 +324,7 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     /**
      * Gets the position.
-     * 
+     *
      * @return the position
      */
     public int getPosition() {

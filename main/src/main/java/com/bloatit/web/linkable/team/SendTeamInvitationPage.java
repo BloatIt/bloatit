@@ -46,7 +46,7 @@ public class SendTeamInvitationPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member me) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final HtmlDiv left = new HtmlDiv();
         layout.addLeft(left);
@@ -54,8 +54,6 @@ public class SendTeamInvitationPage extends LoggedPage {
         final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl(team);
         final HtmlForm form = new HtmlForm(target.urlString());
         left.add(form);
-        final Member me = session.getAuthToken().getMember();
-        me.authenticate(session.getAuthToken());
         final FieldData fieldData = target.getReceiverParameter().pickFieldData();
         final HtmlDropDown receiverInput = new HtmlDropDown(fieldData.getName(), Context.tr("Select a member"));
         form.add(receiverInput);

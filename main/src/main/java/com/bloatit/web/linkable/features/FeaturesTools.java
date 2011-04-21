@@ -29,7 +29,6 @@ import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
-import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class FeaturesTools {
@@ -45,7 +44,7 @@ public class FeaturesTools {
     /**
      * Convenience method for {@link #generateFeatureTitle(Feature, boolean)}
      * with <i>isTitle</i> set to false
-     * 
+     *
      * @param feature the feature for which a block will be generated
      * @return the generated block
      * @throws UnauthorizedOperationException when some operation cannot be
@@ -70,7 +69,7 @@ public class FeaturesTools {
      * <li>If <code>isTitle</code> is <i>true</i>, the whole block will be
      * rendered as a normal text, and a link to the feature page will be added</li>
      * </p>
-     * 
+     *
      * @param feature the feature for which we want to generate a description
      *            block
      * @param isTitle <i>true</i> if the block has to be rendered as a title,

@@ -30,11 +30,7 @@ public abstract class LoggedAction extends Action {
     public LoggedAction(final Url url) {
         super(url);
         this.meUrl = url;
-        if (session.isLogged()) {
-            this.member = session.getAuthToken().getMember();
-        } else {
-            this.member = null;
-        }
+        this.member = session.getAuthToken().getMember();
     }
 
     @Override
@@ -62,7 +58,7 @@ public abstract class LoggedAction extends Action {
     /**
      * Called before creating the page, used to check if there are additional
      * errors that can't be spotted by Url.
-     * 
+     *
      * @param me the logged member
      * @return {@value Action#NO_ERROR} if there is no error, an Url to the page
      *         to handle errors otherwise
@@ -71,7 +67,7 @@ public abstract class LoggedAction extends Action {
 
     /**
      * Called when user is correctly authentified
-     * 
+     *
      * @param me the currently logged user
      */
     protected abstract Url doProcessRestricted(Member me);
@@ -84,7 +80,7 @@ public abstract class LoggedAction extends Action {
 
     /**
      * <b>Do not forget to localize</p>
-     * 
+     *
      * @return the error message to dislay to the user, informing him while he
      *         couldn't access the page
      */

@@ -30,7 +30,7 @@ import com.bloatit.model.lists.CommentList;
 /**
  * This is a bug report. A bug report is associated with a milestone. it is
  * quite similar to the bug report in a classical bugTracker.
- * 
+ *
  * @author Thomas Guyard
  */
 public class Bug extends UserContent<DaoBug> implements Commentable {
@@ -59,7 +59,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Find a bug in the cache or create an new one.
-     * 
+     *
      * @param dao the dao
      * @return null if dao is null. Else return the new Bug.
      */
@@ -70,7 +70,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Instantiates a new bug.
-     * 
+     *
      * @param dao the dao
      */
     private Bug(final DaoBug dao) {
@@ -79,7 +79,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Create a new Bug.
-     * 
+     *
      * @param member is the author of the bug.
      * @param milestone is the milestone on which this bug has been set.
      * @param title is the title of the bug.
@@ -99,7 +99,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Sets the error level.
-     * 
+     *
      * @param level the new error level
      * @see com.bloatit.data.DaoBug#setErrorLevel(com.bloatit.data.DaoBug.Level)
      */
@@ -109,7 +109,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the member assigned to this bug. It is always the offer author.
-     * 
+     *
      * @return the assigned to
      * @see com.bloatit.data.DaoBug#getAssignedTo()
      */
@@ -119,7 +119,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets this bug description.
-     * 
+     *
      * @return the description
      * @see com.bloatit.data.DaoBug#getDescription()
      */
@@ -129,7 +129,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the locale in which this bug is written.
-     * 
+     *
      * @return the locale
      * @see com.bloatit.data.DaoBug#getLocale()
      */
@@ -139,7 +139,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the error level.
-     * 
+     *
      * @return the error level
      * @see com.bloatit.data.DaoBug#getErrorLevel()
      */
@@ -149,7 +149,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the milestone on which this bug has been added.
-     * 
+     *
      * @return the milestone
      * @see com.bloatit.data.DaoBug#getMilestone()
      */
@@ -159,7 +159,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the state.
-     * 
+     *
      * @return the state
      * @see com.bloatit.data.DaoBug#getState()
      */
@@ -169,7 +169,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Sets the bug to resolved.
-     * 
+     *
      * @see com.bloatit.data.DaoBug#setResolved()
      */
     public void setResolved() {
@@ -179,7 +179,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Sets the bug to developing.
-     * 
+     *
      * @see com.bloatit.data.DaoBug#setDeveloping()
      */
     public void setDeveloping() {
@@ -189,7 +189,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the comments on that bug.
-     * 
+     *
      * @return the comments
      * @see com.bloatit.data.DaoBug#getComments()
      */
@@ -199,7 +199,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the last update date.
-     * 
+     *
      * @return the last update date
      */
     public Date getLastUpdateDate() {
@@ -212,7 +212,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the title.
-     * 
+     *
      * @return the title
      */
     public String getTitle() {
@@ -221,7 +221,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Adds the comment.
-     * 
+     *
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
      */
     @Override
