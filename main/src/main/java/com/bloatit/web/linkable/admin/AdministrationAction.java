@@ -26,7 +26,6 @@ public class AdministrationAction extends AdminAction {
     public static final String POPULARITY_STATE_CODE = "popularitystate";
     public static final String FEATURE_STATE_CODE = "featurestate";
 
-    @SuppressWarnings("rawtypes")
     @RequestParam(name = "id", role = Role.POST)
     private final List<Integer> contents;
 
@@ -38,6 +37,7 @@ public class AdministrationAction extends AdminAction {
     @Optional
     private final DisplayableState stateToSet;
 
+    @SuppressWarnings("unused")
     private final AdministrationActionUrl url;
 
     @SuppressWarnings("unchecked")

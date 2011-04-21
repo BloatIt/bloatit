@@ -13,6 +13,7 @@ package com.bloatit.web.actions;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -36,13 +37,13 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 @ParamContainer("usercontent/attachfile")
 public final class AddAttachementPage extends CreateUserContentPage {
 
-    @SuppressWarnings("rawtypes")
     @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
-    UserContentInterface userContent;
+    private final UserContentInterface<? extends DaoUserContent> userContent;
 
     private final AddAttachementPageUrl url;
 
+    @SuppressWarnings("unchecked")
     public AddAttachementPage(final AddAttachementPageUrl url) {
         super(url, new AddAttachementActionUrl(url.getUserContent()));
         this.url = url;
@@ -61,7 +62,6 @@ public final class AddAttachementPage extends CreateUserContentPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws PageNotFoundException {
-
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addRight(new SideBarUserContentBlock(userContent));
 

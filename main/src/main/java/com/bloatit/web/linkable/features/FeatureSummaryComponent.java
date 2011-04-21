@@ -56,7 +56,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         this.feature = feature;
 
         try {
-
             // ////////////////////
             // Div feature_summary
             final HtmlDiv featureSummary = new HtmlDiv("feature_summary");
@@ -156,12 +155,12 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
-                        final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')", Context.tr("+ Share"));
-                        // TODO: envalbe share button
-                        //featureSummaryShare.add(showHideShareBlock);
+                        @SuppressWarnings("unused") final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')",
+                                                                                                     Context.tr("+ Share"));
+                        // TODO: enable share button
+                        // featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
-
                 }
                 featureSummary.add(featureSummaryBottom);
 
@@ -289,7 +288,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             final String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.LONG);
 
             element.add(new HtmlParagraph(tr("There is no release yet.")));
-            if(DateUtils.isInTheFuture(releaseDate)) {
+            if (DateUtils.isInTheFuture(releaseDate)) {
                 element.add(new HtmlParagraph(tr("Next release is scheduled for {0}.", date)));
             } else {
                 element.add(new HtmlParagraph(tr("Next release was scheduled for {0}.", date)));

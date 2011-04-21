@@ -76,7 +76,7 @@ public final class Session {
 
     /**
      * Construct a session based on the information from <code>id</code>
-     *
+     * 
      * @param id the id of the session
      */
     protected Session(final UUID id) {
@@ -127,7 +127,7 @@ public final class Session {
      * page visited in any tab, and can lead to <i>very</i> confusing result.
      * Avoid relying on this.
      * </p>
-     *
+     * 
      * @return the best page to redirect the user to
      */
     public synchronized Url pickPreferredPage() {
@@ -150,7 +150,7 @@ public final class Session {
      * page visited in any tab, and can lead to <i>very</i> confusing result.
      * Avoid relying on this.
      * </p>
-     *
+     * 
      * @return the last page the user visited
      */
     public synchronized Url getLastVisitedPage() {
@@ -196,7 +196,7 @@ public final class Session {
 
     /**
      * Finds all the session parameters
-     *
+     * 
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */

@@ -11,7 +11,6 @@
  */
 package com.bloatit.web.linkable.features;
 
-import com.bloatit.data.DaoFeature.FeatureState;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;

@@ -3,7 +3,6 @@ package com.bloatit.framework.webprocessor.url;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 
-@SuppressWarnings("unused")
 public final class PageNotFoundUrl extends Url implements Cloneable {
     public static String getName() {
         return "pagenotfound";
@@ -14,7 +13,7 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     }
 
     public PageNotFoundUrl() {
-        super(getName());
+        super();
     }
 
     @Override

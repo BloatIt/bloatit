@@ -1,6 +1,5 @@
 package com.bloatit.framework.webprocessor.masters;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
@@ -11,9 +10,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ModelConfiguration;
 import com.bloatit.web.WebConfiguration;
-import com.sun.tools.javac.util.List;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 public final class Header extends HtmlElement {
     /**

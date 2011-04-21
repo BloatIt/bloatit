@@ -39,7 +39,6 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
-import com.sun.jdi.connect.LaunchingConnector;
 
 /**
  * Page that hosts the form used to reply to an existing comment

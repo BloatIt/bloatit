@@ -16,11 +16,6 @@ public abstract class Url implements Cloneable {
 
     private String anchor = null;
 
-    @Deprecated
-    protected Url(final String name) {
-        super();
-    }
-    
     protected Url() {
         super();
     }

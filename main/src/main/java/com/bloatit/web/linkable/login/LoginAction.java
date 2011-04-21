@@ -60,7 +60,7 @@ public final class LoginAction extends Action {
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
         }
-        session.setAuthToken(null);
+        session.setAuthToken(AuthToken.ANONYMOUS_TOKEN);
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
         transmitParameters();

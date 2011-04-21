@@ -31,6 +31,8 @@ import com.bloatit.web.linkable.contribution.ContributionAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
+import com.bloatit.web.linkable.errors.NotFoundAction;
+import com.bloatit.web.linkable.errors.PageNotFound;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
@@ -40,9 +42,9 @@ import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
 import com.bloatit.web.linkable.login.LoginPage;
 import com.bloatit.web.linkable.login.LogoutAction;
-import com.bloatit.web.linkable.login.MemberActivationAction;
 import com.bloatit.web.linkable.login.LostPasswordAction;
 import com.bloatit.web.linkable.login.LostPasswordPage;
+import com.bloatit.web.linkable.login.MemberActivationAction;
 import com.bloatit.web.linkable.login.RecoverPasswordAction;
 import com.bloatit.web.linkable.login.RecoverPasswordPage;
 import com.bloatit.web.linkable.login.SignUpAction;
@@ -81,7 +83,6 @@ import com.bloatit.web.linkable.team.CreateTeamPage;
 import com.bloatit.web.linkable.team.GiveRightAction;
 import com.bloatit.web.linkable.team.HandleJoinTeamInvitationAction;
 import com.bloatit.web.linkable.team.JoinTeamAction;
-import com.bloatit.web.linkable.team.JoinTeamPage;
 import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
@@ -89,7 +90,6 @@ import com.bloatit.web.linkable.team.TeamsPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SiteMapPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -129,11 +129,12 @@ import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
-import com.bloatit.web.url.JoinTeamPageUrl;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
+import com.bloatit.web.url.LostPasswordActionUrl;
+import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -149,19 +150,18 @@ import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
+import com.bloatit.web.url.NotFoundActionUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.LostPasswordActionUrl;
-import com.bloatit.web.url.LostPasswordPageUrl;
+import com.bloatit.web.url.RecoverPasswordActionUrl;
+import com.bloatit.web.url.RecoverPasswordPageUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
-import com.bloatit.web.url.RecoverPasswordActionUrl;
-import com.bloatit.web.url.RecoverPasswordPageUrl;
 import com.bloatit.web.url.SendTeamInvitationActionUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.SignUpActionUrl;
@@ -260,9 +260,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(CreateTeamPageUrl.getName())) {
             return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(JoinTeamPageUrl.getName())) {
-            return new JoinTeamPage(new JoinTeamPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MessageListPageUrl.getName())) {
             return new MessageListPage(new MessageListPageUrl(params, session.getParameters()));
@@ -442,6 +439,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(RecoverPasswordActionUrl.getName())) {
             return new RecoverPasswordAction(new RecoverPasswordActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(NotFoundActionUrl.getName())) {
+            return new NotFoundAction(new NotFoundActionUrl(params, session.getParameters()));
         }
 
 
