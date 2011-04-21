@@ -95,7 +95,7 @@ public final class HttpResponse {
      */
     public void writeException(final Exception e) {
         final StringBuilder display = new StringBuilder();
-        String string = "Status: " + StatusCode.ERROR_500_INTERNAL_SERVER_ERROR;
+        display.append("Status: " + StatusCode.ERROR_500_INTERNAL_SERVER_ERROR);
         display.append("Content-type: text/plain\r\n\r\n");
         display.append(e.toString());
         display.append(" :\n");
@@ -129,8 +129,7 @@ public final class HttpResponse {
     }
 
     public void writePage(final HtmlElement page) throws IOException {
-        String string = "Status: " + status;
-        writeLine(string);
+        writeLine("Status: " + status);
         writeCookies();
         writeLine("Vary: Accept-Encoding");
         writeLine("Content-Type: text/html");
