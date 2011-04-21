@@ -2,6 +2,10 @@ package com.bloatit.web.pages.tools;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -17,9 +21,6 @@ import com.bloatit.web.components.KudosableAuthorBlock;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
 
 public class CommentTools {
 
@@ -31,7 +32,7 @@ public class CommentTools {
         return ph;
     }
 
-    public static HtmlElement generateCommentList(final PageIterable<Comment> comments, Map<String, String> formatMap) {
+    public static HtmlElement generateCommentList(final PageIterable<Comment> comments, final Map<String, String> formatMap) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         for (final Comment comment : comments) {
             ph.add(generateComment(comment, false, formatMap));
@@ -39,11 +40,11 @@ public class CommentTools {
         return ph;
     }
 
-    private static HtmlElement generateComment(final Comment comment, final boolean child, Map<String, String> formatMap) {
+    private static HtmlElement generateComment(final Comment comment, final boolean child, final Map<String, String> formatMap) {
         final HtmlDiv commentBlock = (child) ? new HtmlDiv("child_comment_block") : new HtmlDiv("main_comment_block");
         {
 
-            commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getMember())));
+            commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getAuthor())));
 
             final HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(formatComment(comment.getText(), formatMap)));
@@ -76,10 +77,10 @@ public class CommentTools {
         return commentBlock;
     }
 
-    private static String formatComment(final String inputComment, Map<String, String> formatMap) {
+    private static String formatComment(final String inputComment, final Map<String, String> formatMap) {
         String comment = inputComment;
         if (formatMap != null) {
-            for (Entry<String, String> formatter : formatMap.entrySet()) {
+            for (final Entry<String, String> formatter : formatMap.entrySet()) {
                 if (!formatter.getValue().isEmpty()) {
                     comment = comment.replaceAll(formatter.getKey(), Matcher.quoteReplacement(formatter.getValue()));
                 } else {

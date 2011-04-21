@@ -39,9 +39,9 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -134,13 +134,15 @@ public abstract class DaoActor extends DaoIdentifiable {
     protected DaoActor(final String login) {
         super();
         if (login == null) {
-            Log.data().fatal("Login null!");
-            throw new NonOptionalParameterException();
+            throw new NonOptionalParameterException("login cannot be null");
         }
-        if (login.isEmpty()) {
-            Log.data().fatal("Login empty!");
-            throw new NonOptionalParameterException("login cannot be empty");
+        if (login.length() < 3) {
+            throw new NonOptionalParameterException("login length must be > 2");
         }
+        if (!login.matches("[^\\p{Space}]+")) {
+            throw new MalformedArgumentException("The login cannot contain space characters.");
+        }
+        
         this.dateCreation = new Date();
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);

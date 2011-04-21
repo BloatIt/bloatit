@@ -81,33 +81,6 @@ public abstract class UserContentAction extends LoggedAction {
 
     protected abstract Url doDoProcessRestricted(Member me, Team asTeam);
 
-    /**
-     * Use the {@link UserContentInterface#setAsTeam(Team)} method to propagate
-     * the asTeam property. It also make sure you have the rights to do so.
-     * 
-     * @param content the content created by in the name of a team.
-     * @param right the right to use (Mostly TALK but it can also be BANK)
-     * @return true if the propagation is done, else otherwise.
-     */
-    protected final boolean propagateAsTeamIfPossible(final UserContentInterface<?> content) {
-        return propagateAsTeamIfPossible(content, team);
-    }
-
-    protected final boolean propagateAsTeamIfPossible(final UserContentInterface<?> content, final Team team) {
-        if (team != null) {
-            if (content.canAccessAsTeam(team) && team.hasTeamPrivilege(right)) {
-                try {
-                    content.setAsTeam(team);
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException("Yon cannot set AsTeam (Even if y tested it ...)", e);
-                }
-                return true;
-            }
-            session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
-        }
-        return false;
-    }
-
     @Override
     protected final Url doProcessRestricted(final Member me) {
         if (attachment != null) {

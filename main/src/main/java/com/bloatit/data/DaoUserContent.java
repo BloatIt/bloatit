@@ -136,14 +136,6 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         this.isDeleted = isDeleted;
     }
 
-    /**
-     * null is the default value and means that the content has a member as
-     * author.
-     */
-    public void setAsTeam(final DaoTeam asTeam) {
-        this.asTeam = asTeam;
-    }
-
     public void addFile(final DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
         daoFileMetadata.setRelatedContent(this);

@@ -76,17 +76,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /*
      * (non-Javadoc)
-     * @see
-     * com.bloatit.model.UserContentInterface#setAsTeam(com.bloatit.model.Team )
-     */
-    @Override
-    public final void setAsTeam(final Team asTeam) throws UnauthorizedOperationException {
-        tryAccess(new UserContentRight.AsTeam(asTeam), Action.WRITE);
-        getDao().setAsTeam(asTeam.getDao());
-    }
-
-    /*
-     * (non-Javadoc)
      * @see com.bloatit.model.UserContentInterface#getAsTeam()
      */
     @Override

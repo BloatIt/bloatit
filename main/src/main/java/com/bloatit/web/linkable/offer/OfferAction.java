@@ -102,7 +102,6 @@ public final class OfferAction extends UserContentAction {
             if (draftOffer == null) {
                 constructingOffer = feature.addOffer(price, description, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
                         * DateUtils.SECOND_PER_DAY);
-                propagateAsTeamIfPossible(constructingOffer);
                 constructingMilestone = constructingOffer.getMilestones().iterator().next();
             } else {
                 constructingOffer = draftOffer;
