@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import org.hibernate.HibernateException;
 
+import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 public class DaoGroupCreationTest extends TestCase {
@@ -44,7 +45,7 @@ public class DaoGroupCreationTest extends TestCase {
         try {
             DaoTeam.createAndPersiste("", "plop3@plop.com", "A group description", DaoTeam.Right.PUBLIC);
             fail();
-        } catch (final NonOptionalParameterException e) {
+        } catch (final MalformedArgumentException e) {
             assertTrue(true);
         }
         try {

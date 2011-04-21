@@ -34,7 +34,7 @@ public class DaoGroupMemberTest extends TestCase {
         tom.setFullname("Thomas Guyard");
         fred = DaoMember.createAndPersist("Fred", "other", "salt", "fred@gmail.com", Locale.FRANCE);
         fred.setFullname("Frédéric Bertolus");
-        yo = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
+        yo = DaoMember.createAndPersist("Yoann", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
 
         b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PUBLIC);
@@ -82,7 +82,7 @@ public class DaoGroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManager.beginWorkUnit();
-        final PageIterable<DaoTeam> groups = DaoMember.getByLogin("Yo").getTeams();
+        final PageIterable<DaoTeam> groups = DaoMember.getByLogin("Yoann").getTeams();
         final Iterator<DaoTeam> it = groups.iterator();
         assertEquals(it.next().getId(), b216.getId());
         assertEquals(it.next().getId(), b217.getId());
@@ -99,7 +99,7 @@ public class DaoGroupMemberTest extends TestCase {
 
         SessionManager.beginWorkUnit();
         final DaoTeam loacalB219 = DaoTeam.getByName("b219");
-        final DaoMember localYo = DaoMember.getByLogin("Yo");
+        final DaoMember localYo = DaoMember.getByLogin("Yoann");
 
         localYo.removeFromTeam(loacalB219);
 
@@ -116,7 +116,7 @@ public class DaoGroupMemberTest extends TestCase {
 
         SessionManager.beginWorkUnit();
         final DaoTeam localB216 = DaoTeam.getByName("b216");
-        final DaoMember loaclYo = DaoMember.getByLogin("Yo");
+        final DaoMember loaclYo = DaoMember.getByLogin("Yoann");
 
         localB216.removeMember(loaclYo);
 

@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 public class DaoMemberCreationTest extends TestCase {
@@ -66,7 +67,7 @@ public class DaoMemberCreationTest extends TestCase {
             SessionManager.flush();
         }
         {
-            final DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
+            final DaoMember theMember = DaoMember.createAndPersist("Yoann", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
             theMember.setFullname("Yoann Plénet");
         }
 
@@ -104,7 +105,7 @@ public class DaoMemberCreationTest extends TestCase {
         try {
             DaoMember.createAndPersist("", "pass", "salt", "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
-        } catch (final NonOptionalParameterException e) {
+        } catch (final MalformedArgumentException e) {
             assertTrue(true);
         }
         try {
@@ -124,10 +125,10 @@ public class DaoMemberCreationTest extends TestCase {
     public void testMemberDuplicateCreation() {
         try {
             SessionManager.beginWorkUnit();
-            DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
+            DaoMember.createAndPersist("Yoann", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
             SessionManager.flush();
             // duplicate login
-            DaoMember.createAndPersist("Yo", "plip", "salt", "yoyo@gmail.com", Locale.FRANCE);
+            DaoMember.createAndPersist("Yoann", "plip", "salt", "yoyo@gmail.com", Locale.FRANCE);
             SessionManager.endWorkUnitAndFlush();
             fail();
         } catch (final HibernateException e) {

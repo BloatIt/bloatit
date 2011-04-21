@@ -11,7 +11,7 @@ import com.bloatit.model.right.AuthToken;
 public class MemberTest extends ModelTestUnit {
 
     public void testAddToPublicGroup() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
         yo.addToPublicTeam(TeamManager.getByName("ubuntuUsers"));
@@ -30,7 +30,7 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testRemoveFromGroup() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
         yo.kickFromTeam(TeamManager.getByName("b219"), yo);
@@ -47,12 +47,12 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testInviteIntoProtectedGroup() {
-        final User yo = MemberManager.getMemberByLogin("Yo");
+        final User yo = MemberManager.getMemberByLogin("Yoann");
         MemberManager.getMemberByLogin("Fred");
     }
 
     public void testInviteIntoProtectedAndRefuseGroup() {
-        MemberManager.getMemberByLogin("Yo");
+        MemberManager.getMemberByLogin("Yoann");
         MemberManager.getMemberByLogin("Fred");
 
         // TODO
@@ -67,7 +67,7 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testGetKarma() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
         assertEquals(0, yo.getKarma());
@@ -78,7 +78,7 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testSetFullName() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
         assertEquals(0, yo.getKarma());
@@ -89,7 +89,7 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testGetFullname() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
         assertEquals("Yoann Plénet", yo.getFullname());
@@ -100,7 +100,7 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testSetFullname() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
         yo.setFullname("Plénet Yoann");
@@ -117,20 +117,20 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testSetPassword() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
         yo.setPassword("Coucou");
 
         try {
-            new AuthToken("Yo", "Coucou");
+            new AuthToken("Yoann", "Coucou");
         } catch (final NotFoundException e) {
             fail();
         }
     }
 
     public void testGetFeatures() throws UnauthorizedOperationException {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
 
@@ -142,7 +142,7 @@ public class MemberTest extends ModelTestUnit {
     }
 
     public void testGetKudos() {
-        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         assertEquals(1, yo.getKudos().size());
 

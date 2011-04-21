@@ -45,7 +45,7 @@ public class SimpleTestDB {
         fred = new Member("Fred", "other", "fred@gmail.com", Locale.FRANCE).getDao();
         fred.setFullname("Frédéric Bertolus");
         fred.setActivationState(ActivationState.ACTIVE);
-        yo = new Member("Yo", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
+        yo = new Member("Yoann", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
 
