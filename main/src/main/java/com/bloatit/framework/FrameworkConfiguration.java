@@ -11,7 +11,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- * 
+ *
  * @author thomas
  */
 public class FrameworkConfiguration extends ReloadableConfiguration {
@@ -65,6 +65,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     // OTHERS
     private AtomicBoolean htmlIndent;
     private int memoryCacheMaxSize;
+    private String imgFavicon;
 
     private FrameworkConfiguration() {
         super();
@@ -242,6 +243,13 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.resourcesDir + "/" + langCode + configuration.jsDatePicker;
     }
 
+    /**
+     * @return the imgFavicon
+     */
+    public static String getImgFavicon() {
+        return FrameworkConfiguration.getCommonsDir() + configuration.imgFavicon;
+    }
+
     // ----------------------------------------------------------
     // OTHERS
     // ----------------------------------------------------------
@@ -313,6 +321,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         // OTHERS
         htmlIndent = new AtomicBoolean(properties.getBoolean("bloatit.html.minify"));
         memoryCacheMaxSize = properties.getInt("bloatit.memory.cache.max.size");
+        imgFavicon = properties.getString("bloatit.img.favicon");
     }
 
     public static void load() {
@@ -328,4 +337,6 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
+
+
 }
