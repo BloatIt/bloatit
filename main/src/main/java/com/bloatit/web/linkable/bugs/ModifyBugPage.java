@@ -30,9 +30,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Member;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 
@@ -41,7 +41,6 @@ import com.bloatit.web.url.ModifyBugPageUrl;
  */
 @ParamContainer("feature/bug/modify")
 public final class ModifyBugPage extends LoggedPage {
-
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_LINES = 5;
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS = 80;
 
@@ -68,33 +67,32 @@ public final class ModifyBugPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-        if (FeatureManager.canCreate(session.getAuthToken())) {
-            return new HtmlDiv("padding_box").add(generateModifyBugForm());
-        }
-        return generateBadRightError();
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        layout.addLeft(generateModifyBugForm());
+        return layout;
     }
 
     private HtmlElement generateModifyBugForm() {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Modify a bug"), 1);
         final ModifyBugActionUrl doModifyUrl = new ModifyBugActionUrl(bug);
-
+        
         // Create the form stub
         final HtmlForm modifyBugForm = new HtmlForm(doModifyUrl.urlString());
-
         formTitle.add(modifyBugForm);
-
+        
         // Level
         final FieldData levelFieldData = doModifyUrl.getLevelParameter().pickFieldData();
         final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("New Level"));
         levelInput.addErrorMessages(levelFieldData.getErrorMessages());
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
         String suggestedLevel = levelFieldData.getSuggestedValue();
-        if(suggestedLevel != null) {
+        if (suggestedLevel != null) {
             levelInput.setDefaultValue(suggestedLevel);
         } else {
             levelInput.setDefaultValue(BindedLevel.getBindedLevel(bug.getErrorLevel()).getLevel().toString());
         }
-        levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel()).getDisplayName()));
+        levelInput.setComment(Context.tr("New level of the bug. Current level is ''{0}''.", BindedLevel.getBindedLevel(bug.getErrorLevel())
+                                                                                                       .getDisplayName()));
         modifyBugForm.add(levelInput);
 
         // State
@@ -103,13 +101,14 @@ public final class ModifyBugPage extends LoggedPage {
         stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
         stateInput.addErrorMessages(stateFieldData.getErrorMessages());
         String suggestedState = stateFieldData.getSuggestedValue();
-        if(suggestedState != null) {
+        if (suggestedState != null) {
             stateInput.setDefaultValue(suggestedState);
         } else {
             stateInput.setDefaultValue(BindedState.getBindedState(bug.getState()).getState().toString());
         }
-        
-        stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState()).getDisplayName()));
+
+        stateInput.setComment(Context.tr("New state of the bug. Current state is ''{0}''.", BindedState.getBindedState(bug.getState())
+                                                                                                       .getDisplayName()));
         modifyBugForm.add(stateInput);
 
         // Create the fields that will describe the reason of bug change
@@ -130,12 +129,6 @@ public final class ModifyBugPage extends LoggedPage {
         return group;
     }
 
-    private HtmlElement generateBadRightError() {
-        // TODO do something here.
-        final HtmlDiv group = new HtmlDiv();
-        return group;
-    }
-
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to modify a bug.");
@@ -148,10 +141,7 @@ public final class ModifyBugPage extends LoggedPage {
 
     public static Breadcrumb generateBreadcrumb(final Bug bug) {
         final Breadcrumb breadcrumb = BugPage.generateBreadcrumb(bug);
-
         breadcrumb.pushLink(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify")));
-
         return breadcrumb;
     }
-
 }

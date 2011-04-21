@@ -25,8 +25,6 @@ public final class SendTeamInvitationAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     private final Member receiver;
 
-    // keep it for consistency
-    @SuppressWarnings("unused")
     private final SendTeamInvitationActionUrl url;
 
     public SendTeamInvitationAction(final SendTeamInvitationActionUrl url) {

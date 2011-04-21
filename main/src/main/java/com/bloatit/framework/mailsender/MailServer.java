@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.mail.Message;

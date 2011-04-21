@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeBase64Decoder;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeBinaryDecoder;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeDecoder;

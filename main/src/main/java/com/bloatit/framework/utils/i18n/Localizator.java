@@ -19,7 +19,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.User;
 
 // TODO break dependency to Member.

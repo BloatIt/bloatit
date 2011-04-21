@@ -8,7 +8,6 @@ import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
 
 public class JsShowHide {
 

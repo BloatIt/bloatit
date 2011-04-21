@@ -71,7 +71,7 @@ public class HtmlTable extends HtmlGenericElement {
             return true;
         }
 
-        public String getColumnCss(@SuppressWarnings("unused") final int column) {
+        public String getColumnCss(final int column) {
             return null;
         }
 

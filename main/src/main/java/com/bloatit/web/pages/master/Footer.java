@@ -2,9 +2,7 @@ package com.bloatit.web.pages.master;
 
 import com.bloatit.common.CommonConfiguration;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
