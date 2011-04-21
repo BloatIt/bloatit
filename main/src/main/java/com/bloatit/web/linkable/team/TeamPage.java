@@ -35,7 +35,9 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -75,6 +77,8 @@ public final class TeamPage extends MasterPage {
         layout.addLeft(generateMain());
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
+        layout.addRight(new SideBarTeamWithdrawMoneyBlock());
+
         return layout;
     }
 
@@ -389,6 +393,20 @@ public final class TeamPage extends MasterPage {
                 return true;
             }
             return false;
+        }
+    }
+
+    public static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
+
+        SideBarTeamWithdrawMoneyBlock() {
+            setTitle(tr("Team account"));
+
+            add(new HtmlParagraph(tr("Like users, teams have an elveos account where they can store money.")));
+            add(new HtmlParagraph(tr("People with the talk right can decide to make developments under the name of the team to let it earn money.")));
+            add(new HtmlParagraph(tr("People with the bank right can withdraw money from the elveos account back to the team bank account.")));
+            // TODO good URL
+            add(new SideBarButton(tr("Withdraw money"), new PageNotFoundUrl(), WebConfiguration.getImgAccountWithdraw()).asElement());
+
         }
     }
 }
