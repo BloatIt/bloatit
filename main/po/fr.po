@@ -2964,7 +2964,7 @@ msgstr "Balance du compte&nbsp;: "
 
 #: com/bloatit/web/linkable/team/TeamPage.java:191
 msgid "<0:amount (1000€):> (<1::view details>)"
-msgstr "<0:amount (1000€):> (1::voir les détails>)"
+msgstr "<0:amount (1000€):> (<1::voir les détails>)"
 
 #: com/bloatit/web/linkable/team/TeamPage.java:204
 #, java-format
