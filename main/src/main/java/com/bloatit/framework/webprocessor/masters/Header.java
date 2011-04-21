@@ -24,7 +24,7 @@ public final class Header extends HtmlElement {
 
         private String robot;
 
-        private Robot(String robot) {
+        private Robot(final String robot) {
             this.robot = robot;
         }
 
@@ -37,7 +37,7 @@ public final class Header extends HtmlElement {
     private final PlaceHolderElement cssPh;
     private final PlaceHolderElement jsPh;
 
-    public Header(final String title, String description, Set<Robot> robots) {
+    public Header(final String title, final String description, final Set<Robot> robots) {
         super("head");
 
         // Additiong of charset
@@ -80,8 +80,8 @@ public final class Header extends HtmlElement {
                 }
             };
             metaRobots.addAttribute("name", "robots");
-            StringBuilder content = new StringBuilder();
-            for (Robot robot : robots) {
+            final StringBuilder content = new StringBuilder();
+            for (final Robot robot : robots) {
                 if (content.length() > 0) {
                     content.append(',');
                 }
@@ -124,8 +124,8 @@ public final class Header extends HtmlElement {
         add(jsPh);
 
         // Javascript to handle libravatar
-        String liburi = ModelConfiguration.getLibravatarURI();
-        HtmlScript js = new HtmlScript();
+        final String liburi = ModelConfiguration.getLibravatarURI();
+        final HtmlScript js = new HtmlScript();
         js.append("$(document).ready(function(){");
         js.append("$(\".libravatar\").each(function() {");
         js.append("var digest = $(this).attr(\"libravatar\");");

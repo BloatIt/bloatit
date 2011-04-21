@@ -14,9 +14,10 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
@@ -27,7 +28,7 @@ import com.bloatit.web.url.CreateTeamPageUrl;
  * </p>
  */
 @ParamContainer("team/create")
-public final class CreateTeamPage extends MasterPage {
+public final class CreateTeamPage extends LoggedPage {
     private final CreateTeamPageUrl url;
 
     public CreateTeamPage(final CreateTeamPageUrl url) {
@@ -36,7 +37,7 @@ public final class CreateTeamPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
         layout.addRight(new SideBarDocumentationBlock("create_team"));
@@ -45,6 +46,11 @@ public final class CreateTeamPage extends MasterPage {
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
+    }
+
+    @Override
+    public String getRefusalReason() {
+        return Context.tr("You cannot create a team without being loogged in.");
     }
 
     private HtmlElement generateMain() {
@@ -57,11 +63,19 @@ public final class CreateTeamPage extends MasterPage {
 
         // name
         final FieldData nameData = target.getLoginParameter().pickFieldData();
-        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Name of the team: "));
+        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Team unique name "));
         nameInput.setDefaultValue(nameData.getSuggestedValue());
         nameInput.addErrorMessages(nameData.getErrorMessages());
-        nameInput.setComment(Context.tr("The public name of the team. Between 5 and 50 characters."));
+        nameInput.setComment(Context.tr("The name of the team, used to identify the team. It must be unique and space free. Between 5 and 50 characters."));
         form.add(nameInput);
+
+        // displayName
+        final FieldData displayNameData = target.getDisplayNameParameter().pickFieldData();
+        final HtmlTextField displayNameInput = new HtmlTextField(displayNameData.getName(), Context.tr("Team display name "));
+        displayNameInput.setDefaultValue(displayNameData.getSuggestedValue());
+        displayNameInput.addErrorMessages(displayNameData.getErrorMessages());
+        displayNameInput.setComment(Context.tr("The public name of the team. Between 5 and 50 characters."));
+        form.add(displayNameInput);
 
         // Contact
         final String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");

@@ -131,7 +131,7 @@ public final class MemberPage extends MasterPage {
             teamBlock.add(teamList);
 
             for (final Team team : member.getTeams()) {
-                teamList.add(new TeamPageUrl(team).getHtmlLink(team.getLogin()));
+                teamList.add(new TeamPageUrl(team).getHtmlLink(team.getDisplayName()));
             }
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Cannot access member team information", e);
@@ -414,7 +414,7 @@ public final class MemberPage extends MasterPage {
     @Override
     protected String createPageTitle() {
         try {
-            return tr("Member - ") + member.getLogin();
+            return tr("Member - ") + member.getDisplayName();
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);

@@ -4,6 +4,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.model.Feature;
@@ -32,6 +33,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
             add(new HtmlParagraph(new FeaturePageUrl(feature).getHtmlLink(tr("more details..."))));
 
         } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException(e);
         }
     }
 

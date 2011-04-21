@@ -25,8 +25,6 @@ public final class SendTeamInvitationAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     private final Member receiver;
 
-    // keep it for consistency
-    @SuppressWarnings("unused")
     private final SendTeamInvitationActionUrl url;
 
     public SendTeamInvitationAction(final SendTeamInvitationActionUrl url) {
@@ -45,7 +43,7 @@ public final class SendTeamInvitationAction extends LoggedAction {
 
         try {
             me.sendInvitation(receiver, team);
-            session.notifyGood(Context.tr("Invitation sent to {0} for team {1}.", receiver.getDisplayName(), team.getLogin()));
+            session.notifyGood(Context.tr("Invitation sent to {0} for team {1}.", receiver.getDisplayName(), team.getDisplayName()));
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("Oops, an error prevented us from sending this invitation. Please notify us of the bug."));
             throw new ShallNotPassException("User couldn't send a team invitation, while he should be able to", e);

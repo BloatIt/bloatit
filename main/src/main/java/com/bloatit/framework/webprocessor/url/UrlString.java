@@ -7,7 +7,7 @@ public class UrlString extends Url {
     private final String url;
 
     public UrlString(final String url) {
-        super("");
+        super();
         this.url = url;
     }
 

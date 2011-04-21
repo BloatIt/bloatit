@@ -71,7 +71,10 @@ public class HtmlTable extends HtmlGenericElement {
             return true;
         }
 
-        public String getColumnCss(@SuppressWarnings("unused") final int column) {
+        /**
+         * @param column The column number on which we want to get the css 
+         */
+        public String getColumnCss(final int column) {
             return null;
         }
 
@@ -138,7 +141,7 @@ public class HtmlTable extends HtmlGenericElement {
             List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
             private String css = null;
 
-            public void setCssClass(String css) {
+            public void setCssClass(final String css) {
                 this.css = css;
             }
 

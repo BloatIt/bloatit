@@ -48,7 +48,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         this.url = url;
         this.factory = factory;
         orderByStr = url.getOrderByStr();
-        asc = url.getAsc();
+        asc = url.getAsc().booleanValue();
     }
 
     @Override

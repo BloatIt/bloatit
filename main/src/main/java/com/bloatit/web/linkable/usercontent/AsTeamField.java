@@ -29,7 +29,7 @@ public class AsTeamField extends PlaceHolderElement {
                 int nbTeam = 0;
                 for (final Team team : teams) {
                     if (team.getUserTeamRight(me).contains(right)) {
-                        teamInput.addDropDownElement(team.getId().toString(), team.getLogin());
+                        teamInput.addDropDownElement(team.getId().toString(), team.getDisplayName());
                         nbTeam++;
                     }
                 }

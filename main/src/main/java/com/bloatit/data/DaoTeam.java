@@ -72,6 +72,8 @@ public class DaoTeam extends DaoActor {
     public enum Right {
         PUBLIC, PROTECTED;
     }
+    
+    private String displayName;
 
     /**
      * WARNING right is a SQL keyword. This is mapped as "team_right".
@@ -153,9 +155,12 @@ public class DaoTeam extends DaoActor {
         this.right = right;
     }
 
-    @Override
     public void setContact(final String contact) {
         this.contact = contact;
+    }
+    
+    public void setDisplayName(final String displayName) {
+        this.displayName = displayName;
     }
 
     /**
@@ -256,7 +261,6 @@ public class DaoTeam extends DaoActor {
         this.description = description;
     }
 
-    @Override
     public String getContact() {
         return this.contact;
     }
@@ -266,6 +270,10 @@ public class DaoTeam extends DaoActor {
      */
     protected List<DaoTeamMembership> getTeamMembership() {
         return this.teamMembership;
+    }
+    
+    public String getDisplayName() {
+        return displayName;
     }
 
     // ======================================================================

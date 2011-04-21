@@ -41,7 +41,7 @@ public final class JoinTeamAction extends LoggedAction {
             }
         } else {
             try {
-                session.notifyBad(Context.tr("The team {0} is not public, you need an invitation to join it.", targetTeam.getLogin()));
+                session.notifyBad(Context.tr("The team {0} is not public, you need an invitation to join it.", targetTeam.getDisplayName()));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyBad(Context.tr("Oops we had an internal issue preventing you to see a team name. It's a bug, please notify us."));
                 throw new ShallNotPassException("Couldn't display team name", e);

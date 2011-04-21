@@ -19,9 +19,8 @@ import com.bloatit.web.url.IndexPageUrl;
  * the webServer to send a redirect on the right url.
  */
 // No serialization possible because IndexPageUrl is not serializable.
-@SuppressWarnings("serial")
 public class RedirectException extends Exception {
-
+    private static final long serialVersionUID = -5875435339130019317L;
     private final Url url;
 
     /**

@@ -123,7 +123,7 @@ public final class AccountPage extends LoggedPage {
             final TwoColumnLayout layout = new TwoColumnLayout(true, url);
             final HtmlDiv accountPage = new HtmlDiv("account_page");
             accountPage.add(generateAccountSolde(currentActor));
-            accountPage.add(new HtmlTitle(tr("{0} – Account informations", isTeamAccount() ? team.getLogin() : loggedUser.getDisplayName()), 1));
+            accountPage.add(new HtmlTitle(tr("{0} – Account informations", isTeamAccount() ? team.getDisplayName() : loggedUser.getDisplayName()), 1));
             accountPage.add(generateAccountMovementList(currentActor.getContributions(), currentActor.getBankTransactions()));
 
             layout.addLeft(accountPage);

@@ -34,7 +34,6 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.managers.ExternalAccountManager;
 import com.bloatit.rest.adapters.DateAdapter;
@@ -146,7 +145,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * @see com.bloatit.model.ExternalAccount#getType()
      */
     @XmlAttribute
-    public AccountType getType() throws RestException {
+    public AccountType getType() {
         try {
             return model.getType();
         } catch (final UnauthorizedOperationException e) {
@@ -160,7 +159,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * @see com.bloatit.model.ExternalAccount#getBankCode()
      */
     @XmlElement
-    public String getBankCode() throws RestException {
+    public String getBankCode() {
         try {
             return model.getBankCode();
         } catch (final UnauthorizedOperationException e) {
@@ -175,7 +174,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
-    public Date getCreationDate() throws RestException {
+    public Date getCreationDate() {
         try {
             return model.getCreationDate();
         } catch (final UnauthorizedOperationException e) {
@@ -189,7 +188,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * @see com.bloatit.model.Account#getAmount()
      */
     @XmlAttribute
-    public BigDecimal getAmount() throws RestException {
+    public BigDecimal getAmount() {
         try {
             return model.getAmount();
         } catch (final UnauthorizedOperationException e) {
@@ -203,7 +202,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * @see com.bloatit.model.Account#getTransactions()
      */
     @XmlElement
-    public RestTransactionList getTransactions() throws RestException {
+    public RestTransactionList getTransactions() {
         try {
             return new RestTransactionList(model.getTransactions());
         } catch (final UnauthorizedOperationException e) {
@@ -218,7 +217,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      */
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
-    public Date getLastModificationDate() throws RestException {
+    public Date getLastModificationDate() {
         try {
             final Date lastModificationDate = model.getLastModificationDate();
             return lastModificationDate;

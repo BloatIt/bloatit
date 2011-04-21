@@ -121,7 +121,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
 
         if (!paramContainer.isComponent()) {
-            final UrlDescription url = new UrlDescription(component, element, paramContainer, isAction(element));
+            final UrlDescription url = new UrlDescription(component, element, isAction(element));
             urls.put(element, url);
             parseSuperClass(element, url);
             if (urlChild != null) {

@@ -11,6 +11,7 @@ import com.bloatit.web.url.AccountPageUrl;
 @ParamContainer("account/charging/process")
 public class AccountChargingProcess extends PaymentProcess {
 
+    @SuppressWarnings("unused")
     private final AccountChargingProcessUrl url;
 
     public AccountChargingProcess(final AccountChargingProcessUrl url) {

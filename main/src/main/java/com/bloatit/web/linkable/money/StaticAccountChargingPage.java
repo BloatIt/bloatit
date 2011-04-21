@@ -13,8 +13,6 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import java.math.BigDecimal;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -72,21 +70,20 @@ public final class StaticAccountChargingPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
+    public HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             try {
-                group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getLogin()), 1);
+                group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getDisplayName()), 1);
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
             }
         } else {
             group = new HtmlTitleBlock(tr("Validate your account charging"), 1);
         }
-        BigDecimal account;
         try {
-            account = getActor(member).getInternalAccount().getAmount();
-            generateNoMoneyContent(group, getActor(member), account);
+            getActor(member).getInternalAccount().getAmount();
+            generateNoMoneyContent(group, getActor(member));
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
@@ -102,7 +99,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         return member;
     }
 
-    private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
+    private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) {
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
 

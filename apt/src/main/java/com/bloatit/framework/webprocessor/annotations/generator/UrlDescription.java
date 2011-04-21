@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.lang.model.element.Element;
 
-import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
 public class UrlDescription extends ClassDescription{
@@ -14,7 +13,7 @@ public class UrlDescription extends ClassDescription{
     private final boolean isAction;
     private final ComponentDescription component;
 
-    public UrlDescription(final ComponentDescription component, final Element element, final ParamContainer container, final boolean isAction) {
+    public UrlDescription(final ComponentDescription component, final Element element, final boolean isAction) {
         this.isAction = isAction;
         this.component = component;
         className = element.getSimpleName().toString() + "Url";

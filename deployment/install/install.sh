@@ -102,7 +102,7 @@ if [ -z "$reponse" ] || [ "$reponse" = "n" ] || [ "$reponse" = "N" ] ; then
     if [ -n "$directory" ] ; then 
         # Set the server document root.
         sudo sed -i -r "/server.document-root/ s#\\\"[a-zA-Z/]*\\\"#\\\"$directory\\\"#g" /etc/lighttpd/lighttpd.conf
-        # server.error-handler-404  = "/en/pagenotfound"
+        # server.error-handler-404  = "/en/dopagenotfound"
         # TODO !
     else 
         error "wwww directory is empty. skiping this step."

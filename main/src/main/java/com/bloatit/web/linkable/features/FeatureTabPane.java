@@ -74,7 +74,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
             tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions().size()), CONTRIBUTIONS_TAB) {
                 @Override
                 public XmlNode generateBody() {
-                    return new FeatureContributorsComponent(url.getContributionUrl(), feature);
+                    return new FeatureContributorsComponent(feature);
                 }
             });
         } catch (final UnauthorizedOperationException e1) {

@@ -91,7 +91,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         return getActor(member).getInternalAccount();
     }
 
-    private Actor<?> getActor(final Member member) throws UnauthorizedOperationException {
+    private Actor<?> getActor(final Member member) {
         if (process.getTeam() != null) {
             return process.getTeam();
         }

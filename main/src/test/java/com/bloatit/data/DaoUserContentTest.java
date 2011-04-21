@@ -15,8 +15,6 @@ public class DaoUserContentTest extends TestCase {
     private DaoMember yo;
     private DaoMember tom;
     private DaoMember fred;
-    private DaoTeam b219;
-
     private DaoFeature feature;
 
     @Override
@@ -41,7 +39,7 @@ public class DaoUserContentTest extends TestCase {
 
             DaoTeam.createAndPersiste("Other", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC).addMember(yo, false);
             DaoTeam.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoTeam.Right.PUBLIC).addMember(yo, false);
-            (b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED)).addMember(yo, true);
+            (DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED)).addMember(yo, true);
         }
 
         final DaoSoftware project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, null, Locale.FRANCE, "title", "descrip"));

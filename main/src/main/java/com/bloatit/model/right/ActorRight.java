@@ -26,13 +26,6 @@ import com.bloatit.model.Actor;
 public class ActorRight extends RightManager {
 
     /**
-     * The Class Email is a {@link Private} accessor for the Email property.
-     */
-    public static class Email extends Private {
-        // nothing this is just a rename.
-    }
-
-    /**
      * The Class ExternalAccount is a {@link Private} accessor for the
      * ExternalAccount property.
      */

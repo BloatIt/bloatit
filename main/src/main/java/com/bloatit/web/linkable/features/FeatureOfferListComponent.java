@@ -259,7 +259,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         authorPara.add(author);
                         if (offer.getAsTeam() != null) {
                             authorPara.addText(Context.tr(" on the behalf of "));
-                            authorPara.add(new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getLogin()));
+                            authorPara.add(new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getDisplayName()));
                         }
                     }
                     offerRightTopColumn.add(authorPara);
@@ -415,7 +415,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
             showHideValidationDetails.setHasFallback(false);
 
 
-            HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("show validation details"));
+            final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("show validation details"));
             showHideLink.setCssClass("fake_link");
             showHideValidationDetails.addActuator(showHideLink);
             lotBlock.add(showHideLink);

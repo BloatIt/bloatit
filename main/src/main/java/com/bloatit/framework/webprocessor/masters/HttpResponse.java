@@ -44,7 +44,7 @@ public final class HttpResponse {
         private final String code;
         private final String message;
 
-        StatusCode(final String code, String message) {
+        StatusCode(final String code, final String message) {
             this.code = code;
             this.message = message;
         }
@@ -53,6 +53,7 @@ public final class HttpResponse {
             return code;
         }
 
+        @Override
         public String toString() {
             return code + " " + message;
         }
@@ -65,7 +66,7 @@ public final class HttpResponse {
     private boolean useGzip = false;
 
     // TODO: use write line in all file
-    public HttpResponse(final OutputStream output, final HttpHeader header) throws IOException {
+    public HttpResponse(final OutputStream output, final HttpHeader header) {
         httpDateformat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         httpDateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
 

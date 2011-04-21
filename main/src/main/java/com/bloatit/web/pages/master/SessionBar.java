@@ -51,6 +51,7 @@ public class SessionBar extends HtmlDiv {
                                                                                                                      .getInternalAccount()
                                                                                                                      .getAmount())));
             } catch (final UnauthorizedOperationException e) {
+                session.notifyBad(Context.tr("An unexpected error prevent us from displaying your internal account amount. Please notify us."));
             }
 
             // Display link to private messages

@@ -97,7 +97,7 @@ public final class CheckContributionPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
+    public HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group = new HtmlTitleBlock(tr("Check contribution"), 1);
 
         final Feature feature = process.getFeature();
@@ -167,7 +167,7 @@ public final class CheckContributionPage extends QuotationPage {
 
             if (process.getTeam() != null) {
                 try {
-                    buttonDiv.add(new HtmlParagraph(Context.tr("Using the '") + process.getTeam().getLogin() + Context.tr("' account")));
+                    buttonDiv.add(new HtmlParagraph(Context.tr("Using the '") + process.getTeam().getDisplayName() + Context.tr("' account")));
                 } catch (final UnauthorizedOperationException e) {
                     throw new ShallNotPassException(e);
                 }
@@ -185,7 +185,7 @@ public final class CheckContributionPage extends QuotationPage {
         group.add(buttonDiv);
     }
 
-    private Actor<?> getActor(final Member member) throws UnauthorizedOperationException {
+    private Actor<?> getActor(final Member member) {
         if (process.getTeam() != null) {
             return process.getTeam();
         }

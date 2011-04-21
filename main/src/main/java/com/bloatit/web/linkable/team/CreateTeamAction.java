@@ -1,6 +1,7 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.data.DaoTeam.Right;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -27,21 +28,38 @@ public final class CreateTeamAction extends LoggedAction {
     public final static String PUBLIC = "PUBLIC";
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters team name has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to %constraint% your text is %valueLength% characters long."),//
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("The team unique name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "50",
+                     maxErrorMsg = @tr("The team unique name size has to be inferior to %constraint% your text is %valueLength% characters long."),//
                      optionalErrorMsg = @tr("You forgot to write a team name"))
     private final String login;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for contact has to be superior to %constraint% but your text is %valueLength% characters long."),//
-            max = "300", maxErrorMsg = @tr("Number of characters for contact has to be inferior to %constraint%."),//
-            optionalErrorMsg = @tr("You forgot to write a specification"))
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "50",
+                     maxErrorMsg = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."),//
+                     optionalErrorMsg = @tr("You forgot to write a team name"))
+    @Optional
+    private final String displayName;
+
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "4",
+                     minErrorMsg = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "300", maxErrorMsg = @tr("The contact size has to be inferior to %constraint%."),//
+                     optionalErrorMsg = @tr("You forgot to write a specification"))
     @Optional
     private final String contact;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "5000",
+                     maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
                      optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
@@ -57,6 +75,7 @@ public final class CreateTeamAction extends LoggedAction {
         this.description = url.getDescription();
         this.login = url.getLogin();
         this.right = url.getRight();
+        this.displayName = url.getDisplayName();
     }
 
     @Override
@@ -77,6 +96,13 @@ public final class CreateTeamAction extends LoggedAction {
             return new CreateTeamPageUrl();
         }
         final Team newTeam = new Team(login, contact, description, teamRight, me);
+        if (displayName != null) {
+            try {
+                newTeam.setDisplayName(displayName);
+            } catch (final UnauthorizedOperationException e) {
+                session.notifyBad(Context.tr("You are not authorized to change the display name."));
+            }
+        }
 
         return new TeamPageUrl(newTeam);
     }
@@ -97,5 +123,6 @@ public final class CreateTeamAction extends LoggedAction {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getLoginParameter());
         session.addParameter(url.getRightParameter());
+        session.addParameter(url.getDisplayNameParameter());
     }
 }

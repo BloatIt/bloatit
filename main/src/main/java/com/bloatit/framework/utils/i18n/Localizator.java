@@ -19,7 +19,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.User;
 
 // TODO break dependency to Member.
@@ -506,7 +505,7 @@ public final class Localizator {
 
             float weigth;
             if (favLangs.length > 1) {
-                weigth = new Float(favLangs[1].substring("q=".length()));
+                weigth = new Float(favLangs[1].substring("q=".length())).floatValue();
             } else {
                 weigth = 1;
             }

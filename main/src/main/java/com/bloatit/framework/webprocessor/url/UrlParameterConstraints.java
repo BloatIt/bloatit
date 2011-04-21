@@ -92,7 +92,7 @@ public class UrlParameterConstraints<U> {
         } else {
             computeConstraint = new ComputeEverythingConstraint((UrlParameterConstraints<Object>) this);
         }
-        final EnumSet constraintErrors = computeConstraint.getConstraintErrors(value);
+        final EnumSet<ConstraintError> constraintErrors = computeConstraint.getConstraintErrors(value);
         
         if (constraintErrors.contains(ConstraintError.MIN_ERROR)) {
             messages.add(new Message(min.getError(), What.MIN_ERROR, computeConstraint.formatMinConstraint(name, value, strValue)));

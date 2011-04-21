@@ -73,7 +73,7 @@ public final class GiveRightAction extends LoggedAction {
         } else {
             if (!targetTeam.canChangeRight(me, targetMember, right, give)) {
                 try {
-                    session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", targetTeam.getLogin()));
+                    session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", targetTeam.getDisplayName()));
                 } catch (final UnauthorizedOperationException e) {
                     session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug.");
                     throw new ShallNotPassException("Cannot display a team name", e);
@@ -91,16 +91,16 @@ public final class GiveRightAction extends LoggedAction {
             // Remove member from team
             try {
                 targetMember.kickFromTeam(targetTeam, me);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
                 throw new ShallNotPassException("Cannot remove a member from a team", e);
             }
         } else {
             try {
                 targetTeam.changeRight(me, targetMember, right, give);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 waitingForJava7(e);
-            } catch (MemberNotInTeamException e) {
+            } catch (final MemberNotInTeamException e) {
                 waitingForJava7(e);
             }
         }
@@ -108,7 +108,7 @@ public final class GiveRightAction extends LoggedAction {
         return new TeamPageUrl(targetTeam);
     }
 
-    public void waitingForJava7(Exception e) {
+    public void waitingForJava7(final Exception e) {
         session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
         throw new ShallNotPassException("Cannot remove a member from a team", e);
     }

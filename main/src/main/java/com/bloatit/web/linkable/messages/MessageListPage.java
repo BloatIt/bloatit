@@ -8,7 +8,6 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -20,6 +19,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.MessageListPageUrl;
 
@@ -37,10 +37,10 @@ public final class MessageListPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member me) throws RedirectException {
-        final HtmlDiv master = new HtmlDiv("padding_box");
+        final TwoColumnLayout master = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Elveos private messages"), 1);
-        master.add(main);
+        master.addLeft(main);
 
         // Generating links to team invites
         final HtmlTitleBlock teamInvites = new HtmlTitleBlock(Context.tr("Team invites"), 2);
@@ -50,7 +50,7 @@ public final class MessageListPage extends LoggedPage {
         for (final JoinTeamInvitation invitation : invitations) {
             final HtmlParagraph p = new HtmlParagraph();
             try {
-                p.addText("Received an invitation to team '" + invitation.getTeam().getLogin() + "' from: '"
+                p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
                         + invitation.getSender().getDisplayName() + "'");
 
                 final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));

@@ -55,10 +55,6 @@ public final class SoftwareManager {
         return new SoftwareList(DBRequests.getAll(DaoSoftware.class));
     }
 
-    /**
-     *
-     * @return
-     */
     public static Software getDefaultSoftware() {
         return Software.create(DaoSoftware.getByName("no-software"));
     }

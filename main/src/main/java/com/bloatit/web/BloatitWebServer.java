@@ -83,7 +83,6 @@ import com.bloatit.web.linkable.team.CreateTeamPage;
 import com.bloatit.web.linkable.team.GiveRightAction;
 import com.bloatit.web.linkable.team.HandleJoinTeamInvitationAction;
 import com.bloatit.web.linkable.team.JoinTeamAction;
-import com.bloatit.web.linkable.team.JoinTeamPage;
 import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
@@ -130,7 +129,6 @@ import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
-import com.bloatit.web.url.JoinTeamPageUrl;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -262,9 +260,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(CreateTeamPageUrl.getName())) {
             return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(JoinTeamPageUrl.getName())) {
-            return new JoinTeamPage(new JoinTeamPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MessageListPageUrl.getName())) {
             return new MessageListPage(new MessageListPageUrl(params, session.getParameters()));
@@ -468,7 +463,7 @@ public class BloatitWebServer extends WebProcessor {
             return new FileResource(new FileResourceUrl(params, session.getParameters()));
         }
 
-        return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));
+        return new PageNotFound(new PageNotFoundUrl());
     }
 
     @Override
