@@ -45,7 +45,7 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You try to access a method that require authentication without
          * authenticating the object.
-         *
+         * 
          * @see RestrictedObject#authenticate(com.bloatit.model.right.AuthToken)
          */
         AUTHENTICATION_NEEDED,
@@ -91,8 +91,8 @@ public class UnauthorizedOperationException extends Exception {
         INVITATION_RECIEVER_MISMATCH,
 
         /**
-        * You try to send an invitation, but you are have not the right.
-        */
+         * You try to send an invitation, but you are have not the right.
+         */
         INVITATION_SEND_NO_RIGHT,
 
         /**
@@ -122,7 +122,12 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You tried to remove a member from a team with having the right
          */
-        TEAM_PROMOTE_RIGHT_MISSING
+        TEAM_PROMOTE_RIGHT_MISSING, 
+        
+        /**
+         * You tried to modify team without having the right to
+         */
+        TEAM_MISSING_MODIFY_RIGHT
 
     }
 
@@ -134,7 +139,7 @@ public class UnauthorizedOperationException extends Exception {
 
     /**
      * Instantiates a new unauthorized operation exception.
-     *
+     * 
      * @param action the action when trying to access a property.
      * @param code the code describing more precisely what went wrong.
      */
@@ -146,7 +151,7 @@ public class UnauthorizedOperationException extends Exception {
 
     /**
      * Instantiates a new unauthorized operation exception.
-     *
+     * 
      * @param action the action when trying to access a property.
      */
     public UnauthorizedOperationException(final Action action) {
@@ -155,7 +160,7 @@ public class UnauthorizedOperationException extends Exception {
 
     /**
      * Instantiates a new unauthorized operation exception.
-     *
+     * 
      * @param code the code describing more precisely what went wrong.
      */
     public UnauthorizedOperationException(final SpecialCode code) {
@@ -166,7 +171,7 @@ public class UnauthorizedOperationException extends Exception {
 
     /**
      * Gets the action.
-     *
+     * 
      * @return the action that has been forbidden.
      */
     public final Action getAction() {
@@ -175,7 +180,7 @@ public class UnauthorizedOperationException extends Exception {
 
     /**
      * Gets the code.
-     *
+     * 
      * @return the code describing what went wrong.
      */
     public final SpecialCode getCode() {
