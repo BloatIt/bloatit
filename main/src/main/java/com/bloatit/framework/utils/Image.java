@@ -20,7 +20,6 @@ import com.bloatit.model.FileMetadata;
 public class Image {
     private String identifier;
     private FileMetadata metadata;
-    
 
     /**
      * Creates an image with a default image type local
@@ -31,10 +30,10 @@ public class Image {
         this.identifier = identifier;
     }
 
-    public Image(final FileMetadata metadata){
+    public Image(final FileMetadata metadata) {
         this.metadata = metadata;
     }
-    
+
     /**
      * Gives the identifier of the image. - If the image is local, its
      * identifier is its unique name on the bloatit server. - If the image is
@@ -46,7 +45,7 @@ public class Image {
      * @return the identifier of the image
      */
     public final String getIdentifier() {
-        if(metadata != null){
+        if (metadata != null) {
             return metadata.getUrl();
         }
         return this.identifier;
@@ -55,6 +54,8 @@ public class Image {
     public FileMetadata getMetadata() {
         return metadata;
     }
-    
-    
+
+    public boolean isNull() {
+        return this.metadata == null;
+    }
 }

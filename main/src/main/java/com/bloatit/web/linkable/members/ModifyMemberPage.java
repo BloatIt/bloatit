@@ -43,11 +43,11 @@ public class ModifyMemberPage extends LoggedPage {
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl();
-        
+
         HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Change account settings"));
         layout.addLeft(title);
-        
+
         HtmlForm form = new HtmlForm(targetUrl.urlString());
         layout.addLeft(form);
         form.enableFileUpload();
@@ -139,6 +139,16 @@ public class ModifyMemberPage extends LoggedPage {
             final HtmlFileInput avatarInput = new HtmlFileInput(avatarField.getName(), Context.tr("Avatar image file"));
             avatarInput.setComment(tr("64px x 64px. 50Kb max. Accepted formats: png, jpg"));
             form.add(avatarInput);
+
+            // ///////
+            // Delete avatar
+            final FieldData deleteAvatarFieldData = targetUrl.getDeleteAvatarParameter().pickFieldData();
+            final HtmlCheckbox deleteAvatar = new HtmlCheckbox(deleteAvatarFieldData.getName(), Context.tr("Delete avatar"), LabelPosition.BEFORE);
+            if (loggedUser.getAvatar() == null && loggedUser.getAvatar().isNull()) {
+                deleteAvatar.addAttribute("disabled", "disabled");
+            }
+            deleteAvatar.setComment(Context.tr("Checking this box will delete your avatar. If you have a libravatar it will be used instead."));
+            form.add(deleteAvatar);
 
             final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
             form.add(submit);
