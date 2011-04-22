@@ -306,7 +306,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         mailLogin = properties.getString("mail.login");
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
-        mailRetryPolicy = new RetryPolicy(properties.getString("mail.from", "[15s, 1min, 2min, 5min, 5min, 5min, 10min, 20min, ...]"));
+        mailRetryPolicy = new RetryPolicy(properties.getString("mail.retry.policy", "[15s, 1min, 2min, 5min, 5min, 5min, 10min, 20min, ...]"));
 
         // CSS
         cssShowdown = properties.getString("bloatit.css.showdown");
