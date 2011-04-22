@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.util.Date;
@@ -21,7 +37,7 @@ import com.bloatit.framework.utils.PageIterable;
 
 /**
  * List of hightlighted features with the reason, the position and the
- * hightlight date
+ * hightlight date.
  */
 @Entity
 @Cacheable
@@ -91,13 +107,13 @@ public class DaoHighlightFeature extends DaoIdentifiable {
     }
 
     /**
-     * Create a DaoHighlightFeature
+     * Create a DaoHighlightFeature.
      * 
-     * @param feature
-     * @param position
-     * @param reason
-     * @param activationDate
-     * @param desactivationDate
+     * @param feature the feature
+     * @param position the position
+     * @param reason the reason
+     * @param activationDate the activation date
+     * @param desactivationDate the desactivation date
      */
     public DaoHighlightFeature(final DaoFeature feature,
                                final int position,
@@ -120,44 +136,89 @@ public class DaoHighlightFeature extends DaoIdentifiable {
     // ======================================================================
 
     /**
+     * Gets the active hightlight features.
+     * 
      * @return all the member in this team. (Use a HQL query).
      */
     public PageIterable<DaoHighlightFeature> getActiveHightlightFeatures() {
         return new QueryCollection<DaoHighlightFeature>("highlightFeature.byIsActivated");
     }
 
+    /**
+     * Gets the position.
+     * 
+     * @return the position
+     */
     public int getPosition() {
         return this.position;
     }
 
+    /**
+     * Sets the position.
+     * 
+     * @param position the new position
+     */
     public void setPosition(final int position) {
         this.position = position;
     }
 
+    /**
+     * Gets the activation date.
+     * 
+     * @return the activation date
+     */
     public Date getActivationDate() {
         return this.activationDate;
     }
 
+    /**
+     * Sets the activation date.
+     * 
+     * @param activationDate the new activation date
+     */
     public void setActivationDate(final Date activationDate) {
         this.activationDate = activationDate;
     }
 
+    /**
+     * Gets the desactivation date.
+     * 
+     * @return the desactivation date
+     */
     public Date getDesactivationDate() {
         return this.desactivationDate;
     }
 
+    /**
+     * Sets the desactivation date.
+     * 
+     * @param desactivationDate the new desactivation date
+     */
     public void setDesactivationDate(final Date desactivationDate) {
         this.desactivationDate = desactivationDate;
     }
 
+    /**
+     * Gets the reason.
+     * 
+     * @return the reason
+     */
     public String getReason() {
         return this.reason;
     }
 
+    /**
+     * Gets the feature.
+     * 
+     * @return the feature
+     */
     public DaoFeature getFeature() {
         return this.feature;
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.data.DaoIdentifiable#hashCode()
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -170,6 +231,9 @@ public class DaoHighlightFeature extends DaoIdentifiable {
         return result;
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.data.DaoIdentifiable#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -220,6 +284,9 @@ public class DaoHighlightFeature extends DaoIdentifiable {
     // Visitor.
     // ======================================================================
 
+    /* (non-Javadoc)
+     * @see com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor)
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -229,6 +296,9 @@ public class DaoHighlightFeature extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao highlight feature.
+     */
     protected DaoHighlightFeature() {
         super();
     }

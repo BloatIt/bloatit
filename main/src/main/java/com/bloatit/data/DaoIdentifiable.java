@@ -35,6 +35,9 @@ public abstract class DaoIdentifiable {
     @DocumentId
     private Integer id;
 
+    /**
+     * @return the id of this identifiable.
+     */
     public Integer getId() {
         return this.id;
     }
@@ -43,6 +46,13 @@ public abstract class DaoIdentifiable {
     // Visitor.
     // ======================================================================
 
+    /**
+     * The accept method for the visitor pattern
+     * 
+     * @param visitor the visitor.
+     * @param <ReturnType> the return type of the visitor
+     * @return whatever the visitor return
+     */
     public abstract <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor);
 
     // ======================================================================

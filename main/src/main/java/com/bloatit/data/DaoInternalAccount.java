@@ -41,7 +41,11 @@ public class DaoInternalAccount extends DaoAccount {
     @Basic(optional = false)
     private BigDecimal blocked;
 
-    // Used in Member constructor.
+    /**
+     * Instantiates a new dao internal account. Used by member constructor
+     * 
+     * @param actor the actor
+     */
     DaoInternalAccount(final DaoActor actor) {
         super(actor);
         this.blocked = BigDecimal.ZERO;
@@ -81,6 +85,10 @@ public class DaoInternalAccount extends DaoAccount {
         addToAmountValue(blocked);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.data.DaoAccount#hasEnoughMoney(java.math.BigDecimal)
+     */
     @Override
     protected boolean hasEnoughMoney(final BigDecimal amount) {
         return getAmount().compareTo(amount) >= 0;
@@ -90,6 +98,12 @@ public class DaoInternalAccount extends DaoAccount {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -99,10 +113,18 @@ public class DaoInternalAccount extends DaoAccount {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * This is the amount that is currently used by contributions.
+     * 
+     * @return the this is the amount that is currently used by contributions
+     */
     public BigDecimal getBlocked() {
         return this.blocked;
     }
 
+    /**
+     * Instantiates a new dao internal account.
+     */
     protected DaoInternalAccount() {
         super();
     }

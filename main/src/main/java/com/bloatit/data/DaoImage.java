@@ -54,6 +54,11 @@ public class DaoImage extends DaoIdentifiable {
     private DaoFileMetadata file;
 
     /**
+     * @param horizontalSize the horizontal size in px
+     * @param verticalSize the vertical size in px
+     * @param compression the type of compression
+     * @param file the file associated with this image
+     * @return the newly created image
      * @see #DaoImage(int, int, String, DaoFileMetadata)
      */
     public static DaoImage createAndPersist(final int horizontalSize, final int verticalSize, final String compression, final DaoFileMetadata file) {

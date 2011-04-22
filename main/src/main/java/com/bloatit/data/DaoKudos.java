@@ -55,7 +55,9 @@ public class DaoKudos extends DaoUserContent {
      * Create a new kudos.
      * 
      * @param member is the person creating the kudos.
+     * @param team the as team property, can be null
      * @param value is value of the kudos.
+     * @param kudosable the kudosable on which we add this kudos.
      */
     public DaoKudos(final DaoMember member, final DaoTeam team, final int value, final DaoKudosable kudosable) {
         super(member, team);
@@ -63,10 +65,20 @@ public class DaoKudos extends DaoUserContent {
         this.kudosable = kudosable;
     }
 
+    /**
+     * Gets the value. Can be positive or negative.
+     * 
+     * @return the value. can be positive or negative
+     */
     public int getValue() {
         return this.value;
     }
 
+    /**
+     * Gets the kudosable.
+     * 
+     * @return the kudosable
+     */
     public DaoKudosable getKudosable() {
         return this.kudosable;
     }
@@ -75,6 +87,9 @@ public class DaoKudos extends DaoUserContent {
     // Visitor.
     // ======================================================================
 
+    /* (non-Javadoc)
+     * @see com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor)
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -84,6 +99,9 @@ public class DaoKudos extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao kudos.
+     */
     protected DaoKudos() {
         super();
     }

@@ -57,6 +57,8 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
              )
 // @formatter:on
 public class DaoContribution extends DaoUserContent {
+
+    /** The Constant COMMENT_MAX_LENGTH. */
     protected static final int COMMENT_MAX_LENGTH = 140;
 
     /**
@@ -64,7 +66,13 @@ public class DaoContribution extends DaoUserContent {
      * feature.
      */
     public enum State {
-        PENDING, VALIDATED, CANCELED
+
+        /** The PENDING. */
+        PENDING,
+        /** The VALIDATED. */
+        VALIDATED,
+        /** The CANCELED. */
+        CANCELED
     }
 
     /**
@@ -99,6 +107,17 @@ public class DaoContribution extends DaoUserContent {
 
     @Basic(optional = false)
     private BigDecimal alreadyGivenMoney;
+    
+    /**
+     * Gets the money raised.
+     * 
+     * @return the money raised
+     */
+    public static BigDecimal getMoneyRaised() {
+        final Query q = SessionManager.getNamedQuery("contribution.getMoneyRaised");
+        return (BigDecimal) q.uniqueResult();
+    }
+
 
     /**
      * Create a new contribution. Update the internal account of the author
@@ -107,11 +126,10 @@ public class DaoContribution extends DaoUserContent {
      * @param member the person making the contribution. (Use
      *            DaoUserContent#setAsTeam() to make a contribution in the name
      *            of team)
+     * @param team the team can be null.
      * @param feature the feature on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
-     * @throws NonOptionalParameterException if any of the parameter is null
-     *             except comment.
      * @throws NotEnoughMoneyException if the account of "member" has not enough
      *             money in it.
      */
@@ -212,18 +230,38 @@ public class DaoContribution extends DaoUserContent {
         this.state = State.CANCELED;
     }
 
+    /**
+     * Gets the amount is the quantity of money put in this contribution.
+     * 
+     * @return the amount is the quantity of money put in this contribution
+     */
     public BigDecimal getAmount() {
         return this.amount;
     }
 
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     */
     public State getState() {
         return this.state;
     }
 
+    /**
+     * Gets the comment.
+     * 
+     * @return the comment
+     */
     public String getComment() {
         return this.comment;
     }
 
+    /**
+     * Gets the feature.
+     * 
+     * @return the feature
+     */
     public DaoFeature getFeature() {
         return this.feature;
     }
@@ -232,6 +270,12 @@ public class DaoContribution extends DaoUserContent {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -241,6 +285,9 @@ public class DaoContribution extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao contribution.
+     */
     protected DaoContribution() {
         super();
     }
@@ -303,8 +350,4 @@ public class DaoContribution extends DaoUserContent {
         return true;
     }
 
-    public static BigDecimal getMoneyRaised() {
-        final Query q = SessionManager.getNamedQuery("contribution.getMoneyRaised");
-        return (BigDecimal) q.uniqueResult();
-    }
 }

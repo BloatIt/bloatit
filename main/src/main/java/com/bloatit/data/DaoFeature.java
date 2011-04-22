@@ -60,7 +60,7 @@ import com.bloatit.framework.utils.PageIterable;
  * A DaoFeature is a kudosable content. It has a translatable description, and
  * can have a specification and some offers. The state of the feature is managed
  * by its super class DaoKudosable. On a feature we can add some comment and
- * some contriutions.
+ * some contributions.
  */
 @Entity
 @Cacheable
@@ -142,19 +142,20 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * order is important !
      */
     public enum FeatureState {
-        /** No offers, waiting for money and offer */
+
+        /** No offers, waiting for money and offer. */
         PENDING,
 
-        /** One or more offer, waiting for money */
+        /** One or more offer, waiting for money. */
         PREPARING,
 
-        /** Development in progress */
+        /** Development in progress. */
         DEVELOPPING,
 
-        /** Something went wrong, the feature is canceled */
+        /** Something went wrong, the feature is canceled. */
         DISCARDED,
 
-        /** All is good, the developer is paid and the users are happy */
+        /** All is good, the developer is paid and the users are happy. */
         FINISHED
     }
 
@@ -196,7 +197,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @IndexedEmbedded
-    public List<DaoComment> comments = new ArrayList<DaoComment>();
+    private List<DaoComment> comments = new ArrayList<DaoComment>();
 
     /**
      * The selected offer is the offer that is most likely to be validated and
@@ -223,6 +224,13 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     /**
+     * Creates the and persist.
+     * 
+     * @param member the author of the feature
+     * @param team the as team property. Can be null.
+     * @param description the description of the feature
+     * @param software the software on which this feature has to be added
+     * @return the new feature
      * @see #DaoFeature(DaoMember, DaoTeam, DaoDescription, DaoSoftware)
      */
     public static DaoFeature
@@ -269,6 +277,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         session.delete(this);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoCommentable#addComment(com.bloatit.data.DaoComment)
+     */
     @Override
     public void addComment(final DaoComment comment) {
         this.comments.add(comment);
@@ -281,10 +294,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @param team add this contribution in the name of team.
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
-     * @throws NotEnoughMoneyException
+     * @return the new {@link DaoContribution}
+     * @throws NotEnoughMoneyException the not enough money exception
      */
-    public DaoContribution
-            addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment)
+            throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }
@@ -308,13 +322,15 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /**
      * Add a new offer for this feature. If there is no selected offer, select
      * this one.
+     * 
+     * @param offer the offer to add
      */
     public void addOffer(final DaoOffer offer) {
         this.offers.add(offer);
     }
 
     /**
-     * delete offer from this feature AND FROM DB !
+     * delete offer from this feature AND FROM DB !.
      * 
      * @param offer the offer we want to delete.
      */
@@ -326,18 +342,36 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
     }
 
+    /**
+     * Compute the selected offer.
+     */
     public void computeSelectedOffer() {
         this.selectedOffer = getCurrentOffer();
     }
 
+    /**
+     * Override the selected offer.
+     * 
+     * @param selectedOffer the offer to set selected
+     */
     public void setSelectedOffer(final DaoOffer selectedOffer) {
         this.selectedOffer = selectedOffer;
     }
 
+    /**
+     * Set the validation date.
+     * 
+     * @param validationDate the new validation date.
+     */
     public void setValidationDate(final Date validationDate) {
         this.validationDate = validationDate;
     }
 
+    /**
+     * Validate contributions.
+     * 
+     * @param percent the percent
+     */
     void validateContributions(final int percent) {
         if (this.selectedOffer == null) {
             throw new BadProgrammerException("The selectedOffer shouldn't be null here !");
@@ -359,12 +393,17 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /**
      * Called by contribution when canceled.
      * 
-     * @param amount
+     * @param amount the amount
      */
     void cancelContribution(final BigDecimal amount) {
         this.contribution = this.contribution.subtract(amount);
     }
 
+    /**
+     * set the feature state.
+     * 
+     * @param featureState the new state
+     */
     public void setFeatureState(final FeatureState featureState) {
         this.featureState = featureState;
     }
@@ -373,6 +412,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // Getters.
     // ======================================================================
 
+    /**
+     * Gets the a description is a translatable text with an title.
+     * 
+     * @return the a description is a translatable text with an title
+     */
     public DaoDescription getDescription() {
         return this.description;
     }
@@ -395,18 +439,38 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         }
     }
 
+    /**
+     * Gets the offers.
+     * 
+     * @return the offers
+     */
     public PageIterable<DaoOffer> getOffers() {
         return new MappedList<DaoOffer>(this.offers);
     }
 
+    /**
+     * Gets the feature state.
+     * 
+     * @return the feature state
+     */
     public FeatureState getFeatureState() {
         return this.featureState;
     }
 
+    /**
+     * Gets the contributions.
+     * 
+     * @return the contributions
+     */
     public PageIterable<DaoContribution> getContributions() {
         return new MappedList<DaoContribution>(this.contributions);
     }
 
+    /**
+     * Gets the comments count.
+     * 
+     * @return the comments count
+     */
     public Long getCommentsCount() {
         return (Long) SessionManager.getNamedQuery("feature.getComments.size").setEntity("this", this).uniqueResult();
     }
@@ -420,20 +484,40 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         return new MappedList<DaoComment>(this.comments);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.data.DaoCommentable#getLastComment()
+     */
     @Override
     public DaoComment getLastComment() {
         return CommentManager.getLastComment(comments);
     }
 
+    /**
+     * The selected offer is the offer that is most likely to be validated and
+     * used.
+     * 
+     * @return the selected offer is the offer that is most likely to be
+     *         validated and used
+     */
     public DaoOffer getSelectedOffer() {
         return this.selectedOffer;
     }
 
+    /**
+     * This is a calculated value with the sum of the value of all
+     * contributions.
+     * 
+     * @return the this is a calculated value with the sum of the value of all
+     *         contributions
+     */
     public BigDecimal getContribution() {
         return this.contribution;
     }
 
     /**
+     * Gets the contribution min.
+     * 
      * @return the minimum value of the contributions on this feature.
      */
     public BigDecimal getContributionMin() {
@@ -441,6 +525,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
+     * Gets the contribution max.
+     * 
      * @return the maximum value of the contributions on this feature.
      */
     public BigDecimal getContributionMax() {
@@ -448,23 +534,37 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     }
 
     /**
+     * Gets the contribution avg.
+     * 
      * @return the average value of the contributions on this feature.
      */
     public BigDecimal getContributionAvg() {
         return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg").setEntity("this", this).uniqueResult();
     }
 
+    /**
+     * Gets the validation date.
+     * 
+     * @return the validation date
+     */
     public Date getValidationDate() {
         return this.validationDate;
     }
 
     /**
+     * Gets the software.
+     * 
      * @return the software
      */
     public DaoSoftware getSoftware() {
         return this.software;
     }
 
+    /**
+     * Count open bugs.
+     * 
+     * @return the int
+     */
     public int countOpenBugs() {
         final Query query = SessionManager.getNamedQuery("feature.getBugs.byNonState.size");
         query.setEntity("offer", this.selectedOffer);
@@ -472,6 +572,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         return ((Long) query.uniqueResult()).intValue();
     }
 
+    /**
+     * Gets the open bugs.
+     * 
+     * @return the open bugs
+     */
     public PageIterable<DaoBug> getOpenBugs() {
         if (this.selectedOffer == null) {
             return new EmptyPageIterable<DaoBug>();
@@ -480,6 +585,11 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
                                                                         .setParameter("state", DaoBug.BugState.RESOLVED);
     }
 
+    /**
+     * Gets the closed bugs.
+     * 
+     * @return the closed bugs
+     */
     public PageIterable<DaoBug> getClosedBugs() {
         return new QueryCollection<DaoBug>("feature.getBugs.byState").setEntity("offer", this.selectedOffer).setParameter("state",
                                                                                                                           DaoBug.BugState.RESOLVED);
@@ -489,6 +599,12 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -498,6 +614,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao feature.
+     */
     protected DaoFeature() {
         super();
     }

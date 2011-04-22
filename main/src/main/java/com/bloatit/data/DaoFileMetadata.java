@@ -31,13 +31,41 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
+/**
+ * The Class DaoFileMetadata represent a file.
+ */
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoFileMetadata extends DaoUserContent {
 
+    /**
+     * The Enum FileType is the type of a file.
+     */
     public enum FileType {
-        TEXT, HTML, TEX, PDF, ODT, DOC, BMP, JPG, PNG, SVG, UNKNOWN
+
+        /** The TEXT. */
+        TEXT,
+        /** The HTML. */
+        HTML,
+        /** The TEX. */
+        TEX,
+        /** The PDF. */
+        PDF,
+        /** The ODT. */
+        ODT,
+        /** The DOC. */
+        DOC,
+        /** The BMP. */
+        BMP,
+        /** The JPG. */
+        JPG,
+        /** The PNG. */
+        PNG,
+        /** The SVG. */
+        SVG,
+        /** The UNKNOWN. */
+        UNKNOWN
     }
 
     @Basic(optional = false)
@@ -60,6 +88,18 @@ public class DaoFileMetadata extends DaoUserContent {
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoUserContent relatedContent;
 
+    /**
+     * Creates the fileMetadata and persist it.
+     * 
+     * @param member the member author
+     * @param team the as team property, can be null
+     * @param relatedContent the related content
+     * @param filename the filename
+     * @param url the url of the file in the filesystem
+     * @param type the file type
+     * @param size the file size
+     * @return the newly created dao file metadata
+     */
     public static DaoFileMetadata createAndPersist(final DaoMember member,
                                                    final DaoTeam team,
                                                    final DaoUserContent relatedContent,
@@ -118,6 +158,8 @@ public class DaoFileMetadata extends DaoUserContent {
     }
 
     /**
+     * Sets the short description.
+     * 
      * @param shortDescription the shortDescription to set
      */
     public void setShortDescription(final String shortDescription) {
@@ -125,6 +167,8 @@ public class DaoFileMetadata extends DaoUserContent {
     }
 
     /**
+     * Gets the url.
+     * 
      * @return the url.
      */
     public String getUrl() {
@@ -132,6 +176,8 @@ public class DaoFileMetadata extends DaoUserContent {
     }
 
     /**
+     * Gets the short description.
+     * 
      * @return the shortDescription
      */
     public String getShortDescription() {
@@ -139,6 +185,8 @@ public class DaoFileMetadata extends DaoUserContent {
     }
 
     /**
+     * Gets the filename.
+     * 
      * @return the filename
      */
     public String getFilename() {
@@ -146,24 +194,51 @@ public class DaoFileMetadata extends DaoUserContent {
     }
 
     /**
+     * Gets the size.
+     * 
      * @return the size
      */
     public int getSize() {
         return this.size;
     }
 
+    /**
+     * Gets the file type.
+     * 
+     * @return the file type
+     */
     public FileType getType() {
         return this.type;
     }
 
+    /**
+     * Gets the content on which this file is attached.
+     * 
+     * @return content on which this file is attached.
+     */
     public DaoUserContent getRelatedContent() {
         return this.relatedContent;
+    }
+
+    /**
+     * Sets the content on which this file is attached.
+     * 
+     * @param relatedContent the content on which this file is attached.
+     */
+    void setRelatedContent(final DaoUserContent relatedContent) {
+        this.relatedContent = relatedContent;
     }
 
     // ======================================================================
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -173,6 +248,9 @@ public class DaoFileMetadata extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao file metadata.
+     */
     protected DaoFileMetadata() {
         // for hibernate.
     }
@@ -225,10 +303,6 @@ public class DaoFileMetadata extends DaoUserContent {
             return false;
         }
         return true;
-    }
-
-    public void setRelatedContent(final DaoUserContent relatedContent) {
-        this.relatedContent = relatedContent;
     }
 
 }

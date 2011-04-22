@@ -36,8 +36,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
 /**
- * This represent a content that is Kudosable. There is no table DaoKudosable.
- * Each attribute is mapped by children classes.
+ * @author Thomas Guyard This represent a content that is Kudosable.
  */
 @Entity
 @Cacheable
@@ -73,7 +72,15 @@ public abstract class DaoKudosable extends DaoUserContent {
      * </p>
      */
     public enum PopularityState {
-        VALIDATED, PENDING, HIDDEN, REJECTED,
+
+        /** The VALIDATED. */
+        VALIDATED,
+        /** The PENDING. */
+        PENDING,
+        /** The HIDDEN. */
+        HIDDEN,
+        /** The REJECTED. */
+        REJECTED,
     }
 
     /**
@@ -101,6 +108,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * initial state is PENDING, and popularity is 0.
      * 
      * @param member the author.
+     * @param team the team
      * @see DaoUserContent#DaoUserContent(DaoMember, DaoTeam)
      */
     public DaoKudosable(final DaoMember member, final DaoTeam team) {
@@ -113,6 +121,9 @@ public abstract class DaoKudosable extends DaoUserContent {
     /**
      * Create a new DaoKudos and add it to the list of kudos.
      * 
+     * @param member the member
+     * @param team the team
+     * @param value the value
      * @return the new popularity
      */
     public int addKudos(final DaoMember member, final DaoTeam team, final int value) {
@@ -121,16 +132,24 @@ public abstract class DaoKudosable extends DaoUserContent {
         return this.popularity;
     }
 
+    /**
+     * Lock popularity. If the popularity is locked you cannot change it.
+     */
     public void lockPopularity() {
         this.isPopularityLocked = true;
     }
 
+    /**
+     * Unlock popularity.
+     */
     public void unlockPopularity() {
         this.isPopularityLocked = false;
     }
 
     /**
      * The state must be update from the framework layer.
+     * 
+     * @param state the new state
      */
     public void setState(final PopularityState state) {
         this.state = state;
@@ -150,6 +169,11 @@ public abstract class DaoKudosable extends DaoUserContent {
         return (Long) q.uniqueResult() > 0;
     }
 
+    /**
+     * Checks if the popularity is locked.
+     * 
+     * @return true, if is popularity locked
+     */
     public boolean isPopularityLocked() {
         return this.isPopularityLocked;
     }
@@ -173,10 +197,22 @@ public abstract class DaoKudosable extends DaoUserContent {
         return vote;
     }
 
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     */
     public PopularityState getState() {
         return this.state;
     }
 
+    /**
+     * The popularity is the sum of each value attached to each kudos that
+     * applies on this kudosable.
+     * 
+     * @return the popularity is the sum of each value attached to each kudos
+     *         that applies on this kudosable
+     */
     public int getPopularity() {
         return this.popularity;
     }
@@ -185,6 +221,9 @@ public abstract class DaoKudosable extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao kudosable.
+     */
     protected DaoKudosable() {
         super();
     }

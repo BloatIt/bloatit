@@ -341,7 +341,7 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * Removes the from team.
+     * Removes this member from team.
      * 
      * @param aTeam the team from which this member is removed.
      */
@@ -363,9 +363,9 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * Adds the team right.
+     * Adds team rights on this member.
      * 
-     * @param aTeam the a team
+     * @param aTeam the team on which we want this user to have this new rights.
      * @param newRight the new right
      */
     public void addTeamRight(final DaoTeam aTeam, final UserTeamRight newRight) {
@@ -374,14 +374,15 @@ public class DaoMember extends DaoActor {
             link.addUserRight(newRight);
         } else {
             Log.data().error("Trying to give user some rights in a team he doesn't belong: team = " + aTeam.getId() + " member = " + getId());
+            // TODO should we throw an error here ?
         }
     }
 
     /**
      * Gets the team rights.
      * 
-     * @param aTeam the a team
-     * @return the team rights
+     * @param aTeam a team on which this member is.
+     * @return the team rights of this member into the team <code>team</code>
      */
     public Set<UserTeamRight> getTeamRights(final DaoTeam aTeam) {
         return aTeam.getUserTeamRight(this);
@@ -390,8 +391,8 @@ public class DaoMember extends DaoActor {
     /**
      * Removes the team right.
      * 
-     * @param aTeam the a team
-     * @param removeRight the remove right
+     * @param aTeam a team on which this member is.
+     * @param removeRight the right to remve
      */
     public void removeTeamRight(final DaoTeam aTeam, final UserTeamRight removeRight) {
         final DaoTeamMembership link = DaoTeamMembership.get(aTeam, this);
@@ -452,7 +453,7 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * Adds the to karma.
+     * Adds to the karma.
      * 
      * @param value the value
      */
@@ -545,7 +546,7 @@ public class DaoMember extends DaoActor {
      * Password equals.
      * 
      * @param otherPassword the other password
-     * @return true, if successful
+     * @return true, if the otherPassword equals the current password.
      */
     public boolean passwordEquals(final String otherPassword) {
         return password.equals(otherPassword);

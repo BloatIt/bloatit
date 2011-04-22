@@ -68,6 +68,16 @@ public class DaoDescription extends DaoIdentifiable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoTranslation> translations = new ArrayList<DaoTranslation>(0);
 
+    /**
+     * Create a daoDescription. Set the default locale to "locale"
+     * 
+     * @param member the author of the description
+     * @param team the as team property, can be null.
+     * @param locale the language in which it is written
+     * @param title the title of the description
+     * @param description the actual content
+     * @return the newly created description.
+     */
     public static DaoDescription createAndPersist(final DaoMember member,
                                                   final DaoTeam team,
                                                   final Locale locale,
@@ -102,6 +112,8 @@ public class DaoDescription extends DaoIdentifiable {
 
     /**
      * Add a new translation to this description.
+     * 
+     * @param translation a new translation
      */
     public void addTranslation(final DaoTranslation translation) {
         this.translations.add(translation);
@@ -109,6 +121,8 @@ public class DaoDescription extends DaoIdentifiable {
 
     /**
      * Change the default locale.
+     * 
+     * @param defaultLocale the new local.
      */
     public void setDefaultLocale(final Locale defaultLocale) {
         this.defaultLocale = defaultLocale;
@@ -129,6 +143,8 @@ public class DaoDescription extends DaoIdentifiable {
     /**
      * Gets the Translations of this description in a PageIterable This will
      * return every translation EVEN this description.
+     * 
+     * @return All the translation of this description.
      */
     public PageIterable<DaoTranslation> getTranslations() {
         return new MappedList<DaoTranslation>(this.translations);
@@ -147,6 +163,9 @@ public class DaoDescription extends DaoIdentifiable {
         return (DaoTranslation) q.uniqueResult();
     }
 
+    /**
+     * @return the local in which this description has been originally written.
+     */
     public Locale getDefaultLocale() {
         return this.defaultLocale;
     }

@@ -62,7 +62,14 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
      * </p>
      */
     public enum State {
-        ACCEPTED, REFUSED, PENDING, DISCARDED
+        /** The ACCEPTED. */
+        ACCEPTED,
+        /** The REFUSED. */
+        REFUSED,
+        /** The PENDING. */
+        PENDING,
+        /** The DISCARDED. */
+        DISCARDED
     }
 
     @ManyToOne(optional = false)
@@ -90,7 +97,7 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
      * 
      * @param team the team this invitation is on.
      * @param member the member this invitation was sent to.
-     * @return the invitation, are null if there is no invitation on that
+     * @return the invitation, or null if there is no invitation on that
      *         <code>team</code> sent to this <code>member</code>.
      */
     public static DaoJoinTeamInvitation getRecievedInvitation(final DaoTeam team, final DaoMember member) {
@@ -100,6 +107,14 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
                                                      .uniqueResult();
     }
 
+    /**
+     * Gets the sent invitation.
+     * 
+     * @param team the team this invitation is on.
+     * @param member the member that has sent this invitation.
+     * @return the invitation, or null if there is no invitation on that
+     *         <code>team</code> sent by this <code>member</code>.
+     */
     public static DaoJoinTeamInvitation getSentInvitation(final DaoTeam team, final DaoMember member) {
         return (DaoJoinTeamInvitation) SessionManager.getNamedQuery("joinTeamInvitation.byTeamSender")
                                                      .setEntity("team", team)
@@ -111,6 +126,14 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
     // Construction.
     // ======================================================================
 
+    /**
+     * Creates the invitation and persist it.
+     * 
+     * @param sender the sender
+     * @param reciever the receiver
+     * @param team the team on which we want to invite
+     * @return newly created the dao join team invitation
+     */
     public static DaoJoinTeamInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoTeam team) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoJoinTeamInvitation joinInvitation = new DaoJoinTeamInvitation(sender, reciever, team);
@@ -142,6 +165,7 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
     /**
      * Set the state to accepted and add the receiver into the list of members
      * of this.team. If the state is not PENDING then do nothing.
+     * 
      * @return <i>true</i> if it is accepted. False otherwise.
      */
     public boolean accept() {
@@ -180,6 +204,12 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -189,18 +219,38 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
     // Getters
     // ======================================================================
 
+    /**
+     * Gets the sender.
+     * 
+     * @return the sender
+     */
     public DaoMember getSender() {
         return this.sender;
     }
 
+    /**
+     * Gets the receiver.
+     * 
+     * @return the receiver
+     */
     public DaoMember getReceiver() {
         return this.receiver;
     }
 
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     */
     public State getState() {
         return this.state;
     }
 
+    /**
+     * Gets the team.
+     * 
+     * @return the team
+     */
     public DaoTeam getTeam() {
         return this.team;
     }
@@ -209,6 +259,9 @@ public class DaoJoinTeamInvitation extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao join team invitation.
+     */
     protected DaoJoinTeamInvitation() {
         super();
     }

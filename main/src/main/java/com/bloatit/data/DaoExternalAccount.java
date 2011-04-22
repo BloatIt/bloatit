@@ -29,6 +29,7 @@ import org.hibernate.Session;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
+// TODO: Auto-generated Javadoc
 /**
  * An external Account is our vision of a "reel" bank account.
  */
@@ -40,7 +41,12 @@ public class DaoExternalAccount extends DaoAccount {
      * Ok for now there is only IBAN code but they may have other types.
      */
     public enum AccountType {
-        IBAN, VIRTUAL
+
+        /** The IBAN. */
+        IBAN,
+
+        /** The VIRTUAL. */
+        VIRTUAL
     }
 
     /**
@@ -53,8 +59,12 @@ public class DaoExternalAccount extends DaoAccount {
     private AccountType type;
 
     /**
-     * Create and persiste a DaoExternalAccount
+     * Create and persist a DaoExternalAccount.
      * 
+     * @param actor the person that possess the account
+     * @param type the type of account
+     * @param bankCode the code to give back some money on it
+     * @return the newly created external account.
      * @see DaoExternalAccount#DaoExternalAccount(DaoActor,
      *      DaoExternalAccount.AccountType, String)
      */
@@ -76,7 +86,6 @@ public class DaoExternalAccount extends DaoAccount {
      * @param actor is the owner of the account
      * @param type is the account type
      * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE
-     *            !!
      * @throws NonOptionalParameterException if any of the parameter is null
      * @throws anExceptionToDefine when we will check the validity of the IBAN
      *             we will have to throw an exception if its not valid.
@@ -90,30 +99,62 @@ public class DaoExternalAccount extends DaoAccount {
         this.bankCode = bankCode;
     }
 
+    /**
+     * Instantiates a new dao external account.
+     * 
+     * @param actor the actor
+     */
     protected DaoExternalAccount(final DaoActor actor) {
         super(actor);
         this.type = AccountType.VIRTUAL;
         this.bankCode = "";
     }
 
+    /**
+     * Sets the this is for tests only there is no check here it is a simple
+     * string.
+     * 
+     * @param bankCode the new this is for tests only there is no check here it
+     *            is a simple string
+     */
     public void setBankCode(final String bankCode) {
         this.bankCode = bankCode;
     }
 
+    /**
+     * Sets the type.
+     * 
+     * @param type the new type
+     */
     public void setType(final AccountType type) {
         this.type = type;
     }
 
+    /**
+     * Gets the this is for tests only there is no check here it is a simple
+     * string.
+     * 
+     * @return the this is for tests only there is no check here it is a simple
+     *         string
+     */
     public String getBankCode() {
         return this.bankCode;
     }
 
+    /**
+     * Gets the type.
+     * 
+     * @return the type
+     */
     public AccountType getType() {
         return this.type;
     }
 
     /**
      * Return true all the time.
+     * 
+     * @param amount the amount
+     * @return true, if successful
      */
     @Override
     protected boolean hasEnoughMoney(final BigDecimal amount) {
@@ -124,6 +165,12 @@ public class DaoExternalAccount extends DaoAccount {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -133,6 +180,9 @@ public class DaoExternalAccount extends DaoAccount {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao external account.
+     */
     protected DaoExternalAccount() {
         super();
     }
