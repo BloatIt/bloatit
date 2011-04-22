@@ -52,10 +52,9 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
+// TODO: Auto-generated Javadoc
 /**
- * A DaoMilestone is a part of a DaoOffer.
- * 
- * @author Thomas Guyard
+ * The Class DaoMilestone.
  */
 @Entity
 @Cacheable
@@ -88,10 +87,31 @@ import com.bloatit.framework.utils.PageIterable;
                      }
              )
 // @formatter:on
+/**
+ * A DaoMilestone is a part of a DaoOffer.
+ * 
+ * @author Thomas Guyard
+ */
 public class DaoMilestone extends DaoIdentifiable {
 
+    /**
+     * The Enum MilestoneState.
+     */
     public enum MilestoneState {
-        PENDING, DEVELOPING, UAT, VALIDATED, CANCELED
+
+        /** The PENDING state is the default creation state. */
+        PENDING,
+        /** The DEVELOPING state is the state when a developer is doing its job. */
+        DEVELOPING,
+        /**
+         * The UAT state is when the milestone has a release but is not in
+         * validated state yet (Bugs ...)
+         */
+        UAT,
+        /** The VALIDATED is a final state. */
+        VALIDATED,
+        /** The CANCELED is a final state. */
+        CANCELED
     }
 
     /**
@@ -100,17 +120,20 @@ public class DaoMilestone extends DaoIdentifiable {
     @Basic(optional = false)
     @Field(index = Index.UN_TOKENIZED, store = Store.YES)
     @DateBridge(resolution = Resolution.DAY)
-    @Column(updatable = false)    
+    @Column(updatable = false)
     private Date expirationDate;
 
+    /** The second before validation. */
     @Basic(optional = false)
     @Column(updatable = false)
     private int secondBeforeValidation;
 
+    /** The fatal bugs percent. */
     @Basic(optional = false)
     @Column(updatable = false)
     private int fatalBugsPercent;
 
+    /** The major bugs percent. */
     @Basic(optional = false)
     @Column(updatable = false)
     private int majorBugsPercent;
@@ -125,9 +148,11 @@ public class DaoMilestone extends DaoIdentifiable {
     private BigDecimal amount;
 
     // nullable.
+    /** The level to validate. */
     @Enumerated
     private Level levelToValidate;
 
+    /** The milestone state. */
     @Basic(optional = false)
     private MilestoneState milestoneState;
 
@@ -140,17 +165,20 @@ public class DaoMilestone extends DaoIdentifiable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoDescription description;
 
+    /** The bugs. */
     @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoBug> bugs = new ArrayList<DaoBug>();
 
+    /** The releases. */
     @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "id DESC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoRelease> releases = new ArrayList<DaoRelease>();
 
+    /** The offer. */
     @ManyToOne(optional = false)
     private DaoOffer offer;
 
@@ -161,14 +189,13 @@ public class DaoMilestone extends DaoIdentifiable {
     /**
      * Create a DaoMilestone.
      * 
-     * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param dateExpire is the date when this offer should be finish. Must be
      *            non null, and in the future.
+     * @param amount is the amount of the offer. Must be non null, and > 0.
+     * @param description the description
+     * @param offer the offer
      * @param secondBeforeValidation number of seconds to wait until we watch
      *            for bugs and validate the milestone.
-     * @throws NonOptionalParameterException if a parameter is null.
-     * @throws BadProgrammerException if the amount is < 0 or if the Date is in
-     *             the future.
      */
     public DaoMilestone(final Date dateExpire,
                         final BigDecimal amount,
@@ -200,14 +227,13 @@ public class DaoMilestone extends DaoIdentifiable {
      * Set the percent of money the developer will received when all bugs of one
      * level are closed. This method take parameters for the Fatal and Major
      * level. The Minor level is calculated from it (see
-     * {@link #getMinorBugsPercent()}).
      * 
      * @param fatalPercent is the percent of the money the developer will get
      *            when all the {@link Level#FATAL} bugs are closed. It must be
      *            >= 0 and <= 100.
      * @param majorPercent is the percent of the money the developer will get
      *            when all the {@link Level#MAJOR} bugs are closed. It must be
-     *            >= 0 and <= 100.
+     *            >= 0 and <= 100. {@link #getMinorBugsPercent()}).
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         if (fatalPercent < 0 || majorPercent < 0) {
@@ -220,10 +246,18 @@ public class DaoMilestone extends DaoIdentifiable {
         this.majorBugsPercent = majorPercent;
     }
 
+    /**
+     * Sets the developing.
+     */
     public void setDeveloping() {
         this.milestoneState = MilestoneState.DEVELOPING;
     }
 
+    /**
+     * Adds the release.
+     * 
+     * @param release the release
+     */
     public void addRelease(final DaoRelease release) {
         this.releases.add(release);
         if (this.milestoneState == MilestoneState.DEVELOPING) {
@@ -232,6 +266,11 @@ public class DaoMilestone extends DaoIdentifiable {
         getOffer().milestoneHasARelease(this);
     }
 
+    /**
+     * Adds the bug.
+     * 
+     * @param bug the bug
+     */
     public void addBug(final DaoBug bug) {
         this.bugs.add(bug);
     }
@@ -290,6 +329,7 @@ public class DaoMilestone extends DaoIdentifiable {
      * You can validate a milestone after its release and when the bugs
      * requirement are done.
      * 
+     * @param level the level
      * @return true if an admin should validate this Milestone part. False
      *         otherwise.
      */
@@ -300,10 +340,21 @@ public class DaoMilestone extends DaoIdentifiable {
         return false;
     }
 
+    /**
+     * Part is validated.
+     * 
+     * @param level the level
+     * @return true, if successful
+     */
     public boolean partIsValidated(final Level level) {
         return this.levelToValidate == null || !EnumSet.range(this.levelToValidate, Level.MINOR).contains(level);
     }
 
+    /**
+     * Validation period finished.
+     * 
+     * @return true, if successful
+     */
     private boolean validationPeriodFinished() {
         final Date releasedDate = getReleasedDate();
         if (releasedDate == null) {
@@ -312,6 +363,9 @@ public class DaoMilestone extends DaoIdentifiable {
         return new Date(releasedDate.getTime() + ((long) this.secondBeforeValidation) * 1000).before(new Date());
     }
 
+    /**
+     * Cancel milestone.
+     */
     public void cancelMilestone() {
         this.milestoneState = MilestoneState.CANCELED;
     }
@@ -320,55 +374,119 @@ public class DaoMilestone extends DaoIdentifiable {
     // Getters.
     // ======================================================================
 
+    /**
+     * Gets the non resolved bugs.
+     * 
+     * @param level the level
+     * @return the non resolved bugs
+     */
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
         return new QueryCollection<DaoBug>("milestone.getBugs.byNonStateLevel").setEntity("this", this)
                                                                                .setParameter("level", level)
                                                                                .setParameter("state", BugState.RESOLVED);
     }
 
+    /**
+     * Gets the bugs.
+     * 
+     * @param level the level
+     * @return the bugs
+     */
     public PageIterable<DaoBug> getBugs(final Level level) {
         return new QueryCollection<DaoBug>("milestone.getBugs.byLevel").setEntity("this", this).setParameter("level", level);
     }
 
+    /**
+     * Gets the bugs.
+     * 
+     * @param state the state
+     * @return the bugs
+     */
     public PageIterable<DaoBug> getBugs(final BugState state) {
         return new QueryCollection<DaoBug>("milestone.getBugs.byState").setEntity("this", this).setParameter("state", state);
     }
 
+    /**
+     * Gets the bugs.
+     * 
+     * @param level the level
+     * @param state the state
+     * @return the bugs
+     */
     public PageIterable<DaoBug> getBugs(final Level level, final BugState state) {
         return new QueryCollection<DaoBug>("milestone.getBugs.byStateLevel").setEntity("this", this)
                                                                             .setParameter("level", level)
                                                                             .setParameter("state", state);
     }
 
+    /**
+     * Gets the second before validation.
+     * 
+     * @return the second before validation
+     */
     public int getSecondBeforeValidation() {
         return secondBeforeValidation;
     }
 
+    /**
+     * Gets the releases.
+     * 
+     * @return the releases
+     */
     public PageIterable<DaoRelease> getReleases() {
         return new MappedList<DaoRelease>(this.releases);
     }
 
+    /**
+     * Gets the after this date, the Milestone should be done.
+     * 
+     * @return the after this date, the Milestone should be done
+     */
     public Date getExpirationDate() {
         return (Date) this.expirationDate.clone();
     }
 
+    /**
+     * Gets the milestone state.
+     * 
+     * @return the milestone state
+     */
     public MilestoneState getMilestoneState() {
         return this.milestoneState;
     }
 
+    /**
+     * Gets the amount represents the money the member want to have to make his
+     * offer.
+     * 
+     * @return the amount represents the money the member want to have to make
+     *         his offer
+     */
     public BigDecimal getAmount() {
         return this.amount;
     }
 
+    /**
+     * Gets the remember a description is a title with some content.
+     * 
+     * @return the remember a description is a title with some content
+     */
     public DaoDescription getDescription() {
         return this.description;
     }
 
+    /**
+     * Gets the offer.
+     * 
+     * @return the offer
+     */
     public DaoOffer getOffer() {
         return this.offer;
     }
 
     /**
+     * Gets the released date.
+     * 
      * @return the releaseDate
      */
     public Date getReleasedDate() {
@@ -377,6 +495,8 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
+     * Gets the fatal bugs percent.
+     * 
      * @return the fatalBugsPercent
      */
     public int getFatalBugsPercent() {
@@ -384,6 +504,8 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
+     * Gets the major bugs percent.
+     * 
      * @return the majorBugsPercent
      */
     public int getMajorBugsPercent() {
@@ -391,6 +513,8 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
+     * Gets the minor bugs percent.
+     * 
      * @return the getMinorBugsPercent (= 100 - (majorBugsPercent +
      *         fatalBugsPercent)).
      */
@@ -402,6 +526,12 @@ public class DaoMilestone extends DaoIdentifiable {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -411,6 +541,9 @@ public class DaoMilestone extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao milestone.
+     */
     protected DaoMilestone() {
         super();
     }

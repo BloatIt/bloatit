@@ -35,7 +35,8 @@ import org.hibernate.search.annotations.Store;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
- * A translation store the data of a description in a for a locale.
+ * A translation is a version of a description in a specific language. It
+ * contains a Title and a text.
  */
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "locale", "description_id" }) })
@@ -61,16 +62,23 @@ public class DaoTranslation extends DaoKudosable {
     private DaoDescription description;
 
     /**
-     * Create a new translation.
+     * Create a new translation. The content translatable is a text and a title.
      * 
-     * @param member
-     * @param description
-     * @param locale
-     * @param title
-     * @param text
+     * @param member the author
+     * @param team null or the speak as team property
+     * @param description the description that is the origin of this
+     *            translation.
+     * @param locale the language in which this description has been added.
+     * @param title the title of this content.
+     * @param text the translated text.
      * @throws NonOptionalParameterException if any of the field is null
      */
-    public DaoTranslation(final DaoMember member, final DaoTeam team, final DaoDescription description, final Locale locale, final String title, final String text) {
+    public DaoTranslation(final DaoMember member,
+                          final DaoTeam team,
+                          final DaoDescription description,
+                          final Locale locale,
+                          final String title,
+                          final String text) {
         super(member, team);
         if (description == null || locale == null || title == null || text == null) {
             throw new NonOptionalParameterException();
@@ -84,14 +92,23 @@ public class DaoTranslation extends DaoKudosable {
         this.description = description;
     }
 
+    /**
+     * @return the title of this translation.
+     */
     public String getTitle() {
         return this.title;
     }
 
+    /**
+     * @return the local of this translation
+     */
     public Locale getLocale() {
         return this.locale;
     }
 
+    /**
+     * @return the text of this translation.
+     */
     public String getText() {
         return this.text;
     }

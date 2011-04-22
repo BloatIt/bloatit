@@ -25,7 +25,6 @@ import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DBRequests;
 
 public class GenericConstructor {

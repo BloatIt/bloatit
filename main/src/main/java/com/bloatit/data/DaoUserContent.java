@@ -69,9 +69,16 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     @Field(store = Store.NO)
     private Date creationDate;
 
+    /**
+     * Instead of actually deleting the content in the db, we can set the
+     * isDeleted boolean to true.
+     */
     @Basic(optional = false)
     private boolean isDeleted;
 
+    /**
+     * A user can attach on any userContent a file.
+     */
     @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
@@ -80,6 +87,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * Initialize the creation date to now.
      * 
      * @param member is the author of this UserContent.
+     * @param team can be null. If the content is created in the name of a team,
+     *            then you have to specify the team here.
      * @throws NonOptionalParameterException if the member == null.
      */
     public DaoUserContent(final DaoMember member, final DaoTeam team) {
@@ -113,10 +122,16 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return asTeam == null ? member : asTeam;
     }
 
+    /**
+     * @return The creation date of this content.
+     */
     public final Date getCreationDate() {
         return (Date) this.creationDate.clone();
     }
 
+    /**
+     * @return the team in which name this content has been created or null.
+     */
     public final DaoTeam getAsTeam() {
         return this.asTeam;
     }
@@ -128,14 +143,26 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return new MappedList<DaoFileMetadata>(this.files);
     }
 
+    /**
+     * @return true if the content should be considered as delete.
+     */
     public boolean isDeleted() {
         return this.isDeleted;
     }
 
+    /**
+     * @param isDeleted the new isDeleted value.
+     * @see #isDeleted
+     */
     public void setIsDeleted(final Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
+    /**
+     * Attach a file on this user content.
+     * 
+     * @param daoFileMetadata the file to attach on this content
+     */
     public void addFile(final DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
         daoFileMetadata.setRelatedContent(this);

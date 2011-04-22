@@ -40,13 +40,28 @@ public class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
+    
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoInternalAccount from;
+    
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoAccount to;
+    
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
+    /**
+     * Create a new transaction and update the two accounts.
+     * 
+     * @param from is the account from which we will take money.
+     * @param to is the account where the money goes
+     * @param amount is the quantity of money transfered.
+     * @return the newly created transaction.
+     * @throws NotEnoughMoneyException if there is not enough money to make the
+     *             transaction
+     * @throws BadProgrammerException if to == from
+     * @throws NullPointerException if any of the parameters = null
+     */
     public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount)
             throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -89,18 +104,30 @@ public class DaoTransaction extends DaoIdentifiable {
         Log.data().info("Transaction done: " + amount);
     }
 
+    /**
+     * @return the account from which the transaction has been done.
+     */
     public DaoInternalAccount getFrom() {
         return this.from;
     }
 
+    /**
+     * @return the account to which the transaction has been done
+     */
     public DaoAccount getTo() {
         return this.to;
     }
 
+    /**
+     * @return the amount of the transaction. It can be positive or negative.
+     */
     public BigDecimal getAmount() {
         return this.amount;
     }
 
+    /**
+     * @return the creation date of this transaction.
+     */
     public Date getCreationDate() {
         return (Date) this.creationDate.clone();
     }

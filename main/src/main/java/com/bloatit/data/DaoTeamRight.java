@@ -15,8 +15,36 @@ import javax.persistence.ManyToOne;
 @Entity
 public class DaoTeamRight extends DaoIdentifiable {
 
+    /**
+     * Enumerate what kind of right a user has in a specific group.
+     */
     public enum UserTeamRight {
-        CONSULT, TALK, INVITE, MODIFY, BANK, PROMOTE
+        /**
+         * Every member of the team must have this right. It is the basic right
+         * to consult the group content.
+         */
+        CONSULT,
+        /**
+         * Tells if you can create content in the name of a team.
+         */
+        TALK,
+        /**
+         * tells if you can invite a user in the current team
+         */
+        INVITE,
+        /**
+         * tells if you can modify content created by a team
+         */
+        MODIFY,
+        /**
+         * Tells that you have access to the account of the team.
+         */
+        BANK,
+        /**
+         * You are the super user of this team. You can change the rights of
+         * other users (but not yours).
+         */
+        PROMOTE
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

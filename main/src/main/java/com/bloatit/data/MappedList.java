@@ -7,6 +7,13 @@ import org.hibernate.Query;
 
 import com.bloatit.framework.utils.PageIterable;
 
+/**
+ * A mapped list is a persistant list mapped to a {@link PageIterable}. You can
+ * use it when you have a list that you want to paginate.
+ * 
+ * @author Thomas Guyard
+ * @param <T> the object stored in the list.
+ */
 public class MappedList<T> implements PageIterable<T> {
 
     private final List<T> list;
@@ -15,6 +22,13 @@ public class MappedList<T> implements PageIterable<T> {
     private int size;
     private int currentPage;
 
+    /**
+     * Create a new mapped list on the list mappedList. The default page size is
+     * the whole list. The size of the list will be calculate using a filter
+     * ("select count(*)").
+     * 
+     * @param mappedList
+     */
     public MappedList(final List<T> mappedList) {
         this.list = mappedList;
         this.sizeQuery = SessionManager.createFilter(mappedList, "select count(*)");

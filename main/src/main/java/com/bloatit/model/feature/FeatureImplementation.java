@@ -368,7 +368,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * Slot called when this feature state change to {@link FinishedState}.
      */
     private void inFinishedState() {
-        if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().hasMilestoneesLeft()) {
+        if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().hasMilestonesLeft()) {
             throw new WrongStateException("Cannot be in finished state if the current offer has milestone to validate.");
         }
         getDao().setFeatureState(FeatureState.FINISHED);

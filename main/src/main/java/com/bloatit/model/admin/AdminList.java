@@ -1,8 +1,8 @@
 package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoIdentifiable;
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.IdentifiableInterface;
 import com.bloatit.model.lists.ListBinder;
 
 /**

@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
@@ -20,6 +19,7 @@ import com.bloatit.model.Commentable;
 import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
+import com.bloatit.model.IdentifiableInterface;
 
 public final class Loaders {
 

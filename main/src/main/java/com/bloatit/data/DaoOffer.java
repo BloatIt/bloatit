@@ -105,8 +105,14 @@ public class DaoOffer extends DaoKudosable {
      * Create a DaoOffer.
      * 
      * @param member is the author of the offer. Must be non null.
+     * @param team the asTeam property. can be null.
      * @param feature is the feature on which this offer is made. Must be non
      *            null.
+     * @param amount the omount need for this offer to go in dev.
+     * @param description the description of the offer
+     * @param dateExpire the scheduled release date
+     * @param secondsBeforeValidation The time to wait before validating this
+     *            offer.
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws BadProgrammerException if the amount is < 0 or if the Date is in
      *             the future.
@@ -130,6 +136,10 @@ public class DaoOffer extends DaoKudosable {
         addMilestone(new DaoMilestone(dateExpire, amount, description, this, secondsBeforeValidation));
     }
 
+    /**
+     * Cancel all milestone on this offer. The already finished milestones (with
+     * valid release) cannot be canceled.
+     */
     public void cancelEverythingLeft() {
         for (int i = this.currentMilestone; i < this.milestones.size(); ++i) {
             this.milestones.get(i).cancelMilestone();
@@ -137,6 +147,12 @@ public class DaoOffer extends DaoKudosable {
         this.currentMilestone = this.milestones.size();
     }
 
+    /**
+     * Add an other milestone. You have to be in the draft mode.
+     * 
+     * @param milestone th milestone to add.
+     * @see #setDraft(boolean)
+     */
     public void addMilestone(final DaoMilestone milestone) {
         if (isDraft() == false) {
             throw new BadProgrammerException("You cannot add a milestone on a non draft offer.");
@@ -149,14 +165,24 @@ public class DaoOffer extends DaoKudosable {
         this.milestones.add(milestone);
     }
 
-    public boolean hasMilestoneesLeft() {
+    /**
+     * @return true if there is non validated milestone on this release.
+     */
+    public boolean hasMilestonesLeft() {
         return this.currentMilestone < this.milestones.size();
     }
 
+    /**
+     * Tells that the current milestone is valid and that we can pass to the new
+     * milestone. This method never fail, even if there is no mileston left.
+     */
     void passToNextMilestone() {
         this.currentMilestone++;
     }
 
+    /**
+     * Tells if a milestone has a release associated to.
+     */
     void milestoneHasARelease(final DaoMilestone milestone) {
         // Find next milestone. Passe it into developing state.
         for (int i = 0; i < this.milestones.size(); ++i) {
@@ -169,6 +195,12 @@ public class DaoOffer extends DaoKudosable {
         }
     }
 
+    /**
+     * An offer is in draft mode during its construction. You have to set the
+     * draft mode to false when you are finish adding new milestones.
+     * 
+     * @param isDraft the new draft state
+     */
     public void setDraft(final boolean isDraft) {
         this.isDraft = isDraft;
     }
@@ -177,6 +209,10 @@ public class DaoOffer extends DaoKudosable {
     // Getters
     // ======================================================================
 
+    /**
+     * @return the is draft value
+     * @see #setDraft(boolean)
+     */
     public boolean isDraft() {
         return this.isDraft;
     }
@@ -188,6 +224,10 @@ public class DaoOffer extends DaoKudosable {
         return new QueryCollection<DaoMilestone>("offer.getMilestones").setEntity("this", this);
     }
 
+    /**
+     * @return the current milestone. make sure there is at least one milestone
+     *         left.
+     */
     public DaoMilestone getCurrentMilestone() {
         return this.milestones.get(this.currentMilestone);
     }
@@ -199,6 +239,9 @@ public class DaoOffer extends DaoKudosable {
         return (Date) this.expirationDate.clone();
     }
 
+    /**
+     * @return the amount of this offer.
+     */
     public BigDecimal getAmount() {
         return this.amount;
     }
@@ -234,12 +277,19 @@ public class DaoOffer extends DaoKudosable {
         throw new BadProgrammerException("This offer has no milestone, or the 'current' milestone isn't found");
     }
 
+    /**
+     * @return tells if this offer has release.
+     */
     public boolean hasRelease() {
         final Query query = SessionManager.createFilter(this.milestones, "SELECT count(*) WHERE this.releases is not empty");
         return !((Long) query.uniqueResult()).equals(0L);
     }
 
+    /**
+     * @return the last release on this offer.
+     */
     public DaoRelease getLastRelease() {
+        // TODO externalize HQL request
         final String q = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
                 "FROM DaoOffer as o " + //
                 "INNER JOIN o.milestones as b " + //
@@ -249,6 +299,13 @@ public class DaoOffer extends DaoKudosable {
         final Query query = SessionManager.createQuery(q).setEntity("this", this);
 
         return (DaoRelease) query.uniqueResult();
+    }
+
+    /**
+     * @return the feature on which this offer has been made.
+     */
+    public DaoFeature getFeature() {
+        return this.feature;
     }
 
     // ======================================================================
@@ -266,10 +323,6 @@ public class DaoOffer extends DaoKudosable {
 
     protected DaoOffer() {
         super();
-    }
-
-    public DaoFeature getFeature() {
-        return this.feature;
     }
 
     // ======================================================================

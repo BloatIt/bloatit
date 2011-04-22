@@ -41,8 +41,14 @@ public class SessionManager {
     }
 
     // SHOULD BE FINAL see generateTestSessionFactory
+    /** The session factory. */
     private static SessionFactory sessionFactory = buildSessionFactory();
 
+    /**
+     * Builds the session factory; Update the lucene index.
+     * 
+     * @return the session factory
+     */
     private static SessionFactory buildSessionFactory() {
         try {
             final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "validate");
@@ -60,6 +66,12 @@ public class SessionManager {
         }
     }
 
+    /**
+     * Create the configuration for hibernate sessionFactory. Handle the
+     * encryptor to encrypt the db password in the hibernate.cfg.xml conf file.
+     * 
+     * @return
+     */
     private static Configuration createConfiguration() {
         final HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
         registry.registerPBEStringEncryptor("strongHibernateStringEncryptor", ConfigurationManager.getEncryptor());
@@ -67,14 +79,36 @@ public class SessionManager {
         return configuration;
     }
 
+    /**
+     * Shortener to create a HQL query.
+     * 
+     * @param str the Hql query string.
+     * @return the query
+     * @see org.hibernate.Session#createQuery(String)
+     */
     public static Query createQuery(final String str) {
         return getSessionFactory().getCurrentSession().createQuery(str);
     }
 
+    /**
+     * Shortener to create a Hql filter
+     * 
+     * @param collection a mapped collection
+     * @param str the filter
+     * @return the query corresponding to that filter
+     * @see org.hibernate.Session#createFilter(Object, String)
+     */
     public static Query createFilter(final Object collection, final String str) {
         return getSessionFactory().getCurrentSession().createFilter(collection, str);
     }
 
+    /**
+     * Shortener to get a HQL query by name.
+     * 
+     * @param name the query name
+     * @return the HQL query having this name.
+     * @see org.hibernate.Session#getNamedQuery(String)
+     */
     public static Query getNamedQuery(final String name) {
         return getSessionFactory().getCurrentSession().getNamedQuery(name);
     }
@@ -82,20 +116,38 @@ public class SessionManager {
     /**
      * singleton pattern implementation.
      * 
-     * @return the current session.
+     * @return the current hibernate session.
      */
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 
+    /**
+     * Singleton pattern implementation.
+     * 
+     * @return the current hibernate search session.
+     */
     public static FullTextSession getCurrentFullTextSession() {
         return Search.getFullTextSession(sessionFactory.getCurrentSession());
     }
 
+    /**
+     * Begin a work unit. You have to make sure this method is called before
+     * using any hibernate related features. It begins a new transaction.
+     * 
+     * @see org.hibernate.Session#beginTransaction()
+     */
     public static void beginWorkUnit() {
         sessionFactory.getCurrentSession().beginTransaction();
     }
 
+    /**
+     * Close the current workunit. Try to commit the data to the db. If there is
+     * an error everything is rollback.
+     * 
+     * @see org.hibernate.Transaction#commit()
+     * @see org.hibernate.Transaction#rollback()
+     */
     public static void endWorkUnitAndFlush() {
         try {
             sessionFactory.getCurrentSession().getTransaction().commit();
@@ -105,14 +157,23 @@ public class SessionManager {
         }
     }
 
+    /**
+     * Shortener for flushing the hibernate session.
+     */
     public static void flush() {
         sessionFactory.getCurrentSession().flush();
     }
 
+    /**
+     * Shortener for clearing the hiberate session.
+     */
     public static void clear() {
         sessionFactory.getCurrentSession().clear();
     }
 
+    /**
+     * Shortener to rollback the current hibernate session.
+     */
     public static void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
@@ -128,13 +189,17 @@ public class SessionManager {
                                                                      .setProperty("hibernate.cache.use_query_cache", "false")
                                                                      .setProperty("hibernate.cache.provider_class", "hibernate.cache.provider_class")
                                                                      .setProperty(Environment.SHOW_SQL, "false")
-//                                                                     .setProperty(Environment.DRIVER, "org.hsqldb.jdbcDriver")
-//                                                                     .setProperty(Environment.DIALECT, HSQLDialect.class.getName())
-//                                                                     .setProperty(Environment.USER, "sa")
-//                                                                     .setProperty(Environment.PASS, "")
-//                                                                     .setProperty(Environment.URL, "jdbc:hsqldb:mem:testdb")
-                                                                     .setProperty(Environment.URL, "jdbc:postgresql://localhost/bloatit_test")
-                                                                     ;
+                                                                     // .setProperty(Environment.DRIVER,
+                                                                     // "org.hsqldb.jdbcDriver")
+                                                                     // .setProperty(Environment.DIALECT,
+                                                                     // HSQLDialect.class.getName())
+                                                                     // .setProperty(Environment.USER,
+                                                                     // "sa")
+                                                                     // .setProperty(Environment.PASS,
+                                                                     // "")
+                                                                     // .setProperty(Environment.URL,
+                                                                     // "jdbc:hsqldb:mem:testdb")
+                                                                     .setProperty(Environment.URL, "jdbc:postgresql://localhost/bloatit_test");
             sessionFactory = configuration.buildSessionFactory();
 
         } catch (final Exception ex) {

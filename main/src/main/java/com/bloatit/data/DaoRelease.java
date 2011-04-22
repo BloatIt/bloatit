@@ -38,6 +38,12 @@ import org.hibernate.annotations.OrderBy;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
+/**
+ * A Release is a finished version of an implemented feature. There should be at
+ * lease one release by milestone.
+ * 
+ * @author Thomas Guyard
+ */
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -63,12 +69,12 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
 
     private String version;
 
-    public DaoRelease(final DaoMember member,
-                      final DaoTeam team,
-                      final DaoMilestone milestone,
-                      final String description,
-                      final String version,
-                      final Locale locale) {
+    private DaoRelease(final DaoMember member,
+                       final DaoTeam team,
+                       final DaoMilestone milestone,
+                       final String description,
+                       final String version,
+                       final Locale locale) {
         super(member, team);
         if (description == null || milestone == null || locale == null || version == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -79,6 +85,15 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
         this.version = version;
     }
 
+    /**
+     * @param member the author of the release.
+     * @param team the as team property of this release.
+     * @param milestone the milestone on which this release has been done
+     * @param description the description of the release
+     * @param version the version of the release (for example 1.2.3 )
+     * @param locale the language in which the description has been written.
+     * @return the new release
+     */
     public static DaoRelease createAndPersist(final DaoMember member,
                                               final DaoTeam team,
                                               final DaoMilestone milestone,
@@ -109,6 +124,9 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
         return this.description;
     }
 
+    /**
+     * @return the version of this release.
+     */
     public String getVersion() {
         return this.version;
     }
@@ -120,6 +138,9 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
         return this.locale;
     }
 
+    /**
+     * @return the milestone on which this release has been added.
+     */
     public DaoMilestone getMilestone() {
         return this.milestone;
     }

@@ -14,14 +14,28 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.data;
+package com.bloatit.model;
 
-import com.bloatit.model.ModelClassVisitor;
-
+/**
+ * @author Thomas Guyard Every identifiable should inherite from the
+ *         identifiable interface.
+ */
 public interface IdentifiableInterface {
 
+    /**
+     * return the unique id of this identifiable.
+     * 
+     * @return the unique id of this identifiable.
+     */
     Integer getId();
 
+    /**
+     * Implement the visitor pattern.
+     * 
+     * @param <ReturnType> the return type of the accept method
+     * @param visitor a visitor that can visit every model layer class.
+     * @return visitor.visit()
+     */
     <ReturnType> ReturnType accept(ModelClassVisitor<ReturnType> visitor);
 
 }

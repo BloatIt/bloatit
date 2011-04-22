@@ -19,7 +19,6 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.right.RestrictedInterface;
 

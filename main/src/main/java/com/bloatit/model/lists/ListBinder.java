@@ -19,8 +19,8 @@ package com.bloatit.model.lists;
 import java.util.Iterator;
 
 import com.bloatit.data.DaoIdentifiable;
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.IdentifiableInterface;
 
 /**
  * The Class ListBinder is the base class of all the binder lists. A Binder list

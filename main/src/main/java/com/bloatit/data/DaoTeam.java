@@ -70,9 +70,16 @@ public class DaoTeam extends DaoActor {
      * in.
      */
     public enum Right {
-        PUBLIC, PROTECTED;
+        /**
+         * Everybody can see this team and can go into it.
+         */
+        PUBLIC,
+        /**
+         * Everybody can see this team but you need an invitation to go into it.
+         */
+        PROTECTED;
     }
-    
+
     private String displayName;
 
     /**
@@ -103,6 +110,12 @@ public class DaoTeam extends DaoActor {
     // Static HQL Requests
     // ======================================================================
 
+    /**
+     * Get a team using its name.
+     * 
+     * @param name the name of the team we are lookong for.
+     * @return the team named <code>name<code> or null if not found.
+     */
     public static DaoTeam getByName(final String name) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.getNamedQuery("team.byName");
@@ -118,6 +131,8 @@ public class DaoTeam extends DaoActor {
      * Create a team and add it into the db.
      * 
      * @param login it the unique and non updatable name of the team.
+     * @param contact some contact information for that team.
+     * @param description the desctiption of the team.
      * @param right is the type of team we are creating (Public or Private).
      * @return the newly created team.
      * @throws HibernateException
@@ -151,15 +166,31 @@ public class DaoTeam extends DaoActor {
         this.description = description;
     }
 
+    /**
+     * Change the type of team.
+     * 
+     * @param right the new right of this team.
+     */
     public void setRight(final Right right) {
         this.right = right;
     }
 
+    /**
+     * Change the contact information on this team.
+     * 
+     * @param contact the new contact information.
+     */
     public void setContact(final String contact) {
         this.contact = contact;
     }
-    
+
+    /**
+     * Change the display name of this team.
+     * 
+     * @param displayName
+     */
     public void setDisplayName(final String displayName) {
+        // TODO: remove me.
         this.displayName = displayName;
     }
 
@@ -176,16 +207,14 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Remove a member from the team
+     * 
+     * @param member the member to remove
      */
     public void removeMember(final DaoMember member) {
         final DaoTeamMembership link = DaoTeamMembership.get(this, member);
         this.teamMembership.remove(link);
         member.getTeamMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
-    }
-
-    public PageIterable<DaoContribution> getContributions() {
-        return new QueryCollection<DaoContribution>("team.getContributions").setEntity("this", this);
     }
 
     /**
@@ -202,6 +231,13 @@ public class DaoTeam extends DaoActor {
         this.avatar = avatar;
     }
 
+    /**
+     * @param description the new description of the team.
+     */
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
     // ======================================================================
     // Visitor.
     // ======================================================================
@@ -216,6 +252,13 @@ public class DaoTeam extends DaoActor {
     // ======================================================================
 
     /**
+     * @return the contribution done by this team.
+     */
+    public PageIterable<DaoContribution> getContributions() {
+        return new QueryCollection<DaoContribution>("team.getContributions").setEntity("this", this);
+    }
+
+    /**
      * @return all the member in this team. (Use a HQL query).
      */
     public PageIterable<DaoMember> getMembers() {
@@ -225,6 +268,9 @@ public class DaoTeam extends DaoActor {
         return new QueryCollection<DaoMember>(filter, count);
     }
 
+    /**
+     * @return the type of team (PUBLIC or PRIVATE)
+     */
     public Right getRight() {
         return this.right;
     }
@@ -232,6 +278,7 @@ public class DaoTeam extends DaoActor {
     /**
      * Finds if a member is in this team, and which is its status.
      * 
+     * @param member The member we want to know its status.
      * @return {@code null} if the member is not in this team, or a set
      *         otherwise. <br />
      *         Note, the returned set can be empty if the user is only a Member
@@ -253,14 +300,16 @@ public class DaoTeam extends DaoActor {
         return rights;
     }
 
+    /**
+     * @return the description of this team.
+     */
     public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
+    /**
+     * @return the contact informations of this team
+     */
     public String getContact() {
         return this.contact;
     }
@@ -271,7 +320,10 @@ public class DaoTeam extends DaoActor {
     protected List<DaoTeamMembership> getTeamMembership() {
         return this.teamMembership;
     }
-    
+
+    /**
+     * @return the display name value of this team. It coulb be null if not setted.
+     */
     public String getDisplayName() {
         return displayName;
     }

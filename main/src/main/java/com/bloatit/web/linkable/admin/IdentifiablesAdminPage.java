@@ -3,7 +3,6 @@ package com.bloatit.web.linkable.admin;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoIdentifiable;
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -23,6 +22,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.model.IdentifiableInterface;
 import com.bloatit.model.admin.IdentifiableAdminListFactory;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.IdentifiablesAdminPageUrl;

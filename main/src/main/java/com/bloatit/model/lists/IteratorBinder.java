@@ -17,8 +17,8 @@
 package com.bloatit.model.lists;
 
 import com.bloatit.data.DaoIdentifiable;
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.model.DataVisitorConstructor;
+import com.bloatit.model.IdentifiableInterface;
 
 /**
  * The Class IteratorBinder is the base class of the iterator used in the List

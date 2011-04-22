@@ -39,6 +39,9 @@ import org.hibernate.annotations.OrderBy;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
+/**
+ * @author Thomas Guyard
+ */
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -46,9 +49,15 @@ import com.bloatit.framework.utils.PageIterable;
 @NamedQueries(value = { @NamedQuery(
                            name = "software.byName",
                            query = "FROM DaoSoftware WHERE name = :name"),
+                       @NamedQuery(
+                                   name = "software.byName.size",
+                                   query = "SELECT count(*) FROM DaoSoftware WHERE name = :name"),
                        }
              )
 // @formatter:on
+/**
+ * A DaoSoftware represent a software on which we can add some new feature.
+ */
 public class DaoSoftware extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = false)
@@ -70,15 +79,35 @@ public class DaoSoftware extends DaoIdentifiable {
     // Static HQL requests
     // ======================================================================
 
+    /**
+     * @param name is the name of the software we are looking for.
+     * @return The software with the name <code>name</code>
+     */
     public static DaoSoftware getByName(final String name) {
         final Query query = SessionManager.getNamedQuery("software.byName").setString("name", name);
         return (DaoSoftware) query.uniqueResult();
+    }
+
+    /**
+     * @param name is the name of the software we are looking for.
+     * @return true if the software exist. false otherwise.
+     */
+    public static boolean exists(final String name) {
+        final Query query = SessionManager.getNamedQuery("software.byName.size").setString("name", name);
+        return ((Long) query.uniqueResult()) > 0;
     }
 
     // ======================================================================
     // Construction
     // ======================================================================
 
+    /**
+     * @param name The name of the software
+     * @param description a description of the software.
+     * @return the newly created daoSoftware.
+     * @throws NonOptionalParameterException if any of the parameters is null or
+     *             empty.
+     */
     public static DaoSoftware createAndPersist(final String name, final DaoDescription description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoSoftware software = new DaoSoftware(name, description);
@@ -105,6 +134,15 @@ public class DaoSoftware extends DaoIdentifiable {
         this.features.add(feature);
     }
 
+    /**
+     * Change the logo of this soft.
+     * 
+     * @param image the image to add.
+     */
+    public void setImage(final DaoFileMetadata image) {
+        this.image = image;
+    }
+
     // ======================================================================
     // Getters
     // ======================================================================
@@ -123,6 +161,9 @@ public class DaoSoftware extends DaoIdentifiable {
         return this.image;
     }
 
+    /**
+     * @return the feature created on this software.
+     */
     public PageIterable<DaoFeature> getFeatures() {
         return new MappedList<DaoFeature>(this.features);
     }
@@ -192,10 +233,6 @@ public class DaoSoftware extends DaoIdentifiable {
         }
 
         return true;
-    }
-
-    public void setImage(final DaoFileMetadata image) {
-        this.image = image;
     }
 
 }

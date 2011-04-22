@@ -154,8 +154,21 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
 // @formatter:on
 public class DaoMember extends DaoActor {
 
+    /**
+     * The Enum Role is the level of power a member has.
+     */
     public enum Role {
-        NORMAL, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
+
+        /** The NORMAL. */
+        NORMAL,
+        /** The PRIVILEGED. */
+        PRIVILEGED,
+        /** The REVIEWER. */
+        REVIEWER,
+        /** The MODERATOR. */
+        MODERATOR,
+        /** The ADMIN user can do everything. */
+        ADMIN
     }
 
     private String fullname;
@@ -234,7 +247,7 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * Finds a DaoMember using its email
+     * Finds a DaoMember using its email.
      * 
      * @param email the email of the member
      * @return the member matching <code>email</code> or <i>null</i> if not
@@ -261,11 +274,10 @@ public class DaoMember extends DaoActor {
      * 
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
+     * @param salt the salt
+     * @param email the email
      * @param locale the locale of the user.
      * @return The newly created DaoMember
-     * @throws HibernateException If there is any problem connecting to the db.
-     *             Or if the member as a non unique login. If an exception is
-     *             thrown then the transaction is rolled back and reopened.
      */
     public static DaoMember createAndPersist(final String login, final String password, final String salt, final String email, final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -315,6 +327,8 @@ public class DaoMember extends DaoActor {
     }
 
     /**
+     * Adds this member to a team.
+     * 
      * @param aTeam the team in which this member is added.
      */
     public void addToTeam(final DaoTeam aTeam) {
@@ -327,6 +341,8 @@ public class DaoMember extends DaoActor {
     }
 
     /**
+     * Removes the from team.
+     * 
      * @param aTeam the team from which this member is removed.
      */
     public void removeFromTeam(final DaoTeam aTeam) {
@@ -346,6 +362,12 @@ public class DaoMember extends DaoActor {
         }
     }
 
+    /**
+     * Adds the team right.
+     * 
+     * @param aTeam the a team
+     * @param newRight the new right
+     */
     public void addTeamRight(final DaoTeam aTeam, final UserTeamRight newRight) {
         final DaoTeamMembership link = DaoTeamMembership.get(aTeam, this);
         if (link != null) {
@@ -355,10 +377,22 @@ public class DaoMember extends DaoActor {
         }
     }
 
+    /**
+     * Gets the team rights.
+     * 
+     * @param aTeam the a team
+     * @return the team rights
+     */
     public Set<UserTeamRight> getTeamRights(final DaoTeam aTeam) {
         return aTeam.getUserTeamRight(this);
     }
 
+    /**
+     * Removes the team right.
+     * 
+     * @param aTeam the a team
+     * @param removeRight the remove right
+     */
     public void removeTeamRight(final DaoTeam aTeam, final UserTeamRight removeRight) {
         final DaoTeamMembership link = DaoTeamMembership.get(aTeam, this);
         for (final DaoTeamRight dgr : link.getRights()) {
@@ -372,30 +406,65 @@ public class DaoMember extends DaoActor {
                 + " right : " + removeRight);
     }
 
+    /**
+     * Sets the role.
+     * 
+     * @param role the new role
+     */
     public void setRole(final Role role) {
         this.role = role;
     }
 
+    /**
+     * Sets the activation state.
+     * 
+     * @param state the new activation state
+     */
     public void setActivationState(final ActivationState state) {
         this.state = state;
     }
 
+    /**
+     * Sets the password.
+     * 
+     * @param password the new password
+     */
     public void setPassword(final String password) {
         this.password = password;
     }
 
+    /**
+     * Sets the fullname.
+     * 
+     * @param firstname the new fullname
+     */
     public void setFullname(final String firstname) {
         this.fullname = firstname;
     }
 
+    /**
+     * Sets the email.
+     * 
+     * @param email the new email
+     */
     public void setEmail(final String email) {
         this.email = email;
     }
 
+    /**
+     * Adds the to karma.
+     * 
+     * @param value the value
+     */
     public void addToKarma(final int value) {
         this.karma += value;
     }
 
+    /**
+     * Sets the locale.
+     * 
+     * @param locale the new locale
+     */
     public void setLocale(final Locale locale) {
         this.locale = locale;
     }
@@ -427,48 +496,93 @@ public class DaoMember extends DaoActor {
         return new QueryCollection<DaoTeam>(filter, count);
     }
 
+    /**
+     * Gets the role.
+     * 
+     * @return the role
+     */
     public Role getRole() {
         return this.role;
     }
 
+    /**
+     * Gets the activation state.
+     * 
+     * @return the activation state
+     */
     public ActivationState getActivationState() {
         return this.state;
     }
 
+    /**
+     * Gets the fullname.
+     * 
+     * @return the fullname
+     */
     public String getFullname() {
         return this.fullname;
     }
 
+    /**
+     * Gets the salt.
+     * 
+     * @return the salt
+     */
     public String getSalt() {
         return salt;
     }
 
+    /**
+     * Gets the password.
+     * 
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Password equals.
+     * 
+     * @param otherPassword the other password
+     * @return true, if successful
+     */
     public boolean passwordEquals(final String otherPassword) {
         return password.equals(otherPassword);
     }
 
+    /**
+     * Gets the email.
+     * 
+     * @return the email
+     */
     public String getEmail() {
         return this.email;
     }
 
+    /**
+     * Gets the locale.
+     * 
+     * @return the locale
+     */
     public Locale getLocale() {
         return this.locale;
     }
 
     /**
-     * @return All the features created by this member.
+     * Gets the features.
+     * 
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
+     * @return All the features created by this member.
      */
     public PageIterable<DaoFeature> getFeatures(final boolean asMemberOnly) {
         return getUserContent(DaoFeature.class, asMemberOnly);
     }
 
     /**
+     * Gets the kudos.
+     * 
      * @return All the kudos created by this member.
      */
     public PageIterable<DaoKudos> getKudos() {
@@ -476,42 +590,53 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * @return All the contributions created by this member.
+     * Gets the contributions.
+     * 
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
+     * @return All the contributions created by this member.
      */
     public PageIterable<DaoContribution> getContributions(final boolean asMemberOnly) {
         return getUserContent(DaoContribution.class, asMemberOnly);
     }
 
     /**
-     * @return All the Comments created by this member.
+     * Gets the comments.
+     * 
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
+     * @return All the Comments created by this member.
      */
     public PageIterable<DaoComment> getComments(final boolean asMemberOnly) {
         return getUserContent(DaoComment.class, asMemberOnly);
     }
 
     /**
-     * @return All the Offers created by this member.
+     * Gets the offers.
+     * 
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
+     * @return All the Offers created by this member.
      */
     public PageIterable<DaoOffer> getOffers(final boolean asMemberOnly) {
         return getUserContent(DaoOffer.class, asMemberOnly);
     }
 
     /**
-     * @return All the Translations created by this member.
+     * Gets the translations.
+     * 
      * @param asMemberOnly the result must contains only result that are not
      *            done as name of a team.
+     * @return All the Translations created by this member.
      */
     public PageIterable<DaoTranslation> getTranslations(final boolean asMemberOnly) {
         return getUserContent(DaoTranslation.class, asMemberOnly);
     }
 
     /**
+     * Gets the received invitation.
+     * 
+     * @param state the state
      * @return All the received invitation to join a team which are in a
      *         specified state
      */
@@ -521,6 +646,8 @@ public class DaoMember extends DaoActor {
     }
 
     /**
+     * Gets the received invitation.
+     * 
      * @param state the state of the invitation (ACCEPTED, PENDING, REFUSED)
      * @param team the team for which the invitations have been sent
      * @return All the received invitation to join a specific team, which are in
@@ -532,6 +659,13 @@ public class DaoMember extends DaoActor {
                                                                                                       .setEntity("team", team);
     }
 
+    /**
+     * Gets the sent invitation.
+     * 
+     * @param state the state
+     * @param team the team
+     * @return the sent invitation
+     */
     public PageIterable<DaoJoinTeamInvitation> getSentInvitation(final State state, final DaoTeam team) {
         return new QueryCollection<DaoJoinTeamInvitation>("member.getSentInvitations.byStateTeam").setEntity("sender", this)
                                                                                                   .setParameter("state", state)
@@ -539,6 +673,9 @@ public class DaoMember extends DaoActor {
     }
 
     /**
+     * Gets the sent invitation.
+     * 
+     * @param state the state
      * @return All the sent invitation to join a team which are in a specified
      *         state
      */
@@ -547,6 +684,9 @@ public class DaoMember extends DaoActor {
     }
 
     /**
+     * Checks if is in team.
+     * 
+     * @param team the team
      * @return if the current member is in the "team".
      */
     public boolean isInTeam(final DaoTeam team) {
@@ -556,12 +696,17 @@ public class DaoMember extends DaoActor {
         return ((Long) q.uniqueResult()) >= 1;
     }
 
+    /**
+     * Gets the karma.
+     * 
+     * @return the karma
+     */
     public Integer getKarma() {
         return this.karma;
     }
 
     /**
-     * Finds the user recent activity
+     * Finds the user recent activity.
      * 
      * @return the user recent activity
      */
@@ -594,13 +739,17 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * used by DaoTeam
+     * used by DaoTeam.
+     * 
+     * @return the team membership
      */
     protected List<DaoTeamMembership> getTeamMembership() {
         return this.teamMembership;
     }
 
     /**
+     * Gets the avatar.
+     * 
      * @return the avatar
      */
     public DaoFileMetadata getAvatar() {
@@ -608,7 +757,9 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * @param avatar
+     * Sets the avatar.
+     * 
+     * @param avatar the new avatar
      */
     public void setAvatar(final DaoFileMetadata avatar) {
         this.avatar = avatar;
@@ -618,6 +769,12 @@ public class DaoMember extends DaoActor {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -627,6 +784,9 @@ public class DaoMember extends DaoActor {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao member.
+     */
     protected DaoMember() {
         super();
     }

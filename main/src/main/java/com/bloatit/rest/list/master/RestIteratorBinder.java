@@ -20,8 +20,8 @@ package com.bloatit.rest.list.master;
 
 import java.util.Iterator;
 
-import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.restprocessor.RestElement;
+import com.bloatit.model.IdentifiableInterface;
 import com.bloatit.rest.resources.ModelToRestVisitor;
 
 /**

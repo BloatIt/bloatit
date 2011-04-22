@@ -25,12 +25,25 @@ import org.hibernate.classic.Session;
 
 import com.bloatit.framework.utils.SecuredHash;
 
+/**
+ * A data manager is a class containing some static methods launch at the begin
+ * / end of the program.
+ * <p>
+ * It is basically the class that will manage the lifetime of the data layer.
+ * </p>
+ * 
+ * @author Thomas Guyard
+ */
 public class DataManager {
 
     private DataManager() {
         // disactivate ctor;
     }
 
+    /**
+     * Initialize the data layer. You can put here all the work that is needed
+     * to be done on the db at the launching of the program.
+     */
     public static void initialize() {
         // Verify that we do not have old not Hashed password:
         open();
@@ -46,16 +59,35 @@ public class DataManager {
         close();
     }
 
+    /**
+     * For now it does nothing. But it is called when the data layer have to
+     * stop. Put here your shutdown routines.
+     */
     public static void shutdown() {
         // For now do nothing.
     }
 
+    /**
+     * Set the current transaction read only.
+     * 
+     * @see DataManager#open()
+     * @see DataManager#close()
+     */
     public static void setReadOnly() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.setDefaultReadOnly(true);
         session.setFlushMode(FlushMode.MANUAL);
     }
 
+    /**
+     * Open a transaction (Or a "work unit"). Tells to the data layer that some
+     * work will be done. You can change the beaver of the current transaction
+     * using {@link #setReadOnly()}
+     * <p>
+     * You cannot open 2 transactions in the same thread. Make sure you have
+     * called {@link #close()} before.
+     * </p>
+     */
     public static void open() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
 
@@ -64,10 +96,16 @@ public class DataManager {
         session.setFlushMode(FlushMode.AUTO);
     }
 
+    /**
+     * Close the current transaction (Or "work unit").
+     */
     public static void close() {
         SessionManager.endWorkUnitAndFlush();
     }
 
+    /**
+     * Rollback the current transaction.
+     */
     public static void rollback() {
         SessionManager.rollback();
     }

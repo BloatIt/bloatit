@@ -109,7 +109,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         }
         final boolean isAllValidated = currentMilestone.validate(force);
         if (isAllValidated) {
-            if (getDao().hasMilestoneesLeft()) {
+            if (getDao().hasMilestonesLeft()) {
                 getFeatureImplementation().setMilestoneIsValidated();
             } else {
                 getFeatureImplementation().setOfferIsValidated();
@@ -131,7 +131,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     private DaoMilestone findCurrentDaoMilestone() {
-        if (getDao().hasMilestoneesLeft()) {
+        if (getDao().hasMilestonesLeft()) {
             return getDao().getCurrentMilestone();
         }
         return null;
