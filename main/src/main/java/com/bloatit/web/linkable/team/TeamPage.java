@@ -2,37 +2,27 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import java.util.EnumSet;
-import java.util.Iterator;
-
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlListItem;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
-import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
-import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTableModel;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.HtmlText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.visitor.Visitor;
@@ -40,6 +30,9 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.team.tabs.AccountTab;
+import com.bloatit.web.linkable.team.tabs.ActivityTab;
+import com.bloatit.web.linkable.team.tabs.MembersTab;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.MasterPage;
@@ -47,11 +40,7 @@ import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountPageUrl;
-import com.bloatit.web.url.GiveRightActionUrl;
-import com.bloatit.web.url.JoinTeamActionUrl;
-import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
-import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -61,23 +50,36 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team")
 public final class TeamPage extends MasterPage {
+    private final static String TEAM_TAB_PANE = "tab";
+    private final static String MEMBERS_TAB = "members";
+    private final static String ACTIVITY_TAB = "activity";
+    private final static String ACCOUNT_TAB = "account";
 
     private final TeamPageUrl url;
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team targetTeam;
 
+    @RequestParam(name = TEAM_TAB_PANE)
+    @Optional(MEMBERS_TAB)
+    private String activeTabKey;
+
     public TeamPage(final TeamPageUrl url) {
         super(url);
         this.url = url;
         this.targetTeam = url.getTargetTeam();
+        this.activeTabKey = url.getActiveTabKey();
     }
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addLeft(generateMain());
-        layout.addRight(generateContactBox());
+        final TwoColumnLayout layout = new TwoColumnLayout(false, url);
+        final Visitor me = session.getAuthToken().getVisitor();
+
+        layout.addLeft(generateTeamIDCard(me));
+        layout.addLeft(generateMain(me));
+
+        layout.addRight(generateSideBar());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
         layout.addRight(new SideBarTeamWithdrawMoneyBlock());
 
@@ -94,7 +96,7 @@ public final class TeamPage extends MasterPage {
         return true;
     }
 
-    private SideBarElementLayout generateContactBox() {
+    private SideBarElementLayout generateSideBar() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
         try {
             contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
@@ -117,12 +119,28 @@ public final class TeamPage extends MasterPage {
         return contacts;
     }
 
-    private HtmlElement generateMain() {
-        final HtmlDiv master = new HtmlDiv();
-        targetTeam.authenticate(session.getAuthToken());
+    private HtmlElement generateMain(Visitor me) {
+        final HtmlDiv master = new HtmlDiv("team_tabs");
 
-        final Visitor me = session.getAuthToken().getVisitor();
+        final TeamPageUrl url = new TeamPageUrl(targetTeam);
+        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, url);
+        master.add(tabPane);
 
+        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));
+        tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
+        tabPane.addTab(new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB));
+
+        return master;
+    }
+
+    /**
+     * Generates the team block displaying it's ID
+     * 
+     * @param me the connected member
+     * @return the ID card
+     */
+    private HtmlElement generateTeamIDCard(Visitor me) {
+        HtmlDiv master = new HtmlDiv("padding_box");
         if (me.hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
@@ -133,7 +151,7 @@ public final class TeamPage extends MasterPage {
         // Title and team type
         HtmlTitleBlock titleBlock;
         try {
-            titleBlock = new HtmlTitleBlock(targetTeam.getLogin(), 1);
+            titleBlock = new HtmlTitleBlock(targetTeam.getDisplayName(), 1);
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Not allowed to see team name in team page, should not happen", e);
         }
@@ -142,12 +160,12 @@ public final class TeamPage extends MasterPage {
         // Avatar
         titleBlock.add(new HtmlDiv("float_left").add(TeamTools.getTeamAvatar(targetTeam)));
 
-        // Group informations
+        // Team informations
         final HtmlList informationsList = new HtmlList();
 
         try {
             // display name
-            informationsList.add(new HtmlDefineParagraph(Context.tr("Displayed Name: "), targetTeam.getDisplayName()));
+            informationsList.add(new HtmlDefineParagraph(Context.tr("Unique name: "), targetTeam.getLogin()));
         } catch (final UnauthorizedOperationException e1) {
             // Should never happen
             Log.web().error("Not allowed to see team display name in team page, should not happen", e1);
@@ -170,10 +188,10 @@ public final class TeamPage extends MasterPage {
         informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(targetTeam.getMembers().size())));
 
         // Features count
-        final int featuresCount = getFeatureCount();
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Involved in features: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)",
-                                                                                                                        featuresCount),
-                                                                                                             new PageNotFoundUrl().getHtmlLink())));
+        final int featuresCount = getActivityCount();
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)",
+                                                                                                                          featuresCount),
+                                                                                                               new PageNotFoundUrl().getHtmlLink())));
 
         titleBlock.add(informationsList);
 
@@ -187,7 +205,7 @@ public final class TeamPage extends MasterPage {
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
-                titleBlock.add(bankInformations);
+                master.add(bankInformations);
                 {
                     final HtmlList bankInformationsList = new HtmlList();
                     bankInformations.add(bankInformationsList);
@@ -209,26 +227,6 @@ public final class TeamPage extends MasterPage {
             }
         }
 
-        // Members
-        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", targetTeam.getMembers().size()), 2);
-        titleBlock.add(memberTitle);
-
-        if (me.hasInviteTeamRight(targetTeam)) {
-            final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(targetTeam);
-            final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
-            memberTitle.add(new HtmlParagraph().add(inviteMember));
-        }
-
-        if (targetTeam.isPublic() && !me.isInTeam(targetTeam)) {
-            final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this team"));
-            memberTitle.add(joinLink);
-        }
-
-        final PageIterable<Member> members = targetTeam.getMembers();
-        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
-        membersTable.setCssClass("members_table");
-        memberTitle.add(membersTable);
-
         return master;
     }
 
@@ -249,156 +247,9 @@ public final class TeamPage extends MasterPage {
         return breadcrumb;
     }
 
-    private int getFeatureCount() {
+    private int getActivityCount() {
         // TODO: real work
         return 3;
-    }
-
-    /**
-     * Model used to display information about each team members.
-     */
-    private class MyTableModel extends HtmlTableModel {
-
-        private final PageIterable<Member> members;
-        private Member member;
-        private Iterator<Member> iterator;
-        private Visitor visitor;
-        private static final int CONSULT = 1;
-        private static final int TALK = 2;
-        private static final int MODIFY = 4;
-        private static final int INVITE = 3;
-        private static final int BANK = 5;
-        private static final int PROMOTE = 6;
-
-        public MyTableModel(final PageIterable<Member> members) {
-            this.members = members;
-            if (session.getAuthToken() != null) {
-                this.visitor = session.getAuthToken().getVisitor();
-            }
-            iterator = members.iterator();
-        }
-
-        @Override
-        public int getColumnCount() {
-            return UserTeamRight.values().length + 1;
-        }
-
-        @Override
-        public XmlNode getHeader(final int column) {
-            if (column == 0) {
-                return new HtmlText(Context.tr("Member name"));
-            }
-            final EnumSet<UserTeamRight> e = EnumSet.allOf(UserTeamRight.class);
-            final UserTeamRight ugr = (UserTeamRight) e.toArray()[column - 1];
-            switch (ugr) {
-                case CONSULT:
-                    return new HtmlText(Context.tr("Consult"));
-                case TALK:
-                    return new HtmlText(Context.tr("Talk"));
-                case MODIFY:
-                    return new HtmlText(Context.tr("Modify"));
-                case INVITE:
-                    return new HtmlText(Context.tr("Invite"));
-                case BANK:
-                    return new HtmlText(Context.tr("Bank"));
-                case PROMOTE:
-                    return new HtmlText(Context.tr("Promote"));
-                default:
-                    return new HtmlText("");
-            }
-        }
-
-        @Override
-        public XmlNode getBody(final int column) {
-            switch (column) {
-                case 0: // Name
-                    try {
-                        return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
-                    } catch (final UnauthorizedOperationException e) {
-                        session.notifyError("An error prevented us from showing you team name. Please notify us.");
-                        throw new ShallNotPassException("Cannot display a team name", e);
-                    }
-                case CONSULT:
-                    return getUserRightStatus(UserTeamRight.CONSULT);
-                case TALK:
-                    return getUserRightStatus(UserTeamRight.TALK);
-                case MODIFY:
-                    return getUserRightStatus(UserTeamRight.MODIFY);
-                case INVITE:
-                    return getUserRightStatus(UserTeamRight.INVITE);
-                case PROMOTE:
-                    return getUserRightStatus(UserTeamRight.PROMOTE);
-                case BANK:
-                    return getUserRightStatus(UserTeamRight.BANK);
-                default:
-                    return new HtmlText("");
-            }
-        }
-
-        private XmlNode getUserRightStatus(final UserTeamRight right) {
-
-            final PlaceHolderElement ph = new PlaceHolderElement();
-
-            if (right == UserTeamRight.CONSULT) {
-                if (member.canBeKickFromTeam(targetTeam, visitor.getMember())) {
-                    if (member.equals(visitor)) {
-                        ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Leave")));
-                    } else {
-                        ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Kick")));
-                    }
-                }
-            } else {
-                if (targetTeam.canChangeRight(visitor.getMember(), member, right, true)) {
-                    ph.add(new GiveRightActionUrl(targetTeam, member, right, true).getHtmlLink(Context.tr("Grant")));
-                } else if (targetTeam.canChangeRight(visitor.getMember(), member, right, false)) {
-                    ph.add(new GiveRightActionUrl(targetTeam, member, right, false).getHtmlLink(Context.tr("Remove")));
-                }
-            }
-
-            return ph;
-        }
-
-        @Override
-        public String getColumnCss(final int column) {
-            switch (column) {
-                case 0: // Name
-                    return "name";
-                case CONSULT:
-                    return getUserRightStyle(UserTeamRight.CONSULT);
-                case TALK:
-                    return getUserRightStyle(UserTeamRight.TALK);
-                case MODIFY:
-                    return getUserRightStyle(UserTeamRight.MODIFY);
-                case INVITE:
-                    return getUserRightStyle(UserTeamRight.INVITE);
-                case PROMOTE:
-                    return getUserRightStyle(UserTeamRight.PROMOTE);
-                case BANK:
-                    return getUserRightStyle(UserTeamRight.BANK);
-                default:
-                    return "";
-            }
-        }
-
-        private String getUserRightStyle(final UserTeamRight right) {
-            if (member.hasTeamRight(targetTeam, right)) {
-                return "can";
-            }
-            return "";
-        }
-
-        @Override
-        public boolean next() {
-            if (iterator == null) {
-                iterator = members.iterator();
-            }
-
-            if (iterator.hasNext()) {
-                member = iterator.next();
-                return true;
-            }
-            return false;
-        }
     }
 
     public static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {

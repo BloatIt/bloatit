@@ -57,6 +57,7 @@ import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
+import com.bloatit.web.components.activity.ActivityVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -247,7 +248,7 @@ public final class MemberPage extends MasterPage {
 
         @Override
         public XmlNode generate(final UserContent<? extends DaoUserContent> content) {
-            return content.accept(new AbstractModelClassVisitor<HtmlElement>() {
+            return content.accept(new ActivityVisitor() {
                 @Override
                 public HtmlElement visit(final Translation model) {
                     // TODO: After implementing correct translation stuff, do
