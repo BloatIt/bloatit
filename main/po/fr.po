@@ -2351,7 +2351,7 @@ msgid ""
 "the <0::Home page>."
 msgstr ""
 "La page que vous cherchez n'est pas ici. Vous pouvez peut-être aller à "
-"<0::l''accueil>."
+"<0::l'accueil>."
 
 #: com/bloatit/web/linkable/errors/PageNotFound.java:65
 msgid ""
