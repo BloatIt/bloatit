@@ -70,10 +70,13 @@ public class RecoverPasswordPage extends MasterPage {
 
         FieldData passwFieldData = targetUrl.getNewPasswordParameter().pickFieldData();
         HtmlPasswordField passInput = new HtmlPasswordField(passwFieldData.getName(), Context.tr("New password"));
+        passInput.setComment(Context.tr("Minimum 7 characters."));
+        passInput.addErrorMessages(passwFieldData.getErrorMessages());
         form.add(passInput);
 
         FieldData checkFieldData = targetUrl.getCheckNewPasswordParameter().pickFieldData();
         HtmlPasswordField checkInput = new HtmlPasswordField(checkFieldData.getName(), Context.tr("Reenter password"));
+        checkInput.addErrorMessages(checkFieldData.getErrorMessages());
         form.add(checkInput);
 
         form.add(new HtmlSubmit(Context.tr("Reset password")));
