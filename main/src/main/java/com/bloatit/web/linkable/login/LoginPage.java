@@ -16,7 +16,6 @@ import static com.bloatit.framework.webprocessor.context.Context.trc;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -69,31 +68,28 @@ public final class LoginPage extends MasterPage {
             final HtmlTextField loginInput = new HtmlTextField(loginData.getName(), Context.trc("Login (noun)", "Login"));
             loginInput.setDefaultValue(loginData.getSuggestedValue());
             loginInput.addErrorMessages(loginData.getErrorMessages());
-            loginInput.setComment(Context.tr("This field is not case sensitive"));
+            loginForm.add(loginInput);
+
             // passwordField
             final HtmlPasswordField passwordInput = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
             passwordInput.addErrorMessages(loginActionUrl.getPasswordParameter().pickFieldData().getErrorMessages());
-            // Submit
-            final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
-
-            loginForm.add(loginInput);
             loginForm.add(passwordInput);
 
+            // Submit
             HtmlDiv loginOrSignUpDiv = new HtmlDiv("login_or_signup");
             loginForm.add(loginOrSignUpDiv);
-
+            final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
             loginOrSignUpDiv.add(submitButton);
             loginOrSignUpDiv.add(new SignUpPageUrl().getHtmlLink(Context.tr("Sign up")));
 
             master.add(loginTitle);
-            master.add(new HtmlParagraph().add(new LostPasswordPageUrl().getHtmlLink(Context.tr("Password lost ?"))));
         }
         return master;
     }
 
     private static class RecoverPasswordSideBarElement extends TitleSideBarElementLayout {
         public RecoverPasswordSideBarElement() {
-            setTitle(Context.tr("Recover your password"));
+            setTitle(Context.tr("Password lost"));
             add(new HtmlMixedText(Context.tr("You can recover you password use the <0::password recovery form>."),
                                   new LostPasswordPageUrl().getHtmlLink()));
         }
