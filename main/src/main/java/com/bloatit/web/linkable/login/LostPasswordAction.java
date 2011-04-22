@@ -28,12 +28,12 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link LostPasswordPage}
  * </p>
  */
-@ParamContainer("password/dorecover")
+@ParamContainer("password/dolost")
 public class LostPasswordAction extends Action {
     private final LostPasswordActionUrl url;
 
     @RequestParam(role = Role.POST)
-    private String email;
+    private final String email;
 
     private Member m;
 
