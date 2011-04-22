@@ -136,7 +136,7 @@ public final class Team extends Actor<DaoTeam> {
     }
 
     @Override
-    public String getDisplayName() throws UnauthorizedOperationException {
+    public String getDisplayName() {
         final String displayName = getDao().getDisplayName();
         if (StringUtils.isEmpty(displayName)) {
             return getLogin();

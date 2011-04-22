@@ -138,11 +138,7 @@ public class RestMember extends RestElement<Member> {
 
     @XmlAttribute(name = "name")
     public String getDisplayName() throws RestException {
-        try {
-            return model.getDisplayName();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to get name on user", e);
-        }
+        return model.getDisplayName();
     }
 
     @XmlElement(name = "karma")

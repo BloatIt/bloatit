@@ -39,11 +39,7 @@ public class UserContentAuthorBlock extends HtmlDiv {
         if (content.getAsTeam() != null) {
             final HtmlSpan userSpan = new HtmlSpan("usercontent_by_user");
             userSpan.addText(tr(" By "));
-            try {
-                userSpan.add(new MemberPageUrl(content.getMember()).getHtmlLink(content.getMember().getDisplayName()));
-            } catch (final UnauthorizedOperationException e1) {
-                throw new ShallNotPassException(e1);
-            }
+            userSpan.add(new MemberPageUrl(content.getMember()).getHtmlLink(content.getMember().getDisplayName()));
             commentInfo.add(userSpan);
         }
 

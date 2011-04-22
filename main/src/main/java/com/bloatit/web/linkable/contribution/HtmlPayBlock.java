@@ -22,11 +22,7 @@ public class HtmlPayBlock extends HtmlDiv {
         add(new HtmlParagraph(Context.tr("You are using a beta version. Payment with real money is not activated."), "debug")).add(new HtmlParagraph(Context.tr("You can simulate it using this card number: 4970100000325734, and the security number: 123."),
                                                                                                                                                      "debug"));
         if (team != null) {
-            try {
-                add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", team.getLogin()), "use_account"));
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException(e);
-            }
+            add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", team.getLogin()), "use_account"));
         }
         add(returnUrl.getHtmlLink(Context.tr("edit")));
         add(payContributionLink);

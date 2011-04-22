@@ -409,8 +409,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     @Override
-    public String getDisplayName() throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Name(), Action.READ);
+    public String getDisplayName() {
         if (getDao().getFullname() != null && !getDao().getFullname().isEmpty()) {
             return getFullname();
         }
@@ -455,8 +454,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getLocale();
     }
 
-    public String getFullname() throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Name(), Action.READ);
+    public String getFullname() {
         return getDao().getFullname();
     }
 

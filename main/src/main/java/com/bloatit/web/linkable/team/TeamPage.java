@@ -96,12 +96,7 @@ public final class TeamPage extends MasterPage {
 
     private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
-        try {
-            contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("Oops, an error prevented us from showing you team name, please notify us."));
-            throw new ShallNotPassException("Couldn't display team name", e);
-        }
+        contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
 
         if (targetTeam.canAccessContact(Action.READ)) {
             try {
@@ -132,11 +127,7 @@ public final class TeamPage extends MasterPage {
 
         // Title and team type
         HtmlTitleBlock titleBlock;
-        try {
-            titleBlock = new HtmlTitleBlock(targetTeam.getLogin(), 1);
-        } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Not allowed to see team name in team page, should not happen", e);
-        }
+        titleBlock = new HtmlTitleBlock(targetTeam.getLogin(), 1);
         master.add(titleBlock);
 
         // Avatar
@@ -145,13 +136,8 @@ public final class TeamPage extends MasterPage {
         // Group informations
         final HtmlList informationsList = new HtmlList();
 
-        try {
-            // display name
-            informationsList.add(new HtmlDefineParagraph(Context.tr("Displayed Name: "), targetTeam.getDisplayName()));
-        } catch (final UnauthorizedOperationException e1) {
-            // Should never happen
-            Log.web().error("Not allowed to see team display name in team page, should not happen", e1);
-        }
+        // display name
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Displayed Name: "), targetTeam.getDisplayName()));
         // Visibility
         informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (targetTeam.isPublic() ? Context.tr("Public")
                 : Context.tr("Private"))));
@@ -239,13 +225,7 @@ public final class TeamPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
-
-        try {
-            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getDisplayName()));
-        } catch (final UnauthorizedOperationException e) {
-            breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(tr("Unknown team")));
-        }
-
+        breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getDisplayName()));
         return breadcrumb;
     }
 
@@ -312,12 +292,7 @@ public final class TeamPage extends MasterPage {
         public XmlNode getBody(final int column) {
             switch (column) {
                 case 0: // Name
-                    try {
-                        return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
-                    } catch (final UnauthorizedOperationException e) {
-                        session.notifyError("An error prevented us from showing you team name. Please notify us.");
-                        throw new ShallNotPassException("Cannot display a team name", e);
-                    }
+                    return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
                 case CONSULT:
                     return getUserRightStatus(UserTeamRight.CONSULT);
                 case TALK:

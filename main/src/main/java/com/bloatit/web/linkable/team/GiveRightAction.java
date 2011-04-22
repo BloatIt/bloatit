@@ -72,12 +72,7 @@ public final class GiveRightAction extends LoggedAction {
             }
         } else {
             if (!targetTeam.canChangeRight(me, targetMember, right, give)) {
-                try {
-                    session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", targetTeam.getDisplayName()));
-                } catch (final UnauthorizedOperationException e) {
-                    session.notifyBad("For an obscure reason you cannot see a team name, please warn us of the bug.");
-                    throw new ShallNotPassException("Cannot display a team name", e);
-                }
+                session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", targetTeam.getDisplayName()));
                 return new TeamPageUrl(targetTeam);
             }
         }

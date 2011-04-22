@@ -58,12 +58,7 @@ public final class MetaReportBugAction extends Action {
     protected Url doProcess() {
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
-        try {
-            bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getDisplayName() : "not logged") + "\n";
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-            throw new ShallNotPassException("User cannot access user information", e);
-        }
+        bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getDisplayName() : "not logged") + "\n";
         bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;

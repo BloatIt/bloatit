@@ -49,24 +49,18 @@ public final class MessageListPage extends LoggedPage {
         final PageIterable<JoinTeamInvitation> invitations = me.getReceivedInvitation(State.PENDING);
         for (final JoinTeamInvitation invitation : invitations) {
             final HtmlParagraph p = new HtmlParagraph();
-            try {
-                p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
-                        + invitation.getSender().getDisplayName() + "'");
+            p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
+                    + invitation.getSender().getDisplayName() + "'");
 
-                final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
-                final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
-                final HtmlGenericElement empty = new HtmlGenericElement();
-                empty.addText(" (");
-                empty.add(accept);
-                empty.addText(") - (");
-                empty.add(refuse);
-                empty.addText(")");
-                p.add(empty);
-
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError("An error prevented us from displaying team name. Please notify us.");
-                throw new ShallNotPassException("User cannot access team name", e);
-            }
+            final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
+            final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
+            final HtmlGenericElement empty = new HtmlGenericElement();
+            empty.addText(" (");
+            empty.add(accept);
+            empty.addText(") - (");
+            empty.add(refuse);
+            empty.addText(")");
+            p.add(empty);
             teamInvites.add(p);
         }
         return master;

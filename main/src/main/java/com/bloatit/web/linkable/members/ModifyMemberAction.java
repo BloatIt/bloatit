@@ -202,18 +202,13 @@ public class ModifyMemberAction extends LoggedAction {
             }
         }
 
-        // Fullname & Delete fullname
-        try {
-            // 2 if, because conditions are a bit rough to check in a single
-            // statement ...
-            if (!isEmpty(me.getFullname()) && !isEmpty(fullname) && !me.getFullname().equals(fullname)) {
-                if (deleteFullName != null && deleteFullName.booleanValue()) {
-                    session.notifyBad(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
-                    error = true;
-                }
+        // 2 if, because conditions are a bit rough to check in a single
+        // statement ...
+        if (!isEmpty(me.getFullname()) && !isEmpty(fullname) && !me.getFullname().equals(fullname)) {
+            if (deleteFullName != null && deleteFullName.booleanValue()) {
+                session.notifyBad(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
+                error = true;
             }
-        } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("ERROR accessing logged user information.", e);
         }
 
         // Avatar and delete avatar

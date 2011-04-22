@@ -57,13 +57,8 @@ public class SendTeamInvitationPage extends LoggedPage {
         final HtmlDropDown receiverInput = new HtmlDropDown(fieldData.getName(), Context.tr("Select a member"));
         form.add(receiverInput);
         for (final Member m : MemberManager.getAll()) {
-            try {
-                if (!m.equals(me)) {
-                    receiverInput.addDropDownElement(m.getId().toString(), m.getDisplayName());
-                }
-            } catch (final UnauthorizedOperationException e) {
-                // TODO
-                throw new ShallNotPassException(e);
+            if (!m.equals(me)) {
+                receiverInput.addDropDownElement(m.getId().toString(), m.getDisplayName());
             }
         }
         form.add(new HtmlSubmit(Context.tr("Submit")));

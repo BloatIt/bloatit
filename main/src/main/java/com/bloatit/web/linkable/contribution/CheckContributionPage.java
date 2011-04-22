@@ -165,11 +165,7 @@ public final class CheckContributionPage extends QuotationPage {
             confirmContributionLink.setCssClass("button");
 
             if (process.getTeam() != null) {
-                try {
-                    buttonDiv.add(new HtmlParagraph(Context.tr("Using the '") + process.getTeam().getDisplayName() + Context.tr("' account")));
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException(e);
-                }
+                buttonDiv.add(new HtmlParagraph(Context.tr("Using the '") + process.getTeam().getDisplayName() + Context.tr("' account")));
             }
 
             buttonDiv.add(confirmContributionLink);
@@ -238,12 +234,8 @@ public final class CheckContributionPage extends QuotationPage {
             final HtmlLink payContributionLink = new StaticCheckContributionPageUrl(process).getHtmlLink(tr("Validate"));
             payContributionLink.setCssClass("button");
             if (process.getTeam() != null) {
-                try {
-                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
-                                                   "use_account"));
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException(e);
-                }
+                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
+                                               "use_account"));
             }
             payBlock.add(payContributionLink);
         }

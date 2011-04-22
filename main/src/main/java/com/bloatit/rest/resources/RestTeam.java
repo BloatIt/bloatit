@@ -169,13 +169,7 @@ public class RestTeam extends RestElement<Team> {
      */
     @XmlAttribute
     public String getName() {
-        try {
-            return model.getLogin();
-        } catch (final UnauthorizedOperationException e) {
-            return null; // throw new
-                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-            // "Not allowed to use getLogin on Team", e);
-        }
+        return model.getLogin();
     }
 
     /**

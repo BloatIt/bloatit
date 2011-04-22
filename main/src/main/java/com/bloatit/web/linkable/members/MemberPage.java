@@ -316,11 +316,7 @@ public final class MemberPage extends MasterPage {
                     if (model.getParentType() == ParentType.COMMENT) {
                         final Member commenter = model.getParentComment().getMember();
                         HtmlLink commenterUrl;
-                        try {
-                            commenterUrl = new MemberPageUrl(commenter).getHtmlLink(commenter.getDisplayName());
-                        } catch (final UnauthorizedOperationException e) {
-                            throw new ShallNotPassException("Cannot access member display name.", e);
-                        }
+                        commenterUrl = new MemberPageUrl(commenter).getHtmlLink(commenter.getDisplayName());
                         mixedText = new HtmlMixedText(Context.tr("Replied to a <0::comment> (from <1::>)"), commentSpan, commenterUrl);
 
                         while (model.getParentType() == ParentType.COMMENT) {
@@ -413,12 +409,7 @@ public final class MemberPage extends MasterPage {
 
     @Override
     protected String createPageTitle() {
-        try {
-            return tr("Member - ") + member.getDisplayName();
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-            throw new ShallNotPassException("User cannot access user information", e);
-        }
+        return tr("Member - ") + member.getDisplayName();
     }
 
     @Override
@@ -433,14 +424,7 @@ public final class MemberPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = MembersListPage.generateBreadcrumb();
-
-        try {
-            breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(member.getDisplayName()));
-        } catch (final UnauthorizedOperationException e) {
-            Context.getSession().notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
-            throw new ShallNotPassException("User cannot access user information", e);
-        }
-
+        breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(member.getDisplayName()));
         return breadcrumb;
     }
 }

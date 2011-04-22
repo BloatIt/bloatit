@@ -177,15 +177,11 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         tableModel.addColumn(clonedUrl.getHtmlLink(Context.tr("asTeam")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
-                try {
-                    final Team asTeam = element.getAsTeam();
-                    if (asTeam != null) {
-                        return asTeam.getLogin();
-                    }
-                    return "null";
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
+                final Team asTeam = element.getAsTeam();
+                if (asTeam != null) {
+                    return asTeam.getLogin();
                 }
+                return "null";
             }
         });
     }
@@ -196,11 +192,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         tableModel.addColumn(clonedUrl.getHtmlLink(Context.tr("Author")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
-                try {
-                    return element.getMember().getLogin();
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
-                }
+                return element.getMember().getLogin();
             }
         });
         return clonedUrl;

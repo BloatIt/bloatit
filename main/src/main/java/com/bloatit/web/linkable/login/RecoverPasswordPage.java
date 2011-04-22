@@ -60,11 +60,7 @@ public class RecoverPasswordPage extends MasterPage {
         layout.addLeft(master);
 
         RecoverPasswordActionUrl targetUrl;
-        try {
-            targetUrl = new RecoverPasswordActionUrl(resetKey, member.getLogin());
-        } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Error recovering member login.", e);
-        }
+        targetUrl = new RecoverPasswordActionUrl(resetKey, member.getLogin());
         HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
 

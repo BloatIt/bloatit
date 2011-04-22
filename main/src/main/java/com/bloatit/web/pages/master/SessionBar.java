@@ -28,11 +28,7 @@ public class SessionBar extends HtmlDiv {
         if (session.isLogged()) {
             // Display user name
             String displayName = "John Doe";
-            try {
-                displayName = session.getAuthToken().getMember().getDisplayName();
-            } catch (final UnauthorizedOperationException e) {
-                // no right, leave invalid name
-            }
+            displayName = session.getAuthToken().getMember().getDisplayName();
             final HtmlLink memberLink = new MemberPageUrl(Context.getSession().getAuthToken().getMember()).getHtmlLink(displayName);
 
             // Display user karma

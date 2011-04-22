@@ -47,13 +47,9 @@ public class LostPasswordAction extends Action {
     protected Url doProcess() {
         TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
-        try {
-            String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString(Context.getHeader().getHttpHeader());
-            templateFile.addNamedParameter("recovery_url", resetUrl);
-            templateFile.addNamedParameter("member", m.getDisplayName());
-        } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("An error prevented us to proceed with password reset. Please notify us.", e);
-        }
+        String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString(Context.getHeader().getHttpHeader());
+        templateFile.addNamedParameter("recovery_url", resetUrl);
+        templateFile.addNamedParameter("member", m.getDisplayName());
 
         String title = new Localizator(m.getUserLocale()).tr("Elveos password recovery");
         String content;

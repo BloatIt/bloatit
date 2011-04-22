@@ -69,12 +69,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Gets the login.
      * 
      * @return the login
-     * @throws UnauthorizedOperationException if you don't have the
-     *             <code>READ</code> right on the <code>Login</code> property
      * @see DaoActor#getLogin()
      */
-    public final String getLogin() throws UnauthorizedOperationException {
-        tryAccess(new ActorRight.Login(), Action.READ);
+    public final String getLogin() {
         return getLoginUnprotected();
     }
 
@@ -174,7 +171,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     public abstract PageIterable<Contribution> getContributions() throws UnauthorizedOperationException;
 
-    public abstract String getDisplayName() throws UnauthorizedOperationException;
+    public abstract String getDisplayName();
 
     public abstract Image getAvatar();
 

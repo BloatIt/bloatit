@@ -94,11 +94,7 @@ public final class AccountChargingPage extends QuotationPage {
     public HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
-            try {
-                group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getDisplayName()), 1);
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException(e);
-            }
+            group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getDisplayName()), 1);
         } else {
             group = new HtmlTitleBlock(tr("Charge your account"), 1);
         }
@@ -151,12 +147,8 @@ public final class AccountChargingPage extends QuotationPage {
             final HtmlLink payContributionLink = new StaticAccountChargingPageUrl(process).getHtmlLink(tr("Validate"));
             payContributionLink.setCssClass("button");
             if (process.getTeam() != null) {
-                try {
-                    payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
-                                                   "use_account"));
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException(e);
-                }
+                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
+                                               "use_account"));
             }
             payBlock.add(payContributionLink);
         }

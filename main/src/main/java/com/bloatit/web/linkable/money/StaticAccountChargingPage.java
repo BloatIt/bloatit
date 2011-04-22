@@ -73,11 +73,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
     public HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
-            try {
-                group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getDisplayName()), 1);
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException(e);
-            }
+            group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getDisplayName()), 1);
         } else {
             group = new HtmlTitleBlock(tr("Validate your account charging"), 1);
         }
