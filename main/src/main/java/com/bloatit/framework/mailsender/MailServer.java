@@ -9,6 +9,8 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -252,12 +254,16 @@ public class MailServer extends Thread {
             } catch (final MessagingException e) {
                 // Happens when trying to send the mail
                 final long waitTime = timeToRetry();
-                Log.mail().fatal("Failed to send mail " + mailFileName + " retrying in : " + waitTime, e);
-                mailsFileName.add(mailFileName);
-                try {
-                    sleep(waitTime);
-                } catch (final InterruptedException e1) {
-                    Log.mail().info("Unexpectedly interrupted in the middle of the retry policy. Ignoring and going on");
+                if (waitTime != -1) {
+                    Log.mail().fatal("Failed to send mail " + mailFileName + " retrying in : " + waitTime, e);
+                    mailsFileName.add(mailFileName);
+                    try {
+                        sleep(waitTime);
+                    } catch (final InterruptedException e1) {
+                        Log.mail().info("Unexpectedly interrupted in the middle of the retry policy. Ignoring and going on");
+                    }
+                } else {
+                    Log.mail().info("Reached end of retry policy.");
                 }
             } catch (final FileNotFoundException e) {
                 /*
@@ -275,7 +281,7 @@ public class MailServer extends Thread {
      * Call whenever we manage to send a message.
      */
     private final void resetRetries() {
-        this.numberOfTries = 0;
+        FrameworkConfiguration.getMailRetryPolicy().reinit();
     }
 
     /**
@@ -284,16 +290,7 @@ public class MailServer extends Thread {
      * @return The time in milliseconds before a retry to send a mail
      */
     private final long timeToRetry() {
-        numberOfTries++;
-        if (numberOfTries > 0 && numberOfTries <= 3) {
-            return 100 * MILLISECOND;
-        } else if (numberOfTries > 3 && numberOfTries <= 7) {
-            return 15 * SECOND;
-        } else if (numberOfTries > 7 && numberOfTries <= 12) {
-            return 30 * SECOND;
-        } else {
-            return 2 * MINUTE;
-        }
+        return FrameworkConfiguration.getMailRetryPolicy().getNext();
     }
 
     /**
