@@ -5,7 +5,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.QuotationPageUrl;
-import com.bloatit.web.url.UserContentActionUrl;
 
 @ParamContainer("quotationPage")
 public abstract class QuotationPage extends LoggedPage {
@@ -14,7 +13,7 @@ public abstract class QuotationPage extends LoggedPage {
     @RequestParam(name = "show_fees_detail")
     private Boolean showFeesDetails;
 
-    protected QuotationPage(final QuotationPageUrl url, final UserContentActionUrl targetUrl) {
+    protected QuotationPage(final QuotationPageUrl url) {
         super(url);
         showFeesDetails = url.getShowFeesDetails();
     }
