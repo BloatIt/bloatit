@@ -50,8 +50,6 @@ public interface UserContentInterface extends IdentifiableInterface, RestrictedI
      */
     Date getCreationDate();
 
-    public abstract boolean canAccessAsTeam(final Team asTeam);
-
     /**
      * Gets the as team. Can (may) be null.
      * 

@@ -14,6 +14,7 @@ public interface Attachmentable {
     /**
      * Associate a file with this user content.
      * 
+     * @param file the file to add.
      * @throws UnauthorizedOperationException
      */
     void addFile(FileMetadata file) throws UnauthorizedOperationException;

@@ -52,6 +52,7 @@ import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.MemberRight;
+import com.bloatit.model.right.RightManager;
 
 public final class Member extends Actor<DaoMember> implements User {
 
@@ -126,7 +127,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @return true if you can use the method.
      */
     public boolean canAccessTeams(final Action action) {
-        return canAccess(new MemberRight.TeamList(), action);
+        return canAccess(new RightManager.Public(), action);
     }
 
     public boolean canGetKarma() {
@@ -381,7 +382,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public PageIterable<Team> getTeams() throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.TeamList(), Action.READ);
+        tryAccess(new RightManager.Public(), Action.READ);
         return new TeamList(getDao().getTeams());
     }
 

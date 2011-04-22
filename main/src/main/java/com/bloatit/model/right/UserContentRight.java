@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.model.Team;
 import com.bloatit.model.UserContent;
 
 /**
@@ -25,29 +23,6 @@ import com.bloatit.model.UserContent;
  * {@link UserContent} class.
  */
 public class UserContentRight extends RightManager {
-
-    /**
-     * The Class AsTeam is an accessor for the AsTeam property.
-     */
-    public static class AsTeam extends Accessor {
-
-        private final Team team;
-
-        // TODO document
-        public AsTeam(final Team team) {
-            this.team = team;
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
-         * RestrictedInterface , com.bloatit.model.right.Action)
-         */
-        @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            return canRead(action) || (team.hasTeamPrivilege(UserTeamRight.TALK) && canWrite(action));
-        }
-    }
 
     /**
      * The Class File is a {@link Public} accessor for the File property.

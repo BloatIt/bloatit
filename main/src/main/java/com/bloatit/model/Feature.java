@@ -266,7 +266,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * @see #authenticate(AuthToken)
      */
     Offer getSelectedOffer() throws UnauthorizedOperationException;
-
+    
     /**
      * A validated offer is an offer selected for more than one day. (If you are
      * in {@link FeatureState#DEVELOPPING} state then there should be always a

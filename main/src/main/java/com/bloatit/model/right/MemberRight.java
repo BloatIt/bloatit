@@ -26,27 +26,6 @@ import com.bloatit.model.Member;
 public class MemberRight extends RightManager {
 
     /**
-     * The Class TeamList is an accessor for the TeamList property.
-     */
-    public static class TeamList extends Accessor {
-
-        /*
-         * (non-Javadoc)
-         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
-         * RestrictedInterface , com.bloatit.model.right.Action)
-         */
-        @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            boolean can = false;
-            can = can || canRead(action);
-            can = can || role.hasTeamPrivilege(UserTeamRight.PROMOTE) && ownerCanWrite(role, action);
-            can = can || ownerCanDelete(role, action);
-            return can;
-        }
-    }
-
-
-    /**
      * The Class Karma is a {@link Public} accessor for the Karma property.
      */
     public static class Karma extends Public {

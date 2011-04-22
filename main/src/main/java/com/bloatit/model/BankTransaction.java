@@ -18,11 +18,14 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.EnumSet;
 
 import javax.persistence.Entity;
 
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.data.DaoTeam;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 
 /**
  * The Class BankTransaction.
@@ -87,6 +90,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @param author it the person implied in this transaction (the one filling
      *            is account)
      * @param value is the quantity of money transfered.
+     * @param valuePayed the really paid value.
      * @param orderReference is a reference we have to create and should be
      *            unique.
      */

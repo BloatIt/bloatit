@@ -18,6 +18,7 @@ package com.bloatit.model.right;
 
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 
 /**
@@ -34,14 +35,6 @@ public interface RestrictedInterface {
      *            on this content.
      */
     public abstract void authenticate(AuthToken token);
-
-    /**
-     * Checks for team privilege.
-     * 
-     * @param right the right
-     * @return true, if successful
-     */
-    public abstract boolean hasTeamPrivilege(UserTeamRight right);
 
     /**
      * Checks for user privilege.
@@ -72,15 +65,8 @@ public interface RestrictedInterface {
      */
     public abstract boolean isNobody();
 
-    /**
-     * Check if an authenticated user can talk as the creator of this content.
-     * 
-     * @return true if the authenticate user is the owner (and no group has
-     *         created this content) or if he has the right to TALK. False
-     *         otherwise.
-     */
-    boolean canTalkAs();
-    
     Team getAsTeam();
+
+    Member getAuthenticatedMember();
 
 }

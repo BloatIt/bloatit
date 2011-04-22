@@ -189,15 +189,7 @@ public final class Team extends Actor<DaoTeam> {
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Rights
     // /////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
-        if (member.isInTeam(this)) {
-            return this.getUserTeamRight(member);
-        }
-        return EnumSet.noneOf(UserTeamRight.class);
-    }
-
+    
     public boolean canChangeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give) {
         if (admin == null) {
             return false;

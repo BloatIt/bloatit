@@ -22,6 +22,7 @@ import java.util.EnumSet;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -109,32 +110,6 @@ public abstract class RestrictedObject implements RestrictedInterface {
         } else {
             owningState = OwningState.AUTHENTICATED;
         }
-
-        teamRights = calculateMyTeamRights(member);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.right.RestrictedInterface#hasTeamPrivilege(com.bloatit
-     * .data. DaoTeamRight.UserTeamRight)
-     */
-    @Override
-    public final boolean hasTeamPrivilege(final UserTeamRight right) {
-        automaticAuthentication();
-        return teamRights.contains(right);
-    }
-
-    /**
-     * Check if an authenticated user can talk as the creator of this content.
-     *
-     * @return true if the authenticate user is the owner (and no group has
-     *         created this content) or if he has the right to TALK. False
-     *         otherwise.
-     */
-    @Override
-    public final boolean canTalkAs() {
-        return (isOwner() && teamRights.isEmpty()) || hasTeamPrivilege(UserTeamRight.TALK);
     }
 
     /*
@@ -183,7 +158,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Return true if this content is mine (I am the author).
-     *
+     * 
      * @param member is the person that wish to know if the content is his.
      * @return true if <code>member</code> is the author of <code>this</code>,
      *         false otherwise.
@@ -191,19 +166,8 @@ public abstract class RestrictedObject implements RestrictedInterface {
     protected abstract boolean isMine(Member member);
 
     /**
-     * Calculate my team rights. This method is redefined in
-     * {@link UserContent#calculateMyTeamRights(Member)}.
-     *
-     * @param member the member
-     * @return the enum set
-     */
-    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
-        return EnumSet.noneOf(UserTeamRight.class);
-    }
-
-    /**
      * Gets the auth token.
-     *
+     * 
      * @return the auth token
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
@@ -218,7 +182,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Gets the auth token unprotected.
-     *
+     * 
      * @return the auth token unprotected
      */
     protected final AuthToken getAuthTokenUnprotected() {
@@ -228,29 +192,34 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Can access.
-     *
+     * 
      * @param accessor the accessor
      * @param action the action
      * @return true, if successful
      */
-    protected final boolean canAccess(final Accessor accessor, final Action action) {
+    protected final boolean canAccess(final GenericAccessor accessor, final Action action) {
         return accessor.canAccess(this, action);
     }
 
     /**
      * Try access.
-     *
+     * 
      * @param accessor the accessor
      * @param action the action
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
      */
-    protected final void tryAccess(final Accessor accessor, final Action action) throws UnauthorizedOperationException {
+    protected final void tryAccess(final GenericAccessor accessor, final Action action) throws UnauthorizedOperationException {
         accessor.tryAccess(this, action);
     }
 
     @Override
     public Team getAsTeam() {
         return getAuthTokenUnprotected() != null ? getAuthTokenUnprotected().getAsTeam() : null;
+    }
+
+    @Override
+    public Member getAuthenticatedMember() {
+        return getAuthTokenUnprotected().getMember();
     }
 }

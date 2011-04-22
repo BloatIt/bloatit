@@ -5,7 +5,6 @@ import static com.bloatit.framework.utils.StringUtils.isEmpty;
 import java.util.List;
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.Optional;

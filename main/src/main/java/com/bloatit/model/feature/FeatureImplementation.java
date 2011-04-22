@@ -185,7 +185,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         tryAccess(new FeatureRight.Contribute(), Action.WRITE);
         // For exception safety keep the order.
         if (getAuthToken().getAsTeam() != null) {
-            if (getAuthToken().getAsTeam().hasTeamPrivilege(UserTeamRight.BANK)) {
+            if (getAuthToken().getAsTeam().getUserTeamRight(getAuthToken().getMember()).contains(UserTeamRight.BANK)) {
                 Log.model().trace("Doing a contribution in the name of a team: " + getAuthToken().getAsTeam().getId());
             } else {
                 throw new UnauthorizedOperationException(SpecialCode.TEAM_CONTRIBUTION_WITHOUT_BANK);
@@ -289,7 +289,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public void cancelDevelopment() throws UnauthorizedOperationException {
         // TODO Verify the rights.
         getAuthToken(); // Make sure we are authenticated.
-        if (!getSelectedOffer().canTalkAs()) {
+        // TODO canTalkAs with parameters.
+        if (getSelectedOffer().getAsTeam() != null){
+            if (getSelectedOffer().getAsTeam().getUserTeamRight(getAuthToken().getMember()).contains(UserTeamRight.MODIFY)){
+                throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_FEATURE);
+            }
+        }else if (!getSelectedOffer().isOwner()){
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_FEATURE);
         }
         setStateObject(getStateObject().eventDeveloperCanceled());

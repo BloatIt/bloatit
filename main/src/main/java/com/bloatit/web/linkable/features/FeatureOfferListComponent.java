@@ -336,7 +336,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
                         // Validation details
                         generateValidationDetails(lot, offerRightBottomColumn);
-                    
+
                     } else {
                         int i = 0;
                         for (final Milestone lot : lots) {
@@ -387,7 +387,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         }
                     }
 
-                    
                 }
                 offerBottomBlock.add(offerRightBottomColumn);
             }
@@ -414,7 +413,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
             final JsShowHide showHideValidationDetails = new JsShowHide(false);
             showHideValidationDetails.setHasFallback(false);
 
-
             final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("show validation details"));
             showHideLink.setCssClass("fake_link");
             showHideValidationDetails.addActuator(showHideLink);
@@ -422,27 +420,29 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
             final HtmlDiv validationDetailsDiv = new HtmlDiv();
 
-            final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(Context.tr("Minimun time for validation: "), new TimeRenderer(lot.getSecondBeforeValidation()*DateUtils.MILLISECOND_PER_SECOND).renderRange(TimeBase.DAY, FormatStyle.MEDIUM));
+            final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(Context.tr("Minimun time for validation: "),
+                                                                                         new TimeRenderer(lot.getSecondBeforeValidation()
+                                                                                                 * DateUtils.MILLISECOND_PER_SECOND).renderRange(TimeBase.DAY,
+                                                                                                                                                 FormatStyle.MEDIUM));
             validationDetailsDiv.add(timeBeforeValidationPara);
 
-            final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "), String.valueOf(lot.getFatalBugsPercent())+"%");
+            final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "),
+                                                                                     String.valueOf(lot.getFatalBugsPercent()) + "%");
             validationDetailsDiv.add(fatalBugPourcentPara);
 
-            final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "), String.valueOf(lot.getMajorBugsPercent())+"%");
+            final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "),
+                                                                                     String.valueOf(lot.getMajorBugsPercent()) + "%");
             validationDetailsDiv.add(majorBugPourcentPara);
 
-            final HtmlDefineParagraph minorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no minor bug: "), String.valueOf(lot.getMinorBugsPercent())+"%");
+            final HtmlDefineParagraph minorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no minor bug: "),
+                                                                                     String.valueOf(lot.getMinorBugsPercent()) + "%");
             validationDetailsDiv.add(minorBugPourcentPara);
 
-            
             lotBlock.add(validationDetailsDiv);
 
             showHideValidationDetails.addListener(validationDetailsDiv);
             showHideValidationDetails.apply();
         }
-
-
-
 
         public void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
             if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
@@ -453,8 +453,20 @@ public class FeatureOfferListComponent extends HtmlDiv {
         }
 
         private boolean isDeveloper() throws UnauthorizedOperationException {
-            return Context.getSession().isLogged() && offer.getFeature().getSelectedOffer() != null
-                    && offer.getFeature().getSelectedOffer().canTalkAs();
+            if (!Context.getSession().isLogged()) {
+                return false;
+            }
+            Offer selectedOffer = offer.getFeature().getSelectedOffer();
+            if (selectedOffer == null) {
+                return false;
+            }
+            if (selectedOffer.getAsTeam() != null) {
+                return Context.getSession().getAuthToken().getMember().hasModifyTeamRight(selectedOffer.getAsTeam());
+            }
+            if (Context.getSession().getAuthToken().getMember().equals(selectedOffer.getMember())) {
+                return true;
+            }
+            return false;
         }
 
         private String getLotState(final Milestone lot) {

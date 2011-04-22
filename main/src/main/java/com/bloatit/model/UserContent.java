@@ -69,11 +69,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         return getDao().getCreationDate();
     }
 
-    @Override
-    public final boolean canAccessAsTeam(final Team asTeam) {
-        return canAccess(new UserContentRight.AsTeam(asTeam), Action.WRITE);
-    }
-
     /*
      * (non-Javadoc)
      * @see com.bloatit.model.UserContentInterface#getAsTeam()
@@ -120,14 +115,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     @Override
     protected boolean isMine(final Member member) {
         return getMember().isMine(member);
-    }
-
-    @Override
-    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
-        if (getAsTeam() != null && member.isInTeam(getAsTeam())) {
-            return getAsTeam().getUserTeamRight(member);
-        }
-        return EnumSet.noneOf(UserTeamRight.class);
     }
 
     @Override

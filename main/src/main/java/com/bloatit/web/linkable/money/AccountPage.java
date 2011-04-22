@@ -112,7 +112,7 @@ public final class AccountPage extends LoggedPage {
         try {
             Actor<?> currentActor = loggedUser;
             if (isTeamAccount()) {
-                if (team.hasTeamPrivilege(UserTeamRight.BANK)) {
+                if (loggedUser.hasBankTeamRight(team)) {
                     currentActor = team;
                 } else {
                     session.notifyBad(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));

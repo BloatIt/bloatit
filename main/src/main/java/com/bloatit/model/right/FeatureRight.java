@@ -61,13 +61,8 @@ public class FeatureRight extends RightManager {
     /**
      * The Class Contribute is an accessor for the Contribute property.
      */
-    public static class Contribute extends Accessor {
+    public static class Contribute extends ReadOnlyBankData {
 
-        @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            final Team team = role.getAsTeam();
-            return (((role.isAuthenticated() &&  team == null) || (team != null && team.hasTeamPrivilege(UserTeamRight.BANK))) && (action == Action.WRITE)) || canRead(action);
-        }
     }
 
     /**

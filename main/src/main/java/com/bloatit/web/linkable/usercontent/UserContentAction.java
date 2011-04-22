@@ -104,7 +104,7 @@ public abstract class UserContentAction extends LoggedAction {
         }
         try {
             if (team != null) {
-                if (!team.hasTeamPrivilege(right)) {
+                if (!team.getUserTeamRight(me).contains(right)) {
                     session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
                     transmitParameters();
                     return doProcessErrors();

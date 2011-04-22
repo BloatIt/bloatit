@@ -362,17 +362,6 @@ public class Milestone extends Identifiable<DaoMilestone> {
         return Offer.create(getDao().getOffer()).isMine(member);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.right.RestrictedObject#calculateMyTeamRights(com.bloatit
-     * .model .Member)
-     */
-    @Override
-    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
-        return Offer.create(getDao().getOffer()).calculateMyTeamRights(member);
-    }
-
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
