@@ -33,11 +33,11 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
     }
 
     public void teamByMember() {
-        getfactory().teamByMember();
+        getfactory().groupByMember();
     }
 
     public void teamByAsTeam() {
-        getfactory().teamByAsTeam();
+        getfactory().groupByAsTeam();
     }
 
     public void orderByMember(final OrderType order) {

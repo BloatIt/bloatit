@@ -29,12 +29,12 @@ public class OfferAdminListFactory extends KudosableAdminListFactory<DaoOffer, O
         getfactory().amount(cmp, value);
     }
 
-    public void withMilestonees() {
-        getfactory().withMilestonees();
+    public void withMilestones() {
+        getfactory().withMilestones();
     }
 
-    public void withoutMilestonees() {
-        getfactory().withoutMilestonees();
+    public void withoutMilestones() {
+        getfactory().withoutMilestones();
     }
 
 }

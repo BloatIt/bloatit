@@ -9,6 +9,8 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * This is the {@link PageIterable} implementation using the Hibernate Search
  * querying interface.
+ * 
+ * @param <T> the class stored in this collection
  */
 public class SearchCollection<T> implements PageIterable<T> {
 

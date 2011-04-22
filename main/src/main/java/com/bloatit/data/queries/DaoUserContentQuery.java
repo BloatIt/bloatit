@@ -26,6 +26,12 @@ import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.SessionManager;
 
+/**
+ * The Class DaoUserContentQuery is a generic way of querying for DaoUserContent
+ * using criterias.
+ * 
+ * @param <T> the generic type
+ */
 public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiableQuery<T> {
 
     private static String CREATION_DATE = "creationDate";
@@ -35,24 +41,43 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
     private static String IS_DELETED = "isDeleted";
     private static String AS_TEAM = "asTeam";
 
+    /**
+     * Instantiates a new dao user content query.
+     * 
+     * @param criteria the criteria to use for this query
+     */
     protected DaoUserContentQuery(final Criteria criteria) {
         super(criteria);
         criteria.createAlias("member", "m");
         criteria.setReadOnly(true);
     }
 
+    /**
+     * Instantiates a new dao user content query.
+     */
     public DaoUserContentQuery() {
         this(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoUserContent.class));
     }
 
-    public void teamByMember() {
+    /**
+     * Group by member.
+     */
+    public void groupByMember() {
         add(Projections.groupProperty(MEMBER));
     }
 
-    public void teamByAsTeam() {
+    /**
+     * Group by as team.
+     */
+    public void groupByAsTeam() {
         add(Projections.groupProperty(AS_TEAM));
     }
 
+    /**
+     * Order by member.
+     * 
+     * @param order the order (ASC/DESC)
+     */
     public void orderByMember(final DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(MEMBER_LOGIN));
@@ -61,6 +86,11 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         }
     }
 
+    /**
+     * Order by as team.
+     * 
+     * @param order the order (ASC/DESC)
+     */
     public void orderByAsTeam(final DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(AS_TEAM));
@@ -69,6 +99,11 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         }
     }
 
+    /**
+     * Order by creation date.
+     * 
+     * @param order the order (ASC/DESC)
+     */
     public void orderByCreationDate(final OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(CREATION_DATE));
@@ -77,34 +112,62 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
         }
     }
 
+    /**
+     * show Deleted content only.
+     */
     public void deletedOnly() {
         add(Restrictions.eq(IS_DELETED, true));
     }
 
+    /**
+     * show Non deleted content only.
+     */
     public void nonDeletedOnly() {
         add(Restrictions.eq(IS_DELETED, false));
     }
 
+    /**
+     * Show content without file
+     */
     public void withoutFile() {
         add(Restrictions.isEmpty(FILES));
     }
 
+    /**
+     * Show content with file.
+     */
     public void withFile() {
         add(Restrictions.isNotEmpty(FILES));
     }
 
+    /**
+     * Show content created as team.
+     */
     public void withAnyTeam() {
         add(Restrictions.isNotNull(AS_TEAM));
     }
 
+    /**
+     * Show content with no team
+     */
     public void withNoTeam() {
         add(Restrictions.isNull(AS_TEAM));
     }
 
+    /**
+     * Show content created from member.
+     * 
+     * @param member the member
+     */
     public void fromMember(final DaoMember member) {
         add(Restrictions.eq(MEMBER, member));
     }
 
+    /**
+     * Show content created from team.
+     * 
+     * @param team the team
+     */
     public void fromTeam(final DaoTeam team) {
         add(Restrictions.eq(AS_TEAM, team));
     }

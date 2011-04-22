@@ -43,9 +43,9 @@ public class DaoMilestoneQuery extends DaoIdentifiableQuery<DaoMilestone> {
      * the milestones that have less than 42 €, you can call:
      * 
      * <pre>
-     * DaoOfferListFactory factory = new DaoMilestoneesListFactory();
+     * DaoOfferListFactory factory = new DaoMilestonesListFactory();
      * factory.amount(Comparator.LESS, 42);
-     * PageIterable&lt;DaoMilestonees&gt; milestones = factory.createCollection();
+     * PageIterable&lt;DaoMilestones&gt; milestones = factory.createCollection();
      * </pre>
      * 
      * @param cmp the cmp.
