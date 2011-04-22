@@ -99,6 +99,9 @@ public abstract class DaoActor extends DaoIdentifiable {
      * This method use a HQL request. If you intend to use "getByLogin" or
      * "getByName", "exist" is useless. (In that case you'd better test if
      * getByLogin != null, to minimize the number of HQL request).
+     * 
+     * @param login the login we are looking for.
+     * @return true if found.
      */
     public static boolean loginExists(final String login) {
         if (login == null) {
@@ -113,6 +116,8 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * This method use a HQL request.
+     * @param email the email we are looking for.
+     * @return true if found
      */
     public static boolean emailExists(final String email) {
         final Query q = SessionManager.getNamedQuery("actor.byEmail.size").setString("email", email);
@@ -131,7 +136,8 @@ public abstract class DaoActor extends DaoIdentifiable {
      *            unique, longer than 2 chars and do not contains space chars
      *            ("[^\\p{Space}]+").
      * @throws NonOptionalParameterException if login or mail is null.
-     * @throws MalformedArgumentException if the login is to small or contain space chars.
+     * @throws MalformedArgumentException if the login is to small or contain
+     *             space chars.
      */
     protected DaoActor(final String login) {
         super();
@@ -168,18 +174,30 @@ public abstract class DaoActor extends DaoIdentifiable {
         this.externalAccount = externalAccount;
     }
 
+    /**
+     * @return the login of the actor
+     */
     public String getLogin() {
         return this.login;
     }
 
+    /**
+     * @return the creation date.
+     */
     public Date getDateCreation() {
         return (Date) this.dateCreation.clone();
     }
 
+    /**
+     * @return the internal account of this actor
+     */
     public DaoInternalAccount getInternalAccount() {
         return this.internalAccount;
     }
 
+    /**
+     * @return the external account of this actor
+     */
     public DaoExternalAccount getExternalAccount() {
         return this.externalAccount;
     }

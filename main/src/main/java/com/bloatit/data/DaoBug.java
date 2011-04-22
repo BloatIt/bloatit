@@ -53,7 +53,13 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * error etc.
      */
     public enum Level {
-        FATAL, MAJOR, MINOR
+
+        /** The FATAL. */
+        FATAL,
+        /** The MAJOR. */
+        MAJOR,
+        /** The MINOR. */
+        MINOR
     }
 
     /**
@@ -61,7 +67,13 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * of fixing it.
      */
     public enum BugState {
-        PENDING, DEVELOPING, RESOLVED
+
+        /** The PENDING. */
+        PENDING,
+        /** The DEVELOPING. */
+        DEVELOPING,
+        /** The RESOLVED. */
+        RESOLVED
     }
 
     @Basic(optional = false)
@@ -94,13 +106,13 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     @Enumerated
     private BugState state;
 
-    public DaoBug(final DaoMember member,
-                  final DaoTeam team,
-                  final DaoMilestone milestone,
-                  final String title,
-                  final String description,
-                  final Locale locale,
-                  final Level level) {
+    private DaoBug(final DaoMember member,
+                   final DaoTeam team,
+                   final DaoMilestone milestone,
+                   final String title,
+                   final String description,
+                   final Locale locale,
+                   final Level level) {
         super(member, team);
         if (title == null || description == null || milestone == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -113,6 +125,18 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
         this.state = BugState.PENDING;
     }
 
+    /**
+     * Creates the bug and persist it.
+     * 
+     * @param member the author
+     * @param team the as Team property. can be null.
+     * @param milestone the milestone on which there is a bug.
+     * @param title the title of the bug
+     * @param description the description of the bug
+     * @param locale the locale in which this bug has been written
+     * @param level the level of the bug
+     * @return the new dao bug
+     */
     public static DaoBug createAndPersist(final DaoMember member,
                                           final DaoTeam team,
                                           final DaoMilestone milestone,
@@ -132,11 +156,21 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
         return bug;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoCommentable#addComment(com.bloatit.data.DaoComment)
+     */
     @Override
     public void addComment(final DaoComment comment) {
         this.comments.add(comment);
     }
 
+    /**
+     * Sets the error level.
+     * 
+     * @param level the new error level
+     */
     public void setErrorLevel(final Level level) {
         this.level = level;
     }
@@ -153,6 +187,8 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     /**
+     * Gets the title.
+     * 
      * @return the title
      */
     public String getTitle() {
@@ -160,6 +196,8 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     /**
+     * Gets the description.
+     * 
      * @return the description
      */
     public String getDescription() {
@@ -167,6 +205,8 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     /**
+     * Gets the this is the language in which the description is written.
+     * 
      * @return the locale
      */
     public Locale getLocale() {
@@ -174,29 +214,49 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     /**
+     * Gets the error level.
+     * 
      * @return the errorLevel
      */
     public Level getErrorLevel() {
         return this.level;
     }
 
+    /**
+     * Gets the milestone.
+     * 
+     * @return the milestone
+     */
     public DaoMilestone getMilestone() {
         return this.milestone;
     }
 
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     */
     public BugState getState() {
         return this.state;
     }
 
+    /**
+     * Sets the resolved.
+     */
     public void setResolved() {
         this.state = BugState.RESOLVED;
     }
 
+    /**
+     * Sets the developing.
+     */
     public void setDeveloping() {
         this.state = BugState.DEVELOPING;
     }
 
     /**
+     * Gets the comments.
+     * 
      * @return the comments
      */
     @Override
@@ -205,6 +265,8 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     /**
+     * Gets the last comment.
+     * 
      * @return the last comment
      */
     @Override
@@ -216,6 +278,12 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -225,6 +293,9 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     // Hibernate mapping
     // ======================================================================
 
+    /**
+     * Instantiates a new dao bug.
+     */
     protected DaoBug() {
         super();
     }

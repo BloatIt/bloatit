@@ -171,18 +171,30 @@ public abstract class DaoAccount extends DaoIdentifiable {
         return new QueryCollection<DaoTransaction>("account.getTransactions").setEntity("this", this);
     }
 
+    /**
+     * @return the modification date of this account
+     */
     public Date getLastModificationDate() {
         return (Date) this.lastModificationDate.clone();
     }
 
+    /**
+     * @return the quantity of money on this account
+     */
     public BigDecimal getAmount() {
         return this.amount;
     }
 
+    /**
+     * @return the actor that possess this account
+     */
     public DaoActor getActor() {
         return this.actor;
     }
 
+    /**
+     * @return this account creation date.
+     */
     public Date getCreationDate() {
         return (Date) this.creationDate.clone();
     }

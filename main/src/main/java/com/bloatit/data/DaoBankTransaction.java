@@ -132,6 +132,9 @@ public class DaoBankTransaction extends DaoIdentifiable {
     // ======================================================================
 
     /**
+     * Gets a bank transaction by token.
+     * 
+     * @param token the token we are looking for
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>.
      *         Return null if not found.
      */
@@ -143,6 +146,17 @@ public class DaoBankTransaction extends DaoIdentifiable {
     // Construction
     // ======================================================================
 
+    /**
+     * Creates a bank transaction and persist it.
+     * 
+     * @param message the message given by the bank during this transaction
+     * @param token the token to identify this bank transaction
+     * @param author the author of the transaction
+     * @param value the value the user will have on its internal account
+     * @param valuePayed the value payed by the user
+     * @param orderReference the order reference a unique reference of the order
+     * @return the dao bank transaction
+     */
     public static DaoBankTransaction createAndPersist(final String message,
                                                       final String token,
                                                       final DaoActor author,
@@ -188,7 +202,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
-     * Set the state to {@link State#AUTHORIZED} if the current state is
+     * Set the state to {@link State#AUTHORIZED} if the current state is.
      * {@link State#PENDING}. Reset the modification date.
      */
     public void setAuthorized() {
@@ -197,6 +211,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
             this.state = State.AUTHORIZED;
         }
     }
+
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the
      * external to the internal account.
@@ -230,6 +245,11 @@ public class DaoBankTransaction extends DaoIdentifiable {
         this.state = State.REFUSED;
     }
 
+    /**
+     * Sets the this field is a spare data field.
+     * 
+     * @param processInformations the new this field is a spare data field
+     */
     public void setProcessInformations(final String processInformations) {
         this.modificationDate = new Date();
         this.processInformations = processInformations;
@@ -239,31 +259,65 @@ public class DaoBankTransaction extends DaoIdentifiable {
     // Getters
     // ======================================================================
 
+    /**
+     * When doing automatic transaction with a bank, we can received a message
+     * (mostly error messages).
+     * 
+     * @return the when doing automatic transaction with a bank, we can received
+     *         a message (mostly error messages)
+     */
     public String getMessage() {
         return this.message;
     }
 
+    /**
+     * A token is used to identify a BankTransaction.
+     * 
+     * @return the a token is used to identify a BankTransaction
+     */
     public String getToken() {
         return this.token;
     }
 
+    /**
+     * Gets the author.
+     * 
+     * @return the author
+     */
     public DaoActor getAuthor() {
         return this.author;
     }
 
+    /**
+     * Gets the value paid.
+     * 
+     * @return the value paid
+     */
     public BigDecimal getValuePaid() {
         return this.valuePaid;
     }
 
+    /**
+     * Gets the value.
+     * 
+     * @return the value
+     */
     public BigDecimal getValue() {
         return this.value;
     }
 
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     */
     public State getState() {
         return this.state;
     }
 
     /**
+     * Gets the creation date.
+     * 
      * @return a clone of the creationDate
      */
     public Date getCreationDate() {
@@ -271,16 +325,28 @@ public class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
+     * Gets the modification date.
+     * 
      * @return a clone of the creationDate
      */
     public Date getModificationDate() {
         return (Date) this.modificationDate.clone();
     }
 
+    /**
+     * Gets the this is the order reference.
+     * 
+     * @return the this is the order reference
+     */
     public String getReference() {
         return this.reference;
     }
 
+    /**
+     * Gets the this field is a spare data field.
+     * 
+     * @return the this field is a spare data field
+     */
     public String getProcessInformations() {
         return this.processInformations;
     }
@@ -289,6 +355,12 @@ public class DaoBankTransaction extends DaoIdentifiable {
     // Visitor.
     // ======================================================================
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
+     * )
+     */
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
@@ -298,6 +370,9 @@ public class DaoBankTransaction extends DaoIdentifiable {
     // For hibernate mapping.
     // ======================================================================
 
+    /**
+     * Instantiates a new dao bank transaction.
+     */
     protected DaoBankTransaction() {
         super();
     }
