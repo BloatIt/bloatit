@@ -105,7 +105,7 @@ public final class TeamPage extends MasterPage {
 
         if (targetTeam.canAccessContact(Action.READ)) {
             try {
-                contacts.add(new HtmlParagraph().addText(targetTeam.getContact()));
+                contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getContact()));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyBad("An error prevented us from showing you team contact information. Please notify us.");
                 throw new ShallNotPassException("User can't see team contact information while he should", e);
