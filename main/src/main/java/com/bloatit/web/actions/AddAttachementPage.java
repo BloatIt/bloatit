@@ -39,7 +39,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
 
     @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
-    private final UserContentInterface<? extends DaoUserContent> userContent;
+    private final UserContentInterface userContent;
 
     private final AddAttachementPageUrl url;
 
@@ -90,7 +90,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
         return AddAttachementPage.generateBreadcrumb(userContent);
     }
 
-    public static Breadcrumb generateBreadcrumb(final UserContentInterface<?> userContent) {
+    public static Breadcrumb generateBreadcrumb(final UserContentInterface userContent) {
         final Breadcrumb breadcrumb = BreadcrumbTools.generateBreadcrumb(userContent);
         breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachment")));
         return breadcrumb;

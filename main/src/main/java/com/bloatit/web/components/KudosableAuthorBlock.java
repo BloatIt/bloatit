@@ -11,7 +11,7 @@ import com.bloatit.web.url.PopularityVoteActionUrl;
 
 public class KudosableAuthorBlock extends UserContentAuthorBlock {
 
-    public KudosableAuthorBlock(final KudosableInterface<?> kudosable) {
+    public KudosableAuthorBlock(final KudosableInterface kudosable) {
         super(kudosable);
 
         add(new HtmlText(" – "));

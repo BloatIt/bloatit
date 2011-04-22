@@ -30,7 +30,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 
-public interface Feature extends KudosableInterface<DaoFeature>, Commentable {
+public interface Feature extends KudosableInterface, Commentable {
 
     /**
      * @param action is the type of action you can do on the property. (READ for

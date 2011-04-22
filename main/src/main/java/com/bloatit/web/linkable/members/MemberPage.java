@@ -377,7 +377,7 @@ public final class MemberPage extends MasterPage {
      */
     private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine,
                                                      final Feature feature,
-                                                     final UserContentInterface<? extends DaoUserContent> content) {
+                                                     final UserContentInterface content) {
         final PlaceHolderElement ph = new PlaceHolderElement();
         try {
             ph.add(generateFeedSecondLine(Context.tr("Feature: "), FeaturesTools.generateFeatureTitle(feature)));
@@ -398,7 +398,7 @@ public final class MemberPage extends MasterPage {
      */
     private HtmlElement generateFeedStructure(final HtmlElement firstLine,
                                               final HtmlElement secondLine,
-                                              final UserContentInterface<? extends DaoUserContent> content) {
+                                              final UserContentInterface content) {
         final HtmlDiv master = new HtmlDiv("feed_item");
         master.add(new HtmlDiv("feed_item_title").add(firstLine));
         final HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");

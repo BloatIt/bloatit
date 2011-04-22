@@ -23,7 +23,7 @@ import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/usercontent")
-public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentInterface<U>, T extends UserContentAdminListFactory<U, V>>
+public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentInterface, T extends UserContentAdminListFactory<U, V>>
         extends IdentifiablesAdminPage<U, V, UserContentAdminListFactory<U, V>> {
 
     public enum OrderByUserContent implements Displayable {

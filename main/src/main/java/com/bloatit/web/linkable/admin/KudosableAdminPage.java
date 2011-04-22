@@ -23,7 +23,7 @@ import com.bloatit.model.admin.KudosableAdminListFactory;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 
 @ParamContainer("admin/kudosable")
-public abstract class KudosableAdminPage<T extends DaoKudosable, U extends KudosableInterface<T>, V extends KudosableAdminListFactory<T, U>> extends
+public abstract class KudosableAdminPage<T extends DaoKudosable, U extends KudosableInterface, V extends KudosableAdminListFactory<T, U>> extends
         UserContentAdminPage<T, U, V> {
 
     @RequestParam(role = RequestParam.Role.POST)

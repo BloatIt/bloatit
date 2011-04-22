@@ -38,7 +38,7 @@ public final class PopularityVoteAction extends LoggedAction {
 
     @ParamConstraint(optionalErrorMsg = @tr("Nothing to vote on."))
     @RequestParam(name = TARGET_KUDOSABLE)
-    private final KudosableInterface<?> targetKudosable;
+    private final KudosableInterface targetKudosable;
 
     @RequestParam(name = VOTE_UP)
     private final Boolean voteUp;

@@ -8,7 +8,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
 
-public class UserContentAdminListFactory<T extends DaoUserContent, U extends UserContentInterface<T>> extends IdentifiableAdminListFactory<T, U> {
+public class UserContentAdminListFactory<T extends DaoUserContent, U extends UserContentInterface> extends IdentifiableAdminListFactory<T, U> {
 
     public static class DefaultFactory extends UserContentAdminListFactory<DaoUserContent, UserContent<DaoUserContent>> {
         // Just a rename

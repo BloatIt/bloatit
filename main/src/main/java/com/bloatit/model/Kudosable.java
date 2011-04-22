@@ -28,7 +28,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.KudosableRight;
 
-public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface<T> {
+public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface {
 
     private static final int TURN_VALID = ModelConfiguration.getKudosableDefaultTurnValid();
     private static final int TURN_REJECTED = ModelConfiguration.getKudosableDefaultTurnRejected();

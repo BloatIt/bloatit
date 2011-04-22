@@ -34,7 +34,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 
 public class BreadcrumbTools {
 
-    public static Breadcrumb generateBreadcrumb(final UserContentInterface<?> userContent) {
+    public static Breadcrumb generateBreadcrumb(final UserContentInterface userContent) {
 
         return userContent.accept(new ModelClassVisitor<Breadcrumb>() {
 

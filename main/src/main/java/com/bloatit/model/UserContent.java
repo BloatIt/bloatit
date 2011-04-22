@@ -35,7 +35,7 @@ import com.bloatit.model.right.UserContentRight;
  * @param <T> the generic type. Must be the concrete Dao version of the concrete
  *            subClass. For example: Feature extends UserContent<DaoFeature>
  */
-public abstract class UserContent<T extends DaoUserContent> extends Identifiable<T> implements UserContentInterface<T> {
+public abstract class UserContent<T extends DaoUserContent> extends Identifiable<T> implements UserContentInterface {
 
     /**
      * Instantiates a new user content.

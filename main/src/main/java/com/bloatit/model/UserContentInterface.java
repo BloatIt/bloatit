@@ -18,7 +18,6 @@ package com.bloatit.model;
 
 import java.util.Date;
 
-import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.right.RestrictedInterface;
 
@@ -26,10 +25,8 @@ import com.bloatit.model.right.RestrictedInterface;
  * The Interface UserContentInterface. A User content is a content created by a
  * user. The {@link Member} that has created the content can say he has done so
  * in the name of a team.
- * 
- * @param <T> the Dao class corresponding to this UserContent.
  */
-public interface UserContentInterface<T extends DaoUserContent> extends IdentifiableInterface, RestrictedInterface, Attachmentable {
+public interface UserContentInterface extends IdentifiableInterface, RestrictedInterface, Attachmentable {
 
     /**
      * Gets the member author.

@@ -18,7 +18,7 @@ public class UserContentAuthorBlock extends HtmlDiv {
 
     private final HtmlDiv commentInfo;
 
-    public UserContentAuthorBlock(final UserContentInterface<?> content) {
+    public UserContentAuthorBlock(final UserContentInterface content) {
         super("usercontent_infos");
         commentInfo = new HtmlDiv("usercontent_author");
         super.add(commentInfo);

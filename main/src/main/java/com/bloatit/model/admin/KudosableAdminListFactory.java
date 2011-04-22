@@ -9,7 +9,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.KudosableInterface;
 
-public class KudosableAdminListFactory<T extends DaoKudosable, U extends KudosableInterface<T>> extends UserContentAdminListFactory<T, U> {
+public class KudosableAdminListFactory<T extends DaoKudosable, U extends KudosableInterface> extends UserContentAdminListFactory<T, U> {
 
     public KudosableAdminListFactory() {
         super(new DaoKudosableQuery<T>());

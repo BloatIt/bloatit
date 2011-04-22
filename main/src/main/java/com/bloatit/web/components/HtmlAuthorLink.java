@@ -7,7 +7,7 @@ import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 public class HtmlAuthorLink extends HtmlLink {
-    public HtmlAuthorLink(final UserContentInterface<?> content) throws UnauthorizedOperationException {
+    public HtmlAuthorLink(final UserContentInterface content) throws UnauthorizedOperationException {
         // @formatter:off
         super(
               content.getAsTeam() != null ? 
