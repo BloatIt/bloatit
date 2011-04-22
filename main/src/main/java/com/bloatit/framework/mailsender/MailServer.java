@@ -9,8 +9,6 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -55,15 +53,11 @@ public class MailServer extends Thread {
     private final static String WIP_MAIL_DIRECTORY = FrameworkConfiguration.getMailDirTmp();
     private final static String SENT_MAIL_DIRECTORY = FrameworkConfiguration.getMailDirSend();
     private final static String FLUSH_AND_STOP = "FLUSHANDSTOP";
-    private final static long MILLISECOND = 1L;
-    private final static long SECOND = 1000L * MILLISECOND;
-    private final static long MINUTE = 60L * SECOND;
 
     private Session session;
     private LinkedBlockingQueue<String> mailsFileName;
 
     private AtomicBoolean stop;
-    private long numberOfTries;
 
     private static volatile MailServer instance;
 
@@ -82,7 +76,6 @@ public class MailServer extends Thread {
     public void initialize() {
         mailsFileName = new LinkedBlockingQueue<String>();
         stop = new AtomicBoolean(false);
-        numberOfTries = 0;
 
         handleUnsent();
         createSentDirectory();
