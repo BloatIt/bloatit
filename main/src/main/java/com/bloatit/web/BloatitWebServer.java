@@ -83,6 +83,8 @@ import com.bloatit.web.linkable.team.CreateTeamPage;
 import com.bloatit.web.linkable.team.GiveRightAction;
 import com.bloatit.web.linkable.team.HandleJoinTeamInvitationAction;
 import com.bloatit.web.linkable.team.JoinTeamAction;
+import com.bloatit.web.linkable.team.ModifyTeamAction;
+import com.bloatit.web.linkable.team.ModifyTeamPage;
 import com.bloatit.web.linkable.team.SendTeamInvitationAction;
 import com.bloatit.web.linkable.team.SendTeamInvitationPage;
 import com.bloatit.web.linkable.team.TeamPage;
@@ -150,6 +152,8 @@ import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
+import com.bloatit.web.url.ModifyTeamActionUrl;
+import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.NotFoundActionUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.PaylineActionUrl;
@@ -321,6 +325,9 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(RecoverPasswordPageUrl.getName())) {
             return new RecoverPasswordPage(new RecoverPasswordPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ModifyTeamPageUrl.getName())) {
+            return new ModifyTeamPage(new ModifyTeamPageUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -442,6 +449,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(NotFoundActionUrl.getName())) {
             return new NotFoundAction(new NotFoundActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ModifyTeamActionUrl.getName())) {
+            return new ModifyTeamAction(new ModifyTeamActionUrl(params, session.getParameters()));
         }
 
 

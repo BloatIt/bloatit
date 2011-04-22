@@ -50,7 +50,7 @@ import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.ModifyMemberPageUrl;
+import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -127,7 +127,7 @@ public final class TeamPage extends MasterPage {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
-            modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change team settings")));
+            modify.add(new ModifyTeamPageUrl(targetTeam).getHtmlLink(Context.tr("Change team settings")));
         }
 
         // Title and team type
