@@ -15,40 +15,119 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
-import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.AccountChargingProcessUrl;
+import com.bloatit.web.url.AccountPageUrl;
+import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.ChangeLanguagePageUrl;
+import com.bloatit.web.url.CreateFeaturePageUrl;
+import com.bloatit.web.url.CreateTeamPageUrl;
+import com.bloatit.web.url.DocumentationPageUrl;
+import com.bloatit.web.url.FeatureListPageUrl;
+import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.web.url.LogoutActionUrl;
+import com.bloatit.web.url.LostPasswordPageUrl;
+import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
+import com.bloatit.web.url.MessageListPageUrl;
+import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
+import com.bloatit.web.url.SoftwareListPageUrl;
+import com.bloatit.web.url.TeamsPageUrl;
 
 @ParamContainer("sitemap")
 public final class SiteMapPage extends MasterPage {
 
-    public SiteMapPage(final SiteMapPageUrl specialsPageUrl) {
-        super(specialsPageUrl);
+    private final SiteMapPageUrl url;
+
+    public SiteMapPage(final SiteMapPageUrl url) {
+        super(url);
+        this.url = url;
 
     }
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        // TODO do something here.
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Special pages"), 2);
-        pageTitle.setCssClass("page_title");
 
-        final HtmlList pageList = new HtmlList();
-        final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(Context.tr("Members list"));
-        pageList.add(memeHtmlLink);
+        TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        return pageTitle;
+        HtmlTitle title = new HtmlTitle(Context.tr("Site map"), 1);
+        layout.addLeft(title);
+
+        HtmlParagraph goal = new HtmlParagraph(Context.tr("This page should list all page in this website. However, some dynamic pages are numerous and cannot be all listed here."));
+        layout.addLeft(goal);
+
+        HtmlTitle titleContent = new HtmlTitle(Context.tr("Content pages"), 2);
+        layout.addLeft(titleContent);
+        HtmlList contentLinkList = new HtmlList();
+        layout.addLeft(contentLinkList);
+
+        contentLinkList.add( new FeatureListPageUrl().getHtmlLink(Context.tr("Feature request list")));
+        contentLinkList.add(new TeamsPageUrl().getHtmlLink(Context.tr("Team list")));
+        contentLinkList.add(new MembersListPageUrl().getHtmlLink(Context.tr("Member list")));
+        contentLinkList.add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares list")));
+        contentLinkList.add(new CreateFeaturePageUrl().getHtmlLink(Context.tr("Request a new feature")));
+        contentLinkList.add(new CreateTeamPageUrl().getHtmlLink(Context.tr("Create a team")));
+        contentLinkList.add(new AddSoftwarePageUrl().getHtmlLink(Context.tr("Add a software")));
+
+
+        HtmlTitle titleUseful = new HtmlTitle(Context.tr("Useful pages"), 2);
+        layout.addLeft(titleUseful);
+        HtmlList usefulLinkList = new HtmlList();
+        layout.addLeft(usefulLinkList);
+
+        usefulLinkList.add(new LoginPageUrl().getHtmlLink(Context.tr("Login")));
+        usefulLinkList.add(new SignUpPageUrl().getHtmlLink(Context.tr("Sign up ")));
+        usefulLinkList.add(new LostPasswordPageUrl().getHtmlLink(Context.tr("Password recovery")));
+        usefulLinkList.add(new SiteMapPageUrl().getHtmlLink(Context.tr("Site map")));
+        usefulLinkList.add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language")));
+        usefulLinkList.add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Signal a bug")));
+
+
+        HtmlTitle titlePersonal = new HtmlTitle(Context.tr("Personal informations pages"), 2);
+        layout.addLeft(titlePersonal);
+        layout.addLeft(new HtmlParagraph(Context.tr("You must be logged to use these pages.")));
+        HtmlList personalLinkList = new HtmlList();
+        layout.addLeft(personalLinkList);
+
+        if(Context.getSession().isLogged()) {
+            personalLinkList.add(new MemberPageUrl(Context.getSession().getAuthToken().getMember()).getHtmlLink(Context.tr("My page")));
+        } else {
+            personalLinkList.add(new HtmlText(Context.tr("My page")));
+        }
+
+        personalLinkList.add( new AccountPageUrl().getHtmlLink(Context.tr("My account")));
+        personalLinkList.add( new MessageListPageUrl().getHtmlLink(Context.tr("My messages")));
+        personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
+        personalLinkList.add(new  AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
+        //TODO good page
+        personalLinkList.add(new  PageNotFoundUrl().getHtmlLink(Context.tr("Withdraw money")));
+
+
+
+        HtmlTitle titleDocumenation = new HtmlTitle(Context.tr("Main documentation pages"), 2);
+        layout.addLeft(titleDocumenation);
+        HtmlList documentationLinkList = new HtmlList();
+        layout.addLeft(documentationLinkList);
+
+        documentationLinkList.add( new  DocumentationPageUrl().getHtmlLink(Context.tr("Documentation home")));
+
+
+        return layout;
     }
 
     @Override
     public String createPageTitle() {
-        return "Special pages list";
+        return Context.tr("Site map");
     }
 
     @Override
@@ -64,7 +143,7 @@ public final class SiteMapPage extends MasterPage {
     public static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
-        breadcrumb.pushLink(new SiteMapPageUrl().getHtmlLink(tr("Special pages")));
+        breadcrumb.pushLink(new SiteMapPageUrl().getHtmlLink(tr("Site map")));
 
         return breadcrumb;
     }

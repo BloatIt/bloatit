@@ -28,7 +28,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This page is displayed after the user clicked on the link in his email.
  * </p>
  */
-@ParamContainer("password/reset")
+@ParamContainer("password/recover")
 public class RecoverPasswordPage extends MasterPage {
     private final RecoverPasswordPageUrl url;
 

@@ -24,7 +24,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link RecoverPasswordPage}
  * </p>
  */
-@ParamContainer("password/doreset")
+@ParamContainer("password/dorecover")
 public class RecoverPasswordAction extends Action {
     private final RecoverPasswordActionUrl url;
 

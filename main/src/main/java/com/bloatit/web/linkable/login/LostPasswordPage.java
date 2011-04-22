@@ -24,7 +24,7 @@ import com.bloatit.web.url.LostPasswordPageUrl;
  * on "lost password"
  * </p>
  */
-@ParamContainer("password/recover")
+@ParamContainer("password/lost")
 public class LostPasswordPage extends MasterPage {
     private final LostPasswordPageUrl url;
 
