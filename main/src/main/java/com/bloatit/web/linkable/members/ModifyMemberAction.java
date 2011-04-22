@@ -58,6 +58,10 @@ public class ModifyMemberAction extends LoggedAction {
     @Optional
     private final Boolean deleteFullName;
 
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Boolean deleteAvatar;
+
     @RequestParam(name = "avatar", role = Role.POST)
     @Optional
     private final String avatar;
@@ -94,6 +98,7 @@ public class ModifyMemberAction extends LoggedAction {
         this.lang = url.getLang();
         this.deleteFullName = url.getDeleteFullName();
         this.currentPassword = url.getCurrentPassword();
+        this.deleteAvatar = url.getDeleteAvatar();
         this.url = url;
     }
 
@@ -114,6 +119,7 @@ public class ModifyMemberAction extends LoggedAction {
 
             // FULLNAME
             if (deleteFullName != null && deleteFullName.booleanValue()) {
+                session.notifyGood(Context.tr("Deleted fullname."));
                 me.setFullname(null);
             } else if (fullname != null && !fullname.trim().isEmpty() && !fullname.equals(me.getFullname())) {
                 session.notifyGood(Context.tr("Fullname updated."));
@@ -163,6 +169,12 @@ public class ModifyMemberAction extends LoggedAction {
                 }
             }
 
+            // DELETE AVATAR
+            if (deleteAvatar != null && deleteAvatar.booleanValue()) {
+                session.notifyGood(Context.tr("Deleted avatar."));
+                me.setAvatar(null);
+            }
+
         } catch (UnauthorizedOperationException e) {
             e.printStackTrace();
         }
@@ -175,11 +187,11 @@ public class ModifyMemberAction extends LoggedAction {
         // TODO: link error messages to form field, so they an be red
         boolean error = false;
 
+        // Password
         if (!((isEmpty(password) && isEmpty(passwordCheck)) || (password != null && password.equals(passwordCheck)))) {
             session.notifyBad(Context.tr("New password must be equal to password verification."));
             error = true;
         }
-
         if (!isEmpty(password)) {
             if (isEmpty(currentPassword)) {
                 session.notifyBad(Context.tr("You must input your current password to change password."));
@@ -190,6 +202,7 @@ public class ModifyMemberAction extends LoggedAction {
             }
         }
 
+        // Fullname & Delete fullname
         try {
             // 2 if, because conditions are a bit rough to check in a single
             // statement ...
@@ -202,6 +215,15 @@ public class ModifyMemberAction extends LoggedAction {
         } catch (UnauthorizedOperationException e) {
             throw new ShallNotPassException("ERROR accessing logged user information.", e);
         }
+
+        // Avatar and delete avatar
+        if (deleteAvatar != null && deleteAvatar.booleanValue() && me.getAvatar() != null && !me.getAvatar().isNull()) {
+            if (!isEmpty(avatar)) {
+                session.notifyBad(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
+                error = true;
+            }
+        }
+
         if (error) {
             return new ModifyMemberPageUrl();
         }

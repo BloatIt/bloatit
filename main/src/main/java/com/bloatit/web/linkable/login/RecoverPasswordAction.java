@@ -31,21 +31,21 @@ public class RecoverPasswordAction extends Action {
     private Member member;
 
     @RequestParam(role = Role.GET)
+    @ParamConstraint(optionalErrorMsg = @tr("Key cannot be blank. Please make sure you didn't make a mistake while copying and pasting."))
     private final String resetKey;
 
     @RequestParam(role = Role.GET)
+    @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank. Please make sure you didn't make a mistake while copying and pasting."))
     private final String login;
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
-    min = "7", minErrorMsg = @tr("Number of characters for password has to be superior to %constraint%."),//
+    min = "7", minErrorMsg = @tr("Minimal length for new password is %constraint%."),//
     max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to %constraint%."))
     private final String newPassword;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."),//
-    min = "7", minErrorMsg = @tr("Number of characters for password check has to be superior to %constraint%."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password check has to be inferior to %constraint%."))
+    @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."))
     private final String checkNewPassword;
 
     public RecoverPasswordAction(RecoverPasswordActionUrl url) {
@@ -65,7 +65,7 @@ public class RecoverPasswordAction extends Action {
         } catch (UnauthorizedOperationException e) {
             throw new ShallNotPassException("Error setting user password.", e);
         }
-        session.notifyGood(Context.tr("Password reset successful, you are now logged."));
+        session.notifyGood(Context.tr("Password change successful, you are now logged."));
         return session.pickPreferredPage();
     }
 

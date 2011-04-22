@@ -555,7 +555,11 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public void setAvatar(final FileMetadata fileImage) {
         // TODO: right management
-        getDao().setAvatar(fileImage.getDao());
+        if (fileImage == null) {
+            getDao().setAvatar(null);
+        } else {
+            getDao().setAvatar(fileImage.getDao());
+        }
     }
 
     @Override

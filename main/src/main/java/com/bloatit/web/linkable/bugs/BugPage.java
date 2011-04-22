@@ -62,11 +62,7 @@ public final class BugPage extends MasterPage {
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-
-
-        
 
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
@@ -81,7 +77,6 @@ public final class BugPage extends MasterPage {
         layout.addLeft(description);
 
         // Attachments
-
         for (final FileMetadata attachment : bug.getFiles()) {
             final HtmlParagraph attachmentPara = new HtmlParagraph();
             attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
@@ -92,19 +87,14 @@ public final class BugPage extends MasterPage {
         if (bug.isOwner()) {
             layout.addLeft(generateNewAttachementForm());
         }
-
-
-
-
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
         layout.addLeft(new CreateCommentForm(new CreateCommentActionUrl(bug)));
 
         return layout;
     }
 
-
     private Map<String, String> generateBugFormatMap() {
-        final Map<String,String> formatMap = new HashMap<String, String>();
+        final Map<String, String> formatMap = new HashMap<String, String>();
 
         formatMap.put("%REASON%", tr("Reason: "));
         formatMap.put("%LEVEL%", tr("Level: "));
@@ -117,8 +107,6 @@ public final class BugPage extends MasterPage {
         formatMap.put("%PENDING%", tr(BindedState.getBindedState(BugState.PENDING).getDisplayName()));
         formatMap.put("%DEVELOPING%", tr(BindedState.getBindedState(BugState.DEVELOPING).getDisplayName()));
         formatMap.put("%RESOLVED%", tr(BindedState.getBindedState(BugState.RESOLVED).getDisplayName()));
-
-
 
         return formatMap;
     }
@@ -139,10 +127,9 @@ public final class BugPage extends MasterPage {
     private HtmlElement generateNewAttachementForm() {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
+        
         addAttachementForm.enableFileUpload();
-
         addAttachementForm.add(new AttachmentField(targetUrl, "2 Gio"));
-
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachment")));
         return addAttachementForm;
     }
@@ -154,9 +141,7 @@ public final class BugPage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb(final Bug bug) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(bug.getFeature());
-
         breadcrumb.pushLink(new BugPageUrl(bug).getHtmlLink(tr("Bug #") + bug.getId()));
-
         return breadcrumb;
     }
 }

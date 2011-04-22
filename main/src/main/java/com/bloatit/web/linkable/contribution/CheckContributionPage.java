@@ -43,7 +43,6 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -69,7 +68,7 @@ public final class CheckContributionPage extends QuotationPage {
     private final CheckContributionPageUrl url;
 
     public CheckContributionPage(final CheckContributionPageUrl url) {
-        super(url, new CheckContributionActionUrl(url.getProcess()));
+        super(url);
         this.url = url;
         preload = url.getPreload();
         process = url.getProcess();

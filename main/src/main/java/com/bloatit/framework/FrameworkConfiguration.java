@@ -5,13 +5,14 @@ import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
+import com.bloatit.framework.mailsender.RetryPolicy;
 
 import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- *
+ * 
  * @author thomas
  */
 public class FrameworkConfiguration extends ReloadableConfiguration {
@@ -44,6 +45,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String mailSmtpSoketFactoryClass;
     private String mailSmtpAuth;
     private String mailSmtpPort;
+    private RetryPolicy mailRetryPolicy;
 
     // SESSIONS
     private long sessionCleanTime;
@@ -146,6 +148,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
     public static String getMailFrom() {
         return configuration.mailFrom;
+    }
+
+    public static RetryPolicy getMailRetryPolicy() {
+        return configuration.mailRetryPolicy;
     }
 
     // -------------------------------------------
@@ -300,6 +306,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         mailLogin = properties.getString("mail.login");
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
+        mailRetryPolicy = new RetryPolicy(properties.getString("mail.retry.policy", "[15s, 1min, 2min, 5min, 5min, 5min, 10min, 20min, ...]"));
 
         // CSS
         cssShowdown = properties.getString("bloatit.css.showdown");
@@ -337,6 +344,5 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
-
 
 }

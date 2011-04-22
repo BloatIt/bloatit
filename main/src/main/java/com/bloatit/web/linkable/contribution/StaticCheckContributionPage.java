@@ -55,7 +55,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
     private final StaticCheckContributionPageUrl url;
 
     public StaticCheckContributionPage(final StaticCheckContributionPageUrl url) {
-        super(url, new CheckContributionActionUrl(url.getProcess()));
+        super(url);
         this.url = url;
         process = url.getProcess();
     }

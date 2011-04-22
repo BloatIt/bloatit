@@ -63,7 +63,7 @@ public final class AccountChargingPage extends QuotationPage {
     private final AccountChargingPageUrl url;
 
     public AccountChargingPage(final AccountChargingPageUrl url) {
-        super(url, null);
+        super(url);
         this.url = url;
         preload = url.getPreload();
         process = url.getProcess();
