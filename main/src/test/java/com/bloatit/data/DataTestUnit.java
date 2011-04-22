@@ -26,7 +26,7 @@ public class DataTestUnit extends TestCase {
         tom.setFullname("Thomas Guyard");
         fred = DaoMember.createAndPersist("Fred", "other", "salt", "fred@gmail.com", Locale.FRANCE);
         fred.setFullname("Frédéric Bertolus");
-        yo = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
+        yo = DaoMember.createAndPersist("Yoann", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
 
         other = DaoTeam.createAndPersiste("Other", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);

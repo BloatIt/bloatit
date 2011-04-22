@@ -27,7 +27,7 @@ public class ModelTestUnit extends TestCase {
         db = new SimpleTestDB();
         ModelAccessor.open();
         try {
-            yoAuthToken = new AuthToken("Yo", "plop");
+            yoAuthToken = new AuthToken("Yoann", "plop");
             tomAuthToken = new AuthToken("Thomas", "password");
             fredAuthToken = new AuthToken("Fred", "other");
         } finally {

@@ -33,7 +33,7 @@ public class DaoUserContentTest extends TestCase {
             SessionManager.flush();
         }
         {
-            yo = DaoMember.createAndPersist("Yo", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
+            yo = DaoMember.createAndPersist("Yoann", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
             yo.setFullname("Yoann Plénet");
             SessionManager.flush();
 
