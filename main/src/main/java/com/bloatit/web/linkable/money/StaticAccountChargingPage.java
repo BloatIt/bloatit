@@ -57,7 +57,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
     private final StaticAccountChargingPageUrl url;
 
     public StaticAccountChargingPage(final StaticAccountChargingPageUrl url) {
-        super(url, null);
+        super(url);
         this.url = url;
         process = url.getProcess();
     }
