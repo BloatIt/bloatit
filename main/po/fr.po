@@ -952,7 +952,7 @@ msgstr "Retapez votre mot de passe"
 #: com/bloatit/web/linkable/login/RecoverPasswordPage.java:82
 #: com/bloatit/web/linkable/login/RecoverPasswordPage.java:89
 msgid "Reset password"
-msgstr "Remise à zéro du mot de pass"
+msgstr "Changer de mot de passe"
 
 #: com/bloatit/web/linkable/login/LostPasswordAction.java:58
 msgid "Elveos password recovery"
@@ -964,8 +964,8 @@ msgid ""
 "A mail with the process to reset your password has been sent to {0}. Please "
 "check your mailbox."
 msgstr ""
-"Un email expliquant comment remettre à zéto votre de mot de passe a été "
-"envoyé à {0}. Veuillez vérifier votre boîte mail."
+"Un email expliquant comment changer de mot de passe a été envoyé à {0}. "
+"Veuillez vérifier votre boîte mail."
 
 #: com/bloatit/web/linkable/login/LostPasswordAction.java:77
 msgid "No account match this email address. Please input another one."
