@@ -37,5 +37,4 @@ public class TeamRight extends RightManager {
     public static class DisplayName extends Public {
         // nothing this is just a rename.
     }
-
 }

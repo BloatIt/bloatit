@@ -93,7 +93,7 @@ public final class Team extends Actor<DaoTeam> {
     public void setRight(final Right right) {
         getDao().setRight(right);
     }
-    
+
     public void setDisplayName(final String displayName) throws UnauthorizedOperationException {
         tryAccess(new TeamRight.DisplayName(), Action.WRITE);
         getDao().setDisplayName(displayName);
@@ -162,6 +162,13 @@ public final class Team extends Actor<DaoTeam> {
         getDao().setContact(contact);
     }
 
+    public void setDescription(String description) throws UnauthorizedOperationException {
+        if (!getAuthToken().getVisitor().hasModifyTeamRight(this)) {
+            throw new UnauthorizedOperationException(SpecialCode.TEAM_MISSING_MODIFY_RIGHT);
+        }
+        getDao().setDescription(description);
+    }
+
     @Override
     public Image getAvatar() {
         return new Image(FileMetadata.create(getDao().getAvatar()));
@@ -169,7 +176,11 @@ public final class Team extends Actor<DaoTeam> {
 
     public void setAvatar(final FileMetadata fileImage) {
         // TODO: right management
-        getDao().setAvatar(fileImage.getDao());
+        if (fileImage == null) {
+            getDao().setAvatar(null);
+        } else {
+            getDao().setAvatar(fileImage.getDao());
+        }
     }
 
     @Override
@@ -217,10 +228,8 @@ public final class Team extends Actor<DaoTeam> {
         return true;
     }
 
-    public void
-            changeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give)
-                                                                                                               throws UnauthorizedOperationException,
-                                                                                                               MemberNotInTeamException {
+    public void changeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give)
+            throws UnauthorizedOperationException, MemberNotInTeamException {
         if (!canChangeRight(admin, target, right, give)) {
             throw new UnauthorizedOperationException(SpecialCode.TEAM_PROMOTE_RIGHT_MISSING);
         }
@@ -237,5 +246,4 @@ public final class Team extends Actor<DaoTeam> {
             target.getDao().removeTeamRight(this.getDao(), right);
         }
     }
-
 }

@@ -23,6 +23,14 @@ public final class HtmlTabBlock extends HtmlDiv {
     private final HtmlDiv tabBody;
     private final HtmlDiv tabHeader;
 
+    /**
+     * Creates a new tab block
+     * 
+     * @param tabBlockKey an identifier of the tab block (used to generate an
+     *            anchor). Just use a unique string
+     * @param activeTabKey the current active tab
+     * @param tablinks the url of the page containing the tab pane
+     */
     public HtmlTabBlock(final String tabBlockKey, final String activeTabKey, final Url tablinks) {
         super("tab_panel");
 
@@ -78,7 +86,6 @@ public final class HtmlTabBlock extends HtmlDiv {
     }
 
     public abstract static class HtmlTab {
-
         private final String title;
         private final String tabKey;
 
