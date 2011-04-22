@@ -44,7 +44,7 @@ public final class ContributionAction extends UserContentAction {
     private final ContributionActionUrl url;
 
     public ContributionAction(final ContributionActionUrl url) {
-        super(url, UserTeamRight.BANK);
+        super(url, url.getProcess().getTeam(), UserTeamRight.BANK);
         this.url = url;
         this.process = url.getProcess();
     }
@@ -56,7 +56,7 @@ public final class ContributionAction extends UserContentAction {
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this feature.", Context.getLocalizator()
                                                                                                   .getCurrency(process.getAmount())
                                                                                                   .getSimpleEuroString()));
-            
+
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());
             featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
             process.close();

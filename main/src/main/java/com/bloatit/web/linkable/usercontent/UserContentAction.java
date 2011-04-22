@@ -26,7 +26,7 @@ public abstract class UserContentAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @Optional
-    private final Team team;
+    private Team team;
 
     @RequestParam(role = Role.POST)
     @Optional
@@ -53,6 +53,11 @@ public abstract class UserContentAction extends LoggedAction {
     private final UserContentActionUrl createUserActionurl;
 
     private final UserTeamRight right;
+
+    protected UserContentAction(final UserContentActionUrl url, Team overrideTeam, final UserTeamRight right) {
+        this(url, right);
+        team = overrideTeam;
+    }
 
     protected UserContentAction(final UserContentActionUrl url, final UserTeamRight right) {
         super(url);
