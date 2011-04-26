@@ -169,6 +169,13 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         return getDao().getProcessInformations();
     }
 
+    protected Actor<?> getAuthorUnprotected() {
+        if (getDao().getAuthor() instanceof DaoTeam) {
+            return Team.create((DaoTeam) getDao().getAuthor());
+        }
+        return Member.create((DaoMember) getDao().getAuthor());
+    }
+
     /**
      * Gets the message. The message is the error (or not) message sent by the
      * bank during a transaction.
@@ -249,10 +256,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     public Actor<?> getAuthor() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtBankTransaction.Author(), Action.READ);
-        if (getDao().getAuthor() instanceof DaoTeam) {
-            return Team.create((DaoTeam) getDao().getAuthor());
-        }
-        return Member.create((DaoMember) getDao().getAuthor());
+        return getAuthorUnprotected();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

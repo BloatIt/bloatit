@@ -190,7 +190,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final BankTransaction model) {
-            return visitAbstract(model.getAuthor());
+            return visitAbstract(model.getAuthorUnprotected());
         }
 
         @Override
@@ -210,7 +210,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final JoinTeamInvitation model) {
-            return visitAbstract(model.getTeam());
+            return visitAbstract(model.getTeamUnprotected());
         }
 
         @Override
@@ -222,7 +222,6 @@ public class Rights {
         public Boolean visitAbstract(final Transaction model) {
             return visitAbstract(model.getToUnprotected()) || visitAbstract(model.getFromUnprotected());
         }
-
     }
 
     private class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -249,7 +248,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final BankTransaction model) {
-            if (model.getAuthor().equals(member)) {
+            if (model.getAuthorUnprotected().equals(member)) {
                 return true;
             }
             return false;
@@ -272,7 +271,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final JoinTeamInvitation model) {
-            return model.getSender().equals(member) || model.getReciever().equals(member);
+            return model.getSenderUnprotected().equals(member) || model.getReceiverUnprotected().equals(member);
         }
 
         @Override

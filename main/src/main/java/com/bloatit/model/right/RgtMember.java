@@ -67,4 +67,12 @@ public class RgtMember extends RightManager {
     public static class Contributions extends Public {
         // nothing this is just a rename.
     }
+    
+    /**
+     * The Class <code>Team</code> is a {@link RightManager.Public} accessor for the
+     * <code>Team</code> property.
+     */
+    public static class Team extends Public {
+        // nothing this is just a rename.
+    }
 }

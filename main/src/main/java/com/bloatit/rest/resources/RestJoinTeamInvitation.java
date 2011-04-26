@@ -134,11 +134,11 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
     }
 
     /**
-     * @see com.bloatit.model.JoinTeamInvitation#getReciever()
+     * @see com.bloatit.model.JoinTeamInvitation#getReceiver()
      */
     @XmlElement
     public RestMember getReceiver() {
-        return new RestMember(model.getReciever());
+        return new RestMember(model.getReceiver());
     }
 
     /**

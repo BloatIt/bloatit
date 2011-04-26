@@ -16,18 +16,18 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.InternalAccount;
-
 /**
- * The Class InternalAccountRight store the properties accessor for the
- * {@link InternalAccount} class.
+ * The Class RgtMilestone store the properties accessor for the
+ * {@link com.bloatit.model.Milestone} class.
  */
-public class RgtInternalAccount extends RightManager {
+public class RgtMilestone extends RightManager {
 
     /**
-     * The Class Blocked is a {@link RightManager.Private} accessor for the Blocked property.
+     * The Class <code>State</code> is a {@link RightManager.Public} accessor for the
+     * <code>State</code> property.
      */
-    public static class Blocked extends BankData {
+    public static class State extends Public {
         // nothing this is just a rename.
     }
+    
 }

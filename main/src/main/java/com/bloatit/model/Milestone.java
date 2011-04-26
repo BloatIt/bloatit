@@ -28,9 +28,13 @@ import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtMilestone;
 
 /**
  * A milestone is a part of an offer. Simple offers are only composed of one
@@ -145,11 +149,13 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     }
 
-    public void setDeveloping() {
+    public void setDeveloping() throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMilestone.State(), Action.WRITE);
         getDao().setDeveloping();
     }
 
-    public void cancelMilestone() {
+    public void cancelMilestone() throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMilestone.State(), Action.WRITE);
         getDao().cancelMilestone();
     }
 
@@ -157,9 +163,11 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * Validate the milestone after it has been relreased.
      * 
      * @return true, if successful
+     * @throws UnauthorizedPublicAccessException
      * @see com.bloatit.data.DaoMilestone#validate(boolean)
      */
-    public boolean validate() {
+    public boolean validate() throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMilestone.State(), Action.WRITE);
         return getDao().validate(false);
     }
 
@@ -168,10 +176,26 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * bugs left.
      * 
      * @return true, if successful
+     * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoMilestone#validate(boolean)
      */
-    public boolean forceValidate() {
+    public boolean forceValidate() throws UnauthorizedOperationException {
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
         return getDao().validate(true);
+    }
+
+    /**
+     * Tells if a specified level is validated (and the corresponding amount has
+     * been given to the developer)
+     * 
+     * @param level the level
+     * @return true, the <code>level</code> is validated.
+     */
+    public boolean partIsValidated(final Level level) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMilestone.State(), Action.WRITE);
+        return getDao().partIsValidated(level);
     }
 
     /**
@@ -179,15 +203,14 @@ public class Milestone extends Identifiable<DaoMilestone> {
      * 
      * @param level the level corresponding to the part we want to validate.
      * @return true, if we should do it, false otherwise.
+     * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoMilestone#shouldValidatePart(com.bloatit.data.DaoBug.Level)
      */
-    public boolean shouldValidatePart(final Level level) {
+    public boolean shouldValidatePart(final Level level) throws UnauthorizedOperationException {
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
         return getDao().shouldValidatePart(level);
-    }
-
-    // TODO doc
-    public boolean partIsValidated(final Level level) {
-        return getDao().partIsValidated(level);
     }
 
     // ////////////////////////////////////////////////////////////////////////

@@ -24,9 +24,9 @@ import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.model.right.RgtAccount;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtAccount;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 
@@ -63,7 +63,7 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         return canAccess(new RgtAccount.Transaction(), Action.READ);
     }
 
-    public InternalAccount getFrom() throws UnauthorizedOperationException {
+    public InternalAccount getFrom() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getFromUnprotected();
     }
@@ -81,17 +81,17 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         throw new BadProgrammerException("Cannot find the right Account child class.");
     }
 
-    public Account<?> getTo() throws UnauthorizedOperationException {
+    public Account<?> getTo() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getToUnprotected();
     }
 
-    public BigDecimal getAmount() throws UnauthorizedOperationException {
+    public BigDecimal getAmount() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getDao().getAmount();
     }
 
-    public Date getCreationDate() throws UnauthorizedOperationException {
+    public Date getCreationDate() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getDao().getCreationDate();
     }

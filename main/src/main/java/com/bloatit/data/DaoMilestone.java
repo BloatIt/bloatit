@@ -341,10 +341,11 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
-     * Part is validated.
+     * Tells if a specified level is validated (and the corresponding amount has
+     * been given to the developer)
      * 
      * @param level the level
-     * @return true, if successful
+     * @return true, the <code>level</code> is validated.
      */
     public boolean partIsValidated(final Level level) {
         return this.levelToValidate == null || !EnumSet.range(this.levelToValidate, Level.MINOR).contains(level);

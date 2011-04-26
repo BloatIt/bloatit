@@ -127,7 +127,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @return true if you can use the method.
      */
     public boolean canAccessTeams(final Action action) {
-        return canAccess(new RightManager.Public(), action);
+        return canAccess(new RgtMember.Team(), action);
     }
 
     public boolean canGetKarma() {
@@ -142,15 +142,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return canAccess(new RgtMember.Locale(), action);
     }
 
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Setter / modification
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
     // / TEAM RIGHTS
-
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Accessors
-    // /////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean hasTeamRight(final Team aTeam, final UserTeamRight aRight) {
         if (getTeamRights(aTeam) == null) {
@@ -205,6 +197,10 @@ public final class Member extends Actor<DaoMember> implements User {
 
     // / END TEAM RIGHTS
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Setter / modification
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Adds a user to a team without checking if the team is Public or not
      * 
@@ -240,7 +236,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public boolean acceptInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (!invitation.getReciever().getId().equals(getAuthToken().getMember().getId())) {
+        if (!invitation.getReceiver().getId().equals(getAuthToken().getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
 
@@ -266,7 +262,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @throws UnauthorizedOperationException
      */
     public void refuseInvitation(final JoinTeamInvitation invitation) throws UnauthorizedOperationException {
-        if (!invitation.getReciever().getId().equals(getAuthToken().getMember().getId())) {
+        if (!invitation.getReceiver().getId().equals(getAuthToken().getMember().getId())) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
         invitation.refuse();
@@ -296,15 +292,6 @@ public final class Member extends Actor<DaoMember> implements User {
      */
     public void setPassword(final String password) throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Password(), Action.WRITE);
-        setPasswordUnprotected(password);
-    }
-
-    /**
-     * Updates user password without checking rights
-     * 
-     * @param password the new password
-     */
-    public void setPasswordUnprotected(final String password) {
         getDao().setPassword(SecuredHash.calculateHash(password, getDao().getSalt()));
     }
 
@@ -313,13 +300,19 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().setLocale(loacle);
     }
 
-    // TODO Right management
-    public void setRole(final Role role) {
+    protected void setRole(final Role role) {
         getDao().setRole(role);
     }
 
-    public void activate() {
-        getDao().setActivationState(ActivationState.ACTIVE);
+    public boolean activate(final String activationKey) {
+        if (getDao().getActivationState() != ActivationState.VALIDATING) {
+            return false;
+        }
+        if (getActivationKey().equals(activationKey)) {
+            getDao().setActivationState(ActivationState.ACTIVE);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -332,6 +325,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @see Member#canAccessTeams(Action)
      */
     public void addToPublicTeam(final Team team) throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Team(), Action.WRITE);
         if (team.getRight() != Right.PUBLIC) {
             throw new UnauthorizedOperationException(SpecialCode.TEAM_NOT_PUBLIC);
         }
