@@ -1,10 +1,9 @@
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -28,7 +27,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This page is displayed after the user clicked on the link in his email.
  * </p>
  */
-@ParamContainer("password/recover")
+@ParamContainer(value="password/recover", protocol=Protocol.HTTPS)
 public class RecoverPasswordPage extends MasterPage {
     private final RecoverPasswordPageUrl url;
 

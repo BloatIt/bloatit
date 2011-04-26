@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.login;
 
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -27,7 +28,7 @@ import com.bloatit.web.url.LoginPageUrl;
 /**
  * A response to a form used to log into the website
  */
-@ParamContainer("action/login")
+@ParamContainer(value="action/login", protocol=Protocol.HTTPS)
 public final class LoginAction extends Action {
 
     public static final String LOGIN_CODE = "bloatit_login";

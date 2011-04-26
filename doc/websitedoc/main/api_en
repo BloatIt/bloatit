@@ -24,7 +24,8 @@ To see a specific entity and not all the list, you just have to add the id of th
     /rest/features/12
 
 In the result, all the item in lists are defined with their id. If a request on a feature (as /rest/features/12) returns a list of contributions as:
-
+    
+    ...
     <contributions>
         <contribution>132</contribution>
         <contribution>133</contribution>
@@ -33,6 +34,7 @@ In the result, all the item in lists are defined with their id. If a request on 
         <contribution>226</contribution>
         <contribution>236</contribution>
     </contributions>
+    ...
     
 you can get details of contributions requesting the entity named "contributions" with the corresponding id :
 

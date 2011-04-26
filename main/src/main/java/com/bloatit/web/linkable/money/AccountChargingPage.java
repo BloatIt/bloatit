@@ -17,12 +17,11 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -46,7 +45,7 @@ import com.bloatit.web.url.StaticAccountChargingPageUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer("account/charging")
+@ParamContainer(value="account/charging", protocol=Protocol.HTTPS)
 public final class AccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -98,14 +97,7 @@ public final class AccountChargingPage extends QuotationPage {
         } else {
             group = new HtmlTitleBlock(tr("Charge your account"), 1);
         }
-        BigDecimal account;
-        try {
-            account = getActor(member).getInternalAccount().getAmount();
-            generateNoMoneyContent(group, getActor(member));
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
-            throw new ShallNotPassException("User cannot access user's account balance", e);
-        }
+        generateNoMoneyContent(group, getActor(member));
         return group;
     }
 

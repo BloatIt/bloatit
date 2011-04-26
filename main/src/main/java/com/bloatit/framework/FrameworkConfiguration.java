@@ -12,7 +12,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- * 
+ *
  * @author thomas
  */
 public class FrameworkConfiguration extends ReloadableConfiguration {
@@ -66,6 +66,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
     // OTHERS
     private AtomicBoolean htmlIndent;
+    private AtomicBoolean https;
     private int memoryCacheMaxSize;
     private String imgFavicon;
 
@@ -268,6 +269,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.htmlIndent.get();
     }
 
+    public static boolean isHttpsEnabled() {
+        return configuration.https.get();
+    }
+
     public static int getMemoryCacheMaxSize() {
         return configuration.memoryCacheMaxSize;
     }
@@ -327,6 +332,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
         // OTHERS
         htmlIndent = new AtomicBoolean(properties.getBoolean("bloatit.html.minify"));
+        https = new AtomicBoolean(properties.getBoolean("bloatit.https"));
         memoryCacheMaxSize = properties.getInt("bloatit.memory.cache.max.size");
         imgFavicon = properties.getString("bloatit.img.favicon");
     }
@@ -344,5 +350,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     protected void doReload() {
         configuration.loadConfiguration();
     }
+
+
 
 }

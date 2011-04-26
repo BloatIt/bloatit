@@ -65,8 +65,6 @@ public class Sorter<T, U extends Comparable<U>> {
             }
             return compareTo((SortEntry) o) == 0;
         }
-
-
     }
 
     private class SortEntryComparator implements Comparator<SortEntry> {

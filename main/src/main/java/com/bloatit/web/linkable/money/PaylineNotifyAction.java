@@ -3,13 +3,14 @@ package com.bloatit.web.linkable.money;
 import com.bloatit.common.Log;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 
-@ParamContainer("payline/donotify")
+@ParamContainer(value="payline/donotify", protocol=Protocol.HTTPS)
 public final class PaylineNotifyAction extends Action {
     public static final String TOKEN_CODE = "token";
 
@@ -29,9 +30,9 @@ public final class PaylineNotifyAction extends Action {
     @Override
     public Url doProcess() {
         Log.web().info("Get a payline notification: " + token);
-        
+
         process.validatePayment(token);
-        
+
         final Url target = process.close();
         if (target != null) {
             return target;

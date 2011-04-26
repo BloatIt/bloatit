@@ -4,12 +4,11 @@ import java.io.IOException;
 
 import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -28,7 +27,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link LostPasswordPage}
  * </p>
  */
-@ParamContainer("password/dolost")
+@ParamContainer(value="password/dolost", protocol=Protocol.HTTPS)
 public class LostPasswordAction extends Action {
     private final LostPasswordActionUrl url;
 
@@ -37,7 +36,7 @@ public class LostPasswordAction extends Action {
 
     private Member m;
 
-    public LostPasswordAction(LostPasswordActionUrl url) {
+    public LostPasswordAction(final LostPasswordActionUrl url) {
         super(url);
         this.email = url.getEmail();
         this.url = url;
@@ -45,21 +44,21 @@ public class LostPasswordAction extends Action {
 
     @Override
     protected Url doProcess() {
-        TemplateFile templateFile = new TemplateFile("recover-password.mail");
+        final TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
-        String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString(Context.getHeader().getHttpHeader());
+        final String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString();
         templateFile.addNamedParameter("recovery_url", resetUrl);
         templateFile.addNamedParameter("member", m.getDisplayName());
 
-        String title = new Localizator(m.getUserLocale()).tr("Elveos password recovery");
+        final String title = new Localizator(m.getUserLocale()).tr("Elveos password recovery");
         String content;
         try {
             content = templateFile.getContent(m.getLocaleUnprotected());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ExternalErrorException("Error when loading mail template file.", e);
         }
 
-        Mail mail = new Mail(m.getEmailUnprotected(), title, content, "password-recovery");
+        final Mail mail = new Mail(m.getEmailUnprotected(), title, content, "password-recovery");
         MailServer.getInstance().send(mail);
 
         session.notifyGood(Context.tr("A mail with the process to reset your password has been sent to {0}. Please check your mailbox.", email));

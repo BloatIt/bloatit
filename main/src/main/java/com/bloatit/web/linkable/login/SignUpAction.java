@@ -10,6 +10,7 @@ import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -26,7 +27,7 @@ import com.bloatit.web.url.SignUpPageUrl;
 /**
  * A response to a form used sign into the website (creation of a new user)
  */
-@ParamContainer("member/dosignup")
+@ParamContainer(value="member/dosignup", protocol=Protocol.HTTPS)
 public final class SignUpAction extends Action {
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
@@ -86,7 +87,7 @@ public final class SignUpAction extends Action {
 
         final String content = Context.tr("Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}",
                                           login,
-                                          url.externalUrlString(Context.getHeader().getHttpHeader()));
+                                          url.externalUrlString());
 
         final Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
 

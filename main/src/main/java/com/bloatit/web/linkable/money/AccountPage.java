@@ -19,6 +19,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -46,7 +47,7 @@ import com.bloatit.web.url.AccountPageUrl;
  * A page used to display logged member informations.
  * </p>
  */
-@ParamContainer("account")
+@ParamContainer(value="account", protocol=Protocol.HTTPS)
 public final class AccountPage extends LoggedPage {
 
     @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))

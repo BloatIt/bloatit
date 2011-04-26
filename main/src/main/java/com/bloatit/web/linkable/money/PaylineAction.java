@@ -1,6 +1,7 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -8,7 +9,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.PaylineActionUrl;
 
-@ParamContainer("paylinedopayment")
+@ParamContainer(value="paylinedopayment", protocol=Protocol.HTTPS)
 public final class PaylineAction extends LoggedAction {
 
     @RequestParam

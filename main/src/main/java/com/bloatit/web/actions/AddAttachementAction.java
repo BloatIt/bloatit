@@ -32,7 +32,6 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 @ParamContainer("usercontent/doattachfile")
 public final class AddAttachementAction extends UserContentAction {
 
-    @SuppressWarnings("rawtypes")
     @ParamConstraint(optionalErrorMsg = @tr("An attachment must be linked to a content"))
     @RequestParam
     private final UserContentInterface userContent;
