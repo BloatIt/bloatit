@@ -240,17 +240,18 @@ public class ActivityTab extends HtmlTab {
             master.add(activityDetail);
             activityDetail.add(new HtmlDiv("feed_item_description").add(secondLine));
 
+            // Author
+            final HtmlBranch authorBox = new HtmlDiv("feed_item_author");
+            activityDetail.add(authorBox);
+            MemberPageUrl to = new MemberPageUrl(content.getMember());
+            authorBox.add(new HtmlDefineParagraph(Context.tr("Author: "), to.getHtmlLink(content.getMember().getDisplayName())));
+
             // Date
             final HtmlBranch dateBox = new HtmlDiv("feed_item_date");
             activityDetail.add(dateBox);
             final String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
             dateBox.addText(dateString);
 
-            // Author
-            final HtmlBranch authorBox = new HtmlDiv("feed_item_author");
-            activityDetail.add(authorBox);
-            MemberPageUrl to = new MemberPageUrl(content.getMember());
-            authorBox.add(new HtmlDefineParagraph(Context.tr("Author: "), to.getHtmlLink(content.getMember().getDisplayName())));
             return master;
         }
     }
