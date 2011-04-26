@@ -10,6 +10,7 @@ import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -26,7 +27,7 @@ import com.bloatit.web.url.SignUpPageUrl;
 /**
  * A response to a form used sign into the website (creation of a new user)
  */
-@ParamContainer("member/dosignup")
+@ParamContainer(value="member/dosignup", protocol=Protocol.HTTPS)
 public final class SignUpAction extends Action {
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//

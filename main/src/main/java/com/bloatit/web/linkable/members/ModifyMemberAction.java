@@ -5,12 +5,12 @@ import static com.bloatit.framework.utils.StringUtils.isEmpty;
 import java.util.List;
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -24,7 +24,7 @@ import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
-@ParamContainer("member/domodify")
+@ParamContainer(value="member/domodify", protocol=Protocol.HTTPS)
 public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
@@ -83,7 +83,7 @@ public class ModifyMemberAction extends LoggedAction {
     @Optional
     private final String lang;
 
-    private ModifyMemberActionUrl url;
+    private final ModifyMemberActionUrl url;
 
     public ModifyMemberAction(ModifyMemberActionUrl url) {
         super(url);

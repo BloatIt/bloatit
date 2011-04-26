@@ -4,6 +4,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
@@ -24,7 +25,7 @@ import com.bloatit.web.url.LostPasswordPageUrl;
  * on "lost password"
  * </p>
  */
-@ParamContainer("password/lost")
+@ParamContainer(value="password/lost", protocol=Protocol.HTTPS)
 public class LostPasswordPage extends MasterPage {
     private final LostPasswordPageUrl url;
 

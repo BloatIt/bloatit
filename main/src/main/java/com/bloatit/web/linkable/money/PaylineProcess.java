@@ -9,6 +9,7 @@ import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.framework.webprocessor.PaymentProcess;
 import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.SessionManager;
@@ -30,7 +31,7 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
-@ParamContainer("payline/process")
+@ParamContainer(value="payline/process", protocol=Protocol.HTTPS)
 public class PaylineProcess extends WebProcess {
 
     @RequestParam

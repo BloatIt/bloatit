@@ -12,6 +12,7 @@
 package com.bloatit.web.linkable.login;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -27,7 +28,7 @@ import com.bloatit.web.url.MemberActivationActionUrl;
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("member/activate")
+@ParamContainer(value="member/activate", protocol=Protocol.HTTPS)
 public final class MemberActivationAction extends Action {
 
     public static final String MEMBER_CODE = "member";

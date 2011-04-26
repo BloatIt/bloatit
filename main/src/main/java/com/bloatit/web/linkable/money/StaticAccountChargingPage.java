@@ -18,6 +18,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -48,7 +49,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer("account/charging/check")
+@ParamContainer(value="account/charging/check", protocol=Protocol.HTTPS)
 public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))

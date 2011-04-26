@@ -5,6 +5,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.StringUtils;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -24,7 +25,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link RecoverPasswordPage}
  * </p>
  */
-@ParamContainer("password/dorecover")
+@ParamContainer(value="password/dorecover", protocol=Protocol.HTTPS)
 public class RecoverPasswordAction extends Action {
     private final RecoverPasswordActionUrl url;
 

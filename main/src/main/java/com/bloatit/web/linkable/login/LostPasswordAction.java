@@ -8,6 +8,7 @@ import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -26,7 +27,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link LostPasswordPage}
  * </p>
  */
-@ParamContainer("password/dolost")
+@ParamContainer(value="password/dolost", protocol=Protocol.HTTPS)
 public class LostPasswordAction extends Action {
     private final LostPasswordActionUrl url;
 
