@@ -37,8 +37,10 @@ public abstract class CreateUserContentPage extends LoggedPage {
      * @param label The asTeam field label.
      * @param comment The comment of the field.
      */
-    protected void addAsTeamField(final HtmlForm form, final Member me, final UserTeamRight right, final String label, final String comment) {
-        form.add(new AsTeamField(targetUrl, me, right, label, comment));
+    protected AsTeamField addAsTeamField(final HtmlForm form, final Member me, final UserTeamRight right, final String label, final String comment) {
+        final AsTeamField teamField = new AsTeamField(targetUrl, me, right, label, comment);
+        form.add(teamField);
+        return teamField;
     }
 
     /**

@@ -54,7 +54,7 @@ public abstract class UserContentAction extends LoggedAction {
 
     private final UserTeamRight right;
 
-    protected UserContentAction(final UserContentActionUrl url, Team overrideTeam, final UserTeamRight right) {
+    protected UserContentAction(final UserContentActionUrl url, final Team overrideTeam, final UserTeamRight right) {
         this(url, right);
         team = overrideTeam;
     }
