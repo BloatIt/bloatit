@@ -147,7 +147,6 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
                                    "AND id not in (from DaoTranslation)"),
-
                       }
 
              )

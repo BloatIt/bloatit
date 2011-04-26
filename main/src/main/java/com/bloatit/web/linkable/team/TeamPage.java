@@ -56,6 +56,9 @@ public final class TeamPage extends MasterPage {
     private final static String ACCOUNT_TAB = "account";
 
     private final TeamPageUrl url;
+
+    private ActivityTab activity;
+
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team targetTeam;
@@ -123,7 +126,8 @@ public final class TeamPage extends MasterPage {
 
         tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));
         tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
-        tabPane.addTab(new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB));
+        activity = new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB, url);
+        tabPane.addTab(activity);
 
         return master;
     }

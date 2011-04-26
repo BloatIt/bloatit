@@ -51,14 +51,28 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                                    name = "team.byName",
-                                    query = "FROM DaoTeam WHERE login = :login"),
+                            name = "team.byName",
+                            query = "FROM DaoTeam WHERE login = :login"),
                         @NamedQuery(
-                                    name = "team.getContributions",
-                                    query = "FROM DaoContribution WHERE asTeam = :this "),
+                            name = "team.getContributions",
+                            query = "FROM DaoContribution WHERE asTeam = :this "),
                         @NamedQuery(
-                                    name = "team.getContributions.size",
-                                    query = "SELECT count(*) FROM DaoContribution WHERE asTeam = :this "),
+                            name = "team.getContributions.size",
+                            query = "SELECT count(*) FROM DaoContribution WHERE asTeam = :this "),
+                        @NamedQuery(
+                            name = "team.getActivity",
+                            query = "FROM DaoUserContent as u " +
+                                    "WHERE u.asTeam = :team " +
+                                    "AND id not in (from DaoKudos) " +
+                                    "AND id not in (from DaoTranslation)"  +
+                                    "ORDER BY creationDate DESC"),
+                        @NamedQuery(
+                            name = "team.getActivity.size",
+                            query = "SELECT COUNT(*)" +
+                            		"FROM DaoUserContent as u " +
+                                    "WHERE u.asTeam = :team " +
+                                    "AND id not in (from DaoKudos) " +
+                                    "AND id not in (from DaoTranslation)"),
                        }
              )
 // @formatter:on
@@ -322,10 +336,20 @@ public class DaoTeam extends DaoActor {
     }
 
     /**
-     * @return the display name value of this team. It coulb be null if not setted.
+     * @return the display name value of this team. It coulb be null if not
+     *         setted.
      */
     public String getDisplayName() {
         return displayName;
+    }
+
+    public PageIterable<DaoUserContent> getActivity() {
+        final Query query = SessionManager.getNamedQuery("team.getActivity");
+        final Query size = SessionManager.getNamedQuery("team.getActivity.size");
+
+        final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
+        q.setEntity("team", this);
+        return q;
     }
 
     // ======================================================================
@@ -335,5 +359,4 @@ public class DaoTeam extends DaoActor {
     protected DaoTeam() {
         super();
     }
-
 }
