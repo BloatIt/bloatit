@@ -13,7 +13,6 @@ package com.bloatit.web.actions;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -43,7 +42,6 @@ public final class AddAttachementPage extends CreateUserContentPage {
 
     private final AddAttachementPageUrl url;
 
-    @SuppressWarnings("unchecked")
     public AddAttachementPage(final AddAttachementPageUrl url) {
         super(url, new AddAttachementActionUrl(url.getUserContent()));
         this.url = url;

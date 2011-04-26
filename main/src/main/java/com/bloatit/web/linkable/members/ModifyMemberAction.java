@@ -84,7 +84,7 @@ public class ModifyMemberAction extends LoggedAction {
 
     private ModifyMemberActionUrl url;
 
-    public ModifyMemberAction(ModifyMemberActionUrl url) {
+    public ModifyMemberAction(final ModifyMemberActionUrl url) {
         super(url);
         this.password = url.getPassword();
         this.passwordCheck = url.getPasswordCheck();
@@ -102,7 +102,7 @@ public class ModifyMemberAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessRestricted(Member me) {
+    protected Url doProcessRestricted(final Member me) {
         try {
             // PASSWORD
             if (password != null && !password.trim().isEmpty() && me.checkPassword(currentPassword.trim()) && !me.checkPassword(password.trim())) {
@@ -141,17 +141,17 @@ public class ModifyMemberAction extends LoggedAction {
 
             // LOCALE
             if (langString != null || countryString != null) {
-                String locale = (langString != null) ? langString : me.getLocale().getLanguage() + "_"
+                final String locale = (langString != null) ? langString : me.getLocale().getLanguage() + "_"
                         + ((countryString != null) ? countryString : me.getLocale().getCountry());
                 me.setLocal(new Locale(locale));
             }
 
             // AVATAR
             if (avatar != null) {
-                FileConstraintChecker fcc = new FileConstraintChecker(avatar);
-                List<String> imageErr = fcc.isImageAvatar();
+                final FileConstraintChecker fcc = new FileConstraintChecker(avatar);
+                final List<String> imageErr = fcc.isImageAvatar();
                 if (!isEmpty(avatarFileName) && imageErr == null) {
-                    FileMetadata file = FileMetadataManager.createFromTempFile(me, null, avatar, avatarFileName, "");
+                    final FileMetadata file = FileMetadataManager.createFromTempFile(me, null, avatar, avatarFileName, "");
                     me.setAvatar(file);
                     session.notifyGood(Context.tr("Avatar updated."));
                 } else {
@@ -174,7 +174,7 @@ public class ModifyMemberAction extends LoggedAction {
                 me.setAvatar(null);
             }
 
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             e.printStackTrace();
         }
 
@@ -182,7 +182,7 @@ public class ModifyMemberAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url doCheckRightsAndEverything(final Member me) {
         // TODO: link error messages to form field, so they an be red
         boolean error = false;
 

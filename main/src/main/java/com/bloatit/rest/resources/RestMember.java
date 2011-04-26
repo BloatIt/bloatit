@@ -137,7 +137,7 @@ public class RestMember extends RestElement<Member> {
     // }
 
     @XmlAttribute(name = "name")
-    public String getDisplayName() throws RestException {
+    public String getDisplayName() {
         return model.getDisplayName();
     }
 

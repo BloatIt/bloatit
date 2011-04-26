@@ -4,8 +4,6 @@ import java.util.EnumSet;
 import java.util.Iterator;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -31,7 +29,7 @@ public class MembersTab extends HtmlTab {
     private final Team team;
     private final Session session = Context.getSession();
 
-    public MembersTab(Team team, String title, String tabKey) {
+    public MembersTab(final Team team, final String title, final String tabKey) {
         super(title, tabKey);
         this.team = team;
     }
@@ -40,7 +38,7 @@ public class MembersTab extends HtmlTab {
     public XmlNode generateBody() {
         final Visitor me = session.getAuthToken().getVisitor();
 
-        HtmlDiv master = new HtmlDiv("tab_pane");
+        final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Members
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", team.getMembers().size()), 2);
