@@ -1,6 +1,7 @@
 package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 
 public class UrlString extends Url {
 
@@ -49,6 +50,11 @@ public class UrlString extends Url {
     @Override
     protected void doGetParametersAsStrings(final Parameters parameters) {
         // nothing to do. There are no parameters.
+    }
+
+    @Override
+    public Protocol getProtocol() {
+        return Protocol.AUTO;
     }
 
 }

@@ -127,7 +127,7 @@ public final class BugPage extends MasterPage {
     private HtmlElement generateNewAttachementForm() {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
-        
+
         addAttachementForm.enableFileUpload();
         addAttachementForm.add(new AttachmentField(targetUrl, "2 Gio"));
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachment")));

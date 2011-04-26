@@ -9,6 +9,7 @@ public class CodeGenerator {
 
     public Clazz generateUrlClass(final UrlDescription desc) {
         final Clazz clazz = new Generator.Clazz(desc.getClassName(), "com.bloatit.web.url");
+        clazz.addImport("com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol");
         clazz.addImport("com.bloatit.framework.utils.parameters.*");
         clazz.addImport("com.bloatit.framework.webprocessor.url.*");
 
@@ -58,6 +59,11 @@ public class CodeGenerator {
             isAction.setOverride();
             isAction.addLine("return " + (desc.isAction() ? "true;" : "false;"));
         }
+
+        final Method getProtocol = clazz.addMethod("Protocol", "getProtocol");
+        getProtocol.setOverride();
+        getProtocol.addLine("return Protocol."+desc.getComponent().getProtocol()+ ";");
+
 
         final Method getCode = clazz.addMethod("String", "getCode");
         getCode.setOverride();

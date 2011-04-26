@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
@@ -47,7 +45,7 @@ public class LostPasswordAction extends Action {
     protected Url doProcess() {
         TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
-        String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString(Context.getHeader().getHttpHeader());
+        String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString();
         templateFile.addNamedParameter("recovery_url", resetUrl);
         templateFile.addNamedParameter("member", m.getDisplayName());
 

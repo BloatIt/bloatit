@@ -15,6 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.trc;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -35,7 +36,7 @@ import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
-@ParamContainer("login")
+@ParamContainer(value = "login", protocol = Protocol.HTTPS)
 public final class LoginPage extends MasterPage {
 
     private final LoginPageUrl url;

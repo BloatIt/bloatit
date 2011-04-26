@@ -1,6 +1,7 @@
 package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 
 public final class PageNotFoundUrl extends Url implements Cloneable {
     public static String getName() {
@@ -45,5 +46,10 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     @Override
     protected void doGetParametersAsStrings(final Parameters parameters) {
         // Do nothing. There is no parameter.
+    }
+
+    @Override
+    public Protocol getProtocol() {
+        return Protocol.AUTO;
     }
 }

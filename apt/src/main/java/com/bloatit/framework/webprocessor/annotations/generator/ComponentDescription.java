@@ -15,6 +15,7 @@ public class ComponentDescription extends ClassDescription {
     private final String className;
     private final String attributeName;
     private final boolean isComponent;
+    private final ParamContainer.Protocol protocol;
     private final String codeName;
     private final Set<ComponentDescription> children = new HashSet<ComponentDescription>();
 
@@ -24,6 +25,7 @@ public class ComponentDescription extends ClassDescription {
         className = element.getSimpleName().toString() + "UrlComponent";
         isComponent = container.isComponent();
         codeName = container.value();
+        protocol = container.protocol();
         this.attributeName = attributeName;
     }
 
@@ -97,6 +99,10 @@ public class ComponentDescription extends ClassDescription {
             }
         }
         return returnParams;
+    }
+
+    public ParamContainer.Protocol getProtocol() {
+        return protocol;
     }
 
 }

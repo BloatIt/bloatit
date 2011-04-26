@@ -86,7 +86,7 @@ public final class SignUpAction extends Action {
 
         final String content = Context.tr("Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}",
                                           login,
-                                          url.externalUrlString(Context.getHeader().getHttpHeader()));
+                                          url.externalUrlString());
 
         final Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
 
