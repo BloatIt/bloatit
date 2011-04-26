@@ -18,13 +18,12 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
-import com.bloatit.model.Team;
+import com.bloatit.model.Rights;
 
 /**
  * <p>
@@ -44,31 +43,55 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link GenericAccessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanRead(final RestrictedInterface role, final Action action) {
-        return Action.READ == action;
+    protected static boolean ownerCanRead(final Rights role, final Action action) {
+        return role.isOwner() && Action.READ == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link GenericAccessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanWrite(final RestrictedInterface role, final Action action) {
-        return Action.WRITE == action;
+    protected static boolean ownerCanWrite(final Rights role, final Action action) {
+        return role.isOwner() && Action.WRITE == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link GenericAccessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanDelete(final RestrictedInterface role, final Action action) {
-        return Action.DELETE == action;
+    protected static boolean ownerCanDelete(final Rights role, final Action action) {
+        return role.isOwner() && Action.DELETE == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link GenericAccessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanRead(final RestrictedInterface role, final Action action) {
+    protected static boolean teamOwnerCanRead(final Rights role, final Action action) {
+        return role.isTeamOwner() && Action.READ == action && role.hasConsultTeamRight();
+    }
+
+    /**
+     * Helper function, use it in the overloading of the
+     * {@link GenericAccessor#can(EnumSet, Action)} method
+     */
+    protected static boolean teamOwnerCanWrite(final Rights role, final Action action) {
+        return role.isTeamOwner() && Action.WRITE == action && role.hasModifyTeamRight();
+    }
+
+    /**
+     * Helper function, use it in the overloading of the
+     * {@link GenericAccessor#can(EnumSet, Action)} method
+     */
+    protected static boolean teamOwnerCanDelete(final Rights role, final Action action) {
+        return role.isTeamOwner() && Action.DELETE == action && role.hasModifyTeamRight();
+    }
+
+    /**
+     * Helper function, use it in the overloading of the
+     * {@link GenericAccessor#can(EnumSet, Action)} method
+     */
+    protected static boolean authentifiedCanRead(final Rights role, final Action action) {
         return role.isAuthenticated() && Action.READ == action;
     }
 
@@ -76,7 +99,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link GenericAccessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanWrite(final RestrictedInterface role, final Action action) {
+    protected static boolean authentifiedCanWrite(final Rights role, final Action action) {
         return role.isAuthenticated() && Action.WRITE == action;
     }
 
@@ -84,7 +107,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link GenericAccessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanDelete(final RestrictedInterface role, final Action action) {
+    protected static boolean authentifiedCanDelete(final Rights role, final Action action) {
         return role.isAuthenticated() && Action.DELETE == action;
     }
 
@@ -118,15 +141,15 @@ public abstract class RightManager {
      */
     public static class Private extends GenericAccessor<UnauthorizedPrivateAccessException> {
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            if (role.getAuthenticatedMember().hasConsultTeamRight(role.getAsTeam())) {
-                return canRead(action) || canWrite(action);
+        protected final boolean can(final Rights role, final Action action) {
+            if (teamOwnerCanRead(role, action) || teamOwnerCanWrite(role, action)) {
+                return true;
             }
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
 
         @Override
-        protected UnauthorizedPrivateAccessException exception(Action action) {
+        protected UnauthorizedPrivateAccessException exception(final Action action) {
             return new UnauthorizedPrivateAccessException(action);
         }
     }
@@ -134,15 +157,18 @@ public abstract class RightManager {
     // TODO change the UnauthorizedPrivateAccessException
     public static class BankData extends GenericAccessor<UnauthorizedPrivateAccessException> {
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            if (role.getAuthenticatedMember().hasBankTeamRight(role.getAsTeam())) {
-                return canRead(action) || canWrite(action);
+        protected final boolean can(final Rights role, final Action action) {
+            if (teamOwnerCanRead(role, action) && role.hasBankTeamRight()) {
+                return true;
+            }
+            if (teamOwnerCanWrite(role, action) && role.hasBankTeamRight()) {
+                return true;
             }
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
 
         @Override
-        protected UnauthorizedPrivateAccessException exception(Action action) {
+        protected UnauthorizedPrivateAccessException exception(final Action action) {
             return new UnauthorizedPrivateAccessException(action);
         }
     }
@@ -150,15 +176,15 @@ public abstract class RightManager {
     // TODO change the UnauthorizedPrivateAccessException
     public static class ReadOnlyBankData extends GenericAccessor<UnauthorizedPrivateAccessException> {
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            if (role.getAuthenticatedMember().hasBankTeamRight(role.getAsTeam())) {
-                return canRead(action);
+        protected final boolean can(final Rights role, final Action action) {
+            if (teamOwnerCanRead(role, action) && role.hasBankTeamRight()) {
+                return true;
             }
             return ownerCanRead(role, action);
         }
 
         @Override
-        protected UnauthorizedPrivateAccessException exception(Action action) {
+        protected UnauthorizedPrivateAccessException exception(final Action action) {
             return new UnauthorizedPrivateAccessException(action);
         }
     }
@@ -169,12 +195,12 @@ public abstract class RightManager {
      */
     public static class Public extends GenericAccessor<UnauthorizedPublicAccessException> {
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            return canRead(action) || ownerCanWrite(role, action);
+        protected final boolean can(final Rights role, final Action action) {
+            return canRead(action) || ownerCanWrite(role, action) || teamOwnerCanWrite(role, action);
         }
 
         @Override
-        protected UnauthorizedPublicAccessException exception(Action action) {
+        protected UnauthorizedPublicAccessException exception(final Action action) {
             return new UnauthorizedPublicAccessException(action);
         }
     }
@@ -184,12 +210,12 @@ public abstract class RightManager {
      */
     public static class PublicReadOnly extends GenericAccessor<UnauthorizedPublicReadOnlyAccessException> {
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
+        protected final boolean can(final Rights role, final Action action) {
             return canRead(action);
         }
 
         @Override
-        protected UnauthorizedPublicReadOnlyAccessException exception(Action action) {
+        protected UnauthorizedPublicReadOnlyAccessException exception(final Action action) {
             return new UnauthorizedPublicReadOnlyAccessException(action);
         }
     }
@@ -199,13 +225,12 @@ public abstract class RightManager {
      */
     public static class PrivateReadOnly extends GenericAccessor<UnauthorizedPrivateReadOnlyAccessException> {
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            return ownerCanRead(role, action);
-
+        protected final boolean can(final Rights role, final Action action) {
+            return ownerCanRead(role, action) && teamOwnerCanRead(role, action);
         }
 
         @Override
-        protected UnauthorizedPrivateReadOnlyAccessException exception(Action action) {
+        protected UnauthorizedPrivateReadOnlyAccessException exception(final Action action) {
             return new UnauthorizedPrivateReadOnlyAccessException(action);
         }
     }
@@ -213,7 +238,7 @@ public abstract class RightManager {
     public static abstract class Accessor extends GenericAccessor<UnauthorizedOperationException> {
 
         @Override
-        protected UnauthorizedOperationException exception(Action action) {
+        protected UnauthorizedOperationException exception(final Action action) {
             return new UnauthorizedOperationException(action);
         }
     }

@@ -16,6 +16,7 @@
 //
 package com.bloatit.model.right;
 
+import com.bloatit.model.Rights;
 import com.bloatit.model.Software;
 
 /**
@@ -35,7 +36,7 @@ public class SoftwareRight extends RightManager {
          * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
+        protected final boolean can(final Rights role, final Action action) {
             boolean can = false;
             can = can || canRead(action);
             can = can || ownerCanWrite(role, action);

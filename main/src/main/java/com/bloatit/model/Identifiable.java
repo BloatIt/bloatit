@@ -18,6 +18,9 @@ package com.bloatit.model;
 
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.GenericAccessor;
 import com.bloatit.model.right.RestrictedObject;
 
 /**
@@ -43,6 +46,29 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
     // public Identifiable(Integer identifant, Class<T> daoClass) {
     // this(DBRequests.getById(daoClass, identifant));
     // }
+    
+    /**
+     * Can access.
+     * 
+     * @param accessor the accessor
+     * @param action the action
+     * @return true, if successful
+     */
+    protected final boolean canAccess(final GenericAccessor<?> accessor, final Action action) {
+        return accessor.canAccess(new Rights(getAuthTokenUnprotected(), this), action);
+    }
+
+    /**
+     * Try access.
+     * 
+     * @param accessor the accessor
+     * @param action the action
+     * @throws UnauthorizedOperationException the unauthorized operation
+     *             exception
+     */
+    protected final void tryAccess(final GenericAccessor<?> accessor, final Action action) throws UnauthorizedOperationException {
+        accessor.tryAccess(new Rights(getAuthTokenUnprotected(), this), action);
+    }
 
     /**
      * @return a unique identifier for this object.

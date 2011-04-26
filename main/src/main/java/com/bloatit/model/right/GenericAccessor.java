@@ -17,8 +17,8 @@
 package com.bloatit.model.right;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.model.Rights;
 
 /**
  * The class Accessor is a class that test if a member as the right to access a
@@ -30,11 +30,11 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
  * </p>
  * <p>
  * This class implement the template method pattern so that child classes just
- * have to implement the can method. You have to create an {@link GenericAccessor}
- * child class for each feature.
+ * have to implement the can method. You have to create an
+ * {@link GenericAccessor} child class for each feature.
  * </p>
- * For example you could create an {@link GenericAccessor} on the Fullname property
- * like this:
+ * For example you could create an {@link GenericAccessor} on the Fullname
+ * property like this:
  * 
  * <pre>
  * class MemberCanAccessFullname extends {@link GenericAccessor} {
@@ -63,10 +63,10 @@ public abstract class GenericAccessor<T extends UnauthorizedOperationException> 
      * @return true, if we have the right to access the RestrictedObject, false
      *         otherwise.
      */
-    protected abstract boolean can(RestrictedInterface object, Action action);
+    protected abstract boolean can(Rights object, Action action);
 
     protected abstract T exception(Action action);
-    
+
     /**
      * CanAccess call the abstract {@link #can(RestrictedInterface, Action)}
      * method to know if the user has the right to access the
@@ -78,8 +78,8 @@ public abstract class GenericAccessor<T extends UnauthorizedOperationException> 
      * @return true, if we have the right to access the RestrictedObject, false
      *         otherwise.
      */
-    public final boolean canAccess(final RestrictedInterface object, final Action action) {
-        if (object.hasUserPrivilege(Role.ADMIN)) {
+    public final boolean canAccess(final Rights object, final Action action) {
+        if (object.hasAdminUserPrivilege()) {
             Log.model().trace("Admin access");
             return true;
         }
@@ -88,15 +88,14 @@ public abstract class GenericAccessor<T extends UnauthorizedOperationException> 
 
     /**
      * Throws an {@link UnauthorizedOperationException} if the
-     * {@link #can(RestrictedInterface, Action)} return false.
+     * {@link #can(Rights, Action)} return false.
      * 
      * @param object is the object on which we want to do the
      *            <code>action</code>
      * @param action is the action.
-     * @throws T the unauthorized operation
-     *             exception
+     * @throws T the unauthorized operation exception
      */
-    public final void tryAccess(final RestrictedInterface object, final Action action) throws T {
+    public final void tryAccess(final Rights object, final Action action) throws T {
         if (!canAccess(object, action)) {
             throw exception(action);
         }

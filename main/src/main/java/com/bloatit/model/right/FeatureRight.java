@@ -16,9 +16,8 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Team;
+import com.bloatit.model.Rights;
 
 /**
  * The Class FeatureRight store the properties accessor for the {@link Feature}
@@ -37,7 +36,7 @@ public class FeatureRight extends RightManager {
          * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
+        protected final boolean can(final Rights role, final Action action){
             return canRead(action) || ownerCanWrite(role, action);
         }
     }
@@ -53,7 +52,7 @@ public class FeatureRight extends RightManager {
          * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
+        protected final boolean can(final Rights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
@@ -76,7 +75,7 @@ public class FeatureRight extends RightManager {
          * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
+        protected final boolean can(final Rights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }

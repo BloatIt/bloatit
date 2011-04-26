@@ -22,14 +22,12 @@ import java.util.EnumSet;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.UserContent;
 
 /**
  * A restricted object is an object that contains some properties which accesses
@@ -188,29 +186,6 @@ public abstract class RestrictedObject implements RestrictedInterface {
     protected final AuthToken getAuthTokenUnprotected() {
         automaticAuthentication();
         return token;
-    }
-
-    /**
-     * Can access.
-     * 
-     * @param accessor the accessor
-     * @param action the action
-     * @return true, if successful
-     */
-    protected final boolean canAccess(final GenericAccessor accessor, final Action action) {
-        return accessor.canAccess(this, action);
-    }
-
-    /**
-     * Try access.
-     * 
-     * @param accessor the accessor
-     * @param action the action
-     * @throws UnauthorizedOperationException the unauthorized operation
-     *             exception
-     */
-    protected final void tryAccess(final GenericAccessor accessor, final Action action) throws UnauthorizedOperationException {
-        accessor.tryAccess(this, action);
     }
 
     @Override

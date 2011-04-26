@@ -68,11 +68,11 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         return getFromUnprotected();
     }
 
-    private InternalAccount getFromUnprotected() {
+    protected InternalAccount getFromUnprotected() {
         return InternalAccount.create(getDao().getFrom());
     }
 
-    private Account<?> getToUnprotected() {
+    protected Account<?> getToUnprotected() {
         if (getDao().getTo().getClass() == DaoInternalAccount.class) {
             return InternalAccount.create((DaoInternalAccount) getDao().getTo());
         } else if (getDao().getTo().getClass() == DaoExternalAccount.class) {

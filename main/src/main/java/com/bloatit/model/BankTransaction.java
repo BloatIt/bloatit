@@ -18,14 +18,13 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.EnumSet;
 
 import javax.persistence.Entity;
 
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoTeam;
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 
 /**
  * The Class BankTransaction.
@@ -238,6 +237,13 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public String getProcessInformations() {
         return getDao().getProcessInformations();
+    }
+
+    public Actor<?> getAuthor() {
+        if (getDao().getAuthor() instanceof DaoTeam) {
+            return Team.create((DaoTeam) getDao().getAuthor());
+        }
+        return Member.create((DaoMember) getDao().getAuthor());
     }
 
     /*

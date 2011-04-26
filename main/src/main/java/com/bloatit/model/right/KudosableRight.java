@@ -17,6 +17,7 @@
 package com.bloatit.model.right;
 
 import com.bloatit.model.Kudosable;
+import com.bloatit.model.Rights;
 
 /**
  * The Class KudosableRight store the properties accessor for the
@@ -35,7 +36,7 @@ public class KudosableRight extends RightManager {
          * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
+        protected final boolean can(final Rights role, final Action action) {
             return authentifiedCanWrite(role, action);
         }
     }
