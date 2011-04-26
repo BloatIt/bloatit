@@ -16,18 +16,20 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.UserContent;
+import com.bloatit.model.Offer;
 
 /**
- * The Class UserContentRight store the properties accessor for the
- * {@link UserContent} class.
+ * The Class OfferRight store the properties accessor for the {@link Offer}
+ * class.
  */
-public class UserContentRight extends RightManager {
+public class RgtOffer extends RightManager {
 
     /**
-     * The Class File is a {@link Public} accessor for the File property.
+     * The Class DateExpire is a {@link RightManager.Public} accessor for the DateExpire
+     * property.
      */
-    public static class File extends Public {
+    public static class DateExpire extends Public {
         // nothing this is just a rename.
     }
+
 }

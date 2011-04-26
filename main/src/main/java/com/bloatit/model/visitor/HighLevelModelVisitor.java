@@ -1,4 +1,29 @@
-package com.bloatit.model;
+package com.bloatit.model.visitor;
+
+import com.bloatit.model.Account;
+import com.bloatit.model.Actor;
+import com.bloatit.model.BankTransaction;
+import com.bloatit.model.Bug;
+import com.bloatit.model.Comment;
+import com.bloatit.model.Contribution;
+import com.bloatit.model.Description;
+import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.Feature;
+import com.bloatit.model.FileMetadata;
+import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.InternalAccount;
+import com.bloatit.model.JoinTeamInvitation;
+import com.bloatit.model.Kudos;
+import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
+import com.bloatit.model.ModelClassVisitor;
+import com.bloatit.model.Offer;
+import com.bloatit.model.Release;
+import com.bloatit.model.Software;
+import com.bloatit.model.Team;
+import com.bloatit.model.Transaction;
+import com.bloatit.model.Translation;
+import com.bloatit.model.UserContentInterface;
 
 public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
 

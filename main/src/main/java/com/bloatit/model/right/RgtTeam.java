@@ -16,26 +16,25 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.Member;
 
 /**
- * The Class ExternalAccountRight store the properties accessor for the
- * {@link ExternalAccount} class.
+ * The Class MemberRight store the properties accessor for the {@link Member}
+ * class.
  */
-public class ExternalAccountRight extends RightManager {
-
+public class RgtTeam extends RightManager {
+    
     /**
-     * The Class BankCode is a {@link Private} accessor for the BankCode
-     * property.
+     * The Class Email is a {@link RightManager.Public} accessor for the Contact property.
      */
-    public static class BankCode extends Private {
+    public static class Contact extends Public {
         // nothing this is just a rename.
     }
-
+    
     /**
-     * The Class Type is a {@link Private} accessor for the Type property.
+     * The Class Email is a {@link RightManager.Public} accessor for the DisplayName property.
      */
-    public static class Type extends Private {
+    public static class DisplayName extends Public {
         // nothing this is just a rename.
     }
 }

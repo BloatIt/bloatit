@@ -23,7 +23,7 @@ import com.bloatit.model.Software;
  * The Class SoftwareRight store the properties accessor for the
  * {@link Software} class.
  */
-public class SoftwareRight extends RightManager {
+public class RgtSoftware extends RightManager {
 
     /**
      * The Class TeamList is an accessor for the TeamList property.
@@ -46,7 +46,8 @@ public class SoftwareRight extends RightManager {
     }
 
     /**
-     * The Class Name is a {@link Public} accessor for the Name property.
+     * The Class Name is a {@link RightManager.Public} accessor for the Name
+     * property.
      */
     public static class Name extends Public {
         // nothing this is just a rename.

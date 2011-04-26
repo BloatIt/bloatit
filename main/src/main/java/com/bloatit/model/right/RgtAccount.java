@@ -16,52 +16,51 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.model.Member;
+import com.bloatit.model.Account;
 
 /**
- * The Class MemberRight store the properties accessor for the {@link Member}
+ * The Class AccountRight store the properties accessor for the {@link Account}
  * class.
  */
-public class MemberRight extends RightManager {
+public class RgtAccount extends RightManager {
 
     /**
-     * The Class Karma is a {@link Public} accessor for the Karma property.
+     * The Class Transaction is a {@link RightManager.PrivateReadOnly} accessor for the
+     * Transaction property.
      */
-    public static class Karma extends Public {
+    public static class Transaction extends PrivateReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Password is a {@link Private} accessor for the Password
+     * The Class Amount is a {@link RightManager.PublicReadOnly} accessor for the Amount
      * property.
      */
-    public static class Password extends Private {
-        // nothing this is just a rename.
-    }
-    
-    /**
-     * The Class Email is a {@link Private} accessor for the Email property.
-     */
-    public static class Email extends Private {
+    public static class Amount extends PrivateReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Locale is a {@link Private} accessor for the Locale property.
+     * The Class LastModificationDate is a {@link RightManager.PrivateReadOnly} accessor for
+     * the LastModificationDate property.
      */
-    public static class Locale extends Public {
+    public static class LastModificationDate extends PrivateReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Name is a {@link Public} accessor for the Name property.
+     * The Class CreationDate is a {@link RightManager.PublicReadOnly} accessor for the
+     * CreationDate property.
      */
-    public static class Name extends Public {
+    public static class CreationDate extends PrivateReadOnly {
         // nothing this is just a rename.
     }
 
-    public static class Contributions extends Public {
+    /**
+     * The Class Actor is a {@link RightManager.PublicReadOnly} accessor for the Actor
+     * property.
+     */
+    public static class Actor extends PrivateReadOnly {
         // nothing this is just a rename.
     }
 }

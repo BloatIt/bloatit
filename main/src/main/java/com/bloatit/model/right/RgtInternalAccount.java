@@ -16,28 +16,18 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Kudosable;
-import com.bloatit.model.Rights;
+import com.bloatit.model.InternalAccount;
 
 /**
- * The Class KudosableRight store the properties accessor for the
- * {@link Kudosable} class.
+ * The Class InternalAccountRight store the properties accessor for the
+ * {@link InternalAccount} class.
  */
-public class KudosableRight extends RightManager {
+public class RgtInternalAccount extends RightManager {
 
     /**
-     * The Class Kudos is a accessor for the Kudos property.
+     * The Class Blocked is a {@link RightManager.Private} accessor for the Blocked property.
      */
-    public static class Kudos extends Accessor {
-
-        /*
-         * (non-Javadoc)
-         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
-         * RestrictedInterface , com.bloatit.model.right.Action)
-         */
-        @Override
-        protected final boolean can(final Rights role, final Action action) {
-            return authentifiedCanWrite(role, action);
-        }
+    public static class Blocked extends Private {
+        // nothing this is just a rename.
     }
 }

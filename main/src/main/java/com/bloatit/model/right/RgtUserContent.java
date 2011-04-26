@@ -16,25 +16,18 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Member;
+import com.bloatit.model.UserContent;
 
 /**
- * The Class MemberRight store the properties accessor for the {@link Member}
- * class.
+ * The Class UserContentRight store the properties accessor for the
+ * {@link UserContent} class.
  */
-public class TeamRight extends RightManager {
-    
+public class RgtUserContent extends RightManager {
+
     /**
-     * The Class Email is a {@link Public} accessor for the Contact property.
+     * The Class File is a {@link RightManager.Public} accessor for the File property.
      */
-    public static class Contact extends Public {
-        // nothing this is just a rename.
-    }
-    
-    /**
-     * The Class Email is a {@link Public} accessor for the DisplayName property.
-     */
-    public static class DisplayName extends Public {
+    public static class File extends Public {
         // nothing this is just a rename.
     }
 }

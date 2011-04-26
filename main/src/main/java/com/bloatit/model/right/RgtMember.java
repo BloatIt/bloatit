@@ -16,59 +16,55 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Account;
+import com.bloatit.model.Member;
 
 /**
- * The Class AccountRight store the properties accessor for the {@link Account}
+ * The Class MemberRight store the properties accessor for the {@link Member}
  * class.
  */
-public class AccountRight extends RightManager {
+public class RgtMember extends RightManager {
 
     /**
-     * The Class Transaction is a {@link PrivateReadOnly} accessor for the
-     * Transaction property.
-     */
-    public static class Transaction extends PrivateReadOnly {
-        // nothing this is just a rename.
-    }
-
-    /**
-     * The Class Amount is a {@link PublicReadOnly} accessor for the Amount
+     * The Class Karma is a {@link RightManager.Public} accessor for the Karma
      * property.
      */
-    public static class Amount extends PublicReadOnly {
+    public static class Karma extends Public {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Comment is a {@link PublicReadOnly} accessor for the Comment
+     * The Class Password is a {@link RightManager.Private} accessor for the
+     * Password property.
+     */
+    public static class Password extends Private {
+        // nothing this is just a rename.
+    }
+
+    /**
+     * The Class Email is a {@link RightManager.Private} accessor for the Email
      * property.
      */
-    public static class Comment extends PublicReadOnly {
+    public static class Email extends Private {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class LastModificationDate is a {@link PrivateReadOnly} accessor for
-     * the LastModificationDate property.
+     * The Class Locale is a {@link RightManager.Private} accessor for the
+     * Locale property.
      */
-    public static class LastModificationDate extends PrivateReadOnly {
+    public static class Locale extends Public {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class CreationDate is a {@link PublicReadOnly} accessor for the
-     * CreationDate property.
-     */
-    public static class CreationDate extends PublicReadOnly {
-        // nothing this is just a rename.
-    }
-
-    /**
-     * The Class Actor is a {@link PublicReadOnly} accessor for the Actor
+     * The Class Name is a {@link RightManager.Public} accessor for the Name
      * property.
      */
-    public static class Actor extends PublicReadOnly {
+    public static class Name extends Public {
+        // nothing this is just a rename.
+    }
+
+    public static class Contributions extends Public {
         // nothing this is just a rename.
     }
 }

@@ -23,7 +23,7 @@ import com.bloatit.model.Rights;
  * The Class FeatureRight store the properties accessor for the {@link Feature}
  * class.
  */
-public class FeatureRight extends RightManager {
+public class RgtFeature extends RightManager {
 
     /**
      * The Class Description is an accessor for the Description property.
@@ -61,7 +61,7 @@ public class FeatureRight extends RightManager {
      * The Class Contribute is an accessor for the Contribute property.
      */
     public static class Contribute extends ReadOnlyBankData {
-
+        // nothing
     }
 
     /**
