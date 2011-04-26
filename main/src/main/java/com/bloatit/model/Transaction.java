@@ -25,7 +25,7 @@ import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.model.right.AccountRight;
+import com.bloatit.model.right.RgtAccount;
 import com.bloatit.model.right.Action;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
@@ -60,11 +60,11 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean canAccessSomething() {
-        return canAccess(new AccountRight.Transaction(), Action.READ);
+        return canAccess(new RgtAccount.Transaction(), Action.READ);
     }
 
     public InternalAccount getFrom() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getFromUnprotected();
     }
 
@@ -82,27 +82,18 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     }
 
     public Account<?> getTo() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getToUnprotected();
     }
 
     public BigDecimal getAmount() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getDao().getAmount();
     }
 
     public Date getCreationDate() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getDao().getCreationDate();
-    }
-
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Role
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    protected boolean isMine(final Member member) {
-        return getFromUnprotected().isMine(member) || getToUnprotected().isMine(member);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

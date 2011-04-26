@@ -26,7 +26,6 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -57,7 +56,7 @@ import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.FeatureRight;
+import com.bloatit.model.right.RgtFeature;
 
 // TODO : delete comment.
 //
@@ -139,7 +138,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public boolean canAccessComment(final Action action) {
-        return canAccess(new FeatureRight.Comment(), action);
+        return canAccess(new RgtFeature.Comment(), action);
     }
 
     /*
@@ -149,7 +148,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public boolean canAccessContribution(final Action action) {
-        return canAccess(new FeatureRight.Contribute(), action);
+        return canAccess(new RgtFeature.Contribute(), action);
     }
 
     /*
@@ -159,7 +158,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public boolean canAccessOffer(final Action action) {
-        return canAccess(new FeatureRight.Offer(), action);
+        return canAccess(new RgtFeature.Offer(), action);
     }
 
     /*
@@ -168,7 +167,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public boolean canAccessDescription() {
-        return canAccess(new FeatureRight.Description(), Action.READ);
+        return canAccess(new RgtFeature.Description(), Action.READ);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +181,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public Contribution addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.WRITE);
+        tryAccess(new RgtFeature.Contribute(), Action.WRITE);
         // For exception safety keep the order.
         if (getAuthToken().getAsTeam() != null) {
             if (getAuthToken().getAsTeam().getUserTeamRight(getAuthToken().getMember()).contains(UserTeamRight.BANK)) {
@@ -220,7 +219,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (!offer.getFeature().equals(this)) {
             throw new IllegalArgumentException();
         }
-        tryAccess(new FeatureRight.Offer(), Action.WRITE);
+        tryAccess(new RgtFeature.Offer(), Action.WRITE);
 
         if (!offer.getMember().equals(getAuthToken().getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
@@ -236,7 +235,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.DELETE);
+        tryAccess(new RgtFeature.Offer(), Action.DELETE);
         if (getDao().getSelectedOffer().getId() != null && getDao().getSelectedOffer().getId().equals(offer.getId())) {
             getDao().computeSelectedOffer();
         }
@@ -250,7 +249,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Comment(), Action.WRITE);
+        tryAccess(new RgtFeature.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
                                                                DaoGetter.getTeam(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
@@ -294,7 +293,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             if (getSelectedOffer().getAsTeam().getUserTeamRight(getAuthToken().getMember()).contains(UserTeamRight.MODIFY)){
                 throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_FEATURE);
             }
-        }else if (!getSelectedOffer().isOwner()){
+            // TODO : If the asTeam property is set !!
+        }else if (!getSelectedOffer().getRights().isOwner()){
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_FEATURE);
         }
         setStateObject(getStateObject().eventDeveloperCanceled());
@@ -303,7 +303,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public void computeSelectedOffer() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().computeSelectedOffer();
@@ -311,7 +311,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public void setFeatureState(final FeatureState featureState) throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         setFeatureStateUnprotected(featureState);
@@ -583,7 +583,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public PageIterable<Comment> getComments() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Comment(), Action.READ);
+        tryAccess(new RgtFeature.Comment(), Action.READ);
         return new CommentList(getDao().getComments());
     }
 
@@ -593,7 +593,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+        tryAccess(new RgtFeature.Contribute(), Action.READ);
         return getContributionsUnprotected();
     }
 
@@ -622,7 +622,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public float getProgression() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+        tryAccess(new RgtFeature.Contribute(), Action.READ);
         final Offer currentOffer = getSelectedOffer();
         if (currentOffer == null) {
             return PROGRESSION_COEF * (1 - 1 / (1 + getDao().getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
@@ -636,7 +636,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public float getMemberProgression(final Actor<?> author) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+        tryAccess(new RgtFeature.Contribute(), Action.READ);
 
         final PageIterable<Contribution> contributions = getContributions();
 
@@ -661,7 +661,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public float getRelativeProgression(final BigDecimal amount) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+        tryAccess(new RgtFeature.Contribute(), Action.READ);
 
         final float memberAmountFloat = amount.floatValue();
         final float totalAmountFloat = getContribution().floatValue();
@@ -676,7 +676,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public BigDecimal getContribution() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+        tryAccess(new RgtFeature.Contribute(), Action.READ);
         return getDao().getContribution();
     }
 
@@ -686,7 +686,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public BigDecimal getContributionMax() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+        tryAccess(new RgtFeature.Contribute(), Action.READ);
         return getDao().getContributionMax();
     }
 
@@ -696,7 +696,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public BigDecimal getContributionMin() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+        tryAccess(new RgtFeature.Contribute(), Action.READ);
         return getDao().getContributionMin();
     }
 
@@ -706,7 +706,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public Description getDescription() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Description(), Action.READ);
+        tryAccess(new RgtFeature.Description(), Action.READ);
         return Description.create(getDao().getDescription());
     }
 
@@ -726,7 +726,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public PageIterable<Offer> getOffers() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.READ);
+        tryAccess(new RgtFeature.Offer(), Action.READ);
         return getOffersUnprotected();
     }
 
@@ -745,7 +745,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public Offer getSelectedOffer() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.READ);
+        tryAccess(new RgtFeature.Offer(), Action.READ);
         return getSelectedOfferUnprotected();
     }
 
@@ -755,7 +755,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      */
     @Override
     public Offer getValidatedOffer() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.READ);
+        tryAccess(new RgtFeature.Offer(), Action.READ);
         return getValidatedOfferUnprotected();
     }
 

@@ -30,7 +30,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.FeatureRight;
+import com.bloatit.model.right.RgtFeature;
 
 // TODO rightManagement
 public final class Offer extends Kudosable<DaoOffer> {
@@ -199,7 +199,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     public float getProgression() throws UnauthorizedOperationException {
 
         if (getAmount().floatValue() != 0) {
-            tryAccess(new FeatureRight.Contribute(), Action.READ);
+            tryAccess(new RgtFeature.Contribute(), Action.READ);
 
             return (getFeature().getContribution().floatValue() * PROGRESSION_PERCENT) / getAmount().floatValue();
         }

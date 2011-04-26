@@ -51,7 +51,7 @@ import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.MemberRight;
+import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
 
 public final class Member extends Actor<DaoMember> implements User {
@@ -131,19 +131,15 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public boolean canGetKarma() {
-        return canAccess(new MemberRight.Karma(), Action.READ);
-    }
-
-    public boolean canAccessName(final Action action) {
-        return canAccess(new MemberRight.Name(), action);
+        return canAccess(new RgtMember.Karma(), Action.READ);
     }
 
     public boolean canSetPassword() {
-        return canAccess(new MemberRight.Password(), Action.WRITE);
+        return canAccess(new RgtMember.Password(), Action.WRITE);
     }
 
     public boolean canAccessLocale(final Action action) {
-        return canAccess(new MemberRight.Locale(), action);
+        return canAccess(new RgtMember.Locale(), action);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -195,19 +191,15 @@ public final class Member extends Actor<DaoMember> implements User {
         if (actor == null) {
             return false;
         }
-
         if (this.equals(actor)) {
             if (hasPromoteTeamRight(aTeam)) {
                 return false;
             }
-
             return true;
         }
-
         if (!actor.hasPromoteTeamRight(aTeam)) {
             return false;
         }
-
         return true;
     }
 
@@ -303,7 +295,7 @@ public final class Member extends Actor<DaoMember> implements User {
      *             the password
      */
     public void setPassword(final String password) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Password(), Action.WRITE);
+        tryAccess(new RgtMember.Password(), Action.WRITE);
         setPasswordUnprotected(password);
     }
 
@@ -317,7 +309,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public void setLocal(final Locale loacle) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Locale(), Action.WRITE);
+        tryAccess(new RgtMember.Locale(), Action.WRITE);
         getDao().setLocale(loacle);
     }
 
@@ -387,7 +379,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public int getKarma() throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Karma(), Action.READ);
+        tryAccess(new RgtMember.Karma(), Action.READ);
         return getDao().getKarma();
     }
 
@@ -418,11 +410,11 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public boolean canAccessEmail(final Action action) {
-        return canAccess(new MemberRight.Email(), action);
+        return canAccess(new RgtMember.Email(), action);
     }
 
     public String getEmail() throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Email(), Action.READ);
+        tryAccess(new RgtMember.Email(), Action.READ);
         return getEmailUnprotected();
     }
 
@@ -431,13 +423,13 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public void setEmail(final String email) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Email(), Action.WRITE);
+        tryAccess(new RgtMember.Email(), Action.WRITE);
         getDao().setEmail(email);
     }
 
     @Override
     public String getUserLogin() {
-        return getLoginUnprotected();
+        return getLogin();
     }
 
     @Override
@@ -451,7 +443,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     public Locale getLocale() throws UnauthorizedOperationException {
         // TODO delete one of those methods
-        tryAccess(new MemberRight.Locale(), Action.READ);
+        tryAccess(new RgtMember.Locale(), Action.READ);
         return getDao().getLocale();
     }
 
@@ -460,7 +452,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     public void setFullname(final String fullname) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Name(), Action.WRITE);
+        tryAccess(new RgtMember.Name(), Action.WRITE);
         getDao().setFullname(fullname);
     }
 
@@ -473,12 +465,12 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     @Override
-    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
+    public PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException {
         return getContributions(true);
     }
 
     public PageIterable<Contribution> getContributions(final boolean asMemberOnly) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Contributions(), Action.READ);
+        tryAccess(new RgtMember.Contributions(), Action.READ);
         return new ContributionList(getDao().getContributions(asMemberOnly));
     }
 

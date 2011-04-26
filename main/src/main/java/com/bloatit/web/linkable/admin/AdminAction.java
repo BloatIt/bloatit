@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.linkable.admin;
 
-import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -46,7 +45,7 @@ public abstract class AdminAction extends LoggedAction {
 
     @Override
     public final Url doProcessRestricted(final Member me) {
-        if (!me.hasUserPrivilege(DaoMember.Role.ADMIN)) {
+        if (!me.getRights().hasAdminUserPrivilege()) {
             session.notifyError(getRefusalReason());
             return new LoginPageUrl();
         }

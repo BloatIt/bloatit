@@ -106,7 +106,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                         featureSummaryPopularity.add(popularityText);
                         featureSummaryPopularity.add(popularityScore);
 
-                        if (!feature.isOwner()) {
+                        if (!feature.getRights().isOwner()) {
                             final int vote = feature.getUserVoteValue();
                             if (vote == 0) {
                                 final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");

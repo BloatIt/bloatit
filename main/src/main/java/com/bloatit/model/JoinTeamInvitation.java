@@ -81,11 +81,6 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         getDao().discard();
     }
 
-    @Override
-    protected boolean isMine(final Member member) {
-        return member.equals(getSender()) || member.equals(getReciever());
-    }
-
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////

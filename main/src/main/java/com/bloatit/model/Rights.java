@@ -5,6 +5,7 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RestrictedObject;
+import com.bloatit.model.visitor.HighLevelModelVisitor;
 
 public class Rights {
 
@@ -156,7 +157,7 @@ public class Rights {
     }
 
     private final boolean hasUserPrivilege(final DaoMember.Role role) {
-        return token.getMember().hasUserPrivilege(role);
+        return token.getMember().getRole() == role;
     }
 
     // ///////////////////////////////////////

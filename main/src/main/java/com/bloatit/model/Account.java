@@ -23,9 +23,9 @@ import com.bloatit.data.DaoAccount;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.TransactionList;
-import com.bloatit.model.right.AccountRight;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.RgtAccount;
 
 /**
  * An account represent a way to store money. To transfer money from an account
@@ -48,6 +48,9 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
         super(id);
     }
 
+    // ///////////////////////////
+    // Can ...
+
     /**
      * Can access transaction.
      * 
@@ -56,7 +59,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessTransaction() {
-        return canAccess(new AccountRight.Transaction(), Action.READ);
+        return canAccess(new RgtAccount.Transaction(), Action.READ);
     }
 
     /**
@@ -67,18 +70,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessAmount() {
-        return canAccess(new AccountRight.Amount(), Action.READ);
-    }
-
-    /**
-     * Can access comment.
-     * 
-     * @return true if the authenticated user can access the
-     *         <code>Comment</code> property (It is a read only property).
-     * @see #authenticate(AuthToken)
-     */
-    public final boolean canAccessComment() {
-        return canAccess(new AccountRight.Comment(), Action.READ);
+        return canAccess(new RgtAccount.Amount(), Action.READ);
     }
 
     /**
@@ -89,7 +81,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessActor() {
-        return canAccess(new AccountRight.Actor(), Action.READ);
+        return canAccess(new RgtAccount.Actor(), Action.READ);
     }
 
     /**
@@ -100,7 +92,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessCreationDate() {
-        return canAccess(new AccountRight.CreationDate(), Action.READ);
+        return canAccess(new RgtAccount.CreationDate(), Action.READ);
     }
 
     /**
@@ -112,8 +104,11 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessLastModificationDate() {
-        return canAccess(new AccountRight.LastModificationDate(), Action.READ);
+        return canAccess(new RgtAccount.LastModificationDate(), Action.READ);
     }
+
+    // ///////////////////////////
+    // get / set ...
 
     /**
      * Every time a new transaction is done the modification date is update.
@@ -125,7 +120,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      *             class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.LastModificationDate(), Action.READ);
+        tryAccess(new RgtAccount.LastModificationDate(), Action.READ);
         return getDao().getLastModificationDate();
     }
 
@@ -137,7 +132,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      *             access the <code>Amount</code> property in this class.
      */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Amount(), Action.READ);
+        tryAccess(new RgtAccount.Amount(), Action.READ);
         return getDao().getAmount();
     }
 
@@ -149,7 +144,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      *             access the <code>Transaction</code> property in this class.
      */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return new TransactionList(getDao().getTransactions());
     }
 
@@ -161,7 +156,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      *             access the <code>Actor</code> property in this class.
      */
     public final Actor<?> getActor() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Actor(), Action.READ);
+        tryAccess(new RgtAccount.Actor(), Action.READ);
         return getActorUnprotected();
     }
 
@@ -173,9 +168,12 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      *             access the <code>CreationDate</code> property in this class.
      */
     public final Date getCreationDate() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.CreationDate(), Action.READ);
+        tryAccess(new RgtAccount.CreationDate(), Action.READ);
         return getDao().getCreationDate();
     }
+
+    // ///////////////////////////
+    // Unprotected methods
 
     /**
      * This method is used only in the authentication process. You should never
@@ -184,18 +182,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @return the actor unprotected
      * @see #getActor()
      */
-    public final Actor<?> getActorUnprotected() {
+    protected final Actor<?> getActorUnprotected() {
         return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
-     */
-    @Override
-    protected boolean isMine(final Member member) {
-        return getActorUnprotected().isMine(member);
     }
 
 }

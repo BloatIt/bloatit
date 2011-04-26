@@ -108,11 +108,6 @@ public final class Description extends Identifiable<DaoDescription> {
         return getDao().getDefaultLocale();
     }
 
-    @Override
-    protected boolean isMine(final Member member) {
-        return false;
-    }
-
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////

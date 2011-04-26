@@ -46,7 +46,7 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
     // public Identifiable(Integer identifant, Class<T> daoClass) {
     // this(DBRequests.getById(daoClass, identifant));
     // }
-    
+
     /**
      * Can access.
      * 
@@ -66,8 +66,13 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
      */
-    protected final void tryAccess(final GenericAccessor<?> accessor, final Action action) throws UnauthorizedOperationException {
+    protected final <T extends UnauthorizedOperationException> void tryAccess(final GenericAccessor<T> accessor, final Action action) throws T {
         accessor.tryAccess(new Rights(getAuthTokenUnprotected(), this), action);
+    }
+
+    @Override
+    public Rights getRights() {
+        return new Rights(getAuthTokenUnprotected(), this);
     }
 
     /**

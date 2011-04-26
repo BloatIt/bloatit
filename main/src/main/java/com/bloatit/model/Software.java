@@ -25,7 +25,7 @@ import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.SoftwareRight;
+import com.bloatit.model.right.RgtSoftware;
 
 public class Software extends Identifiable<DaoSoftware> {
 
@@ -68,7 +68,7 @@ public class Software extends Identifiable<DaoSoftware> {
      * @see com.bloatit.data.DaoSoftware#getName()
      */
     public String getName() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+        tryAccess(new RgtSoftware.Name(), Action.READ);
         return getDao().getName();
     }
 
@@ -77,7 +77,7 @@ public class Software extends Identifiable<DaoSoftware> {
      * @see com.bloatit.data.DaoSoftware#getDescription()
      */
     public final Description getDescription() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+        tryAccess(new RgtSoftware.Name(), Action.READ);
         return Description.create(getDao().getDescription());
     }
 
@@ -86,7 +86,7 @@ public class Software extends Identifiable<DaoSoftware> {
      * @see com.bloatit.data.DaoSoftware#getImage()
      */
     public final FileMetadata getImage() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+        tryAccess(new RgtSoftware.Name(), Action.READ);
         return FileMetadata.create(getDao().getImage());
     }
 
@@ -95,7 +95,7 @@ public class Software extends Identifiable<DaoSoftware> {
      * @see com.bloatit.data.DaoSoftware#getFeatures()
      */
     public final FeatureList getFeatures() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+        tryAccess(new RgtSoftware.Name(), Action.READ);
         return new FeatureList(getDao().getFeatures());
 
     }
@@ -103,15 +103,6 @@ public class Software extends Identifiable<DaoSoftware> {
     public void setImage(final FileMetadata fileImage) {
         // TODO: right management
         getDao().setImage(fileImage.getDao());
-    }
-
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // RightManagement
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    protected boolean isMine(final Member member) {
-        return false;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

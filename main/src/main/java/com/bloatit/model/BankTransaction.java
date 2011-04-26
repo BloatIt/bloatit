@@ -25,6 +25,10 @@ import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoTeam;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtBankTransaction;
 
 /**
  * The Class BankTransaction.
@@ -120,7 +124,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * 
      * @see DaoBankTransaction#setAuthorized()
      */
-    public void setAuthorized() {
+    protected void setAuthorized() {
         getDao().setAuthorized();
     }
 
@@ -129,7 +133,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * 
      * @see DaoBankTransaction#setRefused()
      */
-    public void setRefused() {
+    protected void setRefused() {
         getDao().setRefused();
     }
 
@@ -139,7 +143,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @return true, if successful
      * @see DaoBankTransaction#setValidated()
      */
-    public boolean setValidated() {
+    protected boolean setValidated() {
         return getDao().setValidated();
     }
 
@@ -150,82 +154,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * 
      * @param processInformations the new process informations
      */
-    public void setProcessInformations(final String processInformations) {
+    protected void setProcessInformations(final String processInformations) {
         getDao().setProcessInformations(processInformations);
-    }
-
-    /**
-     * Gets the message. The message is the error (or not) message sent by the
-     * bank during a transaction.
-     * 
-     * @return the message
-     */
-    public String getMessage() {
-        return getDao().getMessage();
-    }
-
-    /**
-     * Gets the paid value.
-     * 
-     * @return the value
-     */
-    public BigDecimal getValuePaid() {
-        return getDao().getValuePaid();
-    }
-
-    /**
-     * Gets the value.
-     * 
-     * @return the value
-     */
-    public BigDecimal getValue() {
-        return getDao().getValue();
-    }
-
-    /**
-     * Gets the state.
-     * 
-     * @return the state
-     */
-    public State getState() {
-        return getDao().getState();
-    }
-
-    /**
-     * Gets the creation date.
-     * 
-     * @return the creation date
-     */
-    public Date getCreationDate() {
-        return getDao().getCreationDate();
-    }
-
-    /**
-     * Gets the modification date.
-     * 
-     * @return the modification date
-     */
-    public Date getModificationDate() {
-        return getDao().getModificationDate();
-    }
-
-    /**
-     * Gets the reference. This is the generated purchase reference.
-     * 
-     * @return the reference
-     */
-    public String getReference() {
-        return getDao().getReference();
-    }
-
-    /**
-     * Gets the token. The token is a unique string identifying this
-     * transaction.
-     * 
-     * @return the token
-     */
-    public String getToken() {
-        return getDao().getToken();
     }
 
     /**
@@ -235,25 +165,170 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * 
      * @return the process informations
      */
-    public String getProcessInformations() {
+    protected String getProcessInformations() {
         return getDao().getProcessInformations();
     }
 
-    public Actor<?> getAuthor() {
+    /**
+     * Gets the message. The message is the error (or not) message sent by the
+     * bank during a transaction.
+     * 
+     * @return the message
+     * @throws UnauthorizedPrivateAccessException
+     */
+    public String getMessage() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtBankTransaction.Message(), Action.READ);
+        return getDao().getMessage();
+    }
+
+    /**
+     * Gets the paid value.
+     * 
+     * @return the value
+     * @throws UnauthorizedPrivateAccessException
+     */
+    public BigDecimal getValuePaid() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtBankTransaction.ValuePaid(), Action.READ);
+        return getDao().getValuePaid();
+    }
+
+    /**
+     * Gets the value.
+     * 
+     * @return the value
+     * @throws UnauthorizedPrivateAccessException
+     */
+    public BigDecimal getValue() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtBankTransaction.Value(), Action.READ);
+        return getDao().getValue();
+    }
+
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     * @throws UnauthorizedPrivateAccessException
+     */
+    public State getState() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtBankTransaction.State(), Action.READ);
+        return getDao().getState();
+    }
+
+    /**
+     * Gets the creation date.
+     * 
+     * @return the creation date
+     * @throws UnauthorizedOperationException
+     */
+    public Date getCreationDate() throws UnauthorizedOperationException {
+        tryAccess(new RgtBankTransaction.CreationDate(), Action.READ);
+        return getDao().getCreationDate();
+    }
+
+    /**
+     * Gets the modification date.
+     * 
+     * @return the modification date
+     * @throws UnauthorizedOperationException
+     */
+    public Date getModificationDate() throws UnauthorizedOperationException {
+        tryAccess(new RgtBankTransaction.ModificationDate(), Action.READ);
+        return getDao().getModificationDate();
+    }
+
+    /**
+     * Gets the reference. This is the generated purchase reference.
+     * 
+     * @return the reference
+     * @throws UnauthorizedPrivateAccessException
+     */
+    public String getReference() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtBankTransaction.Reference(), Action.READ);
+        return getDao().getReference();
+    }
+
+    public Actor<?> getAuthor() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtBankTransaction.Author(), Action.READ);
         if (getDao().getAuthor() instanceof DaoTeam) {
             return Team.create((DaoTeam) getDao().getAuthor());
         }
         return Member.create((DaoMember) getDao().getAuthor());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Can ...
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Tells if the authenticated user can get the Message property.
+     * 
+     * @return true if you can get the Message property.
      */
-    @Override
-    protected boolean isMine(final Member member) {
-        return getDao().getAuthor().getLogin().equals(member.getLoginUnprotected());
+    public final boolean canGetMessage() {
+        return canAccess(new RgtBankTransaction.Message(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the ValuePaid property.
+     * 
+     * @return true if you can get the ValuePaid property.
+     */
+    public final boolean canGetValuePaid() {
+        return canAccess(new RgtBankTransaction.ValuePaid(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the Value property.
+     * 
+     * @return true if you can get the <code>Value</code> property.
+     */
+    public final boolean canGetValue() {
+        return canAccess(new RgtBankTransaction.Value(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the State property.
+     * 
+     * @return true if you can get the State property.
+     */
+    public final boolean canGetState() {
+        return canAccess(new RgtBankTransaction.State(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the CreationDate property.
+     * 
+     * @return true if you can get the CreationDate property.
+     */
+    public final boolean canGetCreationDate() {
+        return canAccess(new RgtBankTransaction.CreationDate(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the ModificationDate property.
+     * 
+     * @return true if you can get the ModificationDate property.
+     */
+    public final boolean canGetModificationDate() {
+        return canAccess(new RgtBankTransaction.ModificationDate(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the Reference property.
+     * 
+     * @return true if you can get the Reference property.
+     */
+    public final boolean canGetReference() {
+        return canAccess(new RgtBankTransaction.Reference(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the Author property.
+     * 
+     * @return true if you can get the Author property.
+     */
+    public final boolean canGetAuthor() {
+        return canAccess(new RgtBankTransaction.Author(), Action.READ);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

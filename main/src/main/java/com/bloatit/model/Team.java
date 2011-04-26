@@ -31,7 +31,7 @@ import com.bloatit.framework.utils.StringUtils;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.TeamRight;
+import com.bloatit.model.right.RgtTeam;
 
 /**
  * This is a team ... There are member in it.
@@ -95,7 +95,7 @@ public final class Team extends Actor<DaoTeam> {
     }
 
     public void setDisplayName(final String displayName) throws UnauthorizedOperationException {
-        tryAccess(new TeamRight.DisplayName(), Action.WRITE);
+        tryAccess(new RgtTeam.DisplayName(), Action.WRITE);
         getDao().setDisplayName(displayName);
     }
 
@@ -149,20 +149,20 @@ public final class Team extends Actor<DaoTeam> {
     }
 
     public boolean canAccessContact(final Action action) {
-        return canAccess(new TeamRight.Contact(), action);
+        return canAccess(new RgtTeam.Contact(), action);
     }
 
     public String getContact() throws UnauthorizedOperationException {
-        tryAccess(new TeamRight.Contact(), Action.READ);
+        tryAccess(new RgtTeam.Contact(), Action.READ);
         return getDao().getContact();
     }
 
     public void setContact(final String contact) throws UnauthorizedOperationException {
-        tryAccess(new TeamRight.Contact(), Action.WRITE);
+        tryAccess(new RgtTeam.Contact(), Action.WRITE);
         getDao().setContact(contact);
     }
 
-    public void setDescription(String description) throws UnauthorizedOperationException {
+    public void setDescription(final String description) throws UnauthorizedOperationException {
         if (!getAuthToken().getVisitor().hasModifyTeamRight(this)) {
             throw new UnauthorizedOperationException(SpecialCode.TEAM_MISSING_MODIFY_RIGHT);
         }
@@ -184,7 +184,7 @@ public final class Team extends Actor<DaoTeam> {
     }
 
     @Override
-    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
+    public PageIterable<Contribution> doGetContributions() {
         return new ListBinder<Contribution, DaoContribution>(getDao().getContributions());
     }
 

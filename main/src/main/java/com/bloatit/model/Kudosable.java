@@ -26,7 +26,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.KudosableRight;
+import com.bloatit.model.right.RgtKudosable;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface {
 
@@ -64,7 +64,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         final EnumSet<SpecialCode> errors = EnumSet.noneOf(SpecialCode.class);
 
         // See if we can kudos.
-        if (!canAccess(new KudosableRight.Kudos(), Action.WRITE)) {
+        if (!canAccess(new RgtKudosable.Kudos(), Action.WRITE)) {
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
 
@@ -85,7 +85,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
 
         // I cannot kudos my own content.
-        if (isOwner()) {
+        if (getRights().isOwner()) {
             errors.add(SpecialCode.OWNED_BY_ME);
         }
 
@@ -198,7 +198,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     public void setState(final PopularityState newState) throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         setStateUnprotected(newState);
@@ -214,7 +214,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     // TODO right management
     @Override
     public void lockPopularity() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().lockPopularity();
@@ -223,7 +223,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     // TODO right management
     @Override
     public void unlockPopularity() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().unlockPopularity();
@@ -232,7 +232,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     // TODO right management
     @Override
     public boolean isPopularityLocked() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         return getDao().isPopularityLocked();

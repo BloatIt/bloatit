@@ -68,7 +68,7 @@ public abstract class GenericAccessor<T extends UnauthorizedOperationException> 
     protected abstract T exception(Action action);
 
     /**
-     * CanAccess call the abstract {@link #can(RestrictedInterface, Action)}
+     * CanAccess call the abstract {@link #can(Rights, Action)}
      * method to know if the user has the right to access the
      * <code>object</code>.
      * 

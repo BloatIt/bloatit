@@ -456,7 +456,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
             if (!Context.getSession().isLogged()) {
                 return false;
             }
-            Offer selectedOffer = offer.getFeature().getSelectedOffer();
+            final Offer selectedOffer = offer.getFeature().getSelectedOffer();
             if (selectedOffer == null) {
                 return false;
             }
@@ -497,7 +497,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 offerSummaryPopularity.add(popularityText);
                 offerSummaryPopularity.add(popularityScore);
 
-                if (!offer.isOwner()) {
+                if (!offer.getRights().isOwner()) {
                     final int vote = offer.getUserVoteValue();
                     if (vote == 0) {
                         final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");

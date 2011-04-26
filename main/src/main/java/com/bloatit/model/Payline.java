@@ -166,8 +166,11 @@ public final class Payline extends RestrictedObject {
         return parameters;
     }
 
-    public Reponse doPayment(final Actor<?> targetActor, final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
-            throws UnauthorizedOperationException {
+    public Reponse doPayment(final Actor<?> targetActor,
+                             final BigDecimal amount,
+                             final String cancelUrl,
+                             final String returnUrl,
+                             final String notificationUrl) throws UnauthorizedOperationException {
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);
@@ -213,7 +216,11 @@ public final class Payline extends RestrictedObject {
         return amount.add(amount.multiply(COMMISSION_VARIABLE_RATE)).add(COMMISSION_FIX_RATE).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
-    private void createBankTransaction(final Actor<?> targetActor, final BigDecimal amount, final BigDecimal amountToPay, final String orderReference, final Reponse reponse) {
+    private void createBankTransaction(final Actor<?> targetActor,
+                                       final BigDecimal amount,
+                                       final BigDecimal amountToPay,
+                                       final String orderReference,
+                                       final Reponse reponse) {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
                                                                         reponse.getToken(),//
@@ -259,7 +266,7 @@ public final class Payline extends RestrictedObject {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param member
      * @return
      */
@@ -302,8 +309,9 @@ public final class Payline extends RestrictedObject {
     }
 
     @Override
-    protected boolean isMine(final Member member) {
-        return false;
+    public Rights getRights() {
+        // FIXME should not return null.
+        return null;
     }
 
 }

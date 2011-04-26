@@ -383,7 +383,7 @@ public class BloatitExampleDB {
 
     /**
      * Work only if the money is available
-     *
+     * 
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {
@@ -408,8 +408,9 @@ public class BloatitExampleDB {
                                                                     new BigDecimal(amount),
                                                                     new BigDecimal(amount),
                                                                     UUID.randomUUID().toString());
-        bankTransaction.setAuthorized();
-        bankTransaction.setValidated();
+        // TODO: should find a way to do this without breaking encapsulation. 
+        // bankTransaction.setAuthorized();
+        // bankTransaction.setValidated();
     }
 
     public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {
