@@ -120,12 +120,14 @@ public final class TeamPage extends MasterPage {
     private HtmlElement generateMain(Visitor me) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
-        final TeamPageUrl url = new TeamPageUrl(targetTeam);
-        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, url);
+        final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
+        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
         tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));
-        tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
+        if (targetTeam.canAccessBankTransaction()) {
+            tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
+        }
         activity = new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB, url);
         tabPane.addTab(activity);
 
@@ -178,11 +180,11 @@ public final class TeamPage extends MasterPage {
         informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(targetTeam.getMembers().size())));
 
         // Features count
-        final int featuresCount = getActivityCount();
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)",
-                                                                                                                          featuresCount),
-                                                                                                               new PageNotFoundUrl().getHtmlLink())));
-
+        final long featuresCount = getActivityCount();
+        TeamPageUrl activityPage = new TeamPageUrl(targetTeam);
+        activityPage.setActiveTabKey(ACTIVITY_TAB);
+        HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), activityPage.getHtmlLink());
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), mixed));
         titleBlock.add(informationsList);
 
         // Description
@@ -231,9 +233,8 @@ public final class TeamPage extends MasterPage {
         return breadcrumb;
     }
 
-    private int getActivityCount() {
-        // TODO: real work
-        return 3;
+    private long getActivityCount() {
+        return targetTeam.getRecentActivityCount();
     }
 
     public static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {

@@ -10,7 +10,7 @@ public class DateUtils {
     public static final int SECOND_PER_DAY = SECOND_PER_HOUR * 24;
     public static final int SECOND_PER_WEEK = SECOND_PER_DAY * 7;
     public static final int MILLISECOND_PER_SECOND = 1000;
-    
+
     public static Date yesterday() {
         return nowPlusSomeDays(-1);
     }
@@ -32,6 +32,12 @@ public class DateUtils {
     public static Date nowPlusSomeDays(final int n) {
         final Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, n);
+        return calendar.getTime();
+    }
+
+    public static Date nowMinusSomeDays(final int n) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -n);
         return calendar.getTime();
     }
 

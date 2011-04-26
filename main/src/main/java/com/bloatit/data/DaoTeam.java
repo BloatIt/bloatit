@@ -42,6 +42,7 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.datetime.DateUtils;
 
 /**
  * A team is an entity where people can be team...
@@ -73,6 +74,14 @@ import com.bloatit.framework.utils.PageIterable;
                                     "WHERE u.asTeam = :team " +
                                     "AND id not in (from DaoKudos) " +
                                     "AND id not in (from DaoTranslation)"),
+                        @NamedQuery(
+                            name = "team.getRecentActivity.size",
+                            query = "SELECT COUNT(*)" +
+                                    "FROM DaoUserContent as u " +
+                                    "WHERE u.asTeam = :team " +
+                                    "AND id not in (from DaoKudos) " +
+                                    "AND id not in (from DaoTranslation)" +
+                                    "AND creationDate > :date"),
                        }
              )
 // @formatter:on
@@ -350,6 +359,14 @@ public class DaoTeam extends DaoActor {
         final QueryCollection<DaoUserContent> q = new QueryCollection<DaoUserContent>(query, size);
         q.setEntity("team", this);
         return q;
+    }
+
+    public long getRecentActivityCount(final int numberOfDays) {
+        // TODO Auto-generated method stub
+        final Query size = SessionManager.getNamedQuery("team.getRecentActivity.size");
+        size.setEntity("team", this);
+        size.setDate("date", DateUtils.nowMinusSomeDays(numberOfDays));
+        return (Long) size.uniqueResult();
     }
 
     // ======================================================================

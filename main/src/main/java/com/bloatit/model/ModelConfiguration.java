@@ -32,6 +32,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableMinInfluenceToUnkudos;
     private int kudosableMinInfluenceToKudos;
     private String bloatitLibravatarURI;
+    private int recentActivityDays;
 
     private ModelConfiguration() {
         super();
@@ -144,13 +145,19 @@ public class ModelConfiguration extends ReloadableConfiguration {
     public static String getLibravatarURI() {
         return configuration.bloatitLibravatarURI;
     }
+    
+    // Others
+    
+    public static int getRecentActivityDays() {
+        return configuration.recentActivityDays;
+    }
 
     protected void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
+        
+        recentActivityDays = properties.getInt("recent.activity.days");
 
-        //
         // Kudosable configuration
-        //
         kudosableDefaultTurnValid = properties.getInt("kudosable.default.turn_valid", 100);
         kudosableDefaultTurnRejected = properties.getInt("kudosable.default.turn_rejected", -100);
         kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -10);

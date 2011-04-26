@@ -19,7 +19,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Comment.ParentType;
@@ -46,7 +45,6 @@ import com.bloatit.web.url.TeamPageUrl;
 @ParamContainer(value = "activityTab", isComponent = true)
 public class ActivityTab extends HtmlTab {
     private final Team team;
-    private final Session session = Context.getSession();
     private final TeamPageUrl url;
 
     @SuppressWarnings("unused")

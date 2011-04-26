@@ -163,6 +163,11 @@ public final class Team extends Actor<DaoTeam> {
         // TODO set rights
         return new UserContentList(getDao().getActivity());
     }
+    
+    public long getRecentActivityCount() {
+        // TODO set rights
+        return getDao().getRecentActivityCount(ModelConfiguration.getRecentActivityDays());
+    }
 
     public void setContact(final String contact) throws UnauthorizedOperationException {
         tryAccess(new TeamRight.Contact(), Action.WRITE);
