@@ -88,7 +88,7 @@ public class MemberTest extends ModelTestUnit {
         assertEquals(0, yo.getKarma());
     }
 
-    public void testGetFullname() throws UnauthorizedOperationException {
+    public void testGetFullname() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);

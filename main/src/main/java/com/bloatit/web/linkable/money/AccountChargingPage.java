@@ -17,9 +17,7 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -99,14 +97,7 @@ public final class AccountChargingPage extends QuotationPage {
         } else {
             group = new HtmlTitleBlock(tr("Charge your account"), 1);
         }
-        BigDecimal account;
-        try {
-            account = getActor(member).getInternalAccount().getAmount();
-            generateNoMoneyContent(group, getActor(member));
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
-            throw new ShallNotPassException("User cannot access user's account balance", e);
-        }
+        generateNoMoneyContent(group, getActor(member));
         return group;
     }
 
