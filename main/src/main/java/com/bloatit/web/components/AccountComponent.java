@@ -12,6 +12,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Sorter;
@@ -45,7 +46,7 @@ import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class AccountComponent extends HtmlPageComponent {
-    public AccountComponent(Team team) throws UnauthorizedOperationException {
+    public AccountComponent(final Team team) throws UnauthorizedOperationException {
         final HtmlDiv accountPage = new HtmlDiv("account_page");
         add(accountPage);
         accountPage.add(generateAccountSolde(team));
@@ -53,7 +54,7 @@ public class AccountComponent extends HtmlPageComponent {
         accountPage.add(generateAccountMovementList(team.getContributions(), team.getBankTransactions()));
     }
 
-    public AccountComponent(Member me) throws UnauthorizedOperationException {
+    public AccountComponent(final Member me) throws UnauthorizedOperationException {
         final HtmlDiv accountPage = new HtmlDiv("account_page");
         add(accountPage);
         accountPage.add(generateAccountSolde(me));
@@ -133,7 +134,7 @@ public class AccountComponent extends HtmlPageComponent {
             addCell(new MoneyCell(contribution.getAmount().negate()));
         }
 
-        private HtmlDiv generateContributionDescription() throws UnauthorizedOperationException {
+        private HtmlDiv generateContributionDescription() {
             final HtmlDiv description = new HtmlDiv("description");
             final HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(contribution.getFeature().getSoftware());
             final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
@@ -176,13 +177,22 @@ public class AccountComponent extends HtmlPageComponent {
 
         public ChargeAccountLine(final BankTransaction bankTransaction) {
             this.bankTransaction = bankTransaction;
-            addCell(new MoneyVariationCell(true));
-            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountTitle()));
-            addCell(new DescriptionCell(tr("Account loading summary"), generateChargeAccountDescription()));
-            addCell(new MoneyCell(bankTransaction.getValue()));
+            try {
+                addCell(new MoneyVariationCell(true));
+                addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountTitle()));
+                addCell(new DescriptionCell(tr("Account loading summary"), generateChargeAccountDescription()));
+                addCell(new MoneyCell(bankTransaction.getValue()));
+            } catch (final UnauthorizedOperationException e) {
+                // TODO test the fallback
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                Context.getSession().notifyBad(Context.tr("You are not allowed to see this account informations."));
+            }
         }
 
-        private HtmlDiv generateChargeAccountDescription() {
+        private HtmlDiv generateChargeAccountDescription() throws UnauthorizedPrivateAccessException {
             final HtmlDiv description = new HtmlDiv("description");
             description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
                                                                                .getCurrency(bankTransaction.getValuePaid())
@@ -201,10 +211,18 @@ public class AccountComponent extends HtmlPageComponent {
 
         public ChargeAccountFailedLine(final BankTransaction bankTransaction) {
             setCssClass("failed_line");
-            addCell(new EmptyCell());
-            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
-            addCell(new EmptyCell());
-            addCell(new MoneyCell(bankTransaction.getValue()));
+            try {
+                addCell(new EmptyCell());
+                addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
+                addCell(new EmptyCell());
+                addCell(new MoneyCell(bankTransaction.getValue()));
+            } catch (final UnauthorizedOperationException e) {
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                Context.getSession().notifyBad(Context.tr("You are not allowed to see this account informations."));
+            }
         }
 
         private HtmlDiv generateChargeAccountFailedTitle() {
@@ -218,10 +236,18 @@ public class AccountComponent extends HtmlPageComponent {
 
         public ChargeAccountAbordedLine(final BankTransaction bankTransaction) {
             setCssClass("failed_line");
-            addCell(new EmptyCell());
-            addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
-            addCell(new EmptyCell());
-            addCell(new MoneyCell(bankTransaction.getValue()));
+            try {
+                addCell(new EmptyCell());
+                addCell(new TitleCell(bankTransaction.getCreationDate(), generateChargeAccountFailedTitle()));
+                addCell(new EmptyCell());
+                addCell(new MoneyCell(bankTransaction.getValue()));
+            } catch (final UnauthorizedOperationException e) {
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                addCell(new EmptyCell());
+                Context.getSession().notifyBad(Context.tr("You are not allowed to see this account informations."));
+            }
         }
 
         private HtmlDiv generateChargeAccountFailedTitle() {

@@ -253,7 +253,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateAlternativeOfferAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final Offer selectedOffer = feature.getSelectedOffer();
@@ -279,7 +279,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    public PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
+    public PlaceHolderElement generateReportBugAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         if (!feature.getSelectedOffer().hasRelease()) {
@@ -316,7 +316,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     }
 
-    public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
+    public PlaceHolderElement generateDevelopingLeftActions() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final Actor<?> author = feature.getSelectedOffer().getAuthor();
@@ -330,7 +330,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
+    public PlaceHolderElement generateFinishedAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final HtmlLink authorLink = new HtmlAuthorLink(feature.getSelectedOffer());

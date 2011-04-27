@@ -26,22 +26,6 @@ import com.bloatit.model.Rights;
 public class RgtFeature extends RightManager {
 
     /**
-     * The Class Description is an accessor for the Description property.
-     */
-    public static class Description extends Accessor {
-
-        /*
-         * (non-Javadoc)
-         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
-         * RestrictedInterface , com.bloatit.model.right.Action)
-         */
-        @Override
-        protected final boolean can(final Rights role, final Action action){
-            return canRead(action) || ownerCanWrite(role, action);
-        }
-    }
-
-    /**
      * The Class Offer is an accessor for the Offer property.
      */
     public static class Offer extends Accessor {
@@ -60,8 +44,17 @@ public class RgtFeature extends RightManager {
     /**
      * The Class Contribute is an accessor for the Contribute property.
      */
-    public static class Contribute extends ReadOnlyBankData {
-        // nothing
+    public static class Contribute extends Accessor {
+
+        /*
+         * (non-Javadoc)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
+         */
+        @Override
+        protected final boolean can(final Rights role, final Action action) {
+            return canRead(action) || authentifiedCanWrite(role, action);
+        }
     }
 
     /**

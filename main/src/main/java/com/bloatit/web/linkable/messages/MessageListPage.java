@@ -3,7 +3,9 @@ package com.bloatit.web.linkable.messages;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoJoinTeamInvitation.State;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
@@ -47,8 +49,12 @@ public final class MessageListPage extends LoggedPage {
         final PageIterable<JoinTeamInvitation> invitations = me.getReceivedInvitation(State.PENDING);
         for (final JoinTeamInvitation invitation : invitations) {
             final HtmlParagraph p = new HtmlParagraph();
-            p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
-                    + invitation.getSender().getDisplayName() + "'");
+            try {
+                p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
+                        + invitation.getSender().getDisplayName() + "'");
+            } catch (final UnauthorizedPrivateReadOnlyAccessException e) {
+                throw new ShallNotPassException(e);
+            }
 
             final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
             final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));

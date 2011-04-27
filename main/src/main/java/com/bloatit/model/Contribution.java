@@ -85,6 +85,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      *             not have enough money.
      */
     public void accept(final Offer offer) throws NotEnoughMoneyException {
+        // TODO make me package visible !
         getDao().validate(offer.getDao(), 100);
     }
 
@@ -94,6 +95,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * back its money.
      */
     public void cancel() {
+        // TODO make me package visible !
         getDao().cancel();
     }
 
@@ -131,7 +133,8 @@ public final class Contribution extends UserContent<DaoContribution> {
         tryAccess(new RgtContribution.Amount(), Action.READ);
         return getDao().getAmount();
     }
-
+    
+    // no right management: this is public data
     public Feature getFeature() {
         return FeatureImplementation.create(getDao().getFeature());
     }

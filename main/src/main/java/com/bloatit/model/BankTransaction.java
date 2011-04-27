@@ -73,11 +73,11 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
-     * Gets the by token.
+     * Gets a bank transaction by token.
      * 
-     * @param token the token
-     * @return the by token
-     * @see DaoBankTransaction#getByToken(String)
+     * @param token the token we are looking for
+     * @return the <code>BankTransaction</code> with this <code>token</code>.
+     *         Return null if not found.
      */
     public static BankTransaction getByToken(final String token) {
         return create(DaoBankTransaction.getByToken(token));

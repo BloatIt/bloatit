@@ -1,6 +1,8 @@
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -30,7 +32,11 @@ public final class PaylineNotifyAction extends Action {
     public Url doProcess() {
         Log.web().info("Get a payline notification: " + token);
         
-        process.validatePayment(token);
+        try {
+            process.validatePayment(token);
+        } catch (final UnauthorizedPrivateAccessException e) {
+            throw new BadProgrammerException(e);
+        }
         
         final Url target = process.close();
         if (target != null) {

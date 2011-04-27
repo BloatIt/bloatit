@@ -25,6 +25,7 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.StringUtils;
@@ -86,15 +87,37 @@ public final class Team extends Actor<DaoTeam> {
         super(dao);
     }
 
+    public void setContact(final String contact) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtTeam.Contact(), Action.WRITE);
+        getDao().setContact(contact);
+    }
+
+    public void setDescription(final String description) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtTeam.Description(), Action.WRITE);
+        getDao().setDescription(description);
+    }
+
+    public void setAvatar(final FileMetadata fileImage) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtTeam.Avatar(), Action.WRITE);
+        if (fileImage == null) {
+            getDao().setAvatar(null);
+        } else {
+            getDao().setAvatar(fileImage.getDao());
+        }
+    }
+
     /**
      * Sets the type of team: either <code>PROTECTED</code> or
      * <code>PUBLIC</code>
+     * 
+     * @throws UnauthorizedPublicAccessException
      */
-    public void setRight(final Right right) {
+    public void setRight(final Right right) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtTeam.Right(), Action.WRITE);
         getDao().setRight(right);
     }
 
-    public void setDisplayName(final String displayName) throws UnauthorizedOperationException {
+    public void setDisplayName(final String displayName) throws UnauthorizedPublicAccessException {
         tryAccess(new RgtTeam.DisplayName(), Action.WRITE);
         getDao().setDisplayName(displayName);
     }
@@ -103,23 +126,48 @@ public final class Team extends Actor<DaoTeam> {
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    public void
+            changeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give)
+                                                                                                               throws UnauthorizedOperationException,
+                                                                                                               MemberNotInTeamException {
+        if (!canChangeRight(admin, target, right, give)) {
+            throw new UnauthorizedOperationException(SpecialCode.TEAM_PROMOTE_RIGHT_MISSING);
+        }
+        if (!target.isInTeam(this)) {
+            throw new MemberNotInTeamException();
+        }
+        changeRightUnprotected(target, right, give);
+    }
+
+    private void changeRightUnprotected(final Member target, final UserTeamRight right, final boolean give) {
+        if (give) {
+            target.getDao().addTeamRight(this.getDao(), right);
+        } else {
+            target.getDao().removeTeamRight(this.getDao(), right);
+        }
+    }
+
+    // no right management: this is public data
+    public String getContact() {
+        return getDao().getContact();
+    }
+
+    // no right management: this is public data
+    @Override
+    public Image getAvatar() {
+        return new Image(FileMetadata.create(getDao().getAvatar()));
+    }
+
     /**
      * @return the list of members that are part of this team
      */
+    // no right management: this is public data
     public PageIterable<Member> getMembers() {
         return new MemberList(getDao().getMembers());
     }
 
     /**
-     * @return the type of team: either <code>PROTECTED</code> or
-     *         <code>PUBLIC</code>
-     */
-    public Right getRight() {
-        return getDao().getRight();
-    }
-
-    /**
-     * Indicates wheter the team is public or not
+     * Indicates whether the team is public or not
      * 
      * @return <code>true</code> if the team is public, <code>false</code>
      *         otherwise
@@ -131,12 +179,15 @@ public final class Team extends Actor<DaoTeam> {
     /**
      * @return the textual representation of this team
      */
+    // no right management: this is public data
     public String getDescription() {
         return getDao().getDescription();
     }
 
     @Override
-    public String getDisplayName() {
+    // no right management: this is public data
+    public String
+            getDisplayName() {
         final String displayName = getDao().getDisplayName();
         if (StringUtils.isEmpty(displayName)) {
             return getLogin();
@@ -148,59 +199,65 @@ public final class Team extends Actor<DaoTeam> {
         return getDao().getUserTeamRight(member.getDao());
     }
 
-    public boolean canAccessContact(final Action action) {
-        return canAccess(new RgtTeam.Contact(), action);
-    }
-
-    public String getContact() throws UnauthorizedOperationException {
-        tryAccess(new RgtTeam.Contact(), Action.READ);
-        return getDao().getContact();
-    }
-
-    public void setContact(final String contact) throws UnauthorizedOperationException {
-        tryAccess(new RgtTeam.Contact(), Action.WRITE);
-        getDao().setContact(contact);
-    }
-
-    public void setDescription(final String description) throws UnauthorizedOperationException {
-        if (!getAuthToken().getVisitor().hasModifyTeamRight(this)) {
-            throw new UnauthorizedOperationException(SpecialCode.TEAM_MISSING_MODIFY_RIGHT);
-        }
-        getDao().setDescription(description);
-    }
-
-    @Override
-    public Image getAvatar() {
-        return new Image(FileMetadata.create(getDao().getAvatar()));
-    }
-
-    public void setAvatar(final FileMetadata fileImage) {
-        // TODO: right management
-        if (fileImage == null) {
-            getDao().setAvatar(null);
-        } else {
-            getDao().setAvatar(fileImage.getDao());
-        }
-    }
-
     @Override
     public PageIterable<Contribution> doGetContributions() {
         return new ListBinder<Contribution, DaoContribution>(getDao().getContributions());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
-    // Visitor
+    // Can ...
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    @Override
-    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
-        return visitor.visit(this);
+    public boolean canAccessContact(final Action action) {
+        return canAccess(new RgtTeam.Contact(), action);
     }
 
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Rights
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    
+    /**
+     * Tells if the authenticated user can access the <i>DisplayName</i>
+     * property.
+     * 
+     * @param action the type of access you want to do on the <i>DisplayName</i>
+     *            property.
+     * @return true if you can access the <i>DisplayName</i> property.
+     */
+    public final boolean canAccessDisplayName(final Action action) {
+        return canAccess(new RgtTeam.DisplayName(), action);
+    }
+
+    /**
+     * Tells if the authenticated user can access the <i>Avatar</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>Avatar</i>
+     *            property.
+     * @return true if you can access the <i>Avatar</i> property.
+     */
+    public final boolean canAccessAvatar(final Action action) {
+        return canAccess(new RgtTeam.Avatar(), action);
+    }
+
+    /**
+     * Tells if the authenticated user can access the <i>Right</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>Right</i>
+     *            property.
+     * @return true if you can access the <i>Right</i> property.
+     */
+    public final boolean canAccessRight(final Action action) {
+        return canAccess(new RgtTeam.Right(), action);
+    }
+
+    /**
+     * Tells if the authenticated user can access the <i>Description</i>
+     * property.
+     * 
+     * @param action the type of access you want to do on the <i>Description</i>
+     *            property.
+     * @return true if you can access the <i>Description</i> property.
+     */
+    public final boolean canAccessDescription(final Action action) {
+        return canAccess(new RgtTeam.Description(), action);
+    }
+
     public boolean canChangeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give) {
         if (admin == null) {
             return false;
@@ -220,22 +277,12 @@ public final class Team extends Actor<DaoTeam> {
         return true;
     }
 
-    public void changeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give)
-            throws UnauthorizedOperationException, MemberNotInTeamException {
-        if (!canChangeRight(admin, target, right, give)) {
-            throw new UnauthorizedOperationException(SpecialCode.TEAM_PROMOTE_RIGHT_MISSING);
-        }
-        if (!target.isInTeam(this)) {
-            throw new MemberNotInTeamException();
-        }
-        changeRightUnprotected(target, right, give);
-    }
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private void changeRightUnprotected(final Member target, final UserTeamRight right, final boolean give) {
-        if (give) {
-            target.getDao().addTeamRight(this.getDao(), right);
-        } else {
-            target.getDao().removeTeamRight(this.getDao(), right);
-        }
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

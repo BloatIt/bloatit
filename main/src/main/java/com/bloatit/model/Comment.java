@@ -21,10 +21,12 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.CommentList;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtComment;
 
 /**
  * The Class Comment.
- *
+ * 
  * @see DaoComment
  */
 public final class Comment extends Kudosable<DaoComment> implements Commentable {
@@ -54,7 +56,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     /**
      * Create a new comment and return it. It return null if the
      * <code>dao</code> is null.
-     *
+     * 
      * @param dao the dao
      * @return the comment or null.
      */
@@ -65,7 +67,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Instantiates a new comment.
-     *
+     * 
      * @param dao the dao
      */
     private Comment(final DaoComment dao) {
@@ -74,7 +76,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Return all the children comment of this comment.
-     *
+     * 
      * @return the children
      * @see DaoComment#getChildren()
      */
@@ -84,7 +86,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     /**
      * Gets the text.
-     *
+     * 
      * @return the text of this comment.
      */
     public String getText() {
@@ -92,58 +94,13 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     }
 
     /**
-     * Turn pending.
-     *
-     * @return the int
-     * @see com.bloatit.model.Kudosable#turnPending()
-     */
-    @Override
-    protected int turnPending() {
-        return ModelConfiguration.getKudosableCommentTurnPending();
-    }
-
-    /**
-     * Turn valid.
-     *
-     * @return the int
-     * @see com.bloatit.model.Kudosable#turnValid()
-     */
-    @Override
-    protected int turnValid() {
-        return ModelConfiguration.getKudosableCommentTurnValid();
-    }
-
-    /**
-     * Turn rejected.
-     *
-     * @return the int
-     * @see com.bloatit.model.Kudosable#turnRejected()
-     */
-    @Override
-    protected int turnRejected() {
-        return ModelConfiguration.getKudosableCommentTurnRejected();
-    }
-
-    /**
-     * Turn hidden.
-     *
-     * @return the int
-     * @see com.bloatit.model.Kudosable#turnHidden()
-     */
-    @Override
-    protected int turnHidden() {
-        return ModelConfiguration.getKudosableCommentTurnHidden();
-    }
-
-    /**
      * Adds the comment.
-     *
+     * 
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
      */
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
-        // TODO: access right
-        // tryAccess(new BugRight.Comment(), Action.WRITE);
+        tryAccess(new RgtComment.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
                                                                DaoGetter.getTeam(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
@@ -151,6 +108,21 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         getDao().addChildComment(comment);
         return Comment.create(comment);
     }
+
+    /**
+     * Tells if the authenticated user can access the <i>Comment</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>Comment</i>
+     *            property.
+     * @return true if you can access the <i>Comment</i> property.
+     */
+    public final boolean canAccessComment(final Action action) {
+        return canAccess(new RgtComment.Comment(), action);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Getters
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     public enum ParentType {
         COMMENT, FEATURE, BUG, RELEASE
@@ -203,6 +175,54 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     public Bug getParentBug() {
         return Bug.create(getDao().getFatherBug());
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Kudosable
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Turn pending.
+     * 
+     * @return the int
+     * @see com.bloatit.model.Kudosable#turnPending()
+     */
+    @Override
+    protected int turnPending() {
+        return ModelConfiguration.getKudosableCommentTurnPending();
+    }
+
+    /**
+     * Turn valid.
+     * 
+     * @return the int
+     * @see com.bloatit.model.Kudosable#turnValid()
+     */
+    @Override
+    protected int turnValid() {
+        return ModelConfiguration.getKudosableCommentTurnValid();
+    }
+
+    /**
+     * Turn rejected.
+     * 
+     * @return the int
+     * @see com.bloatit.model.Kudosable#turnRejected()
+     */
+    @Override
+    protected int turnRejected() {
+        return ModelConfiguration.getKudosableCommentTurnRejected();
+    }
+
+    /**
+     * Turn hidden.
+     * 
+     * @return the int
+     * @see com.bloatit.model.Kudosable#turnHidden()
+     */
+    @Override
+    protected int turnHidden() {
+        return ModelConfiguration.getKudosableCommentTurnHidden();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

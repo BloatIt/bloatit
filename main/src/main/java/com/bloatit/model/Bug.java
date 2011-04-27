@@ -24,16 +24,19 @@ import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtBug;
 
 /**
  * This is a bug report. A bug report is associated with a milestone. it is
  * quite similar to the bug report in a classical bugTracker.
- *
+ * 
  * @author Thomas Guyard
  */
-public class Bug extends UserContent<DaoBug> implements Commentable {
+public final class Bug extends UserContent<DaoBug> implements Commentable {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
@@ -59,7 +62,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Find a bug in the cache or create an new one.
-     *
+     * 
      * @param dao the dao
      * @return null if dao is null. Else return the new Bug.
      */
@@ -70,7 +73,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Instantiates a new bug.
-     *
+     * 
      * @param dao the dao
      */
     private Bug(final DaoBug dao) {
@@ -79,7 +82,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Create a new Bug.
-     *
+     * 
      * @param member is the author of the bug.
      * @param milestone is the milestone on which this bug has been set.
      * @param title is the title of the bug.
@@ -99,109 +102,141 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Sets the error level.
-     *
+     * 
      * @param level the new error level
+     * @throws UnauthorizedPublicAccessException
      * @see com.bloatit.data.DaoBug#setErrorLevel(com.bloatit.data.DaoBug.Level)
      */
-    public void setErrorLevel(final Level level) {
+    public void setErrorLevel(final Level level) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtBug.ErrorLevel(), Action.WRITE);
         getDao().setErrorLevel(level);
     }
 
     /**
+     * Sets the bug to resolved.
+     * 
+     * @throws UnauthorizedPublicAccessException
+     * @see com.bloatit.data.DaoBug#setResolved()
+     */
+    public void setResolved() throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtBug.Status(), Action.WRITE);
+        getDao().setResolved();
+    }
+
+    /**
+     * Sets the bug to developing.
+     * 
+     * @throws UnauthorizedPublicAccessException
+     * @see com.bloatit.data.DaoBug#setDeveloping()
+     */
+    public void setDeveloping() throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtBug.Status(), Action.WRITE);
+        getDao().setDeveloping();
+    }
+
+    /**
+     * Adds the comment.
+     * 
+     * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
+     */
+    @Override
+    public Comment addComment(final String text) throws UnauthorizedOperationException {
+        tryAccess(new RgtBug.Comment(), Action.WRITE);
+        final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
+                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               getAuthToken().getMember().getDao(),
+                                                               text);
+        getDao().addComment(comment);
+        return Comment.create(comment);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Getters
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
      * Gets the member assigned to this bug. It is always the offer author.
-     *
+     * 
      * @return the assigned to
      * @see com.bloatit.data.DaoBug#getAssignedTo()
      */
+    // no right management: this is public data
     public Member getAssignedTo() {
         return Member.create(getDao().getAssignedTo());
     }
 
     /**
      * Gets this bug description.
-     *
+     * 
      * @return the description
      * @see com.bloatit.data.DaoBug#getDescription()
      */
-    public final String getDescription() {
+    // no right management: this is public data
+    public String getDescription() {
         return getDao().getDescription();
     }
 
     /**
      * Gets the locale in which this bug is written.
-     *
+     * 
      * @return the locale
      * @see com.bloatit.data.DaoBug#getLocale()
      */
-    public final Locale getLocale() {
+    // no right management: this is public data
+    public Locale getLocale() {
         return getDao().getLocale();
     }
 
     /**
      * Gets the error level.
-     *
+     * 
      * @return the error level
      * @see com.bloatit.data.DaoBug#getErrorLevel()
      */
-    public final Level getErrorLevel() {
+    // no right management: this is public data
+    public Level getErrorLevel() {
         return getDao().getErrorLevel();
     }
 
     /**
      * Gets the milestone on which this bug has been added.
-     *
+     * 
      * @return the milestone
      * @see com.bloatit.data.DaoBug#getMilestone()
      */
+    // no right management: this is public data
     public Milestone getMilestone() {
         return Milestone.create(getDao().getMilestone());
     }
 
     /**
      * Gets the state.
-     *
+     * 
      * @return the state
      * @see com.bloatit.data.DaoBug#getState()
      */
+    // no right management: this is public data
     public BugState getState() {
         return getDao().getState();
     }
 
     /**
-     * Sets the bug to resolved.
-     *
-     * @see com.bloatit.data.DaoBug#setResolved()
-     */
-    public void setResolved() {
-        // TODO: user right
-        getDao().setResolved();
-    }
-
-    /**
-     * Sets the bug to developing.
-     *
-     * @see com.bloatit.data.DaoBug#setDeveloping()
-     */
-    public void setDeveloping() {
-        // TODO: user right
-        getDao().setDeveloping();
-    }
-
-    /**
      * Gets the comments on that bug.
-     *
+     * 
      * @return the comments
      * @see com.bloatit.data.DaoBug#getComments()
      */
-    public final PageIterable<Comment> getComments() {
+    // no right management: this is public data
+    public PageIterable<Comment> getComments() {
         return new CommentList(getDao().getComments());
     }
 
     /**
      * Gets the last update date.
-     *
+     * 
      * @return the last update date
      */
+    // no right management: this is public data
     public Date getLastUpdateDate() {
         final DaoComment lastComment = getDao().getLastComment();
         if (lastComment == null) {
@@ -212,28 +247,55 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
 
     /**
      * Gets the title.
-     *
+     * 
      * @return the title
      */
+    // no right management: this is public data
     public String getTitle() {
         return getDao().getTitle();
     }
 
+    // no right management: this is public data
+    public Feature getFeature() {
+        return getMilestone().getOffer().getFeature();
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Can ...
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
     /**
-     * Adds the comment.
-     *
-     * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
+     * Tells if the authenticated user can access the <i>ErrorLevel</i>
+     * property.
+     * 
+     * @param action the type of access you want to do on the <i>ErrorLevel</i>
+     *            property.
+     * @return true if you can access the <i>ErrorLevel</i> property.
      */
-    @Override
-    public Comment addComment(final String text) throws UnauthorizedOperationException {
-        // TODO: access right
-        // tryAccess(new BugRight.Comment(), Action.WRITE);
-        final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
-                                                               getAuthToken().getMember().getDao(),
-                                                               text);
-        getDao().addComment(comment);
-        return Comment.create(comment);
+    public final boolean canAccessErrorLevel(final Action action) {
+        return canAccess(new RgtBug.ErrorLevel(), action);
+    }
+
+    /**
+     * Tells if the authenticated user can access the <i>Status</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>Status</i>
+     *            property.
+     * @return true if you can access the <i>Status</i> property.
+     */
+    public final boolean canAccessStatus(final Action action) {
+        return canAccess(new RgtBug.Status(), action);
+    }
+
+    /**
+     * Tells if the authenticated user can access the <i>Comment</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>Comment</i>
+     *            property.
+     * @return true if you can access the <i>Comment</i> property.
+     */
+    public final boolean canAccessComment(final Action action) {
+        return canAccess(new RgtBug.Comment(), action);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -243,10 +305,6 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
-    }
-
-    public Feature getFeature() {
-        return getMilestone().getOffer().getFeature();
     }
 
 }

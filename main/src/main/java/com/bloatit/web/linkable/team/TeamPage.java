@@ -3,7 +3,6 @@ package com.bloatit.web.linkable.team;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
@@ -101,12 +100,7 @@ public final class TeamPage extends MasterPage {
         contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
 
         if (targetTeam.canAccessContact(Action.READ)) {
-            try {
-                contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getContact()));
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("An error prevented us from showing you team contact information. Please notify us.");
-                throw new ShallNotPassException("User can't see team contact information while he should", e);
-            }
+            contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getContact()));
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
         }
@@ -114,7 +108,7 @@ public final class TeamPage extends MasterPage {
         return contacts;
     }
 
-    private HtmlElement generateMain(Visitor me) {
+    private HtmlElement generateMain(final Visitor me) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl url = new TeamPageUrl(targetTeam);
@@ -134,8 +128,8 @@ public final class TeamPage extends MasterPage {
      * @param me the connected member
      * @return the ID card
      */
-    private HtmlElement generateTeamIDCard(Visitor me) {
-        HtmlDiv master = new HtmlDiv("padding_box");
+    private HtmlElement generateTeamIDCard(final Visitor me) {
+        final HtmlDiv master = new HtmlDiv("padding_box");
         if (me.hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");

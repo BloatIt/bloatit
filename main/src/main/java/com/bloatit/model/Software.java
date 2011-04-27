@@ -24,7 +24,7 @@ import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.right.AuthToken;
 
-public class Software extends Identifiable<DaoSoftware> {
+public final class Software extends Identifiable<DaoSoftware> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION

@@ -63,13 +63,9 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                           "Description",
                                                           Software.create(DaoSoftware.getByName("VLC")));
         assertEquals(feature.getMember(), tomAuthToken.getMember());
-        try {
-            assertEquals(feature.getDescription().getDefaultLocale(), Locale.FRANCE);
-            assertEquals(feature.getDescription().getDefaultTranslation().getTitle(), "title");
-            assertEquals(feature.getDescription().getDefaultTranslation().getText(), "Description");
-        } catch (final UnauthorizedOperationException e) {
-            fail();
-        }
+        assertEquals(feature.getDescription().getDefaultLocale(), Locale.FRANCE);
+        assertEquals(feature.getDescription().getDefaultTranslation().getTitle(), "title");
+        assertEquals(feature.getDescription().getDefaultTranslation().getText(), "Description");
     }
 
     public void testCanAccessComment() {
@@ -133,14 +129,11 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
     public void testCanAccessDescription() {
         final Feature feature = createFeatureByThomas();
-        assertTrue(feature.canAccessDescription());
         feature.authenticate(yoAuthToken);
-        assertTrue(feature.canAccessDescription());
         feature.authenticate(tomAuthToken);
-        assertTrue(feature.canAccessDescription());
     }
 
-    public void testAddContribution() throws UnauthorizedOperationException {
+    public void testAddContribution() {
         final Feature feature = createFeatureByThomas();
 
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
@@ -248,12 +241,8 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
         feature.authenticate(fredAuthToken);
 
-        try {
-            assertNull(feature.getSelectedOffer());
-            assertEquals(0, feature.getOffers().getPageSize());
-        } catch (final UnauthorizedOperationException e1) {
-            fail();
-        }
+        assertNull(feature.getSelectedOffer());
+        assertEquals(0, feature.getOffers().getPageSize());
 
         try {
             feature.authenticate(fredAuthToken);
@@ -264,11 +253,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
-        try {
-            assertNotNull(feature.getSelectedOffer());
-        } catch (final UnauthorizedOperationException e) {
-            fail();
-        }
+        assertNotNull(feature.getSelectedOffer());
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
     }
 

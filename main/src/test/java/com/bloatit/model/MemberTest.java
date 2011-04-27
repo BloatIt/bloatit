@@ -3,6 +3,7 @@ package com.bloatit.model;
 import javassist.NotFoundException;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
@@ -129,7 +130,7 @@ public class MemberTest extends ModelTestUnit {
         }
     }
 
-    public void testGetFeatures() throws UnauthorizedOperationException {
+    public void testGetFeatures() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
@@ -141,7 +142,7 @@ public class MemberTest extends ModelTestUnit {
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
     }
 
-    public void testGetKudos() {
+    public void testGetKudos() throws UnauthorizedPrivateAccessException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         assertEquals(1, yo.getKudos().size());

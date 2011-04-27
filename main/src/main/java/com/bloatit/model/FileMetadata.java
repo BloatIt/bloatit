@@ -21,8 +21,11 @@ import java.io.File;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtFileMetadata;
 
-public class FileMetadata extends UserContent<DaoFileMetadata> {
+public final class FileMetadata extends UserContent<DaoFileMetadata> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
@@ -58,43 +61,62 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     /**
      * @param shortDescription
+     * @throws UnauthorizedPublicAccessException
      * @see com.bloatit.data.DaoFileMetadata#setShortDescription(java.lang.String)
      */
-    public final void setShortDescription(final String shortDescription) {
+    public void setDescription(final String shortDescription) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtFileMetadata.Description(), Action.WRITE);
         getDao().setShortDescription(shortDescription);
+    }
+
+    /**
+     * Tells if the authenticated user can access the <i>Description</i>
+     * property.
+     * 
+     * @param action the type of access you want to do on the <i>Description</i>
+     *            property.
+     * @return true if you can access the <i>Description</i> property.
+     */
+    public final boolean canAccessDescription(final Action action) {
+        return canAccess(new RgtFileMetadata.Description(), action);
     }
 
     /**
      * @see com.bloatit.data.DaoFileMetadata#getShortDescription()
      */
-    public final String getShortDescription() {
+    // no right management: this is public data
+    public String getShortDescription() {
         return getDao().getShortDescription();
     }
 
     /**
      * @see com.bloatit.data.DaoFileMetadata#getFilename()
      */
-    public final File getFile() {
+    // no right management: this is public data
+    public File getFile() {
         return new File(getDao().getFilename());
     }
 
     /**
      * @see com.bloatit.data.DaoFileMetadata#getUrl()
      */
-    public final String getUrl() {
+    // no right management: this is public data
+    public String getUrl() {
         return getDao().getUrl();
     }
 
     /**
      * @see com.bloatit.data.DaoFileMetadata#getSize()
      */
-    public final int getSize() {
+    // no right management: this is public data
+    public int getSize() {
         return getDao().getSize();
     }
 
     /**
      * @see com.bloatit.data.DaoFileMetadata#getType()
      */
+    // no right management: this is public data
     public FileType getType() {
         return getDao().getType();
     }
@@ -102,6 +124,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     /**
      * @see com.bloatit.data.DaoFileMetadata#getFilename()
      */
+    // no right management: this is public data
     public String getFileName() {
         return getDao().getFilename();
     }

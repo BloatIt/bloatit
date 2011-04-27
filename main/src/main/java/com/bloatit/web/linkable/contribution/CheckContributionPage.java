@@ -254,19 +254,14 @@ public final class CheckContributionPage extends QuotationPage {
         {
             featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
 
-            try {
-                final HtmlDiv changeLine = new HtmlDiv("change_line");
-                {
+            final HtmlDiv changeLine = new HtmlDiv("change_line");
+            {
 
-                    changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
-                    changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
-                }
-                featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
-                throw new ShallNotPassException("User cannot access user information", e);
+                changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
             }
+            featureContributionSummary.add(changeLine);
+            featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
         }
         return featureContributionSummary;
     }

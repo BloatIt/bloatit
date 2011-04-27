@@ -10,7 +10,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.Action;
 import com.bloatit.web.url.UserContentActionUrl;
 
 public class AsTeamField extends PlaceHolderElement {
@@ -19,7 +18,7 @@ public class AsTeamField extends PlaceHolderElement {
 
     public AsTeamField(final UserContentActionUrl targetUrl, final Member me, final UserTeamRight right, final String label, final String comment) {
         super();
-        if (me != null && me.canAccessTeams(Action.READ)) {
+        if (me != null) {
             try {
                 final PageIterable<Team> teams = me.getTeams();
                 final FieldData teamData = targetUrl.getTeamParameter().pickFieldData();

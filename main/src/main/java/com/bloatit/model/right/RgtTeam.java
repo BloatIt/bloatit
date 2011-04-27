@@ -37,4 +37,28 @@ public class RgtTeam extends RightManager {
     public static class DisplayName extends Public {
         // nothing this is just a rename.
     }
+    
+    /**
+     * The Class <code>Avatar</code> is a {@link RightManager.Public} accessor for the
+     * <code>Avatar</code> property.
+     */
+    public static class Avatar extends Public {
+        // nothing this is just a rename.
+    }
+    
+    /**
+     * The Class <code>Right</code> is a {@link RightManager.Public} accessor for the
+     * <code>Right</code> property.
+     */
+    public static class Right extends Public {
+        // nothing this is just a rename.
+    }
+    
+    /**
+     * The Class <code>Description</code> is a {@link RightManager.Public} accessor for the
+     * <code>Description</code> property.
+     */
+    public static class Description extends Public {
+        // nothing this is just a rename.
+    }
 }

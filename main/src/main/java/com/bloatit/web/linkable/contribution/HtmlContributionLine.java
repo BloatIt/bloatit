@@ -4,7 +4,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -18,7 +17,7 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 
 public class HtmlContributionLine extends HtmlDiv {
 
-    public HtmlContributionLine(final Feature feature, final BigDecimal amount, final Url editUrl) throws UnauthorizedOperationException {
+    public HtmlContributionLine(final Feature feature, final BigDecimal amount, final Url editUrl) {
         super("quotation_detail_line");
         final Localizator localizator = Context.getLocalizator();
 

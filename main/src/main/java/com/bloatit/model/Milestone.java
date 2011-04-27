@@ -42,7 +42,7 @@ import com.bloatit.model.right.RgtMilestone;
  * 
  * @author Thomas Guyard
  */
-public class Milestone extends Identifiable<DaoMilestone> {
+public final class Milestone extends Identifiable<DaoMilestone> {
 
     // ////////////////////////////////////////////////////////////////////////
     // Construction
@@ -151,6 +151,10 @@ public class Milestone extends Identifiable<DaoMilestone> {
 
     public void setDeveloping() throws UnauthorizedPublicAccessException {
         tryAccess(new RgtMilestone.State(), Action.WRITE);
+        setDevelopingUnprotected();
+    }
+    
+    public void setDevelopingUnprotected() {
         getDao().setDeveloping();
     }
 

@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
@@ -149,14 +148,6 @@ public class RestTeam extends RestElement<Team> {
     }
 
     /**
-     * @see com.bloatit.model.Team#getRight()
-     */
-    @XmlElement
-    public Right getRight() {
-        return model.getRight();
-    }
-
-    /**
      * @see com.bloatit.model.Team#getMembers()
      */
     @XmlElement
@@ -202,13 +193,7 @@ public class RestTeam extends RestElement<Team> {
 
     @XmlAttribute
     public String getContacts() {
-        try {
-            return model.getContact();
-        } catch (final UnauthorizedOperationException e) {
-            return null; // throw new
-                         // RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-            // "Not allowed to use getEmail on Team", e);
-        }
+        return model.getContact();
     }
 
     /**

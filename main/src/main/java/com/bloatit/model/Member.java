@@ -29,13 +29,14 @@ import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.SecuredHash;
@@ -50,7 +51,6 @@ import com.bloatit.model.lists.TeamList;
 import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
 
@@ -117,98 +117,6 @@ public final class Member extends Actor<DaoMember> implements User {
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Tells if a user can access the team property. You have to unlock this
-     * Member using the {@link Member#authenticate(AuthToken)} method.
-     * 
-     * @param action can be read/write/delete. for example use READ to know if
-     *            you can use {@link Member#getTeams()}.
-     * @return true if you can use the method.
-     */
-    public boolean canAccessTeams(final Action action) {
-        return canAccess(new RgtMember.Team(), action);
-    }
-
-    public boolean canGetKarma() {
-        return canAccess(new RgtMember.Karma(), Action.READ);
-    }
-
-    public boolean canSetPassword() {
-        return canAccess(new RgtMember.Password(), Action.WRITE);
-    }
-
-    public boolean canAccessLocale(final Action action) {
-        return canAccess(new RgtMember.Locale(), action);
-    }
-
-    // / TEAM RIGHTS
-
-    public boolean hasTeamRight(final Team aTeam, final UserTeamRight aRight) {
-        if (getTeamRights(aTeam) == null) {
-            return false;
-        }
-        return getTeamRights(aTeam).contains(aRight);
-    }
-
-    public Set<UserTeamRight> getTeamRights(final Team g) {
-        return getDao().getTeamRights(g.getDao());
-    }
-
-    public boolean hasConsultTeamRight(final Team aTeam) {
-        return hasTeamRight(aTeam, UserTeamRight.CONSULT);
-    }
-
-    public boolean hasTalkTeamRight(final Team aTeam) {
-        return hasTeamRight(aTeam, UserTeamRight.TALK);
-    }
-
-    public boolean hasInviteTeamRight(final Team aTeam) {
-        return hasTeamRight(aTeam, UserTeamRight.INVITE);
-    }
-
-    public boolean hasModifyTeamRight(final Team aTeam) {
-        return hasTeamRight(aTeam, UserTeamRight.MODIFY);
-    }
-
-    public boolean hasPromoteTeamRight(final Team aTeam) {
-        return hasTeamRight(aTeam, UserTeamRight.PROMOTE);
-    }
-
-    public boolean hasBankTeamRight(final Team aTeam) {
-        return hasTeamRight(aTeam, UserTeamRight.BANK);
-    }
-
-    public boolean canBeKickFromTeam(final Team aTeam, final Member actor) {
-        if (actor == null) {
-            return false;
-        }
-        if (this.equals(actor)) {
-            if (hasPromoteTeamRight(aTeam)) {
-                return false;
-            }
-            return true;
-        }
-        if (!actor.hasPromoteTeamRight(aTeam)) {
-            return false;
-        }
-        return true;
-    }
-
-    // / END TEAM RIGHTS
-
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Setter / modification
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Adds a user to a team without checking if the team is Public or not
-     * 
-     * @param team the team to which the user will be added
-     */
-    protected void addToTeamUnprotected(final Team team) {
-        getDao().addToTeam(team.getDao());
-    }
 
     /**
      * To invite a member into a team you have to have the WRITE right on the
@@ -284,18 +192,82 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     /**
+     * To add a user into a public team, you have to make sure you can access
+     * the teams with the {@link Action#WRITE} action.
+     * 
+     * @param team must be a public team.
+     * @throws UnauthorizedOperationException if the authenticated member do not
+     *             have the right to use this methods.
+     */
+    public void addToPublicTeam(final Team team) throws UnauthorizedOperationException {
+        if (!team.isPublic()) {
+            throw new UnauthorizedOperationException(SpecialCode.TEAM_NOT_PUBLIC);
+        }
+        getDao().addToTeam(team.getDao());
+    }
+
+    /**
+     * Adds a user to a team without checking if the team is Public or not
+     * 
+     * @param team the team to which the user will be added
+     */
+    void addToTeamUnprotected(final Team team) {
+        getDao().addToTeam(team.getDao());
+    }
+
+    // User data modification
+
+    /**
      * Updates user password with right checking
      * 
      * @param password the new password
-     * @throws UnauthorizedOperationException when the logged user cannot modify
-     *             the password
+     * @throws UnauthorizedPrivateAccessException when the logged user cannot
+     *             modify the password
      */
-    public void setPassword(final String password) throws UnauthorizedOperationException {
+    public void setPassword(final String password) throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMember.Password(), Action.WRITE);
         getDao().setPassword(SecuredHash.calculateHash(password, getDao().getSalt()));
     }
 
-    public void setLocal(final Locale loacle) throws UnauthorizedOperationException {
+    /**
+     * Checks if an inputed password matches the user password
+     * 
+     * @param password the password to match
+     * @return <i>true</i> if the inputed password matches the password in the
+     *         database, <i>false</i> otherwise
+     */
+    public boolean checkPassword(final String password) {
+        final String digestedPassword = SecuredHash.calculateHash(password, getDao().getSalt());
+        return getDao().passwordEquals(digestedPassword);
+    }
+
+    public void setFullname(final String fullname) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMember.FullName(), Action.WRITE);
+        getDao().setFullname(fullname);
+    }
+
+    public void setAvatar(final FileMetadata fileImage) {
+        // TODO: right management
+        if (fileImage == null) {
+            getDao().setAvatar(null);
+        } else {
+            getDao().setAvatar(fileImage.getDao());
+        }
+    }
+
+    private String libravatar(final String email) {
+        final String digest = DigestUtils.md5Hex(email.toLowerCase());
+        // return "http://cdn.libravatar.org/avatar/" + digest +
+        // "?d=http://elveos.org/resources/commons/img/none.png&s=64";
+        return digest;
+    }
+
+    public void setEmail(final String email) throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Email(), Action.WRITE);
+        getDao().setEmail(email);
+    }
+
+    public void setLocal(final Locale loacle) throws UnauthorizedPublicAccessException {
         tryAccess(new RgtMember.Locale(), Action.WRITE);
         getDao().setLocale(loacle);
     }
@@ -303,6 +275,8 @@ public final class Member extends Actor<DaoMember> implements User {
     protected void setRole(final Role role) {
         getDao().setRole(role);
     }
+
+    // Activation
 
     public boolean activate(final String activationKey) {
         if (getDao().getActivationState() != ActivationState.VALIDATING) {
@@ -315,26 +289,24 @@ public final class Member extends Actor<DaoMember> implements User {
         return false;
     }
 
-    /**
-     * To add a user into a public team, you have to make sure you can access
-     * the teams with the {@link Action#WRITE} action.
-     * 
-     * @param team must be a public team.
-     * @throws UnauthorizedOperationException if the authenticated member do not
-     *             have the right to use this methods.
-     * @see Member#canAccessTeams(Action)
-     */
-    public void addToPublicTeam(final Team team) throws UnauthorizedOperationException {
-        tryAccess(new RgtMember.Team(), Action.WRITE);
-        if (team.getRight() != Right.PUBLIC) {
-            throw new UnauthorizedOperationException(SpecialCode.TEAM_NOT_PUBLIC);
-        }
-        getDao().addToTeam(team.getDao());
-    }
-
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
+
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.User#getActivationState()
+     */
+    @Override
+    public ActivationState getActivationState() {
+        return getDao().getActivationState();
+    }
+
+    public String getActivationKey() {
+        final DaoMember m = getDao();
+        final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + ACTIVATE_SALT;
+        return DigestUtils.sha256Hex(digest);
+    }
 
     /**
      * @param state can be PENDING, ACCEPTED or REFUSED
@@ -403,121 +375,45 @@ public final class Member extends Actor<DaoMember> implements User {
         return getLogin();
     }
 
-    public boolean canAccessEmail(final Action action) {
-        return canAccess(new RgtMember.Email(), action);
-    }
-
     public String getEmail() throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Email(), Action.READ);
         return getEmailUnprotected();
     }
 
+    // TODO: Create a send notification / mail
     public String getEmailUnprotected() {
         return getDao().getEmail();
     }
 
-    public void setEmail(final String email) throws UnauthorizedOperationException {
-        tryAccess(new RgtMember.Email(), Action.WRITE);
-        getDao().setEmail(email);
-    }
-
+    // no right management: this is public data
     @Override
     public String getUserLogin() {
         return getLogin();
     }
 
+    // no right management: this is public data
     @Override
     public Locale getUserLocale() {
         return getLocaleUnprotected();
     }
 
+    // no right management: this is public data
     public Locale getLocaleUnprotected() {
         return getDao().getLocale();
     }
 
-    public Locale getLocale() throws UnauthorizedOperationException {
-        // TODO delete one of those methods
-        tryAccess(new RgtMember.Locale(), Action.READ);
+    // no right management: this is public data
+    public Locale getLocale() {
         return getDao().getLocale();
     }
 
+    // no right management: this is public data
     public String getFullname() {
         return getDao().getFullname();
     }
 
-    public void setFullname(final String fullname) throws UnauthorizedOperationException {
-        tryAccess(new RgtMember.Name(), Action.WRITE);
-        getDao().setFullname(fullname);
-    }
-
-    public PageIterable<Feature> getFeatures(final boolean asMemberOnly) {
-        return new FeatureList(getDao().getFeatures(asMemberOnly));
-    }
-
-    public PageIterable<Kudos> getKudos() {
-        return new KudosList(getDao().getKudos());
-    }
-
     @Override
-    public PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException {
-        return getContributions(true);
-    }
-
-    public PageIterable<Contribution> getContributions(final boolean asMemberOnly) throws UnauthorizedOperationException {
-        tryAccess(new RgtMember.Contributions(), Action.READ);
-        return new ContributionList(getDao().getContributions(asMemberOnly));
-    }
-
-    public PageIterable<Comment> getComments(final boolean asMemberOnly) {
-        return new CommentList(getDao().getComments(asMemberOnly));
-    }
-
-    public PageIterable<Offer> getOffers(final boolean asMemberOnly) {
-        return new OfferList(getDao().getOffers(asMemberOnly));
-    }
-
-    public PageIterable<Translation> getTranslations(final boolean asMemberOnly) {
-        return new TranslationList(getDao().getTranslations(asMemberOnly));
-    }
-
-    public boolean isInTeam(final Team team) {
-        return isInTeamUnprotected(team);
-    }
-
-    protected boolean isInTeamUnprotected(final Team team) {
-        return getDao().isInTeam(team.getDao());
-    }
-
-    protected void addToKarma(final int value) {
-        getDao().addToKarma(value);
-    }
-
-    public Role getRole() {
-        return getDao().getRole();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.User#getActivationState()
-     */
-    @Override
-    public ActivationState getActivationState() {
-        return getDao().getActivationState();
-    }
-
-    public String getActivationKey() {
-        final DaoMember m = getDao();
-        final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + ACTIVATE_SALT;
-        return DigestUtils.sha256Hex(digest);
-    }
-
-    public String getResetKey() {
-        final DaoMember m = getDao();
-        final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + RESET_SALT;
-        return DigestUtils.sha256Hex(digest);
-    }
-
-    @Override
+    // no right management: this is public data
     public Image getAvatar() {
         final DaoFileMetadata avatar = getDao().getAvatar();
         if (avatar != null) {
@@ -531,36 +427,138 @@ public final class Member extends Actor<DaoMember> implements User {
         return new Image(libravatar);
     }
 
-    private String libravatar(final String email) {
-        final String digest = DigestUtils.md5Hex(email.toLowerCase());
-        // return "http://cdn.libravatar.org/avatar/" + digest +
-        // "?d=http://elveos.org/resources/commons/img/none.png&s=64";
-        return digest;
+    // no right management: this is public data
+    public PageIterable<Feature> getFeatures(final boolean asMemberOnly) {
+        return new FeatureList(getDao().getFeatures(asMemberOnly));
     }
 
-    public void setAvatar(final FileMetadata fileImage) {
-        // TODO: right management
-        if (fileImage == null) {
-            getDao().setAvatar(null);
-        } else {
-            getDao().setAvatar(fileImage.getDao());
+    public PageIterable<Kudos> getKudos() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Kudos(), Action.READ);
+        return new KudosList(getDao().getKudos());
+    }
+
+    @Override
+    public PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException {
+        return getContributions(true);
+    }
+
+    // no right management: this is public data
+    public PageIterable<Contribution> getContributions(final boolean asMemberOnly) {
+        return new ContributionList(getDao().getContributions(asMemberOnly));
+    }
+
+    // no right management: this is public data
+    public PageIterable<Comment> getComments(final boolean asMemberOnly) {
+        return new CommentList(getDao().getComments(asMemberOnly));
+    }
+
+    // no right management: this is public data
+    public PageIterable<Offer> getOffers(final boolean asMemberOnly) {
+        return new OfferList(getDao().getOffers(asMemberOnly));
+    }
+
+    // no right management: this is public data
+    public PageIterable<Translation> getTranslations(final boolean asMemberOnly) {
+        return new TranslationList(getDao().getTranslations(asMemberOnly));
+    }
+
+    protected void addToKarma(final int value) {
+        getDao().addToKarma(value);
+    }
+
+    // no right management: this is public data
+    public Role getRole() {
+        return getDao().getRole();
+    }
+
+    // TODO make a more integrated method.
+    public String getResetKey() {
+        final DaoMember m = getDao();
+        final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + RESET_SALT;
+        return DigestUtils.sha256Hex(digest);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Accessors
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public boolean canGetKarma() {
+        return canAccess(new RgtMember.Karma(), Action.READ);
+    }
+
+    public boolean canSetPassword() {
+        return canAccess(new RgtMember.Password(), Action.WRITE);
+    }
+
+    public boolean canAccessEmail(final Action action) {
+        return canAccess(new RgtMember.Email(), action);
+    }
+
+    public boolean canBeKickFromTeam(final Team aTeam, final Member actor) {
+        if (actor == null) {
+            return false;
         }
+        if (this.equals(actor)) {
+            if (hasPromoteTeamRight(aTeam)) {
+                return false;
+            }
+            return true;
+        }
+        if (!actor.hasPromoteTeamRight(aTeam)) {
+            return false;
+        }
+        return true;
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Team Rights
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    public boolean hasTeamRight(final Team aTeam, final UserTeamRight aRight) {
+        if (getTeamRights(aTeam) == null) {
+            return false;
+        }
+        return getTeamRights(aTeam).contains(aRight);
+    }
+
+    public Set<UserTeamRight> getTeamRights(final Team g) {
+        return getDao().getTeamRights(g.getDao());
+    }
+
+    public boolean hasConsultTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.CONSULT);
+    }
+
+    public boolean hasTalkTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.TALK);
+    }
+
+    public boolean hasInviteTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.INVITE);
+    }
+
+    public boolean hasModifyTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.MODIFY);
+    }
+
+    public boolean hasPromoteTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.PROMOTE);
+    }
+
+    public boolean hasBankTeamRight(final Team aTeam) {
+        return hasTeamRight(aTeam, UserTeamRight.BANK);
+    }
+
+    public boolean isInTeam(final Team team) {
+        return isInTeamUnprotected(team);
+    }
+
+    protected boolean isInTeamUnprotected(final Team team) {
+        return getDao().isInTeam(team.getDao());
     }
 
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
-    }
-
-    /**
-     * Checks if an inputed password matches the user password
-     * 
-     * @param password the password to match
-     * @return <i>true</i> if the inputed password matches the password in the
-     *         database, <i>false</i> otherwise
-     */
-    public boolean checkPassword(final String password) {
-        final String digestedPassword = SecuredHash.calculateHash(password, getDao().getSalt());
-        return getDao().passwordEquals(digestedPassword);
     }
 }

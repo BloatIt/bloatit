@@ -7,7 +7,7 @@ import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.feature.FeatureImplementation;
 
-public class HighlightFeature extends Identifiable<DaoHighlightFeature> {
+public final class HighlightFeature extends Identifiable<DaoHighlightFeature> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION

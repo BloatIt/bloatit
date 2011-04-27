@@ -13,6 +13,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
@@ -53,7 +54,7 @@ public class BloatitExampleDB {
         thomas = createMember("thomas", "Thomas Guyard", Locale.FRANCE);
         yoann = createMember("yoann", "Yoann Plénet", Locale.US);
         admin = createMember("admin", "Administrator", Locale.FRANCE);
-        admin.setRole(Role.ADMIN);
+        admin.getDao().setRole(Role.ADMIN);
 
         chogall = createMember("chogall", "Cho'gall", Locale.UK);
         cerbere = createMember("cerbere", "Cerbère", Locale.KOREA);
@@ -292,7 +293,7 @@ public class BloatitExampleDB {
         return addPerroquetInMageiaFeature;
     }
 
-    public Feature generateLibreOfficeFeatureColorPicker() throws UnauthorizedOperationException {
+    public Feature generateLibreOfficeFeatureColorPicker() {
         // LibreOffice feature
 
         // Feature without offer
@@ -417,7 +418,7 @@ public class BloatitExampleDB {
         final Member member = new Member(login, "plop", login + "@elveos.org", locale);
         member.authenticate(new AuthToken(member));
         member.setFullname(name);
-        member.activate();
+        member.getDao().setActivationState(ActivationState.ACTIVE);
         return member;
     }
 

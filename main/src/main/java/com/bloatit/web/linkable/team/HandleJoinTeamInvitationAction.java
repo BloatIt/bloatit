@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.team;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -44,25 +45,32 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(final Member me) {
         if (accept) {
-            final Team g = invite.getTeam();
+            Team team;
+            try {
+                team = invite.getTeam();
+            } catch (final UnauthorizedPrivateReadOnlyAccessException e1) {
+                session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
+                return session.getLastVisitedPage();
+            }
 
-            if (me.isInTeam(g)) {
+            if (me.isInTeam(team)) {
                 session.notifyError(Context.tr("You cannot join a team you already belong in."));
                 return session.getLastVisitedPage();
             }
 
             try {
                 if (me.acceptInvitation(invite)) {
-                    session.notifyGood(Context.tr("You are now a member of team ''{0}''.", g.getDisplayName()));
+                    session.notifyGood(Context.tr("You are now a member of team ''{0}''.", team.getDisplayName()));
                 } else {
-                    session.notifyBad(Context.tr("You cannot join the team ''{0}'', maybe you already have discarded this invitation.", g.getDisplayName()));
+                    session.notifyBad(Context.tr("You cannot join the team ''{0}'', maybe you already have discarded this invitation.",
+                                                 team.getDisplayName()));
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
                 session.notifyBad(Context.tr("Ooops, we couldn't display team name. It's a bug, please notify us."));
                 throw new ShallNotPassException("Couldn't display a team name, while user should be part of it.", e);
             }
-            return new TeamPageUrl(invite.getTeam());
+            return new TeamPageUrl(team);
         }
         try {
             me.refuseInvitation(invite);

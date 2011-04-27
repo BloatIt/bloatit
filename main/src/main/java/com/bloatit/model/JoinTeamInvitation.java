@@ -65,10 +65,12 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         tryAccess(new RgtJoinTeamInvitation.Team(), Action.READ);
         return getTeamUnprotected();
     }
+
     public Member getSenderUnprotected() {
         return Member.create(getDao().getSender());
     }
-    public Member getReceiverUnprotected(){
+
+    public Member getReceiverUnprotected() {
         return Member.create(getDao().getReceiver());
     }
 

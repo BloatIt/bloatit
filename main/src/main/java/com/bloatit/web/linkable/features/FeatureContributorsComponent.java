@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
@@ -52,44 +51,39 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
 
-            try {
-                final int contributionCount = feature.getContributions().size();
+            final int contributionCount = feature.getContributions().size();
 
-                // Display contribution count
-                contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
+            // Display contribution count
+            contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
 
-                // TODO: generate contribution graph
+            // TODO: generate contribution graph
 
-                // Display contribution list
-                final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
-                contributorsBlock.add(table);
+            // Display contribution list
+            final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
+            contributorsBlock.add(table);
 
-                // Display contribution stats
-                if (contributionCount > 0) {
-                    final String contributionMeanValue = Context.getLocalizator()
-                                                                .getCurrency(feature.getContribution().divide(new BigDecimal(contributionCount),
-                                                                                                              RoundingMode.HALF_EVEN))
-                                                                .getSimpleEuroString();
-                    final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getSimpleEuroString();
-                    final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getSimpleEuroString();
-                    final String contributionMedianValue = Context.getLocalizator()
-                                                                  .getCurrency(computeMedian(feature.getContributions()))
-                                                                  .getSimpleEuroString();
+            // Display contribution stats
+            if (contributionCount > 0) {
+                final String contributionMeanValue = Context.getLocalizator()
+                                                            .getCurrency(feature.getContribution().divide(new BigDecimal(contributionCount),
+                                                                                                          RoundingMode.HALF_EVEN))
+                                                            .getSimpleEuroString();
+                final String contributionMinValue = Context.getLocalizator().getCurrency(feature.getContributionMin()).getSimpleEuroString();
+                final String contributionMaxValue = Context.getLocalizator().getCurrency(feature.getContributionMax()).getSimpleEuroString();
+                final String contributionMedianValue = Context.getLocalizator()
+                                                              .getCurrency(computeMedian(feature.getContributions()))
+                                                              .getSimpleEuroString();
 
-                    final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
-                                                                                             contributionMaxValue,
-                                                                                             contributionMeanValue,
-                                                                                             contributionMedianValue));
-                    contributorsBlock.add(statTable);
-                }
+                final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
+                                                                                         contributionMaxValue,
+                                                                                         contributionMeanValue,
+                                                                                         contributionMedianValue));
+                contributorsBlock.add(statTable);
+            }
 
 
-                if(feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
-                    contributorsBlock.add(new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute")));
-                }
-
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException(e);
+            if(feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
+                contributorsBlock.add(new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute")));
             }
 
         }

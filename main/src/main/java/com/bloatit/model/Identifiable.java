@@ -63,10 +63,10 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
      * 
      * @param accessor the accessor
      * @param action the action
-     * @throws UnauthorizedOperationException the unauthorized operation
-     *             exception
+     * @throws U the unauthorized operation exception
      */
-    protected final <T extends UnauthorizedOperationException> void tryAccess(final GenericAccessor<T> accessor, final Action action) throws T {
+    // TODO make me protected.
+    public final <U extends UnauthorizedOperationException> void tryAccess(final GenericAccessor<U> accessor, final Action action) throws U {
         accessor.tryAccess(new Rights(getAuthTokenUnprotected(), this), action);
     }
 

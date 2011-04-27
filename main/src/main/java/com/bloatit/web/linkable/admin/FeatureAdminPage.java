@@ -5,8 +5,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.util.EnumSet;
 
 import com.bloatit.data.DaoFeature;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
@@ -155,22 +153,14 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("contribution")), new StringColumnGenerator<Feature>() {
             @Override
             public String getStringBody(final Feature element) {
-                try {
-                    return String.valueOf(element.getContribution());
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
-                }
+                return String.valueOf(element.getContribution());
             }
         });
 
         tableModel.addColumn(tr("software"), new StringColumnGenerator<Feature>() {
             @Override
             public String getStringBody(final Feature element) {
-                try {
-                    return element.getSoftware().getName();
-                } catch (final UnauthorizedOperationException e) {
-                    throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
-                }
+                return element.getSoftware().getName();
             }
         });
     }

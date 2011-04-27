@@ -47,32 +47,28 @@ public class RgtMember extends RightManager {
     public static class Email extends Private {
         // nothing this is just a rename.
     }
-
+    
     /**
-     * The Class Locale is a {@link RightManager.Private} accessor for the
-     * Locale property.
+     * The Class <code>Kudos</code> is a {@link RightManager.Private} accessor for the
+     * <code>Kudos</code> property.
      */
-    public static class Locale extends Public {
-        // nothing this is just a rename.
-    }
-
-    /**
-     * The Class Name is a {@link RightManager.Public} accessor for the Name
-     * property.
-     */
-    public static class Name extends Public {
-        // nothing this is just a rename.
-    }
-
-    public static class Contributions extends Public {
+    public static class Kudos extends Private {
         // nothing this is just a rename.
     }
     
     /**
-     * The Class <code>Team</code> is a {@link RightManager.Public} accessor for the
-     * <code>Team</code> property.
+     * The Class <code>FullName</code> is a {@link RightManager.Public} accessor for the
+     * <code>FullName</code> property.
      */
-    public static class Team extends Public {
+    public static class FullName extends Public {
+        // nothing this is just a rename.
+    }
+    
+    /**
+     * The Class <code>Locale</code> is a {@link RightManager.Public} accessor for the
+     * <code>Locale</code> property.
+     */
+    public static class Locale extends Public {
         // nothing this is just a rename.
     }
 }
