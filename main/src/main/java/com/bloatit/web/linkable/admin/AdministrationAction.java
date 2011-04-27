@@ -23,8 +23,8 @@ import com.bloatit.web.url.LoginPageUrl;
 @ParamContainer("doadministration")
 public class AdministrationAction extends AdminAction {
 
-    public static final String POPULARITY_STATE_CODE = "popularitystate";
-    public static final String FEATURE_STATE_CODE = "featurestate";
+    protected static final String POPULARITY_STATE_CODE = "popularitystate";
+    protected static final String FEATURE_STATE_CODE = "featurestate";
 
     @RequestParam(name = "id", role = Role.POST)
     private final List<Integer> contents;

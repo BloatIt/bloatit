@@ -31,7 +31,7 @@ import com.bloatit.web.url.MetaReportBugActionUrl;
 public final class MetaReportBugAction extends Action {
 
     public static final String BUG_DESCRIPTION = "bug_description";
-    public static final String BUG_URL = "bug_url";
+    protected static final String BUG_URL = "bug_url";
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
     @ParamConstraint(max = "800", maxErrorMsg = @tr("The title must be 800 chars length max."), //

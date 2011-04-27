@@ -96,8 +96,8 @@ public abstract class Search<T> {
 
     public static class Pair<U, V> {
 
-        public U key;
-        public V value;
+        protected U key;
+        protected V value;
 
         public Pair(final U key, final V value) {
             this.key = key;

@@ -13,8 +13,7 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
  * @author thomas
  */
 public class CommonConfiguration {
-
-    public static final CommonConfiguration configuration = new CommonConfiguration();
+    private static final CommonConfiguration configuration = new CommonConfiguration();
 
     private String projectVersion;
 
@@ -27,7 +26,7 @@ public class CommonConfiguration {
         return configuration.projectVersion;
     }
 
-    protected void loadConfiguration() {
+    private void loadConfiguration() {
         InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("build.properties");
         if(resourceAsStream == null){
             throw new BadProgrammerException("Cannot locate a configuration file.");

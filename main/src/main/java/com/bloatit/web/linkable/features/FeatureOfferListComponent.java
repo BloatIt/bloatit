@@ -57,7 +57,7 @@ import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 public class FeatureOfferListComponent extends HtmlDiv {
-    public FeatureOfferListComponent(final Feature feature) {
+    protected FeatureOfferListComponent(final Feature feature) {
         super();
         try {
 

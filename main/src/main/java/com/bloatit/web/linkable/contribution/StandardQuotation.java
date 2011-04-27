@@ -12,13 +12,13 @@ import com.bloatit.web.linkable.money.QuotationEntry;
 
 public class StandardQuotation {
 
-    final public QuotationEntry subTotalTTCEntry;
-    final public QuotationEntry feesHT;
-    final public QuotationEntry feesTTC;
-    final public QuotationEntry totalHT;
-    final public QuotationEntry totalTTC;
-    final public QuotationEntry bank;
-    final public QuotationEntry commission;
+    final protected QuotationEntry subTotalTTCEntry;
+    final protected QuotationEntry feesHT;
+    final protected QuotationEntry feesTTC;
+    final protected QuotationEntry totalHT;
+    final protected QuotationEntry totalTTC;
+    final protected QuotationEntry bank;
+    final protected QuotationEntry commission;
 
     public StandardQuotation(final BigDecimal amount) {
 

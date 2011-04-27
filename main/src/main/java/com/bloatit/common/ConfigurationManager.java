@@ -26,7 +26,7 @@ import com.bloatit.framework.webprocessor.url.Loaders;
  */
 public class ConfigurationManager {
     public final static String SHARE_DIR = System.getProperty("user.home") + "/.local/share/bloatit/";
-    public final static String ETC_DIR = System.getProperty("user.home") + "/.config/bloatit/";
+    private final static String ETC_DIR = System.getProperty("user.home") + "/.config/bloatit/";
     private final static String FALLBACK_ETC_DIR = "/etc/bloatit/";
     private static final String SUFFIX = ".properties";
 

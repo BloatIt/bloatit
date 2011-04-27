@@ -24,8 +24,8 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team/docreate")
 public final class CreateTeamAction extends LoggedAction {
-    public final static String PROTECTED = "PROTECTED";
-    public final static String PUBLIC = "PUBLIC";
+    protected final static String PROTECTED = "PROTECTED";
+    protected final static String PUBLIC = "PUBLIC";
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(
