@@ -45,7 +45,7 @@ public class ModelTestUnit extends TestCase {
         yoAuthToken = new AuthToken("Yoann", "plop");
         tomAuthToken = new AuthToken("Thomas", "password");
         fredAuthToken = new AuthToken("Fred", "other");
-        fredAuthToken = new AuthToken("loser", "loser");
+        loser = new AuthToken("loser", "loser");
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
@@ -67,9 +68,10 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * @return the creation date
      * @throws UnauthorizedPublicAccessException if you don't have the right to
      *             access the DateCreation property.
+     * @throws  
      * @see DaoActor#getDateCreation()
      */
-    public final Date getDateCreation() throws UnauthorizedPublicAccessException {
+    public final Date getDateCreation() throws UnauthorizedPublicReadOnlyAccessException  {
         tryAccess(new RgtActor.DateCreation(), Action.READ);
         return getDao().getDateCreation();
     }
@@ -119,9 +121,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Returns the contributions done by this actor.
      * 
      * @return the contributions done by this actor
-     * @throws UnauthorizedOperationException
+     * @throws UnauthorizedOperationException 
      */
-    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
+    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException  {
         tryAccess(new RgtActor.Contribution(), Action.READ);
         return doGetContributions();
     }
