@@ -17,7 +17,9 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -46,7 +48,7 @@ import com.bloatit.web.url.StaticAccountChargingPageUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer(value="account/charging", protocol=Protocol.HTTPS)
+@ParamContainer(value = "account/charging", protocol = Protocol.HTTPS)
 public final class AccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -56,8 +58,8 @@ public final class AccountChargingPage extends QuotationPage {
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
     @ParamConstraint(min = "1", minErrorMsg = @tr("You must specify a positive value."), //
-                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final AccountChargingPageUrl url;
@@ -119,7 +121,7 @@ public final class AccountChargingPage extends QuotationPage {
                 process.setAmountToPay(preload);
             }
             if (process.getAmountToCharge().equals(BigDecimal.ZERO)) {
-                
+
                 process.setAmountToCharge(WebConfiguration.getDefaultChargingAmount());
                 process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
             }
@@ -141,8 +143,7 @@ public final class AccountChargingPage extends QuotationPage {
             final HtmlLink payContributionLink = new StaticAccountChargingPageUrl(process).getHtmlLink(tr("Validate"));
             payContributionLink.setCssClass("button");
             if (process.getTeam() != null) {
-                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
-                                               "use_account"));
+                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));
             }
             payBlock.add(payContributionLink);
         }

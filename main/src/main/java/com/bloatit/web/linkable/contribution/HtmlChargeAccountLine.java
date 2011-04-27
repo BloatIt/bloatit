@@ -4,6 +4,8 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -24,10 +26,17 @@ public class HtmlChargeAccountLine extends HtmlDiv {
         super("quotation_detail_line");
         final Localizator localizator = Context.getLocalizator();
 
+        BigDecimal initialAmount;
+        try {
+            initialAmount = actor.getInternalAccount().getAmount();
+        } catch (UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Error getting internal account", e);
+        }
+
         add(MembersTools.getMemberAvatarSmall(actor));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(BigDecimal.ZERO).getSimpleEuroString()));
+        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount).getSimpleEuroString()));
         add(new HtmlDiv("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up")));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(amountToCharge).getSimpleEuroString()));
+        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString()));
 
         add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
         add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
