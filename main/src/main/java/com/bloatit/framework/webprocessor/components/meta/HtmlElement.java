@@ -19,7 +19,7 @@ public abstract class HtmlElement extends XmlElement {
         super();
     }
 
-    public HtmlElement(final HtmlElement element) {
+    protected HtmlElement(final HtmlElement element) {
         super(element);
     }
 

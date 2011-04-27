@@ -8,10 +8,10 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 
 public abstract class XmlElement extends XmlNode {
-    protected final List<XmlNode> children = new ArrayList<XmlNode>();
+    private final List<XmlNode> children = new ArrayList<XmlNode>();
     protected final HtmlTag tag;
 
-    public XmlElement(final String tag) {
+    protected XmlElement(final String tag) {
         super();
         this.tag = new HtmlTag(tag);
     }
@@ -21,7 +21,7 @@ public abstract class XmlElement extends XmlNode {
         this.tag = null;
     }
 
-    public XmlElement(final XmlElement element) {
+    protected XmlElement(final XmlElement element) {
         super();
         for (final XmlNode child : element.children) {
             this.children.add(child);
@@ -89,7 +89,7 @@ public abstract class XmlElement extends XmlNode {
      * @return <code>true</code> if this element has at least one child,
      *         <code>false</code> otherwise
      */
-    public final boolean hasChild() {
+    protected final boolean hasChild() {
         return iterator().hasNext();
     }
 

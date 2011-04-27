@@ -8,7 +8,7 @@ import com.bloatit.web.url.UserContentActionUrl;
 
 public class LanguageField extends PlaceHolderElement {
 
-    public LanguageField(final UserContentActionUrl targetUrl, final String label, final String comment) {
+    protected LanguageField(final UserContentActionUrl targetUrl, final String label, final String comment) {
         super();
         final FieldData localeData = targetUrl.getLocaleParameter().pickFieldData();
         final LanguageSelector localeInput = new LanguageSelector(localeData.getName(), label);

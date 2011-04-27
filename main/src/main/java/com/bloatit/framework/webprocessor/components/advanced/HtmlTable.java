@@ -85,7 +85,7 @@ public class HtmlTable extends HtmlGenericElement {
 
     public static class HtmlLineTableModel extends HtmlTableModel {
 
-        List<HtmlTableLine> lines = new ArrayList<HtmlTableLine>();
+        private List<HtmlTableLine> lines = new ArrayList<HtmlTableLine>();
         int currentLine = -1;
 
         public void addLine(final HtmlTableLine line) {
@@ -138,7 +138,7 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         public static class HtmlTableLine {
-            List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
+            private List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
             private String css = null;
 
             public void setCssClass(final String css) {
@@ -160,7 +160,7 @@ public class HtmlTable extends HtmlGenericElement {
 
         public static abstract class HtmlTableCell {
 
-            final String css;
+            private final String css;
 
             public HtmlTableCell(final String css) {
                 this.css = css;

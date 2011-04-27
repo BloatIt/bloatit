@@ -139,7 +139,7 @@ public final class ModifyBugPage extends LoggedPage {
         return ModifyBugPage.generateBreadcrumb(bug);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Bug bug) {
+    private static Breadcrumb generateBreadcrumb(final Bug bug) {
         final Breadcrumb breadcrumb = BugPage.generateBreadcrumb(bug);
         breadcrumb.pushLink(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify")));
         return breadcrumb;

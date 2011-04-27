@@ -39,7 +39,7 @@ public class FCGIOutputStream extends OutputStream {
     private final ByteArrayOutputStream waitBuffer;
     private final OutputStream outputStream;
 
-    public FCGIOutputStream(final FCGIParser fcgiParser, final OutputStream outputStream) {
+    protected FCGIOutputStream(final FCGIParser fcgiParser, final OutputStream outputStream) {
         this.fcgiParser = fcgiParser;
         this.outputStream = outputStream;
         prepareBuffer = new ByteArrayOutputStream(PREPARE_BUFFER_SIZE);

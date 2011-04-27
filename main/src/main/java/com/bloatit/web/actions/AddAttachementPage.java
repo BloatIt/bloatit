@@ -88,7 +88,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
         return AddAttachementPage.generateBreadcrumb(userContent);
     }
 
-    public static Breadcrumb generateBreadcrumb(final UserContentInterface userContent) {
+    private static Breadcrumb generateBreadcrumb(final UserContentInterface userContent) {
         final Breadcrumb breadcrumb = BreadcrumbTools.generateBreadcrumb(userContent);
         breadcrumb.pushLink(new AddAttachementPageUrl(userContent).getHtmlLink(tr("Add an attachment")));
         return breadcrumb;

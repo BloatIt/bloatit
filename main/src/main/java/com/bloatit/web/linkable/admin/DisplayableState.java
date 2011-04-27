@@ -23,7 +23,7 @@ public enum DisplayableState implements Displayable {
         this.displayName = displayName;
     }
 
-    public static PopularityState getState(final DisplayableState cmp) {
+    protected static PopularityState getState(final DisplayableState cmp) {
         return Enum.valueOf(PopularityState.class, cmp.name());
     }
 

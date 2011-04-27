@@ -40,7 +40,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
     protected static final String DETAILS_TAB = "details_tab";
     public static final String OFFERS_TAB = "offers_tab";
     public static final String CONTRIBUTIONS_TAB = "contributions_tab";
-    public static final String DESCRIPTION_TAB = "description_tab";
+    private static final String DESCRIPTION_TAB = "description_tab";
 
     @RequestParam(name = FEATURE_TAB_PANE)
     @Optional(DESCRIPTION_TAB)
@@ -50,7 +50,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
     @SuppressWarnings("unused")
     private FeatureContributorsComponent contribution;
 
-    public FeatureTabPane(final FeatureTabPaneUrlComponent url, final Feature feature) {
+    protected FeatureTabPane(final FeatureTabPaneUrlComponent url, final Feature feature) {
         super();
         activeTabKey = url.getActiveTabKey();
 

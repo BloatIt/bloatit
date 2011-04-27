@@ -320,7 +320,7 @@ public final class FeatureListPage extends MasterPage {
         return new FeatureList(search.doSearch());
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         final FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
         breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));

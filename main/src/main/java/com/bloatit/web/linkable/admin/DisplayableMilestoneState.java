@@ -27,7 +27,7 @@ public enum DisplayableMilestoneState implements Displayable {
         return Enum.valueOf(DisplayableMilestoneState.class, cmp.name());
     }
 
-    public static MilestoneState getState(final DisplayableMilestoneState cmp) {
+    protected static MilestoneState getState(final DisplayableMilestoneState cmp) {
         return Enum.valueOf(MilestoneState.class, cmp.name());
     }
 

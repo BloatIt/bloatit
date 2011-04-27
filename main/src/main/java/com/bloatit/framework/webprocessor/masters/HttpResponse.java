@@ -129,7 +129,7 @@ public final class HttpResponse {
         return new IndentedHtmlStream(outputStream);
     }
 
-    public void writePage(final HtmlElement page) throws IOException {
+    protected void writePage(final HtmlElement page) throws IOException {
         writeLine("Status: " + status);
         writeCookies();
         writeLine("Vary: Accept-Encoding");
@@ -160,7 +160,7 @@ public final class HttpResponse {
 
     }
 
-    public void writeResource(final String path, final long size, final String fileName) throws IOException {
+    protected void writeResource(final String path, final long size, final String fileName) throws IOException {
         writeLine("Content-Disposition: inline; filename=" + fileName);
         writeLine("Vary: Accept-Encoding");
         // writeLine("Cache-Control: max-age=31104000");

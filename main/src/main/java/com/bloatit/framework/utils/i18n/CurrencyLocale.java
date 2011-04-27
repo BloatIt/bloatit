@@ -64,7 +64,7 @@ public final class CurrencyLocale {
      * @throws CurrencyNotAvailableException whenever <code>targetLocale</code>
      *             currency is not in the list of available currencies
      */
-    public CurrencyLocale(final BigDecimal euroAmount, final Locale targetLocale) throws CurrencyNotAvailableException {
+    protected CurrencyLocale(final BigDecimal euroAmount, final Locale targetLocale) throws CurrencyNotAvailableException {
         this.euroAmount = euroAmount;
         this.targetLocale = targetLocale;
         try {
@@ -199,7 +199,7 @@ public final class CurrencyLocale {
      * @param currency the currency to check
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
-    public static boolean availableCurrency(final Currency currency) {
+    private static boolean availableCurrency(final Currency currency) {
         return currencies.containsKey(currency);
     }
 

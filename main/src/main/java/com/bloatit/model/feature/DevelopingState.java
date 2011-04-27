@@ -28,7 +28,7 @@ public class DevelopingState extends AbstractFeatureState {
      * 
      * @param feature the feature on which this state apply.
      */
-    public DevelopingState(final FeatureImplementation feature) {
+    protected DevelopingState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

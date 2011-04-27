@@ -20,7 +20,7 @@ public class SimplePostParser extends PostParameterParser {
         this.length = length;
     }
 
-    public void initParsing() throws IOException {
+    private void initParsing() throws IOException {
         final byte[] postBytes = new byte[length];
         final int read = postStream.read(postBytes);
         if (read == length) {

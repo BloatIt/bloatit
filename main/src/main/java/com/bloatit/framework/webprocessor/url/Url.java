@@ -62,7 +62,7 @@ public abstract class Url implements Cloneable {
         return externalUrlString();
     }
 
-    public String internalUrlString() {
+    private String internalUrlString() {
         final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null) {
             sb.append("/").append(Context.getLocalizator().getCode());

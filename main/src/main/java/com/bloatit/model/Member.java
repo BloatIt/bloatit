@@ -162,7 +162,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return getTeamRights(aTeam).contains(aRight);
     }
 
-    public Set<UserTeamRight> getTeamRights(final Team g) {
+    private Set<UserTeamRight> getTeamRights(final Team g) {
         return getDao().getTeamRights(g.getDao());
     }
 
@@ -182,7 +182,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return hasTeamRight(aTeam, UserTeamRight.MODIFY);
     }
 
-    public boolean hasPromoteTeamRight(final Team aTeam) {
+    protected boolean hasPromoteTeamRight(final Team aTeam) {
         return hasTeamRight(aTeam, UserTeamRight.PROMOTE);
     }
 
@@ -362,7 +362,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @param team the team invited to join
      * @return all the received invitation with the specified state and team
      */
-    public PageIterable<JoinTeamInvitation> getReceivedInvitation(final State state, final Team team) {
+    private PageIterable<JoinTeamInvitation> getReceivedInvitation(final State state, final Team team) {
         return new JoinTeamInvitationList(getDao().getReceivedInvitation(state, team.getDao()));
     }
 
@@ -476,7 +476,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return getContributions(true);
     }
 
-    public PageIterable<Contribution> getContributions(final boolean asMemberOnly) throws UnauthorizedOperationException {
+    private PageIterable<Contribution> getContributions(final boolean asMemberOnly) throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Contributions(), Action.READ);
         return new ContributionList(getDao().getContributions(asMemberOnly));
     }
@@ -497,7 +497,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return isInTeamUnprotected(team);
     }
 
-    protected boolean isInTeamUnprotected(final Team team) {
+    private boolean isInTeamUnprotected(final Team team) {
         return getDao().isInTeam(team.getDao());
     }
 

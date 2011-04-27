@@ -74,7 +74,7 @@ public class Framework {
         }
     }
 
-    void shutdown() {
+    private void shutdown() {
         SessionManager.saveSessions();
         scgiServer.stop();
         MailServer.getInstance().quickStop();

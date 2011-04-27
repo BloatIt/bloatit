@@ -65,12 +65,12 @@ public class MarkdownEditor extends HtmlStringFormField {
         ((HtmlTextArea) inputBlock.getInputElement()).setComment(comment);
     }
 
-    public static class MarkdownEditorInputBlock extends InputBlock {
+    private static class MarkdownEditorInputBlock extends InputBlock {
         private final HtmlTextArea input;
         private final HtmlDiv buttonBar = new HtmlDiv("md_button");
         private final HtmlDiv container = new HtmlDiv("md_editor");
 
-        public MarkdownEditorInputBlock(final String name, final int rows, final int cols) {
+        private MarkdownEditorInputBlock(final String name, final int rows, final int cols) {
             input = new HtmlTextArea(name, rows, cols);
             generate();
         }

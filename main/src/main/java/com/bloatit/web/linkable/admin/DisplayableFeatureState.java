@@ -25,7 +25,7 @@ public enum DisplayableFeatureState implements Displayable {
         this.displayName = displayName;
     }
 
-    public static FeatureState getFeatureState(final DisplayableFeatureState cmp) {
+    protected static FeatureState getFeatureState(final DisplayableFeatureState cmp) {
         return Enum.valueOf(FeatureState.class, cmp.name());
     }
 

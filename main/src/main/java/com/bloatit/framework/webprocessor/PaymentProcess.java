@@ -35,7 +35,7 @@ public abstract class PaymentProcess extends WebProcess {
     }
 
     @Override
-    public final void notifyChildAdded(final WebProcess subProcess) {
+    protected final void notifyChildAdded(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
             locked = true;
         }
@@ -87,7 +87,7 @@ public abstract class PaymentProcess extends WebProcess {
     }
 
     @Override
-    public final void doLoad() {
+    protected final void doLoad() {
         if (team != null) {
             team = TeamManager.getById(team.getId());
         }

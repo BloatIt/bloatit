@@ -116,13 +116,13 @@ public final class AccountPage extends LoggedPage {
 
     }
 
-    public static Breadcrumb generateBreadcrumb(final Team team) {
+    protected static Breadcrumb generateBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
         breadcrumb.pushLink(new AccountPageUrl().getHtmlLink(tr("Account informations")));
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member) {
+    protected static Breadcrumb generateBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
         breadcrumb.pushLink(new AccountPageUrl().getHtmlLink(tr("Account informations")));
         return breadcrumb;
@@ -130,7 +130,7 @@ public final class AccountPage extends LoggedPage {
 
     public static class SideBarLoadAccountBlock extends TitleSideBarElementLayout {
 
-        public SideBarLoadAccountBlock(final Team asTeam) {
+        private SideBarLoadAccountBlock(final Team asTeam) {
             setTitle(tr("Load account"));
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));

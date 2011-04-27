@@ -36,7 +36,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanRead(final RestrictedInterface role, final Action action) {
+    private static boolean ownerCanRead(final RestrictedInterface role, final Action action) {
         return role.canTalkAs() && Action.READ == action;
     }
 

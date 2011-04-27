@@ -126,7 +126,7 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
         return MilestoneAdminPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new MilestoneAdminPageUrl().getHtmlLink(tr("Milestone administration")));

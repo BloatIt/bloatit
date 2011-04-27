@@ -15,7 +15,7 @@ import com.bloatit.web.linkable.members.MembersTools;
 
 public class HtmlPrepaidLine extends HtmlDiv {
 
-    public HtmlPrepaidLine(final Actor<?> actor) throws UnauthorizedOperationException {
+    protected HtmlPrepaidLine(final Actor<?> actor) throws UnauthorizedOperationException {
         super("quotation_detail_line");
 
         add(MembersTools.getMemberAvatarSmall(actor));

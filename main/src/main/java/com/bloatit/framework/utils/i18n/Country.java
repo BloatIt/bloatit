@@ -47,7 +47,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * @param name the long name of the country
      * @param code the ISO code of the country
      */
-    public Country(final String name, final String code) {
+    private Country(final String name, final String code) {
         super();
         this.name = name;
         this.code = code;

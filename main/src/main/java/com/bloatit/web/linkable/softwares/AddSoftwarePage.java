@@ -140,7 +140,7 @@ public final class AddSoftwarePage extends LoggedPage {
         return AddSoftwarePage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
         breadcrumb.pushLink(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
         return breadcrumb;

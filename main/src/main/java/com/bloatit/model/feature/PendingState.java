@@ -28,7 +28,7 @@ public class PendingState extends CanContributeMetaState {
      * 
      * @param feature the feature on which this state apply.
      */
-    public PendingState(final FeatureImplementation feature) {
+    protected PendingState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

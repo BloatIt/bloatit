@@ -41,19 +41,19 @@ public class AdminActionManager {
         }
     }
 
-    public EnumSet<Action> userContentActions() {
+    protected EnumSet<Action> userContentActions() {
         return EnumSet.range(Action.DELETE, Action.RESTORE);
     }
 
-    public EnumSet<Action> kudosableActions() {
+    protected EnumSet<Action> kudosableActions() {
         return EnumSet.range(Action.LOCK, Action.SETSTATE);
     }
 
-    public EnumSet<Action> featureActions() {
+    protected EnumSet<Action> featureActions() {
         return EnumSet.range(Action.UPDATE_DEVELOPMENT_STATE, Action.SET_FEATURE_IN_DEVELOPMENT);
     }
 
-    public EnumSet<Action> milestoneActions() {
+    protected EnumSet<Action> milestoneActions() {
         return EnumSet.range(Action.VALIDATE_BATCH, Action.FORCE_VALIDATE_BATCH);
     }
 }

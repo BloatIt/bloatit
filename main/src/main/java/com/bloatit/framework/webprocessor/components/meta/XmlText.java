@@ -14,7 +14,7 @@ public class XmlText extends XmlNode {
         super();
     }
 
-    protected XmlText(final XmlText text) {
+    private XmlText(final XmlText text) {
         super();
         this.content = text.content;
     }

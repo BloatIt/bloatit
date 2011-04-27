@@ -26,7 +26,7 @@ public class RestHeader {
      *            of the Http request
      * @see HttpHeader
      */
-    public RestHeader(final HttpHeader httpHeader) {
+    protected RestHeader(final HttpHeader httpHeader) {
         this.httpHeader = httpHeader;
         try {
             // Extract language

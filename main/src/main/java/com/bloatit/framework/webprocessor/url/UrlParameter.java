@@ -253,7 +253,7 @@ public class UrlParameter<T, U> extends UrlNode {
          * 
          * @param parameter a parameter to find or use.
          */
-        public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
+        private FieldDataFromUrl(final UrlParameter<T, U> parameter) {
             super();
             name = parameter.getName();
 

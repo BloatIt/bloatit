@@ -94,12 +94,12 @@ public abstract class Search<T> {
         this.sort = sort;
     }
 
-    public static class Pair<U, V> {
+    public static class Pair<U, V> { // NO_UCD
 
         protected U key;
         protected V value;
 
-        public Pair(final U key, final V value) {
+        private Pair(final U key, final V value) {
             this.key = key;
             this.value = value;
         }

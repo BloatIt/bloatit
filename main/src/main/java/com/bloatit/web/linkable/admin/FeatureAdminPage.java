@@ -24,16 +24,16 @@ import com.bloatit.web.url.FeatureAdminPageUrl;
 public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Feature, FeatureAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFeatureState filterByState;
+    private DisplayableFeatureState filterByState;
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFilterType filterSelectedOffer;
+    private DisplayableFilterType filterSelectedOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFilterType filterHasOffer;
+    private DisplayableFilterType filterHasOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFilterType filterHasContribution;
+    private DisplayableFilterType filterHasContribution;
 
     private final FeatureAdminPageUrl url;
 
@@ -180,7 +180,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
         return FeatureAdminPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new FeatureAdminPageUrl().getHtmlLink(tr("Feature administration")));

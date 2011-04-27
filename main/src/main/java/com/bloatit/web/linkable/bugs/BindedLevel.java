@@ -15,7 +15,7 @@ public enum BindedLevel implements Displayable {
         this.label = label;
     }
 
-    public static BindedLevel getBindedLevel(final Level level) {
+    protected static BindedLevel getBindedLevel(final Level level) {
         return Enum.valueOf(BindedLevel.class, level.name());
     }
 

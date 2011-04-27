@@ -44,7 +44,7 @@ import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
  */
 public class RestException extends Exception {
     private static final long serialVersionUID = 1789724106068640033L;
-    StatusCode status;
+    private StatusCode status;
 
     public RestException(final StatusCode status, final String message) {
         super(message);

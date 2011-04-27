@@ -71,7 +71,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) {
+    private HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getDisplayName()), 1);
@@ -155,7 +155,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
+    private static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
         final Breadcrumb breadcrumb;
         if (asTeam != null) {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, process);

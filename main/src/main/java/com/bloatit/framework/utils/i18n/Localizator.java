@@ -327,8 +327,8 @@ public final class Localizator {
      * Describes a Language using a two letters code and a name
      */
     public static class LanguageDescriptor implements DropDownElement {
-        public String code;
-        public String name;
+        private String code;
+        private String name;
 
         @Override
         public String getName() {

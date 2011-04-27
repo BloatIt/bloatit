@@ -111,7 +111,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @param team the team
      * @see DaoUserContent#DaoUserContent(DaoMember, DaoTeam)
      */
-    public DaoKudosable(final DaoMember member, final DaoTeam team) {
+    protected DaoKudosable(final DaoMember member, final DaoTeam team) {
         super(member, team);
         this.popularity = 0;
         setState(PopularityState.PENDING);

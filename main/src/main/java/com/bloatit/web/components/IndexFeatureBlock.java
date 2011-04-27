@@ -63,7 +63,7 @@ public class IndexFeatureBlock extends HtmlDiv {
         }
     }
 
-    public final HtmlBranch setFloatRight(final HtmlElement element) {
+    private final HtmlBranch setFloatRight(final HtmlElement element) {
         floatRight.add(new HtmlDiv("float_right").add(element));
         return this;
     }

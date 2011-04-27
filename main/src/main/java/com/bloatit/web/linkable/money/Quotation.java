@@ -63,7 +63,7 @@ public class Quotation extends QuotationEntry {
 
     }
 
-    public static class QuotationProxyEntry extends QuotationEntry {
+    public static class QuotationProxyEntry extends QuotationEntry { // NO_UCD
 
         private final QuotationEntry reference;
 

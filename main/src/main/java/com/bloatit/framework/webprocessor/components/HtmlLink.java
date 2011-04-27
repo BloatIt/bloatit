@@ -59,7 +59,7 @@ public class HtmlLink extends HtmlBranch {
         addAttribute("href", url);
     }
 
-    public HtmlLink(final HtmlLink htmlLink) {
+    private HtmlLink(final HtmlLink htmlLink) {
         super(htmlLink);
     }
 

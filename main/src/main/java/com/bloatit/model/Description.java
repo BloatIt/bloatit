@@ -84,7 +84,7 @@ public final class Description extends Identifiable<DaoDescription> {
         getDao().addTranslation(translation.getDao());
     }
 
-    public Translation getTranslation(final Locale locale) {
+    private Translation getTranslation(final Locale locale) {
         return Translation.create(getDao().getTranslation(locale));
     }
 

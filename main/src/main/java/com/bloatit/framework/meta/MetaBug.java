@@ -13,11 +13,11 @@ public class MetaBug {
     private final String id;
     private final String description;
 
-    public MetaBug(final File file) throws IOException {
+    protected MetaBug(final File file) throws IOException {
         this(file.getName(), fileToString(file));
     }
 
-    public MetaBug(final String id, final String description) {
+    private MetaBug(final String id, final String description) {
         this.id = id;
         this.description = description;
 
@@ -38,7 +38,7 @@ public class MetaBug {
         }
     }
 
-    public static String fileToString(final File file) throws IOException {
+    private static String fileToString(final File file) throws IOException {
         final byte[] buffer = new byte[(int) file.length()];
         final BufferedInputStream f = new BufferedInputStream(new FileInputStream(file));
         f.read(buffer);

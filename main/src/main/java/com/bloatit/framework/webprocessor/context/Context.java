@@ -15,9 +15,9 @@ public class Context {
     private static final int MILLISECOND_DIV = 1000;
 
     static class ContextData {
-        public Session session = null;
-        public Localizator localizator = null;
-        public WebHeader header = null;
+        private Session session = null;
+        private Localizator localizator = null;
+        private WebHeader header = null;
     }
 
     static class UniqueThreadContext {
@@ -28,7 +28,7 @@ public class Context {
             }
         };
 
-        public static ContextData getContext() {
+        private static ContextData getContext() {
             return uniqueContextData.get();
         }
     } // UniqueThreadContext
@@ -90,7 +90,7 @@ public class Context {
         return UniqueThreadContext.getContext().header;
     }
 
-    public static long getResquestTime() {
+    protected static long getResquestTime() {
         return Context.requestTime.get();
     }
 

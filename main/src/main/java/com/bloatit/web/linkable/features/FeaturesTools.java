@@ -78,7 +78,7 @@ public class FeaturesTools {
      * @throws UnauthorizedOperationException when some operation cannot be
      *             accessed
      */
-    public static HtmlBranch generateFeatureTitle(final Feature feature, final boolean isTitle) throws UnauthorizedOperationException {
+    private static HtmlBranch generateFeatureTitle(final Feature feature, final boolean isTitle) throws UnauthorizedOperationException {
         HtmlBranch master;
         if (isTitle) {
             master = new HtmlTitle(1);

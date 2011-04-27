@@ -136,7 +136,7 @@ public final class CreateTeamPage extends LoggedPage {
         return CreateTeamPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new CreateTeamPageUrl().getHtmlLink(tr("Create a team")));

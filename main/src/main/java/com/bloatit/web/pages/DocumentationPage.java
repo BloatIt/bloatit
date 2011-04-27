@@ -76,13 +76,13 @@ public final class DocumentationPage extends MasterPage {
         return DocumentationPage.generateBreadcrumbPage(docTarget);
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         breadcrumb.pushLink(new DocumentationPageUrl().getHtmlLink(tr("Documentation")));
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumbPage(final String docTarget) {
+    private static Breadcrumb generateBreadcrumbPage(final String docTarget) {
         final Breadcrumb breadcrumb = DocumentationPage.generateBreadcrumb();
 
         final DocumentationPageUrl documentationPageUrl = new DocumentationPageUrl();

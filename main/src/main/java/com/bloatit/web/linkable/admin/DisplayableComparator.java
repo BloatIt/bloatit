@@ -26,7 +26,7 @@ public enum DisplayableComparator implements Displayable {
         return Enum.valueOf(DisplayableComparator.class, cmp.name());
     }
 
-    public static Comparator getComparator(final DisplayableComparator cmp) {
+    protected static Comparator getComparator(final DisplayableComparator cmp) {
         return Enum.valueOf(Comparator.class, cmp.name());
     }
 

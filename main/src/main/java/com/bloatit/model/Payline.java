@@ -62,7 +62,7 @@ public final class Payline extends RestrictedObject {
         private final String message;
         private final String redirectUrl;
 
-        Reponse(final DoWebPaymentResponse reponse) {
+        private Reponse(final DoWebPaymentResponse reponse) {
             code = reponse.getResult().getCode();
             token = reponse.getToken();
             message = reponse.getResult().getShortMessage() + "\n" + reponse.getResult().getLongMessage();

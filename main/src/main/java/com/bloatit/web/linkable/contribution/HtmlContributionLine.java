@@ -18,7 +18,7 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 
 public class HtmlContributionLine extends HtmlDiv {
 
-    public HtmlContributionLine(final Feature feature, final BigDecimal amount, final Url editUrl) throws UnauthorizedOperationException {
+    protected HtmlContributionLine(final Feature feature, final BigDecimal amount, final Url editUrl) throws UnauthorizedOperationException {
         super("quotation_detail_line");
         final Localizator localizator = Context.getLocalizator();
 

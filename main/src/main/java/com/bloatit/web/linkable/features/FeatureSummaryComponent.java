@@ -51,7 +51,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private final Feature feature;
 
-    public FeatureSummaryComponent(final Feature feature) {
+    protected FeatureSummaryComponent(final Feature feature) {
         super();
         this.feature = feature;
 
@@ -177,7 +177,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         }
     }
 
-    public HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -231,7 +231,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return featureSummaryProgress;
     }
 
-    public PlaceHolderElement generateContributeAction() {
+    private PlaceHolderElement generateContributeAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
         element.add(contributeText);
@@ -279,7 +279,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    public PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         if (!feature.getSelectedOffer().hasRelease()) {
@@ -316,7 +316,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     }
 
-    public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final Actor<?> author = feature.getSelectedOffer().getAuthor();
@@ -330,7 +330,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    public PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final HtmlLink authorLink = new HtmlAuthorLink(feature.getSelectedOffer());

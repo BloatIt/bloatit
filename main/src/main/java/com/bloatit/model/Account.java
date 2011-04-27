@@ -184,7 +184,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @return the actor unprotected
      * @see #getActor()
      */
-    protected final Actor<?> getActorUnprotected() {
+    private final Actor<?> getActorUnprotected() {
         return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
     }
 

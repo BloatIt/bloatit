@@ -76,7 +76,7 @@ public abstract class Accessor {
      * @return true, if we have the right to access the RestrictedObject, false
      *         otherwise.
      */
-    public final boolean canAccess(final RestrictedInterface object, final Action action) {
+    protected final boolean canAccess(final RestrictedInterface object, final Action action) {
         if (object.hasUserPrivilege(Role.ADMIN)) {
             Log.model().trace("Admin access");
             return true;
@@ -94,7 +94,7 @@ public abstract class Accessor {
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
      */
-    public final void tryAccess(final RestrictedInterface object, final Action action) throws UnauthorizedOperationException {
+    protected final void tryAccess(final RestrictedInterface object, final Action action) throws UnauthorizedOperationException {
         if (!canAccess(object, action)) {
             throw new UnauthorizedOperationException(action);
         }

@@ -131,7 +131,7 @@ public class ConfigurationManager {
         private final Properties properties;
         private final Date lastModified;
 
-        public PropertiesRetriever(final Properties properties, final Date lastModified) {
+        private PropertiesRetriever(final Properties properties, final Date lastModified) {
             this.properties = properties;
             this.lastModified = lastModified;
         }

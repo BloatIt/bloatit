@@ -48,7 +48,7 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
 
     private final KudosableAdminPageUrl url;
 
-    public KudosableAdminPage(final KudosableAdminPageUrl url, final V factory) {
+    protected KudosableAdminPage(final KudosableAdminPageUrl url, final V factory) {
         super(url, factory);
         this.url = url;
         filterLoked = url.getFilterLoked();

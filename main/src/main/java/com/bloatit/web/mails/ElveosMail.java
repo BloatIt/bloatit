@@ -16,7 +16,7 @@ public abstract class ElveosMail {
     private final TemplateFile content;
     private final String title;
 
-    public ElveosMail(final TemplateFile content, final String title) {
+    private ElveosMail(final TemplateFile content, final String title) {
         super();
         this.content = content;
         this.title = title;
@@ -46,7 +46,7 @@ public abstract class ElveosMail {
      * @param str the string to return
      * @return <code>str</code>
      */
-    protected static String tr(final String str) {
+    private static String tr(final String str) {
         return str;
     }
 

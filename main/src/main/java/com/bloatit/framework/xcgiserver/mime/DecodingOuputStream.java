@@ -43,7 +43,7 @@ public class DecodingOuputStream extends OutputStream {
      *            <code> {@link MimeDecoder#decodeStep()}</code>*
      *            <code>bufferMultiply</code>
      */
-    public DecodingOuputStream(final OutputStream output, final MimeDecoder codec, final int bufferMultiply) {
+    private DecodingOuputStream(final OutputStream output, final MimeDecoder codec, final int bufferMultiply) {
         super();
         this.output = output;
         this.codec = codec;
@@ -94,7 +94,7 @@ public class DecodingOuputStream extends OutputStream {
      * @param b the byte to write
      * @throws IOException when an IO error occurs
      */
-    public void write(final byte b) throws IOException {
+    private void write(final byte b) throws IOException {
         if (bufferIndex >= bufferSize) {
             output.write(codec.decode(buffer, 0, bufferIndex));
             bufferIndex = 0;

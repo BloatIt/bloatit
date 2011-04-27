@@ -24,7 +24,7 @@ public abstract class QueryResponseStream {
      * @param out the underlying stream. Should usually be a socket to a web
      *            server (or an encapsulation of a socket to a web server)
      */
-    public QueryResponseStream(final OutputStream out) {
+    protected QueryResponseStream(final OutputStream out) {
         super();
         this.out = out;
     }

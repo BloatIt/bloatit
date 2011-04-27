@@ -81,7 +81,7 @@ public final class TeamsPage extends MasterPage {
         return TeamsPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         breadcrumb.pushLink(new TeamsPageUrl().getHtmlLink(tr("Teams")));
         return breadcrumb;

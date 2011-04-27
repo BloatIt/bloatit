@@ -29,7 +29,7 @@ public class FinishedState extends AbstractFeatureState {
      * 
      * @param feature the feature on which this state apply.
      */
-    public FinishedState(final FeatureImplementation feature) {
+    protected FinishedState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

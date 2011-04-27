@@ -26,7 +26,7 @@ public class AttachmentField extends PlaceHolderElement {
      * @param descriptionLabel
      * @param descriptionComment
      */
-    public AttachmentField(final UserContentActionUrl targetUrl,
+    private AttachmentField(final UserContentActionUrl targetUrl,
                            final String attachmentLabel,
                            final String attachmentComment,
                            final String descriptionLabel,

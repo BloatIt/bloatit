@@ -41,7 +41,7 @@ public class FileConstraintChecker {
      * 
      * @param file the file to check
      */
-    public FileConstraintChecker(final File file) {
+    private FileConstraintChecker(final File file) {
         this.file = file;
     }
 
@@ -115,7 +115,7 @@ public class FileConstraintChecker {
      *         image height is smaller than <code>height</code>. <i>false</i>
      *         otherwise. Note if file is not an image, returns <i>false</i>.
      */
-    public boolean isImageSmaller(final int width, final int height) {
+    private boolean isImageSmaller(final int width, final int height) {
         if (!file.exists()) {
             return false;
         }

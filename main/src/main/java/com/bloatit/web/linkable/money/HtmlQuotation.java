@@ -25,7 +25,7 @@ public class HtmlQuotation extends HtmlDiv {
 
         private final int level;
 
-        QuotationRenderer(final QuotationEntry entry, final int level) {
+        private QuotationRenderer(final QuotationEntry entry, final int level) {
             this.level = level;
             entry.accept(this);
         }

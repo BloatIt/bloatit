@@ -19,7 +19,7 @@ public class ByteReader {
     private static final byte LF = (byte) '\n';
     private final InputStream input;
 
-    public ByteReader(final InputStream input) {
+    protected ByteReader(final InputStream input) {
         this.input = input;
     }
 
@@ -36,7 +36,7 @@ public class ByteReader {
      * 
      * @throws IOException
      */
-    public byte read() throws EOFException, IOException {
+    protected byte read() throws EOFException, IOException {
         final int i = input.read();
         if (i == -1) {
             throw new EOFException();
@@ -59,7 +59,7 @@ public class ByteReader {
      * @throws IOException
      * @throws EOFException
      */
-    public byte[] readLine() throws EOFException, IOException {
+    private byte[] readLine() throws EOFException, IOException {
         boolean end = false;
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         boolean previousWasCR = false;
@@ -106,7 +106,7 @@ public class ByteReader {
      * @throws IOException when the stream is not accessible
      * @see #readLine()
      */
-    public String readString() throws EOFException, IOException {
+    protected String readString() throws EOFException, IOException {
         return new String(readLine());
     }
 

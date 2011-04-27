@@ -83,7 +83,7 @@ public class SendTeamInvitationPage extends LoggedPage {
         return SendTeamInvitationPage.generateBreadcrumb(team);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Team team) {
+    private static Breadcrumb generateBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
         breadcrumb.pushLink(new SendTeamInvitationPageUrl(team).getHtmlLink(tr("Send team invitation")));
         return breadcrumb;

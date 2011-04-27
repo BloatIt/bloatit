@@ -41,7 +41,7 @@ public class Breadcrumb {
      * 
      * @return a Node representing the breadcrumb
      */
-    public HtmlElement toHtmlElement() {
+    protected HtmlElement toHtmlElement() {
         final HtmlDiv breadcrumb = new HtmlDiv("breadcrumb");
 
         boolean first = true;

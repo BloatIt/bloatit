@@ -185,7 +185,7 @@ public final class FileMetadataManager {
      * @param out the file to where to copy <code>in</code>.
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public static void copyFile(final File in, final File out) throws IOException {
+    private static void copyFile(final File in, final File out) throws IOException {
         final FileChannel inChannel = new FileInputStream(in).getChannel();
         final FileChannel outChannel = new FileOutputStream(out).getChannel();
         try {

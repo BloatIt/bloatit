@@ -54,7 +54,7 @@ public class UserContentAdminPageImplementation extends
         return UserContentAdminPageImplementation.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new UserContentAdminPageUrl().getHtmlLink(tr("User content administration")));

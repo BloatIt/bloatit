@@ -11,7 +11,7 @@ public class PluginBox extends PlaceHolderElement {
     private final ArrayList<HtmlElement> plugins = new ArrayList<HtmlElement>();
     private final PlaceHolderElement pageContent;
 
-    public PluginBox(final Url url) {
+    protected PluginBox(final Url url) {
         pageContent = new PlaceHolderElement();
         plugins.add(pageContent);
         plugins.add(new SideBarBugReportBlock(url));
@@ -20,7 +20,7 @@ public class PluginBox extends PlaceHolderElement {
         }
     }
 
-    public void addPageContent(final SideBarElementLayout content) {
+    protected void addPageContent(final SideBarElementLayout content) {
         pageContent.add(content);
     }
 }

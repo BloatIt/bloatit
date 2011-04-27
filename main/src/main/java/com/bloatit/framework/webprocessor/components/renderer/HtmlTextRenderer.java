@@ -15,7 +15,7 @@ public abstract class HtmlTextRenderer extends XmlText {
      * 
      * @param text
      */
-    public HtmlTextRenderer(final String text) {
+    protected HtmlTextRenderer(final String text) {
         super();
         super.content = doRender(text);
     }

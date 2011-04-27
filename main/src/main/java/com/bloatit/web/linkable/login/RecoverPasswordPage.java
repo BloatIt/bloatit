@@ -89,7 +89,7 @@ public class RecoverPasswordPage extends MasterPage {
         return generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = LoginPage.generateBreadcrumb();
         return breadcrumb;
     }

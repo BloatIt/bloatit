@@ -65,7 +65,7 @@ public final class KudosableAdminPageImplementation extends
         return KudosableAdminPageImplementation.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new KudosableAdminPageUrl().getHtmlLink(tr("Votable administration")));

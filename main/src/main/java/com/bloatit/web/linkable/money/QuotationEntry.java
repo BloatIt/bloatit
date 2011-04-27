@@ -12,7 +12,7 @@ public abstract class QuotationEntry {
     private boolean closed;
     protected final List<QuotationEntry> entries = new ArrayList<QuotationEntry>();
 
-    public QuotationEntry(final String label, final String comment) {
+    protected QuotationEntry(final String label, final String comment) {
         super();
         this.label = label;
         this.comment = comment;

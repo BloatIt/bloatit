@@ -103,7 +103,7 @@ public final class GiveRightAction extends LoggedAction {
         return new TeamPageUrl(targetTeam);
     }
 
-    public void waitingForJava7(final Exception e) {
+    private void waitingForJava7(final Exception e) {
         session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
         throw new ShallNotPassException("Cannot remove a member from a team", e);
     }

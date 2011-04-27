@@ -15,7 +15,7 @@ public class UrlParameterConstraints<U> {
         private final T value;
         private final String error;
 
-        public Param(final T value, final String error) {
+        private Param(final T value, final String error) {
             super();
             this.value = value;
             this.error = error;
@@ -68,7 +68,7 @@ public class UrlParameterConstraints<U> {
         this(false);
     }
 
-    public UrlParameterConstraints(final boolean optional) {
+    private UrlParameterConstraints(final boolean optional) {
         this.isMinExclusive = false;
         this.isMaxExclusive = false;
         this.min = new Param<Integer>(ParamConstraint.DEFAULT_MIN, "min constraint violation (%value) invalid for parameter %paramName%.");
@@ -80,7 +80,7 @@ public class UrlParameterConstraints<U> {
     }
 
     @SuppressWarnings("unchecked")
-    public void computeConstraints(final U value, final Class<U> valueClass, final Messages messages, final String name, final String strValue) {
+    protected void computeConstraints(final U value, final Class<U> valueClass, final Messages messages, final String name, final String strValue) {
         @SuppressWarnings("rawtypes")
         ComputeConstraint computeConstraint;
         if (valueClass.equals(Integer.class)) {

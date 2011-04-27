@@ -103,7 +103,7 @@ public class RetryPolicy {
         return retries;
     }
 
-    public synchronized void reinit() {
+    protected synchronized void reinit() {
         index = 0;
     }
 

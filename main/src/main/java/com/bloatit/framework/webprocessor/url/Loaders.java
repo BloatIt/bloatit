@@ -30,7 +30,7 @@ public final class Loaders {
         // desactivate ctor
     }
 
-    public static <T> String toStr(final T obj) {
+    protected static <T> String toStr(final T obj) {
         if (obj == null) {
             return "";
         }
@@ -50,7 +50,7 @@ public final class Loaders {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "synthetic-access", "rawtypes" })
+    private @SuppressWarnings({ "unchecked", "synthetic-access", "rawtypes" })
     static <T> Loader<T> getLoader(final Class<T> theClass) {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();

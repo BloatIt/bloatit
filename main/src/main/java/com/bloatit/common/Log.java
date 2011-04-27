@@ -41,7 +41,7 @@ public final class Log {
 
         private final Logger log;
 
-        public BloatitLogger(final Logger log) {
+        private BloatitLogger(final Logger log) {
             super();
             this.log = log;
         }

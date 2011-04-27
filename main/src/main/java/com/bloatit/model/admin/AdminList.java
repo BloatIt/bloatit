@@ -11,7 +11,7 @@ import com.bloatit.model.lists.ListBinder;
  */
 public class AdminList<T extends DaoIdentifiable, U extends IdentifiableInterface> extends ListBinder<U, T> {
 
-    public AdminList(final PageIterable<T> daoCollection) {
+    protected AdminList(final PageIterable<T> daoCollection) {
         super(daoCollection);
     }
 }

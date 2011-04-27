@@ -108,7 +108,7 @@ public class ModelAccessor {
     /**
      * @see com.bloatit.model.AbstractModel#close()
      */
-    public static void rollback() {
+    protected static void rollback() {
         try {
             mutex.acquire();
             model.rollback();

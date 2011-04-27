@@ -23,7 +23,7 @@ public class RestResource {
      * @param classes the list of classes available to convert
      *            <code>underlying</code> to XML
      */
-    public RestResource(final Object underlying, final String request, final Class<?>... classes) {
+    protected RestResource(final Object underlying, final String request, final Class<?>... classes) {
         this.underlying = underlying;
         this.classes = classes;
         this.request = request;

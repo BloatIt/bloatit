@@ -80,7 +80,7 @@ public class PageNotFound extends MasterPage {
         return PageNotFound.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink(tr("Page not found")));
         return breadcrumb;

@@ -21,7 +21,7 @@ final class Timer {
         }
     }
 
-    public void reset() {
+    private void reset() {
         startTime = System.currentTimeMillis();
     }
 

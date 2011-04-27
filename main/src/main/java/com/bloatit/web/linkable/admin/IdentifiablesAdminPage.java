@@ -75,7 +75,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         return everything;
     }
 
-    public final void generateFilterForm(final HtmlForm filterForm) {
+    private final void generateFilterForm(final HtmlForm filterForm) {
         final UserContentAdminPageUrl url = new UserContentAdminPageUrl();
         final HtmlFormBlock block = new HtmlFormBlock("Filters");
         filterForm.add(block);
@@ -89,7 +89,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         block.add(new HtmlSubmit(tr("Filter")));
     }
 
-    public final void generateTable(final HtmlForm actionForm) {
+    private final void generateTable(final HtmlForm actionForm) {
         final HtmlGenericTableModel<V> tableModel = new HtmlGenericTableModel<V>(factory.list());
 
         tableModel.addColumn(new HtmlCheckbox("id_all", LabelPosition.BEFORE), new ColumnGenerator<V>() {
@@ -121,7 +121,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         });
     }
 
-    public final void generateActionForm(final HtmlForm actionForm) {
+    private final void generateActionForm(final HtmlForm actionForm) {
         // add the action drop down
         final HtmlRadioButtonGroup group = new HtmlRadioButtonGroup("actions");
         final HtmlFormBlock block = new HtmlFormBlock("actions");

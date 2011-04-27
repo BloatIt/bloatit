@@ -71,7 +71,7 @@ public final class CreateCommentAction extends UserContentAction {
         return session.pickPreferredPage();
     }
 
-    public Url redirectWithError() {
+    private Url redirectWithError() {
         session.addParameter(url.getCommentParameter());
         session.addParameter(url.getCommentableParameter());
         session.addParameter(url.getAttachmentDescriptionParameter());

@@ -93,7 +93,7 @@ public final class AccountChargingPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) {
+    private HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getDisplayName()), 1);
@@ -177,7 +177,7 @@ public final class AccountChargingPage extends QuotationPage {
         return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
+    protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
         final Breadcrumb breadcrumb;
         if (asTeam != null) {
             breadcrumb = AccountPage.generateBreadcrumb(asTeam);

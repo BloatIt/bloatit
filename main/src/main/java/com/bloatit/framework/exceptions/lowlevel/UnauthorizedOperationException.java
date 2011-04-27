@@ -143,7 +143,7 @@ public class UnauthorizedOperationException extends Exception {
      * @param action the action when trying to access a property.
      * @param code the code describing more precisely what went wrong.
      */
-    public UnauthorizedOperationException(final Action action, final SpecialCode code) {
+    private UnauthorizedOperationException(final Action action, final SpecialCode code) {
         super();
         this.action = action;
         this.code = code;

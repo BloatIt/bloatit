@@ -73,7 +73,7 @@ public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
      * 
      * @param criteria the criteria
      */
-    public DaoAbstractQuery(final Criteria criteria) {
+    protected DaoAbstractQuery(final Criteria criteria) {
         super();
         this.criteria = criteria;
     }

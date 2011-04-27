@@ -42,7 +42,7 @@ public class GenericConstructor {
         return null;
     }
 
-    public static Class<?> getDaoClass(final Class<? extends IdentifiableInterface> clazz) {
+    private static Class<?> getDaoClass(final Class<? extends IdentifiableInterface> clazz) {
         if (clazz.equals(ExternalAccount.class)) {
             return DaoExternalAccount.class;
         }

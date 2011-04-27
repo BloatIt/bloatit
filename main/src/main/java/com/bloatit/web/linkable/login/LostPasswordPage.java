@@ -65,7 +65,7 @@ public class LostPasswordPage extends MasterPage {
         return generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = LoginPage.generateBreadcrumb();
         breadcrumb.pushLink(new LostPasswordPageUrl().getHtmlLink(tr("Recover password")));
         return breadcrumb;

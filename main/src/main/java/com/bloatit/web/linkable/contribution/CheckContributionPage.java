@@ -96,7 +96,7 @@ public final class CheckContributionPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) {
+    private HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group = new HtmlTitleBlock(tr("Check contribution"), 1);
 
         final Feature feature = process.getFeature();
@@ -117,7 +117,7 @@ public final class CheckContributionPage extends QuotationPage {
         return group;
     }
 
-    public void generateWithMoneyContent(final HtmlTitleBlock group, final Feature feature, final Actor<?> actor) {
+    private void generateWithMoneyContent(final HtmlTitleBlock group, final Feature feature, final Actor<?> actor) {
         final HtmlDiv contributionSummaryDiv = new HtmlDiv("contribution_summary");
         {
             contributionSummaryDiv.add(generateFeatureSummary(feature));
@@ -249,7 +249,7 @@ public final class CheckContributionPage extends QuotationPage {
 
     }
 
-    public HtmlDiv generateFeatureSummary(final Feature feature) {
+    private HtmlDiv generateFeatureSummary(final Feature feature) {
         final HtmlDiv featureContributionSummary = new HtmlDiv("feature_contribution_summary");
         {
             featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
@@ -291,7 +291,7 @@ public final class CheckContributionPage extends QuotationPage {
         return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
+    private static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
         final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
         breadcrumb.pushLink(checkContributionPageUrl.getHtmlLink(tr("Contribute - Check")));

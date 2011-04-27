@@ -44,7 +44,7 @@ public class PaylineProcess extends WebProcess {
     private boolean success = false;
 
     // Make the payment request.
-    final Payline payline = new Payline();
+    private final Payline payline = new Payline();
 
     private final PaylineProcessUrl url;
 

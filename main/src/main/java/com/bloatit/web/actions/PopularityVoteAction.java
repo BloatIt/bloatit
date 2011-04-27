@@ -33,8 +33,8 @@ import com.bloatit.web.url.PopularityVoteActionUrl;
 @ParamContainer("popularity/vote")
 public final class PopularityVoteAction extends LoggedAction {
 
-    public static final String TARGET_KUDOSABLE = "targetKudosable";
-    public static final String VOTE_UP = "voteUp";
+    private static final String TARGET_KUDOSABLE = "targetKudosable";
+    private static final String VOTE_UP = "voteUp";
 
     @ParamConstraint(optionalErrorMsg = @tr("Nothing to vote on."))
     @RequestParam(name = TARGET_KUDOSABLE)
@@ -90,7 +90,7 @@ public final class PopularityVoteAction extends LoggedAction {
         return null;
     }
 
-    public void analyseErrors(final EnumSet<SpecialCode> canVote) {
+    private void analyseErrors(final EnumSet<SpecialCode> canVote) {
         if (canVote.contains(SpecialCode.ALREADY_VOTED)) {
             session.notifyBad(Context.tr("You already voted on that."));
         }

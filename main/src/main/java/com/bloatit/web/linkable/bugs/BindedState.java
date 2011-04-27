@@ -16,7 +16,7 @@ public enum BindedState implements Displayable {
         this.label = label;
     }
 
-    public static BindedState getBindedState(final BugState state) {
+    protected static BindedState getBindedState(final BugState state) {
         return Enum.valueOf(BindedState.class, state.name());
     }
 

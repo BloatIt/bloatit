@@ -29,7 +29,7 @@ public class MappedList<T> implements PageIterable<T> {
      * 
      * @param mappedList
      */
-    public MappedList(final List<T> mappedList) {
+    protected MappedList(final List<T> mappedList) {
         this.list = mappedList;
         this.sizeQuery = SessionManager.createFilter(mappedList, "select count(*)");
         this.pageSize = 0;

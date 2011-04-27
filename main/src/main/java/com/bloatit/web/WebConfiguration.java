@@ -8,7 +8,7 @@ import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.FrameworkConfiguration;
 
 public class WebConfiguration extends ReloadableConfiguration {
-    public static final WebConfiguration configuration = new WebConfiguration();
+    private static final WebConfiguration configuration = new WebConfiguration();
     private PropertiesRetriever properties;
 
     // CSS
@@ -166,7 +166,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         return configuration.defaultChargingAmount;
     }
 
-    protected void loadConfiguration() {
+    private void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("web.properties");
 
         // CSS
@@ -195,7 +195,7 @@ public class WebConfiguration extends ReloadableConfiguration {
         defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");
     }
 
-    public static void load() {
+    protected static void load() {
         configuration.loadConfiguration();
     }
 

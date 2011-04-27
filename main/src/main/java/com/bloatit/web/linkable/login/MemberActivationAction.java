@@ -31,8 +31,8 @@ import com.bloatit.web.url.MemberActivationActionUrl;
 @ParamContainer(value="member/activate", protocol=Protocol.HTTPS)
 public final class MemberActivationAction extends Action {
 
-    public static final String MEMBER_CODE = "member";
-    public static final String KEY_CODE = "key";
+    private static final String MEMBER_CODE = "member";
+    private static final String KEY_CODE = "key";
 
     @RequestParam(name = MEMBER_CODE, role = Role.GET)
     private final String login;

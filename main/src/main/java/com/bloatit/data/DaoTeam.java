@@ -233,7 +233,7 @@ public class DaoTeam extends DaoActor {
      * 
      * @param member the member to remove
      */
-    public void removeMember(final DaoMember member) {
+    protected void removeMember(final DaoMember member) {
         final DaoTeamMembership link = DaoTeamMembership.get(this, member);
         this.teamMembership.remove(link);
         member.getTeamMembership().remove(link);

@@ -28,7 +28,7 @@ import com.bloatit.web.pages.master.HtmlNotification;
 
 public abstract class Page implements Linkable {
 
-    protected final Url thisUrl;
+    private final Url thisUrl;
     private Header pageHeader;
     protected final Session session;
 

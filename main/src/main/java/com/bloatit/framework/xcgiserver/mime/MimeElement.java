@@ -123,7 +123,7 @@ public class MimeElement {
      * @param key the name of the header field
      * @return the value of the header field
      */
-    public String getHeaderField(final String key) {
+    private String getHeaderField(final String key) {
         return header.get(key);
     }
 
@@ -181,7 +181,7 @@ public class MimeElement {
      * 
      * @throws IOException If the stream cannot be closed
      */
-    public void close() throws IOException {
+    protected void close() throws IOException {
         if (contentOutput == null) {
             // Closed before content, we initialize it anyway so we generate a
             // filename and other stuff that can be needed.

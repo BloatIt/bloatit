@@ -30,7 +30,7 @@ import com.bloatit.web.url.ModifyTeamPageUrl;
 
 @ParamContainer("team/modify")
 public class ModifyTeamPage extends LoggedPage {
-    ModifyTeamPageUrl url;
+    private ModifyTeamPageUrl url;
 
     @RequestParam(role = Role.GET)
     private final Team team;
@@ -140,7 +140,7 @@ public class ModifyTeamPage extends LoggedPage {
         return generateBreadcrumb(team);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Team team) {
+    private static Breadcrumb generateBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
         breadcrumb.pushLink(new ModifyTeamPageUrl(team).getHtmlLink(Context.tr("modify")));
         return breadcrumb;

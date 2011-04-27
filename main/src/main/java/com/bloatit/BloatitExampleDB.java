@@ -28,7 +28,7 @@ import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
 
-public class BloatitExampleDB {
+public class BloatitExampleDB { // NO_UCD
 
     private Software libreOffice;
     private final Member yoann;

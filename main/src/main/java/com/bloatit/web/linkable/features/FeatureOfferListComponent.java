@@ -175,7 +175,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
         }
     }
 
-    public void generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
+    private void generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
             throws UnauthorizedOperationException {
         // UnSelected
         offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
@@ -395,7 +395,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         }
 
-        public void generateReleaseList(final Milestone lot, final HtmlDiv lotBlock) {
+        private void generateReleaseList(final Milestone lot, final HtmlDiv lotBlock) {
             final PageIterable<Release> releases = lot.getReleases();
             if (releases.size() > 0) {
                 lotBlock.add(new HtmlParagraph(tr("Releases:")));
@@ -409,7 +409,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
             }
         }
 
-        public void generateValidationDetails(final Milestone lot, final HtmlDiv lotBlock) {
+        private void generateValidationDetails(final Milestone lot, final HtmlDiv lotBlock) {
 
             final JsShowHide showHideValidationDetails = new JsShowHide(false);
             showHideValidationDetails.setHasFallback(false);
@@ -444,7 +444,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
 
 
-        public void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
+        private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
             if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
                 final HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("Add a release"));
                 link.setCssClass("button");

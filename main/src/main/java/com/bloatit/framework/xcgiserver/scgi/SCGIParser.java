@@ -29,7 +29,7 @@ import com.bloatit.framework.xcgiserver.XcgiParser;
  * Home page: http://gist.github.com/38425 See also:
  * http://en.wikipedia.org/wiki/SCGIUtils
  */
-public class SCGIParser implements XcgiParser {
+public class SCGIParser implements XcgiParser { // NO_UCD
 
     /** Used to decode the headers. */
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
@@ -47,7 +47,7 @@ public class SCGIParser implements XcgiParser {
 
         private static final long serialVersionUID = 1L;
 
-        public SCGIException(final String message) {
+        private SCGIException(final String message) {
             super(message);
         }
     }

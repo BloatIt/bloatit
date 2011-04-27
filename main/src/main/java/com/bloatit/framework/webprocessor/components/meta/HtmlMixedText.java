@@ -40,7 +40,7 @@ public class HtmlMixedText extends HtmlBranch {
         }
     }
 
-    public void parseTag(final String tag, final HtmlElement parameters[]) {
+    private void parseTag(final String tag, final HtmlElement parameters[]) {
         final String[] split = tag.split(":");
 
         if (split.length < 1) {

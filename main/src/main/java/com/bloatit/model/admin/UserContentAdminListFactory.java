@@ -18,7 +18,7 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         super(new DaoUserContentQuery<T>());
     }
 
-    public UserContentAdminListFactory(final DaoUserContentQuery<T> factory) {
+    protected UserContentAdminListFactory(final DaoUserContentQuery<T> factory) {
         super(factory);
     }
 

@@ -84,7 +84,7 @@ public final class MessageListPage extends LoggedPage {
         return MessageListPage.generateBreadcrumb(session.getAuthToken().getMember());
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member) {
+    private static Breadcrumb generateBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
 
         breadcrumb.pushLink(new MessageListPageUrl().getHtmlLink(tr("Message list")));

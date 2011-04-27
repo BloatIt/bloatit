@@ -49,7 +49,7 @@ public class HttpParameter implements Iterable<String> {
         return values.iterator();
     }
 
-    public void add(final String value) {
+    protected void add(final String value) {
         values.add(value);
     }
 }

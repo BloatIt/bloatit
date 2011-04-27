@@ -32,7 +32,7 @@ import com.bloatit.web.url.ModifyMemberPageUrl;
 
 @ParamContainer(value="member/modify", protocol=Protocol.HTTPS)
 public class ModifyMemberPage extends LoggedPage {
-    ModifyMemberPageUrl url;
+    private ModifyMemberPageUrl url;
 
     public ModifyMemberPage(ModifyMemberPageUrl url) {
         super(url);
@@ -182,7 +182,7 @@ public class ModifyMemberPage extends LoggedPage {
         return generateBreadcrumb(Context.getSession().getAuthToken().getMember());
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member) {
+    private static Breadcrumb generateBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
         breadcrumb.pushLink(new ModifyMemberPageUrl().getHtmlLink(Context.tr("modify")));
         return breadcrumb;

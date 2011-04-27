@@ -47,7 +47,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
      *            "development time out".
      * @param time the date when this task will be run.
      */
-    public TaskDevelopmentTimeOut(final int featureId, final Date time) {
+    protected TaskDevelopmentTimeOut(final int featureId, final Date time) {
         super(time, featureId);
         this.featureId = featureId;
     }
