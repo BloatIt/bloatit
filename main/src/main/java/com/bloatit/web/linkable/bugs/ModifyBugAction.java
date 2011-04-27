@@ -15,9 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -105,24 +103,17 @@ public final class ModifyBugAction extends Action {
             } else if (state.getState() == BugState.RESOLVED) {
                 bug.setResolved();
             }
-        } catch (final UnauthorizedPublicAccessException e1) {
-            session.notifyBad(Context.tr("You are not allowed to change the state of this bug."));
-        }
-
-        try {
             if (reason == null) {
                 bug.addComment(changes);
             } else {
                 bug.addComment(changes + "\n%REASON%\n" + reason);
             }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from accessing changing state on this bug. Please notify us."));
-            throw new ShallNotPassException("The user can change the bug state but not post comments on this bug");
+            session.notifyError(Context.tr("You are not allowed to change the state of this bug."));
+            return doProcessErrors();
         }
 
-        final BugPageUrl to = new BugPageUrl(bug);
-
-        return to;
+        return new BugPageUrl(bug);
     }
 
     @Override
