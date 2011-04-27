@@ -576,4 +576,9 @@ public final class Member extends Actor<DaoMember> implements User {
         final String digestedPassword = SecuredHash.calculateHash(password, getDao().getSalt());
         return getDao().passwordEquals(digestedPassword);
     }
+
+    public long getInvitationCount() {
+        // TODO right management
+        return getDao().getInvitationCount();
+    }
 }
