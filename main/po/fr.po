@@ -3930,7 +3930,7 @@ msgstr "Nombre de caractères minimum pour le login %constraint%."
 #: com/bloatit/web/linkable/login/SignUpAction.java:123
 #, java-format
 msgid "Invalid login: {0}. Make sure it doesn't contain space characters."
-msgstr "Login invalide. Assurez vous de ne pas mettre d'espaces."
+msgstr "Login invalide: {0}. Assurez vous de ne pas mettre d''espaces."
 
 #: com/bloatit/web/linkable/money/StaticAccountChargingPage.java:77
 #, java-format

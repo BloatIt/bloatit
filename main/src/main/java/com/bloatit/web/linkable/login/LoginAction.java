@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.login;
 
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -19,7 +20,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.managers.LoginManager;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.LoginActionUrl;
@@ -61,9 +61,12 @@ public final class LoginAction extends Action {
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
         }
+
         session.setAuthToken(AuthToken.ANONYMOUS_TOKEN);
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
+        url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your login.")));
+        url.getPasswordParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your password.")));
         transmitParameters();
         return new LoginPageUrl();
     }
@@ -81,10 +84,12 @@ public final class LoginAction extends Action {
     @Override
     protected void transmitParameters() {
         session.addParameter(url.getLoginParameter());
-        final UrlParameter<String, String> passwordParameter = url.getPasswordParameter().clone();
-        if(passwordParameter.getValue() != null) {
-            passwordParameter.setValue("");
+
+        //TODO: clear the password for all password fields
+        if(url.getPasswordParameter().getValue() != null) {
+            url.getPasswordParameter().setValue("");
         }
-        session.addParameter(passwordParameter);
+
+        session.addParameter(url.getPasswordParameter());
     }
 }
