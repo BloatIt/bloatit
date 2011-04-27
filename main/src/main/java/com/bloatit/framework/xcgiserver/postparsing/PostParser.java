@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.framework.xcgiserver.postparsing;
 
 import java.io.EOFException;

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.web.pages.master.sidebar;
 
 import java.util.ArrayList;
