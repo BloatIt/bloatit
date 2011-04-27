@@ -33,6 +33,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.QuotationPage;
@@ -118,8 +119,9 @@ public final class AccountChargingPage extends QuotationPage {
                 process.setAmountToPay(preload);
             }
             if (process.getAmountToCharge().equals(BigDecimal.ZERO)) {
-                process.setAmountToCharge(BigDecimal.ONE);
-                process.setAmountToPay(BigDecimal.ONE);
+                
+                process.setAmountToCharge(WebConfiguration.getDefaultChargingAmount());
+                process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
             }
         } catch (final IllegalWriteException e) {
             session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));

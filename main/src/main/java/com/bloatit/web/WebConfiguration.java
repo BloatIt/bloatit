@@ -1,5 +1,7 @@
 package com.bloatit.web;
 
+import java.math.BigDecimal;
+
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
@@ -30,6 +32,7 @@ public class WebConfiguration extends ReloadableConfiguration {
     private String imgMessage;
     private String imgAccountCharge;
     private String imgAccountWithdraw;
+    private BigDecimal defaultChargingAmount;
 
     private WebConfiguration() {
         super();
@@ -158,6 +161,10 @@ public class WebConfiguration extends ReloadableConfiguration {
     public static String getImgAccountWithdraw() {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgAccountWithdraw;
     }
+    
+    public static BigDecimal getDefaultChargingAmount() {
+        return configuration.defaultChargingAmount;
+    }
 
     protected void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("web.properties");
@@ -183,6 +190,9 @@ public class WebConfiguration extends ReloadableConfiguration {
         imgMessage = properties.getString("bloatit.img.message");
         imgAccountCharge = properties.getString("bloatit.img.account.charge");
         imgAccountWithdraw = properties.getString("bloatit.img.account.withdraw");
+        
+        // OTHERS
+        defaultChargingAmount = properties.getBigDecimal("bloatit.default.charging.amount");
     }
 
     public static void load() {
