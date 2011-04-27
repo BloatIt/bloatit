@@ -27,13 +27,13 @@ import com.bloatit.web.url.FileResourceUrl;
 @ParamContainer("resource")
 public final class FileResource extends Resource {
 
-    public static final String FILE_FIELD_NAME = "id";
+    private static final String FILE_FIELD_NAME = "id";
 
     @ParamConstraint(optionalErrorMsg = @tr("The id of the resource is incorrect or missing"))
     @RequestParam(name = FILE_FIELD_NAME)
     private final FileMetadata file;
 
-    public FileResource(final FileResourceUrl url) {
+    protected FileResource(final FileResourceUrl url) {
         this.file = url.getFile();
         
     }

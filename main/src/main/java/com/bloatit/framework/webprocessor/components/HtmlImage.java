@@ -33,7 +33,7 @@ public class HtmlImage extends HtmlLeaf {
         addAttribute("class", cssClass);
     }
 
-    public HtmlImage(final Url imageUrl, final String alt) {
+    private HtmlImage(final Url imageUrl, final String alt) {
         super("img");
         addAttribute("src", imageUrl.urlString());
         addAttribute("alt", alt);

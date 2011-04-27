@@ -27,10 +27,10 @@ public class FCGIOutputStream extends OutputStream {
 
     private static final int WAIT_BUFFER_SIZE = 60000;
     private static final int PREPARE_BUFFER_SIZE = 65000;
-    final static byte FCGI_REQUEST_COMPLETE = 0;
+    private final static byte FCGI_REQUEST_COMPLETE = 0;
     final static byte FCGI_CANT_MPX_CONN = 1;
     final static byte FCGI_OVERLOADED = 2;
-    final static byte FCGI_UNKNOWN_ROLE = 3;
+    final static byte FCGI_UNKNOWN_ROLE = 3; // NO_UCD
 
     // private final DataOutputStream outputStream;
     private final FCGIParser fcgiParser;
@@ -39,7 +39,7 @@ public class FCGIOutputStream extends OutputStream {
     private final ByteArrayOutputStream waitBuffer;
     private final OutputStream outputStream;
 
-    public FCGIOutputStream(final FCGIParser fcgiParser, final OutputStream outputStream) {
+    protected FCGIOutputStream(final FCGIParser fcgiParser, final OutputStream outputStream) {
         this.fcgiParser = fcgiParser;
         this.outputStream = outputStream;
         prepareBuffer = new ByteArrayOutputStream(PREPARE_BUFFER_SIZE);

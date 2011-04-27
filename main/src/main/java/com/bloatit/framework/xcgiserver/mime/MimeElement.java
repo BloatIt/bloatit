@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.xcgiserver.mime;
 
 import java.io.ByteArrayInputStream;
@@ -123,7 +139,7 @@ public class MimeElement {
      * @param key the name of the header field
      * @return the value of the header field
      */
-    public String getHeaderField(final String key) {
+    private String getHeaderField(final String key) {
         return header.get(key);
     }
 
@@ -181,7 +197,7 @@ public class MimeElement {
      * 
      * @throws IOException If the stream cannot be closed
      */
-    public void close() throws IOException {
+    protected void close() throws IOException {
         if (contentOutput == null) {
             // Closed before content, we initialize it anyway so we generate a
             // filename and other stuff that can be needed.

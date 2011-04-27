@@ -59,7 +59,7 @@ public class DaoKudos extends DaoUserContent {
      * @param value is value of the kudos.
      * @param kudosable the kudosable on which we add this kudos.
      */
-    public DaoKudos(final DaoMember member, final DaoTeam team, final int value, final DaoKudosable kudosable) {
+    protected DaoKudos(final DaoMember member, final DaoTeam team, final int value, final DaoKudosable kudosable) {
         super(member, team);
         this.value = value;
         this.kudosable = kudosable;

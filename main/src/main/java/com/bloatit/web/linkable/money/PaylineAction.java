@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.web.linkable.money;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;

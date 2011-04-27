@@ -30,7 +30,7 @@ public final class FeatureCommentListComponent extends HtmlPageComponent {
     private PageIterable<Comment> comments;
     private final Feature targetFeature;
 
-    public FeatureCommentListComponent(final Feature feature) {
+    protected FeatureCommentListComponent(final Feature feature) {
         super();
         this.targetFeature = feature;
         try {
@@ -46,7 +46,7 @@ public final class FeatureCommentListComponent extends HtmlPageComponent {
     /**
      * Creates the block that will be displayed in the offer tab.
      */
-    protected HtmlElement produce() {
+    private HtmlElement produce() {
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
         {

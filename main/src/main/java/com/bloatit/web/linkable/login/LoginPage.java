@@ -111,7 +111,7 @@ public final class LoginPage extends MasterPage {
         return LoginPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         breadcrumb.pushLink(new LoginPageUrl().getHtmlLink(trc("Login (verb)", "Login")));
         return breadcrumb;

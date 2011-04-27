@@ -26,7 +26,7 @@ public final class HtmlSimpleTextArea extends HtmlBranch {
         addAttribute("rows", "" + rows);
     }
 
-    public HtmlSimpleTextArea setDefaultValue(final String text) {
+    protected HtmlSimpleTextArea setDefaultValue(final String text) {
         addText(text);
         return this;
     }

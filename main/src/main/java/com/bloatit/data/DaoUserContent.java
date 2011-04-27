@@ -91,7 +91,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      *            then you have to specify the team here.
      * @throws NonOptionalParameterException if the member == null.
      */
-    public DaoUserContent(final DaoMember member, final DaoTeam team) {
+    protected DaoUserContent(final DaoMember member, final DaoTeam team) {
         super();
         if (member == null) {
             Log.data().fatal("Cannot create a DaoUserContent with a null member.");

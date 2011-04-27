@@ -22,6 +22,7 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
@@ -30,6 +31,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.StringUtils;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
+import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.TeamRight;
 
@@ -155,6 +157,16 @@ public final class Team extends Actor<DaoTeam> {
     public String getContact() throws UnauthorizedOperationException {
         tryAccess(new TeamRight.Contact(), Action.READ);
         return getDao().getContact();
+    }
+    
+    public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
+        // TODO set rights
+        return new UserContentList(getDao().getActivity());
+    }
+    
+    public long getRecentActivityCount() {
+        // TODO set rights
+        return getDao().getRecentActivityCount(ModelConfiguration.getRecentActivityDays());
     }
 
     public void setContact(final String contact) throws UnauthorizedOperationException {

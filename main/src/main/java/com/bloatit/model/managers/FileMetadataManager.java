@@ -81,7 +81,9 @@ public final class FileMetadataManager {
 
         final File tempFile = new File(tempFileUrl);
         final File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
-        tempFile.renameTo(storedFile);
+        if (!tempFile.renameTo(storedFile)) {
+            throw new BadProgrammerException("Couldn't move file " + tempFile.getName() + " from temp to perm directory");
+        }
 
         return createFileMetadata(author, team, filename, description, storedFile);
     }
@@ -92,7 +94,7 @@ public final class FileMetadataManager {
     private static final void createWipDirectory() {
         final File storeDir = new File(FILE_STORAGE_DIRECTORY);
         if (!storeDir.exists()) {
-            if(!storeDir.mkdirs()){
+            if (!storeDir.mkdirs()) {
                 throw new BadProgrammerException("Couldn't create file " + FILE_STORAGE_DIRECTORY);
             }
             Log.model().info("Created directory " + FILE_STORAGE_DIRECTORY);
@@ -100,8 +102,8 @@ public final class FileMetadataManager {
     }
 
     /**
-     * Same as {@link #createFromTempFile(Member, Team, String, String, String)} but
-     * with a copy.
+     * Same as {@link #createFromTempFile(Member, Team, String, String, String)}
+     * but with a copy.
      * 
      * @param author the author of the new {@link FileMetadata}
      * @param path the url to the local file.
@@ -183,7 +185,7 @@ public final class FileMetadataManager {
      * @param out the file to where to copy <code>in</code>.
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public static void copyFile(final File in, final File out) throws IOException {
+    private static void copyFile(final File in, final File out) throws IOException {
         final FileChannel inChannel = new FileInputStream(in).getChannel();
         final FileChannel outChannel = new FileOutputStream(out).getChannel();
         try {

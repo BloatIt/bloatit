@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
@@ -30,6 +46,7 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.money.AccountPage.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
 import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
@@ -39,6 +56,7 @@ import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -56,6 +74,9 @@ public final class TeamPage extends MasterPage {
     private final static String ACCOUNT_TAB = "account";
 
     private final TeamPageUrl url;
+
+    private ActivityTab activity;
+
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
     private final Team targetTeam;
@@ -79,10 +100,16 @@ public final class TeamPage extends MasterPage {
         layout.addLeft(generateTeamIDCard(me));
         layout.addLeft(generateMain(me));
 
-        layout.addRight(generateSideBar());
-        layout.addRight(new SideBarDocumentationBlock("team_role"));
-        layout.addRight(new SideBarTeamWithdrawMoneyBlock());
+        layout.addRight(generateContactBox());
 
+        if (activeTabKey.equals(ACCOUNT_TAB)) {
+            layout.addRight(new SideBarTeamWithdrawMoneyBlock());
+            layout.addRight(new SideBarTeamChargeAccountBlock(targetTeam));
+        } else if (activeTabKey.equals(ACTIVITY_TAB)) {
+            layout.addRight(new SideBarDocumentationBlock("team_role"));
+        } else if (activeTabKey.equals(MEMBERS_TAB)) {
+            layout.addRight(new SideBarDocumentationBlock("team_role"));
+        }
         return layout;
     }
 
@@ -96,7 +123,7 @@ public final class TeamPage extends MasterPage {
         return true;
     }
 
-    private SideBarElementLayout generateSideBar() {
+    private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
         contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
 
@@ -117,13 +144,16 @@ public final class TeamPage extends MasterPage {
     private HtmlElement generateMain(Visitor me) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
-        final TeamPageUrl url = new TeamPageUrl(targetTeam);
-        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, url);
+        final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
+        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
         tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));
-        tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
-        tabPane.addTab(new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB));
+        if (targetTeam.canAccessBankTransaction()) {
+            tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
+        }
+        activity = new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB, url);
+        tabPane.addTab(activity);
 
         return master;
     }
@@ -174,11 +204,11 @@ public final class TeamPage extends MasterPage {
         informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(targetTeam.getMembers().size())));
 
         // Features count
-        final int featuresCount = getActivityCount();
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), new HtmlMixedText(Context.tr("{0} (<0::see details>)",
-                                                                                                                          featuresCount),
-                                                                                                               new PageNotFoundUrl().getHtmlLink())));
-
+        final long featuresCount = getActivityCount();
+        TeamPageUrl activityPage = new TeamPageUrl(targetTeam);
+        activityPage.setActiveTabKey(ACTIVITY_TAB);
+        HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), activityPage.getHtmlLink());
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), mixed));
         titleBlock.add(informationsList);
 
         // Description
@@ -227,13 +257,11 @@ public final class TeamPage extends MasterPage {
         return breadcrumb;
     }
 
-    private int getActivityCount() {
-        // TODO: real work
-        return 3;
+    private long getActivityCount() {
+        return targetTeam.getRecentActivityCount();
     }
 
-    public static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
-
+    private static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
         SideBarTeamWithdrawMoneyBlock() {
             setTitle(tr("Team account"));
 
@@ -243,6 +271,20 @@ public final class TeamPage extends MasterPage {
             // TODO good URL
             add(new SideBarButton(tr("Withdraw money"), new PageNotFoundUrl(), WebConfiguration.getImgAccountWithdraw()).asElement());
 
+        }
+    }
+
+    private static class SideBarTeamChargeAccountBlock extends TitleSideBarElementLayout {
+        SideBarTeamChargeAccountBlock(Team team) {
+            setTitle(tr("Load account"));
+
+            add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
+            // TODO good URL
+            final AccountChargingProcessUrl chargingAccountUrl = new AccountChargingProcessUrl();
+            chargingAccountUrl.setTeam(team);
+            add(new SideBarButton(tr("Charge your account"), chargingAccountUrl, WebConfiguration.getImgAccountCharge()).asElement());
+            add(new HtmlDefineParagraph(tr("Note: "),
+                                        tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
     }
 }

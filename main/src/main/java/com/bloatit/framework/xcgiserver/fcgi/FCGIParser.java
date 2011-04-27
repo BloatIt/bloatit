@@ -58,15 +58,15 @@ public class FCGIParser implements XcgiParser {
     /**
      * Values of type component of record
      */
-    final static byte FCGI_BEGIN_REQUEST = 1;
+    private final static byte FCGI_BEGIN_REQUEST = 1;
     final static byte FCGI_ABORT_REQUEST = 2;
     final static byte FCGI_END_REQUEST = 3;
     final static byte FCGI_PARAMS = 4;
-    final static byte FCGI_STDIN = 5;
+    private final static byte FCGI_STDIN = 5;
     final static byte FCGI_STDOUT = 6;
     final static byte FCGI_STDERR = 7;
     final static byte FCGI_DATA = 8;
-    final static byte FCGI_GET_VALUES = 9;
+    private final static byte FCGI_GET_VALUES = 9;
     final static byte FCGI_GET_VALUES_RESULT = 10;
     final static byte FCGI_UNKNOWN_TYPE = 11;
     final static byte FCGI_MAXTYPE = FCGI_UNKNOWN_TYPE;
@@ -74,31 +74,31 @@ public class FCGIParser implements XcgiParser {
     /**
      * Mask for flags component of FCGI_BEGIN_REQUEST body
      */
-    final static byte FCGI_KEEP_CONN = 1;
+    private final static byte FCGI_KEEP_CONN = 1;
 
     /**
      * Values for role component of FCGI_BeginRequestBody
      */
-    final static byte FCGI_RESPONDER = 1;
-    final static byte FCGI_AUTHORIZER = 2;
-    final static byte FCGI_FILTER = 3;
+    private final static byte FCGI_RESPONDER = 1;
+    final static byte FCGI_AUTHORIZER = 2; // NO_UCD
+    final static byte FCGI_FILTER = 3; // NO_UCD
 
     /**
      * Input stream
      */
-    DataInputStream dataInput;
+    private DataInputStream dataInput;
 
     /**
      * Status of param input stream. The param input stream is closed when a
      * empty FCGI_PARAMS record is received.
      */
-    boolean paramStreamOpen = true;
+    private boolean paramStreamOpen = true;
 
     /**
      * Status of post input stream. The post input stream is closed when a empty
      * FCGI_STDIN record is received.
      */
-    boolean postStreamOpen = true;
+    private boolean postStreamOpen = true;
 
     /**
      * Http header params. This map is full with param input stream record's
@@ -138,11 +138,11 @@ public class FCGIParser implements XcgiParser {
 
     }
 
-    public static class FCGIException extends IOException {
+    private static class FCGIException extends IOException {
 
         private static final long serialVersionUID = 1L;
 
-        public FCGIException(final String message) {
+        private FCGIException(final String message) {
             super(message);
         }
     }
@@ -162,7 +162,7 @@ public class FCGIParser implements XcgiParser {
         return env;
     }
 
-    public void fetchPostRecord() throws IOException {
+    protected void fetchPostRecord() throws IOException {
 
         // TODO: comment that
         while (postStreamOpen && !(parseRecord() == FCGI_STDIN)) {
@@ -170,7 +170,7 @@ public class FCGIParser implements XcgiParser {
         }
     }
 
-    public void fetchAll() throws IOException {
+    protected void fetchAll() throws IOException {
         while (paramStreamOpen && postStreamOpen) {
             parseRecord();
         }
@@ -337,7 +337,7 @@ public class FCGIParser implements XcgiParser {
      * @param b an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */
-    public static final long unsignedIntToLong(final int[] b) {
+    private static final long unsignedIntToLong(final int[] b) {
         long l = 0;
 
         l += b[0];

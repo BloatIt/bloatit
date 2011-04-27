@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.xcgiserver.mime;
 
 import java.io.IOException;
@@ -43,7 +59,7 @@ public class DecodingOuputStream extends OutputStream {
      *            <code> {@link MimeDecoder#decodeStep()}</code>*
      *            <code>bufferMultiply</code>
      */
-    public DecodingOuputStream(final OutputStream output, final MimeDecoder codec, final int bufferMultiply) {
+    private DecodingOuputStream(final OutputStream output, final MimeDecoder codec, final int bufferMultiply) {
         super();
         this.output = output;
         this.codec = codec;
@@ -94,7 +110,7 @@ public class DecodingOuputStream extends OutputStream {
      * @param b the byte to write
      * @throws IOException when an IO error occurs
      */
-    public void write(final byte b) throws IOException {
+    private void write(final byte b) throws IOException {
         if (bufferIndex >= bufferSize) {
             output.write(codec.decode(buffer, 0, bufferIndex));
             bufferIndex = 0;

@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.web.linkable.admin;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
@@ -24,16 +40,16 @@ import com.bloatit.web.url.FeatureAdminPageUrl;
 public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Feature, FeatureAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFeatureState filterByState;
+    private DisplayableFeatureState filterByState;
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFilterType filterSelectedOffer;
+    private DisplayableFilterType filterSelectedOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFilterType filterHasOffer;
+    private DisplayableFilterType filterHasOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
-    protected DisplayableFilterType filterHasContribution;
+    private DisplayableFilterType filterHasContribution;
 
     private final FeatureAdminPageUrl url;
 
@@ -180,7 +196,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
         return FeatureAdminPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new FeatureAdminPageUrl().getHtmlLink(tr("Feature administration")));

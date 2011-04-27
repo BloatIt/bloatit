@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.web.linkable.admin;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
@@ -75,7 +91,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         return everything;
     }
 
-    public final void generateFilterForm(final HtmlForm filterForm) {
+    private final void generateFilterForm(final HtmlForm filterForm) {
         final UserContentAdminPageUrl url = new UserContentAdminPageUrl();
         final HtmlFormBlock block = new HtmlFormBlock("Filters");
         filterForm.add(block);
@@ -89,7 +105,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         block.add(new HtmlSubmit(tr("Filter")));
     }
 
-    public final void generateTable(final HtmlForm actionForm) {
+    private final void generateTable(final HtmlForm actionForm) {
         final HtmlGenericTableModel<V> tableModel = new HtmlGenericTableModel<V>(factory.list());
 
         tableModel.addColumn(new HtmlCheckbox("id_all", LabelPosition.BEFORE), new ColumnGenerator<V>() {
@@ -121,7 +137,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         });
     }
 
-    public final void generateActionForm(final HtmlForm actionForm) {
+    private final void generateActionForm(final HtmlForm actionForm) {
         // add the action drop down
         final HtmlRadioButtonGroup group = new HtmlRadioButtonGroup("actions");
         final HtmlFormBlock block = new HtmlFormBlock("actions");

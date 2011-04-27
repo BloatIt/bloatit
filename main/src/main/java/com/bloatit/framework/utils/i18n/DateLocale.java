@@ -233,7 +233,7 @@ public final class DateLocale {
      * 
      * @param locale
      */
-    static public String getPattern(final Locale locale) {
+    static protected String getPattern(final Locale locale) {
         return DateLocale.getPattern(locale, FormatStyle.SHORT);
     }
 
@@ -242,7 +242,7 @@ public final class DateLocale {
      * 
      * @param locale
      */
-    static public String getPattern(final Locale locale, final FormatStyle format) {
+    static protected String getPattern(final Locale locale, final FormatStyle format) {
         final SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(getJavaStyle(format), locale);
         return cleanPattern(sdf.toPattern());
     }

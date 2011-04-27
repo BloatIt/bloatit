@@ -66,7 +66,7 @@ public final class ContributePage extends CreateUserContentPage {
         return layout;
     }
 
-    public HtmlElement generateContributeForm(final Member me) {
+    private HtmlElement generateContributeForm(final Member me) {
         final CheckContributionActionUrl formActionUrl = new CheckContributionActionUrl(process);
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
@@ -137,7 +137,7 @@ public final class ContributePage extends CreateUserContentPage {
         return ContributePage.generateBreadcrumb(process.getFeature(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
+    private static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
         breadcrumb.pushLink(new ContributePageUrl(process).getHtmlLink(tr("Contribute")));
         return breadcrumb;

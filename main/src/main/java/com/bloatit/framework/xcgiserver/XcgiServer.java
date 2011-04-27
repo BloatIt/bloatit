@@ -51,7 +51,7 @@ public final class XcgiServer {
         this.processors.add(processor);
     }
 
-    List<XcgiProcessor> getProcessors() {
+    private List<XcgiProcessor> getProcessors() {
         return processors;
     }
 
@@ -94,7 +94,7 @@ public final class XcgiServer {
         private final ServerSocket provider;
         private final Timer timer;
 
-        public XcgiThread(final int port) throws IOException {
+        private XcgiThread(final int port) throws IOException {
             super();
             provider = new ServerSocket(port);
             timer = new Timer();
@@ -116,7 +116,7 @@ public final class XcgiServer {
             }
         }
 
-        public void kill() {
+        private void kill() {
             if (socket != null && !socket.isClosed()) {
                 try {
                     socket.close();

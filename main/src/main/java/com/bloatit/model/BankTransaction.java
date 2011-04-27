@@ -126,7 +126,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * 
      * @see DaoBankTransaction#setRefused()
      */
-    public void setRefused() {
+    protected void setRefused() {
         getDao().setRefused();
     }
 

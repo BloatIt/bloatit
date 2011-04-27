@@ -52,7 +52,7 @@ public class LocalesConfiguration extends ReloadableConfiguration {
         return configuration.languagesProperties.getProperties();
     }
 
-    protected void loadConfiguration() {
+    private void loadConfiguration() {
         languagesProperties = ConfigurationManager.loadProperties("locales/languages.properties", PropertiesType.SHARE);
         countryProperties = ConfigurationManager.loadProperties("locales/countries.properties", PropertiesType.SHARE);
     }
@@ -67,7 +67,7 @@ public class LocalesConfiguration extends ReloadableConfiguration {
         configuration.loadConfiguration();
     }
 
-    public static void load() {
+    protected static void load() {
         configuration.loadConfiguration();
     }
 }

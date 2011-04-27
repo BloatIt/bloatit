@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.webprocessor.url;
 
 import java.math.BigDecimal;
@@ -30,7 +46,7 @@ public final class Loaders {
         // desactivate ctor
     }
 
-    public static <T> String toStr(final T obj) {
+    protected static <T> String toStr(final T obj) {
         if (obj == null) {
             return "";
         }
@@ -50,7 +66,7 @@ public final class Loaders {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "synthetic-access", "rawtypes" })
+    private @SuppressWarnings({ "unchecked", "synthetic-access", "rawtypes" })
     static <T> Loader<T> getLoader(final Class<T> theClass) {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();
@@ -220,7 +236,7 @@ public final class Loaders {
     private static class ToCharacter extends Loader<Character> {
         @Override
         public Character fromString(final String data) {
-            return new Character(data.charAt(0));
+            return Character.valueOf(data.charAt(0));
         }
     }
 

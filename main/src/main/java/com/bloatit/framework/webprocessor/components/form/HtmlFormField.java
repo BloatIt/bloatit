@@ -65,7 +65,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     protected PlaceHolderElement commentPh = new PlaceHolderElement();
-    protected PlaceHolderElement notificationPh = new PlaceHolderElement();
+    private PlaceHolderElement notificationPh = new PlaceHolderElement();
     protected InputBlock inputBlock;
     private final PlaceHolderElement ph = new PlaceHolderElement();
     private HtmlLabel label;
@@ -268,7 +268,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     /**
      *
      */
-    protected void checkIdLabel() {
+    private void checkIdLabel() {
         if (getId() == null) {
             setId(rng.nextString());
         } else {
@@ -345,7 +345,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
          */
         public abstract HtmlElement getContentElement();
 
-        public static InputBlock create(final HtmlElement element) {
+        protected static InputBlock create(final HtmlElement element) {
             return new InputBlock() {
 
                 @Override

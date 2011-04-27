@@ -121,7 +121,7 @@ public final class AddReleasePage extends CreateUserContentPage {
         return AddReleasePage.generateBreadcrumb(milestone);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Milestone milestone) {
+    private static Breadcrumb generateBreadcrumb(final Milestone milestone) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(milestone.getOffer().getFeature());
 
         breadcrumb.pushLink(new AddReleasePageUrl(milestone).getHtmlLink(tr("Add a release")));

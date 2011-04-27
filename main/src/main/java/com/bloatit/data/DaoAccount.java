@@ -78,7 +78,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @param actor is the owner of this account
      * @throws NonOptionalParameterException if the actor == null
      */
-    public DaoAccount(final DaoActor actor) {
+    protected DaoAccount(final DaoActor actor) {
         if (actor == null) {
             throw new NonOptionalParameterException();
         }

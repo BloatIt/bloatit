@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.model;
 
 import com.bloatit.common.ConfigurationManager;
@@ -5,7 +21,7 @@ import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
 
 public class ModelConfiguration extends ReloadableConfiguration {
-    public static ModelConfiguration configuration = new ModelConfiguration();
+    private static ModelConfiguration configuration = new ModelConfiguration();
 
     private PropertiesRetriever properties;
 
@@ -32,6 +48,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableMinInfluenceToUnkudos;
     private int kudosableMinInfluenceToKudos;
     private String bloatitLibravatarURI;
+    private int recentActivityDays;
 
     private ModelConfiguration() {
         super();
@@ -41,7 +58,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     /**
      * Make sure the configuration file is loaded.
      */
-    public static void loadConfiguration() {
+    protected static void loadConfiguration() {
         configuration.getClass();
     }
 
@@ -53,35 +70,35 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.properties;
     }
 
-    public static int getKudosableDefaultTurnValid() {
+    protected static int getKudosableDefaultTurnValid() {
         return configuration.kudosableDefaultTurnValid;
     }
 
-    public static int getKudosableDefaultTurnRejected() {
+    protected static int getKudosableDefaultTurnRejected() {
         return configuration.kudosableDefaultTurnRejected;
     }
 
-    public static int getKudosableDefaultTurnHidden() {
+    protected static int getKudosableDefaultTurnHidden() {
         return configuration.kudosableDefaultTurnHidden;
     }
 
-    public static int getKudosableDefaultTurnPending() {
+    protected static int getKudosableDefaultTurnPending() {
         return configuration.kudosableDefaultTurnPending;
     }
 
-    public static int getKudosableCommentTurnValid() {
+    protected static int getKudosableCommentTurnValid() {
         return configuration.kudosableCommentTurnValid;
     }
 
-    public static int getKudosableCommentTurnRejected() {
+    protected static int getKudosableCommentTurnRejected() {
         return configuration.kudosableCommentTurnRejected;
     }
 
-    public static int getKudosableCommentTurnHidden() {
+    protected static int getKudosableCommentTurnHidden() {
         return configuration.kudosableCommentTurnHidden;
     }
 
-    public static int getKudosableCommentTurnPending() {
+    protected static int getKudosableCommentTurnPending() {
         return configuration.kudosableCommentTurnPending;
     }
 
@@ -101,56 +118,62 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.kudosableFeatureTurnPending;
     }
 
-    public static int getKudosableOfferTurnValid() {
+    protected static int getKudosableOfferTurnValid() {
         return configuration.kudosableOfferTurnValid;
     }
 
-    public static int getKudosableOfferTurnRejected() {
+    protected static int getKudosableOfferTurnRejected() {
         return configuration.kudosableOfferTurnRejected;
     }
 
-    public static int getKudosableOfferTurnHidden() {
+    protected static int getKudosableOfferTurnHidden() {
         return configuration.kudosableOfferTurnHidden;
     }
 
-    public static int getKudosableOfferTurnPending() {
+    protected static int getKudosableOfferTurnPending() {
         return configuration.kudosableOfferTurnPending;
     }
 
-    public static int getKudosableTranslationTurnValid() {
+    protected static int getKudosableTranslationTurnValid() {
         return configuration.kudosableTranslationTurnValid;
     }
 
-    public static int getKudosableTranslationTurnRejected() {
+    protected static int getKudosableTranslationTurnRejected() {
         return configuration.kudosableTranslationTurnRejected;
     }
 
-    public static int getKudosableTranslationTurnHidden() {
+    protected static int getKudosableTranslationTurnHidden() {
         return configuration.kudosableTranslationTurnHidden;
     }
 
-    public static int getKudosableTranslationTurnPending() {
+    protected static int getKudosableTranslationTurnPending() {
         return configuration.kudosableTranslationTurnPending;
     }
 
-    public static int getKudosableMinInfluenceToUnkudos() {
+    protected static int getKudosableMinInfluenceToUnkudos() {
         return configuration.kudosableMinInfluenceToUnkudos;
     }
 
-    public static int getKudosableMinInfluenceToKudos() {
+    protected static int getKudosableMinInfluenceToKudos() {
         return configuration.kudosableMinInfluenceToKudos;
     }
 
     public static String getLibravatarURI() {
         return configuration.bloatitLibravatarURI;
     }
+    
+    // Others
+    
+    protected static int getRecentActivityDays() {
+        return configuration.recentActivityDays;
+    }
 
-    protected void load() {
+    private void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
+        
+        recentActivityDays = properties.getInt("recent.activity.days");
 
-        //
         // Kudosable configuration
-        //
         kudosableDefaultTurnValid = properties.getInt("kudosable.default.turn_valid", 100);
         kudosableDefaultTurnRejected = properties.getInt("kudosable.default.turn_rejected", -100);
         kudosableDefaultTurnHidden = properties.getInt("kudosable.default.turn_hidden", -10);

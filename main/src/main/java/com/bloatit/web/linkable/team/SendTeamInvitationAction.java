@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;

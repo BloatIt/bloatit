@@ -28,7 +28,7 @@ import com.bloatit.model.Identifiable;
  * The Class GenericManager is a utility class with static method to load data
  * from the DB. It is generic because the methods are not specific for a class.
  */
-public final class GenericManager {
+public final class GenericManager { // NO_UCD
 
     /**
      * Desactivate constructor on utility class.

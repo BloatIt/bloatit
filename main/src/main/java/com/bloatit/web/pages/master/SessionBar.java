@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -7,6 +23,8 @@ import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.model.Member;
+import com.bloatit.model.managers.JoinTeamInvitationManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.url.LoginPageUrl;
@@ -51,8 +69,14 @@ public class SessionBar extends HtmlDiv {
             }
 
             // Display link to private messages
-            final HtmlLink messagesLink = new MessageListPageUrl().getHtmlLink("Messages");
-            add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink));
+            Member me = session.getAuthToken().getMember();
+            long nb;
+            if ((nb = me.getInvitationCount()) > 0) {
+                final HtmlLink messagesLink = new MessageListPageUrl().getHtmlLink(Context.tr("Invitations ({0})", nb));
+                messagesLink.setCssClass("bold");
+                HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
+                add(componentSpan);
+            }
 
             // Display logout link
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));
@@ -65,5 +89,4 @@ public class SessionBar extends HtmlDiv {
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(signupLink));
         }
     }
-
 }

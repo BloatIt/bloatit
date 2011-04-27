@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.webprocessor.components.advanced.showdown;
 
 import java.util.ArrayList;
@@ -65,12 +81,12 @@ public class MarkdownEditor extends HtmlStringFormField {
         ((HtmlTextArea) inputBlock.getInputElement()).setComment(comment);
     }
 
-    public static class MarkdownEditorInputBlock extends InputBlock {
+    private static class MarkdownEditorInputBlock extends InputBlock {
         private final HtmlTextArea input;
         private final HtmlDiv buttonBar = new HtmlDiv("md_button");
         private final HtmlDiv container = new HtmlDiv("md_editor");
 
-        public MarkdownEditorInputBlock(final String name, final int rows, final int cols) {
+        private MarkdownEditorInputBlock(final String name, final int rows, final int cols) {
             input = new HtmlTextArea(name, rows, cols);
             generate();
         }

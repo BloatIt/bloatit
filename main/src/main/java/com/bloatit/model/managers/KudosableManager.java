@@ -46,7 +46,7 @@ public final class KudosableManager {
      * @param id the id
      * @return the {@link Kudosable} or <code>null</code> if not found.
      */
-    public static Kudosable<?> getById(final Integer id) {
+    protected static Kudosable<?> getById(final Integer id) {
 
         // Try with comment
         final DaoComment comment = DBRequests.getById(DaoComment.class, id);

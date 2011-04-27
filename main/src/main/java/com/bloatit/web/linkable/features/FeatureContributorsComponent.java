@@ -41,14 +41,14 @@ public final class FeatureContributorsComponent extends HtmlDiv {
 
     private final Feature feature;
 
-    public FeatureContributorsComponent(final Feature feature) {
+    protected FeatureContributorsComponent(final Feature feature) {
         super();
         this.feature = feature;
         add(produce());
     }
 
     @SuppressWarnings("synthetic-access")
-    protected HtmlElement produce() {
+    private HtmlElement produce() {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
 
@@ -124,7 +124,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
         private Contribution contribution;
         private final PageIterable<Contribution> contributions;
 
-        public ContributionTableModel(final PageIterable<Contribution> contributions) {
+        private ContributionTableModel(final PageIterable<Contribution> contributions) {
             this.contributions = contributions;
 
         }
@@ -210,12 +210,12 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     }
 
     public static final class ContributionStatTableModel extends HtmlTableModel {
+        private final static int lineCount = 1;
 
         private final String contributionMinValue;
         private final String contributionMaxValue;
         private final String contributionMeanValue;
         private int line = -1;
-        private final int lineCount = 1;
         private final String contributionMedianValue;
 
         private ContributionStatTableModel(final String contributionMinValue,

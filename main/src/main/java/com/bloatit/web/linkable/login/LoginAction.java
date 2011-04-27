@@ -31,8 +31,8 @@ import com.bloatit.web.url.LoginPageUrl;
 @ParamContainer(value="action/login", protocol=Protocol.HTTPS)
 public final class LoginAction extends Action {
 
-    public static final String LOGIN_CODE = "bloatit_login";
-    public static final String PASSWORD_CODE = "bloatit_password";
+    private static final String LOGIN_CODE = "bloatit_login";
+    protected static final String PASSWORD_CODE = "bloatit_password";
 
     @ParamConstraint(optionalErrorMsg = @tr("You must enter a login."))
     @RequestParam(name = LOGIN_CODE, role = RequestParam.Role.POST)

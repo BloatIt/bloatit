@@ -40,7 +40,7 @@ public abstract class AdminAction extends LoggedAction {
     /**
      * @param url
      */
-    public AdminAction(final Url url) {
+    protected AdminAction(final Url url) {
         super(url);
     }
 

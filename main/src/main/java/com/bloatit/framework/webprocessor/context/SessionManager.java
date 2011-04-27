@@ -186,7 +186,7 @@ public final class SessionManager {
         }
     }
 
-    public static synchronized void performClearExpiredSessions() {
+    private static synchronized void performClearExpiredSessions() {
 
         final Iterator<Session> it = activeSessions.values().iterator();
 
@@ -212,7 +212,7 @@ public final class SessionManager {
         return null;
     }
 
-    public static synchronized void cleanTemporarySession(final Session sessionToClean) {
+    private static synchronized void cleanTemporarySession(final Session sessionToClean) {
         final Iterator<Entry<String, Session>> it = temporarySessions.entrySet().iterator();
 
         while (it.hasNext()) {

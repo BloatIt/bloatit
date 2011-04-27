@@ -25,8 +25,8 @@ import java.io.PipedOutputStream;
 
 public class FCGIPostStream extends InputStream {
 
-    PipedInputStream pipeIn;
-    PipedOutputStream pipeOut;
+    private PipedInputStream pipeIn;
+    private PipedOutputStream pipeOut;
     private final FCGIParser fcgiParser;
 
     public FCGIPostStream(final FCGIParser fcgiParser) throws IOException {
@@ -68,7 +68,7 @@ public class FCGIPostStream extends InputStream {
         return read(b, 0, b.length);
     }
 
-    public void pushData(final byte[] data) throws IOException {
+    protected void pushData(final byte[] data) throws IOException {
         pipeOut.write(data);
     }
 }

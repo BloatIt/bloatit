@@ -48,7 +48,7 @@ public final class CacheManager {
         };
 
         @SuppressWarnings("rawtypes")
-        public static Map<Integer, Identifiable> getCurrentCache() {
+        private static Map<Integer, Identifiable> getCurrentCache() {
             return uniqueCache.get();
         }
     } // UniqueThreadCache
@@ -60,7 +60,7 @@ public final class CacheManager {
     /**
      * Erase all entries in the cache. This method is threadSafe.
      */
-    public static void clear() {
+    protected static void clear() {
         UniqueThreadCache.getCurrentCache().clear();
         Log.cache().trace("Model cache cleared.");
     }
@@ -73,7 +73,7 @@ public final class CacheManager {
      * @return identifiable.
      */
     @SuppressWarnings("rawtypes")
-    public static Identifiable add(final Integer id, final Identifiable identifiable) {
+    protected static Identifiable add(final Integer id, final Identifiable identifiable) {
         UniqueThreadCache.getCurrentCache().put(id, identifiable);
         Log.cache().trace("Add into model cache: " + id);
         return identifiable;
@@ -86,7 +86,7 @@ public final class CacheManager {
      * @return the object if it exist, null otherwise.
      */
     @SuppressWarnings("rawtypes")
-    public static Identifiable get(final DaoIdentifiable identifiable) {
+    protected static Identifiable get(final DaoIdentifiable identifiable) {
         try {
             Log.cache().trace("Get from model cache: " + identifiable.getId());
             return UniqueThreadCache.getCurrentCache().get(identifiable.getId());

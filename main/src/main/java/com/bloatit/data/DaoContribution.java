@@ -133,7 +133,7 @@ public class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if the account of "member" has not enough
      *             money in it.
      */
-    public DaoContribution(final DaoMember member, final DaoTeam team, final DaoFeature feature, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    protected DaoContribution(final DaoMember member, final DaoTeam team, final DaoFeature feature, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         super(member, team);
         if (feature == null) {
             throw new NonOptionalParameterException();
