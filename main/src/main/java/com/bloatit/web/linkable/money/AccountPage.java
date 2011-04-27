@@ -130,7 +130,7 @@ public final class AccountPage extends LoggedPage {
 
     public static class SideBarLoadAccountBlock extends TitleSideBarElementLayout {
 
-        SideBarLoadAccountBlock(final Team asTeam) {
+        public SideBarLoadAccountBlock(final Team asTeam) {
             setTitle(tr("Load account"));
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));

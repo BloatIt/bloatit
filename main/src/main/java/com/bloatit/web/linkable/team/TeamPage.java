@@ -30,6 +30,7 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.money.AccountPage.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
 import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
@@ -39,6 +40,7 @@ import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -82,10 +84,16 @@ public final class TeamPage extends MasterPage {
         layout.addLeft(generateTeamIDCard(me));
         layout.addLeft(generateMain(me));
 
-        layout.addRight(generateSideBar());
-        layout.addRight(new SideBarDocumentationBlock("team_role"));
-        layout.addRight(new SideBarTeamWithdrawMoneyBlock());
+        layout.addRight(generateContactBox());
 
+        if (activeTabKey.equals(ACCOUNT_TAB)) {
+            layout.addRight(new SideBarTeamWithdrawMoneyBlock());
+            layout.addRight(new SideBarTeamChargeAccountBlock(targetTeam));
+        } else if (activeTabKey.equals(ACTIVITY_TAB)) {
+            layout.addRight(new SideBarDocumentationBlock("team_role"));
+        } else if (activeTabKey.equals(MEMBERS_TAB)) {
+            layout.addRight(new SideBarDocumentationBlock("team_role"));
+        }
         return layout;
     }
 
@@ -99,7 +107,7 @@ public final class TeamPage extends MasterPage {
         return true;
     }
 
-    private SideBarElementLayout generateSideBar() {
+    private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
         contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
 
@@ -237,8 +245,7 @@ public final class TeamPage extends MasterPage {
         return targetTeam.getRecentActivityCount();
     }
 
-    public static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
-
+    private static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
         SideBarTeamWithdrawMoneyBlock() {
             setTitle(tr("Team account"));
 
@@ -248,6 +255,20 @@ public final class TeamPage extends MasterPage {
             // TODO good URL
             add(new SideBarButton(tr("Withdraw money"), new PageNotFoundUrl(), WebConfiguration.getImgAccountWithdraw()).asElement());
 
+        }
+    }
+
+    private static class SideBarTeamChargeAccountBlock extends TitleSideBarElementLayout {
+        SideBarTeamChargeAccountBlock(Team team) {
+            setTitle(tr("Load account"));
+
+            add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
+            // TODO good URL
+            final AccountChargingProcessUrl chargingAccountUrl = new AccountChargingProcessUrl();
+            chargingAccountUrl.setTeam(team);
+            add(new SideBarButton(tr("Charge your account"), chargingAccountUrl, WebConfiguration.getImgAccountCharge()).asElement());
+            add(new HtmlDefineParagraph(tr("Note: "),
+                                        tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
     }
 }
