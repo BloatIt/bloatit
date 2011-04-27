@@ -111,7 +111,7 @@ public final class SoftwareListPage extends MasterPage {
         return SoftwareListPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new SoftwareListPageUrl().getHtmlLink(tr("Softwares")));

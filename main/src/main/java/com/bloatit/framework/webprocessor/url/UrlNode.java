@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.framework.utils.parameters.Parameters;

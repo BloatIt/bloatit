@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.xcgiserver.mime;
 
 import java.io.ByteArrayOutputStream;
@@ -19,7 +35,7 @@ public class ByteReader {
     private static final byte LF = (byte) '\n';
     private final InputStream input;
 
-    public ByteReader(final InputStream input) {
+    protected ByteReader(final InputStream input) {
         this.input = input;
     }
 
@@ -36,7 +52,7 @@ public class ByteReader {
      * 
      * @throws IOException
      */
-    public byte read() throws EOFException, IOException {
+    protected byte read() throws EOFException, IOException {
         final int i = input.read();
         if (i == -1) {
             throw new EOFException();
@@ -59,7 +75,7 @@ public class ByteReader {
      * @throws IOException
      * @throws EOFException
      */
-    public byte[] readLine() throws EOFException, IOException {
+    private byte[] readLine() throws EOFException, IOException {
         boolean end = false;
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         boolean previousWasCR = false;
@@ -106,7 +122,7 @@ public class ByteReader {
      * @throws IOException when the stream is not accessible
      * @see #readLine()
      */
-    public String readString() throws EOFException, IOException {
+    protected String readString() throws EOFException, IOException {
         return new String(readLine());
     }
 

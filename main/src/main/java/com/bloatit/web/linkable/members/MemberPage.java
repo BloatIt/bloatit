@@ -221,7 +221,6 @@ public final class MemberPage extends MasterPage {
         main.add(new HtmlClearer());
 
         // Displaying list of user recent activity
-
         final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
         main.add(recent);
 
@@ -240,7 +239,7 @@ public final class MemberPage extends MasterPage {
     /**
      * Paged renderer for the activity feed
      */
-    private final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
+    private static final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
         public ActivityRenderer() {
             super();
         }
@@ -341,70 +340,67 @@ public final class MemberPage extends MasterPage {
                     }
                     return new PlaceHolderElement();
                 }
+
             });
         }
-    }
 
-    /**
-     * Generates a second line of a feed
-     *
-     * @param item the String to display at the start of the second line
-     * @param target the element to display after <code>item</code>
-     * @return the element to add as a second line
-     */
-    private HtmlElement generateFeedSecondLine(final String item, final HtmlElement target) {
-        return new HtmlDefineParagraph(item, target);
-    }
-
-    /**
-     * Generates a complete structure of a feed for elements that have a feature
-     * on their second line
-     * <p>
-     * This is a convenience method for
-     * {@link #generateFeedStructure(HtmlElement, HtmlElement, UserContentInterface)}
-     * that avoids having to create the feature second line
-     * </p>
-     *
-     * @param firstLine the element to show on the first line
-     * @param feature the <code>feature</code> to display on the second line
-     * @param content the UserContent that originates everything, so we can get
-     *            its creation date
-     * @return the element to add in the feed
-     */
-    private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine,
-                                                     final Feature feature,
-                                                     final UserContentInterface content) {
-        final PlaceHolderElement ph = new PlaceHolderElement();
-        try {
-            ph.add(generateFeedSecondLine(Context.tr("Feature: "), FeaturesTools.generateFeatureTitle(feature)));
-        } catch (final UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Cannot access some feature information.", e);
+        /**
+         * Generates a second line of a feed
+         * 
+         * @param item the String to display at the start of the second line
+         * @param target the element to display after <code>item</code>
+         * @return the element to add as a second line
+         */
+        private HtmlElement generateFeedSecondLine(final String item, final HtmlElement target) {
+            return new HtmlDefineParagraph(item, target);
         }
-        return generateFeedStructure(firstLine, ph, content);
-    }
 
-    /**
-     * Creates a complete feed item to add to the feed
-     *
-     * @param firstLine the first line of the feed item
-     * @param secondLine the second line of the feed item
-     * @param content the UserContent that originates everything, so we can get
-     *            its creation date
-     * @return the element to add in the feed
-     */
-    private HtmlElement generateFeedStructure(final HtmlElement firstLine,
-                                              final HtmlElement secondLine,
-                                              final UserContentInterface content) {
-        final HtmlDiv master = new HtmlDiv("feed_item");
-        master.add(new HtmlDiv("feed_item_title").add(firstLine));
-        final HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");
-        master.add(secondAndThirdLine);
-        secondAndThirdLine.add(new HtmlDiv("feed_item_description").add(secondLine));
-        final HtmlBranch dateBox = new HtmlDiv("feed_item_date");
-        secondAndThirdLine.add(dateBox);
-        final String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
-        dateBox.addText(dateString);
-        return master;
+        /**
+         * Generates a complete structure of a feed for elements that have a
+         * feature on their second line
+         * <p>
+         * This is a convenience method for
+         * {@link #generateFeedStructure(HtmlElement, HtmlElement, UserContentInterface)}
+         * that avoids having to create the feature second line
+         * </p>
+         * 
+         * @param firstLine the element to show on the first line
+         * @param feature the <code>feature</code> to display on the second line
+         * @param content the UserContent that originates everything, so we can
+         *            get its creation date
+         * @return the element to add in the feed
+         */
+        private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine, final Feature feature, final UserContentInterface content) {
+            final PlaceHolderElement ph = new PlaceHolderElement();
+            try {
+                ph.add(generateFeedSecondLine(Context.tr("Feature: "), FeaturesTools.generateFeatureTitle(feature)));
+            } catch (final UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Cannot access some feature information.", e);
+            }
+            return generateFeedStructure(firstLine, ph, content);
+        }
+
+        /**
+         * Creates a complete feed item to add to the feed
+         * 
+         * @param firstLine the first line of the feed item
+         * @param secondLine the second line of the feed item
+         * @param content the UserContent that originates everything, so we can
+         *            get its creation date
+         * @return the element to add in the feed
+         */
+        private HtmlElement generateFeedStructure(final HtmlElement firstLine, final HtmlElement secondLine, final UserContentInterface content) {
+            final HtmlDiv master = new HtmlDiv("feed_item");
+            master.add(new HtmlDiv("feed_item_title").add(firstLine));
+            final HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");
+            master.add(secondAndThirdLine);
+            secondAndThirdLine.add(new HtmlDiv("feed_item_description").add(secondLine));
+            final HtmlBranch dateBox = new HtmlDiv("feed_item_date");
+            secondAndThirdLine.add(dateBox);
+            final String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
+            dateBox.addText(dateString);
+            return master;
+        }
     }
 
     @Override

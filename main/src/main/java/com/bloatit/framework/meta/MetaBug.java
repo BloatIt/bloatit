@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.meta;
 
 import java.io.BufferedInputStream;
@@ -13,11 +29,11 @@ public class MetaBug {
     private final String id;
     private final String description;
 
-    public MetaBug(final File file) throws IOException {
+    protected MetaBug(final File file) throws IOException {
         this(file.getName(), fileToString(file));
     }
 
-    public MetaBug(final String id, final String description) {
+    private MetaBug(final String id, final String description) {
         this.id = id;
         this.description = description;
 
@@ -38,7 +54,7 @@ public class MetaBug {
         }
     }
 
-    public static String fileToString(final File file) throws IOException {
+    private static String fileToString(final File file) throws IOException {
         final byte[] buffer = new byte[(int) file.length()];
         final BufferedInputStream f = new BufferedInputStream(new FileInputStream(file));
         f.read(buffer);

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.model;
 
 import com.bloatit.data.DaoTeam;

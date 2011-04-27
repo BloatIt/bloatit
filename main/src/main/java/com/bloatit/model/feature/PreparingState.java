@@ -32,7 +32,7 @@ public class PreparingState extends CanContributeMetaState {
      * 
      * @param feature the feature on which this state apply.
      */
-    public PreparingState(final FeatureImplementation feature) {
+    protected PreparingState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

@@ -321,7 +321,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * @param team the team invited to join
      * @return all the received invitation with the specified state and team
      */
-    public PageIterable<JoinTeamInvitation> getReceivedInvitation(final State state, final Team team) {
+    private PageIterable<JoinTeamInvitation> getReceivedInvitation(final State state, final Team team) {
         return new JoinTeamInvitationList(getDao().getReceivedInvitation(state, team.getDao()));
     }
 
@@ -349,6 +349,7 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getKarma();
     }
 
+    // TODO make right managements
     public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
         return new UserContentList(getDao().getActivity());
     }
@@ -414,7 +415,8 @@ public final class Member extends Actor<DaoMember> implements User {
 
     @Override
     // no right management: this is public data
-    public Image getAvatar() {
+    public Image
+            getAvatar() {
         final DaoFileMetadata avatar = getDao().getAvatar();
         if (avatar != null) {
             return new Image(FileMetadata.create(avatar));
@@ -425,6 +427,11 @@ public final class Member extends Actor<DaoMember> implements User {
             return null;
         }
         return new Image(libravatar);
+    }
+    
+    public long getInvitationCount() {
+        // TODO right management
+        return getDao().getInvitationCount();
     }
 
     // no right management: this is public data
@@ -513,7 +520,7 @@ public final class Member extends Actor<DaoMember> implements User {
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Team Rights
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     public boolean hasTeamRight(final Team aTeam, final UserTeamRight aRight) {
         if (getTeamRights(aTeam) == null) {
             return false;

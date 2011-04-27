@@ -333,7 +333,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * This method is called each time this Kudosable change its state to
      * Hidden.
      */
-    protected void notifyHidden() {
+    private void notifyHidden() {
         // Implement me if you wish
     }
 

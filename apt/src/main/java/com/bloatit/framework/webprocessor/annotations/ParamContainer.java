@@ -8,7 +8,16 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ParamContainer {
+
+    enum Protocol {
+        AUTO,
+        HTTPS,
+        HTTP
+    }
+
     String value();
+
+    Protocol protocol() default Protocol.AUTO;
 
     boolean isComponent() default false;
 }

@@ -32,7 +32,7 @@ import com.bloatit.web.url.MetaEditBugActionUrl;
 @ParamContainer("meta/bug/doedit")
 public final class MetaEditBugAction extends LoggedAction {
 
-    public static final String BUG_DESCRIPTION = "bug_description";
+    private static final String BUG_DESCRIPTION = "bug_description";
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
     @ParamConstraint(max = "800",

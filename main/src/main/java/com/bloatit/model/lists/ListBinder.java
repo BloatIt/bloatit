@@ -114,7 +114,7 @@ public class ListBinder<E extends IdentifiableInterface, DAO extends DaoIdentifi
      * @param dao the dao
      * @return the iterator
      */
-    protected Iterator<E> createFromDaoIterator(final Iterator<DAO> dao) {
+    private Iterator<E> createFromDaoIterator(final Iterator<DAO> dao) {
         return new IteratorBinder<E, DAO>(dao);
     }
 

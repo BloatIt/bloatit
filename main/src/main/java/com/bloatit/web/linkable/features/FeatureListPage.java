@@ -49,27 +49,27 @@ import com.bloatit.web.url.FeatureListPageUrl;
 @ParamContainer("feature/list")
 public final class FeatureListPage extends MasterPage {
 
-    public static final String FILTER_ALL = "all";
-    public static final String FILTER_IN_PROGRESS = "in_progress";
-    public static final String FILTER_FINISHED = "finished";
-    public static final String FILTER_CODE = "filter";
+    private static final String FILTER_ALL = "all";
+    private static final String FILTER_IN_PROGRESS = "in_progress";
+    private static final String FILTER_FINISHED = "finished";
+    private static final String FILTER_CODE = "filter";
 
     @RequestParam(name = FILTER_CODE)
-    @Optional(FILTER_IN_PROGRESS)
+    @Optional(FILTER_ALL)
     private final String filter;
 
-    public static final String SORT_BY_RELEVANCE = "relevance";
-    public static final String SORT_BY_CONTRIBUTION = "contribution";
-    public static final String SORT_BY_PROGRESS = "progress";
-    public static final String SORT_BY_POPULARITY = "popularity";
-    public static final String SORT_BY_CREATION_DATE = "creation_date";
-    public static final String SORT_BY_EXPIRATION_DATE = "expiration_date";
-    public static final String SORT_CODE = "sort";
+    private static final String SORT_BY_RELEVANCE = "relevance";
+    private static final String SORT_BY_CONTRIBUTION = "contribution";
+    private static final String SORT_BY_PROGRESS = "progress";
+    private static final String SORT_BY_POPULARITY = "popularity";
+    private static final String SORT_BY_CREATION_DATE = "creation_date";
+    private static final String SORT_BY_EXPIRATION_DATE = "expiration_date";
+    private static final String SORT_CODE = "sort";
     @RequestParam(name = SORT_CODE)
     @Optional(SORT_BY_POPULARITY)
     private final String sort;
 
-    public static final String SEARCH_STRING_CODE = "search_string";
+    private static final String SEARCH_STRING_CODE = "search_string";
     @RequestParam(name = SEARCH_STRING_CODE)
     @Optional("")
     private final String searchString;
@@ -231,13 +231,6 @@ public final class FeatureListPage extends MasterPage {
             // featureSearchBlock.add(featureAdvancedSearch);
 
             // Create a feature
-            final HtmlDiv createFeatureBlock = new HtmlDiv("feature_create_block");
-            {
-                createFeatureBlock.addText(Context.tr("If you have an feature or a need about a free software, you can "));
-                final HtmlLink creatFeatureLink = new CreateFeaturePageUrl().getHtmlLink(Context.tr("submit a new feature"));
-                createFeatureBlock.add(creatFeatureLink);
-            }
-            featureSearchBlock.add(createFeatureBlock);
         }
         layout.addLeft(featureSearchBlock);
 
@@ -275,7 +268,7 @@ public final class FeatureListPage extends MasterPage {
         return true;
     }
 
-    static class FeaturesListItem implements HtmlRenderer<Feature> {
+    private static class FeaturesListItem implements HtmlRenderer<Feature> {
         private Feature feature;
 
         @Override
@@ -320,7 +313,7 @@ public final class FeatureListPage extends MasterPage {
         return new FeatureList(search.doSearch());
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
         final FeatureListPageUrl featureListPageUrl = new FeatureListPageUrl();
         breadcrumb.pushLink(featureListPageUrl.getHtmlLink(tr("Features")));

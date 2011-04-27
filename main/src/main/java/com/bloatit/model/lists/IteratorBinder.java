@@ -39,7 +39,7 @@ public class IteratorBinder<E extends IdentifiableInterface, DAO extends DaoIden
      * 
      * @param daoIterator the dao iterator
      */
-    public IteratorBinder(final java.util.Iterator<DAO> daoIterator) {
+    protected IteratorBinder(final java.util.Iterator<DAO> daoIterator) {
         super();
         this.daoIterator = daoIterator;
     }

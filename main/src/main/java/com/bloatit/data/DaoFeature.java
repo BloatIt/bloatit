@@ -272,7 +272,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * Delete this DaoFeature from the database. "this" will remain, but
      * unmapped. (You shoudn't use it then)
      */
-    public void delete() {
+    protected void delete() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.delete(this);
     }

@@ -1,7 +1,25 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.webprocessor.url;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
@@ -23,7 +41,7 @@ public abstract class Url implements Cloneable {
     protected Url(final Url other) {
         this.anchor = other.anchor;
     }
-    
+
     public boolean hasError() {
         return !getMessages().isEmpty();
     }
@@ -40,6 +58,8 @@ public abstract class Url implements Cloneable {
 
     public abstract Messages getMessages();
 
+    public abstract Protocol getProtocol();
+
     @Override
     public abstract Url clone();
 
@@ -52,6 +72,13 @@ public abstract class Url implements Cloneable {
     }
 
     public String urlString() {
+        if(getProtocol() == Protocol.AUTO) {
+            return internalUrlString();
+        }
+        return externalUrlString();
+    }
+
+    private String internalUrlString() {
         final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null) {
             sb.append("/").append(Context.getLocalizator().getCode());
@@ -71,15 +98,20 @@ public abstract class Url implements Cloneable {
         return parameters;
     }
 
-    public final String externalUrlString(final HttpHeader header) {
-        if (header.getServerProtocol().startsWith("HTTPS")) {
-            return "https://" + header.getHttpHost() + urlString();
+    public final String externalUrlString() {
+        final HttpHeader header = Context.getHeader().getHttpHeader();
+
+
+        if (FrameworkConfiguration.isHttpsEnabled() && (getProtocol() == Protocol.HTTPS || (header.getServerProtocol().startsWith("HTTPS") && getProtocol() == Protocol.AUTO))) {
+            return "https://" + header.getHttpHost() + internalUrlString();
         }
-        if (header.getServerProtocol().startsWith("HTTP")) {
-            return "http://" + header.getHttpHost() + urlString();
+
+        if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP || (header.getServerProtocol().startsWith("HTTP") && getProtocol() == Protocol.AUTO)) {
+            return "http://" + header.getHttpHost() + internalUrlString();
         }
+
         Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
-        return "http://" + header.getHttpHost() + urlString();
+        return "http://" + header.getHttpHost() + internalUrlString();
     }
 
     public final HtmlLink getHtmlLink(final XmlNode data) {
@@ -93,5 +125,7 @@ public abstract class Url implements Cloneable {
     public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
+
+
 
 }

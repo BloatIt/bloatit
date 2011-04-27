@@ -28,7 +28,7 @@ public class DiscardedState extends AbstractFeatureState {
      * 
      * @param feature the feature on which this state apply.
      */
-    public DiscardedState(final FeatureImplementation feature) {
+    protected DiscardedState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

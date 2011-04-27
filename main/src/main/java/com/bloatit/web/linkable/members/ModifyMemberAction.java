@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.web.linkable.members;
 
 import static com.bloatit.framework.utils.StringUtils.isEmpty;
@@ -10,6 +26,7 @@ import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -23,7 +40,7 @@ import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
-@ParamContainer("member/domodify")
+@ParamContainer(value="member/domodify", protocol=Protocol.HTTPS)
 public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
@@ -82,7 +99,7 @@ public class ModifyMemberAction extends LoggedAction {
     @Optional
     private final String lang;
 
-    private ModifyMemberActionUrl url;
+    private final ModifyMemberActionUrl url;
 
     public ModifyMemberAction(final ModifyMemberActionUrl url) {
         super(url);

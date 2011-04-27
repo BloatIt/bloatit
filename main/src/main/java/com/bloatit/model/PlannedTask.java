@@ -67,7 +67,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
      * @param time
      * @see java.util.Timer#schedule(java.util.TimerTask, java.util.Date)
      */
-    public void schedule(final Date time) {
+    private void schedule(final Date time) {
         PlannedTask.timer.schedule(this, time);
     }
 

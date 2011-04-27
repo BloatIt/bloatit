@@ -131,7 +131,7 @@ public final class FeaturePage extends MasterPage {
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumbDetails(final Feature feature) {
+    private static Breadcrumb generateBreadcrumbDetails(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);

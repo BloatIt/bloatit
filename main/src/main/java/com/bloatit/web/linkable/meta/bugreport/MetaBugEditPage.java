@@ -92,7 +92,7 @@ public final class MetaBugEditPage extends MasterPage {
         return MetaBugEditPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new MembersListPageUrl().getHtmlLink(tr("Members")));

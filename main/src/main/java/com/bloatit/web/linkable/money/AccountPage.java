@@ -19,6 +19,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -47,7 +48,7 @@ import com.bloatit.web.url.AccountPageUrl;
  * A page used to display logged member informations.
  * </p>
  */
-@ParamContainer("account")
+@ParamContainer(value="account", protocol=Protocol.HTTPS)
 public final class AccountPage extends LoggedPage {
 
     @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
@@ -121,13 +122,13 @@ public final class AccountPage extends LoggedPage {
 
     }
 
-    public static Breadcrumb generateBreadcrumb(final Team team) {
+    protected static Breadcrumb generateBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
         breadcrumb.pushLink(new AccountPageUrl().getHtmlLink(tr("Account informations")));
         return breadcrumb;
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member) {
+    protected static Breadcrumb generateBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
         breadcrumb.pushLink(new AccountPageUrl().getHtmlLink(tr("Account informations")));
         return breadcrumb;
@@ -135,7 +136,7 @@ public final class AccountPage extends LoggedPage {
 
     public static class SideBarLoadAccountBlock extends TitleSideBarElementLayout {
 
-        SideBarLoadAccountBlock(final Team asTeam) {
+        private SideBarLoadAccountBlock(final Team asTeam) {
             setTitle(tr("Load account"));
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));

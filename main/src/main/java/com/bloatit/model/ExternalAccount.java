@@ -47,7 +47,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
         return new MyCreator().create(dao);
     }
 
-    ExternalAccount(final DaoExternalAccount dao) {
+    private ExternalAccount(final DaoExternalAccount dao) {
         super(dao);
     }
 

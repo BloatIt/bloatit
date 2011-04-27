@@ -32,7 +32,7 @@ class LazyLoaders {
         private T value = null;
         private final String name;
 
-        public LazyComponent(final String name) {
+        private LazyComponent(final String name) {
             this.name = name;
         }
 

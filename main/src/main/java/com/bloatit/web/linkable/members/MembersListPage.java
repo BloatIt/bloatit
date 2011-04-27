@@ -117,7 +117,7 @@ public final class MembersListPage extends MasterPage {
         return MembersListPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    protected static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new MembersListPageUrl().getHtmlLink(tr("Members")));

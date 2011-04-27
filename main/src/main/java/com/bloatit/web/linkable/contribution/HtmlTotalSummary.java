@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.web.linkable.contribution;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;

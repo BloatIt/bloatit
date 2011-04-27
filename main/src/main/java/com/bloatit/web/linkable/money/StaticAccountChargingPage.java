@@ -18,6 +18,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -48,7 +49,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer("account/charging/check")
+@ParamContainer(value="account/charging/check", protocol=Protocol.HTTPS)
 public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -70,7 +71,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) {
+    private HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             group = new HtmlTitleBlock(tr("Validate the {0} account charging", process.getTeam().getDisplayName()), 1);
@@ -149,7 +150,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
+    private static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
         final Breadcrumb breadcrumb;
         if (asTeam != null) {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, process);

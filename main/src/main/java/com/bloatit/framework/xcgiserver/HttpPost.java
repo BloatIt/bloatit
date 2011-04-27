@@ -49,7 +49,7 @@ public class HttpPost {
      *            the request)
      * @throws IOException
      */
-    public HttpPost(final InputStream is, final int length, final String contentType) throws IOException {
+    protected HttpPost(final InputStream is, final int length, final String contentType) throws IOException {
         readBytes(is, length, contentType);
     }
 

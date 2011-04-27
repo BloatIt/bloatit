@@ -123,7 +123,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         return CommentReplyPage.generateBreadcrumb(targetComment);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Comment comment) {
+    private static Breadcrumb generateBreadcrumb(final Comment comment) {
 
         Breadcrumb breadcrumb;
 

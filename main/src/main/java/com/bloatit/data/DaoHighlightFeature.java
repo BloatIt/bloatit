@@ -115,7 +115,7 @@ public class DaoHighlightFeature extends DaoIdentifiable {
      * @param activationDate the activation date
      * @param desactivationDate the desactivation date
      */
-    public DaoHighlightFeature(final DaoFeature feature,
+    private DaoHighlightFeature(final DaoFeature feature,
                                final int position,
                                final String reason,
                                final Date activationDate,

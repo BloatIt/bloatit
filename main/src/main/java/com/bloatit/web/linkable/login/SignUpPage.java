@@ -16,6 +16,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -40,7 +41,7 @@ import com.bloatit.web.url.SignUpPageUrl;
  * Page used by users to create their bloatit accounts
  * </p>
  */
-@ParamContainer("member/signup")
+@ParamContainer(value="member/signup", protocol=Protocol.HTTPS)
 public final class SignUpPage extends MasterPage {
     private final SignUpPageUrl url;
 
@@ -54,7 +55,7 @@ public final class SignUpPage extends MasterPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
         layout.addRight(new SideBarDocumentationBlock("privacy"));
-        
+
         return layout;
     }
 
@@ -133,7 +134,7 @@ public final class SignUpPage extends MasterPage {
         return SignUpPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new SignUpPageUrl().getHtmlLink(tr("Sign-in")));

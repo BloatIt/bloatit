@@ -147,8 +147,13 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                    "WHERE u.member = :member " +
                                    "AND id not in (from DaoKudos) " +
                                    "AND id not in (from DaoTranslation)"),
-
-                      }
+                        @NamedQuery(
+                            name = "member.invitationCount",
+                            query = "SELECT COUNT(*)" +
+                                    "FROM DaoJoinTeamInvitation as i " +
+                                    "WHERE i.receiver = :member " +
+                                    "AND i.state = :state"),
+                           }
 
              )
 // @formatter:on
@@ -658,6 +663,13 @@ public class DaoMember extends DaoActor {
         return new QueryCollection<DaoJoinTeamInvitation>("member.getReceivedInvitations.byStateTeam").setEntity("receiver", this)
                                                                                                       .setParameter("state", state)
                                                                                                       .setEntity("team", team);
+    }
+
+    public long getInvitationCount() {
+        Query q = SessionManager.getNamedQuery("member.invitationCount");
+        q.setEntity("member", this);
+        q.setParameter("state", State.PENDING);
+        return (Long) q.uniqueResult();
     }
 
     /**

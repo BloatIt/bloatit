@@ -36,10 +36,10 @@ import com.bloatit.web.url.ModifyBugPageUrl;
 @ParamContainer("feature/bug/domodify")
 public final class ModifyBugAction extends Action {
 
-    public static final String BUG_STATE = "bug_state";
-    public static final String BUG_REASON = "reason";
-    public static final String BUG_LEVEL = "bug_level";
-    public static final String BUG = "bug";
+    private static final String BUG_STATE = "bug_state";
+    private static final String BUG_REASON = "reason";
+    private static final String BUG_LEVEL = "bug_level";
+    private static final String BUG = "bug";
 
     @RequestParam(name = BUG_REASON, role = Role.POST)
     @Optional

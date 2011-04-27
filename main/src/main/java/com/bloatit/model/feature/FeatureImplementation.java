@@ -340,7 +340,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /**
      * Slot called when this feature state change to {@link PreparingState}.
      */
-    void inPreparingState() {
+    private void inPreparingState() {
         final PageIterable<DaoOffer> offers = getDao().getOffers();
         if (offers.size() < 1) {
             throw new WrongStateException("There must be at least one offer to be in Preparing state.");
@@ -408,7 +408,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * 
      * @param offer the new selected offer
      */
-    void setSelectedOffer(final Offer offer) {
+    private void setSelectedOffer(final Offer offer) {
         final Date validationDate = DateUtils.tomorrow();
         new TaskUpdateDevelopingState(getId(), validationDate);
         getDao().setValidationDate(validationDate);

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.data;
 
 import java.util.Locale;

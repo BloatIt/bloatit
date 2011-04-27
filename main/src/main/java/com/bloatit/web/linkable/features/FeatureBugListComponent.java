@@ -32,7 +32,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
 
 public class FeatureBugListComponent extends HtmlDiv {
 
-    public FeatureBugListComponent(final Feature feature) {
+    protected FeatureBugListComponent(final Feature feature) {
         super("padding");
 
         final HtmlDiv reportBugBlock = new HtmlDiv("float_right");

@@ -140,7 +140,7 @@ public final class SiteMapPage extends MasterPage {
         return SiteMapPage.generateBreadcrumb();
     }
 
-    public static Breadcrumb generateBreadcrumb() {
+    private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = IndexPage.generateBreadcrumb();
 
         breadcrumb.pushLink(new SiteMapPageUrl().getHtmlLink(tr("Site map")));

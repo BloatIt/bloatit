@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.model.admin;
 
 import java.math.BigDecimal;

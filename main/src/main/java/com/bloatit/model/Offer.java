@@ -205,7 +205,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     /** The Constant PROGRESSION_PERCENT. */
-    public static final int PROGRESSION_PERCENT = 100;
+    private static final int PROGRESSION_PERCENT = 100;
 
     /**
      * Return the progression of the funding of this offer with the amount

@@ -17,10 +17,13 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -32,6 +35,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.QuotationPage;
@@ -44,7 +48,7 @@ import com.bloatit.web.url.StaticAccountChargingPageUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer("account/charging")
+@ParamContainer(value = "account/charging", protocol = Protocol.HTTPS)
 public final class AccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -54,8 +58,8 @@ public final class AccountChargingPage extends QuotationPage {
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
     @ParamConstraint(min = "1", minErrorMsg = @tr("You must specify a positive value."), //
-                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final AccountChargingPageUrl url;
@@ -89,7 +93,7 @@ public final class AccountChargingPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) {
+    private HtmlElement generateCheckContributeForm(final Member member) {
         final HtmlTitleBlock group;
         if (process.getTeam() != null) {
             group = new HtmlTitleBlock(tr("Charge the {0} account", process.getTeam().getDisplayName()), 1);
@@ -117,8 +121,9 @@ public final class AccountChargingPage extends QuotationPage {
                 process.setAmountToPay(preload);
             }
             if (process.getAmountToCharge().equals(BigDecimal.ZERO)) {
-                process.setAmountToCharge(BigDecimal.ONE);
-                process.setAmountToPay(BigDecimal.ONE);
+
+                process.setAmountToCharge(WebConfiguration.getDefaultChargingAmount());
+                process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
             }
         } catch (final IllegalWriteException e) {
             session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
@@ -138,8 +143,7 @@ public final class AccountChargingPage extends QuotationPage {
             final HtmlLink payContributionLink = new StaticAccountChargingPageUrl(process).getHtmlLink(tr("Validate"));
             payContributionLink.setCssClass("button");
             if (process.getTeam() != null) {
-                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
-                                               "use_account"));
+                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));
             }
             payBlock.add(payContributionLink);
         }
@@ -173,7 +177,7 @@ public final class AccountChargingPage extends QuotationPage {
         return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
+    protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
         final Breadcrumb breadcrumb;
         if (asTeam != null) {
             breadcrumb = AccountPage.generateBreadcrumb(asTeam);

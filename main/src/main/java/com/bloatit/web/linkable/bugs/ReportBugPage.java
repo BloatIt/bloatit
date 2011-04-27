@@ -162,7 +162,7 @@ public final class ReportBugPage extends CreateUserContentPage {
         return ReportBugPage.generateBreadcrumb(milestone.getOffer());
     }
 
-    public static Breadcrumb generateBreadcrumb(final Offer offer) {
+    private static Breadcrumb generateBreadcrumb(final Offer offer) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbBugs(offer.getFeature());
 
         breadcrumb.pushLink(new ReportBugPageUrl(offer).getHtmlLink(tr("Report a bug")));

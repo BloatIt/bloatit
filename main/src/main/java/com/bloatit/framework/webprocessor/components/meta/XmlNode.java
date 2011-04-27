@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.bloatit.framework.webprocessor.components.meta;
 
 import java.util.ArrayList;

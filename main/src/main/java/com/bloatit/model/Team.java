@@ -22,6 +22,7 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
@@ -31,6 +32,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.StringUtils;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
+import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTeam;
 
@@ -203,6 +205,17 @@ public final class Team extends Actor<DaoTeam> {
     public PageIterable<Contribution> doGetContributions() {
         return new ListBinder<Contribution, DaoContribution>(getDao().getContributions());
     }
+    
+    public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
+        // TODO set rights
+        return new UserContentList(getDao().getActivity());
+    }
+    
+    public long getRecentActivityCount() {
+        // TODO set rights
+        return getDao().getRecentActivityCount(ModelConfiguration.getRecentActivityDays());
+    }
+
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Can ...
@@ -210,6 +223,16 @@ public final class Team extends Actor<DaoTeam> {
 
     public boolean canAccessContact(final Action action) {
         return canAccess(new RgtTeam.Contact(), action);
+    }
+    
+    /**
+     * Tells if the authenticated user can access the <i>BankTransaction</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>BankTransaction</i> property.
+     * @return true if you can access the <i>BankTransaction</i> property.
+     */
+    public final boolean canAccessBankTransaction(final Action action) {
+        return canAccess(new RgtTeam.BankTransaction(), action);
     }
 
     /**
@@ -285,4 +308,5 @@ public final class Team extends Actor<DaoTeam> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
 }

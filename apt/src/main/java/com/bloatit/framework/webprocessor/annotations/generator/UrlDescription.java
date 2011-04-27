@@ -39,7 +39,7 @@ public class UrlDescription extends ClassDescription{
         return isAction;
     }
 
-    
+
     public List<ParameterDescription> getFathersConstructorParameters() {
         final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
         if (father!=null) {
@@ -48,7 +48,7 @@ public class UrlDescription extends ClassDescription{
         }
         return parameters;
     }
-    
+
     public List<ParameterDescription> getConstructorParameters() {
         final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
         for (final ParameterDescription params : component.getParameters()) {
@@ -58,4 +58,5 @@ public class UrlDescription extends ClassDescription{
         }
         return parameters;
     }
+
 }

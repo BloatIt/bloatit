@@ -89,7 +89,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         return layout;
     }
 
-    public HtmlTitleBlock generateOfferForm(final Member me) {
+    private HtmlTitleBlock generateOfferForm(final Member me) {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
         if (offer != null) {
@@ -187,7 +187,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         return MakeOfferPage.generateBreadcrumb(feature);
     }
 
-    public static Breadcrumb generateBreadcrumb(final Feature feature) {
+    private static Breadcrumb generateBreadcrumb(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
 
         breadcrumb.pushLink(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make an offer")));

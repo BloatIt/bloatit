@@ -98,7 +98,7 @@ public class SessionManager {
      * @return the query corresponding to that filter
      * @see org.hibernate.Session#createFilter(Object, String)
      */
-    public static Query createFilter(final Object collection, final String str) {
+    protected static Query createFilter(final Object collection, final String str) {
         return getSessionFactory().getCurrentSession().createFilter(collection, str);
     }
 
@@ -174,7 +174,7 @@ public class SessionManager {
     /**
      * Shortener to rollback the current hibernate session.
      */
-    public static void rollback() {
+    protected static void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
 

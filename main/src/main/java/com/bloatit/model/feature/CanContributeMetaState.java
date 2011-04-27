@@ -32,7 +32,7 @@ public abstract class CanContributeMetaState extends AbstractFeatureState {
      * 
      * @param feature the feature on which this state apply.
      */
-    public CanContributeMetaState(final FeatureImplementation feature) {
+    protected CanContributeMetaState(final FeatureImplementation feature) {
         super(feature);
     }
 

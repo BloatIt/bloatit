@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.webprocessor.components.meta;
 
 import java.util.ArrayList;
@@ -8,10 +24,10 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 
 public abstract class XmlElement extends XmlNode {
-    protected final List<XmlNode> children = new ArrayList<XmlNode>();
+    private final List<XmlNode> children = new ArrayList<XmlNode>();
     protected final HtmlTag tag;
 
-    public XmlElement(final String tag) {
+    protected XmlElement(final String tag) {
         super();
         this.tag = new HtmlTag(tag);
     }
@@ -21,7 +37,7 @@ public abstract class XmlElement extends XmlNode {
         this.tag = null;
     }
 
-    public XmlElement(final XmlElement element) {
+    protected XmlElement(final XmlElement element) {
         super();
         for (final XmlNode child : element.children) {
             this.children.add(child);
@@ -89,7 +105,7 @@ public abstract class XmlElement extends XmlNode {
      * @return <code>true</code> if this element has at least one child,
      *         <code>false</code> otherwise
      */
-    public final boolean hasChild() {
+    protected final boolean hasChild() {
         return iterator().hasNext();
     }
 

@@ -41,7 +41,7 @@ public class RestIteratorBinder<T extends RestElement<M>, M extends Identifiable
         this.modelIterator = modelIterator;
     }
 
-    public RestIteratorBinder(final Iterable<M> modelIterable) {
+    protected RestIteratorBinder(final Iterable<M> modelIterable) {
         super();
         this.modelIterator = modelIterable.iterator();
     }

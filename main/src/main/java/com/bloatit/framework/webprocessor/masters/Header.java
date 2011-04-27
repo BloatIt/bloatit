@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.framework.webprocessor.masters;
 
 import java.util.Set;
@@ -37,7 +53,7 @@ public final class Header extends HtmlElement {
     private final PlaceHolderElement cssPh;
     private final PlaceHolderElement jsPh;
 
-    public Header(final String title, final String description, final Set<Robot> robots) {
+    protected Header(final String title, final String description, final Set<Robot> robots) {
         super("head");
 
         // Additiong of charset
@@ -144,7 +160,7 @@ public final class Header extends HtmlElement {
      *
      * @param css the string describing the name of the css
      */
-    public void addCss(final String css) {
+    protected void addCss(final String css) {
         final HtmlElement cssLink = new HtmlGenericElement("link") {
             @Override
             public boolean selfClosable() {
@@ -171,7 +187,7 @@ public final class Header extends HtmlElement {
      * @param js a string describing the URI of the js link, either relative to
      *            the application or absolute (and starting with http://)
      */
-    public void addJs(final String js) {
+    protected void addJs(final String js) {
         final HtmlElement jsLink = new HtmlGenericElement("script");
         jsLink.addAttribute("type", "text/javascript");
         jsLink.addAttribute("src", js);

@@ -71,7 +71,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         return layout;
     }
 
-    public HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
+    private HtmlElement generateCheckContributeForm(final Member member) throws RedirectException {
         final HtmlTitleBlock group = new HtmlTitleBlock(tr("Final check"), 1);
         BigDecimal account;
         try {

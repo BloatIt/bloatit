@@ -61,4 +61,12 @@ public class RgtTeam extends RightManager {
     public static class Description extends Public {
         // nothing this is just a rename.
     }
+    
+    /**
+     * The Class <code>BankTransaction</code> is a {@link RightManager.BankData} accessor for the
+     * <code>BankTransaction</code> property.
+     */
+    public static class BankTransaction extends BankData {
+        // nothing this is just a rename.
+    }
 }

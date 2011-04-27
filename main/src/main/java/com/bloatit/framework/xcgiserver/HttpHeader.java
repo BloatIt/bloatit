@@ -173,7 +173,7 @@ public class HttpHeader {
 
     private final Map<String, String> env;
 
-    public HttpHeader(final Map<String, String> env) {
+    protected HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
         Log.framework().info(env);
