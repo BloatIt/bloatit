@@ -82,6 +82,8 @@ import com.bloatit.rest.list.RestFileMetadataList;
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestFileMetadata extends RestElement<FileMetadata> {
     private FileMetadata model;
+    private static String LANG = "en";
+    private static String URI = "elveos.org/" + LANG + "/resource/id-";
 
     // ---------------------------------------------------------------------------------------
     // -- Constructors
@@ -176,7 +178,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      */
     @XmlElement
     public String getUrl() {
-        return model.getUrl();
+        return URI + model.getId();
     }
 
     /**

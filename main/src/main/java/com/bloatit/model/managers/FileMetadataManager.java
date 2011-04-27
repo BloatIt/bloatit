@@ -92,7 +92,7 @@ public final class FileMetadataManager {
     private static final void createWipDirectory() {
         final File storeDir = new File(FILE_STORAGE_DIRECTORY);
         if (!storeDir.exists()) {
-            if(!storeDir.mkdirs()){
+            if (!storeDir.mkdirs()) {
                 throw new BadProgrammerException("Couldn't create file " + FILE_STORAGE_DIRECTORY);
             }
             Log.model().info("Created directory " + FILE_STORAGE_DIRECTORY);
@@ -100,8 +100,8 @@ public final class FileMetadataManager {
     }
 
     /**
-     * Same as {@link #createFromTempFile(Member, Team, String, String, String)} but
-     * with a copy.
+     * Same as {@link #createFromTempFile(Member, Team, String, String, String)}
+     * but with a copy.
      * 
      * @param author the author of the new {@link FileMetadata}
      * @param path the url to the local file.
