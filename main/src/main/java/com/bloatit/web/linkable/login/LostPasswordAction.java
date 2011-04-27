@@ -60,6 +60,7 @@ public class LostPasswordAction extends Action {
 
     @Override
     protected Url doProcess() {
+        //TODO check all template at startup
         final TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
         final String resetUrl = new RecoverPasswordPageUrl(m.getResetKey(), m.getLogin()).externalUrlString();

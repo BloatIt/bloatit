@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.login;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.StringUtils;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -99,6 +100,8 @@ public class RecoverPasswordAction extends Action {
     protected Url checkRightsAndEverything() {
         if (!newPassword.equals(checkNewPassword)) {
             session.notifyBad(Context.tr("Password doesn't match confirmation."));
+            url.getNewPasswordParameter().getCustomMessages().add(new Message(Context.tr("New password doesn't match with confirmation.")));
+            url.getCheckNewPasswordParameter().getCustomMessages().add(new Message(Context.tr("Confirmation doesn't match with new password.")));
             return new RecoverPasswordPageUrl(resetKey, login);
         }
         member = MemberManager.getMemberByLogin(login);

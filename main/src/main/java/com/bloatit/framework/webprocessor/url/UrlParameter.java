@@ -35,6 +35,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 public class UrlParameter<T, U> extends UrlNode {
     private final UrlParameterDescription<U> description;
     private final UrlParameterConstraints<U> constraints;
+    private final Messages customMessages = new Messages();
 
     private T value;
     private String strValue;
@@ -77,6 +78,10 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
+    public Messages getCustomMessages() {
+        return customMessages;
+    }
+
     public String getStringValue() {
         if (strValue != null && !strValue.isEmpty()) {
             if (getRole() == Role.PRETTY) {
@@ -107,7 +112,7 @@ public class UrlParameter<T, U> extends UrlNode {
     public final void setValue(final T value) {
         setValueUnprotected(value);
         final Messages messages = getMessages();
-        if (messages.hasMessage()) {
+        if (messages.size() - customMessages.size() > 0) {
             final StringBuilder sb = new StringBuilder();
             for (final Message message : messages) {
                 sb.append(message.getMessage()).append(" [").append(value).append("] && ");
@@ -169,6 +174,8 @@ public class UrlParameter<T, U> extends UrlNode {
     @Override
     public Messages getMessages() {
         final Messages messages = new Messages();
+        messages.addAll(customMessages);
+
         if (conversionError) {
 
             final Message message = new Message(getConversionErrorMsg(), What.CONVERSION_ERROR, new GenericMessageFormater(getName(),
@@ -266,7 +273,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         * 
+         *
          * @param parameter a parameter to find or use.
          */
         private FieldDataFromUrl(final UrlParameter<T, U> parameter) {
@@ -298,5 +305,7 @@ public class UrlParameter<T, U> extends UrlNode {
             return messages;
         }
     }
+
+
 
 }
