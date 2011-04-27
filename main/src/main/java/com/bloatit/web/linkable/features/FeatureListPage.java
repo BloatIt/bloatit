@@ -55,7 +55,7 @@ public final class FeatureListPage extends MasterPage {
     private static final String FILTER_CODE = "filter";
 
     @RequestParam(name = FILTER_CODE)
-    @Optional(FILTER_IN_PROGRESS)
+    @Optional(FILTER_ALL)
     private final String filter;
 
     private static final String SORT_BY_RELEVANCE = "relevance";
@@ -231,13 +231,6 @@ public final class FeatureListPage extends MasterPage {
             // featureSearchBlock.add(featureAdvancedSearch);
 
             // Create a feature
-            final HtmlDiv createFeatureBlock = new HtmlDiv("feature_create_block");
-            {
-                createFeatureBlock.addText(Context.tr("If you have an feature or a need about a free software, you can "));
-                final HtmlLink creatFeatureLink = new CreateFeaturePageUrl().getHtmlLink(Context.tr("submit a new feature"));
-                createFeatureBlock.add(creatFeatureLink);
-            }
-            featureSearchBlock.add(createFeatureBlock);
         }
         layout.addLeft(featureSearchBlock);
 
@@ -275,7 +268,7 @@ public final class FeatureListPage extends MasterPage {
         return true;
     }
 
-    static class FeaturesListItem implements HtmlRenderer<Feature> {
+    private static class FeaturesListItem implements HtmlRenderer<Feature> {
         private Feature feature;
 
         @Override
