@@ -210,12 +210,12 @@ public final class FeatureContributorsComponent extends HtmlDiv {
     }
 
     public static final class ContributionStatTableModel extends HtmlTableModel {
+        private final static int lineCount = 1;
 
         private final String contributionMinValue;
         private final String contributionMaxValue;
         private final String contributionMeanValue;
         private int line = -1;
-        private final int lineCount = 1;
         private final String contributionMedianValue;
 
         private ContributionStatTableModel(final String contributionMinValue,

@@ -34,7 +34,7 @@ public class DateAdapter extends XmlAdapter<String, Date> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
-    public String marshal(final Date date) throws Exception {
+    public synchronized String marshal(final Date date) throws Exception {
         if (date == null) {
             return ISO8601Local.format(new Date());
         }
@@ -48,7 +48,7 @@ public class DateAdapter extends XmlAdapter<String, Date> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
-    public Date unmarshal(final String dateString) throws Exception {
+    public synchronized Date unmarshal(final String dateString) throws Exception {
         return ISO8601Local.parse(dateString);
     }
 

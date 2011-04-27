@@ -81,7 +81,9 @@ public final class FileMetadataManager {
 
         final File tempFile = new File(tempFileUrl);
         final File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
-        tempFile.renameTo(storedFile);
+        if (!tempFile.renameTo(storedFile)) {
+            throw new BadProgrammerException("Couldn't move file " + tempFile.getName() + " from temp to perm directory");
+        }
 
         return createFileMetadata(author, team, filename, description, storedFile);
     }

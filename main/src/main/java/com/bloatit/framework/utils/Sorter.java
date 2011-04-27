@@ -63,6 +63,7 @@ public class Sorter<T, U extends Comparable<U>> {
             if (o == null || o.getClass() != getClass()) {
                 return false;
             }
+            // FIXME : Implement HASHCODE PLEASE !
             return compareTo((SortEntry) o) == 0;
         }
     }

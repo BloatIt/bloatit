@@ -80,7 +80,7 @@ public class ActivityTab extends HtmlTab {
     /**
      * Paged renderer for the activity feed
      */
-    private final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
+    private static final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
         public ActivityRenderer() {
             super();
         }

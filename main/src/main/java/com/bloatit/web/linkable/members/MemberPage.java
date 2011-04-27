@@ -239,7 +239,7 @@ public final class MemberPage extends MasterPage {
     /**
      * Paged renderer for the activity feed
      */
-    private final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
+    private static final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
         public ActivityRenderer() {
             super();
         }

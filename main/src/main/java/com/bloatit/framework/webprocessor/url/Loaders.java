@@ -220,7 +220,7 @@ public final class Loaders {
     private static class ToCharacter extends Loader<Character> {
         @Override
         public Character fromString(final String data) {
-            return new Character(data.charAt(0));
+            return Character.valueOf(data.charAt(0));
         }
     }
 
