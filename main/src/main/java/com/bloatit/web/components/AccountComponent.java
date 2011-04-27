@@ -65,7 +65,7 @@ public class AccountComponent extends HtmlPageComponent {
         final HtmlDiv accountPage = new HtmlDiv("account_page");
         add(accountPage);
         accountPage.add(generateAccountSolde(team));
-        accountPage.add(new HtmlTitle(tr("{0} – Account informations", team.getDisplayName()), 1));
+        accountPage.add(new HtmlTitle(tr("Account informations – {0}", team.getDisplayName()), 1));
         accountPage.add(generateAccountMovementList(team.getContributions(), team.getBankTransactions()));
     }
 
@@ -73,7 +73,7 @@ public class AccountComponent extends HtmlPageComponent {
         final HtmlDiv accountPage = new HtmlDiv("account_page");
         add(accountPage);
         accountPage.add(generateAccountSolde(me));
-        accountPage.add(new HtmlTitle(tr("{0} – Account informations", me.getDisplayName()), 1));
+        accountPage.add(new HtmlTitle(tr("Account informations – {0}", me.getDisplayName()), 1));
         accountPage.add(generateAccountMovementList(me.getContributions(), me.getBankTransactions()));
     }
 
