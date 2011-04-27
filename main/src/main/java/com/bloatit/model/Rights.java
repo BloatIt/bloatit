@@ -37,13 +37,20 @@ public class Rights {
 
     private final OwningState owningState;
     private final AuthToken token;
+    private Team currentTeam;
 
     public Rights(final AuthToken token, final IdentifiableInterface identifiable) {
         this.token = token;
-        if (token.isAnonymous()) {
+        currentTeam = null;
+        if (token == null || token.isAnonymous()) {
             owningState = OwningState.NOBODY;
         } else {
-            if (token.getAsTeam() != null) {
+            if (token.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
+                if (token.getAsTeam() != null) {
+                    currentTeam = token.getAsTeam();
+                } else {
+                    currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
+                }
                 if (identifiable.accept(new IsTeamOwnerVisitor(token.getMember()))) {
                     owningState = OwningState.TEAM_OWNER;
                 } else {
@@ -82,19 +89,19 @@ public class Rights {
     // Team Rights
 
     public boolean hasModifyTeamRight() {
-        return hasModifyTeamRight(token.getMember(), token.getAsTeam());
+        return token != null && currentTeam != null && hasModifyTeamRight(token.getMember(), currentTeam);
     }
 
     public boolean hasConsultTeamRight() {
         if (isTeamOwner()) {
-            return hasConsultTeamRight(token.getMember(), token.getAsTeam());
+            return token != null && currentTeam != null && hasConsultTeamRight(token.getMember(), currentTeam);
         }
         return false;
     }
 
     public boolean hasBankTeamRight() {
         if (isTeamOwner()) {
-            return hasBankTeamRight(token.getMember(), token.getAsTeam());
+            return token != null && currentTeam != null && hasBankTeamRight(token.getMember(), currentTeam);
         }
         return false;
     }
@@ -157,11 +164,69 @@ public class Rights {
     }
 
     private final boolean hasUserPrivilege(final DaoMember.Role role) {
-        return token.getMember().getRole() == role;
+        return token != null && token.getMember().getRole() == role;
     }
 
     // ///////////////////////////////////////
     // Visitors
+
+    private class GetCreatedByTeamVisitor extends HighLevelModelVisitor<Team> {
+
+        @Override
+        public Team visitAbstract(final Account<?> model) {
+            return visitAbstract(model.getActorUnprotected());
+        }
+
+        @Override
+        public Team visitAbstract(final Actor<?> model) {
+            if (model instanceof Team) {
+                return (Team) model;
+            }
+            return null;
+        }
+
+        @Override
+        public Team visitAbstract(final UserContentInterface model) {
+            return model.getAsTeam();
+        }
+
+        @Override
+        public Team visitAbstract(final BankTransaction model) {
+            return visitAbstract(model.getAuthorUnprotected());
+        }
+
+        @Override
+        public Team visitAbstract(final Milestone model) {
+            return visitAbstract(model.getOffer());
+        }
+
+        @Override
+        public Team visitAbstract(final Description model) {
+            return null;
+        }
+
+        @Override
+        public Team visitAbstract(final HighlightFeature model) {
+            return null;
+        }
+
+        @Override
+        public Team visitAbstract(final JoinTeamInvitation model) {
+            return null;
+        }
+
+        @Override
+        public Team visitAbstract(final Software model) {
+            return null;
+        }
+
+        @Override
+        public Team visitAbstract(final Transaction model) {
+            // FIXME !!
+            return null;
+        }
+
+    }
 
     private class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
         private final Member member;

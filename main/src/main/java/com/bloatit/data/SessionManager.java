@@ -174,7 +174,7 @@ public class SessionManager {
     /**
      * Shortener to rollback the current hibernate session.
      */
-    protected static void rollback() {
+    public static void rollback() {
         sessionFactory.getCurrentSession().getTransaction().rollback();
     }
 
