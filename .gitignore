@@ -38,3 +38,4 @@ log-*
 .*.swp
 main/nb-configuration.xml
 main/src/main/java/hibernate.cfg.xml
+main/*.class
