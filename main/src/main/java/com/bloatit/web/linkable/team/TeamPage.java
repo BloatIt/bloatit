@@ -96,7 +96,7 @@ public final class TeamPage extends MasterPage {
         final Visitor me = session.getAuthToken().getVisitor();
 
         layout.addLeft(generateTeamIDCard(me));
-        layout.addLeft(generateMain(me));
+        layout.addLeft(generateMain());
 
         layout.addRight(generateContactBox());
 
@@ -134,7 +134,7 @@ public final class TeamPage extends MasterPage {
         return contacts;
     }
 
-    private HtmlElement generateMain(final Visitor me) {
+    private HtmlElement generateMain() {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
