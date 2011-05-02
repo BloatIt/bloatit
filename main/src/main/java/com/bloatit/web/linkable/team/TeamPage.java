@@ -46,7 +46,6 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.money.AccountPage.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
 import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
@@ -125,7 +124,7 @@ public final class TeamPage extends MasterPage {
 
     private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
-        contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
+        contacts.setTitle(Context.tr("How to contact \"{0}\"?", targetTeam.getDisplayName()));
 
         if (targetTeam.canAccessContact(Action.READ)) {
             try {

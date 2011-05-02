@@ -270,20 +270,20 @@ public final class Payline extends RestrictedObject {
 
         // Add the member id
         ref.append(member.getId());
-        ref.append("-");
+        ref.append('-');
 
         PageIterable<BankTransaction> bankTransaction;
         try {
             // Add the last bankTransaction + 1
             bankTransaction = member.getBankTransactions();
             if (bankTransaction.size() == 0) {
-                ref.append("0");
+                ref.append('0');
             } else {
                 ref.append(bankTransaction.iterator().next().getId() + 1);
             }
 
             // Add a random string to ensure uniqueness.
-            ref.append("-").append(RandomStringUtils.randomAlphabetic(5));
+            ref.append('-').append(RandomStringUtils.randomAlphabetic(5));
         } catch (final UnauthorizedOperationException e) {
             Log.model().fatal("Unauthorized exception should never append ! ", e);
             ref.append("ERROR");

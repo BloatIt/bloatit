@@ -149,7 +149,7 @@ public class Quotation extends QuotationEntry {
         StringBuilder o = new StringBuilder();
         o.append(output);
         while (output.length() < 40) {
-            o.append(" ");
+            o.append(' ');
         }
         return o.toString();
     }

@@ -191,14 +191,14 @@ public class RestTransaction extends RestElement<Transaction> {
     /**
      * Provided for JAXB
      */
-    void setModel(final Transaction model) {
+    void setModel(final Transaction model) { // NO_UCD
         this.model = model;
     }
 
     /**
      * Package method to find the model
      */
-    Transaction getModel() {
+    Transaction getModel() { // NO_UCD
         return model;
     }
 
