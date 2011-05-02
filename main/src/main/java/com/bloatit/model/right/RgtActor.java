@@ -44,7 +44,7 @@ public class RgtActor extends RightManager {
      * The Class BankTransaction is a {@link RightManager.Private} accessor for
      * the BankTransaction property.
      */
-    public static class BankTransaction extends Private {
+    public static class BankTransaction extends BankData {
         // nothing
     }
 

@@ -187,7 +187,7 @@ public class SessionManager {
             final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create-drop")
                                                                      .setProperty("hibernate.cache.use_second_level_cache", "false")
                                                                      .setProperty("hibernate.cache.use_query_cache", "false")
-                                                                     .setProperty("hibernate.cache.provider_class", "hibernate.cache.provider_class")
+                                                                     .setProperty("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider")
                                                                      .setProperty(Environment.SHOW_SQL, "false")
                                                                      // .setProperty(Environment.DRIVER,
                                                                      // "org.hsqldb.jdbcDriver")

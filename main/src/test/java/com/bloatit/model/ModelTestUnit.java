@@ -27,7 +27,7 @@ public class ModelTestUnit extends TestCase {
     protected AuthToken tomAuthToken;
     protected AuthToken fredAuthToken;
     protected AuthToken loser;
-    
+
     protected static SimpleTestDB db;
     static int init = init();
 
@@ -54,5 +54,6 @@ public class ModelTestUnit extends TestCase {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.rollback();
         }
+        CacheManager.clear();
     }
 }

@@ -19,6 +19,7 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
@@ -49,6 +50,8 @@ public class SimpleTestDB {
     private final DaoTeam privateGroup;
     private final DaoFeature feature;
     private final DaoSoftware project;
+    private DaoBankTransaction yoBankTransaction;
+    private DaoBankTransaction publicGroupBankTransaction;
 
     public SimpleTestDB() {
 
@@ -111,7 +114,14 @@ public class SimpleTestDB {
         privateGroup.addMember(loser, false);
 
         try {
-            DaoTransaction.createAndPersist(yo.getInternalAccount(), privateGroup.getExternalAccount(), new BigDecimal("-1000"));
+            yoBankTransaction = DaoBankTransaction.createAndPersist("test", "token1", yo, new BigDecimal("1000"), new BigDecimal("1100"), "order1");
+            getYoBankTransaction().setAuthorized();
+            getYoBankTransaction().setValidated();
+            
+            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test", "token2", publicGroup, new BigDecimal("1000"), new BigDecimal("1100"), "order2");
+            publicGroupBankTransaction.setAuthorized();
+            publicGroupBankTransaction.setValidated();
+
             DaoTransaction.createAndPersist(tom.getInternalAccount(), privateGroup.getExternalAccount(), new BigDecimal("-1000"));
             DaoTransaction.createAndPersist(fred.getInternalAccount(), privateGroup.getExternalAccount(), new BigDecimal("-1000"));
         } catch (final NotEnoughMoneyException e) {
@@ -217,5 +227,13 @@ public class SimpleTestDB {
 
     public DaoFeature getFeature() {
         return feature;
+    }
+
+    public DaoBankTransaction getYoBankTransaction() {
+        return yoBankTransaction;
+    }
+
+    public DaoBankTransaction getPublicGroupBankTransaction() {
+        return publicGroupBankTransaction;
     }
 }

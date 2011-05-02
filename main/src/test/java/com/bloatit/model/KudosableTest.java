@@ -17,6 +17,7 @@
 package com.bloatit.model;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.feature.FeatureManager;
 
 public class KudosableTest extends ModelTestUnit {
@@ -39,18 +40,20 @@ public class KudosableTest extends ModelTestUnit {
         assertFalse(feature.canVoteUp().isEmpty());
     }
 
-    public void testUnkudos() {
-        final Feature feature = FeatureManager.getFeatureById(db.getFeature().getId());
-
+    public void testUnkudos() throws UnauthorizedOperationException {
+        final Feature feature = FeatureImplementation.create(db.getFeature());
+        
         assertEquals(0, feature.getPopularity());
-        feature.authenticate(yoAuthToken);
-        // feature.unkudos();
-        // assertEquals(-1, feature.getPopularity());
+        feature.authenticate(tomAuthToken);
+        assertTrue(feature.canVoteUp().isEmpty());
+        feature.voteDown();
+        assertEquals(-1, feature.getPopularity());
     }
 
     public void testKudos() throws UnauthorizedOperationException {
         final Feature feature = FeatureManager.getFeatureById(db.getFeature().getId());
 
+        assertEquals(0, feature.getPopularity());
         feature.authenticate(fredAuthToken);
         feature.voteUp();
         assertEquals(1, feature.getPopularity());
