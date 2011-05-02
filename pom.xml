@@ -2,16 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bloatit</groupId>
 	<artifactId>BloatItFather</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
 	<scm>
-        <url>https://gitorious.org/bloatit</url>
-		<connection>scm:git:git://gitorious.org/bloatit/bloatit.git</connection>
+		<url>https://github.com/BloatIt/bloatit</url>
+		<connection>scm:git:git://github.com/BloatIt/bloatit.git</connection>
 	</scm>
 
 	<build>
