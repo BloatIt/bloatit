@@ -51,7 +51,7 @@ public final class SignUpAction extends Action {
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("Email cannot be blank."),//
                      min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 3."),//
-                     max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 31."))
+                     max = "254", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 255."))
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
