@@ -47,6 +47,7 @@ import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
@@ -320,6 +321,9 @@ public class DaoMember extends DaoActor {
         }
         if (password.isEmpty()) {
             throw new NonOptionalParameterException("Password cannot be empty!");
+        }
+        if (!login.matches("[^\\p{Space}]+")) {
+            throw new MalformedArgumentException("The login cannot contain space characters.");
         }
         setLocale(locale);
         this.email = email;
@@ -666,7 +670,7 @@ public class DaoMember extends DaoActor {
     }
 
     public long getInvitationCount() {
-        Query q = SessionManager.getNamedQuery("member.invitationCount");
+        final Query q = SessionManager.getNamedQuery("member.invitationCount");
         q.setEntity("member", this);
         q.setParameter("state", State.PENDING);
         return (Long) q.uniqueResult();

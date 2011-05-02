@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
@@ -26,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
@@ -81,11 +79,8 @@ public final class AccountPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws PageNotFoundException {
         try {
-            Actor<?> currentActor = loggedUser;
             if (isTeamAccount()) {
-                if (loggedUser.hasBankTeamRight(team)) {
-                    currentActor = team;
-                } else {
+                if (!loggedUser.hasBankTeamRight(team)) {
                     session.notifyBad(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));
                     throw new PageNotFoundException();
                 }

@@ -162,8 +162,8 @@ public class FCGIParser implements XcgiParser {
 
     protected void fetchPostRecord() throws IOException {
 
-        // TODO: comment that
         while (postStreamOpen && !(parseRecord() == FCGI_STDIN)) {
+            // TODO: comment that
         }
     }
 

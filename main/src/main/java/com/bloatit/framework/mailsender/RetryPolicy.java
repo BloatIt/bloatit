@@ -56,7 +56,7 @@ public class RetryPolicy {
     /**
      * Create a retry policy based on a String representing the policy
      */
-    public RetryPolicy(String policy) {
+    public RetryPolicy(final String policy) {
         this.policy = parsePolicy(policy);
     }
 
@@ -69,20 +69,20 @@ public class RetryPolicy {
      * 
      * @param policy
      */
-    public RetryPolicy(long[] policy) {
+    public RetryPolicy(final long[] policy) {
         this.policy = Arrays.copyOf(policy, policy.length);
     }
 
     private long[] parsePolicy(String policy) {
         policy = policy.substring(policy.indexOf('[') + 1, policy.lastIndexOf(']'));
         policy = policy.replace(" ", "");
-        String[] split = policy.split(",");
-        Pattern p = Pattern.compile("^([1-9][0-9]*)([a-zA-Z]*)$");
+        final String[] split = policy.split(",");
+        final Pattern p = Pattern.compile("^([1-9][0-9]*)([a-zA-Z]*)$");
 
-        long[] retries = new long[split.length];
+        final long[] retries = new long[split.length];
         int j = 0;
-        for (String s : split) {
-            Matcher m = p.matcher(s);
+        for (final String s : split) {
+            final Matcher m = p.matcher(s);
             if (!m.matches() || m.groupCount() != 2) {
                 if (s.equals("...")) {
                     if (j == 0) {
@@ -97,8 +97,8 @@ public class RetryPolicy {
                             + "'. Please respect format [1ms, 1s, 1min, 1h, 1d, ...]");
                 }
             } else {
-                int i = Integer.parseInt(m.group(1));
-                String d = m.group(2);
+                final int i = Integer.parseInt(m.group(1));
+                final String d = m.group(2);
                 if (d.equals("ms")) {
                     retries[j] = i * MILLISECOND;
                 } else if (d.equals("s")) {
@@ -135,7 +135,7 @@ public class RetryPolicy {
      * @return the next duration to wait in milliseconds
      */
     public synchronized long getNext() {
-        long next = policy[index];
+        final long next = policy[index];
         if (next == 0) {
             return policy[index - 1];
         }
@@ -147,9 +147,10 @@ public class RetryPolicy {
         return next;
     }
 
+    @Override
     public synchronized String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (long p : policy) {
+        final StringBuilder sb = new StringBuilder();
+        for (final long p : policy) {
             sb.append(p + ",");
         }
         return sb.toString();

@@ -177,8 +177,6 @@ public final class TeamPage extends MasterPage {
         // Team informations
         final HtmlList informationsList = new HtmlList();
 
-        // display name
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Unique name: "), targetTeam.getLogin()));
         // Visibility
         informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (targetTeam.isPublic() ? Context.tr("Public")
                 : Context.tr("Private"))));

@@ -147,10 +147,10 @@ public abstract class DaoActor extends DaoIdentifiable {
         if (login.length() < 3) {
             throw new MalformedArgumentException("login length must be > 2");
         }
-        if (!login.matches("[^\\p{Space}]+")) {
-            throw new MalformedArgumentException("The login cannot contain space characters.");
+        if (!login.trim().equals(login)) {
+            throw new MalformedArgumentException("The login cannot begin or end with spaces.");
         }
-
+        
         this.dateCreation = new Date();
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);
