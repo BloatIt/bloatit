@@ -24,9 +24,9 @@ import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.model.right.AccountRight;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtAccount;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 
@@ -60,19 +60,19 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean canAccessSomething() {
-        return canAccess(new AccountRight.Transaction(), Action.READ);
+        return canAccess(new RgtAccount.Transaction(), Action.READ);
     }
 
-    public InternalAccount getFrom() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+    public InternalAccount getFrom() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getFromUnprotected();
     }
 
-    private InternalAccount getFromUnprotected() {
+    protected InternalAccount getFromUnprotected() {
         return InternalAccount.create(getDao().getFrom());
     }
 
-    private Account<?> getToUnprotected() {
+    protected Account<?> getToUnprotected() {
         if (getDao().getTo().getClass() == DaoInternalAccount.class) {
             return InternalAccount.create((DaoInternalAccount) getDao().getTo());
         } else if (getDao().getTo().getClass() == DaoExternalAccount.class) {
@@ -81,28 +81,19 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         throw new BadProgrammerException("Cannot find the right Account child class.");
     }
 
-    public Account<?> getTo() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+    public Account<?> getTo() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getToUnprotected();
     }
 
-    public BigDecimal getAmount() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+    public BigDecimal getAmount() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getDao().getAmount();
     }
 
-    public Date getCreationDate() throws UnauthorizedOperationException {
-        tryAccess(new AccountRight.Transaction(), Action.READ);
+    public Date getCreationDate() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtAccount.Transaction(), Action.READ);
         return getDao().getCreationDate();
-    }
-
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Role
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    protected boolean isMine(final Member member) {
-        return getFromUnprotected().isMine(member) || getToUnprotected().isMine(member);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

@@ -26,7 +26,6 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -57,7 +56,8 @@ import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.FeatureRight;
+import com.bloatit.model.right.RgtFeature;
+import com.bloatit.model.right.RgtOffer;
 
 // TODO : delete comment.
 //
@@ -85,7 +85,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /**
      * Create a new FeatureImplementation. This method is not protected by any
      * right management.
-     *
+     * 
      * @param dao the dao
      * @return null if the <code>dao</code> is null.
      */
@@ -98,7 +98,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * Create a new feature. The right management for creating a feature is
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link FeatureManager}.
-     *
+     * 
      * @param author the author
      * @param locale the locale in which this feature is written
      * @param title the title of the feature
@@ -121,7 +121,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Use the {@link #create(DaoFeature)} method.
-     *
+     * 
      * @param dao the dao
      */
     private FeatureImplementation(final DaoFeature dao) {
@@ -132,60 +132,31 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     // Can something
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#canAccessComment(com.bloatit .model.right
-     * .RightManager.Action)
-     */
     @Override
     public boolean canAccessComment(final Action action) {
-        return canAccess(new FeatureRight.Comment(), action);
+        return canAccess(new RgtFeature.Comment(), action);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#canAccessContribution(com.bloatit .model
-     * .right.RightManager.Action)
-     */
     @Override
     public boolean canAccessContribution(final Action action) {
-        return canAccess(new FeatureRight.Contribute(), action);
+        return canAccess(new RgtFeature.Contribute(), action);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#canAccessOffer(com.bloatit.model .right
-     * .RightManager.Action)
-     */
     @Override
     public boolean canAccessOffer(final Action action) {
-        return canAccess(new FeatureRight.Offer(), action);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#canAccessDescription()
-     */
-    @Override
-    public boolean canAccessDescription() {
-        return canAccess(new FeatureRight.Description(), Action.READ);
+        return canAccess(new RgtFeature.Offer(), action);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Do things.
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#addContribution(java.math.BigDecimal ,
-     * java.lang.String)
-     */
     @Override
     public Contribution addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.WRITE);
+        tryAccess(new RgtFeature.Contribute(), Action.WRITE);
         // For exception safety keep the order.
         if (getAuthToken().getAsTeam() != null) {
-            if (getAuthToken().getAsTeam().hasTeamPrivilege(UserTeamRight.BANK)) {
+            if (getAuthToken().getAsTeam().getUserTeamRight(getAuthToken().getMember()).contains(UserTeamRight.BANK)) {
                 Log.model().trace("Doing a contribution in the name of a team: " + getAuthToken().getAsTeam().getId());
             } else {
                 throw new UnauthorizedOperationException(SpecialCode.TEAM_CONTRIBUTION_WITHOUT_BANK);
@@ -205,6 +176,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                           final Locale local,
                           final Date dateExpire,
                           final int secondsBeforeValidation) throws UnauthorizedOperationException {
+        tryAccess(new RgtFeature.Offer(), Action.WRITE);
         final Offer offer = new Offer(getAuthToken().getMember(),
                                       getAuthToken().getAsTeam(),
                                       this,
@@ -220,8 +192,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         if (!offer.getFeature().equals(this)) {
             throw new IllegalArgumentException();
         }
-        tryAccess(new FeatureRight.Offer(), Action.WRITE);
+        tryAccess(new RgtFeature.Offer(), Action.WRITE);
 
+        // Warning: This does not works when the offer is created by a team
         if (!offer.getMember().equals(getAuthToken().getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
@@ -230,13 +203,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return offer;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#removeOffer(com.bloatit.model .Offer)
-     */
     @Override
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.DELETE);
+        tryAccess(new RgtFeature.Offer(), Action.DELETE);
         if (getDao().getSelectedOffer().getId() != null && getDao().getSelectedOffer().getId().equals(offer.getId())) {
             getDao().computeSelectedOffer();
         }
@@ -244,13 +213,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         setStateObject(getStateObject().eventRemoveOffer(offer));
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#addComment(java.lang.String)
-     */
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Comment(), Action.WRITE);
+        tryAccess(new RgtFeature.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
                                                                DaoGetter.getTeam(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
@@ -259,46 +224,34 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return Comment.create(comment);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#unSelectOffer(com.bloatit.model .Offer)
+    /**
+     * Used by Offer class. You should never have to use it
+     * 
+     * @param offer the offer to unselect. Nothing is done if the offer is not
+     *            selected.
      */
-    @Override
     public void unSelectOffer(final Offer offer) {
-        if (offer.equals(getSelectedOfferUnprotected())) {
+        if (offer.equals(getSelectedOffer())) {
             setSelectedOffer(null);
             getDao().computeSelectedOffer();
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#validateCurrentMilestone(boolean)
-     */
-    @Override
     public boolean validateCurrentMilestone(final boolean force) {
         throwWrongStateExceptionOnNondevelopingState();
-        return getSelectedOfferUnprotected().validateCurrentMilestone(force);
+        return getSelectedOffer().validateCurrentMilestone(force);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#cancelDevelopment()
-     */
     @Override
     public void cancelDevelopment() throws UnauthorizedOperationException {
-        // TODO Verify the rights.
-        getAuthToken(); // Make sure we are authenticated.
-        if (!getSelectedOffer().canTalkAs()) {
-            throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_FEATURE);
-        }
+        getSelectedOffer().tryAccess(new RgtOffer.SelectedOffer(), Action.WRITE);
         setStateObject(getStateObject().eventDeveloperCanceled());
         // Work is done in the slot system.
     }
 
     @Override
     public void computeSelectedOffer() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().computeSelectedOffer();
@@ -306,7 +259,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public void setFeatureState(final FeatureState featureState) throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         setFeatureStateUnprotected(featureState);
@@ -348,7 +301,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             throw new WrongStateException("Cannot be in development state, not enough money.");
         }
         getDao().setFeatureState(FeatureState.DEVELOPPING);
-        getSelectedOfferUnprotected().getCurrentMilestone().setDeveloping();
+        getSelectedOffer().getCurrentMilestone().setDevelopingUnprotected();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentMilestone().getExpirationDate());
     }
 
@@ -361,7 +314,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         for (final Contribution contribution : getContributionsUnprotected()) {
             contribution.cancel();
         }
-        getSelectedOfferUnprotected().cancelEverythingLeft();
+        getSelectedOffer().cancelEverythingLeft();
     }
 
     /**
@@ -409,8 +362,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     /**
+     * Make sure this method is not accessible by any user (except admin).
      * <p>
-     * Test if the current feature should passe into {@link DevelopingState}.
+     * Test if the current feature should passe into {@link DevelopingState}. Do
+     * it if possible.
      * </p>
      * <p>
      * Called by a {@link PlannedTask}.
@@ -443,10 +398,6 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Kudosable#notifyRejected()
-     */
     @Override
     protected void notifyRejected() {
         setStateObject(getStateObject().eventFeatureRejected());
@@ -454,7 +405,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Sets the selected offer. Called internally and in featureState.
-     *
+     * 
      * @param offer the new selected offer
      */
     private void setSelectedOffer(final Offer offer) {
@@ -464,10 +415,6 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         getDao().setSelectedOffer(offer.getDao());
     }
 
-    public void updateDevelopmentStatus() {
-        updateDevelopmentState();
-    }
-
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Offer feedBack
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -475,7 +422,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /**
      * Method called by Offer when the offer is kudosed. Update the
      * selectedOffer using it popularity.
-     *
+     * 
      * @param offer the offer that has been kudosed.
      * @param positif true means kudos up, false kudos down.
      */
@@ -487,12 +434,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Update the selected offer using the popularity.
-     *
+     * 
      * @param offer The offer that has been kudosed
      * @param positif true if this is a kudos, false if it is a unkudos.
      */
     private void computeSelectedOffer(final Offer offer, final boolean positif) {
-        final Offer selectedOffer = getSelectedOfferUnprotected();
+        final Offer selectedOffer = getSelectedOffer();
         final boolean isSelectedOffer = offer.equals(selectedOffer);
         if (positif && !isSelectedOffer) {
             if (selectedOffer == null || offer.getPopularity() > selectedOffer.getPopularity()) {
@@ -544,10 +491,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public boolean isDeveloping() {
         final boolean isDeveloping = getFeatureState() == FeatureState.DEVELOPPING;
         if (isDeveloping) {
-            assert getSelectedOfferUnprotected() != null;
-            assert getValidatedOfferUnprotected() != null;
-            assert getSelectedOfferUnprotected().equals(getValidatedOfferUnprotected());
-            assert getValidatedOfferUnprotected().isFinished() == false;
+            assert getSelectedOffer() != null;
+            assert getValidatedOffer() != null;
+            assert getSelectedOffer().equals(getValidatedOffer());
+            assert getValidatedOffer().isFinished() == false;
         }
         return isDeveloping;
     }
@@ -558,10 +505,6 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getValidationDate()
-     */
     @Override
     public Date getValidationDate() {
         return getDao().getValidationDate();
@@ -572,29 +515,19 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return getDao().getCommentsCount();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getComments()
-     */
     @Override
-    public PageIterable<Comment> getComments() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Comment(), Action.READ);
+    public PageIterable<Comment> getComments() {
         return new CommentList(getDao().getComments());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getContributions()
-     */
     @Override
-    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+    public PageIterable<Contribution> getContributions()  {
         return getContributionsUnprotected();
     }
 
     /**
      * Gets the contributions unprotected.
-     *
+     * 
      * @return the contributions unprotected
      * @see #getContribution()
      */
@@ -611,13 +544,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /** The Constant PROGRESSION_PERCENT. */
     public static final int PROGRESSION_PERCENT = 100;
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getProgression()
-     */
     @Override
-    public float getProgression() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+    public float getProgression() {
         final Offer currentOffer = getSelectedOffer();
         if (currentOffer == null) {
             return PROGRESSION_COEF * (1 - 1 / (1 + getDao().getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
@@ -625,13 +553,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return currentOffer.getProgression();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getMemberProgression()
-     */
     @Override
     public float getMemberProgression(final Actor<?> author) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
 
         final PageIterable<Contribution> contributions = getContributions();
 
@@ -650,14 +573,8 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return progression * memberAmountFloat / totalAmountFloat;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getRelativeProgression()
-     */
     @Override
-    public float getRelativeProgression(final BigDecimal amount) throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
-
+    public float getRelativeProgression(final BigDecimal amount) {
         final float memberAmountFloat = amount.floatValue();
         final float totalAmountFloat = getContribution().floatValue();
         final float progression = getProgression();
@@ -665,124 +582,63 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return progression * memberAmountFloat / totalAmountFloat;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getContribution()
-     */
     @Override
-    public BigDecimal getContribution() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+    public BigDecimal getContribution() {
         return getDao().getContribution();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getContributionMax()
-     */
     @Override
-    public BigDecimal getContributionMax() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+    public BigDecimal getContributionMax()  {
         return getDao().getContributionMax();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getContributionMin()
-     */
     @Override
-    public BigDecimal getContributionMin() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Contribute(), Action.READ);
+    public BigDecimal getContributionMin()  {
         return getDao().getContributionMin();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getDescription()
-     */
     @Override
-    public Description getDescription() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Description(), Action.READ);
+    public Description getDescription()  {
         return Description.create(getDao().getDescription());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getSoftware()
-     */
     @Override
-    public Software getSoftware() throws UnauthorizedOperationException {
-        // TODO: access right
+    public Software getSoftware()  {
         return Software.create(getDao().getSoftware());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getOffers()
-     */
     @Override
-    public PageIterable<Offer> getOffers() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.READ);
+    public PageIterable<Offer> getOffers() {
         return getOffersUnprotected();
     }
 
     /**
      * Gets the offers unprotected.
-     *
+     * 
      * @return the offers unprotected
      */
     private PageIterable<Offer> getOffersUnprotected() {
         return new OfferList(getDao().getOffers());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getSelectedOffer()
-     */
     @Override
-    public Offer getSelectedOffer() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.READ);
-        return getSelectedOfferUnprotected();
+    public Offer getSelectedOffer() {
+        return Offer.create(getDao().getSelectedOffer());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getValidatedOffer()
-     */
     @Override
-    public Offer getValidatedOffer() throws UnauthorizedOperationException {
-        tryAccess(new FeatureRight.Offer(), Action.READ);
-        return getValidatedOfferUnprotected();
-    }
-
-    private Offer getValidatedOfferUnprotected() {
+    public Offer getValidatedOffer() {
         if (getDao().getSelectedOffer() != null && getValidationDate().before(new Date())) {
-            return getSelectedOfferUnprotected();
+            return getSelectedOffer();
         }
         return null;
     }
 
-    /**
-     * Gets the selected offer with no Right management.
-     *
-     * @return the selected offer unprotected
-     */
-    private Offer getSelectedOfferUnprotected() {
-        return Offer.create(getDao().getSelectedOffer());
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getTitle()
-     */
     @Override
-    public String getTitle() throws UnauthorizedOperationException {
+    public String getTitle() {
         return getDescription().getDefaultTranslation().getTitle();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Feature#getFeatureState()
-     */
     @Override
     public FeatureState getFeatureState() {
         return getDao().getFeatureState();
@@ -790,7 +646,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Sets the state object.
-     *
+     * 
      * @param stateObject the new state object
      */
     private void setStateObject(final AbstractFeatureState stateObject) {
@@ -799,7 +655,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the state object.
-     *
+     * 
      * @return the state object
      */
     private AbstractFeatureState getStateObject() {
@@ -843,7 +699,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn pending.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnPending()
      */
@@ -854,7 +710,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn valid.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnValid()
      */
@@ -865,7 +721,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn rejected.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnRejected()
      */
@@ -876,7 +732,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn hidden.
-     *
+     * 
      * @return the int
      * @see com.bloatit.model.Kudosable#turnHidden()
      */

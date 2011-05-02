@@ -13,9 +13,7 @@ package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -93,23 +91,18 @@ public final class SoftwareListPage extends MasterPage {
         @Override
         public XmlNode generate(final Software software) {
             final SoftwarePageUrl softwareUrl = new SoftwarePageUrl(software);
-            try {
-                final HtmlDiv box = new HtmlDiv("software_box");
+            final HtmlDiv box = new HtmlDiv("software_box");
 
-                box.add(new HtmlDiv("float_right").add(SoftwaresTools.getSoftwareLogo(software)));
+            box.add(new HtmlDiv("float_right").add(SoftwaresTools.getSoftwareLogo(software)));
 
-                final HtmlDiv textBox = new HtmlDiv("software_text");
-                HtmlLink htmlLink;
-                htmlLink = softwareUrl.getHtmlLink(software.getName());
-                textBox.add(htmlLink);
-                box.add(textBox);
-                box.add(new HtmlClearer());
+            final HtmlDiv textBox = new HtmlDiv("software_text");
+            HtmlLink htmlLink;
+            htmlLink = softwareUrl.getHtmlLink(software.getName());
+            textBox.add(htmlLink);
+            box.add(textBox);
+            box.add(new HtmlClearer());
 
-                return box;
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError("An error prevented us from displaying team information.");
-                throw new ShallNotPassException("Cannot display software information", e);
-            }
+            return box;
         }
     };
 

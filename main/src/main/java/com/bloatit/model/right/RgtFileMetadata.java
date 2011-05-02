@@ -16,28 +16,16 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Contribution;
-
 /**
- * The Class ContributionRight store the properties accessor for the
- * {@link Contribution} class.
+ * The Class RgtFileMetadata store the properties accessor for the
+ * {@link com.bloatit.model.FileMetadata} class.
  */
-public class ContributionRight extends RightManager {
-
+public class RgtFileMetadata extends RightManager {
     /**
-     * The Class Amount is a {@link PublicReadOnly} accessor for the Transaction
-     * Amount.
+     * The Class <code>Description</code> is a {@link RightManager.Public}
+     * accessor for the <code>Description</code> property.
      */
-    public static class Amount extends PublicReadOnly {
+    public static class Description extends Public {
         // nothing this is just a rename.
     }
-
-    /**
-     * The Class Comment is a {@link PublicReadOnly} accessor for the Comment
-     * property.
-     */
-    public static class Comment extends PublicReadOnly {
-        // nothing this is just a rename.
-    }
-
 }

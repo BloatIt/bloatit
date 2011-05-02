@@ -16,6 +16,7 @@
 //
 package com.bloatit.web.linkable.money;
 
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -48,7 +49,11 @@ public final class PaylineReturnAction extends Action {
     @Override
     protected Url doProcess() {
         if (ack.equals("ok")) {
-            process.validatePayment(token);
+            try {
+                process.validatePayment(token);
+            } catch (final UnauthorizedPrivateAccessException e) {
+                session.notifyBad(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
+            }
         } else if (ack.equals("cancel")) {
             process.refusePayment(token);
         }

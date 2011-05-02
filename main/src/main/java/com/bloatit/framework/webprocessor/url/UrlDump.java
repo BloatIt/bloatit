@@ -38,7 +38,7 @@ public class UrlDump extends Url {
     }
 
     private void writeParameter(StringBuilder sb, String name, String value) {
-        sb.append("/").append(name).append("-").append(value);
+        sb.append('/').append(name).append('-').append(value);
     }
 
     @Override

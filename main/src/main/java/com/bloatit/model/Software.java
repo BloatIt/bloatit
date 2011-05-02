@@ -20,14 +20,11 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoSoftware;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.SoftwareRight;
 
-public class Software extends Identifiable<DaoSoftware> {
+public final class Software extends Identifiable<DaoSoftware> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
@@ -67,51 +64,34 @@ public class Software extends Identifiable<DaoSoftware> {
     /**
      * @see com.bloatit.data.DaoSoftware#getName()
      */
-    public String getName() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+    public String getName()  {
         return getDao().getName();
     }
 
     /**
-     * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoSoftware#getDescription()
      */
-    public final Description getDescription() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+    public final Description getDescription()  {
         return Description.create(getDao().getDescription());
     }
 
     /**
-     * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoSoftware#getImage()
      */
-    public final FileMetadata getImage() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+    public final FileMetadata getImage()  {
         return FileMetadata.create(getDao().getImage());
     }
 
     /**
-     * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoSoftware#getFeatures()
      */
-    public final FeatureList getFeatures() throws UnauthorizedOperationException {
-        tryAccess(new SoftwareRight.Name(), Action.READ);
+    public final FeatureList getFeatures() {
         return new FeatureList(getDao().getFeatures());
 
     }
 
     public void setImage(final FileMetadata fileImage) {
-        // TODO: right management
         getDao().setImage(fileImage.getDao());
-    }
-
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // RightManagement
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    protected boolean isMine(final Member member) {
-        return false;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

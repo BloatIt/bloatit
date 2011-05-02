@@ -64,8 +64,8 @@ public final class CheckContributionPage extends QuotationPage {
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
     @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
-                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final CheckContributionPageUrl url;
@@ -168,7 +168,7 @@ public final class CheckContributionPage extends QuotationPage {
             confirmContributionLink.setCssClass("button");
 
             if (process.getTeam() != null) {
-                buttonDiv.add(new HtmlParagraph(Context.tr("Using the '") + process.getTeam().getDisplayName() + Context.tr("' account")));
+                buttonDiv.add(new HtmlParagraph(Context.tr("Using the ''{0}'' account", process.getTeam().getDisplayName())));
             }
 
             buttonDiv.add(confirmContributionLink);
@@ -238,8 +238,7 @@ public final class CheckContributionPage extends QuotationPage {
             final HtmlLink payContributionLink = new StaticCheckContributionPageUrl(process).getHtmlLink(tr("Validate"));
             payContributionLink.setCssClass("button");
             if (process.getTeam() != null) {
-                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()),
-                                               "use_account"));
+                payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));
             }
             payBlock.add(payContributionLink);
         }
@@ -262,19 +261,14 @@ public final class CheckContributionPage extends QuotationPage {
         {
             featureContributionSummary.add(new HtmlTitle(tr("The feature"), 2));
 
-            try {
-                final HtmlDiv changeLine = new HtmlDiv("change_line");
-                {
+            final HtmlDiv changeLine = new HtmlDiv("change_line");
+            {
 
-                    changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
-                    changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
-                }
-                featureContributionSummary.add(changeLine);
-                featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
-                throw new ShallNotPassException("User cannot access user information", e);
+                changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
             }
+            featureContributionSummary.add(changeLine);
+            featureContributionSummary.add(new HtmlDefineParagraph(tr("Target feature: "), FeaturesTools.getTitle(feature)));
         }
         return featureContributionSummary;
     }

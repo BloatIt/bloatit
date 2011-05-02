@@ -50,28 +50,39 @@ public class Release extends UserContent<DaoRelease> {
         this(DaoRelease.createAndPersist(member.getDao(), DaoGetter.getTeam(team), milestone.getDao(), description, version, locale));
     }
 
+    // no right management: this is public data
     public Milestone getMilestone() {
         return Milestone.create(getDao().getMilestone());
     }
 
+    // no right management: this is public data
     public String getDescription() {
         return getDao().getDescription();
     }
 
-    public Locale locale() {
+    // no right management: this is public data
+    public Locale getLocale() {
         return getDao().getLocale();
     }
 
+    // no right management: this is public data
     public Comment getLastComment() {
         return Comment.create(getDao().getLastComment());
     }
 
+    // no right management: this is public data
     public PageIterable<Comment> getComments() {
         return new ListBinder<Comment, DaoComment>(getDao().getComments());
     }
 
+    // no right management: this is public data
     public Feature getFeature() {
         return getMilestone().getOffer().getFeature();
+    }
+
+    // no right management: this is public data
+    public String getVersion() {
+        return getDao().getVersion();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -81,10 +92,6 @@ public class Release extends UserContent<DaoRelease> {
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
-    }
-
-    public String getVersion() {
-        return getDao().getVersion();
     }
 
 }

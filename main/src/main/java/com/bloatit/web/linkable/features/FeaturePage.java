@@ -13,9 +13,7 @@ package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -63,12 +61,7 @@ public final class FeaturePage extends MasterPage {
     @Override
     protected String createPageTitle() {
         if (feature != null) {
-            try {
-                return feature.getTitle();
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from displaying feature name. Please notify us."));
-                throw new ShallNotPassException("User cannot access feature name", e);
-            }
+            return feature.getTitle();
         }
         return Context.tr("feature not found.");
     }
@@ -97,16 +90,8 @@ public final class FeaturePage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb(final Feature feature) {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-
-        try {
-            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
-        } catch (final UnauthorizedOperationException e) {
-            Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
-            throw new ShallNotPassException("User cannot access feature information", e);
-        }
-
+        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
         return breadcrumb;
     }
 

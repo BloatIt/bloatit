@@ -14,9 +14,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -55,40 +53,30 @@ public final class SoftwarePage extends MasterPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        try {
-            HtmlTitle softwareName;
-            softwareName = new HtmlTitle(software.getName(), 1);
-            layout.addLeft(softwareName);
+        HtmlTitle softwareName;
+        softwareName = new HtmlTitle(software.getName(), 1);
+        layout.addLeft(softwareName);
 
-            final FileMetadata image = software.getImage();
-            if (image != null) {
-                layout.addLeft(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
-            }
-
-            final Locale defaultLocale = Context.getLocalizator().getLocale();
-            final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
-
-            final HtmlParagraph shortDescription = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle()));
-            final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
-
-            layout.addLeft(shortDescription);
-            layout.addLeft(description);
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyError("An error prevented us from displaying software information. Please notify us.");
-            throw new ShallNotPassException("User cannot access software information", e);
+        final FileMetadata image = software.getImage();
+        if (image != null) {
+            layout.addLeft(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
         }
+
+        final Locale defaultLocale = Context.getLocalizator().getLocale();
+        final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
+
+        final HtmlParagraph shortDescription = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle()));
+        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
+
+        layout.addLeft(shortDescription);
+        layout.addLeft(description);
 
         return layout;
     }
 
     @Override
     protected String createPageTitle() {
-        try {
-            return tr("Software - ") + software.getName();
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyError("An error prevented us from displaying software name. Please notify us.");
-            throw new ShallNotPassException("User cannot access software name", e);
-        }
+        return tr("Software - ") + software.getName();
     }
 
     @Override
@@ -103,12 +91,7 @@ public final class SoftwarePage extends MasterPage {
 
     public static Breadcrumb generateBreadcrumb(final Software software) {
         final Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
-        try {
-            breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
-        } catch (final UnauthorizedOperationException e) {
-            Context.getSession().notifyError("An error prevented us from displaying software name. Please notify us.");
-            throw new ShallNotPassException("User cannot access software name", e);
-        }
+        breadcrumb.pushLink(new SoftwarePageUrl(software).getHtmlLink(software.getName()));
 
         return breadcrumb;
     }

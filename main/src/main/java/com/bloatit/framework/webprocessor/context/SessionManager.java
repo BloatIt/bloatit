@@ -87,9 +87,9 @@ public final class SessionManager {
                     final StringBuilder sessionDump = new StringBuilder();
 
                     sessionDump.append(session.getValue().getKey().toString());
-                    sessionDump.append(" ");
+                    sessionDump.append(' ');
                     sessionDump.append(session.getValue().getAuthToken().getMember().getId());
-                    sessionDump.append("\n");
+                    sessionDump.append('\n');
 
                     fileOutputStream.write(sessionDump.toString().getBytes());
                 }

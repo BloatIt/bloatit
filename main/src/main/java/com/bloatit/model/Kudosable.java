@@ -26,10 +26,11 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.KudosableRight;
+import com.bloatit.model.right.RgtKudosable;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface {
 
+    // TODO make sure those variables are reloaded when needed.
     private static final int TURN_VALID = ModelConfiguration.getKudosableDefaultTurnValid();
     private static final int TURN_REJECTED = ModelConfiguration.getKudosableDefaultTurnRejected();
     private static final int TURN_HIDDEN = ModelConfiguration.getKudosableDefaultTurnHidden();
@@ -64,7 +65,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         final EnumSet<SpecialCode> errors = EnumSet.noneOf(SpecialCode.class);
 
         // See if we can kudos.
-        if (!canAccess(new KudosableRight.Kudos(), Action.WRITE)) {
+        if (!canAccess(new RgtKudosable.Kudos(), Action.WRITE)) {
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
 
@@ -85,7 +86,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
 
         // I cannot kudos my own content.
-        if (isOwner()) {
+        if (getRights().isOwner()) {
             errors.add(SpecialCode.OWNED_BY_ME);
         }
 
@@ -128,30 +129,21 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return vote;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.KudosableInterface#getState()
-     */
-    @Override
-    public final PopularityState getState() {
-        return getDao().getState();
-    }
-
     private int vote(final int sign) throws UnauthorizedOperationException {
         final EnumSet<SpecialCode> canKudos = canVote(sign);
         if (!canKudos.isEmpty()) {
             throw new UnauthorizedOperationException(canKudos.iterator().next());
         }
-
+    
         // Make sure we are in the right position
         final Member member = getAuthToken().getMember();
         final int influence = member.calculateInfluence();
-
+    
         if (influence > 0) {
             getMember().addToKarma(influence);
             calculateNewState(getDao().addKudos(member.getDao(), DaoGetter.getTeam(getAuthToken().getAsTeam()), sign * influence));
         }
-
+    
         return influence * sign;
     }
 
@@ -197,13 +189,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
     }
 
-    public void setState(final PopularityState newState) throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
-        setStateUnprotected(newState);
-    }
-
     private void setStateUnprotected(final PopularityState newState) {
         if (getState() != newState) {
             Log.model().info("Kudosable: " + getId() + " change from state: " + this.getState() + ", to: " + newState);
@@ -211,30 +196,40 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         getDao().setState(newState);
     }
 
-    // TODO right management
+    public void setState(final PopularityState newState) throws UnauthorizedOperationException {
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        setStateUnprotected(newState);
+    }
+
     @Override
     public void lockPopularity() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().lockPopularity();
     }
 
-    // TODO right management
     @Override
     public void unlockPopularity() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().unlockPopularity();
     }
 
-    // TODO right management
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.KudosableInterface#getState()
+     */
+    @Override
+    public final PopularityState getState() {
+        return getDao().getState();
+    }
+
     @Override
     public boolean isPopularityLocked() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
-            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
-        }
         return getDao().isPopularityLocked();
     }
 

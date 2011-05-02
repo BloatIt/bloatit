@@ -16,20 +16,28 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Offer;
+import com.bloatit.model.Kudosable;
+import com.bloatit.model.Rights;
 
 /**
- * The Class OfferRight store the properties accessor for the {@link Offer}
- * class.
+ * The Class KudosableRight store the properties accessor for the
+ * {@link Kudosable} class.
  */
-public class OfferRight extends RightManager {
+public class RgtKudosable extends RightManager {
 
     /**
-     * The Class DateExpire is a {@link Public} accessor for the DateExpire
-     * property.
+     * The Class Kudos is a accessor for the Kudos property.
      */
-    public static class DateExpire extends Public {
-        // nothing this is just a rename.
-    }
+    public static class Kudos extends Accessor {
 
+        /*
+         * (non-Javadoc)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
+         */
+        @Override
+        protected final boolean can(final Rights role, final Action action) {
+            return authentifiedCanWrite(role, action);
+        }
+    }
 }

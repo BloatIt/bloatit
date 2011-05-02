@@ -24,7 +24,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.right.ContributionRight;
+import com.bloatit.model.right.RgtContribution;
 
 /**
  * This is a financial contribution.
@@ -85,6 +85,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      *             not have enough money.
      */
     public void accept(final Offer offer) throws NotEnoughMoneyException {
+        // TODO make me package visible !
         getDao().validate(offer.getDao(), 100);
     }
 
@@ -94,6 +95,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * back its money.
      */
     public void cancel() {
+        // TODO make me package visible !
         getDao().cancel();
     }
 
@@ -105,7 +107,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessAmount() {
-        return canAccess(new ContributionRight.Amount(), Action.READ);
+        return canAccess(new RgtContribution.Amount(), Action.READ);
     }
 
     /**
@@ -116,7 +118,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessComment() {
-        return canAccess(new ContributionRight.Comment(), Action.READ);
+        return canAccess(new RgtContribution.Comment(), Action.READ);
     }
 
     /**
@@ -128,10 +130,11 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @see Contribution#authenticate(AuthToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
-        tryAccess(new ContributionRight.Amount(), Action.READ);
+        tryAccess(new RgtContribution.Amount(), Action.READ);
         return getDao().getAmount();
     }
-
+    
+    // no right management: this is public data
     public Feature getFeature() {
         return FeatureImplementation.create(getDao().getFeature());
     }
@@ -144,7 +147,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      *             access the <code>Comment</code> property.
      */
     public String getComment() throws UnauthorizedOperationException {
-        tryAccess(new ContributionRight.Comment(), Action.READ);
+        tryAccess(new RgtContribution.Comment(), Action.READ);
         return getDao().getComment();
     }
 

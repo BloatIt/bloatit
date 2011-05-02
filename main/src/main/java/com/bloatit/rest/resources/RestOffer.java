@@ -31,12 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.restprocessor.exception.RestException;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Offer;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.rest.adapters.DateAdapter;
@@ -190,12 +187,8 @@ public class RestOffer extends RestElement<Offer> {
      * @see com.bloatit.model.Offer#getProgression()
      */
     @XmlAttribute
-    public float getProgression() throws RestException {
-        try {
-            return model.getProgression();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getProgression on Offer", e);
-        }
+    public float getProgression() {
+        return model.getProgression();
     }
 
     /**

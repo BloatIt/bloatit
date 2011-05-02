@@ -136,7 +136,7 @@ public class UrlParameter<T, U> extends UrlNode {
                 @SuppressWarnings("rawtypes") final List casted = List.class.cast(this.value);
                 for (final String aValue : httpParam) {
                     // TODO make me works !
-                    sb.append("&").append(getName()).append("=").append(aValue);
+                    sb.append('&').append(getName()).append('=').append(aValue);
                     casted.add(Loaders.fromStr(description.getConvertInto(), aValue));
                 }
                 strValue = sb.toString();
@@ -192,7 +192,7 @@ public class UrlParameter<T, U> extends UrlNode {
         final String stringValue = getStringValue();
         if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
-                sb.append("/").append(getName()).append("-").append(stringValue);
+                sb.append('/').append(getName()).append('-').append(stringValue);
             }
         }
     }
@@ -214,7 +214,7 @@ public class UrlParameter<T, U> extends UrlNode {
         if (value instanceof List) {
             final StringBuilder sb = new StringBuilder();
             for (final U elem : ((List<U>) value)) {
-                sb.append("&").append(getName()).append("=").append(Loaders.toStr(elem));
+                sb.append('&').append(getName()).append('=').append(Loaders.toStr(elem));
             }
             return sb.toString();
         }

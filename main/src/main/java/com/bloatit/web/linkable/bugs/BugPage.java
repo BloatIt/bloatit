@@ -84,7 +84,7 @@ public final class BugPage extends MasterPage {
             layout.addLeft(attachmentPara);
         }
 
-        if (bug.isOwner()) {
+        if (bug.getRights().isOwner()) {
             layout.addLeft(generateNewAttachementForm());
         }
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));

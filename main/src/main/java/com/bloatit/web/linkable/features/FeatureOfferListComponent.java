@@ -18,8 +18,6 @@ import java.math.BigDecimal;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.queries.EmptyPageIterable;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.datetime.TimeRenderer;
@@ -59,124 +57,121 @@ import com.bloatit.web.url.TeamPageUrl;
 public class FeatureOfferListComponent extends HtmlDiv {
     protected FeatureOfferListComponent(final Feature feature) {
         super();
-        try {
+        PageIterable<Offer> offers = new EmptyPageIterable<Offer>();
+        offers = feature.getOffers();
+        int nbUnselected = offers.size();
 
-            PageIterable<Offer> offers = new EmptyPageIterable<Offer>();
-            offers = feature.getOffers();
-            int nbUnselected = offers.size();
-
-            final Offer selectedOffer = feature.getSelectedOffer();
-            if (selectedOffer != null) {
-                nbUnselected--;
-            }
-
-            final HtmlDiv offersBlock = new HtmlDiv("offers_block");
-
-            switch (feature.getFeatureState()) {
-                case PENDING: {
-                    offersBlock.add(new HtmlTitle(Context.tr("No offer"), 1));
-                    final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
-                    offersBlock.add(block);
-                    block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The first offer is selected by default.")));
-
-                    final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
-                    link.setCssClass("button");
-
-                    final HtmlDiv noOffer = new HtmlDiv("no_offer_block");
-                    {
-                        noOffer.add(link);
-                    }
-                    block.addInRightColumn(noOffer);
-
-                }
-                    break;
-                case PREPARING:
-                    offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
-
-                    // Selected
-                    BicolumnOfferBlock block = new BicolumnOfferBlock(true);
-                    offersBlock.add(block);
-
-                    // Generating the left column
-                    block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
-                    if (selectedOffer != null) {
-                        if (feature.getValidationDate() != null && DateUtils.isInTheFuture(feature.getValidationDate())) {
-                            final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
-
-                            final BigDecimal amountLeft = selectedOffer.getAmount().subtract(feature.getContribution());
-
-                            if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
-                                final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
-                                block.addInLeftColumn(new HtmlParagraph(tr("This offer will be validated in about {0}. After this time, the offer will go into development as soon as the requested amount is available ({1} left).",
-                                                                           renderer.getTimeString(),
-                                                                           currency.toString())));
-                            } else {
-                                block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ")
-                                        + renderer.getTimeString() + "."));
-                            }
-                        } else {
-                            final BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
-                            final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
-                            block.addInLeftColumn(new HtmlParagraph(tr("This offer is validated and will go into development as soon as the requested amount is available ({0} left).",
-                                                                       currency.toString())));
-                        }
-                        // Generating the right column
-                        block.addInRightColumn(new OfferBlock(selectedOffer, true));
-                    } else {
-                        block.addInRightColumn(new HtmlParagraph(tr("No selected offer. The last selected offer has been voted down and is no more selected."),
-                                                                 "no_selected_offer_para"));
-                    }
-
-                    // UnSelected
-                    offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
-                    final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
-                    offersBlock.add(unselectedBlock);
-                    unselectedBlock.addInLeftColumn(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
-                    unselectedBlock.addInLeftColumn(new HtmlParagraph("The concurrent offers must be voted enough to become the selected offer."));
-
-                    for (final Offer offer : offers) {
-                        if (offer != selectedOffer) {
-                            unselectedBlock.addInRightColumn(new OfferBlock(offer, false));
-                        }
-                    }
-                    break;
-                case DEVELOPPING:
-                    offersBlock.add(new HtmlTitle(Context.tr("Offer in development"), 1));
-                    offersBlock.add(block = new BicolumnOfferBlock(true));
-                    block.addInLeftColumn(new HtmlParagraph(tr("This offer is in development. You can discuss about it in the comments.")));
-                    if (selectedOffer != null && selectedOffer.hasRelease()) {
-                        block.addInLeftColumn(new HtmlParagraph(tr("Test the last release and report bugs.")));
-                    }
-                    block.addInRightColumn(new OfferBlock(selectedOffer, true));
-
-                    generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
-
-                    break;
-                case FINISHED:
-                    offersBlock.add(new HtmlTitle(Context.tr("Finished offer"), 1));
-                    offersBlock.add(block = new BicolumnOfferBlock(true));
-                    block.addInLeftColumn(new HtmlParagraph(tr("This offer is finished.")));
-                    block.addInRightColumn(new OfferBlock(selectedOffer, true));
-
-                    generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
-                    break;
-                case DISCARDED:
-                    offersBlock.add(new HtmlTitle(Context.tr("Feature discarded ..."), 1));
-                    break;
-                default:
-                    break;
-            }
-            add(offersBlock);
-
-        } catch (final UnauthorizedOperationException e) {
-            // No right no current offer.
-            Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
-            throw new ShallNotPassException("User cannot access selected offer", e);
+        final Offer selectedOffer = feature.getSelectedOffer();
+        if (selectedOffer != null) {
+            nbUnselected--;
         }
+
+        final HtmlDiv offersBlock = new HtmlDiv("offers_block");
+
+        switch (feature.getFeatureState()) {
+            case PENDING: {
+                offersBlock.add(new HtmlTitle(Context.tr("No offer"), 1));
+                final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
+                offersBlock.add(block);
+                block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The first offer is selected by default.")));
+
+                final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
+                link.setCssClass("button");
+
+                final HtmlDiv noOffer = new HtmlDiv("no_offer_block");
+                {
+                    noOffer.add(link);
+                }
+                block.addInRightColumn(noOffer);
+            }
+
+                break;
+            case PREPARING: {
+                offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
+
+                // Selected
+                final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
+                offersBlock.add(block);
+
+                // Generating the left column
+                block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
+                if (selectedOffer != null) {
+                    if (feature.getValidationDate() != null && DateUtils.isInTheFuture(feature.getValidationDate())) {
+                        final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
+
+                        final BigDecimal amountLeft = selectedOffer.getAmount().subtract(feature.getContribution());
+
+                        if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
+                            final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+                            final HtmlSpan timeSpan = new HtmlSpan("bold");
+                            timeSpan.addText(renderer.getTimeString());
+                            final HtmlMixedText timeToValid = new HtmlMixedText(tr("This offer will be validated in about <0::>. After this time, the offer will go into development as soon as the requested amount is available ({0} left).",
+                                                                                   currency.toString()),
+                                                                                timeSpan);
+                            final HtmlParagraph element = new HtmlParagraph(timeToValid);
+                            block.addInLeftColumn(element);
+                        } else {
+                            final HtmlSpan timeSpan = new HtmlSpan("bold");
+                            timeSpan.addText(renderer.getTimeString());
+                            final HtmlMixedText timeToValid = new HtmlMixedText("This offer will go into development in about <0::>.", timeSpan);
+                            block.addInLeftColumn(timeToValid);
+                        }
+                    } else {
+                        final BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
+                        final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
+                        block.addInLeftColumn(new HtmlParagraph(tr("This offer is validated and will go into development as soon as the requested amount is available ({0} left).",
+                                                                   currency.toString())));
+                    }
+                    // Generating the right column
+                    block.addInRightColumn(new OfferBlock(selectedOffer, true));
+                }
+
+                // UnSelected
+                offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
+                final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
+                offersBlock.add(unselectedBlock);
+                unselectedBlock.addInLeftColumn(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
+                unselectedBlock.addInLeftColumn(new HtmlParagraph("The concurrent offers must be voted enough to become the selected offer."));
+
+                for (final Offer offer : offers) {
+                    if (offer != selectedOffer) {
+                        unselectedBlock.addInRightColumn(new OfferBlock(offer, false));
+                    }
+                }
+                break;
+            }
+            case DEVELOPPING:
+                final BicolumnOfferBlock block;
+                offersBlock.add(new HtmlTitle(Context.tr("Offer in development"), 1));
+                offersBlock.add(block = new BicolumnOfferBlock(true));
+                block.addInLeftColumn(new HtmlParagraph(tr("This offer is in development. You can discuss about it in the comments.")));
+                if (selectedOffer != null && selectedOffer.hasRelease()) {
+                    block.addInLeftColumn(new HtmlParagraph(tr("Test the last release and report bugs.")));
+                }
+                block.addInRightColumn(new OfferBlock(selectedOffer, true));
+
+                generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
+
+                break;
+            case FINISHED:
+                offersBlock.add(new HtmlTitle(Context.tr("Finished offer"), 1));
+                offersBlock.add(block = new BicolumnOfferBlock(true));
+                block.addInLeftColumn(new HtmlParagraph(tr("This offer is finished.")));
+                block.addInRightColumn(new OfferBlock(selectedOffer, true));
+
+                generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
+                break;
+            case DISCARDED:
+                offersBlock.add(new HtmlTitle(Context.tr("Feature discarded ..."), 1));
+                break;
+            default:
+                break;
+        }
+        add(offersBlock);
     }
 
-    private void generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock)
-            throws UnauthorizedOperationException {
+    private void
+            generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock) {
         // UnSelected
         offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
         final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
@@ -220,7 +215,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         private final Offer offer;
 
-        public OfferBlock(final Offer offer, final boolean selected) throws UnauthorizedOperationException {
+        public OfferBlock(final Offer offer, final boolean selected) {
             super((selected ? "offer_selected_block" : "offer_unselected_block"));
             this.offer = offer;
 
@@ -336,7 +331,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
                         // Validation details
                         generateValidationDetails(lot, offerRightBottomColumn);
-                    
+
                     } else {
                         int i = 0;
                         for (final Milestone lot : lots) {
@@ -387,7 +382,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         }
                     }
 
-                    
                 }
                 offerBottomBlock.add(offerRightBottomColumn);
             }
@@ -414,7 +408,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
             final JsShowHide showHideValidationDetails = new JsShowHide(false);
             showHideValidationDetails.setHasFallback(false);
 
-
             final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("show validation details"));
             showHideLink.setCssClass("fake_link");
             showHideValidationDetails.addActuator(showHideLink);
@@ -422,29 +415,31 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
             final HtmlDiv validationDetailsDiv = new HtmlDiv();
 
-            final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(Context.tr("Minimun time for validation: "), new TimeRenderer(lot.getSecondBeforeValidation()*DateUtils.MILLISECOND_PER_SECOND).renderRange(TimeBase.DAY, FormatStyle.MEDIUM));
+            final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(Context.tr("Minimun time for validation: "),
+                                                                                         new TimeRenderer(lot.getSecondBeforeValidation()
+                                                                                                 * DateUtils.MILLISECOND_PER_SECOND).renderRange(TimeBase.DAY,
+                                                                                                                                                 FormatStyle.MEDIUM));
             validationDetailsDiv.add(timeBeforeValidationPara);
 
-            final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "), String.valueOf(lot.getFatalBugsPercent())+"%");
+            final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "),
+                                                                                     String.valueOf(lot.getFatalBugsPercent()) + "%");
             validationDetailsDiv.add(fatalBugPourcentPara);
 
-            final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "), String.valueOf(lot.getMajorBugsPercent())+"%");
+            final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "),
+                                                                                     String.valueOf(lot.getMajorBugsPercent()) + "%");
             validationDetailsDiv.add(majorBugPourcentPara);
 
-            final HtmlDefineParagraph minorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no minor bug: "), String.valueOf(lot.getMinorBugsPercent())+"%");
+            final HtmlDefineParagraph minorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no minor bug: "),
+                                                                                     String.valueOf(lot.getMinorBugsPercent()) + "%");
             validationDetailsDiv.add(minorBugPourcentPara);
 
-            
             lotBlock.add(validationDetailsDiv);
 
             showHideValidationDetails.addListener(validationDetailsDiv);
             showHideValidationDetails.apply();
         }
 
-
-
-
-        private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) throws UnauthorizedOperationException {
+        private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) {
             if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
                 final HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("Add a release"));
                 link.setCssClass("button");
@@ -452,9 +447,21 @@ public class FeatureOfferListComponent extends HtmlDiv {
             }
         }
 
-        private boolean isDeveloper() throws UnauthorizedOperationException {
-            return Context.getSession().isLogged() && offer.getFeature().getSelectedOffer() != null
-                    && offer.getFeature().getSelectedOffer().canTalkAs();
+        private boolean isDeveloper() {
+            if (!Context.getSession().isLogged()) {
+                return false;
+            }
+            final Offer selectedOffer = offer.getFeature().getSelectedOffer();
+            if (selectedOffer == null) {
+                return false;
+            }
+            if (selectedOffer.getAsTeam() != null) {
+                return Context.getSession().getAuthToken().getMember().hasModifyTeamRight(selectedOffer.getAsTeam());
+            }
+            if (Context.getSession().getAuthToken().getMember().equals(selectedOffer.getMember())) {
+                return true;
+            }
+            return false;
         }
 
         private String getLotState(final Milestone lot) {
@@ -485,7 +492,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 offerSummaryPopularity.add(popularityText);
                 offerSummaryPopularity.add(popularityScore);
 
-                if (!offer.isOwner()) {
+                if (!offer.getRights().isOwner()) {
                     final int vote = offer.getUserVoteValue();
                     if (vote == 0) {
                         final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");

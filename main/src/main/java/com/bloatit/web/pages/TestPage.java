@@ -69,7 +69,7 @@ public final class TestPage extends MasterPage {
         final StringBuilder plop = new StringBuilder();
         for (int i = 0; i < 100; i++) {
             plop.append(rs.nextString());
-            plop.append(" ");
+            plop.append(' ');
         }
         htb.add(new HtmlParagraph(plop.toString()));
         anotherDiv.add(htb);

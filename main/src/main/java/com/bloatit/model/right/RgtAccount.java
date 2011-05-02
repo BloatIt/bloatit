@@ -22,53 +22,45 @@ import com.bloatit.model.Account;
  * The Class AccountRight store the properties accessor for the {@link Account}
  * class.
  */
-public class AccountRight extends RightManager {
+public class RgtAccount extends RightManager {
 
     /**
-     * The Class Transaction is a {@link PrivateReadOnly} accessor for the
+     * The Class Transaction is a {@link RightManager.ReadOnlyBankData} accessor for the
      * Transaction property.
      */
-    public static class Transaction extends PrivateReadOnly {
+    public static class Transaction extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Amount is a {@link PublicReadOnly} accessor for the Amount
+     * The Class Amount is a {@link RightManager.ReadOnlyBankData} accessor for the Amount
      * property.
      */
-    public static class Amount extends PublicReadOnly {
+    public static class Amount extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Comment is a {@link PublicReadOnly} accessor for the Comment
-     * property.
-     */
-    public static class Comment extends PublicReadOnly {
-        // nothing this is just a rename.
-    }
-
-    /**
-     * The Class LastModificationDate is a {@link PrivateReadOnly} accessor for
+     * The Class LastModificationDate is a {@link RightManager.ReadOnlyBankData} accessor for
      * the LastModificationDate property.
      */
-    public static class LastModificationDate extends PrivateReadOnly {
+    public static class LastModificationDate extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class CreationDate is a {@link PublicReadOnly} accessor for the
+     * The Class CreationDate is a {@link RightManager.ReadOnlyBankData} accessor for the
      * CreationDate property.
      */
-    public static class CreationDate extends PublicReadOnly {
+    public static class CreationDate extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Actor is a {@link PublicReadOnly} accessor for the Actor
+     * The Class Actor is a {@link RightManager.ReadOnlyBankData} accessor for the Actor
      * property.
      */
-    public static class Actor extends PublicReadOnly {
+    public static class Actor extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 }

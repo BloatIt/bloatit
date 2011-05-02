@@ -16,8 +16,6 @@
 //
 package com.bloatit.web.linkable.team.tabs;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
@@ -35,9 +33,11 @@ public class AccountTab extends HtmlTab {
 
     @Override
     public XmlNode generateBody() {
-        if (!team.hasTeamPrivilege(UserTeamRight.BANK)) {
-            throw new ShallNotPassException("You cannot access team bank information.");
-        }
+        // TODO rights.
+        // if (!team.hasTeamPrivilege(UserTeamRight.BANK)) {
+        // throw new
+        // ShallNotPassException("You cannot access team bank information.");
+        // }
 
         HtmlDiv master = new HtmlDiv("tab_pane");
 

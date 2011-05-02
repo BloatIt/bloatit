@@ -28,6 +28,8 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
@@ -174,7 +176,11 @@ public final class FileMetadataManager {
         }
 
         final FileMetadata file = new FileMetadata(author, team, name, storedFile.getPath(), type, (int) storedFile.length());
-        file.setShortDescription(description);
+        try {
+            file.setDescription(description);
+        } catch (final UnauthorizedPublicAccessException e) {
+            throw new ShallNotPassException(e);
+        }
         return file;
     }
 

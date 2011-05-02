@@ -17,6 +17,10 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoJoinTeamInvitation;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtJoinTeamInvitation;
 
 /**
  * This is an invitation to join a team. Some teams are not public, and you have
@@ -47,15 +51,30 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         return new MyCreator().create(dao);
     }
 
-    public Member getSender() {
+    public Member getSender() throws UnauthorizedPrivateReadOnlyAccessException {
+        tryAccess(new RgtJoinTeamInvitation.Sender(), Action.READ);
         return Member.create(getDao().getSender());
     }
 
-    public Member getReciever() {
+    public Member getReceiver() throws UnauthorizedOperationException {
+        tryAccess(new RgtJoinTeamInvitation.Receiver(), Action.READ);
         return Member.create(getDao().getReceiver());
     }
 
-    public Team getTeam() {
+    public Team getTeam() throws UnauthorizedPrivateReadOnlyAccessException {
+        tryAccess(new RgtJoinTeamInvitation.Team(), Action.READ);
+        return getTeamUnprotected();
+    }
+
+    public Member getSenderUnprotected() {
+        return Member.create(getDao().getSender());
+    }
+
+    public Member getReceiverUnprotected() {
+        return Member.create(getDao().getReceiver());
+    }
+
+    protected Team getTeamUnprotected() {
         return Team.create(getDao().getTeam());
     }
 
@@ -81,9 +100,34 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         getDao().discard();
     }
 
-    @Override
-    protected boolean isMine(final Member member) {
-        return member.equals(getSender()) || member.equals(getReciever());
+    // /////////////::
+    // Can ...
+
+    /**
+     * Tells if the authenticated user can get the <i>Team</i> property.
+     * 
+     * @return true if you can get the <i>Team</i> property.
+     */
+    public final boolean canGetTeam() {
+        return canAccess(new RgtJoinTeamInvitation.Team(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the <i>Sender</i> property.
+     * 
+     * @return true if you can get the <i>Sender</i> property.
+     */
+    public final boolean canGetSender() {
+        return canAccess(new RgtJoinTeamInvitation.Sender(), Action.READ);
+    }
+
+    /**
+     * Tells if the authenticated user can get the <i>Receiver</i> property.
+     * 
+     * @return true if you can get the <i>Receiver</i> property.
+     */
+    public final boolean canGetReciever() {
+        return canAccess(new RgtJoinTeamInvitation.Receiver(), Action.READ);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

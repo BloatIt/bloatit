@@ -14,8 +14,6 @@ package com.bloatit.web.linkable.features;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -100,12 +98,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
         softwareInput.addDropDownElement("", tr("No software"));
         for (final Software software : SoftwareManager.getAll()) {
-            try {
-                softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from displaying software information. Please notify us."));
-                throw new ShallNotPassException("User cannot access software information", e);
-            }
+            softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
         
         // TODO: set the default value to "select a software"

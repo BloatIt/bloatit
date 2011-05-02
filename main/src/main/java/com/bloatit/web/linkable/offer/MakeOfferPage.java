@@ -14,8 +14,6 @@ package com.bloatit.web.linkable.offer;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -94,13 +92,8 @@ public final class MakeOfferPage extends CreateUserContentPage {
     private HtmlTitleBlock generateOfferForm(final Member me) {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
-        try {
-            if (offer != null) {
-                offerPageContainer.add(new FeatureOfferListComponent.OfferBlock(offer, true));
-            }
-        } catch (final UnauthorizedOperationException e) {
-            session.notifyBad("For an obscure reason you cannot see the offer you are constructing, please warn us of the bug.");
-            throw new ShallNotPassException("Cannot see an offer when constructing it", e);
+        if (offer != null) {
+            offerPageContainer.add(new FeatureOfferListComponent.OfferBlock(offer, true));
         }
 
         // Create offer form

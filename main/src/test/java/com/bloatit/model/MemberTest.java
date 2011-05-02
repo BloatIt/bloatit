@@ -16,10 +16,16 @@
 //
 package com.bloatit.model;
 
+import java.util.Locale;
+
 import javassist.NotFoundException;
 
+import com.bloatit.data.DaoMember;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.context.User;
+import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.AuthToken;
@@ -29,15 +35,28 @@ public class MemberTest extends ModelTestUnit {
     public void testAddToPublicGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        yo.authenticate(yoAuthToken);
-        yo.addToPublicTeam(TeamManager.getByName("ubuntuUsers"));
+        final DaoMember daouser = new Member("User", "password", "user@gmail.com", Locale.FRANCE).getDao();
+        daouser.setFullname("Thomas Guyard");
+        daouser.setActivationState(ActivationState.ACTIVE);
+        final Member user = Member.create(daouser);
 
-        assertTrue(yo.isInTeam(TeamManager.getByName("ubuntuUsers")));
+        user.authenticate(new AuthToken(user));
+        user.addToPublicTeam(TeamManager.getByName("publicGroup"));
+        assertTrue(user.isInTeam(TeamManager.getByName("publicGroup")));
+
+        assertTrue(yo.isInTeam(TeamManager.getByName("publicGroup")));
+        yo.authenticate(yoAuthToken);
+        try {
+            yo.addToPublicTeam(TeamManager.getByName("publicGroup"));
+            fail();
+        } catch (final BadProgrammerException e) {
+            assertTrue(true);
+        }
 
         try {
             yo.authenticate(fredAuthToken);
             // A user can only add himself to a public group.
-            yo.addToPublicTeam(TeamManager.getByName("ubuntuUsers"));
+            yo.addToPublicTeam(TeamManager.getByName("publicGroup"));
             fail();
         } catch (final Exception e) {
             assertTrue(true);
@@ -49,13 +68,13 @@ public class MemberTest extends ModelTestUnit {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         yo.authenticate(yoAuthToken);
-        yo.kickFromTeam(TeamManager.getByName("b219"), yo);
-        assertFalse(yo.isInTeam(TeamManager.getByName("b219")));
+        yo.kickFromTeam(TeamManager.getByName("publicGroup"), yo);
+        assertFalse(yo.isInTeam(TeamManager.getByName("publicGroup")));
 
         try {
             yo.authenticate(fredAuthToken);
             // A user can only remove himself from a group.
-            yo.kickFromTeam(TeamManager.getByName("b219"), fredAuthToken.getMember());
+            yo.kickFromTeam(TeamManager.getByName("publicGroup"), fredAuthToken.getMember());
             fail();
         } catch (final Exception e) {
             assertTrue(true);
@@ -145,7 +164,7 @@ public class MemberTest extends ModelTestUnit {
         }
     }
 
-    public void testGetFeatures() throws UnauthorizedOperationException {
+    public void testGetFeatures() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
@@ -160,13 +179,27 @@ public class MemberTest extends ModelTestUnit {
     public void testGetKudos() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
-        assertEquals(1, yo.getKudos().size());
+        try {
+            assertEquals(1, yo.getKudos().size());
+            fail();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            assertTrue(true);
+        }
 
-        yo.authenticate(yoAuthToken);
-        assertEquals(1, yo.getKudos().size());
+        try {
+            yo.authenticate(yoAuthToken);
+            assertEquals(1, yo.getKudos().size());
+        } catch (final UnauthorizedPrivateAccessException e) {
+            fail();
+        }
 
-        yo.authenticate(fredAuthToken);
-        assertEquals(1, yo.getKudos().size());
+        try {
+            yo.authenticate(fredAuthToken);
+            assertEquals(1, yo.getKudos().size());
+            fail();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            assertTrue(true);
+        }
     }
 
     // public void testGetSpecifications() {

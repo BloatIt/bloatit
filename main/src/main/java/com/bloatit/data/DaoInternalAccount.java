@@ -60,7 +60,7 @@ public class DaoInternalAccount extends DaoAccount {
      */
     protected void block(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(getAmount()) > 0) {
-            Log.data().fatal("Cannot block " + blocked.toEngineeringString() + " on account " + getId() + ", Throwing NotEnougthMoneyEcception.");
+            Log.data().fatal("Cannot block " + blocked.toEngineeringString() + " on account " + getId() + ", Throwing NotEnoughMoneyException.");
             throw new NotEnoughMoneyException();
         }
         resetModificationDate();

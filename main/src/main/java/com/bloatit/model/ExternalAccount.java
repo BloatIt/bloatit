@@ -20,7 +20,7 @@ import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.ExternalAccountRight;
+import com.bloatit.model.right.RgtExternalAccount;
 
 /**
  * @see DaoExternalAccount
@@ -59,14 +59,14 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
      * @return true if you can access the <code>BankCode</code> property.
      */
     public boolean canAccessBankCode() {
-        return canAccess(new ExternalAccountRight.BankCode(), Action.READ);
+        return canAccess(new RgtExternalAccount.BankCode(), Action.READ);
     }
 
     /**
      * @return true if you can access the <code>Type</code> property.
      */
     public boolean canAccessType() {
-        return canAccess(new ExternalAccountRight.Type(), Action.READ);
+        return canAccess(new RgtExternalAccount.Type(), Action.READ);
     }
 
     /**
@@ -74,7 +74,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
      *             access the <code>BankCode</code> property.
      */
     public String getBankCode() throws UnauthorizedOperationException {
-        tryAccess(new ExternalAccountRight.BankCode(), Action.READ);
+        tryAccess(new RgtExternalAccount.BankCode(), Action.READ);
         return getDao().getBankCode();
     }
 
@@ -83,7 +83,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
      *             access the <code>Type</code> property.
      */
     public AccountType getType() throws UnauthorizedOperationException {
-        tryAccess(new ExternalAccountRight.Type(), Action.READ);
+        tryAccess(new RgtExternalAccount.Type(), Action.READ);
         return getDao().getType();
     }
 

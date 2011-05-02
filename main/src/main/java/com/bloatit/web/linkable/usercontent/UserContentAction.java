@@ -70,7 +70,7 @@ public abstract class UserContentAction extends LoggedAction {
 
     private final UserTeamRight right;
 
-    protected UserContentAction(final UserContentActionUrl url, Team overrideTeam, final UserTeamRight right) {
+    protected UserContentAction(final UserContentActionUrl url, final Team overrideTeam, final UserTeamRight right) {
         this(url, right);
         team = overrideTeam;
     }
@@ -120,7 +120,7 @@ public abstract class UserContentAction extends LoggedAction {
         }
         try {
             if (team != null) {
-                if (!team.hasTeamPrivilege(right)) {
+                if (!team.getUserTeamRight(me).contains(right)) {
                     session.notifyBad(Context.tr("You are not allowed to do this action in the name of a team."));
                     transmitParameters();
                     return doProcessErrors();

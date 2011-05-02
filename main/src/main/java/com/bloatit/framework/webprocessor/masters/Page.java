@@ -161,6 +161,7 @@ public abstract class Page implements Linkable {
         final HtmlBranch html = new HtmlGenericElement("html");
         page.add(html);
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+        html.addAttribute("xml:lang", Context.getLocalizator().getCode());
         pageHeader = new Header(getTitle(), getPageDescription(), getRobots());
         html.add(pageHeader);
 

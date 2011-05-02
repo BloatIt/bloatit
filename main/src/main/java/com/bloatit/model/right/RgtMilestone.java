@@ -16,27 +16,18 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Kudosable;
-
 /**
- * The Class KudosableRight store the properties accessor for the
- * {@link Kudosable} class.
+ * The Class RgtMilestone store the properties accessor for the
+ * {@link com.bloatit.model.Milestone} class.
  */
-public class KudosableRight extends RightManager {
+public class RgtMilestone extends RightManager {
 
     /**
-     * The Class Kudos is a accessor for the Kudos property.
+     * The Class <code>State</code> is a {@link RightManager.Public} accessor for the
+     * <code>State</code> property.
      */
-    public static class Kudos extends Accessor {
-
-        /*
-         * (non-Javadoc)
-         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
-         * RestrictedInterface , com.bloatit.model.right.Action)
-         */
-        @Override
-        protected final boolean can(final RestrictedInterface role, final Action action) {
-            return authentifiedCanWrite(role, action);
-        }
+    public static class State extends Public {
+        // nothing this is just a rename.
     }
+    
 }

@@ -63,12 +63,6 @@ public interface Feature extends KudosableInterface, Commentable {
     boolean canAccessOffer(final Action action);
 
     /**
-     * @return true if you can access the <code>Description</code> property.
-     * @see #getDescription()
-     */
-    boolean canAccessDescription();
-
-    /**
      * Add a contribution on this feature.
      * 
      * @param amount must be a positive non null value.
@@ -82,7 +76,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * @see #authenticate(AuthToken)
      */
     Contribution addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
-    
+
     /**
      * Add a new Offer on this Feature. You can do this operation when you are
      * in the {@link FeatureState#PENDING} or {@link FeatureState#PREPARING}
@@ -100,8 +94,9 @@ public interface Feature extends KudosableInterface, Commentable {
      *             {@link FeatureState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
-    Offer addOffer(BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
-            throws UnauthorizedOperationException;
+    Offer
+            addOffer(BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
+                                                                                                                        throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.
@@ -122,27 +117,12 @@ public interface Feature extends KudosableInterface, Commentable {
      */
     void cancelDevelopment() throws UnauthorizedOperationException;
 
-    // TODO authorization
-    boolean validateCurrentMilestone(final boolean force);
-
-    /**
-     * Used by Offer class. You should never have to use it
-     * 
-     * @param offer the offer to unselect. Nothing is done if the offer is not
-     *            selected.
-     */
-    void unSelectOffer(final Offer offer);
-
     Date getValidationDate();
 
     /**
      * @return the first level comments on this feature.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Comment</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      */
-    PageIterable<Comment> getComments() throws UnauthorizedOperationException;
+    PageIterable<Comment> getComments();
 
     /**
      * Get the total number of comments for this feature. It doesn't take into
@@ -155,12 +135,8 @@ public interface Feature extends KudosableInterface, Commentable {
 
     /**
      * @return all the Contributions on this Feature.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Contribution</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      */
-    PageIterable<Contribution> getContributions() throws UnauthorizedOperationException;
+    PageIterable<Contribution> getContributions();
 
     /**
      * Return the progression in percent. It compare the amount of contribution
@@ -169,12 +145,8 @@ public interface Feature extends KudosableInterface, Commentable {
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Contribution</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      */
-    float getProgression() throws UnauthorizedOperationException;
+    float getProgression();
 
     /**
      * Return the progression due by the member in percent. It compare the
@@ -183,10 +155,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Contribution</code>
-     *             property.
-     * @see #authenticate(AuthToken)
+     * @throws UnauthorizedOperationException
      */
     float getMemberProgression(Actor<?> author) throws UnauthorizedOperationException;
 
@@ -197,75 +166,47 @@ public interface Feature extends KudosableInterface, Commentable {
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Contribution</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      */
-    float getRelativeProgression(BigDecimal amount) throws UnauthorizedOperationException;
+    float getRelativeProgression(BigDecimal amount);
 
     /**
      * @return return the sum of the values of all the contributions on this
      *         feature.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Contribution</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      */
-    BigDecimal getContribution() throws UnauthorizedOperationException;
+    BigDecimal getContribution();
 
     /**
      * @return return the value of the contribution with the max contribution.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Contribution</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      */
-    BigDecimal getContributionMax() throws UnauthorizedOperationException;
+    BigDecimal getContributionMax();
 
     /**
      * @return return the value of the contribution with the min contribution.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             {@link Action#READ} right on the <code>Contribution</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      */
-    BigDecimal getContributionMin() throws UnauthorizedOperationException;
+    BigDecimal getContributionMin();
 
     /**
      * @return the current Description of this feature.
-     * @throws UnauthorizedOperationException if the user does not has the right
-     *             on the <code>Description</code> property.
-     * @see #authenticate(AuthToken)
      */
-    Description getDescription() throws UnauthorizedOperationException;
+    Description getDescription();
 
     /**
      * @return the current associate software of this feature.
-     * @throws UnauthorizedOperationException if the user does not has the right
-     *             on the <code>Software</code> property.
-     * @see #authenticate(AuthToken)
      */
-    Software getSoftware() throws UnauthorizedOperationException;
+    Software getSoftware();
 
     /**
      * @return all the offers on this feature.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             <code>READ</code> right on the <code>Offer</code> property.
-     * @see #authenticate(AuthToken)
      */
-    PageIterable<Offer> getOffers() throws UnauthorizedOperationException;
+    PageIterable<Offer> getOffers();
 
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
      * 
      * @return the current offer for this feature, or null if there is no offer.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             <code>READ</code> right on the <code>Offer</code> property.
-     * @see #authenticate(AuthToken)
      */
-    Offer getSelectedOffer() throws UnauthorizedOperationException;
+    Offer getSelectedOffer();
 
     /**
      * A validated offer is an offer selected for more than one day. (If you are
@@ -273,19 +214,13 @@ public interface Feature extends KudosableInterface, Commentable {
      * validated offer.
      * 
      * @return the validated offer or null if there is no valid offer.
-     * @throws UnauthorizedOperationException if you do not have the
-     *             <code>READ</code> right on the offer property
      */
-    Offer getValidatedOffer() throws UnauthorizedOperationException;
+    Offer getValidatedOffer();
 
     /**
-     * @throws UnauthorizedOperationException if the user does not has the
-     *             <code>READ</code> right on the <code>Description</code>
-     *             property.
-     * @see #authenticate(AuthToken)
      * @see #getDescription()
      */
-    String getTitle() throws UnauthorizedOperationException;
+    String getTitle();
 
     FeatureState getFeatureState();
 

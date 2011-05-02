@@ -62,7 +62,7 @@ public final class MemberActivationAction extends Action {
         if (member != null) {
             if (member.getActivationState() == ActivationState.VALIDATING) {
                 if (key.equals(member.getActivationKey())) {
-                    member.activate();
+                    member.activate(key);
 
                     // Auto login after activation
                     session.setAuthToken(new AuthToken(member));

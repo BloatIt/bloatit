@@ -19,7 +19,6 @@ package com.bloatit.web.linkable.team;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
@@ -46,7 +45,6 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.money.AccountPage.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
 import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
@@ -125,15 +123,10 @@ public final class TeamPage extends MasterPage {
 
     private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
-        contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
+        contacts.setTitle(Context.tr("How to contact \"{0}\"?", targetTeam.getDisplayName()));
 
         if (targetTeam.canAccessContact(Action.READ)) {
-            try {
-                contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getContact()));
-            } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("An error prevented us from showing you team contact information. Please notify us.");
-                throw new ShallNotPassException("User can't see team contact information while he should", e);
-            }
+            contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getContact()));
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
         }
@@ -141,7 +134,7 @@ public final class TeamPage extends MasterPage {
         return contacts;
     }
 
-    private HtmlElement generateMain(Visitor me) {
+    private HtmlElement generateMain(final Visitor me) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
@@ -149,7 +142,7 @@ public final class TeamPage extends MasterPage {
         master.add(tabPane);
 
         tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));
-        if (targetTeam.canAccessBankTransaction()) {
+        if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }
         activity = new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB, url);
@@ -164,8 +157,8 @@ public final class TeamPage extends MasterPage {
      * @param me the connected member
      * @return the ID card
      */
-    private HtmlElement generateTeamIDCard(Visitor me) {
-        HtmlDiv master = new HtmlDiv("padding_box");
+    private HtmlElement generateTeamIDCard(final Visitor me) {
+        final HtmlDiv master = new HtmlDiv("padding_box");
         if (me.hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
@@ -205,9 +198,9 @@ public final class TeamPage extends MasterPage {
 
         // Features count
         final long featuresCount = getActivityCount();
-        TeamPageUrl activityPage = new TeamPageUrl(targetTeam);
+        final TeamPageUrl activityPage = new TeamPageUrl(targetTeam);
         activityPage.setActiveTabKey(ACTIVITY_TAB);
-        HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), activityPage.getHtmlLink());
+        final HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), activityPage.getHtmlLink());
         informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), mixed));
         titleBlock.add(informationsList);
 
@@ -275,7 +268,7 @@ public final class TeamPage extends MasterPage {
     }
 
     private static class SideBarTeamChargeAccountBlock extends TitleSideBarElementLayout {
-        SideBarTeamChargeAccountBlock(Team team) {
+        SideBarTeamChargeAccountBlock(final Team team) {
             setTitle(tr("Load account"));
 
             add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));

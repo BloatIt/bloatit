@@ -16,25 +16,28 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Member;
+import com.bloatit.model.Contribution;
 
 /**
- * The Class MemberRight store the properties accessor for the {@link Member}
- * class.
+ * The Class ContributionRight store the properties accessor for the
+ * {@link Contribution} class.
  */
-public class TeamRight extends RightManager {
-    
+public class RgtContribution extends RightManager {
+
     /**
-     * The Class Email is a {@link Public} accessor for the Contact property.
+     * The Class Amount is a {@link RightManager.PublicReadOnly} accessor for the Transaction
+     * Amount.
      */
-    public static class Contact extends Public {
+    public static class Amount extends PublicReadOnly {
         // nothing this is just a rename.
     }
-    
+
     /**
-     * The Class Email is a {@link Public} accessor for the DisplayName property.
+     * The Class Comment is a {@link RightManager.PublicReadOnly} accessor for the Comment
+     * property.
      */
-    public static class DisplayName extends Public {
+    public static class Comment extends PublicReadOnly {
         // nothing this is just a rename.
     }
+
 }

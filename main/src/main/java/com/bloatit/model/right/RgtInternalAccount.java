@@ -22,12 +22,12 @@ import com.bloatit.model.InternalAccount;
  * The Class InternalAccountRight store the properties accessor for the
  * {@link InternalAccount} class.
  */
-public class InternalAccountRight extends RightManager {
+public class RgtInternalAccount extends RightManager {
 
     /**
-     * The Class Blocked is a {@link Private} accessor for the Blocked property.
+     * The Class Blocked is a {@link RightManager.Private} accessor for the Blocked property.
      */
-    public static class Blocked extends Private {
+    public static class Blocked extends BankData {
         // nothing this is just a rename.
     }
 }

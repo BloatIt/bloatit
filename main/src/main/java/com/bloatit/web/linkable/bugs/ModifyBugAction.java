@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -45,7 +44,7 @@ public final class ModifyBugAction extends Action {
     @RequestParam(name = BUG_REASON, role = Role.POST)
     @Optional
     @ParamConstraint(max = "120", maxErrorMsg = @tr("The reason must be 120 chars length max."), //
-    min = "0")
+                     min = "0")
     private final String reason;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
@@ -90,34 +89,31 @@ public final class ModifyBugAction extends Action {
 
         String changes = "";
         if (currentLevel != level.getLevel()) {
-            changes += tr("%LEVEL% {0} => {1}", "%"+BindedLevel.getBindedLevel(currentLevel)+"%", "%"+level+"%")+"\n";
+            changes += tr("%LEVEL% {0} => {1}", "%" + BindedLevel.getBindedLevel(currentLevel) + "%", "%" + level + "%") + "\n";
         }
 
         if (currentState != state.getState()) {
-            changes += tr("%STATE% {0} => {1}", "%"+BindedState.getBindedState(currentState)+"%", "%"+state+"%")+"\n";
-        }
-
-        bug.setErrorLevel(level.getLevel());
-        if (state.getState() == BugState.DEVELOPING) {
-            bug.setDeveloping();
-        } else if (state.getState() == BugState.RESOLVED) {
-            bug.setResolved();
+            changes += tr("%STATE% {0} => {1}", "%" + BindedState.getBindedState(currentState) + "%", "%" + state + "%") + "\n";
         }
 
         try {
+            bug.setErrorLevel(level.getLevel());
+            if (state.getState() == BugState.DEVELOPING) {
+                bug.setDeveloping();
+            } else if (state.getState() == BugState.RESOLVED) {
+                bug.setResolved();
+            }
             if (reason == null) {
                 bug.addComment(changes);
             } else {
                 bug.addComment(changes + "\n%REASON%\n" + reason);
             }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from accessing changing state on this bug. Please notify us."));
-            throw new ShallNotPassException("The user can change the bug state but not post comments on this bug");
+            session.notifyError(Context.tr("You are not allowed to change the state of this bug."));
+            return doProcessErrors();
         }
-        
-        final BugPageUrl to = new BugPageUrl(bug);
 
-        return to;
+        return new BugPageUrl(bug);
     }
 
     @Override

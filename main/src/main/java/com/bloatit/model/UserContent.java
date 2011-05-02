@@ -17,17 +17,14 @@
 package com.bloatit.model;
 
 import java.util.Date;
-import java.util.EnumSet;
 
-import com.bloatit.data.DaoMember.Role;
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.UserContentRight;
+import com.bloatit.model.right.RgtUserContent;
 
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
@@ -69,11 +66,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         return getDao().getCreationDate();
     }
 
-    @Override
-    public final boolean canAccessAsTeam(final Team asTeam) {
-        return canAccess(new UserContentRight.AsTeam(asTeam), Action.WRITE);
-    }
-
     /*
      * (non-Javadoc)
      * @see com.bloatit.model.UserContentInterface#getAsTeam()
@@ -92,52 +84,36 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         return new FileMetadataList(getDao().getFiles());
     }
 
-    // TODO right management
     public void delete() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().setIsDeleted(true);
     }
 
-    // TODO right management
     public void restore() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         getDao().setIsDeleted(false);
     }
 
-    // TODO right management
     @Override
     public boolean isDeleted() throws UnauthorizedOperationException {
-        if (!hasUserPrivilege(Role.ADMIN)) {
+        if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         return getDao().isDeleted();
     }
 
     @Override
-    protected boolean isMine(final Member member) {
-        return getMember().isMine(member);
-    }
-
-    @Override
-    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
-        if (getAsTeam() != null && member.isInTeam(getAsTeam())) {
-            return getAsTeam().getUserTeamRight(member);
-        }
-        return EnumSet.noneOf(UserTeamRight.class);
-    }
-
-    @Override
     public final boolean canAddFile() {
-        return canAccess(new UserContentRight.File(), Action.WRITE);
+        return canAccess(new RgtUserContent.File(), Action.WRITE);
     }
 
     @Override
     public void addFile(final FileMetadata file) throws UnauthorizedOperationException {
-        tryAccess(new UserContentRight.File(), Action.WRITE);
+        tryAccess(new RgtUserContent.File(), Action.WRITE);
         getDao().addFile(file.getDao());
     }
 

@@ -22,6 +22,9 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -122,14 +125,20 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
             public XmlNode getBody(final Milestone element) {
                 final PlaceHolderElement place = new PlaceHolderElement();
                 for (final Level level : EnumSet.allOf(Level.class)) {
-                    if (element.partIsValidated(level)) {
-                        place.add(new HtmlParagraph(level.toString() + " -> VALIDATED"));
-                    } else {
-                        if (element.shouldValidatePart(level)) {
-                            place.add(new HtmlParagraph(level.toString() + " -> SHOULD"));
+                    try {
+                        if (element.partIsValidated(level)) {
+                            place.add(new HtmlParagraph(level.toString() + " -> VALIDATED"));
                         } else {
-                            place.add(new HtmlParagraph(level.toString() + " -> SHOULDN'T"));
+                            if (element.shouldValidatePart(level)) {
+                                place.add(new HtmlParagraph(level.toString() + " -> SHOULD"));
+                            } else {
+                                place.add(new HtmlParagraph(level.toString() + " -> SHOULDN'T"));
+                            }
                         }
+                    } catch (final UnauthorizedPublicAccessException e) {
+                        throw new ShallNotPassException(e);
+                    } catch (final UnauthorizedOperationException e) {
+                        throw new ShallNotPassException(e);
                     }
                 }
                 return place;

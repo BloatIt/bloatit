@@ -23,7 +23,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
@@ -51,7 +50,7 @@ public class FeaturesTools {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public static String getTitle(final Feature feature) throws UnauthorizedOperationException {
+    public static String getTitle(final Feature feature) {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
         return translatedDescription.getTitle();
@@ -184,25 +183,15 @@ public class FeaturesTools {
     private static HtmlElement generateProgressText(final Feature feature, final float progressValue) {
 
         Offer currentOffer = null;
-        try {
-            currentOffer = feature.getSelectedOffer();
-        } catch (final UnauthorizedOperationException e1) {
-            Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
-            throw new ShallNotPassException("User cannot access selected offer", e1);
-        }
+        currentOffer = feature.getSelectedOffer();
         if (currentOffer == null) {
 
             final HtmlSpan amount = new HtmlSpan();
             amount.setCssClass(IMPORTANT_CSS_CLASS);
 
             CurrencyLocale currency;
-            try {
-                currency = Context.getLocalizator().getCurrency(feature.getContribution());
-                amount.addText(currency.getSimpleEuroString());
-            } catch (final UnauthorizedOperationException e) {
-                Context.getSession().notifyError(Context.tr("An error prevented us from displaying contribution amount. Please notify us."));
-                throw new ShallNotPassException("User cannot access contribution amount", e);
-            }
+            currency = Context.getLocalizator().getCurrency(feature.getContribution());
+            amount.addText(currency.getSimpleEuroString());
 
             final HtmlParagraph progressText = new HtmlParagraph();
             progressText.setCssClass("progress_text");
@@ -215,40 +204,35 @@ public class FeaturesTools {
 
         // Amount
         CurrencyLocale amountCurrency;
-        try {
-            amountCurrency = Context.getLocalizator().getCurrency(feature.getContribution());
-            final HtmlSpan amount = new HtmlSpan();
-            amount.setCssClass(IMPORTANT_CSS_CLASS);
-            amount.addText(amountCurrency.getSimpleEuroString());
+        amountCurrency = Context.getLocalizator().getCurrency(feature.getContribution());
+        final HtmlSpan amount = new HtmlSpan();
+        amount.setCssClass(IMPORTANT_CSS_CLASS);
+        amount.addText(amountCurrency.getSimpleEuroString());
 
-            // Target
-            final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
-            final HtmlSpan target = new HtmlSpan();
-            target.setCssClass(IMPORTANT_CSS_CLASS);
-            target.addText(targetCurrency.getSimpleEuroString());
+        // Target
+        final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
+        final HtmlSpan target = new HtmlSpan();
+        target.setCssClass(IMPORTANT_CSS_CLASS);
+        target.addText(targetCurrency.getSimpleEuroString());
 
-            // Progress
-            final HtmlSpan progress = new HtmlSpan();
-            progress.setCssClass(IMPORTANT_CSS_CLASS);
-            final NumberFormat format = NumberFormat.getNumberInstance();
-            format.setMinimumFractionDigits(0);
-            progress.addText("" + format.format(progressValue) + " %");
+        // Progress
+        final HtmlSpan progress = new HtmlSpan();
+        progress.setCssClass(IMPORTANT_CSS_CLASS);
+        final NumberFormat format = NumberFormat.getNumberInstance();
+        format.setMinimumFractionDigits(0);
+        progress.addText("" + format.format(progressValue) + " %");
 
-            final HtmlParagraph progressText = new HtmlParagraph();
-            progressText.setCssClass("progress_text");
+        final HtmlParagraph progressText = new HtmlParagraph();
+        progressText.setCssClass("progress_text");
 
-            progressText.add(new HtmlMixedText(trn("<0:1600€:> i.e <1:69%:> of <2:2300€:> requested",
-                                                   "<0:1600€:> i.e <1:69%:> of <2:2300€:> requested",
-                                                   currentOffer.getAmount().intValue()), amount, progress, target));
+        progressText.add(new HtmlMixedText(trn("<0:1600€:> i.e <1:69%:> of <2:2300€:> requested",
+                                               "<0:1600€:> i.e <1:69%:> of <2:2300€:> requested",
+                                               currentOffer.getAmount().intValue()), amount, progress, target));
 
-            return progressText;
-        } catch (final UnauthorizedOperationException e) {
-            Context.getSession().notifyError(Context.tr("An error prevented us from displaying contribution amount. Please notify us."));
-            throw new ShallNotPassException("User cannot access contibution amount", e);
-        }
+        return progressText;
     }
 
-    public static HtmlDiv generateDetails(final Feature feature, final boolean showBugs) throws UnauthorizedOperationException {
+    public static HtmlDiv generateDetails(final Feature feature, final boolean showBugs) {
         final HtmlDiv featureSummaryDetails = new HtmlDiv("feature_summary_details");
         {
 

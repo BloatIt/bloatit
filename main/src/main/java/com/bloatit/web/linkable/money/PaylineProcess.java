@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.framework.webprocessor.PaymentProcess;
 import com.bloatit.framework.webprocessor.WebProcess;
@@ -127,7 +128,7 @@ public class PaylineProcess extends WebProcess {
         return ((PaymentProcess) getFather()).getAmountToPay();
     }
 
-    void validatePayment(final String token) {
+    void validatePayment(final String token) throws UnauthorizedPrivateAccessException {
         try {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
@@ -142,6 +143,10 @@ public class PaylineProcess extends WebProcess {
                 success = true;
                 // Notify the user:
                 final BankTransaction bankTransaction = BankTransaction.getByToken(token);
+                if (bankTransaction == null) {
+                    session.notifyBad(Context.tr("Cannot validate your payment. Reason: Token not found."));
+                    return;
+                }
                 final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getSimpleEuroString();
                 final String paidValueStr = Context.getLocalizator().getCurrency(bankTransaction.getValuePaid()).getTwoDecimalEuroString();
                 session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
@@ -169,6 +174,19 @@ public class PaylineProcess extends WebProcess {
         } catch (final TokenNotfoundException e) {
             Log.web().fatal("Token not found.", e);
             session.notifyBad("Payment canceled. Reason: Payment refused. Please report the bug.");
+        }
+    }
+
+    public String getPaymentReference(final String token) {
+        final BankTransaction bankTransaction = BankTransaction.getByToken(token);
+        if (bankTransaction == null) {
+            return "";
+        }
+        try {
+            return bankTransaction.getReference();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            Log.web().fatal("Cannot find a reference.", e);
+            return "Reference-not-Found";
         }
     }
 }

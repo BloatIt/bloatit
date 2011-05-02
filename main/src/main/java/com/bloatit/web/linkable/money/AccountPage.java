@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
@@ -80,9 +81,14 @@ public final class AccountPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws PageNotFoundException {
         try {
-            if (isTeamAccount() && !team.hasTeamPrivilege(UserTeamRight.BANK)) {
-                session.notifyBad(tr("You are not allowed to see ''{0}'' team account.", team.getLogin()));
-                throw new PageNotFoundException();
+            Actor<?> currentActor = loggedUser;
+            if (isTeamAccount()) {
+                if (loggedUser.hasBankTeamRight(team)) {
+                    currentActor = team;
+                } else {
+                    session.notifyBad(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));
+                    throw new PageNotFoundException();
+                }
             }
 
             final TwoColumnLayout layout = new TwoColumnLayout(true, url);

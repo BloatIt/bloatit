@@ -66,7 +66,7 @@ public class ActivityTab extends HtmlTab {
     @SuppressWarnings("unused")
     private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
 
-    public ActivityTab(Team team, String title, String tabKey, TeamPageUrl url) {
+    public ActivityTab(final Team team, final String title, final String tabKey, final TeamPageUrl url) {
         super(title, tabKey);
         this.team = team;
         this.url = url;
@@ -74,7 +74,7 @@ public class ActivityTab extends HtmlTab {
 
     @Override
     public XmlNode generateBody() {
-        HtmlDiv master = new HtmlDiv("tab_pane");
+        final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Displaying list of user recent activity
         final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 1);
@@ -257,7 +257,7 @@ public class ActivityTab extends HtmlTab {
             // Author
             final HtmlBranch authorBox = new HtmlDiv("feed_item_author");
             activityDetail.add(authorBox);
-            MemberPageUrl to = new MemberPageUrl(content.getMember());
+            final MemberPageUrl to = new MemberPageUrl(content.getMember());
             authorBox.add(new HtmlDefineParagraph(Context.tr("Author: "), to.getHtmlLink(content.getMember().getDisplayName())));
 
             // Date

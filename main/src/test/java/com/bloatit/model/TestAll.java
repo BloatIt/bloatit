@@ -26,10 +26,13 @@ public class TestAll {
      */
     public static Test suite() {
         TestSuite suite;
-
+        
         suite = new TestSuite("Tests in package com.bloatit.model");
         suite.addTestSuite(KudosableTest.class);
         suite.addTestSuite(MemberTest.class);
+        suite.addTestSuite(ActorTest.class);
+        suite.addTestSuite(AccountTest.class);
+        suite.addTestSuite(BankTransactionTest.class);
         suite.addTest(com.bloatit.model.feature.TestAll.suite());
         return suite;
     }

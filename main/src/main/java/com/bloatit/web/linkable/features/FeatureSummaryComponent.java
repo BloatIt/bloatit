@@ -106,7 +106,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                         featureSummaryPopularity.add(popularityText);
                         featureSummaryPopularity.add(popularityScore);
 
-                        if (!feature.isOwner()) {
+                        if (!feature.getRights().isOwner()) {
                             final int vote = feature.getUserVoteValue();
                             if (vote == 0) {
                                 final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");
@@ -253,7 +253,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    private PlaceHolderElement generateAlternativeOfferAction() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateAlternativeOfferAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final Offer selectedOffer = feature.getSelectedOffer();
@@ -279,7 +279,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    private PlaceHolderElement generateReportBugAction() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateReportBugAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         if (!feature.getSelectedOffer().hasRelease()) {
@@ -316,7 +316,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     }
 
-    private PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateDevelopingLeftActions() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final Actor<?> author = feature.getSelectedOffer().getAuthor();
@@ -330,7 +330,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return element;
     }
 
-    private PlaceHolderElement generateFinishedAction() throws UnauthorizedOperationException {
+    private PlaceHolderElement generateFinishedAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final HtmlLink authorLink = new HtmlAuthorLink(feature.getSelectedOffer());

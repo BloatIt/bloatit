@@ -19,11 +19,10 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoExternalAccount;
-import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
@@ -33,6 +32,7 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.DaoTeam;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.SessionManager;
@@ -45,51 +45,85 @@ public class SimpleTestDB {
     private final DaoMember tom;
     private final DaoMember fred;
     private final DaoMember yo;
-    private final DaoTeam other;
-    private final DaoTeam b219;
-    private final DaoTeam ubuntuUsers;
+    private final DaoMember loser;
+    private final DaoTeam publicGroup;
+    private final DaoTeam privateGroup;
     private final DaoFeature feature;
     private final DaoSoftware project;
+    private DaoBankTransaction yoBankTransaction;
+    private DaoBankTransaction publicGroupBankTransaction;
 
     public SimpleTestDB() {
 
         SessionManager.beginWorkUnit();
 
+        loser = new Member("loser", "loser", "loser@gmail.com", Locale.FRANCE).getDao();
+        loser.setFullname("loser loser");
+        loser.setActivationState(ActivationState.ACTIVE);
+
         tom = new Member("Thomas", "password", "tom@gmail.com", Locale.FRANCE).getDao();
         tom.setFullname("Thomas Guyard");
         tom.setActivationState(ActivationState.ACTIVE);
+
         fred = new Member("Fred", "other", "fred@gmail.com", Locale.FRANCE).getDao();
         fred.setFullname("Frédéric Bertolus");
         fred.setActivationState(ActivationState.ACTIVE);
+
         yo = new Member("Yoann", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
 
-        final DaoMember admin = new Member("admin", "admin",  "admin@gmail.com", Locale.FRANCE).getDao();
+        final DaoMember admin = new Member("admin", "admin", "admin@gmail.com", Locale.FRANCE).getDao();
         admin.setFullname("Administrator");
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
 
-        other = DaoTeam.createAndPersiste("other", "plop@plop.com", "A group description", DaoTeam.Right.PROTECTED);
-        b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
-        ubuntuUsers = DaoTeam.createAndPersiste("ubuntuUsers", "plop3@plop.com", "A group description", DaoTeam.Right.PUBLIC);
+        publicGroup = DaoTeam.createAndPersiste("publicGroup", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);
+        privateGroup = DaoTeam.createAndPersiste("privateGroup", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
 
-        other.addMember(yo, true);
-        b219.addMember(yo, false);
-        b219.addMember(tom, true);
-        b219.addMember(fred, false);
-        ubuntuUsers.addMember(fred, true);
+        publicGroup.addMember(tom, true);
+        tom.addTeamRight(publicGroup, UserTeamRight.CONSULT);
+        tom.addTeamRight(publicGroup, UserTeamRight.MODIFY);
+        tom.addTeamRight(publicGroup, UserTeamRight.INVITE);
+        tom.addTeamRight(publicGroup, UserTeamRight.BANK);
+        tom.addTeamRight(publicGroup, UserTeamRight.PROMOTE);
+        tom.addTeamRight(publicGroup, UserTeamRight.TALK);
+        publicGroup.addMember(fred, true);
+        fred.addTeamRight(publicGroup, UserTeamRight.CONSULT);
+        fred.addTeamRight(publicGroup, UserTeamRight.TALK);
+        publicGroup.addMember(yo, false);
+        yo.addTeamRight(publicGroup, UserTeamRight.CONSULT);
+        yo.addTeamRight(publicGroup, UserTeamRight.TALK);
+        yo.addTeamRight(publicGroup, UserTeamRight.BANK);
+        publicGroup.addMember(loser, false);
 
-        yo.setExternalAccount(DaoExternalAccount.createAndPersist(yo, AccountType.IBAN, "code"));
-        tom.setExternalAccount(DaoExternalAccount.createAndPersist(tom, AccountType.IBAN, "code"));
-        fred.setExternalAccount(DaoExternalAccount.createAndPersist(fred, AccountType.IBAN, "code"));
-        b219.setExternalAccount(DaoExternalAccount.createAndPersist(b219, AccountType.IBAN, "code"));
-        ubuntuUsers.setExternalAccount(DaoExternalAccount.createAndPersist(ubuntuUsers, AccountType.IBAN, "code"));
+        privateGroup.addMember(tom, true);
+        tom.addTeamRight(privateGroup, UserTeamRight.CONSULT);
+        tom.addTeamRight(privateGroup, UserTeamRight.MODIFY);
+        tom.addTeamRight(privateGroup, UserTeamRight.INVITE);
+        tom.addTeamRight(privateGroup, UserTeamRight.BANK);
+        tom.addTeamRight(privateGroup, UserTeamRight.PROMOTE);
+        tom.addTeamRight(privateGroup, UserTeamRight.TALK);
+        privateGroup.addMember(fred, true);
+        fred.addTeamRight(privateGroup, UserTeamRight.CONSULT);
+        fred.addTeamRight(privateGroup, UserTeamRight.TALK);
+        privateGroup.addMember(yo, false);
+        yo.addTeamRight(privateGroup, UserTeamRight.CONSULT);
+        yo.addTeamRight(privateGroup, UserTeamRight.TALK);
+        yo.addTeamRight(privateGroup, UserTeamRight.BANK);
+        privateGroup.addMember(loser, false);
 
         try {
-            DaoTransaction.createAndPersist(yo.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
-            DaoTransaction.createAndPersist(tom.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
-            DaoTransaction.createAndPersist(fred.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
+            yoBankTransaction = DaoBankTransaction.createAndPersist("test", "token1", yo, new BigDecimal("1000"), new BigDecimal("1100"), "order1");
+            getYoBankTransaction().setAuthorized();
+            getYoBankTransaction().setValidated();
+            
+            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test", "token2", publicGroup, new BigDecimal("1000"), new BigDecimal("1100"), "order2");
+            publicGroupBankTransaction.setAuthorized();
+            publicGroupBankTransaction.setValidated();
+
+            DaoTransaction.createAndPersist(tom.getInternalAccount(), privateGroup.getExternalAccount(), new BigDecimal("-1000"));
+            DaoTransaction.createAndPersist(fred.getInternalAccount(), privateGroup.getExternalAccount(), new BigDecimal("-1000"));
         } catch (final NotEnoughMoneyException e) {
             e.printStackTrace();
         }
@@ -175,24 +209,31 @@ public class SimpleTestDB {
         return yo;
     }
 
-    public DaoTeam getOther() {
-        return other;
+    public final DaoMember getLoser() {
+        return loser;
     }
 
-    public DaoTeam getB219() {
-        return b219;
+    public final DaoTeam getPublicGroup() {
+        return publicGroup;
     }
 
-    public DaoTeam getUbuntuUsers() {
-        return ubuntuUsers;
+    public final DaoTeam getPrivateGroup() {
+        return privateGroup;
+    }
+
+    public final DaoSoftware getProject() {
+        return project;
     }
 
     public DaoFeature getFeature() {
         return feature;
     }
 
-    public static void main(final String[] args) {
-        new SimpleTestDB();
+    public DaoBankTransaction getYoBankTransaction() {
+        return yoBankTransaction;
     }
 
+    public DaoBankTransaction getPublicGroupBankTransaction() {
+        return publicGroupBankTransaction;
+    }
 }

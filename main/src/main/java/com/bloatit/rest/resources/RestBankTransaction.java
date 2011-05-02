@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
@@ -144,7 +146,11 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @XmlAttribute
     public BigDecimal getValuePaid() {
-        return model.getValuePaid();
+        try {
+            return model.getValuePaid();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -152,7 +158,11 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @XmlAttribute
     public BigDecimal getValue() {
-        return model.getValue();
+        try {
+            return model.getValue();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -160,7 +170,11 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @XmlElement
     public String getMessage() {
-        return model.getMessage();
+        try {
+            return model.getMessage();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -168,7 +182,11 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @XmlAttribute(name = "transactionstate")
     public State getTransactionState() {
-        return model.getState();
+        try {
+            return model.getState();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            return null;
+        }
     }
 
     /**
@@ -177,7 +195,11 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
-        return model.getCreationDate();
+        try {
+            return model.getCreationDate();
+        } catch (final UnauthorizedOperationException e) {
+            return null;
+        }
     }
 
     /**
@@ -186,7 +208,11 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     @XmlAttribute
     @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getModificationDate() {
-        return model.getModificationDate();
+        try {
+            return model.getModificationDate();
+        } catch (final UnauthorizedOperationException e) {
+            return null;
+        }
     }
 
     /**
@@ -194,23 +220,11 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @XmlElement
     public String getReference() {
-        return model.getReference();
-    }
-
-    /**
-     * @see com.bloatit.model.BankTransaction#getToken()
-     */
-    @XmlElement
-    public String getToken() {
-        return model.getToken();
-    }
-
-    /**
-     * @see com.bloatit.model.BankTransaction#getProcessInformations()
-     */
-    @XmlElement
-    public String getProcessInformations() {
-        return model.getProcessInformations();
+        try {
+            return model.getReference();
+        } catch (final UnauthorizedPrivateAccessException e) {
+            return null;
+        }
     }
 
     // ---------------------------------------------------------------------------------------

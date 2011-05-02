@@ -39,7 +39,7 @@ public class KudosableAuthorBlock extends UserContentAuthorBlock {
 
             commentPopularity.addText(tr("Popularity: {0}", HtmlTools.compressKarma(kudosable.getPopularity())));
 
-            if (!kudosable.isOwner()) {
+            if (!kudosable.getRights().isOwner()) {
                 final int vote = kudosable.getUserVoteValue();
                 if (vote == 0) {
                     commentPopularity.addText(" (");

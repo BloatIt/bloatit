@@ -25,12 +25,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.restprocessor.exception.RestException;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.rest.list.RestFeatureList;
@@ -141,48 +138,32 @@ public class RestSoftware extends RestElement<Software> {
      * @see com.bloatit.model.Software#getName()
      */
     @XmlAttribute
-    public String getName() throws RestException {
-        try {
-            return model.getName();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getName on Software", e);
-        }
+    public String getName() {
+        return model.getName();
     }
 
     /**
      * @see com.bloatit.model.Software#getDescription()
      */
     @XmlElement
-    public RestDescription getDescription() throws RestException {
-        try {
-            return new RestDescription(model.getDescription());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDescription on Software", e);
-        }
+    public RestDescription getDescription() {
+        return new RestDescription(model.getDescription());
     }
 
     /**
      * @see com.bloatit.model.Software#getFeatures()
      */
     @XmlElement
-    public RestFeatureList getFeatures() throws RestException {
-        try {
-            return new RestFeatureList(model.getFeatures());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getFeatures on Software", e);
-        }
+    public RestFeatureList getFeatures() {
+        return new RestFeatureList(model.getFeatures());
     }
 
     /**
      * @see com.bloatit.model.Software#getImage()
      */
     @XmlElement
-    public RestFileMetadata getImage() throws RestException {
-        try {
-            return new RestFileMetadata(model.getImage());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getImage on Software", e);
-        }
+    public RestFileMetadata getImage() {
+        return new RestFileMetadata(model.getImage());
     }
 
     // ---------------------------------------------------------------------------------------

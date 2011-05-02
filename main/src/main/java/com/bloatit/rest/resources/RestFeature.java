@@ -32,12 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
-import com.bloatit.framework.restprocessor.exception.RestException;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.rest.adapters.DateAdapter;
@@ -165,12 +162,8 @@ public class RestFeature extends RestElement<Feature> {
     }
 
     @XmlElement
-    public String getTitle() throws RestException {
-        try {
-            return model.getTitle();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getTitle()");
-        }
+    public String getTitle() {
+        return model.getTitle();
     }
 
     @XmlAttribute
@@ -179,67 +172,39 @@ public class RestFeature extends RestElement<Feature> {
     }
 
     @XmlElement
-    public RestCommentList getComments() throws RestException {
-        try {
-            return new RestCommentList(model.getComments());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getComments()");
-        }
+    public RestCommentList getComments() {
+        return new RestCommentList(model.getComments());
     }
 
     @XmlElement
-    public RestContributionList getContributions() throws RestException {
-        try {
-            return new RestContributionList(model.getContributions());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getContributions()");
-        }
+    public RestContributionList getContributions() {
+        return new RestContributionList(model.getContributions());
     }
 
     @XmlAttribute
-    public float getProgression() throws RestException {
-        try {
-            return model.getProgression();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getProgression()");
-        }
+    public float getProgression() {
+        return model.getProgression();
     }
 
     @XmlElement
-    public BigDecimal getContribution() throws RestException {
-        try {
-            return model.getContribution();
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getContribution()");
-        }
+    public BigDecimal getContribution() {
+        return model.getContribution();
     }
 
     @XmlElement
-    public RestDescription getDescription() throws RestException {
-        try {
-            return new RestDescription(model.getDescription());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getDescription()");
-        }
+    public RestDescription getDescription() {
+        return new RestDescription(model.getDescription());
     }
 
     @XmlAttribute
     @XmlIDREF
-    public RestSoftware getSoftware() throws RestException {
-        try {
-            return new RestSoftware(model.getSoftware());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getSoftware()");
-        }
+    public RestSoftware getSoftware() {
+        return new RestSoftware(model.getSoftware());
     }
 
     @XmlElement
-    public RestOfferList getOffers() throws RestException {
-        try {
-            return new RestOfferList(model.getOffers());
-        } catch (final UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Feature.getOffers()");
-        }
+    public RestOfferList getOffers() {
+        return new RestOfferList(model.getOffers());
     }
 
     /**

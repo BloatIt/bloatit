@@ -307,6 +307,10 @@ public class DaoTeam extends DaoActor {
      *         Note, the returned set can be empty if the user is only a Member
      */
     public EnumSet<UserTeamRight> getUserTeamRight(final DaoMember member) {
+        
+        // TODO externilize query
+        
+        
         final Query q = SessionManager.getSessionFactory()
                                       .getCurrentSession()
                                       .createQuery("select gm from com.bloatit.data.DaoTeam g join g.teamMembership as gm join gm.member as m where g = :team and m = :member");

@@ -14,8 +14,6 @@ package com.bloatit.web.linkable.features;
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -69,30 +67,19 @@ public final class FeatureTabPane extends HtmlPageComponent {
             }
         });
 
-        // Create participations tab
-        try {
-            tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions().size()), CONTRIBUTIONS_TAB) {
-                @Override
-                public XmlNode generateBody() {
-                    return new FeatureContributorsComponent(feature);
-                }
-            });
-        } catch (final UnauthorizedOperationException e1) {
-            Context.getSession().notifyError(Context.tr("An error prevented us from displaying cotnribution informations. Please notify us."));
-            throw new ShallNotPassException("User cannot access contributions informations", e1);
-        }
+        tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions().size()), CONTRIBUTIONS_TAB) {
+            @Override
+            public XmlNode generateBody() {
+                return new FeatureContributorsComponent(feature);
+            }
+        });
 
-        // Create Comments tab
-        try {
-            tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), OFFERS_TAB) {
-                @Override
-                public XmlNode generateBody() {
-                    return new FeatureOfferListComponent(feature);
-                }
-            });
-        } catch (final UnauthorizedOperationException e) {
-            // No access to offer, the tab is not displayed
-        }
+        tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), OFFERS_TAB) {
+            @Override
+            public XmlNode generateBody() {
+                return new FeatureOfferListComponent(feature);
+            }
+        });
 
         // Create Details tab
         // tabPane.addTab(new HtmlTab(Context.tr("Details"), DETAILS_TAB) {
@@ -124,15 +111,11 @@ public final class FeatureTabPane extends HtmlPageComponent {
             {
 
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
-                try {
-                    final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
-                    // final HtmlParagraph description = new HtmlParagraph(new
-                    // HtmlRawTextRenderer(translatedDescription.getText()));
-                    final HtmlElement description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
-                    descriptionText.add(description);
-                } catch (final UnauthorizedOperationException e1) {
-                    // Nothing.
-                }
+                final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
+                // final HtmlParagraph description = new HtmlParagraph(new
+                // HtmlRawTextRenderer(translatedDescription.getText()));
+                final HtmlElement description = new HtmlCachedMarkdownRenderer(translatedDescription.getText());
+                descriptionText.add(description);
 
             }
             descriptionBlock.add(descriptionText);

@@ -71,6 +71,14 @@ public final class Description extends Identifiable<DaoDescription> {
         super(dao);
     }
 
+    public void addTranslation(final Translation translation) {
+        getDao().addTranslation(translation.getDao());
+    }
+
+    public void setDefaultLocale(final Locale defaultLocale) {
+        getDao().setDefaultLocale(defaultLocale);
+    }
+
     /**
      * @return all the translations for a description and <code>this</code>
      *         also.
@@ -80,11 +88,7 @@ public final class Description extends Identifiable<DaoDescription> {
         return new TranslationList(getDao().getTranslations());
     }
 
-    public void addTranslation(final Translation translation) {
-        getDao().addTranslation(translation.getDao());
-    }
-
-    private Translation getTranslation(final Locale locale) {
+    public Translation getTranslation(final Locale locale) {
         return Translation.create(getDao().getTranslation(locale));
     }
 
@@ -100,17 +104,8 @@ public final class Description extends Identifiable<DaoDescription> {
         return Translation.create(getDao().getDefaultTranslation());
     }
 
-    public void setDefaultLocale(final Locale defaultLocale) {
-        getDao().setDefaultLocale(defaultLocale);
-    }
-
     public Locale getDefaultLocale() {
         return getDao().getDefaultLocale();
-    }
-
-    @Override
-    protected boolean isMine(final Member member) {
-        return false;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

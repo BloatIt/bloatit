@@ -17,18 +17,10 @@
 
 package com.bloatit.model.right;
 
-import java.util.EnumSet;
-
-import com.bloatit.common.Log;
-import com.bloatit.data.DaoMember.Role;
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.model.Member;
-import com.bloatit.model.Team;
-import com.bloatit.model.UserContent;
 
 /**
  * A restricted object is an object that contains some properties which accesses
@@ -36,53 +28,19 @@ import com.bloatit.model.UserContent;
  */
 public abstract class RestrictedObject implements RestrictedInterface {
 
-    /**
-     * The Enum OwningState is the state of a user regarding to this
-     * {@link RestrictedObject}.
-     */
-    private enum OwningState {
-
-        /** NOBODY means the user is not authenticated. */
-        NOBODY,
-        /**
-         * AUTHENTICATED means the user is authenticated but he is not the
-         * author of this content
-         */
-        AUTHENTICATED,
-        /**
-         * OWNER means the user is authenticated and is the author of this
-         * content
-         */
-        OWNER
-    }
-
     /** The token. */
     private AuthToken token = null;
-
-    /** The owning state of the current user authenticated on this content. */
-    private OwningState owningState;
-
-    /** The team rights of the current user authenticated on this content. */
-    private EnumSet<UserTeamRight> teamRights;
 
     /**
      * Instantiates a new restricted object.
      */
     public RestrictedObject() {
-        owningState = OwningState.NOBODY;
-        teamRights = EnumSet.noneOf(UserTeamRight.class);
+        super();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.right.RestrictedInterface#authenticate(com.bloatit.
-     * model.right .AuthToken)
-     */
     @Override
     public void authenticate(final AuthToken token) {
         this.token = token;
-        updateRights();
     }
 
     private void automaticAuthentication() {
@@ -92,118 +50,9 @@ public abstract class RestrictedObject implements RestrictedInterface {
         }
     }
 
-    private void updateRights() {
-        if (token == null || token.isAnonymous()) {
-            Log.model().debug("Try to authenticate with a null token.");
-            owningState = OwningState.NOBODY;
-            return;
-        }
-        if (token.getMember() == null) {
-            Log.model().fatal("Null member on an AuthToken");
-            return;
-        }
-
-        final Member member = token.getMember();
-        if (isMine(member)) {
-            owningState = OwningState.OWNER;
-        } else {
-            owningState = OwningState.AUTHENTICATED;
-        }
-
-        teamRights = calculateMyTeamRights(member);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.right.RestrictedInterface#hasTeamPrivilege(com.bloatit
-     * .data. DaoTeamRight.UserTeamRight)
-     */
-    @Override
-    public final boolean hasTeamPrivilege(final UserTeamRight right) {
-        automaticAuthentication();
-        return teamRights.contains(right);
-    }
-
-    /**
-     * Check if an authenticated user can talk as the creator of this content.
-     *
-     * @return true if the authenticate user is the owner (and no group has
-     *         created this content) or if he has the right to TALK. False
-     *         otherwise.
-     */
-    @Override
-    public final boolean canTalkAs() {
-        return (isOwner() && teamRights.isEmpty()) || hasTeamPrivilege(UserTeamRight.TALK);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.right.RestrictedInterface#hasUserPrivilege(com.bloatit
-     * .data.DaoMember .Role)
-     */
-    @Override
-    public final boolean hasUserPrivilege(final Role role) {
-        automaticAuthentication();
-        // We have to test if we are authenticated
-        // to make sure the token is != null
-        return isAuthenticated() && token.getMember().getRole() == role;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.right.RestrictedInterface#isAuthenticated()
-     */
-    @Override
-    public final boolean isAuthenticated() {
-        automaticAuthentication();
-        return owningState != OwningState.NOBODY;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.right.RestrictedInterface#isOwner()
-     */
-    @Override
-    public final boolean isOwner() {
-        automaticAuthentication();
-        return owningState == OwningState.OWNER;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.right.RestrictedInterface#isNobody()
-     */
-    @Override
-    public final boolean isNobody() {
-        automaticAuthentication();
-        return owningState == OwningState.NOBODY;
-    }
-
-    /**
-     * Return true if this content is mine (I am the author).
-     *
-     * @param member is the person that wish to know if the content is his.
-     * @return true if <code>member</code> is the author of <code>this</code>,
-     *         false otherwise.
-     */
-    protected abstract boolean isMine(Member member);
-
-    /**
-     * Calculate my team rights. This method is redefined in
-     * {@link UserContent#calculateMyTeamRights(Member)}.
-     *
-     * @param member the member
-     * @return the enum set
-     */
-    protected EnumSet<UserTeamRight> calculateMyTeamRights(final Member member) {
-        return EnumSet.noneOf(UserTeamRight.class);
-    }
-
     /**
      * Gets the auth token.
-     *
+     * 
      * @return the auth token
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
@@ -218,39 +67,11 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /**
      * Gets the auth token unprotected.
-     *
+     * 
      * @return the auth token unprotected
      */
     protected final AuthToken getAuthTokenUnprotected() {
         automaticAuthentication();
         return token;
-    }
-
-    /**
-     * Can access.
-     *
-     * @param accessor the accessor
-     * @param action the action
-     * @return true, if successful
-     */
-    protected final boolean canAccess(final Accessor accessor, final Action action) {
-        return accessor.canAccess(this, action);
-    }
-
-    /**
-     * Try access.
-     *
-     * @param accessor the accessor
-     * @param action the action
-     * @throws UnauthorizedOperationException the unauthorized operation
-     *             exception
-     */
-    protected final void tryAccess(final Accessor accessor, final Action action) throws UnauthorizedOperationException {
-        accessor.tryAccess(this, action);
-    }
-
-    @Override
-    public Team getAsTeam() {
-        return getAuthTokenUnprotected() != null ? getAuthTokenUnprotected().getAsTeam() : null;
     }
 }

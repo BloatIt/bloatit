@@ -50,14 +50,11 @@ public interface UserContentInterface extends IdentifiableInterface, RestrictedI
      */
     Date getCreationDate();
 
-    public abstract boolean canAccessAsTeam(final Team asTeam);
-
     /**
      * Gets the as team. Can (may) be null.
      * 
      * @return the as team
      */
-    @Override
     Team getAsTeam();
 
     boolean isDeleted() throws UnauthorizedOperationException;

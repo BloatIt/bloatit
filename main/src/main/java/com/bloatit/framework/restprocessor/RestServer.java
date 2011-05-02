@@ -16,9 +16,8 @@
 //
 package com.bloatit.framework.restprocessor;
 
-import java.lang.reflect.Method;
-
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -414,7 +413,7 @@ public abstract class RestServer implements XcgiProcessor {
             return "()";
         }
         final StringBuilder sb = new StringBuilder();
-        sb.append("(");
+        sb.append('(');
         for (final Entry<String, HttpParameter> param : params.entrySet()) {
             sb.append("String " + param.getKey() + ", ");
         }

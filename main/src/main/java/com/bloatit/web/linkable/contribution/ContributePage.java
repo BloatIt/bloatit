@@ -33,6 +33,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -83,11 +84,14 @@ public final class ContributePage extends CreateUserContentPage {
         contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents."));
 
         // Input field : As team
-        addAsTeamField(contribForm,
-                       me,
-                       UserTeamRight.BANK,
-                       tr("In the name of"),
-                       tr("Talk in the name of this team and use its money to make a contribution."));
+        final AsTeamField teamField = addAsTeamField(contribForm,
+                                                     me,
+                                                     UserTeamRight.BANK,
+                                                     tr("In the name of"),
+                                                     tr("Talk in the name of this team and use its money to make a contribution."));
+        if (process.getTeam() != null) {
+            teamField.getTeamInput().setDefaultValue(process.getTeam().getId().toString());
+        }
 
         // Input field : comment
         final FieldData commentData = formActionUrl.getCommentParameter().pickFieldData();

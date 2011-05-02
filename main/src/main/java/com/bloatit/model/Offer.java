@@ -25,12 +25,14 @@ import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.FeatureRight;
+import com.bloatit.model.right.RgtOffer;
 
 // TODO rightManagement
 public final class Offer extends Kudosable<DaoOffer> {
@@ -78,6 +80,10 @@ public final class Offer extends Kudosable<DaoOffer> {
                                   final Locale local,
                                   final Date dateExpire,
                                   final int secondBeforeValidation) throws UnauthorizedOperationException {
+        if (!isDraft()) {
+            throw new BadProgrammerException("You cannot add a milestone on a non draft offer.");
+        }
+        tryAccess(new RgtOffer.Milestone(), Action.WRITE);
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                                            amount,
                                                            DaoDescription.createAndPersist(getDao().getMember(),
@@ -95,10 +101,12 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Work-flow
     // ////////////////////////////////////////////////////////////////////////
 
-    public void setDraftFinished() {
+    public void setDraftFinished() throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtOffer.Draft(), Action.WRITE);
         getDao().setDraft(false);
     }
 
+    // TODO make me protected
     public boolean validateCurrentMilestone(final boolean force) {
         // If the validation is not complete, there is nothing to do in the
         // feature
@@ -118,7 +126,8 @@ public final class Offer extends Kudosable<DaoOffer> {
         return isAllValidated;
     }
 
-    public boolean shouldValidateCurrentMilestonePart(final Level level) {
+    // Must be internal call. Make me protected ?
+    protected boolean shouldValidateCurrentMilestonePart(final Level level) {
         final DaoMilestone currentMilestone = findCurrentDaoMilestone();
         if (currentMilestone == null) {
             return false;
@@ -126,6 +135,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         return currentMilestone.shouldValidatePart(level);
     }
 
+    // TODO make me protected
     public void cancelEverythingLeft() {
         getDao().cancelEverythingLeft();
     }
@@ -159,30 +169,37 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
+    // TODO make me protected
     public boolean isFinished() {
         return !hasMilestoneLeft();
     }
 
+    // Public data, no right management.
     public boolean isDraft() {
         return getDao().isDraft();
     }
 
-    public Feature getFeature() {
+    // Public data, no right management.
+    public FeatureImplementation getFeature() {
         return getFeatureImplementation();
     }
 
+    // Public data, no right management.
     private FeatureImplementation getFeatureImplementation() {
         return FeatureImplementation.create(getDao().getFeature());
     }
 
+    // Public data, no right management.
     public BigDecimal getAmount() {
         return getDao().getAmount();
     }
 
+    // Public data, no right management.
     public PageIterable<Milestone> getMilestones() {
         return new MilestoneList(getDao().getMilestones());
     }
 
+    // Public data, no right management.
     public Date getExpirationDate() {
         return getDao().getExpirationDate();
     }
@@ -193,27 +210,26 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * Return the progression of the funding of this offer with the amount
      * available on the feature
-     * 
-     * @throws UnauthorizedOperationException
      */
-    public float getProgression() throws UnauthorizedOperationException {
-
+    // Public data, no right management.
+    public float getProgression() {
         if (getAmount().floatValue() != 0) {
-            tryAccess(new FeatureRight.Contribute(), Action.READ);
-
             return (getFeature().getContribution().floatValue() * PROGRESSION_PERCENT) / getAmount().floatValue();
         }
         return Float.POSITIVE_INFINITY;
     }
 
+    // Public data, no right management.
     public Milestone getCurrentMilestone() {
         return Milestone.create(getDao().getCurrentMilestone());
     }
 
+    // Public data, no right management.
     public boolean hasRelease() {
         return getDao().hasRelease();
     }
 
+    // Public data, no right management.
     public Release getLastRelease() {
         return Release.create(getDao().getLastRelease());
     }

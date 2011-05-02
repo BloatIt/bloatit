@@ -154,11 +154,9 @@ public class FCGIParser implements XcgiParser {
 
     @Override
     public Map<String, String> getEnv() throws IOException {
-
         while (paramStreamOpen) {
             parseRecord();
         }
-
         return env;
     }
 
@@ -166,7 +164,6 @@ public class FCGIParser implements XcgiParser {
 
         // TODO: comment that
         while (postStreamOpen && !(parseRecord() == FCGI_STDIN)) {
-            ;
         }
     }
 

@@ -20,8 +20,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -44,7 +42,7 @@ public class HtmlContributionLine extends HtmlTableLine {
     private final BigDecimal amount;
     private final Url editUrl;
 
-    protected HtmlContributionLine(final Feature feature, final BigDecimal amount, final Url editUrl) throws UnauthorizedOperationException {
+    protected HtmlContributionLine(final Feature feature, final BigDecimal amount, final Url editUrl) {
         this.feature = feature;
         this.amount = amount;
         this.editUrl = editUrl;
@@ -75,11 +73,7 @@ public class HtmlContributionLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-            try {
                 return SoftwaresTools.getSoftwareLogoSmall(feature.getSoftware());
-            } catch (UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Fail to get a feature logo", e);
-            }
         }
     }
 
@@ -91,11 +85,7 @@ public class HtmlContributionLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-            try {
-                return new HtmlText(localizator.getCurrency(feature.getContribution()).getSimpleEuroString());
-            } catch (UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Fail to get a contribution amount", e);
-            }
+            return new HtmlText(localizator.getCurrency(feature.getContribution()).getSimpleEuroString());
         }
     }
 
@@ -107,11 +97,7 @@ public class HtmlContributionLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-            try {
-                return new HtmlText(localizator.getCurrency(feature.getContribution().add(amount)).getSimpleEuroString());
-            } catch (UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Fail to get a contribution amount", e);
-            }
+            return new HtmlText(localizator.getCurrency(feature.getContribution().add(amount)).getSimpleEuroString());
         }
     }
 
@@ -147,11 +133,7 @@ public class HtmlContributionLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-            try {
-                return new HtmlDiv("").addText(FeaturesTools.getTitle(feature));
-            } catch (UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Fail to get a feature title", e);
-            }
+            return new HtmlDiv("").addText(FeaturesTools.getTitle(feature));
         }
     }
 

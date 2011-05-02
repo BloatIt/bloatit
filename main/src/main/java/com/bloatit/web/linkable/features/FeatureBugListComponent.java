@@ -15,8 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.Iterator;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -37,16 +35,11 @@ public class FeatureBugListComponent extends HtmlDiv {
     protected FeatureBugListComponent(final Feature feature) {
         super("padding");
 
-        try {
-            final HtmlDiv reportBugBlock = new HtmlDiv("float_right");
-            final HtmlLink reportBugLink = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(tr("Report a new bug"));
-            reportBugLink.setCssClass("button");
-            reportBugBlock.add(reportBugLink);
-            add(reportBugBlock);
-        } catch (final UnauthorizedOperationException e) {
-            Context.getSession().notifyError(Context.tr("An error prevented us from displaying selected offer. Please notify us."));
-            throw new ShallNotPassException("User cannot access selected offer", e);
-        }
+        final HtmlDiv reportBugBlock = new HtmlDiv("float_right");
+        final HtmlLink reportBugLink = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(tr("Report a new bug"));
+        reportBugLink.setCssClass("button");
+        reportBugBlock.add(reportBugLink);
+        add(reportBugBlock);
 
         // Open bugs
         final PageIterable<Bug> openBugs = feature.getOpenBugs();
