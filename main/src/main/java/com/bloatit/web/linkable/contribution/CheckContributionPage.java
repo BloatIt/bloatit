@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
@@ -243,6 +244,7 @@ public final class CheckContributionPage extends QuotationPage {
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
         summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);
 

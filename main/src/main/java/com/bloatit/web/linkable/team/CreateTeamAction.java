@@ -18,6 +18,7 @@ package com.bloatit.web.linkable.team;
 
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -28,6 +29,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
@@ -96,6 +98,13 @@ public final class CreateTeamAction extends LoggedAction {
 
     @Override
     protected Url doCheckRightsAndEverything(final Member me) {
+
+        if (TeamManager.exist(login)) {
+            session.notifyError(Context.tr("The team name ''{0}''already used. Find another name.", login));
+            url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Team name already used.")));
+            return doProcessErrors();
+        }
+
         return NO_ERROR;
     }
 
