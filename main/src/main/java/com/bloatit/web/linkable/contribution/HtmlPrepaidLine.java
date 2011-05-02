@@ -120,6 +120,13 @@ public class HtmlPrepaidLine extends HtmlTableLine {
 
             return new HtmlDiv("").add(prepaidAccount).add(prepaidAccountDetails);
         }
+
+        @Override
+        public int getColspan() {
+            return 2;
+        }
+
+
     }
 
     private class AmountCell extends HtmlTableCell {

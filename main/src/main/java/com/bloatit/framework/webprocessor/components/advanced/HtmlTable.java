@@ -55,6 +55,10 @@ public class HtmlTable extends HtmlGenericElement {
                 if (model.getColumnCss(i) != null) {
                     td.setCssClass(model.getColumnCss(i));
                 }
+
+                if (model.getColspan(i) != 1) {
+                    td.addAttribute("colspan", String.valueOf(model.getColspan(i)));
+                }
                 tr.add(td);
             }
             add(tr);
@@ -77,6 +81,7 @@ public class HtmlTable extends HtmlGenericElement {
     public static abstract class HtmlTableModel {
         public abstract int getColumnCount();
 
+
         public abstract XmlNode getHeader(int column);
 
         public abstract XmlNode getBody(int column);
@@ -97,6 +102,11 @@ public class HtmlTable extends HtmlGenericElement {
         public String getLineCss() {
             return null;
         }
+
+        public int getColspan(int i) {
+            return 1;
+        }
+
     }
 
     public static class HtmlLineTableModel extends HtmlTableModel {
@@ -149,6 +159,11 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         @Override
+        public int getColspan(final int column) {
+            return lines.get(currentLine).getCells().get(column).getColspan();
+        }
+
+        @Override
         public String getLineCss() {
             return lines.get(currentLine).getCssClass();
         }
@@ -186,6 +201,10 @@ public class HtmlTable extends HtmlGenericElement {
 
             public String getCss() {
                 return css;
+            }
+
+            public int getColspan() {
+                return 1;
             }
 
         }
