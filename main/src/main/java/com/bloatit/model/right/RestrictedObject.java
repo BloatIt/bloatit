@@ -21,8 +21,6 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.model.Member;
-import com.bloatit.model.Team;
 
 /**
  * A restricted object is an object that contains some properties which accesses
@@ -51,7 +49,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
             authenticate(session.getAuthToken());
         }
     }
-    
+
     /**
      * Gets the auth token.
      * 
@@ -75,15 +73,5 @@ public abstract class RestrictedObject implements RestrictedInterface {
     protected final AuthToken getAuthTokenUnprotected() {
         automaticAuthentication();
         return token;
-    }
-
-    @Override
-    public Team getAsTeam() {
-        return getAuthTokenUnprotected() != null ? getAuthTokenUnprotected().getAsTeam() : null;
-    }
-
-    @Override
-    public Member getAuthenticatedMember() {
-        return getAuthTokenUnprotected().getMember();
     }
 }

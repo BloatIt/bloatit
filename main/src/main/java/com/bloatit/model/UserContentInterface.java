@@ -55,7 +55,6 @@ public interface UserContentInterface extends IdentifiableInterface, RestrictedI
      * 
      * @return the as team
      */
-    @Override
     Team getAsTeam();
 
     boolean isDeleted() throws UnauthorizedOperationException;

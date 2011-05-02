@@ -43,10 +43,6 @@ public abstract class Identifiable<T extends DaoIdentifiable> extends Restricted
         this.dao = dao;
     }
 
-    // public Identifiable(Integer identifant, Class<T> daoClass) {
-    // this(DBRequests.getById(daoClass, identifant));
-    // }
-
     /**
      * Can access.
      * 
