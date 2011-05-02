@@ -96,11 +96,10 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Linked software
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
-        softwareInput.addDropDownElement("", tr("No software"));
         for (final Software software : SoftwareManager.getAll()) {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
-        
+
         // TODO: set the default value to "select a software"
         createFeatureForm.add(softwareInput);
 
@@ -121,26 +120,26 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                                                                      SPECIF_INPUT_NB_COLUMNS);
         //@formatter:off
         final String suggestedValue = tr("What is the expected work ?\n" +
-                                         "\n" + 
-                                         "What is the requested date ?\n" + 
-                                         "\n" + 
-                                         "What is the expected compatibility ?\n" + 
-                                         "\n" + 
-                                         "  * Linux 2.6.x\n" + 
-                                         "  * Windows 7\n" + 
-                                         "  * Mac Os X\n" + 
-                                         "  * ...\n" + 
-                                         "\n" + 
-                                         "What is the expected output ?\n" + 
-                                         "\n" + 
-                                         " * Source tarball\n" + 
-                                         " * Diff patch\n" + 
-                                         " * Public repository\n" + 
-                                         " * Push in the project's official  repository\n" + 
-                                         " * Windows install\n" + 
-                                         " * Install shell script\n" + 
-                                         " * Deb package\n" + 
-                                         " * Rpm package\n" + 
+                                         "\n" +
+                                         "What is the requested date ?\n" +
+                                         "\n" +
+                                         "What is the expected compatibility ?\n" +
+                                         "\n" +
+                                         "  * Linux 2.6.x\n" +
+                                         "  * Windows 7\n" +
+                                         "  * Mac Os X\n" +
+                                         "  * ...\n" +
+                                         "\n" +
+                                         "What is the expected output ?\n" +
+                                         "\n" +
+                                         " * Source tarball\n" +
+                                         " * Diff patch\n" +
+                                         " * Public repository\n" +
+                                         " * Push in the project's official  repository\n" +
+                                         " * Windows install\n" +
+                                         " * Install shell script\n" +
+                                         " * Deb package\n" +
+                                         " * Rpm package\n" +
                                          " * ...");
         //@formatter:on
 

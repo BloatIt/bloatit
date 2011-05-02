@@ -16,6 +16,9 @@
 //
 package com.bloatit.model.managers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
@@ -37,7 +40,7 @@ public final class HighlightFeatureManager {
 
     /**
      * Gets a {@link HighlightFeature} by its id.
-     * 
+     *
      * @param id the id
      * @return the {@link HighlightFeature} or null if not found.
      */
@@ -47,10 +50,38 @@ public final class HighlightFeatureManager {
 
     /**
      * Gets the all th {@link HighlightFeature}s.
-     * 
+     *
      * @return the {@link HighlightFeature} features.
      */
     public static PageIterable<HighlightFeature> getAll() {
         return new HighlightFeatureList(DBRequests.getAll(DaoHighlightFeature.class));
+    }
+
+    public static List<HighlightFeature> getPositionArray(int featureCount) {
+
+        final PageIterable<HighlightFeature> hightlightFeatureList = HighlightFeatureManager.getAll();
+        final List<HighlightFeature> hightlightFeatureArray = new ArrayList<HighlightFeature>(featureCount);
+
+        for(int i = 0; i< featureCount; i++) {
+            hightlightFeatureArray.add(null);
+        }
+
+        for (final HighlightFeature highlightFeature : hightlightFeatureList) {
+            if(!highlightFeature.isActive()) {
+                continue;
+            }
+            final int position = highlightFeature.getPosition() - 1;
+            if (position < featureCount) {
+                if (hightlightFeatureArray.get(position) == null) {
+                    hightlightFeatureArray.add(position, highlightFeature);
+                } else {
+                    if (hightlightFeatureArray.get(position).getActivationDate().before(highlightFeature.getActivationDate())) {
+                        hightlightFeatureArray.set(position, highlightFeature);
+                    }
+                }
+            }
+        }
+
+        return hightlightFeatureArray;
     }
 }

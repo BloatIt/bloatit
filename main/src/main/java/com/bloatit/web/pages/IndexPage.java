@@ -14,9 +14,10 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.List;
+
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -82,28 +83,16 @@ public final class IndexPage extends MasterPage {
         final HtmlDiv featureList = new HtmlDiv("feature_list");
         {
             final int featureCount = 6;
-            final PageIterable<HighlightFeature> hightlightFeatureList = HighlightFeatureManager.getAll();
-            final HighlightFeature[] hightlightFeatureArray = new HighlightFeature[featureCount];
 
-            for (final HighlightFeature highlightFeature : hightlightFeatureList) {
-                final int position = highlightFeature.getPosition() - 1;
-                if (position < featureCount) {
-                    if (hightlightFeatureArray[position] == null) {
-                        hightlightFeatureArray[position] = highlightFeature;
-                    } else {
-                        if (hightlightFeatureArray[position].getActivationDate().before(highlightFeature.getActivationDate())) {
-                            hightlightFeatureArray[position] = highlightFeature;
-                        }
-                    }
-                }
-            }
+            final List<HighlightFeature> hightlightFeatureArray = HighlightFeatureManager.getPositionArray(featureCount);
+
 
             for (int i = 0; i < (featureCount + 1) / 2; i++) {
                 final HtmlDiv featureListRow = new HtmlDiv("feature_list_row");
                 {
                     final HtmlDiv featureListLeftCase = new HtmlDiv("feature_list_left_case");
                     {
-                        final HighlightFeature highlightFeature = hightlightFeatureArray[i * 2];
+                        final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2);
                         if (highlightFeature != null) {
                             featureListLeftCase.add(new IndexFeatureBlock(highlightFeature));
                         }
@@ -112,7 +101,7 @@ public final class IndexPage extends MasterPage {
 
                     final HtmlDiv featureListRightCase = new HtmlDiv("feature_list_right_case");
                     {
-                        final HighlightFeature highlightFeature = hightlightFeatureArray[i * 2 + 1];
+                        final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2 + 1);
                         if (highlightFeature != null) {
                             featureListRightCase.add(new IndexFeatureBlock(highlightFeature));
                         }
