@@ -33,6 +33,7 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.ModelClassVisitor;
+import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.Software;
@@ -152,6 +153,11 @@ public class BreadcrumbTools {
             @Override
             public Breadcrumb visit(final Release model) {
                 return ReleasePage.generateBreadcrumb(model);
+            }
+
+            @Override
+            public Breadcrumb visit(MoneyWithdrawal moneyWithdrawal) {
+                throw new NotImplementedException();
             }
         });
     }

@@ -170,6 +170,10 @@ public class HttpHeader {
      */
     private final LazyString contentType = new LazyString("CONTENT_TYPE");
 
+    private final LazyString pathTranslated = new LazyString("PATH_TRANSLATED");
+
+    private final LazyString httpReferer = new LazyString("HTTP_REFERER");
+
     private final Map<String, String> env;
 
     protected HttpHeader(final Map<String, String> env) {
@@ -305,4 +309,11 @@ public class HttpHeader {
         return httpCookie.getValue(env);
     }
 
+    public String getPathTranslated() {
+        return pathTranslated.getValue(env);
+    }
+
+    public String getHttpReferer() {
+        return httpReferer.getValue(env);
+    }
 }

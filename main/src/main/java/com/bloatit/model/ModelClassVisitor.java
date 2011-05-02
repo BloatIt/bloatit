@@ -59,4 +59,6 @@ public interface ModelClassVisitor<ReturnType> {
     ReturnType visit(Translation model);
 
     ReturnType visit(Release model);
+
+    ReturnType visit(MoneyWithdrawal moneyWithdrawal);
 }

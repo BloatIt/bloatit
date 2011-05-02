@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+ 	<changeSet author="Yoann Plénet" id="Creation of money withdrawal">
+		<comment>Creating the table used to store money withdrawal</comment>
+        <createTable tableName="daomoneywithdrawal">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daomoneywithdrawalpk"/>
+            </column>
+            <column name="actor_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="iban" type="varchar(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="transaction_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amountwithdrawn" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastmodificationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="comment" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="state" type="int4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refusalreason" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+	</changeSet>
+	
+	<changeSet author="Yoann Plénet" id="Creation of money withdrawal FKs">
+        <addForeignKeyConstraint baseColumnNames="actor_id" baseTableName="daomoneywithdrawal" constraintName="FK643905A3E25C0F76" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+        <addForeignKeyConstraint baseColumnNames="transaction_id" baseTableName="daomoneywithdrawal" constraintName="FK643905A3E25C0F77" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daotransaction" referencesUniqueColumn="false"/>
+	</changeSet>
+	
+</databaseChangeLog>

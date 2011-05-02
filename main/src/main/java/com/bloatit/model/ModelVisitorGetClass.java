@@ -30,6 +30,7 @@ import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
@@ -236,5 +237,10 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     @Override
     public Class<?> visit(final Release model) {
         return DaoRelease.class;
+    }
+
+    @Override
+    public Class<?> visit(MoneyWithdrawal moneyWithdrawal) {
+        return DaoMoneyWithdrawal.class;
     }
 }

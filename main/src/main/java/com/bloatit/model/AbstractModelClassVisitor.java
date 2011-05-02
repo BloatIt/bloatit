@@ -119,4 +119,9 @@ public class AbstractModelClassVisitor<T> implements ModelClassVisitor<T> {
     public T visit(final Release model) {
         throw new NotImplementedException();
     }
+
+    @Override
+    public T visit(MoneyWithdrawal moneyWithdrawal) {
+        throw new NotImplementedException();
+    }
 }
