@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
  * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
  * Affero General Public License as published by the Free Software Foundation,
  * either version 3 of the License, or (at your option) any later version.
  * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -25,6 +25,8 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
@@ -101,8 +103,11 @@ public final class StaticAccountChargingPage extends QuotationPage {
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
 
-        final HtmlDiv lines = new HtmlDiv("quotation_details_lines");
-        lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, null));
+        HtmlLineTableModel model = new HtmlLineTableModel();
+        model.addLine(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, null));
+
+        final HtmlTable lines = new HtmlTable(model);
+        lines.setCssClass("quotation_details_lines");
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");

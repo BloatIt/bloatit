@@ -110,19 +110,30 @@
     //width: 100%;
     padding-left: 40px;
     padding-right: 40px;
+    border: none;
+    
+    tr {
+        background-color: transparent;
+    }
 }
 
 .quotation_detail_line {
-    .display-box;
-    .box-orient;
-    .box-align(center);
     
     //padding-left: 5px;
     //padding-right: 0px;
     padding-top: 15px;
     padding-bottom: 10px;
     
+    
     width: 100%;
+    
+    td {
+        border: none;
+    }
+    
+    
+
+    
     
     .software_logo_small_block, .avatar_small_block{
         margin-left: 5px;
@@ -139,7 +150,6 @@
     }
     
     .quotation_detail_line_description {
-        .box-flex;
         font-size: 0.7em;
         color: @light_text_color;
         //max-width: 300px;
@@ -150,18 +160,16 @@
     .quotation_detail_line_money {
         font-size: 1.2em;
         color: @dark_text_color;
-        width: 5em;
+        min-width: 3em;
         text-align: right;
         padding-right: 10px;    
         padding-left: 10px;
     }
     
     .quotation_detail_line_amount {
-        .box-flex;
     
-        .display-box;
-        .box-orient(vertical);
         margin-left: 20px;
+
         
         .quotation_detail_line_amount_money {
             font-size: 1.4em;
@@ -173,8 +181,8 @@
         .quotation_detail_line_amount_modify {
             font-size: 0.7em;
             text-align: right;
-            margin-bottom: -15px;
-            margin-top: -2px;
+            margin-bottom: 0px;
+            margin-top: -4px;
             margin-right: 10px;
         }
         
@@ -182,10 +190,11 @@
     }
     
     .quotation_detail_line_field {
-        
-        .display-box;
-        .box-orient(vertical);
-        
+        form {
+            .display-box;
+            .box-orient(vertical);
+        }
+        width: 100px;
         .field {
         
             

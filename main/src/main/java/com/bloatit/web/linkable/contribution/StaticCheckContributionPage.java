@@ -27,6 +27,8 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -110,18 +112,20 @@ public final class StaticCheckContributionPage extends QuotationPage {
         } catch (final IllegalWriteException e) {
             session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
-
-        final HtmlDiv lines = new HtmlDiv("quotation_details_lines");
+        HtmlLineTableModel model = new HtmlLineTableModel();
         try {
-            lines.add(new HtmlContributionLine(process.getFeature(), process.getAmount(), null));
+            model.addLine(new HtmlContributionLine(process.getFeature(), process.getAmount(), null));
             if (actor.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
-                lines.add(new HtmlPrepaidLine(actor));
+                model.addLine(new HtmlPrepaidLine(actor));
             }
-            lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, null));
+            model.addLine(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, null));
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
+
+        final HtmlTable lines = new HtmlTable(model);
+        lines.setCssClass("quotation_details_lines");
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
