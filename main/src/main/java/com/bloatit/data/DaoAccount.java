@@ -66,8 +66,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
     private Date lastModificationDate;
 
     /**
-     * The amount is the quantity of money you has in your account. WARNING: For
-     * now there is no ?devise? ($,€, ...)
+     * The amount is the quantity of money you has in your account.
      */
     @Basic(optional = false)
     private BigDecimal amount;

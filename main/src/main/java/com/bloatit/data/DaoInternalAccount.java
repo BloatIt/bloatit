@@ -35,8 +35,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 public class DaoInternalAccount extends DaoAccount {
 
     /**
-     * This is the amount that is currently used by contributions. (amount -
-     * blocked) is the money directly available in this account.
+     * This is the amount that is currently used by contributions.
      */
     @Basic(optional = false)
     private BigDecimal blocked;
@@ -52,7 +51,8 @@ public class DaoInternalAccount extends DaoAccount {
     }
 
     /**
-     * bloc an amount of money, and reset the modification date.
+     * bloc an amount of money, and reset the modification date. Substract the
+     * blocked value to the amount stored in this account.
      * 
      * @param blocked the amount we want to block
      * @throws NotEnoughMoneyException if there is not enough money to block.
