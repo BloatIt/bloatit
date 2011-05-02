@@ -202,6 +202,8 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
+
+
 public class BloatitWebServer extends WebProcessor {
 
     public BloatitWebServer() {
@@ -476,7 +478,7 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ModifyTeamActionUrl.getPageName())) {
             return new ModifyTeamAction(new ModifyTeamActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(DeclareHightlightedFeatureActionUrl.getName())) {
+        if (pageCode.equals(DeclareHightlightedFeatureActionUrl.getPageName())) {
             return new DeclareHightlightedFeatureAction(new DeclareHightlightedFeatureActionUrl(params, session.getParameters()));
         }
 
