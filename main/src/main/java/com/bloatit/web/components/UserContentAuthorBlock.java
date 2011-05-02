@@ -9,6 +9,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.UserContentInterface;
@@ -25,19 +26,15 @@ public class UserContentAuthorBlock extends HtmlDiv {
         super.add(commentInfo);
         super.add(new HtmlClearer());
 
-        if (content.getAsTeam() != null) {
-            commentInfo.addText(tr("In the name of "));
-        } else {
-            commentInfo.addText(tr("By "));
-        }
-
-        commentInfo.add(new HtmlAuthorLink(content));
-
+        HtmlAuthorLink authorLink = new HtmlAuthorLink(content);
         if (content.getAsTeam() != null) {
             final HtmlSpan userSpan = new HtmlSpan("usercontent_by_user");
-            userSpan.addText(tr(" By "));
             userSpan.add(new MemberPageUrl(content.getMember()).getHtmlLink(content.getMember().getDisplayName()));
-            commentInfo.add(userSpan);
+            HtmlMixedText authorMixed = new HtmlMixedText(tr("In the name of <0::> by <1::>"), authorLink, userSpan);
+            commentInfo.add(authorMixed);
+        } else {
+            commentInfo.addText(tr("By "));
+            commentInfo.add(authorLink);
         }
 
         commentInfo.addText(" – ");
