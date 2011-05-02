@@ -21,9 +21,11 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -89,6 +91,11 @@ public final class MemberPage extends MasterPage {
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a member number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
+    
+    @SuppressWarnings("unused")
+    @RequestParam(name = "name", role = Role.PRETTY, generatedFrom = "member")
+    @Optional("john-do")
+    private final String displayName;
 
     private boolean myPage;
 
@@ -101,6 +108,7 @@ public final class MemberPage extends MasterPage {
         } else {
             this.myPage = true;
         }
+        this.displayName = url.getDisplayName();
     }
 
     @Override

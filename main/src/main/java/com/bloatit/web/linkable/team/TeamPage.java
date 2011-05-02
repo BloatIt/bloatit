@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
@@ -83,11 +84,18 @@ public final class TeamPage extends MasterPage {
     @Optional(MEMBERS_TAB)
     private String activeTabKey;
 
+    @SuppressWarnings("unused")
+    @RequestParam(name = "name", role = Role.PRETTY, generatedFrom = "targetTeam")
+    @Optional("john-do")
+    private final String login;
+
+    
     public TeamPage(final TeamPageUrl url) {
         super(url);
         this.url = url;
         this.targetTeam = url.getTargetTeam();
         this.activeTabKey = url.getActiveTabKey();
+        this.login = url.getLogin();
     }
 
     @Override
