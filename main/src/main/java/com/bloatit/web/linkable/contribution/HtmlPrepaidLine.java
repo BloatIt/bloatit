@@ -43,7 +43,13 @@ public class HtmlPrepaidLine extends HtmlDiv {
                                                                                              "money up")));
         add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getSimpleEuroString()));
 
-        add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Prepaid from internal account")));
+
+        HtmlDiv prepaidAccount = new HtmlDiv("title");
+        prepaidAccount.addText(tr("Prepaid from internal account"));
+        HtmlDiv prepaidAccountDetails = new HtmlDiv("details");
+        prepaidAccountDetails.addText(actor.getDisplayName());
+
+        add(new HtmlDiv("quotation_detail_line_categorie").add(prepaidAccount).add(prepaidAccountDetails));
 
         final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
 

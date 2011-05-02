@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
@@ -53,7 +54,7 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
  */
 @ParamContainer("contribute/check")
 public final class CheckContributionPage extends QuotationPage {
-    
+
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
@@ -210,7 +211,7 @@ public final class CheckContributionPage extends QuotationPage {
         } catch (final IllegalWriteException e) {
             session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
-        
+
         final HtmlDiv lines = new HtmlDiv("quotation_details_lines");
         try {
             final ContributePageUrl contributePageUrl = new ContributePageUrl(process);
@@ -219,7 +220,7 @@ public final class CheckContributionPage extends QuotationPage {
             if (actor.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
                 lines.add(new HtmlPrepaidLine(actor));
             }
-            
+
             final CheckContributionPageUrl recalculateUrl = url.clone();
             recalculateUrl.setPreload(null);
             lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, recalculateUrl));
@@ -241,9 +242,10 @@ public final class CheckContributionPage extends QuotationPage {
         }
 
         group.add(lines);
-        
+
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
         summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);
 

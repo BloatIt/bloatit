@@ -54,7 +54,12 @@ public class HtmlChargeAccountLine extends HtmlDiv {
         add(new HtmlDiv("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up")));
         add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString()));
 
-        add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Internal account")));
+        HtmlDiv internalAccount = new HtmlDiv("title");
+        internalAccount.addText(tr("Internal account"));
+        HtmlDiv internalAccountDetails = new HtmlDiv("details");
+        internalAccountDetails.addText(actor.getDisplayName());
+
+        add(new HtmlDiv("quotation_detail_line_categorie").add(internalAccount).add(internalAccountDetails));
         add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
 
         final HtmlDiv amountBlock;
