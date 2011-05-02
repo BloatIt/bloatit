@@ -6,8 +6,6 @@ package com.bloatit.model;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.bloatit.data.SessionManager;
-
 /**
  * The class <code>TestAll</code> builds a suite that can be used to run all of
  * the tests within its package as well as within any subpackages of its
@@ -29,9 +27,6 @@ public class TestAll {
     public static Test suite() {
         TestSuite suite;
         
-        SessionManager.getSessionFactory().close();
-        SessionManager.generateTestSessionFactory();
-
         suite = new TestSuite("Tests in package com.bloatit.model");
         suite.addTestSuite(KudosableTest.class);
         suite.addTestSuite(MemberTest.class);

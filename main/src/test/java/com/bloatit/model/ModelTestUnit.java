@@ -27,20 +27,19 @@ public class ModelTestUnit extends TestCase {
     protected AuthToken tomAuthToken;
     protected AuthToken fredAuthToken;
     protected AuthToken loser;
-
+    
+    private static boolean firstInit = true;
     protected static SimpleTestDB db;
-    static int init = init();
-
-    private static int init() {
-        SessionManager.generateTestSessionFactory();
-        ModelAccessor.initialize(new Model());
-        db = new SimpleTestDB();
-        return 0;
-    }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        if (firstInit) {
+            SessionManager.generateTestSessionFactory();
+            ModelAccessor.initialize(new Model());
+            db = new SimpleTestDB();
+            firstInit = false;
+        }
         ModelAccessor.open();
         yoAuthToken = new AuthToken("Yoann", "plop");
         tomAuthToken = new AuthToken("Thomas", "password");
