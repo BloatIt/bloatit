@@ -51,6 +51,12 @@ public final class Log {
         void trace(final Object message);
 
         void trace(final Object message, final Throwable e);
+        
+        boolean isInfoEnabled();
+        
+        boolean isDebugEnabled();
+        
+        boolean isTraceEnabled();
     }
 
     public static class BloatitLogger implements LoggerInterface {
@@ -131,6 +137,21 @@ public final class Log {
         @Override
         public void trace(final Object message, final Throwable e) {
             log.trace(message, e);
+        }
+
+        @Override
+        public boolean isInfoEnabled() {
+            return log.isInfoEnabled();
+        }
+
+        @Override
+        public boolean isDebugEnabled() {
+            return log.isDebugEnabled();
+        }
+
+        @Override
+        public boolean isTraceEnabled() {
+            return log.isTraceEnabled();
         }
     }
 

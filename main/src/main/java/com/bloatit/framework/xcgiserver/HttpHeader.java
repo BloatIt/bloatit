@@ -176,7 +176,6 @@ public class HttpHeader {
     protected HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
-        Log.framework().info(env);
     }
 
     public final String getPathInfo() {

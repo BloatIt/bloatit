@@ -87,8 +87,7 @@ public final class XcgiServer {
         }
     }
 
-    final class XcgiThread extends Thread {
-
+    private final class XcgiThread extends Thread {
         private static final int NB_MAX_SOCKET_ERROR = 12;
         private Socket socket;
         private final ServerSocket provider;
@@ -142,6 +141,25 @@ public final class XcgiServer {
             final Map<String, String> env = parser.getEnv();
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
+
+            if (Log.framework().isDebugEnabled()) {
+                Log.framework().debug(env);
+            }
+
+            // LOGGING REQUESTS
+            StringBuilder request = new StringBuilder();
+            request.append(header.getRequestMethod());
+            request.append(' ');
+            request.append(header.getRequestUri());
+            request.append("  ");
+            request.append('[');
+            request.append("USER_AGENT=");
+            request.append(header.getHttpUserAgent());
+            request.append(' ');
+            request.append("ACCEPT_LANGUAGES=");
+            request.append(header.getHttpAcceptLanguage());
+            request.append(']');
+            Log.framework().info(request.toString());
 
             // FIXME: use timer ?
             SessionManager.clearExpiredSessions();
