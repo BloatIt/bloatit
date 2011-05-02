@@ -81,12 +81,12 @@ public abstract class Url implements Cloneable {
     private String internalUrlString() {
         final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null) {
-            sb.append("/").append(Context.getLocalizator().getCode());
+            sb.append('/').append(Context.getLocalizator().getCode());
         }
-        sb.append("/").append(getCode());
+        sb.append('/').append(getCode());
         doConstructUrl(sb);
         if (anchor != null) {
-            sb.append("#").append(anchor);
+            sb.append('#').append(anchor);
         }
         return sb.toString();
     }

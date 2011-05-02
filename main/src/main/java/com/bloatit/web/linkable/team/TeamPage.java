@@ -123,7 +123,7 @@ public final class TeamPage extends MasterPage {
 
     private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
-        contacts.setTitle(Context.tr("How to contact {0}?", targetTeam.getDisplayName()));
+        contacts.setTitle(Context.tr("How to contact \"{0}\"?", targetTeam.getDisplayName()));
 
         if (targetTeam.canAccessContact(Action.READ)) {
             contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getContact()));

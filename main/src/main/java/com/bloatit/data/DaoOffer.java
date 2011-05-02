@@ -154,7 +154,7 @@ public class DaoOffer extends DaoKudosable {
      * @see #setDraft(boolean)
      */
     public void addMilestone(final DaoMilestone milestone) {
-        if (isDraft() == false) {
+        if (!isDraft()) {
             throw new BadProgrammerException("You cannot add a milestone on a non draft offer.");
         }
         this.amount = milestone.getAmount().add(this.amount);

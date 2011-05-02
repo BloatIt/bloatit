@@ -16,6 +16,9 @@
 //
 package com.bloatit.framework.xcgiserver;
 
+/**
+ * Simple class used to measure time spent between 2 actions
+ */
 final class Timer {
 
     private long startTime;
@@ -40,5 +43,4 @@ final class Timer {
     private void reset() {
         startTime = System.currentTimeMillis();
     }
-
 }

@@ -59,7 +59,6 @@ public class CommentTools {
     private static HtmlElement generateComment(final Comment comment, final boolean child, final Map<String, String> formatMap) {
         final HtmlDiv commentBlock = (child) ? new HtmlDiv("child_comment_block") : new HtmlDiv("main_comment_block");
         {
-
             commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getAuthor())));
 
             final HtmlParagraph commentText = new HtmlParagraph();
@@ -77,7 +76,7 @@ public class CommentTools {
             commentBlock.add(new KudosableAuthorBlock(comment));
             commentBlock.add(new HtmlClearer());
 
-            // Display child elements
+            // Display children elements
             for (final Comment childComment : comment.getChildren()) {
                 commentBlock.add(generateComment(childComment, true, formatMap));
             }

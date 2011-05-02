@@ -83,14 +83,14 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     noOffer.add(link);
                 }
                 block.addInRightColumn(noOffer);
-
             }
+
                 break;
-            case PREPARING:
+            case PREPARING: {
                 offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
 
                 // Selected
-                BicolumnOfferBlock block = new BicolumnOfferBlock(true);
+                final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
                 offersBlock.add(block);
 
                 // Generating the left column
@@ -103,12 +103,18 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
                         if (amountLeft.compareTo(BigDecimal.ZERO) > 0) {
                             final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
-                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will be validated in about {0}. After this time, the offer will go into development as soon as the requested amount is available ({1} left).",
-                                                                       renderer.getTimeString(),
-                                                                       currency.toString())));
+                            final HtmlSpan timeSpan = new HtmlSpan("bold");
+                            timeSpan.addText(renderer.getTimeString());
+                            final HtmlMixedText timeToValid = new HtmlMixedText(tr("This offer will be validated in about <0::>. After this time, the offer will go into development as soon as the requested amount is available ({0} left).",
+                                                                                   currency.toString()),
+                                                                                timeSpan);
+                            final HtmlParagraph element = new HtmlParagraph(timeToValid);
+                            block.addInLeftColumn(element);
                         } else {
-                            block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ")
-                                    + renderer.getTimeString() + "."));
+                            final HtmlSpan timeSpan = new HtmlSpan("bold");
+                            timeSpan.addText(renderer.getTimeString());
+                            final HtmlMixedText timeToValid = new HtmlMixedText("This offer will go into development in about <0::>.", timeSpan);
+                            block.addInLeftColumn(timeToValid);
                         }
                     } else {
                         final BigDecimal amountLeft = feature.getSelectedOffer().getAmount().subtract(feature.getContribution());
@@ -118,9 +124,6 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     }
                     // Generating the right column
                     block.addInRightColumn(new OfferBlock(selectedOffer, true));
-                } else {
-                    block.addInRightColumn(new HtmlParagraph(tr("No selected offer. The last selected offer has been voted down and is no more selected."),
-                                                             "no_selected_offer_para"));
                 }
 
                 // UnSelected
@@ -136,7 +139,9 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     }
                 }
                 break;
+            }
             case DEVELOPPING:
+                final BicolumnOfferBlock block;
                 offersBlock.add(new HtmlTitle(Context.tr("Offer in development"), 1));
                 offersBlock.add(block = new BicolumnOfferBlock(true));
                 block.addInLeftColumn(new HtmlParagraph(tr("This offer is in development. You can discuss about it in the comments.")));
@@ -165,7 +170,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
         add(offersBlock);
     }
 
-    private void generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock) {
+    private void
+            generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock) {
         // UnSelected
         offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
         final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);

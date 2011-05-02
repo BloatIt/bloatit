@@ -118,7 +118,7 @@ public class HtmlTag {
      * @return the <code>String</code> representing an opening tag
      */
     protected String getOpenTag() {
-        return createOpenTagButWithoutLastChar().append(">").toString();
+        return createOpenTagButWithoutLastChar().append('>').toString();
     }
 
     /**
@@ -182,11 +182,11 @@ public class HtmlTag {
      */
     private StringBuilder createOpenTagButWithoutLastChar() {
         final StringBuilder openTag = new StringBuilder();
-        openTag.append("<");
+        openTag.append('<');
         openTag.append(tag);
         for (final Entry<String, String> att : attributes.entrySet()) {
-            openTag.append(" ");
-            openTag.append(att.getKey()).append("=").append("\"").append(att.getValue()).append("\"");
+            openTag.append(' ');
+            openTag.append(att.getKey()).append('=').append('"').append(att.getValue()).append('"');
         }
         return openTag;
     }

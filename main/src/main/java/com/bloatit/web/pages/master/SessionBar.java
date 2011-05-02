@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.Member;
-import com.bloatit.model.managers.JoinTeamInvitationManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.url.LoginPageUrl;
