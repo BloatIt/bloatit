@@ -143,6 +143,10 @@ public final class OfferAction extends UserContentAction {
             session.notifyBad(Context.tr("The specified offer is not modifiable. You cannot add a lot in it."));
             return session.pickPreferredPage();
         }
+        if(!expiryDate.isFuture()){
+            session.notifyBad(Context.tr("The date must be in the future."));
+            return session.pickPreferredPage();
+        }
         return NO_ERROR;
     }
 

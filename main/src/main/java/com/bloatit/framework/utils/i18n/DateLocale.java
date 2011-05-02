@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bloatit.framework.utils.datetime.DateUtils;
+
 /**
  * <p>
  * A class to handle dates for the front web
@@ -62,7 +64,6 @@ import java.util.Locale;
  * </p>
  */
 public final class DateLocale {
-
     private Date javaDate;
     private final String dateString;
     private final Locale locale;
@@ -85,7 +86,7 @@ public final class DateLocale {
         SHORT, MEDIUM, LONG, FULL
     }
 
-    public enum DisplayedTime {
+    private enum DisplayedTime {
         DATE, TIME, DATETIME
     }
 
@@ -184,6 +185,10 @@ public final class DateLocale {
         return sdf.format(javaDate);
     }
 
+    public boolean isFuture() {
+        return DateUtils.isInTheFuture(javaDate);
+    }
+
     /**
      * Parses the String into a java Date object
      * 
@@ -219,13 +224,6 @@ public final class DateLocale {
             default:
                 return DateFormat.SHORT;
         }
-    }
-
-    /**
-     * Returns the current pattern used to display the date
-     */
-    public String getPattern(final FormatStyle style) {
-        return DateLocale.getPattern(this.locale, style);
     }
 
     /**
