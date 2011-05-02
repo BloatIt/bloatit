@@ -20,11 +20,16 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
@@ -32,27 +37,142 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 
-public class HtmlContributionLine extends HtmlDiv {
+public class HtmlContributionLine extends HtmlTableLine {
+
+    private final Feature feature;
+    private final Localizator localizator;
+    private final BigDecimal amount;
+    private final Url editUrl;
 
     protected HtmlContributionLine(final Feature feature, final BigDecimal amount, final Url editUrl) throws UnauthorizedOperationException {
-        super("quotation_detail_line");
-        final Localizator localizator = Context.getLocalizator();
+        this.feature = feature;
+        this.amount = amount;
+        this.editUrl = editUrl;
+        setCssClass("quotation_detail_line");
 
-        add(SoftwaresTools.getSoftwareLogoSmall(feature.getSoftware()));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(feature.getContribution()).getSimpleEuroString()));
-        add(new HtmlDiv("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up")));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(feature.getContribution().add(amount)).getSimpleEuroString()));
-        add(new HtmlDiv("quotation_detail_line_categorie").addText(tr("Contribution")));
-        add(new HtmlDiv("quotation_detail_line_description").addText(FeaturesTools.getTitle(feature)));
+        localizator = Context.getLocalizator();
 
-        final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
-        amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amount).getTwoDecimalEuroString()));
-        
-        // Modify contribution button
-        if (editUrl != null) {
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_modify").add(editUrl.getHtmlLink(tr("edit"))));
+        addCell(new SoftwareLogoCell());
+        addCell(new BeforeMoneyCell());
+        addCell(new MoneyImageCell());
+        addCell(new AfterMoneyCell());
+
+
+        addCell(new CategorieCell());
+        addCell(new DescriptionCell());
+
+        addCell(new AmountCell());
+
+
+
+    }
+
+    private class SoftwareLogoCell extends HtmlTableCell{
+
+        public SoftwareLogoCell() {
+            super("");
         }
-        add(amountBlock);
 
+        @Override
+        public XmlNode getBody() {
+            try {
+                return SoftwaresTools.getSoftwareLogoSmall(feature.getSoftware());
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Fail to get a feature logo", e);
+            }
+        }
+    }
+
+    private class BeforeMoneyCell extends HtmlTableCell{
+
+        public BeforeMoneyCell() {
+            super("quotation_detail_line_money");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            try {
+                return new HtmlText(localizator.getCurrency(feature.getContribution()).getSimpleEuroString());
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Fail to get a contribution amount", e);
+            }
+        }
+    }
+
+    private class AfterMoneyCell extends HtmlTableCell{
+
+        public AfterMoneyCell() {
+            super("quotation_detail_line_money");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            try {
+                return new HtmlText(localizator.getCurrency(feature.getContribution().add(amount)).getSimpleEuroString());
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Fail to get a contribution amount", e);
+            }
+        }
+    }
+
+    private class MoneyImageCell extends HtmlTableCell{
+
+        public MoneyImageCell() {
+            super("quotation_detail_line_money_image");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up");
+        }
+    }
+
+    private class CategorieCell extends HtmlTableCell{
+
+        public CategorieCell() {
+            super("quotation_detail_line_categorie");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            return new HtmlDiv("").addText(tr("Contribution"));
+        }
+    }
+
+    private class DescriptionCell extends HtmlTableCell{
+
+        public DescriptionCell() {
+            super("quotation_detail_line_description");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            try {
+                return new HtmlDiv("").addText(FeaturesTools.getTitle(feature));
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Fail to get a feature title", e);
+            }
+        }
+    }
+
+    private class AmountCell extends HtmlTableCell{
+
+        public AmountCell() {
+            super("quotation_detail_line_amount");
+        }
+
+        @Override
+        public XmlNode getBody() {
+
+
+            final HtmlDiv amountBlock = new HtmlDiv();
+            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amount).getTwoDecimalEuroString()));
+
+            // Modify contribution button
+            if (editUrl != null) {
+                amountBlock.add(new HtmlDiv("quotation_detail_line_amount_modify").add(editUrl.getHtmlLink(tr("edit"))));
+            }
+            return amountBlock;
+        }
     }
 }

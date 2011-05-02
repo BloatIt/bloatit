@@ -88,7 +88,7 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         /**
-         * @param column The column number on which we want to get the css 
+         * @param column The column number on which we want to get the css
          */
         public String getColumnCss(final int column) {
             return null;
@@ -101,7 +101,7 @@ public class HtmlTable extends HtmlGenericElement {
 
     public static class HtmlLineTableModel extends HtmlTableModel {
 
-        private List<HtmlTableLine> lines = new ArrayList<HtmlTableLine>();
+        private final List<HtmlTableLine> lines = new ArrayList<HtmlTableLine>();
         int currentLine = -1;
 
         public void addLine(final HtmlTableLine line) {
@@ -154,22 +154,22 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         public static class HtmlTableLine {
-            private List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
+            private final List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
             private String css = null;
 
-            public void setCssClass(final String css) {
+            final public void setCssClass(final String css) {
                 this.css = css;
             }
 
-            public String getCssClass() {
+            final public String getCssClass() {
                 return css;
             }
 
-            public void addCell(final HtmlTableCell cell) {
+            final public void addCell(final HtmlTableCell cell) {
                 cells.add(cell);
             }
 
-            public List<HtmlTableCell> getCells() {
+            final public List<HtmlTableCell> getCells() {
                 return cells;
             }
         }

@@ -29,6 +29,8 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
@@ -131,10 +133,11 @@ public final class AccountChargingPage extends QuotationPage {
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToPay());
 
-        final HtmlDiv lines = new HtmlDiv("quotation_details_lines");
+        HtmlLineTableModel model = new HtmlLineTableModel();
+
         final AccountChargingPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
-        lines.add(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, recalculateUrl));
+        model.addLine(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, recalculateUrl));
 
         // Pay block
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
@@ -147,6 +150,8 @@ public final class AccountChargingPage extends QuotationPage {
             payBlock.add(payContributionLink);
         }
 
+        final HtmlTable lines = new HtmlTable(model);
+        lines.setCssClass("quotation_details_lines");
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");

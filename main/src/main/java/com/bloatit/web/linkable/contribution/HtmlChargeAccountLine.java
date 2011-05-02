@@ -26,64 +26,218 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.members.MembersTools;
 
-public class HtmlChargeAccountLine extends HtmlDiv {
+public class HtmlChargeAccountLine extends HtmlTableLine {
+
+    private final Actor<?> actor;
+    private final Localizator localizator;
+    private final BigDecimal amountToCharge;
+    private final Url recalculateTargetForm;
 
     public HtmlChargeAccountLine(final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
-        super("quotation_detail_line");
-        final Localizator localizator = Context.getLocalizator();
+        this.amountToCharge = amountToCharge;
+        this.actor = actor;
+        this.recalculateTargetForm = recalculateTargetForm;
+        setCssClass("quotation_detail_line");
+        localizator = Context.getLocalizator();
 
-        BigDecimal initialAmount;
-        try {
-            initialAmount = actor.getInternalAccount().getAmount();
-        } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Error getting internal account", e);
+        addCell(new MemberAvatarCell());
+        addCell(new BeforeMoneyCell());
+        addCell(new MoneyImageCell());
+        addCell(new AfterMoneyCell());
+
+        addCell(new CategorieCell());
+        addCell(new DescriptionCell());
+        addCell(new AmountCell());
+        //
+        // BigDecimal initialAmount;
+        // try {
+        // initialAmount = actor.getInternalAccount().getAmount();
+        // } catch (UnauthorizedOperationException e) {
+        // throw new ShallNotPassException("Error getting internal account", e);
+        // }
+        //
+        // add(MembersTools.getMemberAvatarSmall(actor));
+        // add(new
+        // HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount).getSimpleEuroString()));
+        // add(new HtmlDiv("quotation_detail_line_money_image").add(new
+        // HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
+        // "money up")));
+        // add(new
+        // HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString()));
+        //
+        // HtmlDiv internalAccount = new HtmlDiv("title");
+        // internalAccount.addText(tr("Internal account"));
+        // HtmlDiv internalAccountDetails = new HtmlDiv("details");
+        // internalAccountDetails.addText(actor.getDisplayName());
+        //
+        // add(new
+        // HtmlDiv("quotation_detail_line_categorie").add(internalAccount).add(internalAccountDetails));
+        // add(new
+        // HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
+        //
+        // final HtmlDiv amountBlock;
+        // if (recalculateTargetForm == null) {
+        // amountBlock = new HtmlDiv("quotation_detail_line_amount");
+        // amountBlock.add(new
+        // HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amountToCharge)
+        // .getTwoDecimalEuroString()));
+        // } else {
+        // amountBlock = new HtmlDiv("quotation_detail_line_field");
+        // final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(),
+        // Method.GET);
+        //
+        // final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
+        // if (amountToCharge == null) {
+        // moneyField.setDefaultValue("0");
+        // } else {
+        // moneyField.setDefaultValue(amountToCharge.toPlainString());
+        // }
+        //
+        // final HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
+        //
+        // form.add(moneyField);
+        // form.add(recalculate);
+        // amountBlock.add(form);
+        // }
+        // add(amountBlock);
+    }
+
+    private class MemberAvatarCell extends HtmlTableCell {
+
+        public MemberAvatarCell() {
+            super("");
         }
 
-        add(MembersTools.getMemberAvatarSmall(actor));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount).getSimpleEuroString()));
-        add(new HtmlDiv("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up")));
-        add(new HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString()));
+        @Override
+        public XmlNode getBody() {
+            return MembersTools.getMemberAvatarSmall(actor);
+        }
+    }
 
-        HtmlDiv internalAccount = new HtmlDiv("title");
-        internalAccount.addText(tr("Internal account"));
-        HtmlDiv internalAccountDetails = new HtmlDiv("details");
-        internalAccountDetails.addText(actor.getDisplayName());
+    private class BeforeMoneyCell extends HtmlTableCell {
 
-        add(new HtmlDiv("quotation_detail_line_categorie").add(internalAccount).add(internalAccountDetails));
-        add(new HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
+        public BeforeMoneyCell() {
+            super("quotation_detail_line_money");
+        }
 
-        final HtmlDiv amountBlock;
-        if (recalculateTargetForm == null) {
-            amountBlock = new HtmlDiv("quotation_detail_line_amount");
-            amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amountToCharge)
-                                                                                                 .getTwoDecimalEuroString()));
-        } else {
-            amountBlock = new HtmlDiv("quotation_detail_line_field");
-            final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.GET);
-
-            final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
-            if (amountToCharge == null) {
-                moneyField.setDefaultValue("0");
-            } else {
-                moneyField.setDefaultValue(amountToCharge.toPlainString());
+        @Override
+        public XmlNode getBody() {
+            try {
+                BigDecimal initialAmount;
+                initialAmount = actor.getInternalAccount().getAmount();
+                return new HtmlText(localizator.getCurrency(initialAmount).getSimpleEuroString());
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Error getting internal account", e);
             }
-
-            final HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
-
-            form.add(moneyField);
-            form.add(recalculate);
-            amountBlock.add(form);
         }
-        add(amountBlock);
+    }
+
+    private class AfterMoneyCell extends HtmlTableCell {
+
+        public AfterMoneyCell() {
+            super("quotation_detail_line_money");
+        }
+
+        @Override
+        public XmlNode getBody() {
+
+            try {
+                BigDecimal initialAmount;
+                initialAmount = actor.getInternalAccount().getAmount();
+                return new HtmlText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString());
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Error getting internal account", e);
+            }
+        }
+    }
+
+    private class MoneyImageCell extends HtmlTableCell {
+
+        public MoneyImageCell() {
+            super("quotation_detail_line_money_image");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            return new HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()), "money up");
+        }
+    }
+
+    private class CategorieCell extends HtmlTableCell {
+
+        public CategorieCell() {
+            super("quotation_detail_line_categorie");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            HtmlDiv internalAccount = new HtmlDiv("title");
+            internalAccount.addText(tr("Internal account"));
+            HtmlDiv internalAccountDetails = new HtmlDiv("details");
+            internalAccountDetails.addText(actor.getDisplayName());
+
+            return new HtmlDiv("").add(internalAccount).add(internalAccountDetails);
+        }
+    }
+
+    private class DescriptionCell extends HtmlTableCell {
+
+        public DescriptionCell() {
+            super("quotation_detail_line_description");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            return new HtmlDiv("").addText(tr("Load money in your internal account for future contributions."));
+        }
+    }
+
+    private class AmountCell extends HtmlTableCell {
+
+        public AmountCell() {
+            super("quotation_detail_line_amount");
+        }
+
+        @Override
+        public XmlNode getBody() {
+
+            final HtmlDiv amountBlock;
+            if (recalculateTargetForm == null) {
+                amountBlock = new HtmlDiv("quotation_detail_line_amount");
+                amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amountToCharge)
+                                                                                                     .getTwoDecimalEuroString()));
+            } else {
+                amountBlock = new HtmlDiv("quotation_detail_line_field");
+                final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.GET);
+
+                final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
+                if (amountToCharge == null) {
+                    moneyField.setDefaultValue("0");
+                } else {
+                    moneyField.setDefaultValue(amountToCharge.toPlainString());
+                }
+
+                final HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
+
+                form.add(moneyField);
+                form.add(recalculate);
+                amountBlock.add(form);
+            }
+            return amountBlock;
+        }
     }
 }

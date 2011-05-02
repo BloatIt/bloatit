@@ -20,45 +20,127 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.math.BigDecimal;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableCell;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLineTableModel.HtmlTableLine;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.members.MembersTools;
 
-public class HtmlPrepaidLine extends HtmlDiv {
+public class HtmlPrepaidLine extends HtmlTableLine {
+
+    private final Actor<?> actor;
 
     protected HtmlPrepaidLine(final Actor<?> actor) throws UnauthorizedOperationException {
-        super("quotation_detail_line");
+        this.actor = actor;
+        setCssClass("quotation_detail_line");
 
-        add(MembersTools.getMemberAvatarSmall(actor));
-
-        add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator()
-                                                                      .getCurrency(actor.getInternalAccount().getAmount())
-                                                                      .getSimpleEuroString()));
-        add(new HtmlDiv().setCssClass("quotation_detail_line_money_image").add(new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()),
-                                                                                             "money up")));
-        add(new HtmlDiv("quotation_detail_line_money").addText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getSimpleEuroString()));
-
-
-        HtmlDiv prepaidAccount = new HtmlDiv("title");
-        prepaidAccount.addText(tr("Prepaid from internal account"));
-        HtmlDiv prepaidAccountDetails = new HtmlDiv("details");
-        prepaidAccountDetails.addText(actor.getDisplayName());
-
-        add(new HtmlDiv("quotation_detail_line_categorie").add(prepaidAccount).add(prepaidAccountDetails));
-
-        final HtmlDiv amountBlock = new HtmlDiv("quotation_detail_line_amount");
-
-        amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                         .getCurrency(actor.getInternalAccount()
-                                                                                                           .getAmount()
-                                                                                                           .negate())
-                                                                                         .getTwoDecimalEuroString()));
-
-        add(amountBlock);
+        addCell(new MemberAvatarCell());
+        addCell(new BeforeMoneyCell());
+        addCell(new MoneyImageCell());
+        addCell(new AfterMoneyCell());
+        addCell(new CategorieCell());
+        addCell(new AmountCell());
     }
+
+    private class MemberAvatarCell extends HtmlTableCell {
+
+        public MemberAvatarCell() {
+            super("");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            return MembersTools.getMemberAvatarSmall(actor);
+        }
+    }
+
+    private class BeforeMoneyCell extends HtmlTableCell {
+
+        public BeforeMoneyCell() {
+            super("quotation_detail_line_money");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            try {
+                return new HtmlText(Context.getLocalizator()
+                                    .getCurrency(actor.getInternalAccount().getAmount())
+                                    .getSimpleEuroString());
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Fail to get a account amount", e);
+            }
+        }
+    }
+
+    private class AfterMoneyCell extends HtmlTableCell {
+
+        public AfterMoneyCell() {
+            super("quotation_detail_line_money");
+        }
+
+        @Override
+        public XmlNode getBody() {
+                return new HtmlText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getSimpleEuroString());
+        }
+    }
+
+    private class MoneyImageCell extends HtmlTableCell {
+
+        public MoneyImageCell() {
+            super("quotation_detail_line_money_image");
+        }
+
+        @Override
+        public XmlNode getBody() {
+            return new HtmlImage(new Image(WebConfiguration.getImgMoneyDownSmall()), "money up");
+        }
+    }
+
+    private class CategorieCell extends HtmlTableCell {
+
+        public CategorieCell() {
+            super("quotation_detail_line_categorie");
+        }
+
+        @Override
+        public XmlNode getBody() {
+
+            HtmlDiv prepaidAccount = new HtmlDiv("title");
+            prepaidAccount.addText(tr("Prepaid from internal account"));
+            HtmlDiv prepaidAccountDetails = new HtmlDiv("details");
+            prepaidAccountDetails.addText(actor.getDisplayName());
+
+            return new HtmlDiv("").add(prepaidAccount).add(prepaidAccountDetails);
+        }
+    }
+
+    private class AmountCell extends HtmlTableCell {
+
+        public AmountCell() {
+            super("quotation_detail_line_amount");
+        }
+
+        @Override
+        public XmlNode getBody() {
+
+            try {
+                return new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
+                                                                                 .getCurrency(actor.getInternalAccount()
+                                                                                              .getAmount()
+                                                                                              .negate())
+                                                                            .getTwoDecimalEuroString());
+            } catch (UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Fail to get a account amount", e);
+            }
+        }
+    }
+
 }
