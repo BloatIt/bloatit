@@ -36,15 +36,16 @@ public final class FeaturePage extends MasterPage {
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a feature number."))
     private final Feature feature;
 
+    // Sub component.
+    @SuppressWarnings("unused")
+    private FeatureTabPane featureTabPane;
+    
     @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, generatedFrom = "feature")
     @Optional("Title")
     private final String title;
-
+    
     private final FeaturePageUrl url;
-
-    @SuppressWarnings("unused")
-    private FeatureTabPane featureTabPane;
 
     public FeaturePage(final FeaturePageUrl url) {
         super(url);

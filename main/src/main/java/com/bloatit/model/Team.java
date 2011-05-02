@@ -29,7 +29,6 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.StringUtils;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
 import com.bloatit.model.lists.UserContentList;
@@ -186,15 +185,10 @@ public final class Team extends Actor<DaoTeam> {
         return getDao().getDescription();
     }
 
-    @Override
     // no right management: this is public data
-    public String
-            getDisplayName() {
-        final String displayName = getDao().getDisplayName();
-        if (StringUtils.isEmpty(displayName)) {
-            return getLogin();
-        }
-        return displayName;
+    @Override
+    public String getDisplayName() {
+        return getLogin();
     }
 
     public EnumSet<UserTeamRight> getUserTeamRight(final Member member) {
@@ -205,17 +199,16 @@ public final class Team extends Actor<DaoTeam> {
     public PageIterable<Contribution> doGetContributions() {
         return new ListBinder<Contribution, DaoContribution>(getDao().getContributions());
     }
-    
+
     public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
         // TODO set rights
         return new UserContentList(getDao().getActivity());
     }
-    
+
     public long getRecentActivityCount() {
         // TODO set rights
         return getDao().getRecentActivityCount(ModelConfiguration.getRecentActivityDays());
     }
-
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Can ...
@@ -224,11 +217,13 @@ public final class Team extends Actor<DaoTeam> {
     public boolean canAccessContact(final Action action) {
         return canAccess(new RgtTeam.Contact(), action);
     }
-    
+
     /**
-     * Tells if the authenticated user can access the <i>BankTransaction</i> property.
+     * Tells if the authenticated user can access the <i>BankTransaction</i>
+     * property.
      * 
-     * @param action the type of access you want to do on the <i>BankTransaction</i> property.
+     * @param action the type of access you want to do on the
+     *            <i>BankTransaction</i> property.
      * @return true if you can access the <i>BankTransaction</i> property.
      */
     public final boolean canAccessBankTransaction(final Action action) {

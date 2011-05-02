@@ -25,7 +25,6 @@ import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 
 public abstract class UrlComponent extends UrlNode {
-    private static final EmptyComponent EMPTY_COMPONENT = new EmptyComponent();
     private boolean isRegistered = false;
     private final List<UrlNode> nodes = new ArrayList<UrlNode>();
 
@@ -119,28 +118,6 @@ public abstract class UrlComponent extends UrlNode {
             messages.addAll(node.getMessages());
         }
         return messages;
-    }
-
-    public static UrlComponent getEmptyComponent() {
-        return EMPTY_COMPONENT;
-    }
-
-    private static class EmptyComponent extends UrlComponent {
-
-        public EmptyComponent() {
-            // do nothing. the component is empty
-        }
-
-        @Override
-        protected void doRegister() {
-            // do nothing. the component is empty
-        }
-
-        @Override
-        public UrlComponent clone() {
-            // every empty component is the same. So return this
-            return this;
-        }
     }
 
 }

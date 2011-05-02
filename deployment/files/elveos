@@ -18,37 +18,45 @@ PIDFILE=$SHARE_DIR/.$NAME.pid
 #
 do_start()
 {
-if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
-    return 1
-fi
+    if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
+    echo
+        echo "ERROR: $DESC already running." >&2
+        return 1
+    fi
 
-CLASSPATH=$ROOT/java
-for i in $DEPEDENCIES/*.jar ; do 
-   CLASSPATH=$CLASSPATH:$i
-done
+    if [ -e "$SHARE_DIR"/lucene//com.bloatit.data.DaoFeature/lucene-*lock ] ; then
+    echo
+        echo "ERROR: $DESC: Lucene index locked." >&2
+        return 1
+    fi
 
-local tmp_launcher=/tmp/javaLauncher.sh
-echo '
-#!/bin/bash
-CLASSPATH=$1
-MAIN_CLASS=$2
-PID_FILE=$3
-SHARE_DIR=$4
-stty -echo
-read -p "Master password for elveos daemon: " _password ; echo
-stty echo
-echo $_password | nohup java -classpath $CLASSPATH $MAIN_CLASS >> $SHARE_DIR/log/log.txt 2>> $SHARE_DIR/log/errors.txt &
-echo $! > $3
-' > $tmp_launcher
+    CLASSPATH=$ROOT/java
+    for i in $DEPEDENCIES/*.jar ; do 
+        CLASSPATH=$CLASSPATH:$i
+    done
 
-if [ "$(id -un)" != "$USER" ] ; then
-    su $USER -c "bash $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR"
-else
-    bash $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR
-fi
+    local tmp_launcher=/tmp/javaLauncher.sh
+    echo '
+    #!/bin/bash
+    CLASSPATH=$1
+    MAIN_CLASS=$2
+    PID_FILE=$3
+    SHARE_DIR=$4
+    stty -echo
+    read -p "Master password for elveos daemon: " _password ; echo
+    stty echo
+    echo $_password | nohup java -classpath $CLASSPATH $MAIN_CLASS >> $SHARE_DIR/log/log.txt 2>> $SHARE_DIR/log/errors.txt &
+    echo $! > $3
+    ' > $tmp_launcher
 
-rm $tmp_launcher
-return 0
+    if [ "$(id -un)" != "$USER" ] ; then
+        su $USER -c "bash $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR"
+    else
+        bash $tmp_launcher $CLASSPATH $MAIN_CLASS $PIDFILE $SHARE_DIR
+    fi
+
+    rm $tmp_launcher
+    return 0
 }
 
 #
@@ -56,74 +64,76 @@ return 0
 #
 do_stop()
 {
-if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
-    kill -15 "$(cat $PIDFILE)"
-    rm $PIDFILE
-    return 0
-fi
-return 1
+    if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
+        kill -15 "$(cat $PIDFILE)"
+        rm $PIDFILE
+        return 0
+    fi
+    return 1
 }
 
 case "$1" in
-  start)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
-	do_start
-	case "$?" in
-		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-	esac
-	;;
-  stop)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
-	do_stop
-	case "$?" in
-		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
-		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
-	esac
-	;;
+    start)
+        [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+        do_start
+        case "$?" in
+            0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+        2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+    esac
+    ;;
+stop)
+    [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+    do_stop
+    case "$?" in
+        0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+    2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+esac
+;;
   status)
-       if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
-           echo "Running"
-       else
-           echo "Stopped" 
-       fi
-       exit 0
-       ;;
+      if [ -e "$PIDFILE" ] && [ -n "$(ps -e | grep -E "^ *$(cat $PIDFILE)")" ] ; then
+          echo "Running"
+      else
+          echo "Stopped" 
+      fi
+      exit 0
+      ;;
   #reload|force-reload)
-	#
-	# If do_reload() is not implemented then leave this commented out
-	# and leave 'force-reload' as an alias for 'restart'.
-	#
-	#log_daemon_msg "Reloading $DESC" "$NAME"
-	#do_reload
-	#log_end_msg $?
-	#;;
+      #
+      # If do_reload() is not implemented then leave this commented out
+      # and leave 'force-reload' as an alias for 'restart'.
+      #
+      #log_daemon_msg "Reloading $DESC" "$NAME"
+      #do_reload
+      #log_end_msg $?
+      #;;
   restart|force-reload)
-	#
-	# If the "reload" option is implemented then remove the
-	# 'force-reload' alias
-	#
-	log_daemon_msg "Restarting $DESC" "$NAME"
-	do_stop
-	case "$?" in
-	  0|1)
-		do_start
-		case "$?" in
-			0) log_end_msg 0 ;;
-			1) log_end_msg 1 ;; # Old process is still running
-			*) log_end_msg 1 ;; # Failed to start
-		esac
-		;;
-	  *)
-	  	# Failed to stop
-		log_end_msg 1
-		;;
-	esac
-	;;
+      #
+      # If the "reload" option is implemented then remove the
+      # 'force-reload' alias
+      #
+      log_daemon_msg "Restarting $DESC" "$NAME"
+      do_stop
+      case "$?" in
+          0|1)
+              do_start
+              case "$?" in
+                  0) log_end_msg 0 ;;
+              1) log_end_msg 1 ;; # Old process is still running
+          *) log_end_msg 1 ;; # Failed to start
+      esac
+      ;;
   *)
-	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
-	exit 3
-	;;
+      # Failed to stop
+      log_end_msg 1
+      ;;
+    esac
+    ;;
+*)
+    echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+    exit 3
+    ;;
 esac
 
 :
+
+

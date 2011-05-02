@@ -91,11 +91,6 @@ public class MarkdownEditor extends HtmlStringFormField {
             generate();
         }
 
-        public MarkdownEditorInputBlock(final String name, final String label, final int rows, final int cols) {
-            input = new HtmlTextArea(name, label, rows, cols);
-            generate();
-        }
-
         private void generate() {
             buttonBar.setId("blmdbar-" + RandomStringUtils.randomAlphabetic(4));
             container.add(buttonBar);

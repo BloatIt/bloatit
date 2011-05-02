@@ -23,7 +23,7 @@ public class CodeGenerator {
         // TODO make me final
         clazz.addAttribute(desc.getComponent().getClassName(), "component");
 
-        final Method staticGetName = clazz.addMethod("String", "getName");
+        final Method staticGetName = clazz.addMethod("String", "getPageName");
         staticGetName.setStaticFinal("static");
         staticGetName.addLine("return " + desc.getComponent().getCodeNameStr() + ";");
 
@@ -62,12 +62,11 @@ public class CodeGenerator {
 
         final Method getProtocol = clazz.addMethod("Protocol", "getProtocol");
         getProtocol.setOverride();
-        getProtocol.addLine("return Protocol."+desc.getComponent().getProtocol()+ ";");
-
+        getProtocol.addLine("return Protocol." + desc.getComponent().getProtocol() + ";");
 
         final Method getCode = clazz.addMethod("String", "getCode");
         getCode.setOverride();
-        getCode.addLine("return getName();");
+        getCode.addLine("return getPageName();");
 
         final Method doConstructUrl = clazz.addMethod("void", "doConstructUrl");
         doConstructUrl.setOverride();
@@ -224,7 +223,7 @@ public class CodeGenerator {
             setter.addLine("this." + param.getAttributeName() + ".setValue(other);");
             for (final ParameterDescription generatedParam : desc.getParameterGeneratedFromMe(param)) {
                 setter.addLine("try {");
-                setter.addLine("    title.setValue(" + param.getAttributeName() + ".getValue().get"
+                setter.addLine("    " + generatedParam.getAttributeName() + ".setValue(" + param.getAttributeName() + ".getValue().get"
                         + Utils.toCamelCase(generatedParam.getAttributeName(), true) + "());");
                 setter.addLine("} catch (final Exception e) {");
                 setter.addLine("    Log.framework().warn(\"Error in pretty value generation.\", e);");

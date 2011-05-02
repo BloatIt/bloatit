@@ -82,16 +82,8 @@ public final class CreateTeamPage extends LoggedPage {
         final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Team unique name "));
         nameInput.setDefaultValue(nameData.getSuggestedValue());
         nameInput.addErrorMessages(nameData.getErrorMessages());
-        nameInput.setComment(Context.tr("The name of the team, used to identify the team. It must be unique and space free. Between 5 and 50 characters."));
+        nameInput.setComment(Context.tr("The name of the team. It must be unique. Between 5 and 50 characters."));
         form.add(nameInput);
-
-        // displayName
-        final FieldData displayNameData = target.getDisplayNameParameter().pickFieldData();
-        final HtmlTextField displayNameInput = new HtmlTextField(displayNameData.getName(), Context.tr("Team display name "));
-        displayNameInput.setDefaultValue(displayNameData.getSuggestedValue());
-        displayNameInput.addErrorMessages(displayNameData.getErrorMessages());
-        displayNameInput.setComment(Context.tr("The public name of the team. Between 5 and 50 characters."));
-        form.add(displayNameInput);
 
         // Contact
         final String suggested = Context.tr("You can contact us using: \n\n * [Website](http://www.example.com) \n * Email: contact@example.com \n * IRC: irc://irc.example.com:6667 \n * ... ");

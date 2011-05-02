@@ -19,9 +19,11 @@ import java.util.Map;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -51,6 +53,11 @@ public final class BugPage extends MasterPage {
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
     private final Bug bug;
+    
+    @SuppressWarnings("unused")
+    @RequestParam(role = Role.PRETTY, generatedFrom = "bug")
+    @Optional("Title")
+    private final String title;
 
     private final BugPageUrl url;
 
@@ -58,6 +65,7 @@ public final class BugPage extends MasterPage {
         super(url);
         this.url = url;
         this.bug = url.getBug();
+        title = url.getTitle();
     }
 
     @Override
