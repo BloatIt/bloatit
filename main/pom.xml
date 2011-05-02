@@ -115,13 +115,10 @@
 				</executions>
 			</plugin>
 
-			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> 
-				<version>1.9.5.0</version> <executions> <execution> <phase>process-resources</phase> 
-				<configuration> <changeLogFile>src/main/resources/liquiabse/current.liquibase.xml</changeLogFile> 
-				<url>jdbc:postgresql://localhost/bloatit</url> <username>bloatit</username> 
+			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> <version>1.9.5.0</version> <executions> <execution> <phase>process-resources</phase> 
+				<configuration> <changeLogFile>src/main/resources/liquiabse/current.liquibase.xml</changeLogFile> <url>jdbc:postgresql://localhost/bloatit</url> <username>bloatit</username> 
 				<password>passe</password> <driver>org.postgresql.Driver</driver> <liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile> 
-				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> 
-				</plugin> -->
+				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> </plugin> -->
 		</plugins>
 
 		<resources>
@@ -286,12 +283,12 @@
 
 
 	<pluginRepositories>
-	
+
 		<pluginRepository>
 			<id>gettext-commons-site</id>
 			<url>http://gettext-commons.googlecode.com/svn/maven-repository</url>
 		</pluginRepository>
-		
+
 		<pluginRepository>
 			<id>jboss-public-repository-group</id>
 			<name>JBoss Public Maven Repository Group</name>
@@ -326,7 +323,7 @@
 				<updatePolicy>never</updatePolicy>
 			</releases>
 		</pluginRepository>
-		
+
 	</pluginRepositories>
-	
+
 </project>
