@@ -16,10 +16,13 @@
 //
 package com.bloatit.web.linkable.usercontent;
 
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.url.UserContentActionUrl;
 
@@ -35,7 +38,7 @@ public class AttachmentField extends PlaceHolderElement {
 
     /**
      * Do not forget the: form.enableFileUpload();
-     * 
+     *
      * @param targetUrl
      * @param attachmentLabel
      * @param attachmentComment
@@ -49,19 +52,33 @@ public class AttachmentField extends PlaceHolderElement {
                            final String descriptionComment) {
         super();
         // Attachment
+        HtmlParagraph addAttachementLink = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");
+        add(addAttachementLink);
+
+        HtmlDiv attachmentDiv = new HtmlDiv();
+        add(attachmentDiv);
+
         final FieldData attachedFileData = targetUrl.getAttachmentParameter().pickFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileData.getName(), attachmentLabel);
         attachedFileInput.setDefaultValue(attachedFileData.getSuggestedValue());
         attachedFileInput.addErrorMessages(attachedFileData.getErrorMessages());
         attachedFileInput.setComment(attachmentComment);
-        add(attachedFileInput);
+        attachmentDiv.add(attachedFileInput);
 
         final FieldData attachmentDescriptiondData = targetUrl.getAttachmentDescriptionParameter().pickFieldData();
         final HtmlTextField attachmentDescriptionInput = new HtmlTextField(attachmentDescriptiondData.getName(), descriptionLabel);
         attachmentDescriptionInput.setDefaultValue(attachmentDescriptiondData.getSuggestedValue());
         attachmentDescriptionInput.addErrorMessages(attachmentDescriptiondData.getErrorMessages());
         attachmentDescriptionInput.setComment(descriptionComment);
-        add(attachmentDescriptionInput);
+        attachmentDiv.add(attachmentDescriptionInput);
+
+        JsShowHide showHide = new JsShowHide(false);
+        showHide.setHasFallback(false);
+
+        showHide.addActuator(addAttachementLink);
+        showHide.addListener(attachmentDiv);
+        showHide.apply();
+
     }
 
 }
