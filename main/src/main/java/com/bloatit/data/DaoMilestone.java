@@ -64,8 +64,8 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "milestone.getBugs.byNonStateLevel",
                            query = "FROM DaoBug WHERE milestone = :this AND state != :state AND level = :level"),
                         @NamedQuery(
-                           name = "milestone.getBugs.byNonState.size",
-                           query = "SELECT count(*) FROM DaoBug WHERE milestone = :this AND state != :state"),
+                           name = "milestone.getBugs.byNonStateLevel.size",
+                           query = "SELECT count(*) FROM DaoBug WHERE milestone = :this AND state != :state AND level = :level"),
                         @NamedQuery(
                            name = "milestone.getBugs.byState",
                            query = "FROM DaoBug WHERE milestone = :this AND state = :state"),

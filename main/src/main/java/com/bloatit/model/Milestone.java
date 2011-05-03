@@ -153,7 +153,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
         tryAccess(new RgtMilestone.State(), Action.WRITE);
         setDevelopingUnprotected();
     }
-    
+
     public void setDevelopingUnprotected() {
         getDao().setDeveloping();
     }
@@ -275,6 +275,15 @@ public final class Milestone extends Identifiable<DaoMilestone> {
      */
     public final Date getReleaseDate() {
         return getDao().getReleasedDate();
+    }
+
+    public final Date getValidationDate() {
+        return new Date(getSecondBeforeValidation() * 1000 + getReleaseDate().getTime());
+    }
+
+    public final boolean hasBlockingBug() {
+        return (getFatalBugsPercent() * getNonResolvedBugs(Level.FATAL).size() + getMajorBugsPercent() * getNonResolvedBugs(Level.MAJOR).size() + getMinorBugsPercent()
+                * getNonResolvedBugs(Level.MINOR).size()) > 0;
     }
 
     /**
