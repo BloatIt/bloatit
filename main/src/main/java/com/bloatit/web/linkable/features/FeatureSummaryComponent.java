@@ -264,7 +264,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
 
-                element.add(new HtmlParagraph(tr(" {0} are missing before the development start.", currency.toString())));
+                element.add(new HtmlParagraph(tr(" {0} are missing before the development start.", currency.getSimpleEuroString())));
             } else {
                 final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
