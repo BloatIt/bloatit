@@ -210,7 +210,7 @@ public class AccountComponent extends HtmlPageComponent {
             addCell(new MoneyCell(moneyWithdrawal.getAmountWithdrawn().negate()));
         }
 
-        private HtmlDiv generateContributionDescription() {
+        private HtmlDiv generateContributionDescription() throws UnauthorizedPrivateAccessException {
             final HtmlDiv description = new HtmlDiv("description");
 
             String statusString = "";
