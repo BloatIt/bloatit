@@ -2,6 +2,7 @@ package com.bloatit.web.linkable.admin.withdraw;
 
 import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -10,10 +11,8 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlSimpleLineTable;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
-import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
@@ -23,13 +22,13 @@ import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.managers.MoneyWithdrawalManager;
 import com.bloatit.web.linkable.admin.AdminPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
 @ParamContainer("admin/withdraw")
 public class MoneyWithdrawalAdminPage extends AdminPage {
+    @SuppressWarnings("unused")
     private MoneyWithdrawalAdminPageUrl url;
 
     private static final String FILTER_TREATED = "treated";
@@ -127,9 +126,9 @@ public class MoneyWithdrawalAdminPage extends AdminPage {
 
         HtmlSimpleLineTable table = new HtmlSimpleLineTable();
         master.add(table);
-        table.addHeader("Author", "Amount", "State", "IBAN", "Select");
+        table.addHeader("Author", "Amount", "State", "IBAN", "Action", "Last Modified");
         for (MoneyWithdrawal mw : list) {
-            MoneyWithdrawalAdminActionUrl targetUrl = new MoneyWithdrawalAdminActionUrl(mw);
+            MoneyWithdrawalAdminActionUrl targetUrl = new MoneyWithdrawalAdminActionUrl(filter, mw);
             HtmlForm form = null;
 
             FieldData stateFieldData = targetUrl.getNewStateParameter().pickFieldData();
@@ -155,7 +154,9 @@ public class MoneyWithdrawalAdminPage extends AdminPage {
                     form.add(new HtmlSubmit(Context.tr("Submit")));
                     break;
             }
-            table.addLine(mw.getActor().getDisplayName(), mw.getAmountWithdrawn(), mw.getState(), mw.getIBAN(), form);
+            String timeString = Context.getLocalizator().getDate(mw.getLastModificationDate()).toDateTimeString(FormatStyle.SHORT, FormatStyle.SHORT);
+            
+            table.addLine(mw.getActor().getDisplayName(), mw.getAmountWithdrawn(), mw.getState(), mw.getIBAN(), form, timeString);
         }
 
         return master;

@@ -20,10 +20,13 @@ import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.UUID;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -39,6 +42,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
+import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
@@ -73,7 +77,7 @@ public class BloatitExampleDB { // NO_UCD
         yoann = createMember("yoann", "Yoann Plénet", Locale.US);
         admin = createMember("admin", "Administrator", Locale.FRANCE);
         admin.getDao().setRole(Role.ADMIN);
-        
+
         chogall = createMember("chogall", "Cho'gall", Locale.UK);
         cerbere = createMember("cerbere", "Cerbère", Locale.KOREA);
         hydre = createMember("hydre", "Hydre", Locale.GERMANY);
@@ -97,6 +101,25 @@ public class BloatitExampleDB { // NO_UCD
         giveMoney(cerbere, 1000);
         giveMoney(hydre, 500);
         giveMoney(elephantman, 100000000);
+
+        // Add withdrawal
+        withdrawMoney(fred, 1000, State.REQUESTED);
+        withdrawMoney(fred, 2000, State.TREATED);
+        withdrawMoney(fred, 3000, State.REFUSED);
+        withdrawMoney(fred, 4000, State.CANCELED);
+        withdrawMoney(fred, 5000, State.COMPLETE);
+
+        withdrawMoney(yoann, 1000, State.REQUESTED);
+        withdrawMoney(yoann, 2000, State.TREATED);
+        withdrawMoney(yoann, 3000, State.REFUSED);
+        withdrawMoney(yoann, 4000, State.CANCELED);
+        withdrawMoney(yoann, 5000, State.COMPLETE);
+
+        withdrawMoney(thomas, 1000, State.REQUESTED);
+        withdrawMoney(thomas, 2000, State.TREATED);
+        withdrawMoney(thomas, 3000, State.REFUSED);
+        withdrawMoney(thomas, 4000, State.CANCELED);
+        withdrawMoney(thomas, 5000, State.COMPLETE);
 
         // Add teams
         final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
@@ -418,6 +441,29 @@ public class BloatitExampleDB { // NO_UCD
         featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
+    private void withdrawMoney(Member m, int amount, State completion) {
+        // TODO: this have not been tested yet.
+        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", RandomStringUtils.randomAlphanumeric(4) + "-"
+                + RandomStringUtils.randomAlphanumeric(10), new BigDecimal(amount));
+        switch (completion) {
+            case REQUESTED:
+                break;
+            case TREATED:
+                mw.setTreated();
+                break;
+            case COMPLETE:
+                mw.setTreated();
+                mw.setComplete();
+                break;
+            case CANCELED:
+                mw.setCanceled();
+                break;
+            case REFUSED:
+                mw.setRefused();
+                break;
+        }
+    }
+
     // private void setFeatureInDiscardedState(final Feature feature) {
     // final FeatureImplementation featureImpl = (FeatureImplementation)
     // feature;
@@ -454,4 +500,3 @@ public class BloatitExampleDB { // NO_UCD
         System.exit(0);
     }
 }
-

@@ -14,10 +14,14 @@ import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
 @ParamContainer("admin/dowithdraw")
 public class MoneyWithdrawalAdminAction extends AdminAction {
+    @SuppressWarnings("unused")
     private final MoneyWithdrawalAdminActionUrl url;
 
     @RequestParam(name = "newState", role = Role.POST)
     private final State newState;
+    
+    @RequestParam(role = Role.GET)
+    private final String backTo;
 
     @RequestParam(role = Role.GET)
     private final MoneyWithdrawal target;
@@ -27,6 +31,7 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
         this.url = url;
         this.newState = url.getNewState();
         this.target = url.getTarget();
+        this.backTo = url.getBackTo();
     }
 
     @Override
@@ -35,7 +40,9 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
         target.setState(newState);
         session.notifyGood("Successfuly modified withdraw request from " + target.getActor().getDisplayName() + " of "
                 + target.getAmountWithdrawn().toPlainString() + "€ from State " + old + " to state " + newState + ".");
-        return new MoneyWithdrawalAdminPageUrl();
+        MoneyWithdrawalAdminPageUrl back = new MoneyWithdrawalAdminPageUrl();
+        back.setFilter(backTo);
+        return back;
     }
 
     @Override

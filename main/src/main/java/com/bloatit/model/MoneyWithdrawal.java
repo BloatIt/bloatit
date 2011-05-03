@@ -3,17 +3,15 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.hibernate.dialect.InterbaseDialect;
-
 import com.bloatit.data.DaoActor;
-import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMoneyWithdrawal;
-import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoMoneyWithdrawal.State;
-import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 
+/**
+ * Money withdrawals represent requests to withdraw money from the user internal
+ * account back to his bank account.
+ */
 public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     private static final BigDecimal ibanCheckingConstant = new BigDecimal(97);
 
@@ -50,6 +48,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      */
     public MoneyWithdrawal(Actor<? extends DaoActor> actor, final String IBAN, final String reference, final BigDecimal amountWithdrawn) {
         super(DaoMoneyWithdrawal.createAndPersist(actor.getDao(), IBAN, reference, amountWithdrawn));
+        if (!checkIban(IBAN)) {
+            throw new BadProgrammerException("Invalid IBAN format!");
+        }
     }
 
     private MoneyWithdrawal(DaoMoneyWithdrawal dao) {
@@ -60,6 +61,12 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     // Setters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Indicates the user wants to cancel the withdrawal.
+     * <p>
+     * Can only be used while in state REQUESTED
+     * </p>
+     */
     public void setCanceled() {
         switch (getState()) {
             case COMPLETE:
@@ -73,6 +80,12 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         getDao().setCanceled();
     }
 
+    /**
+     * Indicates the admins want to refused the withdrawal.
+     * <p>
+     * Can only be used while in state REQUESTED or TREATED
+     * </p>
+     */
     public void setRefused() {
         switch (getState()) {
             case COMPLETE:
@@ -85,6 +98,12 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         getDao().setRefused();
     }
 
+    /**
+     * Indicates the admins asked their banks to pass the withdrawal.
+     * <p>
+     * Can only be used while in state REQUESTED
+     * </p>
+     */
     public void setTreated() {
         switch (getState()) {
             case COMPLETE:
@@ -98,6 +117,12 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         getDao().setTreated();
     }
 
+    /**
+     * Indicates the bank dealth with the money transfer.
+     * <p>
+     * Can only be used while in state TREATED
+     * </p>
+     */
     public void setComplete() {
         switch (getState()) {
             case COMPLETE:
@@ -111,6 +136,13 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         getDao().setComplete();
     }
 
+    /**
+     * Proxy to the various methods to change the state
+     * 
+     * @param newState the new state of the withdrawal
+     * @throws BadProgrammerException whenever <code>newState</code> is not
+     *             compatible with current withdrawal state.
+     */
     public void setState(State newState) {
         switch (newState) {
             case REQUESTED:
@@ -205,6 +237,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     // Static
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Checks if a String matches the IBAN formatting
+     */
     public static boolean checkIban(String iban) {
         iban = iban.replace(" ", "");
         iban = iban.replace("-", "");
