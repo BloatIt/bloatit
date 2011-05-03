@@ -39,6 +39,7 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdown
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.right.Action;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeatureTabPane;
@@ -83,29 +84,23 @@ public final class BugPage extends MasterPage {
 
         layout.addRight(new SideBarFeatureBlock(bug.getFeature()));
 
-
-
-        HtmlDiv bugListDiv = new HtmlDiv("bug_list");
+        final HtmlDiv bugListDiv = new HtmlDiv("bug_list");
         layout.addLeft(bugListDiv);
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(bug.getFeature());
         featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
         bugListDiv.add(new HtmlParagraph(featurePageUrl.getHtmlLink(tr("Return to bugs list"))));
 
-
-        if (bug.getRights().isOwner()) {
+        if (bug.canAccessErrorLevel(Action.WRITE) && bug.canAccessStatus(Action.WRITE)) {
             bugListDiv.add(new HtmlParagraph(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties"))));
         }
-
-
-
 
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
         layout.addLeft(bugTitle);
 
         // Details
-        HtmlDiv bugDetails = new HtmlDiv("bug_details");
+        final HtmlDiv bugDetails = new HtmlDiv("bug_details");
         layout.addLeft(bugDetails);
         bugDetails.add(new HtmlDefineParagraph(Context.tr("Reported by: "), bug.getAuthor().getDisplayName()));
         bugDetails.add(new HtmlDefineParagraph(Context.tr("State: "), tr(BindedState.getBindedState(bug.getState()).getDisplayName())));
@@ -119,7 +114,7 @@ public final class BugPage extends MasterPage {
         layout.addLeft(description);
 
         // Attachments
-        PageIterable<FileMetadata> files = bug.getFiles();
+        final PageIterable<FileMetadata> files = bug.getFiles();
         if (files.size() > 0 || bug.getRights().isOwner()) {
 
             final HtmlDiv attachmentDiv = new HtmlDiv();
@@ -136,13 +131,13 @@ public final class BugPage extends MasterPage {
 
             if (bug.getRights().isOwner()) {
 
-                HtmlParagraph newAttachementLink = new HtmlParagraph(Context.tr("add new attachement"), "fake_link");
-                HtmlElement generateNewAttachementForm = generateNewAttachementForm();
+                final HtmlParagraph newAttachementLink = new HtmlParagraph(Context.tr("add new attachement"), "fake_link");
+                final HtmlElement generateNewAttachementForm = generateNewAttachementForm();
 
                 attachmentDiv.add(newAttachementLink);
                 attachmentDiv.add(generateNewAttachementForm);
 
-                JsShowHide showHide = new JsShowHide(false);
+                final JsShowHide showHide = new JsShowHide(false);
                 showHide.setHasFallback(false);
 
                 showHide.addActuator(newAttachementLink);
