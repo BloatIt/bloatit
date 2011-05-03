@@ -3,8 +3,11 @@
  */
 package com.bloatit.model;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * The class <code>TestAll</code> builds a suite that can be used to run all of
@@ -15,25 +18,25 @@ import junit.framework.TestSuite;
  * @author tom
  * @version $Revision: 1.0 $
  */
-public class TestAll {
 
-    /**
-     * Create a test suite that can run all of the test cases in this package
-     * and all subpackages.
-     * 
-     * @return the test suite that was created
-     * @generatedBy CodePro at 27/01/11 17:30
-     */
-    public static Test suite() {
-        TestSuite suite;
-        
-        suite = new TestSuite("Tests in package com.bloatit.model");
-        suite.addTestSuite(KudosableTest.class);
-        suite.addTestSuite(MemberTest.class);
-        suite.addTestSuite(ActorTest.class);
-        suite.addTestSuite(AccountTest.class);
-        suite.addTestSuite(BankTransactionTest.class);
-        suite.addTest(com.bloatit.model.feature.TestAll.suite());
-        return suite;
+@RunWith(Suite.class)
+@SuiteClasses(value = { KudosableTest.class,
+                       MemberTest.class,
+                       ActorTest.class,
+                       AccountTest.class,
+                       BankTransactionTest.class,
+                       com.bloatit.model.feature.TestAll.class, })
+public class TestAll {
+    // nothing
+    @Before
+    public void before() {
+        System.out.println("--------------------------");
+        System.out.println("Begin tests of Model layer");
+    }
+    
+    @After
+    public void after() {
+        System.out.println("End tests of Model layer");
+        System.out.println("--------------------------");
     }
 }

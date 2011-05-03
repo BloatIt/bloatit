@@ -16,14 +16,19 @@
 //
 package com.bloatit.data;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Locale;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.bloatit.data.DaoFileMetadata.FileType;
 
-public class DaoUserContentTest extends TestCase {
+public class DaoUserContentTest {
 
+    @Test
     public void testGetAuthor() {
         assertEquals(yo, feature.getMember());
     }
@@ -33,9 +38,8 @@ public class DaoUserContentTest extends TestCase {
     private DaoMember fred;
     private DaoFeature feature;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         SessionManager.generateTestSessionFactory();
         SessionManager.beginWorkUnit();
         {
@@ -69,9 +73,8 @@ public class DaoUserContentTest extends TestCase {
         SessionManager.endWorkUnitAndFlush();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }

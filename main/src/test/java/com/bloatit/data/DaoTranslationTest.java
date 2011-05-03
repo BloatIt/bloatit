@@ -16,12 +16,18 @@
 //
 package com.bloatit.data;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Locale;
+
+import org.junit.Test;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 public class DaoTranslationTest extends DataTestUnit {
 
+    @Test
     public void testDaoTranslationDaoMemberDaoDescriptionLocaleStringString() {
         final DaoDescription description = DaoDescription.createAndPersist(yo, null, Locale.ENGLISH, "English title", "English body");
 
@@ -70,6 +76,7 @@ public class DaoTranslationTest extends DataTestUnit {
         }
     }
 
+    @Test
     public void testUniqunessOfTranslation() {
         final DaoDescription description = DaoDescription.createAndPersist(yo, null, Locale.ENGLISH, "English title", "English body");
 

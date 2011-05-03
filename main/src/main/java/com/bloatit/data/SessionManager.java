@@ -184,7 +184,7 @@ public class SessionManager {
     public static void generateTestSessionFactory() {
         try {
 
-            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create")
+            final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create-drop")
                                                                      .setProperty("hibernate.cache.use_second_level_cache", "false")
                                                                      .setProperty("hibernate.cache.use_query_cache", "false")
                                                                      .setProperty("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider")

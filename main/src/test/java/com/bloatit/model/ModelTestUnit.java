@@ -16,13 +16,14 @@
 //
 package com.bloatit.model;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
 
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.model.right.AuthToken;
 
-public class ModelTestUnit extends TestCase {
+public class ModelTestUnit {
     protected AuthToken yoAuthToken;
     protected AuthToken tomAuthToken;
     protected AuthToken fredAuthToken;
@@ -31,13 +32,12 @@ public class ModelTestUnit extends TestCase {
     private static boolean firstInit = true;
     protected static SimpleTestDB db;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         if (firstInit) {
             SessionManager.generateTestSessionFactory();
-            ModelAccessor.initialize(new Model());
             db = new SimpleTestDB();
+            ModelAccessor.initialize(new Model());
             firstInit = false;
         }
         ModelAccessor.open();
@@ -47,9 +47,8 @@ public class ModelTestUnit extends TestCase {
         loser = new AuthToken("loser", "loser");
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.rollback();
         }
