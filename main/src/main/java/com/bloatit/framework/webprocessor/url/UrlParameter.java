@@ -285,7 +285,7 @@ public class UrlParameter<T, U> extends UrlNode {
                 suggestedValue = sessionParam.getSuggestedValue();
                 messages = sessionParam.getMessages();
             } else {
-                suggestedValue = null;
+                suggestedValue = parameter.getSuggestedValue();
                 messages = new Messages();
             }
         }

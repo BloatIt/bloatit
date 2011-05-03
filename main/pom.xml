@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bloatit</groupId>
 	<artifactId>BloatIt</artifactId>
@@ -21,6 +22,16 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<!-- Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.8.1</version>
+				<configuration>
+					<test>com.bloatit.TestAll</test>
 				</configuration>
 			</plugin>
 
@@ -115,10 +126,13 @@
 				</executions>
 			</plugin>
 
-			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> <version>1.9.5.0</version> <executions> <execution> <phase>process-resources</phase> 
-				<configuration> <changeLogFile>src/main/resources/liquiabse/current.liquibase.xml</changeLogFile> <url>jdbc:postgresql://localhost/bloatit</url> <username>bloatit</username> 
+			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> 
+				<version>1.9.5.0</version> <executions> <execution> <phase>process-resources</phase> 
+				<configuration> <changeLogFile>src/main/resources/liquiabse/current.liquibase.xml</changeLogFile> 
+				<url>jdbc:postgresql://localhost/bloatit</url> <username>bloatit</username> 
 				<password>passe</password> <driver>org.postgresql.Driver</driver> <liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile> 
-				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> </plugin> -->
+				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> 
+				</plugin> -->
 		</plugins>
 
 		<resources>
@@ -172,7 +186,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

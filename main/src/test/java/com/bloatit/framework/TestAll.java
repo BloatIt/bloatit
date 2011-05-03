@@ -16,8 +16,9 @@
 //
 package com.bloatit.framework;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 import com.bloatit.framework.webserver.mime.MultipartMimeParserTest;
 import com.bloatit.framework.webserver.mime.decoders.MimeBase64DecoderTest;
@@ -27,19 +28,8 @@ import com.bloatit.framework.webserver.mime.decoders.MimeBase64DecoderTest;
  * the tests within its package as well as within any subpackages of its
  * package.
  */
+@RunWith(Suite.class)
+@SuiteClasses(value = { MimeBase64DecoderTest.class, MultipartMimeParserTest.class, })
 public class TestAll {
-
-    /**
-     * Create a test suite that can run all of the test cases in this package
-     * and all subpackages.
-     */
-    public static Test suite() {
-        TestSuite suite;
-
-        suite = new TestSuite("Tests in package com.bloatit.framework");
-        suite.addTestSuite(MimeBase64DecoderTest.class);
-        suite.addTestSuite(MultipartMimeParserTest.class);
-        return suite;
-    }
-
+    // Nothing
 }

@@ -16,8 +16,9 @@
 //
 package com.bloatit.model.feature;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * The class <code>TestAll</code> builds a suite that can be used to run all of
@@ -28,20 +29,9 @@ import junit.framework.TestSuite;
  * @author tom
  * @version $Revision: 1.0 $
  */
+
+@RunWith(Suite.class)
+@SuiteClasses(value = { FeatureImplementationTest.class, })
 public class TestAll {
-
-    /**
-     * Create a test suite that can run all of the test cases in this package
-     * and all subpackages.
-     * 
-     * @return the test suite that was created
-     * @generatedBy CodePro at 27/01/11 16:38
-     */
-    public static Test suite() {
-        TestSuite suite;
-
-        suite = new TestSuite("Tests in package com.bloatit.model.feature");
-        suite.addTestSuite(FeatureImplementationTest.class);
-        return suite;
-    }
+    // nothing
 }

@@ -18,25 +18,26 @@ package com.bloatit.data;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 import com.bloatit.data.DaoFileMetadata.FileType;
 
-public class DataTestUnit extends TestCase {
+public class DataTestUnit {
 
-    protected DaoMember tom;
-    protected DaoMember fred;
-    protected DaoMember yo;
-    protected DaoTeam other;
-    protected DaoTeam myGroup;
-    protected DaoTeam b219;
-    protected DaoSoftware project;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    protected static DaoMember tom;
+    protected static DaoMember fred;
+    protected static DaoMember yo;
+    protected static DaoTeam other;
+    protected static DaoTeam myGroup;
+    protected static DaoTeam b219;
+    protected static DaoSoftware project;
+    
+    @BeforeClass
+    public static void createDB() {
         SessionManager.generateTestSessionFactory();
-
         SessionManager.beginWorkUnit();
         tom = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
         tom.setFullname("Thomas Guyard");
@@ -55,16 +56,25 @@ public class DataTestUnit extends TestCase {
         project = DaoSoftware.createAndPersist("VLC", DaoDescription.createAndPersist(fred, null, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(fred, null, null, "/dev/", "null", FileType.JPG, 12));
         SessionManager.endWorkUnitAndFlush();
-
-        SessionManager.beginWorkUnit();
     }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    
+    @AfterClass
+    public static void closeDB() {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }
         SessionManager.getSessionFactory().close();
+    }
+    
+    @Before
+    public void setUp() throws Exception {
+        SessionManager.beginWorkUnit();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManager.rollback();
+        }
     }
 }

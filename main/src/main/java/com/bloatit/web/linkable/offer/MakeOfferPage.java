@@ -19,6 +19,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
@@ -28,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -129,12 +132,27 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(), Context.tr("Description"), 10, 80);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
+        descriptionInput.setComment(Context.tr("Describe your offer. This description must be accurate because it will be used to validate the conformity at the end of the developement."));
         offerForm.add(descriptionInput);
 
         // locale
         addLanguageField(offerForm, //
                          Context.tr("description langue"), //
                          Context.tr("The language in which you have maid the description."));
+
+        HtmlDiv validationDetails = new HtmlDiv();
+        final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
+        showHideLink.setCssClass("fake_link");
+
+        final JsShowHide showHideValidationDetails = new JsShowHide(false);
+        showHideValidationDetails.setHasFallback(false);
+        showHideValidationDetails.addActuator(showHideLink);
+        showHideValidationDetails.addListener(validationDetails);
+
+
+        offerForm.add(showHideLink);
+        offerForm.add(validationDetails);
+        showHideValidationDetails.apply();
 
         // days before validation
         final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();
@@ -143,7 +161,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         nbDaysInput.addErrorMessages(nbDaysData.getErrorMessages());
         nbDaysInput.setComment(Context.tr("The number of days to wait before this offer is can be validated. "
                 + "During this time users can add bugs un the bug tracker. Fatal bugs have to be colsed before the validation."));
-        offerForm.add(nbDaysInput);
+        validationDetails.add(nbDaysInput);
 
         // percent Fatal
         final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().pickFieldData();
@@ -154,7 +172,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
                 + "of the amount on this feature request when all the FATAL bugs are closed. "
                 + "The money left will be transfered when all the MAJOR bugs are closed. If you specify this field, you have to specify the next one on MAJOR bug percent. "
                 + "By default, all the money on this feature request is transfered when all the FATAL bugs are closed."));
-        offerForm.add(percentFatalInput);
+        validationDetails.add(percentFatalInput);
 
         // percent Major
         final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().pickFieldData();
@@ -164,7 +182,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         percentMajorInput.setComment(Context.tr("If you specified a value for the 'FATAL bugs percent', you have to also specify one for the MAJOR bugs. "
                 + "You can say that you want to gain less than 100% of the amount on this offer when all the MAJOR bugs are closed. "
                 + "The money left will be transfered when all the MINOR bugs are closed. Make sure that (FATAL percent + MAJOR percent) <= 100."));
-        offerForm.add(percentMajorInput);
+        validationDetails.add(percentMajorInput);
 
         // Is finished
         final FieldData isFinishedData = offerActionUrl.getIsFinishedParameter().pickFieldData();

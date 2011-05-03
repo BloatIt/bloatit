@@ -18,6 +18,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -51,9 +52,12 @@ public final class OfferAction extends UserContentAction {
     private final Offer draftOffer;
 
     @RequestParam(role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
+    @ParamConstraint(optionalErrorMsg = @tr("You must set a price to your offer."),
+                     min = "1", minErrorMsg = @tr("The price must be greater to 0."))
     private final BigDecimal price;
 
     @RequestParam(role = Role.POST)
+    @ParamConstraint(optionalErrorMsg = @tr("You must set an expiration date."))
     private final DateLocale expiryDate;
 
 
@@ -63,16 +67,18 @@ public final class OfferAction extends UserContentAction {
                      max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final String description;
 
-    @RequestParam(role = Role.POST)
+    @RequestParam(role = Role.POST, suggestedValue="7")
+    @ParamConstraint(optionalErrorMsg = @tr("You must set a days count for validation."),
+                     min = "1", minErrorMsg = @tr("The validation time must be greater to 0."))
     private final Integer daysBeforeValidation;
 
-    @RequestParam(role = Role.POST)
+    @RequestParam(role = Role.POST, suggestedValue="100")
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
                      max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentFatal;
 
-    @RequestParam(role = Role.POST)
+    @RequestParam(role = Role.POST, suggestedValue="0")
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
                      max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
@@ -135,22 +141,35 @@ public final class OfferAction extends UserContentAction {
 
     @Override
     protected Url doCheckRightsAndEverything(final Member me) {
+
+        boolean everythingIsRight = true;
+
         if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
             session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
-            return session.pickPreferredPage();
+            url.getPercentMajorParameter().getCustomMessages().add(new Message(Context.tr("You have to specify both the Major and Fatal percent.")));
+            url.getPercentFatalParameter().getCustomMessages().add(new Message(Context.tr("You have to specify both the Major and Fatal percent.")));
+            everythingIsRight = false;
         }
         if (percentFatal != null && percentFatal + percentMajor > 100) {
             session.notifyBad(Context.tr("Major + Fatal percent cannot be > 100 !!"));
-            return session.pickPreferredPage();
+            url.getPercentMajorParameter().getCustomMessages().add(new Message(Context.tr("Major + Fatal percent cannot be > 100 !!")));
+            url.getPercentFatalParameter().getCustomMessages().add(new Message(Context.tr("Major + Fatal percent cannot be > 100 !!")));
+            everythingIsRight = false;
         }
         if (draftOffer != null && !draftOffer.isDraft()) {
             session.notifyBad(Context.tr("The specified offer is not modifiable. You cannot add a lot in it."));
-            return session.pickPreferredPage();
+            everythingIsRight = false;
         }
         if(!expiryDate.isFuture()){
             session.notifyBad(Context.tr("The date must be in the future."));
-            return session.pickPreferredPage();
+            url.getExpiryDateParameter().getCustomMessages().add(new Message(Context.tr("The date must be in the future.")));
+            everythingIsRight = false;
         }
+
+        if(! everythingIsRight) {
+            return new MakeOfferPageUrl(feature);
+        }
+
         return NO_ERROR;
     }
 

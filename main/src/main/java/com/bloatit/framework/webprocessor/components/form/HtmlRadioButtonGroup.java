@@ -27,7 +27,7 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
     public HtmlRadioButtonGroup(final String name) {
         super();
         this.name = name;
-        this.position = LabelPosition.AFTER;
+        this.position = LabelPosition.BEFORE;
     }
 
     public HtmlRadioButtonGroup(final String name, final LabelPosition position) {

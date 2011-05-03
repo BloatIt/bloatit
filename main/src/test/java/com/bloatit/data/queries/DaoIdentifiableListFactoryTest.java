@@ -16,7 +16,12 @@
 //
 package com.bloatit.data.queries;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Locale;
+
+import org.junit.Test;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
@@ -25,6 +30,7 @@ import com.bloatit.data.DataTestUnit;
 
 public class DaoIdentifiableListFactoryTest extends DataTestUnit {
 
+    @Test
     public void testDaoIdentifiableListFactory() {
 
         final DaoFeature feature = DaoFeature.createAndPersist(yo,
@@ -41,6 +47,7 @@ public class DaoIdentifiableListFactoryTest extends DataTestUnit {
         assertEquals(feature, factory.uniqueResult());
     }
 
+    @Test
     public void testCreateCollection() {
         final DaoIdentifiableQuery<DaoIdentifiable> factory = new DaoIdentifiableQuery<DaoIdentifiable>();
 

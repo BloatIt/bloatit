@@ -811,7 +811,7 @@ msgid ""
 msgstr ""
 "Le nombre de jours à attendre avant que cette offre puisse être validée. "
 "Pendant cette période les utilisateurs pourront créer des bug dans le bug "
-"tracker. Les bugs critiquides devront être fermés avant la validation."
+"tracker. Les bugs critiques devront être fermés avant la validation."
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:157
 msgid "Percent gained when no FATAL bugs"
@@ -854,7 +854,7 @@ msgstr ""
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:180
 msgid "Finish your Offer"
-msgstr "Finissez vous offre"
+msgstr "Finir votre offre"
 
 #: com/bloatit/web/linkable/offer/MakeOfferPage.java:181
 msgid "Add an other lot"

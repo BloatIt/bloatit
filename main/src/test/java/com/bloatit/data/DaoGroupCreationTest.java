@@ -16,42 +16,60 @@
 //
 package com.bloatit.data;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.hibernate.HibernateException;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
-public class DaoGroupCreationTest extends TestCase {
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+public class DaoGroupCreationTest  {
+    
+    @BeforeClass
+    public static void createDB() {
         SessionManager.generateTestSessionFactory();
     }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    
+    @AfterClass
+    public static void closeDB() {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }
         SessionManager.getSessionFactory().close();
     }
-
-    public void testCreateGroup() {
+    
+    @Before
+    public void setUp() throws Exception {
         SessionManager.beginWorkUnit();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManager.rollback();
+        }
+    }
+
+    @Test
+    public void testCreateGroup() {
         DaoTeam.createAndPersiste("Other", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);
         DaoTeam.createAndPersiste("myGroup", "plop1@plop.com", "A group description", DaoTeam.Right.PUBLIC);
         DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PUBLIC);
         DaoTeam.createAndPersiste("b218", "plop3@plop.com", "A group description", DaoTeam.Right.PUBLIC);
         DaoTeam.createAndPersiste("b217", "plop4@plop.com", "A group description", DaoTeam.Right.PUBLIC);
         DaoTeam.createAndPersiste("b216", "plop5@plop.com", "A group description", DaoTeam.Right.PUBLIC);
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testCreateGroupLimite() {
-        SessionManager.beginWorkUnit();
         try {
             DaoTeam.createAndPersiste("b217", "", "A group description", DaoTeam.Right.PUBLIC);
             fail();
@@ -82,30 +100,28 @@ public class DaoGroupCreationTest extends TestCase {
         } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testDuplicatedGroup() {
         testCreateGroup();
         try {
-            SessionManager.beginWorkUnit();
             DaoTeam.createAndPersiste("Other", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);
             assertTrue(true);
             SessionManager.endWorkUnitAndFlush();
-            assertTrue(false);
+            fail();
         } catch (final HibernateException e) {
             assertTrue(true);
         }
     }
 
+    @Test
     public void testGetGroupByName() {
-        SessionManager.beginWorkUnit();
         final DaoTeam b219 = DaoTeam.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoTeam.Right.PUBLIC);
 
         assertEquals(b219.getId(), DaoTeam.getByName("b219").getId());
         assertNull(DaoTeam.getByName("Inexistant"));
         assertNull(DaoTeam.getByName(null));
-        SessionManager.endWorkUnitAndFlush();
     }
 
 }

@@ -16,10 +16,19 @@
 //
 package com.bloatit.data;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Iterator;
 import java.util.Locale;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.PageIterable;
@@ -27,24 +36,18 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * Unit test for Member and groups
  */
-public class DaoGroupMemberTest extends TestCase {
+public class DaoGroupMemberTest {
 
-    private DaoMember tom;
-    private DaoMember fred;
-    private DaoMember yo;
-    private DaoTeam b216;
-    private DaoTeam b217;
-    private DaoTeam b219;
+    private static DaoMember tom;
+    private static DaoMember fred;
+    private static DaoMember yo;
+    private static DaoTeam b216;
+    private static DaoTeam b217;
+    private static DaoTeam b219;
 
-    public DaoGroupMemberTest(final String testName) {
-        super(testName);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeClass
+    public static void createDB() {
         SessionManager.generateTestSessionFactory();
-
         SessionManager.beginWorkUnit();
         tom = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
         tom.setFullname("Thomas Guyard");
@@ -58,31 +61,40 @@ public class DaoGroupMemberTest extends TestCase {
         b217 = DaoTeam.createAndPersiste("b217", "plop4@plop.com", "A group description", DaoTeam.Right.PUBLIC);
 
         SessionManager.endWorkUnitAndFlush();
-
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterClass
+    public static void closeDB() {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }
         SessionManager.getSessionFactory().close();
     }
 
-    public void testAddUserToGroup() {
+    @Before
+    public void setUp() throws Exception {
         SessionManager.beginWorkUnit();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManager.rollback();
+        }
+    }
+
+    @Test
+    public void testAddUserToGroup() {
         DaoMember.getByLogin(fred.getLogin()).addToTeam(DaoTeam.getByName(b219.getLogin()));
         DaoMember.getByLogin(yo.getLogin()).addToTeam(DaoTeam.getByName(b219.getLogin()));
         DaoMember.getByLogin(yo.getLogin()).addToTeam(DaoTeam.getByName(b217.getLogin()));
         DaoMember.getByLogin(yo.getLogin()).addToTeam(DaoTeam.getByName(b216.getLogin()));
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testGetAllUserInGroup() {
         testAddUserToGroup();
 
-        SessionManager.beginWorkUnit();
         final PageIterable<DaoMember> members = DaoTeam.getByName(b219.getLogin()).getMembers();
         final Iterator<DaoMember> it = members.iterator();
         assertEquals(it.next().getId(), fred.getId());
@@ -91,13 +103,12 @@ public class DaoGroupMemberTest extends TestCase {
 
         assertEquals(2, members.size());
 
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testGetAllGroupForUser() {
         testAddUserToGroup();
 
-        SessionManager.beginWorkUnit();
         final PageIterable<DaoTeam> groups = DaoMember.getByLogin("Yoann").getTeams();
         final Iterator<DaoTeam> it = groups.iterator();
         assertEquals(it.next().getId(), b216.getId());
@@ -107,13 +118,11 @@ public class DaoGroupMemberTest extends TestCase {
 
         assertEquals(3, groups.size());
 
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testRemoveGroup() {
         testAddUserToGroup();
-
-        SessionManager.beginWorkUnit();
         final DaoTeam loacalB219 = DaoTeam.getByName("b219");
         final DaoMember localYo = DaoMember.getByLogin("Yoann");
 
@@ -123,14 +132,12 @@ public class DaoGroupMemberTest extends TestCase {
         assertEquals(it.next().getId(), b216.getId());
         assertEquals(it.next().getId(), b217.getId());
         assertFalse(it.hasNext());
-
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testRemoveMember() {
         testAddUserToGroup();
 
-        SessionManager.beginWorkUnit();
         final DaoTeam localB216 = DaoTeam.getByName("b216");
         final DaoMember loaclYo = DaoMember.getByLogin("Yoann");
 
@@ -141,11 +148,10 @@ public class DaoGroupMemberTest extends TestCase {
         assertEquals(it.next().getId(), b219.getId());
         assertFalse(it.hasNext());
 
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testDuplicateAdd() {
-        SessionManager.beginWorkUnit();
 
         DaoMember.getByLogin(fred.getLogin()).addToTeam(DaoTeam.getByName(b219.getLogin()));
         try {
@@ -155,12 +161,10 @@ public class DaoGroupMemberTest extends TestCase {
             assertTrue(true);
         }
 
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testAddRight() {
-        SessionManager.beginWorkUnit();
-
         final DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
         final DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
         fred.addToTeam(b219);
@@ -169,13 +173,10 @@ public class DaoGroupMemberTest extends TestCase {
         if (!(fred.getTeamRights(b219).contains(UserTeamRight.CONSULT) && fred.getTeamRights(b219).contains(UserTeamRight.TALK))) {
             fail();
         }
-
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testRemoveRight() {
-        SessionManager.beginWorkUnit();
-
         final DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
         final DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
 
@@ -187,8 +188,6 @@ public class DaoGroupMemberTest extends TestCase {
         if (fred.getTeamRights(b219).contains(UserTeamRight.TALK) || !fred.getTeamRights(b219).contains(UserTeamRight.CONSULT)) {
             fail();
         }
-
-        SessionManager.endWorkUnitAndFlush();
     }
 
 }
