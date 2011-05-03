@@ -1,0 +1,12 @@
+${member},
+
+Vous avez demandé un transfert d'argent d'un montant de ${amount}€ depuis votre compte elveos.org vers un compte bancaire identifié par l'IBAN ${IBAN}.
+Cette requête est maintenant traitée par les équipes elveos.
+
+Si vous n'avez pas demandé ce transfert d'argent, vous pouvez l'annuler en utilisant elveos.org/fr/account ou en nous envoyant un mail à l'adresse contact@elveos.org.
+
+La référence de ce retrait est : ${reference}.
+
+Merci de votre confiance,
+
+L'équipe elveos.

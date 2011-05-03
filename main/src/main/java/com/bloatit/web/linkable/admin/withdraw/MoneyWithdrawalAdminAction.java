@@ -1,6 +1,8 @@
 package com.bloatit.web.linkable.admin.withdraw;
 
 import com.bloatit.data.DaoMoneyWithdrawal.State;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -19,7 +21,7 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
 
     @RequestParam(name = "newState", role = Role.POST)
     private final State newState;
-    
+
     @RequestParam(role = Role.GET)
     private final String backTo;
 
@@ -35,8 +37,10 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessAdmin() {
-        State old = target.getState();
+    protected Url doProcessAdmin() throws UnauthorizedPrivateAccessException {
+        State old;
+        old = target.getState();
+
         target.setState(newState);
         session.notifyGood("Successfuly modified withdraw request from " + target.getActor().getDisplayName() + " of "
                 + target.getAmountWithdrawn().toPlainString() + "€ from State " + old + " to state " + newState + ".");

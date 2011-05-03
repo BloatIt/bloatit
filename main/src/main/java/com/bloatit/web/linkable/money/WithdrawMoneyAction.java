@@ -54,9 +54,12 @@ public class WithdrawMoneyAction extends LoggedAction {
     protected Url doProcessRestricted(Member me) {
         String ref = RandomStringUtils.randomAlphanumeric(4) + "-" + RandomStringUtils.randomAlphanumeric(10);
         new MoneyWithdrawal(actor, IBAN, ref, amount);
+        String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
         if (actor instanceof Member) {
+            session.notifyGood(Context.tr("Requestrd to withdraw {0} from your account.", amountStr));
             return new AccountPageUrl();
         } else {
+            session.notifyGood(Context.tr("Requestrd to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
             TeamPageUrl teamPageUrl = new TeamPageUrl((Team) actor);
             teamPageUrl.setActiveTabKey(TeamPage.ACCOUNT_TAB);
             return teamPageUrl;
