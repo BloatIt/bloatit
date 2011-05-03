@@ -19,6 +19,7 @@ package com.bloatit.model;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtJoinTeamInvitation;
 
@@ -51,7 +52,7 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         return new MyCreator().create(dao);
     }
 
-    public Member getSender() throws UnauthorizedPrivateReadOnlyAccessException {
+    public Member getSender() throws UnauthorizedPrivateReadOnlyAccessException, UnauthorizedPublicAccessException {
         tryAccess(new RgtJoinTeamInvitation.Sender(), Action.READ);
         return Member.create(getDao().getSender());
     }
@@ -61,7 +62,7 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         return Member.create(getDao().getReceiver());
     }
 
-    public Team getTeam() throws UnauthorizedPrivateReadOnlyAccessException {
+    public Team getTeam() throws UnauthorizedPrivateReadOnlyAccessException, UnauthorizedPublicAccessException {
         tryAccess(new RgtJoinTeamInvitation.Team(), Action.READ);
         return getTeamUnprotected();
     }

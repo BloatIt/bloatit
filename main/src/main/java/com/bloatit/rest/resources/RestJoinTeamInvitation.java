@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
@@ -156,6 +157,8 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
             return new RestTeam(model.getTeam());
         } catch (final UnauthorizedPrivateReadOnlyAccessException e) {
             return null;
+        } catch (UnauthorizedPublicAccessException e) {
+            return null;
         }
     }
 
@@ -167,6 +170,8 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
         try {
             return new RestMember(model.getSender());
         } catch (final UnauthorizedPrivateReadOnlyAccessException e) {
+            return null;
+        } catch (UnauthorizedPublicAccessException e) {
             return null;
         }
     }
