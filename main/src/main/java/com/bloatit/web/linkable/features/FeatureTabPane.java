@@ -34,7 +34,7 @@ import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
     public static final String FEATURE_TAB_PANE = "tab";
-    protected static final String BUGS_TAB = "bugs";
+    public static final String BUGS_TAB = "bugs";
     protected static final String DETAILS_TAB = "details";
     public static final String OFFERS_TAB = "offers";
     public static final String CONTRIBUTIONS_TAB = "contributions";

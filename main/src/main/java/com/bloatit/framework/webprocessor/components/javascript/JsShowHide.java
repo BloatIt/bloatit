@@ -24,11 +24,12 @@ import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 
 public class JsShowHide {
 
     private final List<HtmlBranch> actuators = new ArrayList<HtmlBranch>();
-    private final List<HtmlBranch> listeners = new ArrayList<HtmlBranch>();
+    private final List<HtmlElement> listeners = new ArrayList<HtmlElement>();
     private final RandomString rng = new RandomString(10);
     private final boolean state;
     private boolean hasFallback;
@@ -49,7 +50,7 @@ public class JsShowHide {
         injectJQueryInclusion(actuator);
     }
 
-    public void addListener(final HtmlBranch listener) {
+    public void addListener(final HtmlElement listener) {
         listeners.add(listener);
 
     }
@@ -57,7 +58,7 @@ public class JsShowHide {
     public void apply() {
 
         if (!state && hasFallback) {
-            for (final HtmlBranch listener : listeners) {
+            for (final HtmlElement listener : listeners) {
                 listener.addAttribute("style", "display: none;");
             }
         }
@@ -71,17 +72,17 @@ public class JsShowHide {
 
             script.append("$(function() {\n" + "        function runEffect() {\n");
 
-            for (final HtmlBranch listener : listeners) {
+            for (final HtmlElement listener : listeners) {
                 script.append("          $( \"#" + listener.getId() + "\" )." + effectCall + ";\n");
             }
             script.append("        }\n");
             script.append("        $( \"#" + actuator.getId() + "\" ).click(function() {\n" + "            runEffect();\n"
                     + "            return false;\n" + "        });\n");
 
-            for (final HtmlBranch listener : listeners) {
+            for (final HtmlElement listener : listeners) {
                 script.append("$( \"#" + listener.getId() + "\" ).hide();\n");
             }
-            
+
             script.append("    });");
 
             actuator.add(script);
@@ -90,7 +91,7 @@ public class JsShowHide {
     }
 
     private void prepareIds() {
-        for (final HtmlBranch listener : listeners) {
+        for (final HtmlElement listener : listeners) {
             if (listener.getId() == null) {
                 listener.setId(rng.nextString());
             }
