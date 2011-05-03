@@ -29,7 +29,7 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.IndexPageUrl;
 
 public class PageNotFound extends MasterPage {
-    private PageNotFoundUrl url;
+    private final PageNotFoundUrl url;
 
     public PageNotFound(final PageNotFoundUrl url) {
         super(url);
@@ -85,5 +85,4 @@ public class PageNotFound extends MasterPage {
         breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink(tr("Page not found")));
         return breadcrumb;
     }
-
 }

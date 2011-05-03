@@ -55,12 +55,20 @@ public class RgtActor extends RightManager {
     public static class DateCreation extends PublicReadOnly {
         // nothing this is just a rename.
     }
-    
+
     /**
      * The Class Contribution is a {@link RightManager.Public} accessor for the
      * DateCreation property.
      */
     public static class Contribution extends Public {
+        // nothing this is just a rename.
+    }
+
+    /**
+     * The Class MonayWithdrawal is a {@link RightManager.Public} accessor for the
+     * DateCreation property.
+     */
+    public static class MoneyWithdrawal extends Public {
         // nothing this is just a rename.
     }
 }

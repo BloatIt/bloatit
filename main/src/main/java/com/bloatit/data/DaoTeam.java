@@ -281,6 +281,24 @@ public class DaoTeam extends DaoActor {
         return new QueryCollection<DaoContribution>("team.getContributions").setEntity("this", this);
     }
 
+
+    /**
+     * Gets the moneywithdrawals.
+     *
+     * @param asMemberOnly the result must contains only result that are not
+     *            done as name of a team.
+     * @return All the contributions created by this team.
+     */
+    public PageIterable<DaoMoneyWithdrawal> getMoneyWithdrawals() {
+
+        final Query query = SessionManager.createQuery("from DaoMoneyWithdrawal as x where x.actor = :actor");
+        final Query size = SessionManager.createQuery("SELECT count(*) from DaoMoneyWithdrawal as x where x.actor = :actor");
+
+        final QueryCollection<DaoMoneyWithdrawal> q = new QueryCollection<DaoMoneyWithdrawal>(query, size);
+        q.setEntity("actor", this);
+        return q;
+    }
+
     /**
      * @return all the member in this team. (Use a HQL query).
      */

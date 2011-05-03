@@ -165,7 +165,7 @@ public final class XcgiServer {
             request.append(']');
             Log.framework().info(request.toString());
 
-            // FIXME: use timer ?
+            // TODO: use timer ?
             SessionManager.clearExpiredSessions();
 
             try {
