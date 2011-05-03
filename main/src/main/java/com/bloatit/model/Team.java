@@ -100,6 +100,10 @@ public final class Team extends Actor<DaoTeam> {
 
     public void setAvatar(final FileMetadata fileImage) throws UnauthorizedPublicAccessException {
         tryAccess(new RgtTeam.Avatar(), Action.WRITE);
+        setAvatarUnprotected(fileImage);
+    }
+
+    public void setAvatarUnprotected(final FileMetadata fileImage) {
         if (fileImage == null) {
             getDao().setAvatar(null);
         } else {
@@ -127,10 +131,8 @@ public final class Team extends Actor<DaoTeam> {
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public void
-            changeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give)
-                                                                                                               throws UnauthorizedOperationException,
-                                                                                                               MemberNotInTeamException {
+    public void changeRight(final Member admin, final Member target, final UserTeamRight right, final boolean give)
+            throws UnauthorizedOperationException, MemberNotInTeamException {
         if (!canChangeRight(admin, target, right, give)) {
             throw new UnauthorizedOperationException(SpecialCode.TEAM_PROMOTE_RIGHT_MISSING);
         }

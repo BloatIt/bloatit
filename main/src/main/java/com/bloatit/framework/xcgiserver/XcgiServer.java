@@ -142,9 +142,7 @@ public final class XcgiServer {
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
 
-            if (Log.framework().isDebugEnabled()) {
-                Log.framework().debug(env);
-            }
+            Log.framework().debug(env);
 
             // LOGGING REQUESTS
             StringBuilder request = new StringBuilder();
@@ -153,11 +151,17 @@ public final class XcgiServer {
             request.append(header.getRequestUri());
             request.append("  ");
             request.append('[');
+            request.append("REMOTE_ADDR=");
+            request.append(header.getRemoteAddr());
+            request.append(", ");
             request.append("USER_AGENT=");
             request.append(header.getHttpUserAgent());
-            request.append(' ');
+            request.append(", ");
             request.append("ACCEPT_LANGUAGES=");
             request.append(header.getHttpAcceptLanguage());
+            request.append(", ");
+            request.append("PATH_TRANSLATED=");
+            request.append(header.getPathTranslated());
             request.append(']');
             Log.framework().info(request.toString());
 

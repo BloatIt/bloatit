@@ -58,9 +58,9 @@ public final class ReportBugPage extends CreateUserContentPage {
     private final ReportBugPageUrl url;
 
     public ReportBugPage(final ReportBugPageUrl url) {
-        super(url, new ReportBugActionUrl(url.getOffer().getCurrentMilestone()));
+        super(url, (url.getOffer() == null ? null : new ReportBugActionUrl(url.getOffer().getCurrentMilestone())));
         this.url = url;
-        milestone = url.getOffer().getCurrentMilestone();
+        milestone = (url.getOffer() == null ? null:url.getOffer().getCurrentMilestone());
         offer = url.getOffer();
     }
 

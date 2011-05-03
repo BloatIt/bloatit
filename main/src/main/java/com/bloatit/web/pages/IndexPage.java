@@ -15,7 +15,7 @@ package com.bloatit.web.pages;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.List;
-
+import java.math.BigDecimal;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -124,17 +124,23 @@ public final class IndexPage extends MasterPage {
         leftSummary.add(summaryBox);
 
         // Feature count
-        final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ", FeatureManager.getFeatureCount()));
+        final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ",
+                                                                                      FeatureManager.getFeatureCount()));
         summaryBox.add(featureCount);
 
         // Contribution amount
-        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(ContributionManager.getMoneyRaised(), false);
+        BigDecimal moneyRaised = ContributionManager.getMoneyRaised();
+        if (moneyRaised == null) {
+            moneyRaised = BigDecimal.ZERO;
+        }
+        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false);
         final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
         final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
         summaryBox.add(contributionRaised);
 
         // Count of offers
-        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ", OfferManager.getOfferCount()));
+        final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ",
+                                                                                    OfferManager.getOfferCount()));
         summaryBox.add(offerCount);
 
         // Count of releases

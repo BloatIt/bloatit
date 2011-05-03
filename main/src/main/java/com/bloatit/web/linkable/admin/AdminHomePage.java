@@ -33,6 +33,7 @@ import com.bloatit.web.url.FeatureAdminPageUrl;
 import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
+import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin")
@@ -61,6 +62,7 @@ public class AdminHomePage extends AdminPage {
         list.add(new KudosableAdminPageUrl().getHtmlLink("Kudosables"));
         list.add(new FeatureAdminPageUrl().getHtmlLink("Feature"));
         list.add(new HightlightedFeatureAdminPageUrl().getHtmlLink("Hightlighted Features"));
+        list.add(new MoneyWithdrawalAdminPageUrl().getHtmlLink("Manage money withdrawals"));
         return master;
     }
 

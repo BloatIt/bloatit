@@ -20,14 +20,18 @@ import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.UUID;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.BankTransaction;
@@ -38,6 +42,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
+import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
@@ -63,6 +68,7 @@ public class BloatitExampleDB { // NO_UCD
     private Software mageia;
 
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
 
         SessionManager.beginWorkUnit();
 
@@ -96,15 +102,37 @@ public class BloatitExampleDB { // NO_UCD
         giveMoney(hydre, 500);
         giveMoney(elephantman, 100000000);
 
+        // Add withdrawal
+        withdrawMoney(fred, 1000, State.REQUESTED);
+        withdrawMoney(fred, 2000, State.TREATED);
+        withdrawMoney(fred, 3000, State.REFUSED);
+        withdrawMoney(fred, 4000, State.CANCELED);
+        withdrawMoney(fred, 5000, State.COMPLETE);
+
+        withdrawMoney(yoann, 1000, State.REQUESTED);
+        withdrawMoney(yoann, 2000, State.TREATED);
+        withdrawMoney(yoann, 3000, State.REFUSED);
+        withdrawMoney(yoann, 4000, State.CANCELED);
+        withdrawMoney(yoann, 5000, State.COMPLETE);
+
+        withdrawMoney(thomas, 1000, State.REQUESTED);
+        withdrawMoney(thomas, 2000, State.TREATED);
+        withdrawMoney(thomas, 3000, State.REFUSED);
+        withdrawMoney(thomas, 4000, State.CANCELED);
+        withdrawMoney(thomas, 5000, State.COMPLETE);
+
         // Add teams
         final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
+        other.authenticate(new AuthToken(yoann));
         other.setAvatar(getImage(yoann, "teams/other.png"));
 
         final Team b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
-        b219.setAvatar(getImage(fred, "teams/b219.png"));
+        b219.authenticate(new AuthToken(fred));
+        b219.setAvatarUnprotected(getImage(fred, "teams/b219.png"));
 
         final Team ubuntuUsers = new Team("ubuntuUsers", "ubuntu.users@elveos.org", "The team for ubuntu users", Right.PUBLIC, thomas);
-        ubuntuUsers.setAvatar(getImage(thomas, "teams/ubuntuUsers.png"));
+        ubuntuUsers.authenticate(new AuthToken(thomas));
+        ubuntuUsers.setAvatarUnprotected(getImage(thomas, "teams/ubuntuUsers.png"));
 
         // Generate softwares
         generateVlcSoftware();
@@ -413,6 +441,35 @@ public class BloatitExampleDB { // NO_UCD
         featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
+    private void withdrawMoney(Member m, int amount, State completion) {
+        // TODO: this have not been tested yet.
+        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
+        mw.authenticate(new AuthToken(admin));
+        
+        try {
+            switch (completion) {
+                case REQUESTED:
+                    break;
+                case TREATED:
+
+                    break;
+                case COMPLETE:
+                    mw.setTreated();
+                    mw.setComplete();
+                    break;
+                case CANCELED:
+                    mw.setCanceled();
+                    break;
+                case REFUSED:
+                    mw.setRefused();
+                    break;
+            }
+            mw.setTreated();
+        } catch (UnauthorizedPrivateAccessException e) {
+            throw new ShallNotPassException("Right error in creating money withdrawal", e);
+        }
+    }
+
     // private void setFeatureInDiscardedState(final Feature feature) {
     // final FeatureImplementation featureImpl = (FeatureImplementation)
     // feature;
@@ -425,9 +482,8 @@ public class BloatitExampleDB { // NO_UCD
                                                                     new BigDecimal(amount),
                                                                     new BigDecimal(amount),
                                                                     UUID.randomUUID().toString());
-        // TODO: should find a way to do this without breaking encapsulation. 
-        // bankTransaction.setAuthorized();
-        // bankTransaction.setValidated();
+        bankTransaction.getDao().setAuthorized();
+        bankTransaction.getDao().setValidated();
     }
 
     public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {

@@ -59,6 +59,7 @@ import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
+import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
 /**
  * <p>
@@ -67,10 +68,10 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team")
 public final class TeamPage extends MasterPage {
-    private final static String TEAM_TAB_PANE = "tab";
-    private final static String MEMBERS_TAB = "members";
-    private final static String ACTIVITY_TAB = "activity";
-    private final static String ACCOUNT_TAB = "account";
+    public final static String TEAM_TAB_PANE = "tab";
+    public final static String MEMBERS_TAB = "members";
+    public final static String ACTIVITY_TAB = "activity";
+    public final static String ACCOUNT_TAB = "account";
 
     private final TeamPageUrl url;
 
@@ -109,7 +110,7 @@ public final class TeamPage extends MasterPage {
         layout.addRight(generateContactBox());
 
         if (activeTabKey.equals(ACCOUNT_TAB)) {
-            layout.addRight(new SideBarTeamWithdrawMoneyBlock());
+            layout.addRight(new SideBarTeamWithdrawMoneyBlock(targetTeam));
             layout.addRight(new SideBarTeamChargeAccountBlock(targetTeam));
         } else if (activeTabKey.equals(ACTIVITY_TAB)) {
             layout.addRight(new SideBarDocumentationBlock("team_role"));
@@ -261,14 +262,14 @@ public final class TeamPage extends MasterPage {
     }
 
     private static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
-        SideBarTeamWithdrawMoneyBlock() {
+        SideBarTeamWithdrawMoneyBlock(Team team) {
             setTitle(tr("Team account"));
 
             add(new HtmlParagraph(tr("Like users, teams have an elveos account where they can store money.")));
             add(new HtmlParagraph(tr("People with the talk right can decide to make developments under the name of the team to let it earn money.")));
             add(new HtmlParagraph(tr("People with the bank right can withdraw money from the elveos account back to the team bank account.")));
             // TODO good URL
-            add(new SideBarButton(tr("Withdraw money"), new PageNotFoundUrl(), WebConfiguration.getImgAccountWithdraw()).asElement());
+            add(new SideBarButton(tr("Withdraw money"), new WithdrawMoneyPageUrl(team), WebConfiguration.getImgAccountWithdraw()).asElement());
 
         }
     }

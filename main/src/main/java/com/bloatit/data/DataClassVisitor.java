@@ -16,6 +16,7 @@
 //
 package com.bloatit.data;
 
+
 /**
  * This is the interface that all the visitors from the Data layer have to
  * implement.
@@ -194,4 +195,11 @@ public interface DataClassVisitor<ReturnType> {
      */
     ReturnType visit(DaoRelease dao);
 
+    /**
+     * visit a persistent object.
+     * 
+     * @param dao the visited dao
+     * @return what you want
+     */
+    ReturnType visit(DaoMoneyWithdrawal dao);
 }

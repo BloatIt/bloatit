@@ -226,6 +226,12 @@ public class Rights {
             return null;
         }
 
+        @Override
+        public Team visitAbstract(MoneyWithdrawal model) {
+            // FIXME
+            return null;
+        }
+
     }
 
     private class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -287,6 +293,11 @@ public class Rights {
         public Boolean visitAbstract(final Transaction model) {
             return visitAbstract(model.getToUnprotected()) || visitAbstract(model.getFromUnprotected());
         }
+
+        @Override
+        public Boolean visitAbstract(MoneyWithdrawal model) {
+            return visitAbstract(model.getActorUnprotected());
+        }
     }
 
     private class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -347,6 +358,11 @@ public class Rights {
         @Override
         public Boolean visitAbstract(final Transaction model) {
             return visitAbstract(model.getToUnprotected()) || visitAbstract(model.getFromUnprotected());
+        }
+
+        @Override
+        public Boolean visitAbstract(MoneyWithdrawal model) {
+            return visitAbstract(model.getActorUnprotected());
         }
     }
 }

@@ -36,6 +36,7 @@ import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
@@ -129,6 +130,9 @@ public class GenericConstructor {
         }
         if (clazz.equals(Release.class)) {
             return DaoRelease.class;
+        }
+        if (clazz.equals(MoneyWithdrawal.class)) {
+            return DaoMoneyWithdrawal.class;
         }
         if (clazz.equals(Kudosable.class) || clazz.equals(KudosableInterface.class)) {
             return DaoKudosable.class;
