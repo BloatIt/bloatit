@@ -18,6 +18,7 @@ package com.bloatit.web.linkable.admin;
 
 import java.util.List;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
@@ -52,6 +53,11 @@ public class AdministrationAction extends AdminAction {
     @ParamConstraint
     @Optional
     private final DisplayableState stateToSet;
+    
+    @RequestParam(name = FEATURE_STATE_CODE, role = Role.POST)
+    @ParamConstraint
+    @Optional
+    private final DisplayableFeatureState featureStateToSet;
 
     @SuppressWarnings("unused")
     private final AdministrationActionUrl url;
@@ -63,6 +69,7 @@ public class AdministrationAction extends AdminAction {
         contents = url.getContents();
         action = url.getAction();
         stateToSet = url.getStateToSet();
+        featureStateToSet = url.getFeatureStateToSet();
     }
 
     @Override
@@ -100,10 +107,27 @@ public class AdministrationAction extends AdminAction {
                         break;
                     case SET_FEATURE_IN_DEVELOPMENT:
                         final Feature feature = Loaders.fromStr(Feature.class, id);
-                        if (feature.getSelectedOffer() == null || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
-                            session.notifyBad("There is no offer or not enough money. So no developement state for id: " + feature.getId() + ".");
-                        } else {
-                            feature.setFeatureState(FeatureState.DEVELOPPING);
+                            switch (featureStateToSet) {
+                                case DEVELOPPING:
+                                    if (feature.getSelectedOffer() == null || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
+                                        session.notifyBad("There is no offer or not enough money. So no development state for id: " + feature.getId() + ".");
+                                    } else {
+                                        feature.setFeatureState(FeatureState.DEVELOPPING);
+                                    }
+                                    break;
+                                case DISCARDED:
+                                    feature.setFeatureState(FeatureState.DISCARDED);
+                                    break;
+                                case FINISHED:
+                                    feature.setFeatureState(FeatureState.FINISHED);
+                                    break;
+                                case PENDING:
+                                case PREPARING:
+                                case NO_FILTER:
+                                default:
+                                    Log.web().info("Wrong feature state. Nothing to do.");
+                                    session.notifyBad("Wrong feature state. Nothing to do.");
+                                    break;
                         }
                         break;
                     case VALIDATE_BATCH:

@@ -33,31 +33,26 @@ public class DevelopingState extends AbstractFeatureState {
         feature.setFeatureStateUnprotected(getState());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.feature.AbstractFeatureState#eventMilestoneReleased()
-     */
     @Override
     public AbstractFeatureState eventMilestoneReleased() {
         return this;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.feature.AbstractFeatureState#eventDeveloperCanceled()
-     */
+    @Override
+    public AbstractFeatureState eventMilestoneIsValidated() {
+        return this;
+    }
+    
+    @Override
+    public AbstractFeatureState eventOfferIsValidated() {
+        return new FinishedState(feature);
+    }
+
     @Override
     public AbstractFeatureState eventDeveloperCanceled() {
         return new DiscardedState(feature);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.feature.AbstractFeatureState#eventDevelopmentTimeOut()
-     */
     @Override
     public AbstractFeatureState eventDevelopmentTimeOut() {
         // TODO: make Penality.

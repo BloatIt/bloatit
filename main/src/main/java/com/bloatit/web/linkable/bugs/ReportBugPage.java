@@ -58,10 +58,27 @@ public final class ReportBugPage extends CreateUserContentPage {
     private final ReportBugPageUrl url;
 
     public ReportBugPage(final ReportBugPageUrl url) {
-        super(url, (url.getOffer() == null ? null : new ReportBugActionUrl(url.getOffer().getCurrentMilestone())));
+        super(url, (computeActionUrl(computeMilestone(url))));
         this.url = url;
-        milestone = (url.getOffer() == null ? null:url.getOffer().getCurrentMilestone());
+        milestone = computeMilestone(url);
         offer = url.getOffer();
+    }
+
+    private static Milestone computeMilestone(final ReportBugPageUrl url) {
+        if (url.getOffer() == null) {
+            return null;
+        }
+        if (url.getOffer().isFinished()) {
+            return url.getOffer().getLastMilestone();
+        }
+        return url.getOffer().getCurrentMilestone();
+    }
+
+    private static ReportBugActionUrl computeActionUrl(final Milestone milestone) {
+        if (milestone == null) {
+            return null;
+        }
+        return new ReportBugActionUrl(milestone);
     }
 
     @Override

@@ -21,6 +21,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.util.EnumSet;
 
 import com.bloatit.data.DaoFeature;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlGenericTableModel;
@@ -38,15 +39,19 @@ import com.bloatit.web.url.FeatureAdminPageUrl;
 public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Feature, FeatureAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional("NO_FILTER")
     private DisplayableFeatureState filterByState;
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional("NO_FILTER")
     private DisplayableFilterType filterSelectedOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional("NO_FILTER")
     private DisplayableFilterType filterHasOffer;
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional("NO_FILTER")
     private DisplayableFilterType filterHasContribution;
 
     private final FeatureAdminPageUrl url;

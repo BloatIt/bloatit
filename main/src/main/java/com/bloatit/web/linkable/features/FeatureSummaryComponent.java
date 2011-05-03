@@ -291,7 +291,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         final PlaceHolderElement element = new PlaceHolderElement();
 
         final Offer selectedOffer = feature.getSelectedOffer();
-        final Milestone currentMilestone = selectedOffer.getCurrentMilestone();
+        final Milestone currentMilestone = selectedOffer.isFinished() ? selectedOffer.getLastMilestone() : selectedOffer.getCurrentMilestone();
         if (!selectedOffer.hasRelease()) {
             final Date releaseDate = currentMilestone.getExpirationDate();
 
@@ -422,21 +422,24 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                                                                 "<0> will receive {0}% of the amount when the {1} remaining FATAL bugs are resolved.",
                                                                 fatalSize,
                                                                 fatalBugsPercent,
-                                                                fatalSize), authorLink)));
+                                                                fatalSize),
+                                                            authorLink)));
         }
         if (majorSize > 0 && majorBugsPercent > 0) {
             details.add(new HtmlParagraph(new HtmlMixedText(trn("<0> will receive {0}% of the amount when the remaining MAJOR bug are resolved.",
                                                                 "<0> will receive {0}% of the amount when the {1} remaining MAJOR bugs are resolved.",
                                                                 majorSize,
                                                                 majorBugsPercent,
-                                                                majorSize), authorLink)));
+                                                                majorSize),
+                                                            authorLink)));
         }
         if (minorSize > 0 && minorBugsPercent > 0) {
             details.add(new HtmlParagraph(new HtmlMixedText(trn("<0> will receive {0}% of the amount when the remaining MINOR bug are resolved.",
                                                                 "<0> will receive {0}% of the amount when the {1} remaining MINOR bugs are resolved.",
                                                                 minorSize,
                                                                 minorBugsPercent,
-                                                                minorSize), authorLink)));
+                                                                minorSize),
+                                                            authorLink)));
         }
         final HtmlBranch showHideLink = new HtmlSpan().addText(" " + tr("Details"));
         element.add(showHideLink);

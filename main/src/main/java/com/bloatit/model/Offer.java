@@ -126,6 +126,17 @@ public final class Offer extends Kudosable<DaoOffer> {
         return isAllValidated;
     }
 
+    protected void notifyMilestoneIsValidated(final Milestone milestone) {
+        if (!milestone.getOffer().equals(this)) {
+            throw new BadProgrammerException("This offer is not the owner of this milestone.");
+        }
+        if (getDao().hasMilestonesLeft()) {
+            getFeatureImplementation().setMilestoneIsValidated();
+        } else {
+            getFeatureImplementation().setOfferIsValidated();
+        }
+    }
+
     // Must be internal call. Make me protected ?
     protected boolean shouldValidateCurrentMilestonePart(final Level level) {
         final DaoMilestone currentMilestone = findCurrentDaoMilestone();
@@ -222,6 +233,11 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Public data, no right management.
     public Milestone getCurrentMilestone() {
         return Milestone.create(getDao().getCurrentMilestone());
+    }
+    
+    // Public data, no right management.
+    public Milestone getLastMilestone() {
+        return Milestone.create(getDao().getLastMilestone());
     }
 
     // Public data, no right management.
