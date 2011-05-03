@@ -20,8 +20,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.apache.commons.lang.RandomStringUtils;
-
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -445,8 +443,7 @@ public class BloatitExampleDB { // NO_UCD
 
     private void withdrawMoney(Member m, int amount, State completion) {
         // TODO: this have not been tested yet.
-        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", RandomStringUtils.randomAlphanumeric(4) + "-"
-                + RandomStringUtils.randomAlphanumeric(10), new BigDecimal(amount));
+        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
         mw.authenticate(new AuthToken(admin));
         
         try {

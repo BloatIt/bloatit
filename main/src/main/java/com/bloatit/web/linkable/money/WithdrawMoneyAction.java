@@ -2,8 +2,6 @@ package com.bloatit.web.linkable.money;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang.RandomStringUtils;
-
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -52,8 +50,7 @@ public class WithdrawMoneyAction extends LoggedAction {
 
     @Override
     protected Url doProcessRestricted(Member me) {
-        String ref = RandomStringUtils.randomAlphanumeric(4) + "-" + RandomStringUtils.randomAlphanumeric(10);
-        new MoneyWithdrawal(actor, IBAN, ref, amount);
+        new MoneyWithdrawal(actor, IBAN, amount);
         String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
         if (actor instanceof Member) {
             session.notifyGood(Context.tr("Requestrd to withdraw {0} from your account.", amountStr));

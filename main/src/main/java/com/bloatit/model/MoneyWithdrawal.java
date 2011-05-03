@@ -3,6 +3,8 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoMoneyWithdrawal.State;
@@ -13,7 +15,6 @@ import com.bloatit.framework.mails.ElveosMail.WithdrawalCompleteMail;
 import com.bloatit.framework.mails.ElveosMail.WithdrawalRequestedMail;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtMoneyWithdrawal;
-import com.bloatit.model.right.RgtOffer;
 
 /**
  * Money withdrawals represent requests to withdraw money from the user internal
@@ -53,8 +54,8 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * @param reference
      * @param amountWithdrawn
      */
-    public MoneyWithdrawal(Actor<? extends DaoActor> actor, final String IBAN, final String reference, final BigDecimal amountWithdrawn) {
-        super(DaoMoneyWithdrawal.createAndPersist(actor.getDao(), IBAN, reference, amountWithdrawn));
+    public MoneyWithdrawal(Actor<? extends DaoActor> actor, final String IBAN, final BigDecimal amountWithdrawn) {
+        super(DaoMoneyWithdrawal.createAndPersist(actor.getDao(), IBAN, generateReference(), amountWithdrawn));
         if (!checkIban(IBAN)) {
             throw new BadProgrammerException("Invalid IBAN format!");
         }
@@ -200,6 +201,10 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @return the actor of the request (either a member or a team)
+     * @throws UnauthorizedPrivateAccessException
+     */
     public Actor<?> getActor() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.Actor(), Action.READ);
         return getActorUnprotected();
@@ -227,11 +232,20 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         return null;
     }
 
+    /**
+     * @return the {@link MoneyWithdrawal} transaction, or <i>null</i> if there
+     *         is no transaction yet
+     * @throws UnauthorizedPrivateAccessException
+     */
     public Transaction getTransaction() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.Transaction(), Action.READ);
         return Transaction.create(getDao().getTransaction());
     }
 
+    /**
+     * @return the money transaction IBAN
+     * @throws UnauthorizedPrivateAccessException
+     */
     public String getIBAN() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.Iban(), Action.READ);
         return getIBANUnprotected();
@@ -241,6 +255,10 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         return getDao().getIBAN();
     }
 
+    /**
+     * @return the amount of the money withdrawal
+     * @throws UnauthorizedPrivateAccessException
+     */
     public BigDecimal getAmountWithdrawn() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.Amount(), Action.READ);
         return getAmountWithdrawnUnprotected();
@@ -250,16 +268,32 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         return getDao().getAmountWithdrawn();
     }
 
+    /**
+     * @return the creation date of the money withdrawal
+     * @throws UnauthorizedPrivateAccessException
+     */
     public Date getCreationDate() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.CreationDate(), Action.READ);
         return getDao().getCreationDate();
     }
 
+    /**
+     * Last modification date is the last time the state of the money withdrawal
+     * has been changed. If no change happened, this will be the same as
+     * creation date.
+     * 
+     * @return the last modification date of the money withdrawal
+     * @throws UnauthorizedPrivateAccessException
+     */
     public Date getLastModificationDate() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.LastModificationDate(), Action.READ);
         return getDao().getLastModificationDate();
     }
 
+    /**
+     * @return the unique reference of the Money Withdrawal
+     * @throws UnauthorizedPrivateAccessException
+     */
     public String getReference() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.Reference(), Action.READ);
         return getReferenceUnprotected();
@@ -269,16 +303,29 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         return getDao().getReference();
     }
 
+    /**
+     * @return the comment the admins added to this request
+     * @throws UnauthorizedOperationException
+     */
     public String getComment() throws UnauthorizedOperationException {
         tryAccess(new RgtMoneyWithdrawal.Comment(), Action.READ);
         return getDao().getComment();
     }
 
+    /**
+     * @return the current state of the withdrawal
+     * @throws UnauthorizedPrivateAccessException
+     */
     public State getState() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.State(), Action.READ);
         return getDao().getState();
     }
 
+    /**
+     * @return the reason why this request has been refused by admins, or null
+     *         if it is not refused
+     * @throws UnauthorizedPrivateAccessException
+     */
     public String getRefusalReason() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMoneyWithdrawal.RefusalReason(), Action.READ);
         return getDao().getRefusalReason();
@@ -313,5 +360,12 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         }
 
         return new BigDecimal(extendedIban.toString()).remainder(ibanCheckingConstant).intValue() == 1;
+    }
+
+    /**
+     * @return a random string to use as reference to the team
+     */
+    private static String generateReference() {
+        return RandomStringUtils.randomAlphanumeric(4) + "-" + RandomStringUtils.randomAlphanumeric(10);
     }
 }
