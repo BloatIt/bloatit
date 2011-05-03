@@ -31,13 +31,14 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
+import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTeam;
 
 /**
  * This is a team ... There are member in it.
- * 
+ *
  * @see DaoTeam
  */
 public final class Team extends Actor<DaoTeam> {
@@ -63,7 +64,7 @@ public final class Team extends Actor<DaoTeam> {
      * <p>
      * Creates a new team
      * </p>
-     * 
+     *
      * @param login the displayed name of the team
      * @param contact a string with various means to contact the team
      * @param description a textual description of the team
@@ -114,7 +115,7 @@ public final class Team extends Actor<DaoTeam> {
     /**
      * Sets the type of team: either <code>PROTECTED</code> or
      * <code>PUBLIC</code>
-     * 
+     *
      * @throws UnauthorizedPublicAccessException
      */
     public void setRight(final Right right) throws UnauthorizedPublicAccessException {
@@ -171,7 +172,7 @@ public final class Team extends Actor<DaoTeam> {
 
     /**
      * Indicates whether the team is public or not
-     * 
+     *
      * @return <code>true</code> if the team is public, <code>false</code>
      *         otherwise
      */
@@ -202,6 +203,11 @@ public final class Team extends Actor<DaoTeam> {
         return new ListBinder<Contribution, DaoContribution>(getDao().getContributions());
     }
 
+    @Override
+    public PageIterable<MoneyWithdrawal> doGetMoneyWithdrawals() throws UnauthorizedOperationException {
+        return new MoneyWithdrawalList(getDao().getMoneyWithdrawals());
+    }
+
     public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {
         // TODO set rights
         return new UserContentList(getDao().getActivity());
@@ -223,7 +229,7 @@ public final class Team extends Actor<DaoTeam> {
     /**
      * Tells if the authenticated user can access the <i>BankTransaction</i>
      * property.
-     * 
+     *
      * @param action the type of access you want to do on the
      *            <i>BankTransaction</i> property.
      * @return true if you can access the <i>BankTransaction</i> property.
@@ -235,7 +241,7 @@ public final class Team extends Actor<DaoTeam> {
     /**
      * Tells if the authenticated user can access the <i>DisplayName</i>
      * property.
-     * 
+     *
      * @param action the type of access you want to do on the <i>DisplayName</i>
      *            property.
      * @return true if you can access the <i>DisplayName</i> property.
@@ -246,7 +252,7 @@ public final class Team extends Actor<DaoTeam> {
 
     /**
      * Tells if the authenticated user can access the <i>Avatar</i> property.
-     * 
+     *
      * @param action the type of access you want to do on the <i>Avatar</i>
      *            property.
      * @return true if you can access the <i>Avatar</i> property.
@@ -257,7 +263,7 @@ public final class Team extends Actor<DaoTeam> {
 
     /**
      * Tells if the authenticated user can access the <i>Right</i> property.
-     * 
+     *
      * @param action the type of access you want to do on the <i>Right</i>
      *            property.
      * @return true if you can access the <i>Right</i> property.
@@ -269,7 +275,7 @@ public final class Team extends Actor<DaoTeam> {
     /**
      * Tells if the authenticated user can access the <i>Description</i>
      * property.
-     * 
+     *
      * @param action the type of access you want to do on the <i>Description</i>
      *            property.
      * @return true if you can access the <i>Description</i> property.

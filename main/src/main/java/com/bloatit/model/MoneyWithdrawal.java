@@ -38,7 +38,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * Check the cache, if a corresponding MoneyWithdrawal exist return it,
      * otherwise create a MoneyWithdrawal using its dao representation. If the
      * dao == null return null;
-     * 
+     *
      * @param dao the dao
      * @return the bank transaction
      */
@@ -49,7 +49,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * Creates a new Money withdrawal request
-     * 
+     *
      * @param IBAN
      * @param reference
      * @param amountWithdrawn
@@ -172,7 +172,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * Proxy to the various methods to change the state
-     * 
+     *
      * @param newState the new state of the withdrawal
      * @throws UnauthorizedPrivateAccessException
      * @throws BadProgrammerException whenever <code>newState</code> is not
@@ -359,7 +359,12 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
             extendedIban.append(Character.digit(currentChar, Character.MAX_RADIX));
         }
 
-        return new BigDecimal(extendedIban.toString()).remainder(ibanCheckingConstant).intValue() == 1;
+        try {
+            return new BigDecimal(extendedIban.toString()).remainder(ibanCheckingConstant).intValue() == 1;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
     }
 
     /**
