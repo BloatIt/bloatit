@@ -16,13 +16,20 @@
 //
 package com.bloatit.data;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Iterator;
+
+import org.junit.Test;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 public class DaoCommentTest extends DataTestUnit {
 
+    @Test
     public void testCreateAndPersist() {
         final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), "A text");
         assertEquals("A text", comment.getText());
@@ -46,6 +53,7 @@ public class DaoCommentTest extends DataTestUnit {
         }
     }
 
+    @Test
     public void testAddChildComment() {
         final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), "A text");
         final DaoComment commentChild = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(fred.getLogin()), "A comment");
@@ -72,6 +80,7 @@ public class DaoCommentTest extends DataTestUnit {
         }
     }
 
+    @Test
     public void testGetChildrenFromQuery() {
         final DaoComment comment = DaoComment.createAndPersist((DaoComment) null, null, DaoMember.getByLogin(yo.getLogin()), "A text");
         final DaoComment commentChild = DaoComment.createAndPersist(comment, null, DaoMember.getByLogin(fred.getLogin()), "A comment");

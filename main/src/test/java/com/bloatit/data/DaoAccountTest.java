@@ -16,6 +16,11 @@
 //
 package com.bloatit.data;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
+
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
@@ -30,6 +35,7 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
  */
 public class DaoAccountTest extends DataTestUnit {
 
+    @Test
     public void testDaoAccountDaoActor() {
         final DaoMember localTom = DaoMember.getByLogin(tom.getLogin());
         localTom.setExternalAccount(DaoExternalAccount.createAndPersist(localTom, AccountType.IBAN, "Bank code !"));

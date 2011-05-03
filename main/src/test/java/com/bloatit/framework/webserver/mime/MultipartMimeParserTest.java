@@ -18,13 +18,14 @@
  */
 package com.bloatit.framework.webserver.mime;
 
-import com.bloatit.framework.FrameworkTestUnit;
+import org.junit.Test;
 
 /**
  *
  */
-public class MultipartMimeParserTest extends FrameworkTestUnit {
+public class MultipartMimeParserTest {
 
+    @Test
     public void testOKParsing() {
         // // String toParse =
         // // "-----------------------------112924560112292093081138430544\r\n"

@@ -1,11 +1,19 @@
 package com.bloatit.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
+
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
 
 public class ActorTest extends ModelTestUnit {
 
+    @Test
     public final void testGetLogin() {
         final Member tom = Member.create(db.getTom());
         assertEquals(tom.getLogin(), db.getTom().getLogin());
@@ -14,6 +22,7 @@ public class ActorTest extends ModelTestUnit {
         assertEquals(publicTeam.getLogin(), db.getPublicGroup().getLogin());
     }
 
+    @Test
     public final void testGetDateCreation() {
         final Member tom = Member.create(db.getTom());
         try {
@@ -30,6 +39,7 @@ public class ActorTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public final void testGetInternalAccount() {
         final Member tom = Member.create(db.getTom());
 
@@ -102,6 +112,7 @@ public class ActorTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public final void testGetExternalAccount() {
         final Member tom = Member.create(db.getTom());
 
@@ -174,6 +185,7 @@ public class ActorTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public final void testGetBankTransactions() {
         final Member tom = Member.create(db.getTom());
 
@@ -246,6 +258,7 @@ public class ActorTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public final void testGetContributions() {
         final Member tom = Member.create(db.getTom());
         try {
@@ -262,6 +275,7 @@ public class ActorTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public final void testGetDisplayName() {
         final Member tom = Member.create(db.getTom());
         assertEquals(tom.getDisplayName(), db.getTom().getFullname());
@@ -272,11 +286,13 @@ public class ActorTest extends ModelTestUnit {
     // fail("Not yet implemented");
     // }
 
+    @Test
     public final void testCanAccessDateCreation() {
         final Member tom = Member.create(db.getTom());
         assertTrue(tom.canAccessDateCreation());
     }
 
+    @Test
     public final void testCanGetInternalAccount() {
         final Member tom = Member.create(db.getTom());
         tom.authenticate(null);
@@ -305,6 +321,7 @@ public class ActorTest extends ModelTestUnit {
         assertTrue(publicTeam.canGetInternalAccount());
     }
 
+    @Test
     public final void testCanGetExternalAccount() {
         final Member tom = Member.create(db.getTom());
         tom.authenticate(null);
@@ -333,6 +350,7 @@ public class ActorTest extends ModelTestUnit {
         assertTrue(publicTeam.canGetExternalAccount());
     }
 
+    @Test
     public final void testCanGetBankTransactionAccount() {
         final Member tom = Member.create(db.getTom());
         tom.authenticate(null);
@@ -361,6 +379,7 @@ public class ActorTest extends ModelTestUnit {
         assertTrue(publicTeam.canGetBankTransactionAccount());
     }
 
+    @Test
     public final void testCanGetContributions() {
         final Member tom = Member.create(db.getTom());
         tom.authenticate(null);

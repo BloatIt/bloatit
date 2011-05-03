@@ -65,8 +65,8 @@
 	<root>
 		<priority value="trace" />
 		<appender-ref ref="console" />
-		<appender-ref ref="info" />
-		<appender-ref ref="error" />
+		<!-- <appender-ref ref="info" />
+		<appender-ref ref="error" /> -->
 	</root>
 
 </log4j:configuration>

@@ -16,16 +16,22 @@
 //
 package com.bloatit.data;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 
-public class DaoTransactionTest extends TestCase {
+public class DaoTransactionTest {
 
+    @Test
     public void testCreateAndPersist() {
         SessionManager.beginWorkUnit();
 
@@ -56,9 +62,8 @@ public class DaoTransactionTest extends TestCase {
 
     private DaoTeam b219;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         SessionManager.generateTestSessionFactory();
         SessionManager.beginWorkUnit();
         {
@@ -84,9 +89,8 @@ public class DaoTransactionTest extends TestCase {
         SessionManager.endWorkUnitAndFlush();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }

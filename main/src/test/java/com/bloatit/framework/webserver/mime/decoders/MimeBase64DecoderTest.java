@@ -16,15 +16,20 @@
 //
 package com.bloatit.framework.webserver.mime.decoders;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.bloatit.framework.FrameworkTestUnit;
+import org.junit.Test;
+
 import com.bloatit.framework.xcgiserver.mime.DecodingOuputStream;
 import com.bloatit.framework.xcgiserver.mime.decoders.MimeBase64Decoder;
 
-public class MimeBase64DecoderTest extends FrameworkTestUnit {
+public class MimeBase64DecoderTest {
 
+    @Test
     public void testOKBase64() {
         final String b64 = "VW4gYWxwaGFiZXQgZGUgNjUgY2FyYWN0w6hyZXMgZXN0IHV0aWxpc8OpIHBvdXIgcGVybWV0dHJlI"
                 + "GxhIHJlcHLDqXNlbnRhdGlvbiBkZSA2IGJpdHMgcGFyIHVuIGNhcmFjdMOocmUgc2ltcGxlLiBMZSA2NWUgY2"
@@ -47,6 +52,7 @@ public class MimeBase64DecoderTest extends FrameworkTestUnit {
         }
     }
 
+    @Test
     public void testFailBase64() {
         final String b64 = "VW4gYWxwaGFiZXQgZGUgNjUgY2FyYWN0w6hyZXMgZXN0IHV0aWxpc8OpIHBvdXIgcGVybWV0dHJlI"
                 + "GxhIHJlcHLDqXNlbnRhdGlvbiBkZSA2IGJpdHMgcGFyIHVuIGNhcmFjdMOocmUgc2ltcGxlLiBMZSA2NWUgY2"

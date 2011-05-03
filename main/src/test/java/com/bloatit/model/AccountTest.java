@@ -1,9 +1,17 @@
 package com.bloatit.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
+
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 
 public class AccountTest extends ModelTestUnit {
 
+    @Test
     public void testCanAccessTransaction() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -38,6 +46,7 @@ public class AccountTest extends ModelTestUnit {
         assertFalse(publicGroupAccount.canAccessTransaction());
     }
 
+    @Test
     public void testCanAccessAmount() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -72,6 +81,7 @@ public class AccountTest extends ModelTestUnit {
         assertFalse(publicGroupAccount.canAccessAmount());
     }
 
+    @Test
     public void testCanAccessActor() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -106,6 +116,7 @@ public class AccountTest extends ModelTestUnit {
         assertFalse(publicGroupAccount.canAccessActor());
     }
 
+    @Test
     public void testCanAccessCreationDate() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -140,6 +151,7 @@ public class AccountTest extends ModelTestUnit {
         assertFalse(publicGroupAccount.canAccessCreationDate());
     }
 
+    @Test
     public void testCanAccessLastModificationDate() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -174,6 +186,7 @@ public class AccountTest extends ModelTestUnit {
         assertFalse(publicGroupAccount.canAccessLastModificationDate());
     }
 
+    @Test
     public void testGetLastModificationDate() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -247,6 +260,7 @@ public class AccountTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public void testGetAmount() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -320,6 +334,7 @@ public class AccountTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public void testGetTransactions() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -394,6 +409,7 @@ public class AccountTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public void testGetActor() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());
@@ -468,6 +484,7 @@ public class AccountTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public void testGetCreationDate() {
         // A user account
         final InternalAccount tomAccount = InternalAccount.create(db.getTom().getInternalAccount());

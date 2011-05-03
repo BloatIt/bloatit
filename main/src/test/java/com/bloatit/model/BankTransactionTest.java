@@ -1,7 +1,13 @@
 package com.bloatit.model;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 public class BankTransactionTest extends ModelTestUnit {
 
+    @Test
     public final void testCanGetMessage() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
@@ -25,6 +31,7 @@ public class BankTransactionTest extends ModelTestUnit {
         assertTrue(groupBankTransaction.canGetMessage());
     }
 
+    @Test
     public final void testCanGetValuePaid() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
@@ -48,6 +55,7 @@ public class BankTransactionTest extends ModelTestUnit {
         assertTrue(groupBankTransaction.canGetValuePaid());
     }
 
+    @Test
     public final void testCanGetValue() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
@@ -71,6 +79,7 @@ public class BankTransactionTest extends ModelTestUnit {
         assertTrue(groupBankTransaction.canGetValue());
     }
 
+    @Test
     public final void testCanGetState() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
@@ -94,6 +103,7 @@ public class BankTransactionTest extends ModelTestUnit {
         assertTrue(groupBankTransaction.canGetState());
     }
 
+    @Test
     public final void testCanGetCreationDate() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
@@ -117,6 +127,7 @@ public class BankTransactionTest extends ModelTestUnit {
         assertTrue(groupBankTransaction.canGetCreationDate());
     }
 
+    @Test
     public final void testCanGetModificationDate() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
@@ -140,6 +151,7 @@ public class BankTransactionTest extends ModelTestUnit {
         assertTrue(groupBankTransaction.canGetModificationDate());
     }
 
+    @Test
     public final void testCanGetReference() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 
@@ -163,6 +175,7 @@ public class BankTransactionTest extends ModelTestUnit {
         assertTrue(groupBankTransaction.canGetReference());
     }
 
+    @Test
     public final void testCanGetAuthor() {
         final BankTransaction bankTransaction = BankTransaction.create(db.getYoBankTransaction());
 

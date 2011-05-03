@@ -16,15 +16,21 @@
 //
 package com.bloatit.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Locale;
 
 import javassist.NotFoundException;
+
+import org.junit.Test;
 
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
@@ -32,6 +38,7 @@ import com.bloatit.model.right.AuthToken;
 
 public class MemberTest extends ModelTestUnit {
 
+    @Test
     public void testAddToPublicGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -64,6 +71,7 @@ public class MemberTest extends ModelTestUnit {
 
     }
 
+    @Test
     public void testRemoveFromGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -81,11 +89,13 @@ public class MemberTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public void testInviteIntoProtectedGroup() {
-        final User yo = MemberManager.getMemberByLogin("Yoann");
+        MemberManager.getMemberByLogin("Yoann");
         MemberManager.getMemberByLogin("Fred");
     }
 
+    @Test
     public void testInviteIntoProtectedAndRefuseGroup() {
         MemberManager.getMemberByLogin("Yoann");
         MemberManager.getMemberByLogin("Fred");
@@ -101,6 +111,7 @@ public class MemberTest extends ModelTestUnit {
         // assertFalse(fred.isInGroup(GroupManager.getByName("other")));
     }
 
+    @Test
     public void testGetKarma() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -112,6 +123,7 @@ public class MemberTest extends ModelTestUnit {
         assertEquals(0, yo.getKarma());
     }
 
+    @Test
     public void testSetFullName() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -123,6 +135,7 @@ public class MemberTest extends ModelTestUnit {
         assertEquals(0, yo.getKarma());
     }
 
+    @Test
     public void testGetFullname() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -134,6 +147,7 @@ public class MemberTest extends ModelTestUnit {
         assertEquals("Yoann Plénet", yo.getFullname());
     }
 
+    @Test
     public void testSetFullname() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -151,6 +165,7 @@ public class MemberTest extends ModelTestUnit {
         assertEquals("Plénet Yoann", yo.getFullname());
     }
 
+    @Test
     public void testSetPassword() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -164,6 +179,7 @@ public class MemberTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public void testGetFeatures() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 
@@ -176,6 +192,7 @@ public class MemberTest extends ModelTestUnit {
         assertEquals("Mon titre", yo.getFeatures(false).iterator().next().getTitle());
     }
 
+    @Test
     public void testGetKudos() {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 

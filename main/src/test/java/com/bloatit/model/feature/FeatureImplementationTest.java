@@ -16,6 +16,13 @@
 //
 package com.bloatit.model.feature;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
@@ -23,6 +30,8 @@ import java.util.Locale;
 import javassist.NotFoundException;
 import mockit.Mock;
 import mockit.Mockit;
+
+import org.junit.Test;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
@@ -46,6 +55,7 @@ import com.bloatit.model.right.AuthToken;
 
 public class FeatureImplementationTest extends ModelTestUnit {
 
+    @Test
     public void testCreate() {
         final Feature feature = FeatureImplementation.create(DaoFeature.createAndPersist(tomAuthToken.getMember().getDao(),
                                                                                          null,
@@ -71,6 +81,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
                                                                         DaoSoftware.getByName("VLC")));
     }
 
+    @Test
     public void testFeature() {
         final Feature feature = new FeatureImplementation(tomAuthToken.getMember(),
                                                           null,
@@ -84,6 +95,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(feature.getDescription().getDefaultTranslation().getText(), "Description");
     }
 
+    @Test
     public void testCanAccessComment() {
         final Feature feature = createFeatureByThomas();
         assertTrue(feature.canAccessComment(Action.READ));
@@ -105,6 +117,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         // For now nobody can delete a comment
     }
 
+    @Test
     public void testCanAccessContribution() {
         final Feature feature = createFeatureByThomas();
         assertTrue(feature.canAccessContribution(Action.READ));
@@ -124,6 +137,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertFalse(feature.canAccessContribution(Action.DELETE));
     }
 
+    @Test
     public void testCanAccessOffer() {
         final Feature feature = createFeatureByThomas();
         assertTrue(feature.canAccessOffer(Action.READ));
@@ -143,12 +157,14 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertFalse(feature.canAccessOffer(Action.DELETE));
     }
 
+    @Test
     public void testCanAccessDescription() {
         final Feature feature = createFeatureByThomas();
         feature.authenticate(yoAuthToken);
         feature.authenticate(tomAuthToken);
     }
 
+    @Test
     public void testAddContribution() {
         final Feature feature = createFeatureByThomas();
 
@@ -251,6 +267,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
     }
 
+    @Test
     public void testAddOffer() {
         final Feature feature = createFeatureByThomas();
 
@@ -280,6 +297,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         }
     }
 
+    @Test
     public void testBeginDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
         Feature feature = createFeatureByThomas();
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
@@ -301,6 +319,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
     }
 
+    @Test
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
         final Feature feature = createFeatureByThomas();
         final DaoMember admin = DaoMember.createAndPersist("admin1", "admin1", "salt", "admin1", Locale.FRANCE);
@@ -338,6 +357,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(0, feature.getOffers().size());
     }
 
+    @Test
     public void testCancelDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
         final Feature feature = createFeatureAddOffer120AddContribution120BeginDev();
 
@@ -423,6 +443,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
     // TODO
     // }
 
+    @Test
     public void testOfferWithALotOfMilestone() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Feature feature = createFeatureByThomas();
 

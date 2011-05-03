@@ -3,36 +3,56 @@
  */
 package com.bloatit.data;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
 import org.hibernate.HibernateException;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
-public class DaoMemberCreationTest extends TestCase {
+public class DaoMemberCreationTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeClass
+    public static void createDB() {
         SessionManager.generateTestSessionFactory();
     }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    
+    @AfterClass
+    public static void closeDB() {
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }
         SessionManager.getSessionFactory().close();
     }
-
-    public void testCreateMember() {
+    
+    @Before
+    public void setUp() throws Exception {
         SessionManager.beginWorkUnit();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManager.rollback();
+        }
+    }
+
+    @Test
+    public void testCreateMember() {
         final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
 
         assertEquals(theMember.getEmail(), "tom@gmail.com");
@@ -53,12 +73,10 @@ public class DaoMemberCreationTest extends TestCase {
         assertEquals(theMember.getRole(), Role.ADMIN);
         theMember.setLocale(Locale.CHINA);
         assertEquals(theMember.getLocale(), Locale.CHINA);
-
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testCreateTreeMembers() {
-        SessionManager.beginWorkUnit();
         {
             final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "salt", "tom@gmail.com", Locale.FRANCE);
             theMember.setFullname("Thomas Guyard");
@@ -75,12 +93,10 @@ public class DaoMemberCreationTest extends TestCase {
         }
 
         assertEquals(3, DBRequests.getAll(DaoMember.class).size());
-
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testCreateMemberLimit() {
-        SessionManager.beginWorkUnit();
         try {
             DaoMember.createAndPersist(null, "pass", "salt", "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
@@ -125,9 +141,9 @@ public class DaoMemberCreationTest extends TestCase {
         }
     }
 
+    @Test
     public void testMemberDuplicateCreation() {
         try {
-            SessionManager.beginWorkUnit();
             DaoMember.createAndPersist("Yoann", "plop", "salt", "yo@gmail.com", Locale.FRANCE);
             SessionManager.flush();
             // duplicate login
@@ -139,18 +155,17 @@ public class DaoMemberCreationTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetMemberByLogin() {
         testCreateTreeMembers();
-        SessionManager.beginWorkUnit();
         assertNotNull(DaoMember.getByLogin("Fred"));
         assertNull(DaoMember.getByLogin("Inexistant"));
         assertNull(DaoMember.getByLogin(null));
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testGetMemberByLoginAndPassword() {
         testCreateTreeMembers();
-        SessionManager.beginWorkUnit();
         assertNotNull(DaoMember.getByLoginAndPassword("Fred", "other"));
         assertNull(DaoMember.getByLoginAndPassword("Fred", "notTheGoodPassword"));
         assertNull(DaoMember.getByLoginAndPassword("Fred", "other "));
@@ -160,6 +175,10 @@ public class DaoMemberCreationTest extends TestCase {
         assertNull(DaoMember.getByLoginAndPassword("Fred", "o"));
         assertNull(DaoMember.getByLoginAndPassword("Fred", ""));
         assertNull(DaoMember.getByLoginAndPassword("Fred", "*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "o*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "[a-z]*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "othe?"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "othe."));
         assertNull(DaoMember.getByLoginAndPassword("Fred", "\\*"));
         assertNull(DaoMember.getByLoginAndPassword("Fred", ".*"));
         assertNull(DaoMember.getByLoginAndPassword("Fred", "\\.*"));
@@ -168,16 +187,14 @@ public class DaoMemberCreationTest extends TestCase {
         assertNull(DaoMember.getByLoginAndPassword("Fred", null));
         assertNull(DaoMember.getByLoginAndPassword(null, "' OR 1=1; --"));
         assertNull(DaoMember.getByLoginAndPassword("Inexistant", "' OR 1=1; --"));
-        SessionManager.endWorkUnitAndFlush();
     }
 
+    @Test
     public void testExistMemberByLogin() {
         testCreateTreeMembers();
-        SessionManager.beginWorkUnit();
         assertTrue(DaoActor.loginExists("Fred"));
         assertFalse(DaoActor.loginExists("Inexistant"));
         assertFalse(DaoActor.loginExists(null));
-        SessionManager.endWorkUnitAndFlush();
     }
 
 }
