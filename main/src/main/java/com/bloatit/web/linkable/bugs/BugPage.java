@@ -19,31 +19,40 @@ import java.util.Map;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
+import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateCommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
+import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 
@@ -53,7 +62,7 @@ public final class BugPage extends MasterPage {
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
     private final Bug bug;
-    
+
     @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, generatedFrom = "bug")
     @Optional("Title")
@@ -72,29 +81,79 @@ public final class BugPage extends MasterPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
+        layout.addRight(new SideBarFeatureBlock(bug.getFeature()));
+
+
+
+        HtmlDiv bugListDiv = new HtmlDiv("bug_list");
+        layout.addLeft(bugListDiv);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(bug.getFeature());
+        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+        featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
+        bugListDiv.add(new HtmlParagraph(featurePageUrl.getHtmlLink(tr("Return to bugs list"))));
+
+
+        if (bug.getRights().isOwner()) {
+            bugListDiv.add(new HtmlParagraph(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties"))));
+        }
+
+
+
+
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
         layout.addLeft(bugTitle);
 
-        layout.addLeft(new HtmlParagraph(tr("State: {0}", tr(BindedState.getBindedState(bug.getState()).getDisplayName()))));
-        layout.addLeft(new HtmlParagraph(tr("Level: {0}", tr(BindedLevel.getBindedLevel(bug.getErrorLevel()).getDisplayName()))));
+        // Details
+        HtmlDiv bugDetails = new HtmlDiv("bug_details");
+        layout.addLeft(bugDetails);
+        bugDetails.add(new HtmlDefineParagraph(Context.tr("Reported by: "), bug.getAuthor().getDisplayName()));
+        bugDetails.add(new HtmlDefineParagraph(Context.tr("State: "), tr(BindedState.getBindedState(bug.getState()).getDisplayName())));
+        bugDetails.add(new HtmlDefineParagraph(Context.tr("Level: "), tr(BindedLevel.getBindedLevel(bug.getErrorLevel()).getDisplayName())));
+        bugDetails.add(new HtmlDefineParagraph(Context.tr("Creation date: "), Context.getLocalizator()
+                                                                                     .getDate(bug.getCreationDate())
+                                                                                     .toString(FormatStyle.MEDIUM)));
 
-        layout.addLeft(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
-
-        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
+        final HtmlDiv description = new HtmlDiv("bug_description");
+        description.add(new HtmlCachedMarkdownRenderer(bug.getDescription()));
         layout.addLeft(description);
 
         // Attachments
-        for (final FileMetadata attachment : bug.getFiles()) {
-            final HtmlParagraph attachmentPara = new HtmlParagraph();
-            attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
-            attachmentPara.addText(tr(": ") + attachment.getShortDescription());
-            layout.addLeft(attachmentPara);
+        PageIterable<FileMetadata> files = bug.getFiles();
+        if (files.size() > 0 || bug.getRights().isOwner()) {
+
+            final HtmlDiv attachmentDiv = new HtmlDiv();
+            layout.addLeft(attachmentDiv);
+            attachmentDiv.setCssClass("bug_attachements");
+            attachmentDiv.add(new HtmlTitle("Attachements", 3));
+
+            for (final FileMetadata attachment : files) {
+                final HtmlParagraph attachmentPara = new HtmlParagraph();
+                attachmentPara.add(new FileResourceUrl(attachment).getHtmlLink(attachment.getFileName()));
+                attachmentPara.addText(tr(": ") + attachment.getShortDescription());
+                attachmentDiv.add(attachmentPara);
+            }
+
+            if (bug.getRights().isOwner()) {
+
+                HtmlParagraph newAttachementLink = new HtmlParagraph(Context.tr("add new attachement"), "fake_link");
+                HtmlElement generateNewAttachementForm = generateNewAttachementForm();
+
+                attachmentDiv.add(newAttachementLink);
+                attachmentDiv.add(generateNewAttachementForm);
+
+                JsShowHide showHide = new JsShowHide(false);
+                showHide.setHasFallback(false);
+
+                showHide.addActuator(newAttachementLink);
+                showHide.addListener(generateNewAttachementForm);
+                showHide.apply();
+            }
         }
 
-        if (bug.getRights().isOwner()) {
-            layout.addLeft(generateNewAttachementForm());
-        }
+        layout.addLeft(new HtmlClearer());
+
+        // Comments
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
         layout.addLeft(new CreateCommentForm(new CreateCommentActionUrl(bug)));
 

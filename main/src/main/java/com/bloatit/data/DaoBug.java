@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -79,6 +80,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     @Basic(optional = false)
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
     private String description;
 
@@ -127,7 +129,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Creates the bug and persist it.
-     * 
+     *
      * @param member the author
      * @param team the as Team property. can be null.
      * @param milestone the milestone on which there is a bug.
@@ -168,7 +170,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Sets the error level.
-     * 
+     *
      * @param level the new error level
      */
     public void setErrorLevel(final Level level) {
@@ -179,7 +181,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * The person assigned to a bug is the developer (the member that has
      * created the offer). The person assigned to a bug is the developer (the
      * member that has created the offer).
-     * 
+     *
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
@@ -188,7 +190,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the title.
-     * 
+     *
      * @return the title
      */
     public String getTitle() {
@@ -197,7 +199,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the description.
-     * 
+     *
      * @return the description
      */
     public String getDescription() {
@@ -206,7 +208,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the this is the language in which the description is written.
-     * 
+     *
      * @return the locale
      */
     public Locale getLocale() {
@@ -215,7 +217,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the error level.
-     * 
+     *
      * @return the errorLevel
      */
     public Level getErrorLevel() {
@@ -224,7 +226,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the milestone.
-     * 
+     *
      * @return the milestone
      */
     public DaoMilestone getMilestone() {
@@ -233,7 +235,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the state.
-     * 
+     *
      * @return the state
      */
     public BugState getState() {
@@ -256,7 +258,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the comments.
-     * 
+     *
      * @return the comments
      */
     @Override
@@ -266,7 +268,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Gets the last comment.
-     * 
+     *
      * @return the last comment
      */
     @Override
