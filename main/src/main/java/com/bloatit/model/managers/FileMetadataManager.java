@@ -151,7 +151,7 @@ public final class FileMetadataManager {
                                                    final String name,
                                                    final String description,
                                                    final File storedFile) {
-        // TODO: improve mine type detection
+        // TODO: improve mime type detection
         FileType type = FileType.UNKNOWN;
         if (storedFile.getName().endsWith(".txt")) {
             type = FileType.TEXT;
@@ -176,11 +176,7 @@ public final class FileMetadataManager {
         }
 
         final FileMetadata file = new FileMetadata(author, team, name, storedFile.getPath(), type, (int) storedFile.length());
-        try {
-            file.setDescription(description);
-        } catch (final UnauthorizedPublicAccessException e) {
-            throw new ShallNotPassException(e);
-        }
+        file.setDescriptionUnprotected(description);
         return file;
     }
 

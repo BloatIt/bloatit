@@ -1,0 +1,59 @@
+package com.bloatit.framework.webprocessor.components.advanced;
+
+import java.math.BigDecimal;
+
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.XmlText;
+
+/**
+ * A simple table that gets constructed simply by adding elements
+ */
+public class HtmlSimpleLineTable extends HtmlLeaf {
+    private HtmlGenericElement body = new HtmlGenericElement("tbody");
+    private PlaceHolderElement headerPh = new PlaceHolderElement();
+
+    public HtmlSimpleLineTable() {
+        super("table");
+        add(headerPh);
+        add(body);
+    }
+
+    public void addLine(Object... line) {
+        HtmlGenericElement tr = new HtmlGenericElement("tr");
+        body.add(tr);
+        for (Object elem : line) {
+            XmlNode element;
+            if (elem == null) {
+                tr.add(new HtmlGenericElement("td"));
+            } else {
+                if (elem instanceof String) {
+                    element = new XmlText((String) elem);
+                } else if (elem instanceof XmlNode) {
+                    element = (XmlNode) elem;
+                } else if (elem instanceof BigDecimal) {
+                    element = new XmlText(((BigDecimal) elem).toPlainString());
+                } else if (elem instanceof Enum<?>) {
+                    element = new XmlText(elem.toString());
+                } else {
+                    throw new BadProgrammerException("Unexpected non string, non XmlNode in SimpleLineTable. (" + elem + ").");
+                }
+
+                tr.add(new HtmlGenericElement("td").add(element));
+            }
+        }
+    }
+
+    public void addHeader(String... header) {
+        HtmlGenericElement thead = new HtmlGenericElement("thead");
+        headerPh.add(thead);
+        HtmlGenericElement tr = new HtmlGenericElement("tr");
+        thead.add(tr);
+        for (String elem : header) {
+            tr.add(new HtmlGenericElement("th").addText(elem));
+        }
+    }
+}

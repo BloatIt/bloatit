@@ -31,7 +31,7 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 // TODO: Auto-generated Javadoc
 /**
- * An external Account is our vision of a "reel" bank account.
+ * An external Account is our vision of a "real" bank account.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

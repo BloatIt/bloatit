@@ -30,7 +30,7 @@ import com.bloatit.web.url.LoginPageUrl;
 
 public abstract class AdminPage extends LoggedPage {
 
-    protected AdminPage(final Url url) {
+    public AdminPage(final Url url) {
         super(url);
     }
 

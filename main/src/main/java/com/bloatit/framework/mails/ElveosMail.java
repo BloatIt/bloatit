@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.mails;
+package com.bloatit.framework.mails;
 
 import java.io.IOException;
 
@@ -80,6 +80,15 @@ public abstract class ElveosMail {
             super(new TemplateFile("contribution-success.mail"), tr("elveos.org: Contribution validated"));
             addNamedParameter("feature_name", featureName);
             addNamedParameter("amount", amount);
+        }
+    }
+
+    public static class WithdrawalComplete extends ElveosMail {
+        public WithdrawalComplete(final String reference, final String amount, final String iban) {
+            super(new TemplateFile("withdrawal-complete.mail"), tr("elveos.org: Money withdrawal complete"));
+            addNamedParameter("amount", amount);
+            addNamedParameter("iban", iban);
+            addNamedParameter("reference", reference);
         }
     }
 }

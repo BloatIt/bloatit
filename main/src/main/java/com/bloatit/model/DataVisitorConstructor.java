@@ -31,6 +31,7 @@ import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
@@ -252,4 +253,8 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
         return Release.create(dao);
     }
 
+    @Override
+    public Identifiable<?> visit(final DaoMoneyWithdrawal dao) {
+        return MoneyWithdrawal.create(dao);
+    }
 }
