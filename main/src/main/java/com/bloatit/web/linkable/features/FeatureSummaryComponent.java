@@ -41,6 +41,7 @@ import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
+import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -264,7 +265,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 final CurrencyLocale currency = Context.getLocalizator().getCurrency(amountLeft);
 
-                element.add(new HtmlParagraph(tr(" {0} are missing before the development start.", currency.toString())));
+                element.add(new HtmlParagraph(tr(" {0} are missing before the development start.", currency.getSimpleEuroString())));
             } else {
                 final TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), feature.getValidationDate()));
 
@@ -300,14 +301,20 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             final Release lastRelease = feature.getSelectedOffer().getLastRelease();
 
             final HtmlLink lastReleaseLink = new ReleasePageUrl(lastRelease).getHtmlLink();
-            final String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.SHORT);
+            final String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.FULL);
 
             element.add(new HtmlParagraph(trn("There is {0} release.", "There is {0} releases.", releaseCount, releaseCount)));
 
-            element.add(new HtmlParagraph(new HtmlMixedText(tr("The <0::last version> was released the {0}.", releaseDate), lastReleaseLink)));
+            element.add(new HtmlParagraph(new HtmlMixedText(tr("The <0::last version> was released {0}.", releaseDate), lastReleaseLink)));
 
             element.add(new HtmlParagraph(tr(" Test it and report bugs.")));
             final HtmlLink link = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
+            link.setCssClass("button");
+            element.add(link);
+        }
+
+        if(feature.getSelectedOffer().getAuthor().equals(Context.getSession().getAuthToken().getMember())) {
+            final HtmlLink link = new AddReleasePageUrl(feature.getSelectedOffer().getCurrentMilestone()).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);
         }

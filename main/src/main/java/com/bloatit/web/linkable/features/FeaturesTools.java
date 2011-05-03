@@ -218,7 +218,7 @@ public class FeaturesTools {
         // Progress
         final HtmlSpan progress = new HtmlSpan();
         progress.setCssClass(IMPORTANT_CSS_CLASS);
-        final NumberFormat format = NumberFormat.getNumberInstance();
+        final NumberFormat format = Context.getLocalizator().getNumberFormat();
         format.setMinimumFractionDigits(0);
         progress.addText("" + format.format(progressValue) + " %");
 

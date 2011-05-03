@@ -17,6 +17,7 @@
 package com.bloatit.framework.utils.i18n;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -573,5 +574,9 @@ public final class Localizator {
 
         // Case where both CurrentLocale != null && FavLanguage != null
         return currentLocale;
+    }
+
+    public NumberFormat getNumberFormat() {
+        return NumberFormat.getInstance(getLocale());
     }
 }

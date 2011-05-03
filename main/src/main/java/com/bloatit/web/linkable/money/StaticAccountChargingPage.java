@@ -104,7 +104,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
 
         HtmlLineTableModel model = new HtmlLineTableModel();
-        model.addLine(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, null));
+        model.addLine(new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, null));
 
         final HtmlTable lines = new HtmlTable(model);
         lines.setCssClass("quotation_details_lines");

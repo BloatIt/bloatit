@@ -128,7 +128,11 @@ public final class CheckContributionPage extends QuotationPage {
             final HtmlDiv authorContributionSummary = new HtmlDiv("author_contribution_summary");
             {
 
-                authorContributionSummary.add(new HtmlTitle(tr("Your account"), 2));
+                if (process.getTeam() != null) {
+                    authorContributionSummary.add(new HtmlTitle(tr("Account of {0}", actor.getDisplayName()), 2));
+                } else {
+                    authorContributionSummary.add(new HtmlTitle(tr("Your account"), 2));
+                }
 
                 try {
                     final HtmlDiv changeLine = new HtmlDiv("change_line");
@@ -168,7 +172,7 @@ public final class CheckContributionPage extends QuotationPage {
             confirmContributionLink.setCssClass("button");
 
             if (process.getTeam() != null) {
-                buttonDiv.add(new HtmlParagraph(Context.tr("Using the ''{0}'' account", process.getTeam().getDisplayName())));
+                buttonDiv.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));
             }
 
             buttonDiv.add(confirmContributionLink);
@@ -226,7 +230,7 @@ public final class CheckContributionPage extends QuotationPage {
 
             final CheckContributionPageUrl recalculateUrl = url.clone();
             recalculateUrl.setPreload(null);
-            model.addLine(new HtmlChargeAccountLine(process.getAmountToCharge(), actor, recalculateUrl));
+            model.addLine(new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl));
         } catch (final UnauthorizedOperationException e) {
             session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
