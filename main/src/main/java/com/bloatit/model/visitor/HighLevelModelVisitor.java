@@ -17,6 +17,7 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.ModelClassVisitor;
+import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.Software;
@@ -46,6 +47,8 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
     public abstract T visitAbstract(Software model);
 
     public abstract T visitAbstract(Transaction model);
+    
+    public abstract T visitAbstract(MoneyWithdrawal model);
 
     @Override
     public final T visit(final ExternalAccount model) {
@@ -144,6 +147,11 @@ public abstract class HighLevelModelVisitor<T> implements ModelClassVisitor<T> {
 
     @Override
     public final T visit(final Release model) {
+        return visitAbstract(model);
+    }
+    
+    @Override
+    public final T visit(final MoneyWithdrawal model) {
         return visitAbstract(model);
     }
 }

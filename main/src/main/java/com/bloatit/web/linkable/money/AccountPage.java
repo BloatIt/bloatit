@@ -40,13 +40,14 @@ import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
+import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
 /**
  * <p>
  * A page used to display logged member informations.
  * </p>
  */
-@ParamContainer(value="account", protocol=Protocol.HTTPS)
+@ParamContainer(value = "account", protocol = Protocol.HTTPS)
 public final class AccountPage extends LoggedPage {
 
     @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
@@ -96,7 +97,7 @@ public final class AccountPage extends LoggedPage {
 
             layout.addRight(new SideBarDocumentationBlock("internal_account"));
             layout.addRight(new SideBarLoadAccountBlock(team));
-            layout.addRight(new SideBarWithdrawMoneyBlock());
+            layout.addRight(new SideBarWithdrawMoneyBlock(loggedUser));
 
             return layout;
         } catch (final UnauthorizedOperationException e) {
@@ -146,12 +147,12 @@ public final class AccountPage extends LoggedPage {
 
     public static class SideBarWithdrawMoneyBlock extends TitleSideBarElementLayout {
 
-        SideBarWithdrawMoneyBlock() {
+        private SideBarWithdrawMoneyBlock(Member me) {
             setTitle(tr("Withdraw money"));
 
             add(new HtmlParagraph(tr("You can withdraw money from you elveos account and get a bank transfer to your personal bank account using the following link:")));
             // TODO good URL
-            add(new SideBarButton(tr("Withdraw money"), new PageNotFoundUrl(), WebConfiguration.getImgAccountWithdraw()).asElement());
+            add(new SideBarButton(tr("Withdraw money"), new WithdrawMoneyPageUrl(me), WebConfiguration.getImgAccountWithdraw()).asElement());
             add(new HtmlDefineParagraph(tr("Note: "),
                                         tr("Note : Do not withdraw money if you are planning to contribute to a project in the future, this will prevent you from paying our commission again later.\n"
                                                 + "Oh, and by the way, we don't like when you withdraw money, not because it costs us money (it does but well that's OK), but because you could as well use this money to contribute to other open source projects.")));

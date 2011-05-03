@@ -66,6 +66,10 @@ public final class FileMetadata extends UserContent<DaoFileMetadata> {
      */
     public void setDescription(final String shortDescription) throws UnauthorizedPublicAccessException {
         tryAccess(new RgtFileMetadata.Description(), Action.WRITE);
+        setDescriptionUnprotected(shortDescription);
+    }
+
+    public void setDescriptionUnprotected(final String shortDescription) {
         getDao().setShortDescription(shortDescription);
     }
 

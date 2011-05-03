@@ -14,13 +14,54 @@ import javax.persistence.OneToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
+import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.queries.QueryCollection;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A money withdrawal happens when a user withdraws money from his elveos
  * account.
  */
 @Entity
+//@formatter:off
+@NamedQueries(value = { 
+                       @NamedQuery(
+                           name =  "withdrawal.bystate",
+                           query = "FROM DaoMoneyWithdrawal " +
+                           		   "WHERE state = :state"),
+                        @NamedQuery(
+                            name =  "withdrawal.bystate.size",
+                            query = "SELECT COUNT(*)" +
+                            		"FROM DaoMoneyWithdrawal " +
+                                    "WHERE state = :state"),
+                        }
+
+             )
+// @formatter:on
 public class DaoMoneyWithdrawal extends DaoIdentifiable {
+
+    /**
+     * The state of the money withdrawal.
+     * <p>
+     * Normal state order is : <br />
+     * REQUESTED -> TREATED -> COMPLETE.
+     * </p>
+     * <p>
+     * User can cancel before treatment, hence it will be : <br />
+     * REQUESTED -> CANCELED
+     * </p>
+     * <p>
+     * Administrators can <b>refuse</b> transaction before it is complete or
+     * canceled : <br />
+     * REQUESTED -> REFUSED <br />
+     * <b>OR</b> <br />
+     * REQUESTED -> TREATED -> REFUSED
+     * </p>
+     */
     public enum State {
         /**
          * First state of a money withdrawal. Means user requested the money but
@@ -130,13 +171,19 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
         this.lastModificationDate = new Date();
         this.creationDate = new Date();
         this.state = State.REQUESTED;
+
+        try {
+            actor.getInternalAccount().block(amountWithdrawn);
+        } catch (NotEnoughMoneyException e) {
+            throw new BadProgrammerException("Not enough money to block from account", e);
+        }
     }
 
     // ======================================================================
     // Setters
     // ======================================================================
 
-    public void setState(State newState) {
+    private void setState(State newState) {
         state = newState;
         this.lastModificationDate = new Date();
     }
@@ -151,6 +198,55 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
 
     public void setRefusalReason(String refusalReason) {
         this.refusalReason = refusalReason;
+    }
+
+    /**
+     * Sets the DaoMoneyWithdrawal as Treated by administrators
+     */
+    public void setTreated() {
+        setState(State.TREATED);
+    }
+
+    /**
+     * Sets the DaoMoneyWithdrawal as Canceled by the user
+     */
+    public void setCanceled() {
+        try {
+            actor.getInternalAccount().unBlock(amountWithdrawn);
+        } catch (NotEnoughMoneyException e) {
+            throw new BadProgrammerException("Not enough money to unblock.", e);
+        }
+        setState(State.CANCELED);
+    }
+
+    /**
+     * Sets the DaoMoneyWithdrawal as Refused by administrators
+     */
+    public void setRefused() {
+        try {
+            actor.getInternalAccount().unBlock(amountWithdrawn);
+        } catch (NotEnoughMoneyException e) {
+            throw new BadProgrammerException("Not enough money to unblock.", e);
+        }
+        setState(State.REFUSED);
+    }
+
+    /**
+     * Sets the DaoMoneyWithdrawal as completed by bank
+     */
+    public void setComplete() {
+        try {
+            actor.getInternalAccount().unBlock(amountWithdrawn);
+        } catch (NotEnoughMoneyException e) {
+            throw new BadProgrammerException("Not enough money to unblock.", e);
+        }
+
+        try {
+            transaction = DaoTransaction.createAndPersist(actor.getInternalAccount(), actor.getExternalAccount(), amountWithdrawn);
+        } catch (NotEnoughMoneyException e) {
+            throw new BadProgrammerException("Not enough money to complete transaction.", e);
+        }
+        setState(State.COMPLETE);
     }
 
     // ======================================================================
@@ -197,9 +293,24 @@ public class DaoMoneyWithdrawal extends DaoIdentifiable {
         return refusalReason;
     }
 
+    // ======================================================================
+    // Static accessors
+    // ======================================================================
+
+    /**
+     * @return all the DaoMoneyWithdrawal that match <code>state</code>
+     */
+    public static PageIterable<DaoMoneyWithdrawal> getByState(State state) {
+        return new QueryCollection<DaoMoneyWithdrawal>("withdrawal.bystate").setParameter("state", state);
+    }
+
+    // ======================================================================
+    // Visitor
+    // ======================================================================
+
     @Override
     public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
-        return null;
+        return visitor.visit(this);
     }
 
     // ======================================================================

@@ -70,6 +70,7 @@
 		<mapping class="com.bloatit.data.DaoUserContent" />
 		<mapping class="com.bloatit.data.DaoKudosable" />
 		<mapping class="com.bloatit.data.DaoRelease" />
+        <mapping class="com.bloatit.data.DaoMoneyWithdrawal" />
 
 	</session-factory>
 </hibernate-configuration>

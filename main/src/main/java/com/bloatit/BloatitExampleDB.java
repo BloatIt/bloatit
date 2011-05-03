@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.UUID;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMember.Role;
@@ -63,6 +64,7 @@ public class BloatitExampleDB { // NO_UCD
     private Software mageia;
 
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException {
+        System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
 
         SessionManager.beginWorkUnit();
 
@@ -71,7 +73,7 @@ public class BloatitExampleDB { // NO_UCD
         yoann = createMember("yoann", "Yoann Plénet", Locale.US);
         admin = createMember("admin", "Administrator", Locale.FRANCE);
         admin.getDao().setRole(Role.ADMIN);
-
+        
         chogall = createMember("chogall", "Cho'gall", Locale.UK);
         cerbere = createMember("cerbere", "Cerbère", Locale.KOREA);
         hydre = createMember("hydre", "Hydre", Locale.GERMANY);
@@ -98,13 +100,16 @@ public class BloatitExampleDB { // NO_UCD
 
         // Add teams
         final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
+        other.authenticate(new AuthToken(yoann));
         other.setAvatar(getImage(yoann, "teams/other.png"));
 
         final Team b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
-        b219.setAvatar(getImage(fred, "teams/b219.png"));
+        b219.authenticate(new AuthToken(fred));
+        b219.setAvatarUnprotected(getImage(fred, "teams/b219.png"));
 
         final Team ubuntuUsers = new Team("ubuntuUsers", "ubuntu.users@elveos.org", "The team for ubuntu users", Right.PUBLIC, thomas);
-        ubuntuUsers.setAvatar(getImage(thomas, "teams/ubuntuUsers.png"));
+        ubuntuUsers.authenticate(new AuthToken(thomas));
+        ubuntuUsers.setAvatarUnprotected(getImage(thomas, "teams/ubuntuUsers.png"));
 
         // Generate softwares
         generateVlcSoftware();
@@ -425,9 +430,8 @@ public class BloatitExampleDB { // NO_UCD
                                                                     new BigDecimal(amount),
                                                                     new BigDecimal(amount),
                                                                     UUID.randomUUID().toString());
-        // TODO: should find a way to do this without breaking encapsulation. 
-        // bankTransaction.setAuthorized();
-        // bankTransaction.setValidated();
+        bankTransaction.getDao().setAuthorized();
+        bankTransaction.getDao().setValidated();
     }
 
     public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {
@@ -450,3 +454,4 @@ public class BloatitExampleDB { // NO_UCD
         System.exit(0);
     }
 }
+

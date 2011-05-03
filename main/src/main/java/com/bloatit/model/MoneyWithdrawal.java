@@ -3,12 +3,19 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.hibernate.dialect.InterbaseDialect;
+
 import com.bloatit.data.DaoActor;
+import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMoneyWithdrawal;
+import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoMoneyWithdrawal.State;
-import com.bloatit.data.DaoTransaction;
+import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 
 public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
+    private static final BigDecimal ibanCheckingConstant = new BigDecimal(97);
 
     /**
      * The Class MyCreator.
@@ -41,7 +48,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * @param reference
      * @param amountWithdrawn
      */
-    public MoneyWithdrawal(Actor<DaoActor> actor, final String IBAN, final String reference, final BigDecimal amountWithdrawn) {
+    public MoneyWithdrawal(Actor<? extends DaoActor> actor, final String IBAN, final String reference, final BigDecimal amountWithdrawn) {
         super(DaoMoneyWithdrawal.createAndPersist(actor.getDao(), IBAN, reference, amountWithdrawn));
     }
 
@@ -50,15 +57,107 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
+    // Setters
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public void setCanceled() {
+        switch (getState()) {
+            case COMPLETE:
+            case CANCELED:
+            case REFUSED:
+            case TREATED:
+                throw new BadProgrammerException("Cannot go from state " + getState() + " to CANCELED.");
+            default:
+                break;
+        }
+        getDao().setCanceled();
+    }
+
+    public void setRefused() {
+        switch (getState()) {
+            case COMPLETE:
+            case CANCELED:
+            case REFUSED:
+                throw new BadProgrammerException("Cannot go from state " + getState() + " to REFUSED.");
+            default:
+                break;
+        }
+        getDao().setRefused();
+    }
+
+    public void setTreated() {
+        switch (getState()) {
+            case COMPLETE:
+            case CANCELED:
+            case REFUSED:
+            case TREATED:
+                throw new BadProgrammerException("Cannot go from state " + getState() + " to TREATED.");
+            default:
+                break;
+        }
+        getDao().setTreated();
+    }
+
+    public void setComplete() {
+        switch (getState()) {
+            case COMPLETE:
+            case CANCELED:
+            case REFUSED:
+            case REQUESTED:
+                throw new BadProgrammerException("Cannot go from state " + getState() + " to COMPLETE.");
+            default:
+                break;
+        }
+        getDao().setComplete();
+    }
+
+    public void setState(State newState) {
+        switch (newState) {
+            case REQUESTED:
+                throw new BadProgrammerException("Cannot go back to Requested");
+            case TREATED:
+                setTreated();
+                break;
+            case COMPLETE:
+                setComplete();
+                break;
+            case CANCELED:
+                setCanceled();
+                break;
+            case REFUSED:
+                setRefused();
+                break;
+        }
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public DaoActor getActor() {
-        return getDao().getActor();
+    public Actor<?> getActor() {
+        Integer id = getDao().getActor().getId();
+        try {
+            Team team;
+            team = Team.class.cast(GenericConstructor.create(Team.class, id));
+            if (team != null) {
+                return team;
+            }
+        } catch (ClassNotFoundException e) {
+        }
+
+        try {
+            Member member;
+            member = Member.class.cast(GenericConstructor.create(Member.class, id));
+            if (member != null) {
+                return member;
+            }
+        } catch (ClassNotFoundException e) {
+        }
+        return null;
     }
 
-    public DaoTransaction getTransaction() {
-        return getDao().getTransaction();
+    public Transaction getTransaction() {
+        return Transaction.create(getDao().getTransaction());
     }
 
     public String getIBAN() {
@@ -93,16 +192,31 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         return getDao().getRefusalReason();
     }
 
-    @Override
-    protected boolean isMine(Member member) {
-        return getDao().getActor().equals(member);
-    }
-
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Static
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public static boolean checkIban(String iban) {
+        iban = iban.replace(" ", "");
+        iban = iban.replace("-", "");
+        StringBuffer sbIban = new StringBuffer(iban.substring(4));
+        sbIban.append(iban.substring(0, 4));
+        iban = sbIban.toString();
+
+        StringBuilder extendedIban = new StringBuilder(iban.length());
+        for (char currentChar : iban.toCharArray()) {
+            extendedIban.append(Character.digit(currentChar, Character.MAX_RADIX));
+        }
+
+        return new BigDecimal(extendedIban.toString()).remainder(ibanCheckingConstant).intValue() == 1;
     }
 }

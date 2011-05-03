@@ -37,6 +37,8 @@ import com.bloatit.web.linkable.admin.HightlightedFeatureAdminPage;
 import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.linkable.admin.MilestoneAdminPage;
 import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
+import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminAction;
+import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminPage;
 import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
@@ -87,6 +89,8 @@ import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.linkable.money.PaylineReturnAction;
 import com.bloatit.web.linkable.money.StaticAccountChargingPage;
 import com.bloatit.web.linkable.money.UnlockAccountChargingProcessAction;
+import com.bloatit.web.linkable.money.WithdrawMoneyAction;
+import com.bloatit.web.linkable.money.WithdrawMoneyPage;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.AddReleaseAction;
@@ -174,6 +178,8 @@ import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
+import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
+import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 import com.bloatit.web.url.NotFoundActionUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.PaylineActionUrl;
@@ -201,6 +207,8 @@ import com.bloatit.web.url.TestPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
+import com.bloatit.web.url.WithdrawMoneyActionUrl;
+import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
 
 
@@ -353,6 +361,12 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ModifyTeamPageUrl.getPageName())) {
             return new ModifyTeamPage(new ModifyTeamPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(WithdrawMoneyPageUrl.getPageName())) {
+            return new WithdrawMoneyPage(new WithdrawMoneyPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MoneyWithdrawalAdminPageUrl.getPageName())) {
+            return new MoneyWithdrawalAdminPage(new MoneyWithdrawalAdminPageUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -481,7 +495,12 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(DeclareHightlightedFeatureActionUrl.getPageName())) {
             return new DeclareHightlightedFeatureAction(new DeclareHightlightedFeatureActionUrl(params, session.getParameters()));
         }
-
+        if (pageCode.equals(WithdrawMoneyActionUrl.getPageName())) {
+            return new WithdrawMoneyAction(new WithdrawMoneyActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(MoneyWithdrawalAdminActionUrl.getPageName())) {
+            return new MoneyWithdrawalAdminAction(new MoneyWithdrawalAdminActionUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Process
