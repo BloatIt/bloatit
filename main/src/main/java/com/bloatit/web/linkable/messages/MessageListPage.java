@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
@@ -77,13 +78,9 @@ public final class MessageListPage extends LoggedPage {
 
             final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
             final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
-            final HtmlGenericElement empty = new HtmlGenericElement();
-            empty.addText(" (");
-            empty.add(accept);
-            empty.addText(") - (");
-            empty.add(refuse);
-            empty.addText(")");
-            p.add(empty);
+
+            HtmlMixedText acceptOrRefuse = new HtmlMixedText(Context.tr(" (<0::>) - (<1::>)"), accept, refuse);
+            p.add(acceptOrRefuse);
             teamInvites.add(p);
         }
         return master;
