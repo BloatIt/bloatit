@@ -300,11 +300,11 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             final Release lastRelease = feature.getSelectedOffer().getLastRelease();
 
             final HtmlLink lastReleaseLink = new ReleasePageUrl(lastRelease).getHtmlLink();
-            final String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.SHORT);
+            final String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.FULL);
 
             element.add(new HtmlParagraph(trn("There is {0} release.", "There is {0} releases.", releaseCount, releaseCount)));
 
-            element.add(new HtmlParagraph(new HtmlMixedText(tr("The <0::last version> was released the {0}.", releaseDate), lastReleaseLink)));
+            element.add(new HtmlParagraph(new HtmlMixedText(tr("The <0::last version> was released {0}.", releaseDate), lastReleaseLink)));
 
             element.add(new HtmlParagraph(tr(" Test it and report bugs.")));
             final HtmlLink link = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
