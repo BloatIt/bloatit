@@ -15,8 +15,11 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
@@ -27,13 +30,17 @@ import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
+import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.web.HtmlTools;
@@ -283,8 +290,10 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
     private PlaceHolderElement generateReportBugAction() {
         final PlaceHolderElement element = new PlaceHolderElement();
 
-        if (!feature.getSelectedOffer().hasRelease()) {
-            final Date releaseDate = feature.getSelectedOffer().getCurrentMilestone().getExpirationDate();
+        final Offer selectedOffer = feature.getSelectedOffer();
+        final Milestone currentMilestone = selectedOffer.getCurrentMilestone();
+        if (!selectedOffer.hasRelease()) {
+            final Date releaseDate = currentMilestone.getExpirationDate();
 
             final String date = Context.getLocalizator().getDate(releaseDate).toString(FormatStyle.LONG);
 
@@ -296,9 +305,9 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             }
 
         } else {
-            final int releaseCount = feature.getSelectedOffer().getCurrentMilestone().getReleases().size();
+            final int releaseCount = currentMilestone.getReleases().size();
 
-            final Release lastRelease = feature.getSelectedOffer().getLastRelease();
+            final Release lastRelease = selectedOffer.getLastRelease();
 
             final HtmlLink lastReleaseLink = new ReleasePageUrl(lastRelease).getHtmlLink();
             final String releaseDate = Context.getLocalizator().getDate(lastRelease.getCreationDate()).toString(FormatStyle.FULL);
@@ -308,19 +317,17 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(new HtmlParagraph(new HtmlMixedText(tr("The <0::last version> was released {0}.", releaseDate), lastReleaseLink)));
 
             element.add(new HtmlParagraph(tr(" Test it and report bugs.")));
-            final HtmlLink link = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
+            final HtmlLink link = new ReportBugPageUrl(selectedOffer).getHtmlLink(Context.tr("Report a bug"));
             link.setCssClass("button");
             element.add(link);
         }
 
-        if(feature.getSelectedOffer().getAuthor().equals(Context.getSession().getAuthToken().getMember())) {
-            final HtmlLink link = new AddReleasePageUrl(feature.getSelectedOffer().getCurrentMilestone()).getHtmlLink(Context.tr("Add a release"));
+        if (selectedOffer.getAuthor().equals(Context.getSession().getAuthToken().getMember())) {
+            final HtmlLink link = new AddReleasePageUrl(currentMilestone).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);
         }
-
         return element;
-
     }
 
     private PlaceHolderElement generateDevelopingLeftActions() {
@@ -332,9 +339,156 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         element.add(new HtmlParagraph(new HtmlMixedText(tr("This feature is developed by <0>."), authorLink)));
 
-        element.add(new HtmlParagraph(tr("Read the comments to have an more recent informations.")));
+        final Offer selectedOffer = feature.getSelectedOffer();
+        if (!feature.getSelectedOffer().isFinished() && selectedOffer.hasRelease()) {
+            if (selectedOffer.getMilestones().size() == 1) {
+
+                final Milestone currentMilestone = feature.getSelectedOffer().getCurrentMilestone();
+                if (!currentMilestone.hasBlockingBug()) {
+                    final Date validationDate = currentMilestone.getValidationDate();
+                    if (DateUtils.isInTheFuture(validationDate)) {
+                        element.add(new HtmlParagraph(tr("If there is no new bug until {0}, it will be successful, and the developer will get its money.",
+                                                         Context.getLocalizator().getDate(validationDate).toString(FormatStyle.LONG))));
+                    } else {
+                        element.add(new HtmlParagraph(tr("As soon as an administrator validate this feature, it will be successful, and the developer will get its money.")));
+                    }
+                } else {
+                    final HtmlParagraph para = new HtmlParagraph(tr("This feature will be successful when all the {0} bugs are resolved.",
+                                                                    getAllLevelsString(currentMilestone)));
+                    element.add(para);
+                    addMilestoneDetails(currentMilestone, authorLink, para);
+                }
+
+            } else {
+                for (final Milestone milestone : selectedOffer.getMilestones()) {
+                    addMilestoneState(milestone, authorLink, element);
+                }
+            }
+        } else {
+            element.add(new HtmlParagraph(tr("Read the comments to have more recent informations.")));
+        }
 
         return element;
+    }
+
+    private void addMilestoneState(final Milestone milestone, final HtmlLink authorLink, final PlaceHolderElement element) {
+        switch (milestone.getMilestoneState()) {
+            case DEVELOPING:
+                element.add(new HtmlParagraph(tr("Milestone {0}: Developing", milestone.getPosition())));
+                break;
+            case UAT:
+                element.add(new HtmlParagraph(tr("Milestone {0}: User acceptance testing", milestone.getPosition())));
+                break;
+            case VALIDATED:
+                element.add(new HtmlParagraph(tr("Milestone {0}: Successful", milestone.getPosition())));
+                break;
+            case CANCELED:
+                element.add(new HtmlParagraph(tr("Milestone {0}: Canceled", milestone.getPosition())));
+                break;
+
+            case PENDING:// should never append
+            default:// should never append
+                assert false;
+                break;
+        }
+
+        if (!milestone.hasBlockingBug()) {
+            final Date validationDate = milestone.getValidationDate();
+            if (DateUtils.isInTheFuture(validationDate)) {
+                element.add(new HtmlParagraph(tr("If there is no new bug until {0}, this milestone will be successful, and the developer will get its money.",
+                                                 Context.getLocalizator().getDate(validationDate).toString(FormatStyle.LONG))));
+            } else {
+                element.add(new HtmlParagraph(tr("As soon as an administrator validate this milestone, it will be successful, and the developer will get its money.")));
+            }
+        } else {
+            element.add(new HtmlParagraph(tr("This milestone will be successful when all the {0} bugs will be resolved.",
+                                             getAllLevelsString(milestone))));
+
+            addMilestoneDetails(milestone, authorLink, element);
+        }
+    }
+
+    private void addMilestoneDetails(final Milestone milestone, final HtmlLink authorLink, final HtmlBranch element) {
+        final int fatalSize = milestone.getNonResolvedBugs(Level.FATAL).size();
+        final int majorSize = milestone.getNonResolvedBugs(Level.MAJOR).size();
+        final int minorSize = milestone.getNonResolvedBugs(Level.MINOR).size();
+        final int fatalBugsPercent = milestone.getFatalBugsPercent();
+        final int majorBugsPercent = milestone.getMajorBugsPercent();
+        final int minorBugsPercent = milestone.getMinorBugsPercent();
+
+        final HtmlDiv details = new HtmlDiv();
+        if (fatalSize > 0 && fatalBugsPercent > 0) {
+            details.add(new HtmlParagraph(new HtmlMixedText(trn("<0> will receive {0}% of the amount when the remaining FATAL bug are resolved.",
+                                                                "<0> will receive {0}% of the amount when the {1} remaining FATAL bugs are resolved.",
+                                                                fatalSize,
+                                                                fatalBugsPercent,
+                                                                fatalSize), authorLink)));
+        }
+        if (majorSize > 0 && majorBugsPercent > 0) {
+            details.add(new HtmlParagraph(new HtmlMixedText(trn("<0> will receive {0}% of the amount when the remaining MAJOR bug are resolved.",
+                                                                "<0> will receive {0}% of the amount when the {1} remaining MAJOR bugs are resolved.",
+                                                                majorSize,
+                                                                majorBugsPercent,
+                                                                majorSize), authorLink)));
+        }
+        if (minorSize > 0 && minorBugsPercent > 0) {
+            details.add(new HtmlParagraph(new HtmlMixedText(trn("<0> will receive {0}% of the amount when the remaining MINOR bug are resolved.",
+                                                                "<0> will receive {0}% of the amount when the {1} remaining MINOR bugs are resolved.",
+                                                                minorSize,
+                                                                minorBugsPercent,
+                                                                minorSize), authorLink)));
+        }
+        final HtmlBranch showHideLink = new HtmlSpan().addText(" " + tr("Details"));
+        element.add(showHideLink);
+        element.add(details);
+
+        final JsShowHide showHideValidationDetails = new JsShowHide(false);
+        showHideValidationDetails.setHasFallback(false);
+        showHideLink.setCssClass("fake_link");
+        showHideValidationDetails.addActuator(showHideLink);
+        showHideValidationDetails.addListener(details);
+        showHideValidationDetails.apply();
+    }
+
+    private String getAllLevelsString(final Milestone milestone) {
+        final int fatalSize = milestone.getNonResolvedBugs(Level.FATAL).size();
+        final int majorSize = milestone.getNonResolvedBugs(Level.MAJOR).size();
+        final int minorSize = milestone.getNonResolvedBugs(Level.MINOR).size();
+        final List<Level> levels = new ArrayList<Level>();
+        if (fatalSize > 0 && milestone.getFatalBugsPercent() > 0) {
+            levels.add(Level.FATAL);
+        }
+        if (majorSize > 0 && milestone.getMajorBugsPercent() > 0) {
+            levels.add(Level.MAJOR);
+        }
+        if (minorSize > 0 && milestone.getMinorBugsPercent() > 0) {
+            levels.add(Level.MINOR);
+        }
+        return composeLevels(levels);
+    }
+
+    private String composeLevels(final List<Level> levels) {
+        final StringBuilder lev = new StringBuilder();
+        for (int i = 0; i < levels.size(); ++i) {
+            if (i != 0 && i < levels.size() - 1) {
+                lev.append(", ");
+            }
+            if (i != 0 && i == levels.size() - 1) {
+                lev.append(tr(" and "));
+            }
+            switch (levels.get(i)) {
+                case FATAL:
+                    lev.append(tr("FATAL"));
+                    break;
+                case MAJOR:
+                    lev.append(tr("MAJOR"));
+                    break;
+                case MINOR:
+                    lev.append(tr("MINOR"));
+                    break;
+            }
+        }
+        return lev.toString();
     }
 
     private PlaceHolderElement generateFinishedAction() {
