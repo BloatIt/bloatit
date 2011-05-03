@@ -1,0 +1,9 @@
+${member},
+
+Votre retrait de ${amount}€ vers le compte ${iban} a été finalisé.
+
+La référence du retrait est : ${reference}
+
+Merci de votre confiance,
+
+L'équipe elveos.

@@ -7,6 +7,7 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.mails.ElveosMail.WithdrawalComplete;
 
 /**
  * Money withdrawals represent requests to withdraw money from the user internal
@@ -134,6 +135,13 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
                 break;
         }
         getDao().setComplete();
+
+        if (getActor() instanceof Member) {
+            Member to = (Member) getActor();
+            new WithdrawalComplete(getReference(), getAmountWithdrawn().toPlainString(), getIBAN()).sendMail(to, "withdrawal-complete");
+        } else {
+            // TODO send a mail to some people in team ...
+        }
     }
 
     /**

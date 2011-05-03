@@ -1,0 +1,9 @@
+Dear ${member},
+
+Your withdrawal of ${amount}€ to the account ${iban} is now complete.
+
+The reference of the withdrawal is : ${reference}
+
+Thank you for your trust,
+
+The elveos team.
