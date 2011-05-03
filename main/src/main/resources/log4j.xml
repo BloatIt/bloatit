@@ -38,7 +38,7 @@
 
 	<!-- must be before the root element -->
 	<logger name="org.hibernate">
-		<level value="warn" />
+		<level value="error" />
 	</logger>
 	<logger name="com.bloatit.data">
 		<level value="trace" />

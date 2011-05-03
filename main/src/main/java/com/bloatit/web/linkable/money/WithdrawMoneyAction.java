@@ -31,7 +31,7 @@ public class WithdrawMoneyAction extends LoggedAction {
     private final Actor<?> actor;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "0", minErrorMsg = @tr("Amount to withdraw must be greater or equal to %constraint%."), //
+    @ParamConstraint(min = "1", minErrorMsg = @tr("Amount to withdraw must be greater or equal to %constraint%."), //
     max = "100000", maxErrorMsg = @tr("Amount to withdraw and must be lesser or equal than %constraint%."))
     private final BigDecimal amount;
 
@@ -53,7 +53,7 @@ public class WithdrawMoneyAction extends LoggedAction {
         new MoneyWithdrawal(actor, IBAN, amount);
         String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
         if (actor instanceof Member) {
-            session.notifyGood(Context.tr("Requestrd to withdraw {0} from your account.", amountStr));
+            session.notifyGood(Context.tr("Requested to withdraw {0} from your account.", amountStr));
             return new AccountPageUrl();
         } else {
             session.notifyGood(Context.tr("Requestrd to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
