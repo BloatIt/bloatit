@@ -25,26 +25,29 @@ import com.bloatit.model.Offer;
 public class RgtJoinTeamInvitation extends RightManager {
 
     /**
-     * The Class <code>Team</code> is a {@link RightManager.PrivateReadOnly}
+     * The Class <code>Team</code> is a {@link RightManager.Public}
      * accessor for the <code>Team</code> property.
      */
-    public static class Team extends PrivateReadOnly {
+    public static class Team extends Public {
+        // TODO Switch this to a kind of weird private with 2 owners
         // nothing this is just a rename.
     }
 
     /**
-     * The Class <code>Sender</code> is a {@link RightManager.PrivateReadOnly}
+     * The Class <code>Sender</code> is a {@link RightManager.Public}
      * accessor for the <code>Sender</code> property.
      */
-    public static class Sender extends PrivateReadOnly {
+    public static class Sender extends Public {
+        // TODO Switch this to a kind of weird private with 2 owners
         // nothing this is just a rename.
     }
 
     /**
-     * The Class <code>Reciever</code> is a {@link RightManager.PrivateReadOnly}
+     * The Class <code>Reciever</code> is a {@link RightManager.Public}
      * accessor for the <code>Reciever</code> property.
      */
-    public static class Receiver extends PrivateReadOnly {
+    public static class Receiver extends Public {
+        // TODO Switch this to a kind of weird private with 2 owners
         // nothing this is just a rename.
     }
 }

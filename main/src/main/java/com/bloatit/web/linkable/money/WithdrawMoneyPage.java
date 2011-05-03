@@ -85,6 +85,7 @@ public class WithdrawMoneyPage extends LoggedPage {
         FieldData IBANData = targetUrl.getIBANParameter().pickFieldData();
         HtmlTextField ibanInput = new HtmlTextField(IBANData.getName(), tr("IBAN: "));
         ibanInput.setDefaultStringValue(IBANData.getSuggestedValue());
+        ibanInput.turnOffAutoComplete();
         form.add(ibanInput);
 
         form.add(new HtmlSubmit(tr("Submit")));

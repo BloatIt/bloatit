@@ -20,8 +20,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.apache.commons.lang.RandomStringUtils;
-
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -31,7 +29,9 @@ import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.BankTransaction;
@@ -443,24 +443,30 @@ public class BloatitExampleDB { // NO_UCD
 
     private void withdrawMoney(Member m, int amount, State completion) {
         // TODO: this have not been tested yet.
-        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", RandomStringUtils.randomAlphanumeric(4) + "-"
-                + RandomStringUtils.randomAlphanumeric(10), new BigDecimal(amount));
-        switch (completion) {
-            case REQUESTED:
-                break;
-            case TREATED:
-                mw.setTreated();
-                break;
-            case COMPLETE:
-                mw.setTreated();
-                mw.setComplete();
-                break;
-            case CANCELED:
-                mw.setCanceled();
-                break;
-            case REFUSED:
-                mw.setRefused();
-                break;
+        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
+        mw.authenticate(new AuthToken(admin));
+        
+        try {
+            switch (completion) {
+                case REQUESTED:
+                    break;
+                case TREATED:
+
+                    break;
+                case COMPLETE:
+                    mw.setTreated();
+                    mw.setComplete();
+                    break;
+                case CANCELED:
+                    mw.setCanceled();
+                    break;
+                case REFUSED:
+                    mw.setRefused();
+                    break;
+            }
+            mw.setTreated();
+        } catch (UnauthorizedPrivateAccessException e) {
+            throw new ShallNotPassException("Right error in creating money withdrawal", e);
         }
     }
 

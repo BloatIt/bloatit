@@ -242,5 +242,11 @@ public abstract class RightManager {
             return new UnauthorizedOperationException(action);
         }
     }
-
+    
+    public static class AdminOnly extends Accessor {
+        @Override
+        protected boolean can(Rights object, Action action) {
+            return false;
+        }
+    }
 }

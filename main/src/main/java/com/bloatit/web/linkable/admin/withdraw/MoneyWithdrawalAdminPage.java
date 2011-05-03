@@ -55,7 +55,7 @@ public class MoneyWithdrawalAdminPage extends AdminPage {
         return master;
     }
 
-    private HtmlElement generateMain() {
+    private HtmlElement generateMain() throws UnauthorizedOperationException {
         HtmlDiv master = new HtmlDiv();
         HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Money withdrawal administration"));
@@ -155,7 +155,7 @@ public class MoneyWithdrawalAdminPage extends AdminPage {
                     break;
             }
             String timeString = Context.getLocalizator().getDate(mw.getLastModificationDate()).toDateTimeString(FormatStyle.SHORT, FormatStyle.SHORT);
-            
+
             table.addLine(mw.getActor().getDisplayName(), mw.getAmountWithdrawn(), mw.getState(), mw.getIBAN(), form, timeString);
         }
 

@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.team;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -65,6 +66,9 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
             try {
                 team = invite.getTeam();
             } catch (final UnauthorizedPrivateReadOnlyAccessException e1) {
+                session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
+                return session.getLastVisitedPage();
+            } catch (UnauthorizedPublicAccessException e) {
                 session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
                 return session.getLastVisitedPage();
             }

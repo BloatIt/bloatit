@@ -22,6 +22,7 @@ import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
@@ -69,6 +70,8 @@ public final class MessageListPage extends LoggedPage {
                 p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
                         + invitation.getSender().getDisplayName() + "'");
             } catch (final UnauthorizedPrivateReadOnlyAccessException e) {
+                throw new ShallNotPassException(e);
+            } catch (UnauthorizedPublicAccessException e) {
                 throw new ShallNotPassException(e);
             }
 

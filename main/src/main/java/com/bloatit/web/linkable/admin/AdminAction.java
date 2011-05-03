@@ -19,6 +19,8 @@
 package com.bloatit.web.linkable.admin;
 
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
@@ -49,7 +51,11 @@ public abstract class AdminAction extends LoggedAction {
             session.notifyError(getRefusalReason());
             return new LoginPageUrl();
         }
-        return doProcessAdmin();
+        try {
+            return doProcessAdmin();
+        } catch (UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Right error in admin page", e);
+        }
     }
 
     @Override
@@ -69,5 +75,5 @@ public abstract class AdminAction extends LoggedAction {
      * 
      * @return the destination Url
      */
-    protected abstract Url doProcessAdmin();
+    protected abstract Url doProcessAdmin() throws UnauthorizedOperationException;
 }

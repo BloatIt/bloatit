@@ -82,9 +82,18 @@ public abstract class ElveosMail {
             addNamedParameter("amount", amount);
         }
     }
+    
+    public static class WithdrawalRequestedMail extends ElveosMail {
+        public WithdrawalRequestedMail(final String reference, final String amount, final String iban) {
+            super(new TemplateFile("withdrawal-requested.mail"), tr("elveos.org: Money withdrawal request"));
+            addNamedParameter("amount", amount);
+            addNamedParameter("iban", iban);
+            addNamedParameter("reference", reference);
+        }
+    }
 
-    public static class WithdrawalComplete extends ElveosMail {
-        public WithdrawalComplete(final String reference, final String amount, final String iban) {
+    public static class WithdrawalCompleteMail extends ElveosMail {
+        public WithdrawalCompleteMail(final String reference, final String amount, final String iban) {
             super(new TemplateFile("withdrawal-complete.mail"), tr("elveos.org: Money withdrawal complete"));
             addNamedParameter("amount", amount);
             addNamedParameter("iban", iban);

@@ -296,7 +296,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(MoneyWithdrawal model) {
-            return visitAbstract(model.getActor());
+            return visitAbstract(model.getActorUnprotected());
         }
     }
 
@@ -362,7 +362,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(MoneyWithdrawal model) {
-            return visitAbstract(model.getActor());
+            return visitAbstract(model.getActorUnprotected());
         }
     }
 }
