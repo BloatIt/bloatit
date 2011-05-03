@@ -55,7 +55,7 @@ public class DBRequests {
 
     /**
      * Make sure you test if the return is != null:
-     * 
+     *
      * <pre>
      * public static Team create() {
      *     DaoTeam dao = DBRequests.getById(DaoTeam.class, 12);
@@ -65,7 +65,7 @@ public class DBRequests {
      *     return new Team(dao);
      * }
      * </pre>
-     * 
+     *
      * @param <T>
      * @param persistant
      * @param id
@@ -100,7 +100,7 @@ public class DBRequests {
                                      .createQuery("select count(*) from " + meta.getEntityName())
                                      .uniqueResult()).intValue();
     }
-    
+
     public static PageIterable<DaoFeature> featuresOrderByPopularity() {
         return featuresOrderBy("popularity");
     }

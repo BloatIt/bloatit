@@ -48,10 +48,15 @@ public class AccountChargingProcess extends PaymentProcess {
             if (subPro.isSuccessful()) {
                 // Redirects to the contribution action which will perform the
                 // actual contribution
-                return new AccountPageUrl();
+
+                AccountPageUrl accountPageUrl = new AccountPageUrl();
+                if(getTeam() != null) {
+                    accountPageUrl.setTeam(getTeam());
+                }
+                return accountPageUrl;
             }
             unlock();
-            return new AccountPageUrl();
+            return new AccountChargingPageUrl(this);
         }
         return null;
     }

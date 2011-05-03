@@ -16,6 +16,8 @@
 //
 package com.bloatit.model;
 
+import org.hibernate.ObjectNotFoundException;
+
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoBankTransaction;
@@ -51,10 +53,16 @@ public class GenericConstructor {
         if (daoClass == null) {
             throw new ClassNotFoundException("Cannot find a dao class for the class " + clazz);
         }
-        final DaoIdentifiable byId = (DaoIdentifiable) DBRequests.getById(daoClass, id);
-        if (byId != null) {
-            return byId.accept(new DataVisitorConstructor());
+        try {
+            final DaoIdentifiable byId = (DaoIdentifiable) DBRequests.getById(daoClass, id);
+            if (byId != null) {
+                return byId.accept(new DataVisitorConstructor());
+            }
+        } catch(ObjectNotFoundException e) {
+            return null;
         }
+
+
         return null;
     }
 

@@ -56,7 +56,11 @@ public final class OfferAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     private final DateLocale expiryDate;
 
+
     @RequestParam(role = Role.POST)
+    @ParamConstraint(optionalErrorMsg = @tr("You must add a description to your offer."),
+                     min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
+                     max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final String description;
 
     @RequestParam(role = Role.POST)

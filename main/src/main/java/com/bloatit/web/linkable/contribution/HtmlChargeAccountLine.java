@@ -46,8 +46,10 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
     private final Localizator localizator;
     private final BigDecimal amountToCharge;
     private final Url recalculateTargetForm;
+    private final boolean isContributing;
 
-    public HtmlChargeAccountLine(final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
+    public HtmlChargeAccountLine(boolean isContributing, final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
+        this.isContributing = isContributing;
         this.amountToCharge = amountToCharge;
         this.actor = actor;
         this.recalculateTargetForm = recalculateTargetForm;
@@ -62,58 +64,6 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         addCell(new CategorieCell());
         addCell(new DescriptionCell());
         addCell(new AmountCell());
-        //
-        // BigDecimal initialAmount;
-        // try {
-        // initialAmount = actor.getInternalAccount().getAmount();
-        // } catch (UnauthorizedOperationException e) {
-        // throw new ShallNotPassException("Error getting internal account", e);
-        // }
-        //
-        // add(MembersTools.getMemberAvatarSmall(actor));
-        // add(new
-        // HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount).getSimpleEuroString()));
-        // add(new HtmlDiv("quotation_detail_line_money_image").add(new
-        // HtmlImage(new Image(WebConfiguration.getImgMoneyUpSmall()),
-        // "money up")));
-        // add(new
-        // HtmlDiv("quotation_detail_line_money").addText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString()));
-        //
-        // HtmlDiv internalAccount = new HtmlDiv("title");
-        // internalAccount.addText(tr("Internal account"));
-        // HtmlDiv internalAccountDetails = new HtmlDiv("details");
-        // internalAccountDetails.addText(actor.getDisplayName());
-        //
-        // add(new
-        // HtmlDiv("quotation_detail_line_categorie").add(internalAccount).add(internalAccountDetails));
-        // add(new
-        // HtmlDiv("quotation_detail_line_description").addText(tr("Load money in your internal account for future contributions.")));
-        //
-        // final HtmlDiv amountBlock;
-        // if (recalculateTargetForm == null) {
-        // amountBlock = new HtmlDiv("quotation_detail_line_amount");
-        // amountBlock.add(new
-        // HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amountToCharge)
-        // .getTwoDecimalEuroString()));
-        // } else {
-        // amountBlock = new HtmlDiv("quotation_detail_line_field");
-        // final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(),
-        // Method.GET);
-        //
-        // final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
-        // if (amountToCharge == null) {
-        // moneyField.setDefaultValue("0");
-        // } else {
-        // moneyField.setDefaultValue(amountToCharge.toPlainString());
-        // }
-        //
-        // final HtmlSubmit recalculate = new HtmlSubmit(tr("recalculate"));
-        //
-        // form.add(moneyField);
-        // form.add(recalculate);
-        // amountBlock.add(form);
-        // }
-        // add(amountBlock);
     }
 
     private class MemberAvatarCell extends HtmlTableCell {
@@ -138,7 +88,12 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
         public XmlNode getBody() {
             try {
                 BigDecimal initialAmount;
-                initialAmount = actor.getInternalAccount().getAmount();
+                if (isContributing) {
+                    initialAmount = BigDecimal.ZERO;
+                } else {
+                    initialAmount = actor.getInternalAccount().getAmount();
+                }
+
                 return new HtmlText(localizator.getCurrency(initialAmount).getSimpleEuroString());
             } catch (UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Error getting internal account", e);
@@ -157,7 +112,11 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
             try {
                 BigDecimal initialAmount;
-                initialAmount = actor.getInternalAccount().getAmount();
+                if (isContributing) {
+                    initialAmount = BigDecimal.ZERO;
+                } else {
+                    initialAmount = actor.getInternalAccount().getAmount();
+                }
                 return new HtmlText(localizator.getCurrency(initialAmount.add(amountToCharge)).getSimpleEuroString());
             } catch (UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Error getting internal account", e);
