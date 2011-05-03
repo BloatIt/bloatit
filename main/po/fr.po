@@ -2432,13 +2432,13 @@ msgid "The selected offer is the one with the more popularity."
 msgstr "L'offre sélectionnée est la plus populaire."
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:112
-#, java-format
+#, fuzzy, java-format
 msgid ""
 "This offer will be validated in about <0::>. After this time, the offer will "
 "go into development as soon as the requested amount is available ({0} left)."
 msgstr ""
 "Cette offre sera validée dans approximativement <0::>. Après cette durée, "
-"l'offre passer dans l'état \"en développement\" dès que le montant requis "
+"l''offre passer dans l''état \"en développement\" dès que le montant requis "
 "est disponible ({0} manquant)."
 
 #: com/bloatit/web/linkable/features/FeatureOfferListComponent.java:126

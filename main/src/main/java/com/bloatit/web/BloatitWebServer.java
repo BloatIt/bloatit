@@ -31,7 +31,9 @@ import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
 import com.bloatit.web.linkable.admin.ConfigurationAdminAction;
 import com.bloatit.web.linkable.admin.ConfigurationAdminPage;
+import com.bloatit.web.linkable.admin.DeclareHightlightedFeatureAction;
 import com.bloatit.web.linkable.admin.FeatureAdminPage;
+import com.bloatit.web.linkable.admin.HightlightedFeatureAdminPage;
 import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.linkable.admin.MilestoneAdminPage;
 import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
@@ -138,6 +140,7 @@ import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
+import com.bloatit.web.url.DeclareHightlightedFeatureActionUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureAdminPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
@@ -145,6 +148,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
+import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.KudosableAdminPageUrl;
@@ -197,6 +201,8 @@ import com.bloatit.web.url.TestPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
+
+
 
 public class BloatitWebServer extends WebProcessor {
 
@@ -322,6 +328,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(AdminHomePageUrl.getPageName())) {
             return new AdminHomePage(new AdminHomePageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(HightlightedFeatureAdminPageUrl.getPageName())) {
+            return new HightlightedFeatureAdminPage(new HightlightedFeatureAdminPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(AddAttachementPageUrl.getPageName())) {
             return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
@@ -468,6 +477,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(ModifyTeamActionUrl.getPageName())) {
             return new ModifyTeamAction(new ModifyTeamActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(DeclareHightlightedFeatureActionUrl.getPageName())) {
+            return new DeclareHightlightedFeatureAction(new DeclareHightlightedFeatureActionUrl(params, session.getParameters()));
         }
 
 

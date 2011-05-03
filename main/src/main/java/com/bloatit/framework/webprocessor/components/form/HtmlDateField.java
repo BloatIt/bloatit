@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.utils.RandomString;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
@@ -34,12 +35,12 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
     private final String locale;
 
     public HtmlDateField(final String name, final Locale userLocale) {
-        super(new DateInputBlock(userLocale.getLanguage()), name);
+        super(new DateInputBlock(userLocale.getLanguage(), "datepicker_"+new RandomString(10).nextString()), name);
         locale = userLocale.getLanguage();
     }
 
     public HtmlDateField(final String name, final String label, final Locale userLocale) {
-        super(new DateInputBlock(userLocale.getLanguage()), name, label);
+        super(new DateInputBlock(userLocale.getLanguage(), "datepicker_"+new RandomString(10).nextString()), name, label);
         locale = userLocale.getLanguage();
     }
 
@@ -59,7 +60,7 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
      * </p>
      * <p>
      * Example of options :
-     * 
+     *
      * <pre>
      * myDateField.addDatePickerOption(&quot;minDate&quot;, &quot;0&quot;); // Sets the minimum date to
      * // today
@@ -67,9 +68,9 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
      * // format to
      * // 2011-03-09
      * </pre>
-     * 
+     *
      * </p>
-     * 
+     *
      * @param name the name of the option
      * @param value the value of the option
      */
@@ -103,15 +104,15 @@ class DateInputBlock extends InputBlock {
     private PlaceHolderElement options;
     private boolean firstOption = true;
 
-    public DateInputBlock(final String languageCode) {
+    public DateInputBlock(final String languageCode, String id) {
         container = new PlaceHolderElement();
         input = new HtmlSimpleInput("text");
         input.addAttribute("autocomplete", "off");
-        input.setId("datepicker");
+        input.setId(id);
         script = new HtmlGenericElement("script");
         script.add(new XmlText("$.datepicker.setDefaults( $.datepicker.regional[ '" + languageCode + "' ] ); \n"));
         script.add(new XmlText("$(function() {\n" + //
-                "    $( \"#datepicker\" ).datepicker({ "));
+                "    $( \"#"+id+"\" ).datepicker({ "));
 
         script.add(options = new PlaceHolderElement());
 

@@ -51,7 +51,7 @@ public class AccountChargingProcess extends PaymentProcess {
                 return new AccountPageUrl();
             }
             unlock();
-            return new AccountPageUrl();
+            return new AccountChargingPageUrl(this);
         }
         return null;
     }

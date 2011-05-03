@@ -21,6 +21,7 @@ import java.util.Date;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.model.feature.FeatureImplementation;
 
 public final class HighlightFeature extends Identifiable<DaoHighlightFeature> {
@@ -62,12 +63,21 @@ public final class HighlightFeature extends Identifiable<DaoHighlightFeature> {
         return getDao().getActivationDate();
     }
 
+    public Date getDesactivationDate() {
+        return getDao().getDesactivationDate();
+    }
+
     public Feature getFeature() {
         return FeatureImplementation.create(getDao().getFeature());
     }
 
     public String getReason() {
         return getDao().getReason();
+    }
+
+    public boolean isActive() {
+        Date now = DateUtils.now();
+        return getActivationDate().before(now) && getDesactivationDate().after(now);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -78,5 +88,7 @@ public final class HighlightFeature extends Identifiable<DaoHighlightFeature> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
+
 
 }
