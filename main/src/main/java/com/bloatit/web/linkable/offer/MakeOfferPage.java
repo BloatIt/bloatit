@@ -129,6 +129,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(), Context.tr("Description"), 10, 80);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
+        descriptionInput.setComment(Context.tr("Describe your offer. This description must be accurate because it will be used to validate the conformity at the end of the developement."));
         offerForm.add(descriptionInput);
 
         // locale
