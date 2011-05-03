@@ -41,6 +41,7 @@ import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
+import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -308,6 +309,12 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
             element.add(new HtmlParagraph(tr(" Test it and report bugs.")));
             final HtmlLink link = new ReportBugPageUrl(feature.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
+            link.setCssClass("button");
+            element.add(link);
+        }
+
+        if(feature.getSelectedOffer().getAuthor().equals(Context.getSession().getAuthToken().getMember())) {
+            final HtmlLink link = new AddReleasePageUrl(feature.getSelectedOffer().getCurrentMilestone()).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);
         }
