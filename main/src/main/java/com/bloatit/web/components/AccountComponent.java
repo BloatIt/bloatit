@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
@@ -49,10 +50,12 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Member;
+import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane;
@@ -67,7 +70,7 @@ public class AccountComponent extends HtmlPageComponent {
         add(accountPage);
         accountPage.add(generateAccountSolde(team));
         accountPage.add(new HtmlTitle(tr("Account informations – {0}", team.getDisplayName()), 1));
-        accountPage.add(generateAccountMovementList(team.getContributions(), team.getBankTransactions()));
+        accountPage.add(generateAccountMovementList(team.getContributions(), team.getBankTransactions(), team.getMoneyWithdrawals()));
     }
 
     public AccountComponent(final Member me) throws UnauthorizedOperationException {
@@ -75,7 +78,8 @@ public class AccountComponent extends HtmlPageComponent {
         add(accountPage);
         accountPage.add(generateAccountSolde(me));
         accountPage.add(new HtmlTitle(tr("Account informations – {0}", me.getDisplayName()), 1));
-        accountPage.add(generateAccountMovementList(me.getContributions(), me.getBankTransactions()));
+        accountPage.add(generateAccountMovementList(me.getContributions(), me.getBankTransactions(), me.getMoneyWithdrawals()));
+
     }
 
     private HtmlElement generateAccountSolde(final Actor<?> loggedUser) {
@@ -98,14 +102,20 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
     private HtmlElement generateAccountMovementList(final PageIterable<Contribution> contributions,
-                                                    final PageIterable<BankTransaction> bankTransactions) {
+                                                    final PageIterable<BankTransaction> bankTransactions, PageIterable<MoneyWithdrawal> moneyWithdrawals) {
         final List<HtmlTableLine> lineList = new ArrayList<HtmlTableLine>();
         final Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
 
         try {
+
+            for (final MoneyWithdrawal moneyWithdrawal: moneyWithdrawals) {
+                sorter.add(new MoneyWithdrawalLine(moneyWithdrawal), moneyWithdrawal.getCreationDate());
+            }
+
             for (final Contribution contribution : contributions) {
                 sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
             }
+
             for (final BankTransaction bankTransaction : bankTransactions) {
                 if (bankTransaction.getValue().compareTo(BigDecimal.ZERO) >= 0) {
 
@@ -186,6 +196,61 @@ public class AccountComponent extends HtmlPageComponent {
             return title;
         }
     }
+
+
+    private static class MoneyWithdrawalLine extends HtmlTableLine {
+
+        private final MoneyWithdrawal moneyWithdrawal;
+
+        public MoneyWithdrawalLine(final MoneyWithdrawal moneyWithdrawal) throws UnauthorizedOperationException {
+            this.moneyWithdrawal = moneyWithdrawal;
+            addCell(new MoneyVariationCell(false));
+            addCell(new TitleCell(moneyWithdrawal.getCreationDate(), generateContributionTitle()));
+            addCell(new DescriptionCell(tr("Withdrawal summary"), generateContributionDescription()));
+            addCell(new MoneyCell(moneyWithdrawal.getAmountWithdrawn().negate()));
+        }
+
+        private HtmlDiv generateContributionDescription() throws UnauthorizedPrivateAccessException {
+            final HtmlDiv description = new HtmlDiv("description");
+
+            String statusString = "";
+            switch (moneyWithdrawal.getState()) {
+                case CANCELED:
+                    statusString = tr("Canceled");
+                    break;
+                case REFUSED:
+                    statusString = tr("Rejected");
+                    break;
+                case COMPLETE:
+                    statusString = tr("Complete");
+                    break;
+                case REQUESTED:
+                    statusString = tr("Requested");
+                    break;
+                case TREATED:
+                    statusString = tr("In progress");
+                    break;
+            }
+
+            description.add(new HtmlDefineParagraph(tr("IBAN: "), moneyWithdrawal.getIBAN()));
+            description.add(new HtmlDefineParagraph(tr("Reference: "), moneyWithdrawal.getReference()));
+            if(moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
+                PageNotFoundUrl cancelUrl = new PageNotFoundUrl();
+                HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)",statusString), cancelUrl.getHtmlLink());
+                description.add(new HtmlDefineParagraph(tr("Status: "),statusWithCancel));
+            } else {
+                description.add(new HtmlDefineParagraph(tr("Status: "),statusString));
+            }
+            return description;
+        }
+
+        private HtmlDiv generateContributionTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            title.addText(tr("Withdrew money"));
+            return title;
+        }
+    }
+
 
     private static class ChargeAccountLine extends HtmlTableLine {
 

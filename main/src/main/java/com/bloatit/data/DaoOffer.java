@@ -233,6 +233,13 @@ public class DaoOffer extends DaoKudosable {
     }
 
     /**
+     * @return the last milestone in the list of milestones.
+     */
+    public DaoMilestone getLastMilestone() {
+        return this.milestones.get(this.milestones.size() - 1);
+    }
+
+    /**
      * @return a cloned version of the expirationDate attribute.
      */
     public Date getExpirationDate() {
@@ -382,5 +389,4 @@ public class DaoOffer extends DaoKudosable {
         }
         return true;
     }
-
 }

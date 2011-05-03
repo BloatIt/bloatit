@@ -32,7 +32,7 @@ import com.bloatit.model.right.RgtActor;
 // TODO: Auto-generated Javadoc
 /**
  * The Class Actor.
- * 
+ *
  * @param <T> the Dao version of this model layer object.
  * @see DaoActor
  */
@@ -40,7 +40,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Instantiates a new actor.
-     * 
+     *
      * @param id the id
      */
     protected Actor(final T id) {
@@ -53,7 +53,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     /**
      * Gets the login. This method is not protected by the right manager because
      * we think it is not needed, and it make our code not readable.
-     * 
+     *
      * @return the login
      * @see DaoActor#getLogin()
      */
@@ -63,7 +63,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Gets the creation date of this {@link Actor}.
-     * 
+     *
      * @return the creation date
      * @see DaoActor#getDateCreation()
      */
@@ -76,7 +76,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * The internal account is the account we manage internally. Users can
      * add/get money to/from it, and can use this money to contribute on
      * softwares.
-     * 
+     *
      * @return the internal account
      * @throws UnauthorizedPrivateAccessException the unauthorized operation
      *             exception
@@ -90,7 +90,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Gets the external account.
-     * 
+     *
      * @return the external account
      * @throws UnauthorizedPrivateAccessException if you haven't the right to
      *             access the <code>ExtenralAccount</code> property.
@@ -102,7 +102,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Gets the bank transactions.
-     * 
+     *
      * @return all the bank transactions this actor has done.
      * @throws UnauthorizedPrivateAccessException if you haven't the right to
      *             access the <code>ExtenralAccount</code> property.
@@ -115,9 +115,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Returns the contributions done by this actor.
-     * 
+     *
      * @return the contributions done by this actor
-     * @throws UnauthorizedOperationException 
+     * @throws UnauthorizedOperationException
      */
     public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException  {
         tryAccess(new RgtActor.Contribution(), Action.READ);
@@ -125,6 +125,19 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     public abstract PageIterable<Contribution> doGetContributions()throws UnauthorizedOperationException;
+
+    /**
+     * Returns the money withdraw done by this actor.
+     *
+     * @return the witdraws done by this actor
+     * @throws UnauthorizedOperationException
+     */
+    public PageIterable<MoneyWithdrawal> getMoneyWithdrawals() throws UnauthorizedOperationException  {
+        tryAccess(new RgtActor.MoneyWithdrawal(), Action.READ);
+        return doGetMoneyWithdrawals();
+    }
+
+    public abstract PageIterable<MoneyWithdrawal> doGetMoneyWithdrawals()throws UnauthorizedOperationException;
 
     /**
      * @return the display name
@@ -141,17 +154,17 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can access date creation.
-     * 
+     *
      * @return true if you can access the DateCreation property.
      * @see Actor#getDateCreation()
      */
     public final boolean canAccessDateCreation() {
         return canAccess(new RgtActor.DateCreation(), Action.READ);
     }
-    
+
     /**
      * Tells if the authenticated user can get internal account.
-     * 
+     *
      * @return true if you can access the <code>InternalAccount</code> property.
      * @see Actor#getInternalAccount()
      * @see Actor#authenticate(AuthToken)
@@ -162,7 +175,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get external account.
-     * 
+     *
      * @return true if you can access the <code>ExternalAccount</code> property.
      */
     public final boolean canGetExternalAccount() {
@@ -171,7 +184,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get the bank transaction.
-     * 
+     *
      * @return true if you can access the <code>BankTransaction</code> property
      *         (READ right).
      */

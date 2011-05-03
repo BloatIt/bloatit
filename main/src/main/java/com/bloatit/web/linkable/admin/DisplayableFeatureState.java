@@ -25,7 +25,6 @@ public enum DisplayableFeatureState implements Displayable {
     PENDING(tr("Validate")), //
     PREPARING(tr("Pending")), //
     DEVELOPPING(tr("Developing")), //
-    INCOME(tr("Income")), //
     DISCARDED(tr("Discarded")), //
     FINISHED(tr("Finished")), //
     ;

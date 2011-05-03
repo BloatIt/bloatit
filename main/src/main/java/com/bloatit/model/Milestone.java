@@ -164,7 +164,7 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     }
 
     /**
-     * Validate the milestone after it has been relreased.
+     * Validate the milestone after it has been released.
      * 
      * @return true, if successful
      * @throws UnauthorizedPublicAccessException
@@ -172,7 +172,11 @@ public final class Milestone extends Identifiable<DaoMilestone> {
      */
     public boolean validate() throws UnauthorizedPublicAccessException {
         tryAccess(new RgtMilestone.State(), Action.WRITE);
-        return getDao().validate(false);
+        if (getDao().validate(false)) {
+            getOffer().notifyMilestoneIsValidated(this);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -187,7 +191,11 @@ public final class Milestone extends Identifiable<DaoMilestone> {
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
-        return getDao().validate(true);
+        if (getDao().validate(true)) {
+            getOffer().notifyMilestoneIsValidated(this);
+            return true;
+        }
+        return false;
     }
 
     /**

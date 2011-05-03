@@ -79,8 +79,15 @@ public class Sorter<T, U extends Comparable<U>> {
             if (o == null || o.getClass() != getClass()) {
                 return false;
             }
-            // FIXME : Implement HASHCODE PLEASE !
             return compareTo((SortEntry) o) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((sortKey == null) ? 0 : sortKey.hashCode());
+            return result;
         }
     }
 

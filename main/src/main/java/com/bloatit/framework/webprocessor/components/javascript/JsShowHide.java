@@ -67,7 +67,7 @@ public class JsShowHide {
 
         for (final HtmlBranch actuator : actuators) {
 
-            final String effectCall = "toggle( \"blind\")";
+            final String effectCall = "toggle( \"blind\", 200)";
             HtmlScript script = new HtmlScript();
 
             script.append("$(function() {\n" + "        function runEffect() {\n");

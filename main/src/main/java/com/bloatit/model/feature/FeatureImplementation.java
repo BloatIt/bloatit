@@ -29,6 +29,7 @@ import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
@@ -299,6 +300,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     private void inDevelopmentState() {
         if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().getAmount().compareTo(getDao().getContribution()) > 0) {
             throw new WrongStateException("Cannot be in development state, not enough money.");
+        }
+        if (getSelectedOffer().isFinished()) {
+            throw new BadProgrammerException("Cannot be in development state and have no milestone left.");
         }
         getDao().setFeatureState(FeatureState.DEVELOPPING);
         getSelectedOffer().getCurrentMilestone().setDevelopingUnprotected();

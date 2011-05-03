@@ -26,6 +26,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -49,6 +50,7 @@ import com.bloatit.web.url.MilestoneAdminPageUrl;
 public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMilestone, Milestone, MilestoneAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
+    @Optional("NOT_SELECTED")
     private final DisplayableMilestoneState milestoneState;
 
     private final MilestoneAdminPageUrl url;
