@@ -29,6 +29,10 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
+/**
+ * Page used by teams and or members to withdraw money from their internal
+ * account back to their physical bank account
+ */
 @ParamContainer("money/withdraw")
 public class WithdrawMoneyPage extends LoggedPage {
     private final WithdrawMoneyPageUrl url;
@@ -50,6 +54,9 @@ public class WithdrawMoneyPage extends LoggedPage {
         return master;
     }
 
+    /**
+     * Creates the form used to input the amount to withdraw
+     */
     private HtmlElement generateCore() {
         HtmlDiv master = new HtmlDiv();
         master.add(new HtmlTitle(1).addText(tr("Withdraw money")));

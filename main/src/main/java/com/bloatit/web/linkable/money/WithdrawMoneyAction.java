@@ -19,7 +19,9 @@ import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountPageUrl;
+import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
@@ -50,9 +52,15 @@ public class WithdrawMoneyAction extends LoggedAction {
 
     @Override
     protected Url doProcessRestricted(Member me) {
-        String ref = RandomStringUtils.randomAlphanumeric(4) + "-" + RandomStringUtils.randomAlphanumeric(10); 
-        new MoneyWithdrawal(me, IBAN, ref, amount);
-        return new AccountPageUrl();
+        String ref = RandomStringUtils.randomAlphanumeric(4) + "-" + RandomStringUtils.randomAlphanumeric(10);
+        new MoneyWithdrawal(actor, IBAN, ref, amount);
+        if (actor instanceof Member) {
+            return new AccountPageUrl();
+        } else {
+            TeamPageUrl teamPageUrl = new TeamPageUrl((Team) actor);
+            teamPageUrl.setActiveTabKey(TeamPage.ACCOUNT_TAB);
+            return teamPageUrl;
+        }
     }
 
     @Override
