@@ -19,8 +19,6 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -28,45 +26,26 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlList;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
-import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
-import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
-import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
-import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.Bug;
-import com.bloatit.model.Comment;
-import com.bloatit.model.Comment.ParentType;
-import com.bloatit.model.Contribution;
-import com.bloatit.model.Feature;
-import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
-import com.bloatit.model.Offer;
-import com.bloatit.model.Release;
 import com.bloatit.model.Team;
-import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
-import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
-import com.bloatit.web.components.activity.ActivityVisitor;
-import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.members.tabs.AccountTab;
+import com.bloatit.web.linkable.members.tabs.ActivityTab;
+import com.bloatit.web.linkable.members.tabs.InvitationsTab;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.BugPageUrl;
-import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
@@ -85,13 +64,25 @@ import com.bloatit.web.url.TeamPageUrl;
 public final class MemberPage extends MasterPage {
     private final MemberPageUrl url;
 
+    public final static String MEMBER_TAB_PANE = "tab";
+    public final static String INVITATIONS_TAB = "invitations";
+    public final static String ACTIVITY_TAB = "activity";
+    public final static String ACCOUNT_TAB = "account";
+
+
+    private ActivityTab activity;
+
+    @RequestParam(name = MEMBER_TAB_PANE)
+    @Optional(ACTIVITY_TAB)
+    private final String activeTabKey;
+
     @SuppressWarnings("unused")
     private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a member number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
-    
+
     @SuppressWarnings("unused")
     @RequestParam(name = "name", role = Role.PRETTY, generatedFrom = "member")
     @Optional("john-do")
@@ -109,12 +100,17 @@ public final class MemberPage extends MasterPage {
             this.myPage = true;
         }
         this.displayName = url.getDisplayName();
+        this.activeTabKey = url.getActiveTabKey();
     }
 
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
-        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final TwoColumnLayout layout = new TwoColumnLayout(false, url);
         layout.addLeft(generateMemberPageMain());
+
+        if (myPage) {
+            layout.addLeft(generateTabPane());
+        }
 
         // Buttons private message & invite in team
         if (myPage) {
@@ -226,190 +222,37 @@ public final class MemberPage extends MasterPage {
             throw new ShallNotPassException("Error while gathering user information", e);
         }
 
-        main.add(new HtmlClearer());
-
-        // Displaying list of user recent activity
-        final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
-        main.add(recent);
-
-        final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
-        recent.add(recentActivity);
-
-        final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
-        final MemberPageUrl clonedUrl = url.clone();
-        HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
-        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getPagedActivityUrl());
-        recentActivity.add(feed);
+        if (!myPage) {
+            // Displaying list of user recent activity
+            final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
+            main.add(recent);
+            recent.add(ActivityTab.generateActivities(member, url));
+        }
 
         return master;
     }
 
-    /**
-     * Paged renderer for the activity feed
-     */
-    private static final class ActivityRenderer implements HtmlRenderer<UserContent<? extends DaoUserContent>> {
-        public ActivityRenderer() {
-            super();
+    private HtmlElement generateTabPane() {
+        final HtmlDiv master = new HtmlDiv("member_tabs");
+
+        final MemberPageUrl secondUrl = new MemberPageUrl(member);
+        final HtmlTabBlock tabPane = new HtmlTabBlock(MEMBER_TAB_PANE, activeTabKey, secondUrl);
+        master.add(tabPane);
+
+        activity =  new ActivityTab(member, tr("Activity"), ACTIVITY_TAB, url);
+        tabPane.addTab(activity);
+        tabPane.addTab(new AccountTab(member, tr("Account"), ACCOUNT_TAB));
+        long nb;
+        if((nb = member.getInvitationCount()) > 0) {
+            tabPane.addTab(new InvitationsTab(member, tr("Invitations&nbsp;({0})",nb), INVITATIONS_TAB));
         }
 
-        @Override
-        public XmlNode generate(final UserContent<? extends DaoUserContent> content) {
-            return content.accept(new ActivityVisitor() {
-                @Override
-                public HtmlElement visit(final Translation model) {
-                    // TODO: After implementing correct translation stuff, do
-                    // something in here
-                    return new HtmlParagraph("translation");
-                }
 
-                @Override
-                public HtmlElement visit(final Kudos model) {
-                    return new HtmlParagraph("kudos");
-                }
-
-                @Override
-                public HtmlElement visit(final Contribution model) {
-                    final HtmlSpan contribSpan = new HtmlSpan("feed_contribution");
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("<0::Contributed>"), contribSpan);
-                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
-                }
-
-                @Override
-                public HtmlElement visit(final Feature model) {
-                    final HtmlSpan featureSpan = new HtmlSpan("feed_feature");
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Requested <0::feature>"), featureSpan);
-                    return generateFeatureFeedStructure(mixedText, model, model);
-                }
-
-                @Override
-                public HtmlElement visit(final Offer model) {
-                    final HtmlSpan offerSpan = new HtmlSpan("feed_offer");
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Made an <0::offer>"), offerSpan);
-                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
-                }
-
-                @Override
-                public HtmlElement visit(final Release model) {
-                    final HtmlSpan releaseSpan = new HtmlSpan("feed_release");
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Made a <0::release>"), releaseSpan);
-                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
-                }
-
-                @Override
-                public HtmlElement visit(final Bug model) {
-                    final HtmlSpan bugSpan = new HtmlSpan("feed_bug");
-                    final HtmlLink bugUrl = new BugPageUrl(model).getHtmlLink(model.getTitle());
-                    bugUrl.setCssClass("bug_link");
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Reported <0::bug> (<1::>)"), bugSpan, bugUrl);
-                    return generateFeatureFeedStructure(mixedText, model.getFeature(), model);
-                }
-
-                @Override
-                public HtmlElement visit(final FileMetadata model) {
-                    final HtmlSpan fileSpan = new HtmlSpan("feed_file");
-                    final HtmlMixedText mixedText = new HtmlMixedText(Context.tr("Uploaded a <0::file>"), fileSpan);
-                    final HtmlLink htmlLink = new FileResourceUrl(model).getHtmlLink(model.getFileName());
-                    final HtmlElement secondLine = generateFeedSecondLine(Context.tr("File: "), htmlLink);
-                    return generateFeedStructure(mixedText, secondLine, model);
-                    // return generateFeatureFeedStructure(mixedText,
-                    // model.getFeature(), model);
-                }
-
-                @Override
-                public HtmlElement visit(Comment model) {
-                    final HtmlSpan commentSpan = new HtmlSpan("feed_comment");
-                    HtmlMixedText mixedText;
-
-                    if (model.getParentType() == ParentType.COMMENT) {
-                        final Member commenter = model.getParentComment().getMember();
-                        HtmlLink commenterUrl;
-                        commenterUrl = new MemberPageUrl(commenter).getHtmlLink(commenter.getDisplayName());
-                        mixedText = new HtmlMixedText(Context.tr("Replied to a <0::comment> (from <1::>)"), commentSpan, commenterUrl);
-
-                        while (model.getParentType() == ParentType.COMMENT) {
-                            model = model.getParentComment();
-                        }
-
-                    } else {
-                        mixedText = new HtmlMixedText(Context.tr("<0::Commented>"), commentSpan);
-                    }
-
-                    switch (model.getParentType()) {
-                        case BUG:
-                            final HtmlLink link = new BugPageUrl(model.getParentBug()).getHtmlLink(model.getParentBug().getTitle());
-                            final HtmlElement secondLine = generateFeedSecondLine(Context.tr("Bug: "), link);
-                            return generateFeedStructure(mixedText, secondLine, model);
-                        case FEATURE:
-                            return generateFeatureFeedStructure(mixedText, model.getParentFeature(), model);
-                        case COMMENT:
-                        case RELEASE:
-                            // Nothing to do here
-                            break;
-                    }
-                    return new PlaceHolderElement();
-                }
-
-            });
-        }
-
-        /**
-         * Generates a second line of a feed
-         * 
-         * @param item the String to display at the start of the second line
-         * @param target the element to display after <code>item</code>
-         * @return the element to add as a second line
-         */
-        private HtmlElement generateFeedSecondLine(final String item, final HtmlElement target) {
-            return new HtmlDefineParagraph(item, target);
-        }
-
-        /**
-         * Generates a complete structure of a feed for elements that have a
-         * feature on their second line
-         * <p>
-         * This is a convenience method for
-         * {@link #generateFeedStructure(HtmlElement, HtmlElement, UserContentInterface)}
-         * that avoids having to create the feature second line
-         * </p>
-         * 
-         * @param firstLine the element to show on the first line
-         * @param feature the <code>feature</code> to display on the second line
-         * @param content the UserContent that originates everything, so we can
-         *            get its creation date
-         * @return the element to add in the feed
-         */
-        private HtmlElement generateFeatureFeedStructure(final HtmlElement firstLine, final Feature feature, final UserContentInterface content) {
-            final PlaceHolderElement ph = new PlaceHolderElement();
-            try {
-                ph.add(generateFeedSecondLine(Context.tr("Feature: "), FeaturesTools.generateFeatureTitle(feature)));
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Cannot access some feature information.", e);
-            }
-            return generateFeedStructure(firstLine, ph, content);
-        }
-
-        /**
-         * Creates a complete feed item to add to the feed
-         * 
-         * @param firstLine the first line of the feed item
-         * @param secondLine the second line of the feed item
-         * @param content the UserContent that originates everything, so we can
-         *            get its creation date
-         * @return the element to add in the feed
-         */
-        private HtmlElement generateFeedStructure(final HtmlElement firstLine, final HtmlElement secondLine, final UserContentInterface content) {
-            final HtmlDiv master = new HtmlDiv("feed_item");
-            master.add(new HtmlDiv("feed_item_title").add(firstLine));
-            final HtmlDiv secondAndThirdLine = new HtmlDiv("feed_content");
-            master.add(secondAndThirdLine);
-            secondAndThirdLine.add(new HtmlDiv("feed_item_description").add(secondLine));
-            final HtmlBranch dateBox = new HtmlDiv("feed_item_date");
-            secondAndThirdLine.add(dateBox);
-            final String dateString = Context.tr("Date: {0}", Context.getLocalizator().getDate(content.getCreationDate()).toString(FormatStyle.LONG));
-            dateBox.addText(dateString);
-            return master;
-        }
+        return master;
     }
+
+
+
 
     @Override
     protected String createPageTitle() {
