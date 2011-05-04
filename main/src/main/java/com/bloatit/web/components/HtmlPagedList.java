@@ -23,16 +23,15 @@ import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.url.HtmlPagedListUrlComponent;
 
 @ParamContainer(value = "pagedList", isComponent = true)
 public class HtmlPagedList<T> extends HtmlDiv {
 
-    private static final int NB_PAGES_RIGHT = 4;
-    private static final int NB_PAGES_CENTER = 3;
-    private static final int NB_PAGES_LEFT = 4;
+    private static final int NB_PAGES_RIGHT = 2;
+    private static final int NB_PAGES_TOTAL = 12;
+    private static final int NB_PAGES_LEFT = 2;
     private static final String CURRENT_PAGE_FIELD_NAME = "current_page";
     private static final String PAGE_SIZE_FIELD_NAME = "page_size";
 
@@ -81,45 +80,162 @@ public class HtmlPagedList<T> extends HtmlDiv {
     private HtmlElement generateLinksBar() {
         final HtmlSpan span = new HtmlSpan("pages_list");
         if (currentPage > 1) {
-            span.add(generateLink(currentPage - 1, tr("Previous")));
+            span.add(generateLink(currentPage - 1, tr("Previous"), true));
+        } else {
+            span.add(generateEmptyLongBlock());
         }
-        // first page
-        span.add(generateLink(1));
+
+
+        if(pageCount <= NB_PAGES_TOTAL) {
+            //Display all pages
+            for (int i = 1; i < pageCount+1; i++) {
+                span.add(generateLink(i, false));
+            }
+        } else {
+            // 3 cases:
+            //  - the current page is near to the first   1  2  3  4  5 -6- 7  8  ...   32 33 34
+            //  - the current page is near to the last    1  2  3 ...  27 28 29 -30- 31 32 33 34
+            //  - the current page is isolated            1  2  3 ...  9 10 -11- 12 ... 32 33 34
+
+            int slotForCenter = NB_PAGES_TOTAL - NB_PAGES_RIGHT - NB_PAGES_LEFT;
+
+
+            int maxSlotForLeft =  currentPage - 1 - NB_PAGES_LEFT;
+            int maxSlotForRight =  pageCount - currentPage - NB_PAGES_RIGHT;
+
+
+
+            int slotForLeft =  maxSlotForLeft;
+            int slotForRight =  maxSlotForRight;
+
+
+
+            if(slotForLeft <= (slotForCenter-1)/2) {
+                slotForRight = slotForCenter - 1  - slotForLeft;
+            } else if (slotForRight <= (slotForCenter-1)/2) {
+                slotForLeft = slotForCenter - 1  - slotForRight;
+            } else {
+                if(slotForLeft > (slotForCenter-1)/2) {
+                    slotForLeft = (slotForCenter-1)/2;
+                }
+                slotForRight = slotForCenter - 1  - slotForLeft;
+            }
+
+
+
+            boolean needLeftSpacer = true;
+            boolean needRightSpacer = true;
+            if(currentPage - slotForLeft -1 <= NB_PAGES_LEFT) {
+                needLeftSpacer = false;
+            }
+
+            if(currentPage + slotForRight   >=  pageCount - NB_PAGES_RIGHT) {
+                needRightSpacer = false;
+            }
+
+
+
+            if(needLeftSpacer) {
+                slotForLeft--;
+            }
+
+            if(needRightSpacer) {
+                slotForRight--;
+            }
+
+
+            //Begin
+            for (int i = 1; i < NB_PAGES_LEFT +1 ; i++) {
+                span.add(generateLink(i, false));
+            }
+
+
+            //Begin spacer
+            if(needLeftSpacer) {
+                span.add(generateShortBlock("…"));
+            }
+
+
+            for (int i = currentPage - slotForLeft; i < currentPage  + slotForRight+1 ; i++) {
+                span.add(generateLink(i, false));
+            }
+
+
+          //End spacer
+            if(needRightSpacer) {
+                span.add(generateShortBlock("…"));
+            }
+
+
+
+          //End
+            for (int i = pageCount-NB_PAGES_RIGHT+1; i < pageCount+1 ; i++) {
+                span.add(generateLink(i, false));
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+        /*// first page
+        span.add(generateLink(1, false));
+
         if (currentPage - NB_PAGES_RIGHT > 1) {
             span.addText("…");
         }
         // center pages
         for (int i = currentPage - NB_PAGES_CENTER; i < currentPage + NB_PAGES_CENTER; i++) {
             if (i > 1 && i < pageCount) {
-                span.add(generateLink(i));
+                span.add(generateLink(i, false));
             }
         }
         if (currentPage + NB_PAGES_LEFT < pageCount) {
             span.addText("…");
         }
         // Last page
-        span.add(generateLink(pageCount));
-
+        span.add(generateLink(pageCount, false));
+*/
         if (currentPage < pageCount) {
-            span.add(generateLink(currentPage + 1, tr("Next")));
+            span.add(generateLink(currentPage + 1, tr("Next"), true));
+        } else {
+            span.add(generateEmptyLongBlock());
         }
+
         return span;
     }
 
-    private XmlNode generateLink(final int i) {
+    private XmlNode generateLink(final int i, boolean longBlock) {
         final String iString = Integer.valueOf(i).toString();
-        return generateLink(i, iString);
+        return generateLink(i, iString, longBlock);
     }
 
-    private XmlNode generateLink(final int i, final String text) {
-        final String iString = Integer.valueOf(i).toString();
-        if (i != currentPage) {
+    private XmlNode generateLink(final int page, final String text, boolean longBlock) {
+        final String iString = Integer.valueOf(page).toString();
+        final String css = (longBlock ? "long_block" : "short_block");
+        if (page != currentPage) {
 
-            url.setCurrentPage(i);
+            url.setCurrentPage(page);
             url.setPageSize(pageSize);
 
-            return currentUrl.getHtmlLink(text);
+            return currentUrl.getHtmlLink(text).setCssClass(css);
         }
-        return new XmlText(iString);
+
+
+        return new HtmlSpan(css+"_active").addText(iString);
     }
+
+    private XmlNode generateEmptyLongBlock() {
+        return new HtmlSpan("long_block");
+    }
+
+    private XmlNode generateShortBlock(String text) {
+        return new HtmlSpan("short_block").addText(text);
+    }
+
 }

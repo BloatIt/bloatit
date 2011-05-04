@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
@@ -35,8 +34,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.UserContent;
-import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
 import com.bloatit.web.linkable.members.tabs.ActivityTab;
 import com.bloatit.web.linkable.members.tabs.InvitationsTab;
@@ -73,8 +70,6 @@ public final class MemberPage extends MasterPage {
     @Optional(ACTIVITY_TAB)
     private final String activeTabKey;
 
-    @SuppressWarnings("unused")
-    private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a member number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value%''."))
