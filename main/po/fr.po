@@ -3898,12 +3898,12 @@ msgstr ""
 "Public Licence.v3>."
 
 #: com/bloatit/web/pages/master/Footer.java:57
-#, java-format
+#, fuzzy, java-format
 msgid ""
 "The source code of elveos is available on gitorious.org, in the <0:: Bloatit "
 "public repository>. The current version is {0}."
 msgstr ""
-"Le code source d'elveos est disponible sur gitorious.org dans le <0:: dépôt "
+"Le code source d''elveos est disponible sur gitorious.org dans le <0:: dépôt "
 "public de Bloatit>. La version courante est {0}."
 
 #: com/bloatit/web/pages/master/Footer.java:60
