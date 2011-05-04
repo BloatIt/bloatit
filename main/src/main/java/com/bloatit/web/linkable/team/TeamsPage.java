@@ -26,9 +26,9 @@ import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
@@ -58,7 +58,7 @@ public final class TeamsPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
 
@@ -94,7 +94,7 @@ public final class TeamsPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return TeamsPage.generateBreadcrumb();
     }
 

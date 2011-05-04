@@ -18,8 +18,9 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -43,18 +44,18 @@ import com.bloatit.web.url.LoginPageUrl;
 public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
     private final Member member;
-    private final AuthToken authToken;
+    private final AuthenticatedUserToken authToken;
 
     public LoggedAction(final Url url) {
         super(url);
         this.meUrl = url;
-        this.authToken = (AuthToken) session.getAuthToken();
+        this.authToken = (AuthenticatedUserToken) session.getUserToken();
         this.member = authToken.getMember();
     }
 
     @Override
-    protected final Url doProcess(AuthToken authToken) {
-        if (!authToken.isAnonymous()) {
+    protected final Url doProcess(ElveosUserToken authToken) {
+        if (authToken.isAuthenticated()) {
             return doProcessRestricted(member);
         }
         session.notifyBad(getRefusalReason());
@@ -64,8 +65,8 @@ public abstract class LoggedAction extends ElveosAction {
     }
 
     @Override
-    protected final Url checkRightsAndEverything(AuthToken authToken) {
-        if (!authToken.isAnonymous()) {
+    protected final Url checkRightsAndEverything(ElveosUserToken authToken) {
+        if (authToken.isAuthenticated()) {
             return checkRightsAndEverything(member);
         }
 
@@ -95,7 +96,7 @@ public abstract class LoggedAction extends ElveosAction {
      * Called when some RequestParams contain erroneous parameters.
      */
     @Override
-    protected abstract Url doProcessErrors(AuthToken authToken);
+    protected abstract Url doProcessErrors(ElveosUserToken authToken);
 
     /**
      * <b>Do not forget to localize</p>

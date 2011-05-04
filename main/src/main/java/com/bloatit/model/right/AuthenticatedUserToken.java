@@ -24,24 +24,22 @@ import javassist.NotFoundException;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.utils.SecuredHash;
-import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.framework.webprocessor.context.User;
-import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
+import com.bloatit.framework.webprocessor.context.UserToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.model.visitor.AnonymousVisitor;
-import com.bloatit.model.visitor.LoggedVisitor;
 
 /**
  * An AuthToken is a token representing an authenticated user. You can use it to
  * tell a {@link RestrictedObject} class which user is using it.
  */
-public final class AuthToken implements AbstractAuthToken {
+public final class AuthenticatedUserToken implements ElveosUserToken {
     private Integer asTeamId;
-    private final Visitor visitor;
+    private final Integer memberId;
     private final UUID key;
 
     /**
@@ -50,7 +48,7 @@ public final class AuthToken implements AbstractAuthToken {
      * @throws NotFoundException if the login is not found or if the password is
      *             wrong.
      */
-    public AuthToken(final String login, final String password) throws NotFoundException {
+    public AuthenticatedUserToken(final String login, final String password) throws NotFoundException {
         final DaoMember tmp = DaoMember.getByLogin(login);
         if (tmp == null) {
             // Spend some time here.
@@ -72,8 +70,8 @@ public final class AuthToken implements AbstractAuthToken {
             throw new NotFoundException("Authentication with inactive or deleted account.");
         }
 
-        visitor = new LoggedVisitor(tmp.getId());
-        key = UUID.randomUUID();
+        this.key = UUID.randomUUID();
+        this.memberId = tmp.getId();
     }
 
     /**
@@ -83,18 +81,18 @@ public final class AuthToken implements AbstractAuthToken {
      * @param memberId
      * @throws NotFoundException
      */
-    public AuthToken(final int memberId) throws NotFoundException {
+    public AuthenticatedUserToken(final int memberId) throws NotFoundException {
         final User tmp = MemberManager.getById(memberId);
         if (tmp == null) {
             throw new NotFoundException("Identification failed");
         }
-        visitor = new LoggedVisitor(memberId);
-        key = UUID.randomUUID();
+        this.key = UUID.randomUUID();
+        this.memberId = memberId;
     }
 
-    public AuthToken(final Member member) {
-        visitor = new LoggedVisitor(member.getId());
-        key = UUID.randomUUID();
+    public AuthenticatedUserToken(final Member member) {
+        this.key = UUID.randomUUID();
+        this.memberId = member.getId();
     }
 
     /*
@@ -106,20 +104,12 @@ public final class AuthToken implements AbstractAuthToken {
         return key;
     }
 
+    @Override
     public Member getMember() {
-        return visitor.getMember();
+        return MemberManager.getById(memberId);
     }
 
-    /**
-     * If a transaction is active, make sure the member has an internal
-     * persistent dao.
-     * 
-     * @return the visitor that is authenticated by this token.
-     */
-    public Visitor getVisitor() {
-        return visitor;
-    }
-
+    @Override
     public void setAsTeam(final Team team) {
         if (team != null) {
             this.asTeamId = team.getId();
@@ -128,6 +118,7 @@ public final class AuthToken implements AbstractAuthToken {
         }
     }
 
+    @Override
     public Team getAsTeam() {
         if (asTeamId == null) {
             return null;
@@ -135,8 +126,8 @@ public final class AuthToken implements AbstractAuthToken {
         return TeamManager.getById(asTeamId);
     }
 
-    public boolean isAnonymous() {
-        return visitor.isAnonymous();
+    @Override
+    public boolean isAuthenticated() {
+        return true;
     }
-
 }

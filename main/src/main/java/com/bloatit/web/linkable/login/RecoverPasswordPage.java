@@ -29,9 +29,9 @@ import com.bloatit.framework.webprocessor.components.form.HtmlPasswordField;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -62,7 +62,7 @@ public class RecoverPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         Member member = MemberManager.getMemberByLogin(login);
 
         if (member == null || !member.getResetKey().equals(resetKey)) {
@@ -102,7 +102,7 @@ public class RecoverPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return generateBreadcrumb();
     }
 

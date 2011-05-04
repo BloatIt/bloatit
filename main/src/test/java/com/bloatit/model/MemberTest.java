@@ -34,7 +34,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessExcept
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 public class MemberTest extends ModelTestUnit {
 
@@ -47,7 +47,7 @@ public class MemberTest extends ModelTestUnit {
         daouser.setActivationState(ActivationState.ACTIVE);
         final Member user = Member.create(daouser);
 
-        user.authenticate(new AuthToken(user));
+        user.authenticate(new AuthenticatedUserToken(user));
         user.addToPublicTeam(TeamManager.getByName("publicGroup"));
         assertTrue(user.isInTeam(TeamManager.getByName("publicGroup")));
 
@@ -173,7 +173,7 @@ public class MemberTest extends ModelTestUnit {
         yo.setPassword("Coucou");
 
         try {
-            new AuthToken("Yoann", "Coucou");
+            new AuthenticatedUserToken("Yoann", "Coucou");
         } catch (final NotFoundException e) {
             fail();
         }

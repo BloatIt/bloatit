@@ -23,7 +23,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtContribution;
 
 /**
@@ -90,7 +90,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * 
      * @return true, if successful
      * @see #getAmount()
-     * @see Contribution#authenticate(AuthToken)
+     * @see Contribution#authenticate(AuthenticatedUserToken)
      */
     public boolean canAccessAmount() {
         return canAccess(new RgtContribution.Amount(), Action.READ);
@@ -101,7 +101,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * 
      * @return true, if successful
      * @see #getComment()
-     * @see Contribution#authenticate(AuthToken)
+     * @see Contribution#authenticate(AuthenticatedUserToken)
      */
     public boolean canAccessComment() {
         return canAccess(new RgtContribution.Comment(), Action.READ);
@@ -113,7 +113,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @return the amount.
      * @throws UnauthorizedOperationException if you do not have the right to
      *             access the <code>Amount</code> property.
-     * @see Contribution#authenticate(AuthToken)
+     * @see Contribution#authenticate(AuthenticatedUserToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
         tryAccess(new RgtContribution.Amount(), Action.READ);

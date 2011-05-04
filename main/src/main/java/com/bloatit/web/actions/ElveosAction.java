@@ -2,14 +2,14 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 
 public abstract class ElveosAction extends Action {
-    private final AuthToken authToken;
+    private final ElveosUserToken authToken;
 
     public ElveosAction(Url url) {
         super(url);
-        this.authToken = (AuthToken) session.getAuthToken();
+        this.authToken = (ElveosUserToken) session.getUserToken();
     }
 
     @Override
@@ -27,11 +27,11 @@ public abstract class ElveosAction extends Action {
         return doProcessErrors(authToken);
     }
 
-    protected abstract Url checkRightsAndEverything(AuthToken token);
+    protected abstract Url checkRightsAndEverything(ElveosUserToken token);
 
-    protected abstract Url doProcess(AuthToken token);
+    protected abstract Url doProcess(ElveosUserToken token);
 
-    protected abstract Url doProcessErrors(AuthToken token);
+    protected abstract Url doProcessErrors(ElveosUserToken token);
 
     protected abstract void transmitParameters();
 }

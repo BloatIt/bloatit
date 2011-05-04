@@ -43,7 +43,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Release;
 import com.bloatit.model.admin.MilestoneAdminListFactory;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.MilestoneAdminPageUrl;

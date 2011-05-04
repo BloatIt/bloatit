@@ -23,10 +23,10 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -92,7 +92,7 @@ public final class ReportBugAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         if (milestone != null) {
             return new ReportBugPageUrl(milestone.getOffer());
         }

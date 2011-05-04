@@ -56,7 +56,7 @@ import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtFeature;
 import com.bloatit.model.right.RgtOffer;
 
@@ -104,7 +104,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * @param locale the locale in which this feature is written
      * @param title the title of the feature
      * @param description the description of the feature
-     * @param software the software {@link FeatureManager#canCreate(AuthToken)}
+     * @param software the software {@link FeatureManager#canCreate(AuthenticatedUserToken)}
      *            to make sure you can create a new feature.
      * @see DaoFeature
      */

@@ -31,10 +31,10 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureList;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFeatureSummary;
 import com.bloatit.web.components.HtmlFeatureSummary.Compacity;
@@ -88,7 +88,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         // Search block
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -323,7 +323,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return FeatureListPage.generateBreadcrumb();
     }
 }

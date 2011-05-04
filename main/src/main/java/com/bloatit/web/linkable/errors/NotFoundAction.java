@@ -20,7 +20,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.NotFoundActionUrl;
 
@@ -32,18 +32,18 @@ public class NotFoundAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcess(AuthToken authToken) {
+    protected Url doProcess(ElveosUserToken authToken) {
         Context.getLocalizator().forceLanguageReset();
         return new PageNotFoundUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         // Doesn't happen
         return null;
     }

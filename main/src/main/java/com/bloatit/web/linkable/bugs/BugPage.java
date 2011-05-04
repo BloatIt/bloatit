@@ -38,9 +38,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeatureTabPane;
@@ -80,7 +80,7 @@ public final class BugPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         layout.addRight(new SideBarFeatureBlock(bug.getFeature(), authToken.getMember()));
@@ -198,7 +198,7 @@ public final class BugPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return BugPage.generateBreadcrumb(bug);
     }
 

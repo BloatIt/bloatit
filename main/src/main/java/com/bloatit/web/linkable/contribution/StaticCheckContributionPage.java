@@ -35,7 +35,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;

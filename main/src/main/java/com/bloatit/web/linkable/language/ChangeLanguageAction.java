@@ -26,7 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
@@ -45,7 +45,7 @@ public final class ChangeLanguageAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(AuthToken authToken) {
+    protected Url doProcess(ElveosUserToken authToken) {
         if (Arrays.asList(Locale.getISOLanguages()).contains(language)) {
             final Locale l = new Locale(language);
             Context.getLocalizator().forceLanguage(l);
@@ -56,12 +56,12 @@ public final class ChangeLanguageAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return new ChangeLanguagePageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
         return NO_ERROR; // Nothing else to check
     }
 

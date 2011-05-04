@@ -40,9 +40,11 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdown
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
@@ -100,9 +102,9 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        final Visitor me = authToken.getVisitor();
+        final Member me = authToken.getMember();
 
         layout.addLeft(generateTeamIDCard(me));
         layout.addLeft(generateMain(authToken));
@@ -143,14 +145,14 @@ public final class TeamPage extends ElveosPage {
         return contacts;
     }
 
-    private HtmlElement generateMain(AuthToken authToken) {
+    private HtmlElement generateMain(ElveosUserToken authToken) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
         final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, authToken.getVisitor()));
+        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, authToken.getMember()));
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }
@@ -166,7 +168,7 @@ public final class TeamPage extends ElveosPage {
      * @param me the connected member
      * @return the ID card
      */
-    private HtmlElement generateTeamIDCard(final Visitor me) {
+    private HtmlElement generateTeamIDCard(final Member me) {
         final HtmlDiv master = new HtmlDiv("padding_box");
         if (me.hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
@@ -247,7 +249,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return TeamPage.generateBreadcrumb(targetTeam);
     }
 

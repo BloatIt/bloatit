@@ -26,7 +26,7 @@ import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtActor;
 
 // TODO: Auto-generated Javadoc
@@ -167,7 +167,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      *
      * @return true if you can access the <code>InternalAccount</code> property.
      * @see Actor#getInternalAccount()
-     * @see Actor#authenticate(AuthToken)
+     * @see Actor#authenticate(AuthenticatedUserToken)
      */
     public final boolean canGetInternalAccount() {
         return canAccess(new RgtActor.InternalAccount(), Action.READ);

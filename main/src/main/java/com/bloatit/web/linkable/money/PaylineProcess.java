@@ -36,6 +36,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
@@ -43,7 +44,6 @@ import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
@@ -77,13 +77,13 @@ public class PaylineProcess extends WebProcess {
     }
 
     @Override
-    protected Url doProcess(AuthToken authToken) {
+    protected Url doProcess(ElveosUserToken authToken) {
         url.getParentProcess().addChildProcess(this);
         return new PaylineActionUrl(this);
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return session.getLastVisitedPage();
     }
 

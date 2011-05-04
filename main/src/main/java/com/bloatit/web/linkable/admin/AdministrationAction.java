@@ -29,12 +29,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.Loaders;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.UserContent;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -151,7 +151,7 @@ public class AdministrationAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return session.pickPreferredPage();
     }
 

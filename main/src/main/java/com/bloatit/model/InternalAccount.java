@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtInternalAccount;
 
 /**
@@ -62,7 +62,7 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
 
     /**
      * @return true if you can access the <code>Blocked</code> property.
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     public boolean canAccessBlocked() {
         return canAccess(new RgtInternalAccount.Blocked(), Action.READ);

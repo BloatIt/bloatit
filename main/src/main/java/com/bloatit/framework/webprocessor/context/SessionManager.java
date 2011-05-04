@@ -29,7 +29,7 @@ import javassist.NotFoundException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 /**
  * This class is thread safe (synchronized).
@@ -83,12 +83,12 @@ public final class SessionManager {
 
             for (final Entry<UUID, Session> session : activeSessions.entrySet()) {
 
-                if (session.getValue().isLogged()) {
+                if (session.getValue().getUserToken().isAuthenticated()) {
                     final StringBuilder sessionDump = new StringBuilder();
 
                     sessionDump.append(session.getValue().getKey().toString());
                     sessionDump.append(' ');
-                    sessionDump.append(session.getValue().getAuthToken().getMember().getId());
+                    sessionDump.append(session.getValue().getUserToken().getMember().getId());
                     sessionDump.append('\n');
 
                     fileOutputStream.write(sessionDump.toString().getBytes());
@@ -172,7 +172,7 @@ public final class SessionManager {
         final UUID uuidKey = UUID.fromString(key);
         final Session session = new Session(uuidKey);
         try {
-            session.setAuthToken(new AuthToken(memberId));
+            session.setAuthToken(new AuthenticatedUserToken(memberId));
         } catch (final NotFoundException e) {
             Log.framework().error("Session not found", e);
         }

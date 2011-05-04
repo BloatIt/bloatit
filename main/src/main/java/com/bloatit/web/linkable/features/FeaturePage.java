@@ -24,8 +24,8 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -78,7 +78,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         // The feature page is composed of 3 parts:
         // - The summary
         // - The tab panel
@@ -159,7 +159,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }

@@ -28,7 +28,7 @@ import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 public interface Feature extends KudosableInterface, Commentable {
 
@@ -73,7 +73,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#WRITE} right on the <code>Contribution</code>
      *             property.
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     Contribution addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
@@ -92,7 +92,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * @throws WrongStateException if the state is != from
      *             {@link FeatureState#PENDING} or
      *             {@link FeatureState#PREPARING}.
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     Offer
             addOffer(BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
@@ -105,7 +105,7 @@ public interface Feature extends KudosableInterface, Commentable {
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>DELETED</code> right on the <code>Offer</code>
      *             property.
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     void removeOffer(final Offer offer) throws UnauthorizedOperationException;
 

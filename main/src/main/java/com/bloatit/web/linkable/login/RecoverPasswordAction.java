@@ -30,9 +30,10 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
@@ -77,8 +78,8 @@ public class RecoverPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(AuthToken token) {
-        session.setAuthToken(new AuthToken(member));
+    protected Url doProcess(ElveosUserToken token) {
+        session.setAuthToken(new AuthenticatedUserToken(member));
         try {
             member.setPassword(newPassword);
         } catch (UnauthorizedOperationException e) {
@@ -89,7 +90,7 @@ public class RecoverPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken token) {
+    protected Url doProcessErrors(ElveosUserToken token) {
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(resetKey)) {
             session.notifyBad(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
@@ -98,7 +99,7 @@ public class RecoverPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken token) {
+    protected Url checkRightsAndEverything(ElveosUserToken token) {
         if (!newPassword.equals(checkNewPassword)) {
             session.notifyBad(Context.tr("Password doesn't match confirmation."));
             url.getNewPasswordParameter().getCustomMessages().add(new Message(Context.tr("New password doesn't match with confirmation.")));

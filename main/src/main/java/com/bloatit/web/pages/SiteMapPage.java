@@ -22,7 +22,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -57,7 +57,7 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
 
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -100,7 +100,7 @@ public final class SiteMapPage extends ElveosPage {
         HtmlList personalLinkList = new HtmlList();
         layout.addLeft(personalLinkList);
 
-        if(Context.getSession().isLogged()) {
+        if(Context.getSession().getUserToken().isAuthenticated()) {
             personalLinkList.add(new MemberPageUrl(authToken.getMember()).getHtmlLink(Context.tr("My page")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
@@ -137,7 +137,7 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return SiteMapPage.generateBreadcrumb();
     }
 

@@ -19,7 +19,7 @@ package com.bloatit.model.right;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
+import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 
@@ -30,7 +30,7 @@ import com.bloatit.framework.webprocessor.context.Session;
 public abstract class RestrictedObject implements RestrictedInterface {
 
     /** The token. */
-    private AuthToken token = null;
+    private AuthenticatedUserToken token = null;
 
     /**
      * Instantiates a new restricted object.
@@ -40,14 +40,14 @@ public abstract class RestrictedObject implements RestrictedInterface {
     }
 
     @Override
-    public void authenticate(final AuthToken token) {
+    public void authenticate(final AuthenticatedUserToken token) {
         this.token = token;
     }
 
     private void automaticAuthentication() {
         final Session session = Context.getSession();
-        if (token == null && session != null && session.isLogged()) {
-            authenticate((AuthToken) session.getAuthToken());
+        if (token == null && session != null && session.getUserToken().isAuthenticated()) {
+            authenticate((AuthenticatedUserToken) session.getUserToken());
         }
     }
 
@@ -58,7 +58,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * @throws UnauthorizedOperationException the unauthorized operation
      *             exception
      */
-    protected final AuthToken getAuthToken() throws UnauthorizedOperationException {
+    protected final AuthenticatedUserToken getAuthToken() throws UnauthorizedOperationException {
         automaticAuthentication();
         if (token != null) {
             return token;
@@ -71,7 +71,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * 
      * @return the auth token unprotected
      */
-    protected final AuthToken getAuthTokenUnprotected() {
+    protected final AuthenticatedUserToken getAuthTokenUnprotected() {
         automaticAuthentication();
         return token;
     }

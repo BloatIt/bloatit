@@ -31,7 +31,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -51,7 +51,7 @@ public final class ChangeLanguagePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateChangeLanguagePageMain());
         layout.addRight(new SideBarDocumentationBlock("change_language"));
@@ -93,7 +93,7 @@ public final class ChangeLanguagePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         final Breadcrumb br = new Breadcrumb();
         br.pushLink(new IndexPageUrl().getHtmlLink(Context.tr("Index")));
         br.pushLink(url.getHtmlLink(Context.tr("Change language")));

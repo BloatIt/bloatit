@@ -13,10 +13,10 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountPageUrl;
@@ -104,7 +104,7 @@ public class WithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         if (actor != null) {
             return new WithdrawMoneyPageUrl(actor);
         } else {

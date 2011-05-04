@@ -22,7 +22,7 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 public final class Software extends Identifiable<DaoSoftware> {
 
@@ -50,7 +50,7 @@ public final class Software extends Identifiable<DaoSoftware> {
     /**
      * Create a new software. The right management for creating a feature is
      * specific. (The Right management system is not working in this case). You
-     * have to use the {@link FeatureManager#canCreate(AuthToken)} to make sure
+     * have to use the {@link FeatureManager#canCreate(AuthenticatedUserToken)} to make sure
      * you can create a new feature.
      */
     public Software(final String name, final Member author, final Locale locale, final String title, final String description) {

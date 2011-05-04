@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
@@ -74,7 +74,7 @@ public final class ModifyBugAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcess(AuthToken authToken) {
+    protected Url doProcess(ElveosUserToken authToken) {
         final Level currentLevel = bug.getErrorLevel();
         final BugState currentState = bug.getState();
 
@@ -118,13 +118,13 @@ public final class ModifyBugAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return Context.getSession().getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken authToken) {
-        if (session.getAuthToken() == null) {
+    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+        if (session.getUserToken() == null) {
             session.notifyError(Context.tr("You must be logged in to modify a bug report."));
             return new ModifyBugPageUrl(bug);
         }

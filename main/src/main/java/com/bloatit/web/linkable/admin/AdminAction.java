@@ -60,7 +60,7 @@ public abstract class AdminAction extends LoggedAction {
 
     @Override
     protected final String getRefusalReason() {
-        if (session.isLogged()) {
+        if (session.getUserToken().isAuthenticated()) {
             return Context.tr("You must be logged as an admin to access this page");
         }
         return Context.tr("You must be logged to access an admin page");

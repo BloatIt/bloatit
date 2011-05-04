@@ -30,11 +30,11 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
@@ -192,7 +192,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return new ModifyTeamPageUrl(team);
     }
 

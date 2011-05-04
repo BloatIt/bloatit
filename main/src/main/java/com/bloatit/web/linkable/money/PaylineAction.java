@@ -8,8 +8,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.PaylineActionUrl;
 
@@ -35,7 +35,7 @@ public final class PaylineAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return Context.getSession().pickPreferredPage();
     }
 

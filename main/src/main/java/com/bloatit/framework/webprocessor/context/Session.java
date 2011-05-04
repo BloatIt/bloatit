@@ -31,8 +31,6 @@ import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
-import com.bloatit.model.right.AuthToken;
-import com.bloatit.model.visitor.AnonymousVisitor;
 import com.bloatit.web.url.IndexPageUrl;
 
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -54,24 +52,13 @@ import edu.emory.mathcs.backport.java.util.Collections;
  */
 public final class Session {
     private static final int SHA1_SIZE = 20;
-    public static AbstractAuthToken ANONYMOUS_TOKEN = new AbstractAuthToken() {
-        @Override
-        public UUID getKey() {
-            return null;
-        }
-
-        @Override
-        public User getMember() {
-            return null;
-        }
-    };
-
-    private final UUID key;
+    
     private long expirationTime;
+    private final UUID key;
 
     private final Deque<ErrorMessage> notificationList;
     private final SessionParameters parameters = new SessionParameters();
-    private AbstractAuthToken authToken;
+    private UserToken authToken;
 
     private UrlDump lastStablePage = null;
     private UrlDump targetPage = null;
@@ -95,7 +82,7 @@ public final class Session {
      */
     protected Session(final UUID id) {
         this.key = id;
-        authToken = ANONYMOUS_TOKEN;
+        authToken = null;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
@@ -105,24 +92,20 @@ public final class Session {
     }
 
     public synchronized void resetExpirationTime() {
-        if (isLogged()) {
+        if (authToken.isAuthenticated()) {
             expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration() * DateUtils.SECOND_PER_DAY;
         } else {
             expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionDefaultDuration() * DateUtils.SECOND_PER_DAY;
         }
     }
 
-    public synchronized void setAuthToken(final AbstractAuthToken token) {
+    public synchronized void setAuthToken(final UserToken token) {
         authToken = token;
         resetExpirationTime();
     }
 
-    public synchronized AbstractAuthToken getAuthToken() {
+    public synchronized UserToken getUserToken() {
         return authToken;
-    }
-
-    public synchronized boolean isLogged() {
-        return authToken != ANONYMOUS_TOKEN;
     }
 
     public synchronized boolean isExpired() {
@@ -240,7 +223,6 @@ public final class Session {
         if (!(param.getValue() == null && param.getStringValue() == null)) {
             parameters.add(param.getName(), param);
         }
-        // Maybe auto notify here ?
     }
 
     public final synchronized String createWebProcess(final WebProcess process) {

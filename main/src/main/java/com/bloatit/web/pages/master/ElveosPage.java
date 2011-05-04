@@ -42,7 +42,8 @@ import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUser;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -51,7 +52,7 @@ public abstract class ElveosPage extends Page {
     private HtmlBranch notifications;
     private final HtmlDiv notificationBlock;
     private final Session session;
-    private final AuthToken token;
+    private final AuthenticatedUserToken token;
     private final Localizator localizator;
 
     public ElveosPage(final Url url) {
@@ -59,7 +60,7 @@ public abstract class ElveosPage extends Page {
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
         session = Context.getSession();
-        token = (AuthToken) Context.getSession().getAuthToken();
+        token = (AuthenticatedUserToken) Context.getSession().getUserToken();
         localizator = Context.getLocalizator();
     }
 
@@ -74,14 +75,14 @@ public abstract class ElveosPage extends Page {
     // -----------------------------------------------------------------------
     // Template method pattern: Abstract methods
     // -----------------------------------------------------------------------
-    protected abstract HtmlElement createBodyContent(AuthToken authToken) throws RedirectException;
+    protected abstract HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException;
 
     protected abstract String createPageTitle();
 
-    protected abstract Breadcrumb createBreadcrumb(AuthToken authToken);
+    protected abstract Breadcrumb createBreadcrumb(ElveosUserToken authToken);
 
     // There is a default behavior here. You can overload it.
-    protected HtmlElement createBodyContentOnParameterError(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContentOnParameterError(ElveosUserToken authToken) throws RedirectException {
         throw new PageNotFoundException();
     }
 
@@ -123,7 +124,7 @@ public abstract class ElveosPage extends Page {
         header.add(headerContent);
         header.add(new HtmlClearer());
 
-        if (session.isLogged()) {
+        if (session.getUserToken().isAuthenticated()) {
             headerContent.add(new SessionBar(token.getMember()));
         } else {
             headerContent.add(new SessionBar());

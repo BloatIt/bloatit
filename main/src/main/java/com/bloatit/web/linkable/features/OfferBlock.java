@@ -275,7 +275,7 @@ public final class OfferBlock extends HtmlDiv {
     }
 
     private boolean isDeveloper() {
-        if (!Context.getSession().isLogged()) {
+        if (!Context.getSession().getUserToken().isAuthenticated()) {
             return false;
         }
         final Offer selectedOffer = offer.getFeature().getSelectedOffer();
@@ -285,7 +285,7 @@ public final class OfferBlock extends HtmlDiv {
         if (selectedOffer.getAsTeam() != null) {
             return me.hasModifyTeamRight(selectedOffer.getAsTeam());
         }
-        if (Context.getSession().getAuthToken().getMember().equals(selectedOffer.getMember())) {
+        if (Context.getSession().getUserToken().getMember().equals(selectedOffer.getMember())) {
             return true;
         }
         return false;

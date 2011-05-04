@@ -50,7 +50,7 @@ import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;

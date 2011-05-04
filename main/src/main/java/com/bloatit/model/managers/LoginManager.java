@@ -22,8 +22,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import javassist.NotFoundException;
 
-import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.framework.webprocessor.context.UserToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 /**
  * The Class LoginManager is an utility class containing static methods.
@@ -32,7 +32,7 @@ public final class LoginManager {
 
     // TODO: clear
     /** The Constant AUTH_TOKEN_LIST. */
-    private static final ConcurrentMap<UUID, AuthToken> AUTH_TOKEN_LIST = new ConcurrentHashMap<UUID, AuthToken>();
+    private static final ConcurrentMap<UUID, AuthenticatedUserToken> AUTH_TOKEN_LIST = new ConcurrentHashMap<UUID, AuthenticatedUserToken>();
 
     /**
      * Desactivated constructor on utility class.
@@ -42,16 +42,16 @@ public final class LoginManager {
     }
 
     /**
-     * Create an {@link AuthToken} using a login and a password.
+     * Create an {@link AuthenticatedUserToken} using a login and a password.
      * 
      * @param login the login
      * @param password the password
-     * @return the new {@link AuthToken} or <code>null</code> if the
+     * @return the new {@link AuthenticatedUserToken} or <code>null</code> if the
      *         login/password does not match any user.
      */
-    public static AbstractAuthToken loginByPassword(final String login, final String password) {
+    public static UserToken loginByPassword(final String login, final String password) {
         try {
-            final AuthToken token = new AuthToken(login, password);
+            final AuthenticatedUserToken token = new AuthenticatedUserToken(login, password);
             AUTH_TOKEN_LIST.put(token.getKey(), token);
             return token;
         } catch (final NotFoundException e) {
@@ -60,12 +60,12 @@ public final class LoginManager {
     }
 
     /**
-     * Gets an {@link AuthToken} using its key.
+     * Gets an {@link AuthenticatedUserToken} using its key.
      * 
      * @param key the unique key
-     * @return the found {@link AuthToken} or <code>null</code> if not found.
+     * @return the found {@link AuthenticatedUserToken} or <code>null</code> if not found.
      */
-    public static AbstractAuthToken getByKey(final String key) {
+    public static UserToken getByKey(final String key) {
         return AUTH_TOKEN_LIST.get(UUID.fromString(key));
     }
 }

@@ -18,9 +18,9 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.SignUpActionUrl;
@@ -75,7 +75,7 @@ public final class SignUpAction extends ElveosAction {
     }
 
     @Override
-    protected final Url doProcess(AuthToken token) {
+    protected final Url doProcess(ElveosUserToken token) {
 
         final Locale locale = new Locale(lang, country);
         final Member m = new Member(login, password, email, locale);
@@ -94,12 +94,12 @@ public final class SignUpAction extends ElveosAction {
     }
 
     @Override
-    protected final Url doProcessErrors(AuthToken token) {
+    protected final Url doProcessErrors(ElveosUserToken token) {
         return new SignUpPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken token) {
+    protected Url checkRightsAndEverything(ElveosUserToken token) {
         if (MemberManager.loginExists(login)) {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
             url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login already used.")));

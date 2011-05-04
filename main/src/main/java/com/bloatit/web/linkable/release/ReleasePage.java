@@ -24,9 +24,9 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -52,7 +52,7 @@ public final class ReleasePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         // TODO directly use the authToken
         layout.addRight(new SideBarFeatureBlock(release.getFeature(), authToken.getMember()));
@@ -89,7 +89,7 @@ public final class ReleasePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return ReleasePage.generateBreadcrumb(release);
     }
 

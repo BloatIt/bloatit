@@ -29,9 +29,9 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LostPasswordActionUrl;
@@ -60,7 +60,7 @@ public class LostPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(AuthToken authToken) {
+    protected Url doProcess(ElveosUserToken authToken) {
         //TODO check all template at startup
         final TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
@@ -84,7 +84,7 @@ public class LostPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
         m = MemberManager.getMemberByEmail(email);
         if (m == null) {
             session.notifyBad(Context.tr("No account match this email address. Please input another one."));
@@ -94,7 +94,7 @@ public class LostPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return new LostPasswordPageUrl();
     }
 

@@ -25,7 +25,7 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtKudosable;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface {
@@ -244,7 +244,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     @Override
     public int getUserVoteValue() {
-        final AuthToken authToken = getAuthTokenUnprotected();
+        final AuthenticatedUserToken authToken = getAuthTokenUnprotected();
 
         if (getAuthTokenUnprotected() == null) {
             return 0;

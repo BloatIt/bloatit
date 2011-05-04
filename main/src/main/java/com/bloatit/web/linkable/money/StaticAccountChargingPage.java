@@ -33,7 +33,7 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlPayBlock;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;

@@ -24,7 +24,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
@@ -49,7 +49,7 @@ public final class PaylineReturnAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(AuthToken authToken) {
+    protected Url doProcess(ElveosUserToken authToken) {
         if (ack.equals("ok")) {
             try {
                 process.validatePayment(token);
@@ -67,12 +67,12 @@ public final class PaylineReturnAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return Context.getSession().pickPreferredPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
         return NO_ERROR; // Nothing else to check
     }
 

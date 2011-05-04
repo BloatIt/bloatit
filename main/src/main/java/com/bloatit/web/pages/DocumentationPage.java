@@ -25,7 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer.DocumentationType;
 import com.bloatit.web.pages.master.BoxLayout;
@@ -67,7 +67,7 @@ public final class DocumentationPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(url);
         final BoxLayout box = new BoxLayout();
         final HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
@@ -86,7 +86,7 @@ public final class DocumentationPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         if (docTarget.equals(DEFAULT_DOC)) {
             return DocumentationPage.generateBreadcrumb();
         }

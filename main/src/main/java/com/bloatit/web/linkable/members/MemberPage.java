@@ -45,6 +45,7 @@ import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Comment.ParentType;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Kudos;
@@ -55,7 +56,6 @@ import com.bloatit.model.Team;
 import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
@@ -104,7 +104,7 @@ public final class MemberPage extends ElveosPage {
         super(url);
         this.url = url;
         this.member = url.getMember();
-        if (!getSession().isLogged() || !member.equals(getSession().getAuthToken().getMember())) {
+        if (!getSession().getUserToken().isAuthenticated() || !member.equals(getSession().getUserToken().getMember())) {
             this.myPage = false;
         } else {
             this.myPage = true;
@@ -113,7 +113,7 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
 
@@ -423,7 +423,7 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return MemberPage.generateBreadcrumb(member);
     }
 

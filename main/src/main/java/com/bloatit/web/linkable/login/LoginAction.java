@@ -17,12 +17,12 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
-import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.AnonymousUserToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.managers.LoginManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -53,8 +53,8 @@ public final class LoginAction extends ElveosAction {
     }
 
     @Override
-    public Url doProcess(AuthToken authToken) {
-        AbstractAuthToken token = null;
+    public Url doProcess(ElveosUserToken authToken) {
+        UserToken token = null;
         token = LoginManager.loginByPassword(login.trim(), password);
 
         if (token != null) {
@@ -64,7 +64,7 @@ public final class LoginAction extends ElveosAction {
             return session.pickPreferredPage();
         }
 
-        session.setAuthToken(Session.ANONYMOUS_TOKEN);
+        session.setAuthToken(AnonymousUserToken.TOKEN);
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
         url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your login.")));
@@ -74,12 +74,12 @@ public final class LoginAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(AuthToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
         return NO_ERROR; // Nothing else to check
     }
 

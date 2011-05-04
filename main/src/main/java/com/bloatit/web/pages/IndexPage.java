@@ -28,13 +28,13 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.model.managers.ReleaseManager;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.components.MoneyDisplayComponent;
@@ -62,7 +62,7 @@ public final class IndexPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
@@ -172,7 +172,7 @@ public final class IndexPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
         return generateBreadcrumb();
     }
 }

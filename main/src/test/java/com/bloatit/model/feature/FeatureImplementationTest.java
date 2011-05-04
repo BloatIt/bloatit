@@ -51,7 +51,7 @@ import com.bloatit.model.ModelTestUnit;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 public class FeatureImplementationTest extends ModelTestUnit {
 
@@ -347,7 +347,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         }
 
         try {
-            feature.authenticate(new AuthToken("admin", "admin"));
+            feature.authenticate(new AuthenticatedUserToken("admin", "admin"));
             feature.removeOffer(feature.getSelectedOffer());
             assertTrue(true);
         } catch (final UnauthorizedOperationException e) {

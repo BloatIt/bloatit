@@ -21,13 +21,13 @@ import org.junit.Before;
 
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.webprocessor.ModelAccessor;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 public class ModelTestUnit {
-    protected AuthToken yoAuthToken;
-    protected AuthToken tomAuthToken;
-    protected AuthToken fredAuthToken;
-    protected AuthToken loser;
+    protected AuthenticatedUserToken yoAuthToken;
+    protected AuthenticatedUserToken tomAuthToken;
+    protected AuthenticatedUserToken fredAuthToken;
+    protected AuthenticatedUserToken loser;
     
     private static boolean firstInit = true;
     protected static SimpleTestDB db;
@@ -41,10 +41,10 @@ public class ModelTestUnit {
             firstInit = false;
         }
         ModelAccessor.open();
-        yoAuthToken = new AuthToken("Yoann", "plop");
-        tomAuthToken = new AuthToken("Thomas", "password");
-        fredAuthToken = new AuthToken("Fred", "other");
-        loser = new AuthToken("loser", "loser");
+        yoAuthToken = new AuthenticatedUserToken("Yoann", "plop");
+        tomAuthToken = new AuthenticatedUserToken("Thomas", "password");
+        fredAuthToken = new AuthenticatedUserToken("Fred", "other");
+        loser = new AuthenticatedUserToken("loser", "loser");
     }
 
     @After

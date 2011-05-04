@@ -36,9 +36,9 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLine
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -79,7 +79,7 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(AuthToken authToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(ElveosUserToken authToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {

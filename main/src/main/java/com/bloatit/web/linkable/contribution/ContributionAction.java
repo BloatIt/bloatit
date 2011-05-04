@@ -20,9 +20,9 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CheckContributionPageUrl;
@@ -86,7 +86,7 @@ public final class ContributionAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return new CheckContributionPageUrl(process);
     }
 

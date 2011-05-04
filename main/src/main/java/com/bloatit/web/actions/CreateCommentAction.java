@@ -23,9 +23,9 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Commentable;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
@@ -80,7 +80,7 @@ public final class CreateCommentAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(AuthToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken authToken) {
         return redirectWithError();
     }
 

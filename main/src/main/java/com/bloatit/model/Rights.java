@@ -3,8 +3,8 @@ package com.bloatit.model;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.framework.webprocessor.context.UserToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RestrictedObject;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
 
@@ -37,13 +37,13 @@ public class Rights {
     }
 
     private final OwningState owningState;
-    private final AuthToken token;
+    private final AuthenticatedUserToken token;
     private Team currentTeam;
 
-    public Rights(final AuthToken token, final IdentifiableInterface identifiable) {
+    public Rights(final AuthenticatedUserToken token, final IdentifiableInterface identifiable) {
         this.token = token;
         currentTeam = null;
-        if (token == null || token.isAnonymous()) {
+        if (token == null || !token.isAuthenticated()) {
             owningState = OwningState.NOBODY;
         } else {
             if (token.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {

@@ -44,12 +44,12 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
 public class MembersTab extends HtmlTab {
     private final Team team;
     private final Session session = Context.getSession();
-    private final Visitor vistor;
+    private final Member vistor;
 
-    public MembersTab(final Team team, final String title, final String tabKey, Visitor vistor) {
+    public MembersTab(final Team team, final String title, final String tabKey, Member member) {
         super(title, tabKey);
         this.team = team;
-        this.vistor = vistor;
+        this.vistor = member;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class MembersTab extends HtmlTab {
         private final PageIterable<Member> members;
         private Member member;
         private Iterator<Member> iterator;
-        private Visitor visitor;
+        private Member visitor;
         private static final int CONSULT = 1;
         private static final int TALK = 2;
         private static final int MODIFY = 4;
@@ -91,10 +91,10 @@ public class MembersTab extends HtmlTab {
         private static final int BANK = 5;
         private static final int PROMOTE = 6;
 
-        public MyTableModel(final PageIterable<Member> members, Visitor visitor) {
+        public MyTableModel(final PageIterable<Member> members, Member member2) {
             this.members = members;
-            if (session.getAuthToken() != null) {
-                this.visitor = visitor;
+            if (session.getUserToken() != null) {
+                this.visitor = member2;
             }
             iterator = members.iterator();
         }
@@ -156,7 +156,7 @@ public class MembersTab extends HtmlTab {
             final PlaceHolderElement ph = new PlaceHolderElement();
 
             if (right == UserTeamRight.CONSULT) {
-                if (member.canBeKickFromTeam(team, visitor.getMember())) {
+                if (member.canBeKickFromTeam(team, visitor)) {
                     if (member.equals(visitor)) { // FIXME : Invalid equals ?
                         ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Leave")));
                     } else {
@@ -164,9 +164,9 @@ public class MembersTab extends HtmlTab {
                     }
                 }
             } else {
-                if (team.canChangeRight(visitor.getMember(), member, right, true)) {
+                if (team.canChangeRight(visitor, member, right, true)) {
                     ph.add(new GiveRightActionUrl(team, member, right, true).getHtmlLink(Context.tr("Grant")));
-                } else if (team.canChangeRight(visitor.getMember(), member, right, false)) {
+                } else if (team.canChangeRight(visitor, member, right, false)) {
                     ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Remove")));
                 }
             }

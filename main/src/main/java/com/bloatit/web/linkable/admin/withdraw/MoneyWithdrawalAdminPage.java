@@ -21,7 +21,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.managers.MoneyWithdrawalManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.linkable.admin.AdminPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.AdminHomePageUrl;

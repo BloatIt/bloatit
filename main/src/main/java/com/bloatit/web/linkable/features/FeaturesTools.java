@@ -129,7 +129,7 @@ public class FeaturesTools {
             float myProgressValue = 0;
             float futureProgressValue = 0;
 
-            if (Context.getSession().isLogged()) {
+            if (Context.getSession().getUserToken().isAuthenticated()) {
                 myProgressValue = feature.getMemberProgression(me);
                 if (myProgressValue > 0.0f && myProgressValue < 5f) {
                     myProgressValue = 5f;
