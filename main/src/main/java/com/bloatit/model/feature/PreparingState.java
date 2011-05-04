@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.model.Offer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PreparingState.
  */

@@ -29,7 +29,6 @@ import org.hibernate.Session;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
-// TODO: Auto-generated Javadoc
 /**
  * An external Account is our vision of a "real" bank account.
  */

@@ -135,13 +135,11 @@ public class UrlParameter<T, U> extends UrlNode {
                 final StringBuilder sb = new StringBuilder();
                 @SuppressWarnings("rawtypes") final List casted = List.class.cast(this.value);
                 for (final String aValue : httpParam) {
-                    // TODO make me works !
                     sb.append('&').append(getName()).append('=').append(aValue);
                     casted.add(Loaders.fromStr(description.getConvertInto(), aValue));
                 }
                 strValue = sb.toString();
             } else {
-                // TODO make sure this is working
                 strValue = httpParam.getSimpleValue();
                 if (value == null || getValueClass().isAssignableFrom(value.getClass())) {
                     setValueUnprotected((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));

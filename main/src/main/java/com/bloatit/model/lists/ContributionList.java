@@ -27,6 +27,6 @@ import com.bloatit.model.Contribution;
 public final class ContributionList extends ListBinder<Contribution, DaoContribution> {
     public ContributionList(final PageIterable<DaoContribution> daoCollection) {
         super(daoCollection);
-        // TODO Auto-generated constructor stub
+        // ras
     }
 }

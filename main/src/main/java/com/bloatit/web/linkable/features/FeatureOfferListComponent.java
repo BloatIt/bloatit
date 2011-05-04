@@ -12,6 +12,7 @@
 package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
+import static com.bloatit.framework.webprocessor.context.Context.trn;
 
 import java.math.BigDecimal;
 
@@ -70,12 +71,12 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         switch (feature.getFeatureState()) {
             case PENDING: {
-                offersBlock.add(new HtmlTitle(Context.tr("No offer"), 1));
+                offersBlock.add(new HtmlTitle(tr("No offer"), 1));
                 final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
                 offersBlock.add(block);
                 block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The first offer is selected by default.")));
 
-                final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(Context.tr("Make an offer"));
+                final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(tr("Make an offer"));
                 link.setCssClass("button");
 
                 final HtmlDiv noOffer = new HtmlDiv("no_offer_block");
@@ -87,7 +88,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
                 break;
             case PREPARING: {
-                offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
+                offersBlock.add(new HtmlTitle(tr("Selected offer"), 1));
 
                 // Selected
                 final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
@@ -127,7 +128,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 }
 
                 // UnSelected
-                offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
+                offersBlock.add(new HtmlTitle(trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
                 final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
                 offersBlock.add(unselectedBlock);
                 unselectedBlock.addInLeftColumn(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
@@ -142,7 +143,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
             }
             case DEVELOPPING:
                 final BicolumnOfferBlock block;
-                offersBlock.add(new HtmlTitle(Context.tr("Offer in development"), 1));
+                offersBlock.add(new HtmlTitle(tr("Offer in development"), 1));
                 offersBlock.add(block = new BicolumnOfferBlock(true));
                 block.addInLeftColumn(new HtmlParagraph(tr("This offer is in development. You can discuss about it in the comments.")));
                 if (selectedOffer != null && selectedOffer.hasRelease()) {
@@ -154,7 +155,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
                 break;
             case FINISHED:
-                offersBlock.add(new HtmlTitle(Context.tr("Finished offer"), 1));
+                offersBlock.add(new HtmlTitle(tr("Finished offer"), 1));
                 offersBlock.add(block = new BicolumnOfferBlock(true));
                 block.addInLeftColumn(new HtmlParagraph(tr("This offer is finished.")));
                 block.addInRightColumn(new OfferBlock(selectedOffer, true));
@@ -162,7 +163,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 generateOldOffersList(offers, nbUnselected, selectedOffer, offersBlock);
                 break;
             case DISCARDED:
-                offersBlock.add(new HtmlTitle(Context.tr("Feature discarded ..."), 1));
+                offersBlock.add(new HtmlTitle(tr("Feature discarded ..."), 1));
                 break;
             default:
                 break;
@@ -173,10 +174,10 @@ public class FeatureOfferListComponent extends HtmlDiv {
     private void
             generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock) {
         // UnSelected
-        offersBlock.add(new HtmlTitle(Context.trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
+        offersBlock.add(new HtmlTitle(trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
         final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
         offersBlock.add(unselectedBlock);
-        unselectedBlock.addInLeftColumn(new HtmlParagraph(Context.tr("These offers have not been selected and will never be developed.")));
+        unselectedBlock.addInLeftColumn(new HtmlParagraph(tr("These offers have not been selected and will never be developed.")));
 
         for (final Offer offer : offers) {
             if (offer != selectedOffer) {
@@ -232,7 +233,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     final HtmlDiv offerPriceBlock = new HtmlDiv("offer_price_block");
                     {
                         final HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
-                        priceLabel.addText(Context.tr("Total price: "));
+                        priceLabel.addText(tr("Total price: "));
                         offerPriceBlock.add(priceLabel);
 
                         final HtmlSpan price = new HtmlSpan("offer_block_price");
@@ -245,7 +246,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     authorPara.setCssClass("offer_block_para");
                     {
                         final HtmlSpan authorLabel = new HtmlSpan("offer_block_label");
-                        authorLabel.addText(Context.tr("Author: "));
+                        authorLabel.addText(tr("Author: "));
                         authorPara.add(authorLabel);
 
                         HtmlLink author = null;
@@ -253,7 +254,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
                         if (offer.getAsTeam() != null) {
-                            authorPara.addText(Context.tr(" on the behalf of "));
+                            authorPara.addText(tr(" on the behalf of "));
                             authorPara.add(new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getDisplayName()));
                         }
                     }
@@ -262,12 +263,12 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     final HtmlDiv progressPara = new HtmlDiv("offer_block_para");
                     {
                         final HtmlSpan progressLabel = new HtmlSpan("offer_block_label");
-                        progressLabel.addText(Context.tr("Funding: "));
+                        progressLabel.addText(tr("Funding: "));
                         progressPara.add(progressLabel);
 
                         final int progression = (int) Math.floor(offer.getProgression());
                         final HtmlSpan progress = new HtmlSpan("offer_block_progress");
-                        progress.addText(Context.tr("{0} %", String.valueOf(progression)));
+                        progress.addText(tr("{0} %", String.valueOf(progression)));
                         progressPara.add(progress);
 
                         int cappedProgressValue = progression;
@@ -305,7 +306,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         datePara.setCssClass("offer_block_para");
                         {
                             final HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
-                            dateLabel.addText(Context.tr("Delivery Date: "));
+                            dateLabel.addText(tr("Delivery Date: "));
                             datePara.add(dateLabel);
 
                             // TODO: use scheduled e date
@@ -318,7 +319,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         final HtmlParagraph description = new HtmlParagraph();
                         {
                             final HtmlSpan descriptionLabel = new HtmlSpan("offer_block_label");
-                            descriptionLabel.addText(Context.tr("Offer's description: "));
+                            descriptionLabel.addText(tr("Offer's description: "));
                             description.add(descriptionLabel);
                             description.add(new XmlText("<br />"));
                             description.addText(lot.getDescription());
@@ -341,7 +342,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                 final HtmlDiv offerLotPriceBlock = new HtmlDiv("offer_price_block");
                                 {
                                     final HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
-                                    priceLabel.addText(Context.tr("Price: "));
+                                    priceLabel.addText(tr("Price: "));
                                     offerLotPriceBlock.add(priceLabel);
 
                                     final HtmlSpan price = new HtmlSpan("offer_block_price_lot");
@@ -350,14 +351,14 @@ public class FeatureOfferListComponent extends HtmlDiv {
                                 }
                                 lotBlock.add(offerLotPriceBlock);
 
-                                final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0} - ", i) + getLotState(lot), 2);
+                                final HtmlTitle lotTitle = new HtmlTitle(tr("Lot {0} - ", i) + getLotState(lot), 2);
                                 lotBlock.add(lotTitle);
 
                                 final HtmlParagraph datePara = new HtmlParagraph();
                                 datePara.setCssClass("offer_block_para");
                                 {
                                     final HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
-                                    dateLabel.addText(Context.tr("Delivery Date: "));
+                                    dateLabel.addText(tr("Delivery Date: "));
                                     datePara.add(dateLabel);
 
                                     // TODO: use scheduled release date
@@ -408,28 +409,28 @@ public class FeatureOfferListComponent extends HtmlDiv {
             final JsShowHide showHideValidationDetails = new JsShowHide(false);
             showHideValidationDetails.setHasFallback(false);
 
-            final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("show validation details"));
+            final HtmlParagraph showHideLink = new HtmlParagraph(tr("show validation details"));
             showHideLink.setCssClass("fake_link");
             showHideValidationDetails.addActuator(showHideLink);
             lotBlock.add(showHideLink);
 
             final HtmlDiv validationDetailsDiv = new HtmlDiv();
 
-            final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(Context.tr("Minimun time for validation: "),
+            final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(tr("Minimun time before validation: "),
                                                                                          new TimeRenderer(lot.getSecondBeforeValidation()
                                                                                                  * DateUtils.MILLISECOND_PER_SECOND).renderRange(TimeBase.DAY,
                                                                                                                                                  FormatStyle.MEDIUM));
             validationDetailsDiv.add(timeBeforeValidationPara);
 
-            final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "),
+            final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(tr("Payment when no fatal bug: "),
                                                                                      String.valueOf(lot.getFatalBugsPercent()) + "%");
             validationDetailsDiv.add(fatalBugPourcentPara);
 
-            final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no fatal bug: "),
+            final HtmlDefineParagraph majorBugPourcentPara = new HtmlDefineParagraph(tr("Payment when no fatal bug: "),
                                                                                      String.valueOf(lot.getMajorBugsPercent()) + "%");
             validationDetailsDiv.add(majorBugPourcentPara);
 
-            final HtmlDefineParagraph minorBugPourcentPara = new HtmlDefineParagraph(Context.tr("Payment when no minor bug: "),
+            final HtmlDefineParagraph minorBugPourcentPara = new HtmlDefineParagraph(tr("Payment when no minor bug: "),
                                                                                      String.valueOf(lot.getMinorBugsPercent()) + "%");
             validationDetailsDiv.add(minorBugPourcentPara);
 
@@ -486,7 +487,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
         private XmlNode generatePopularityBlock() {
             final HtmlDiv offerSummaryPopularity = new HtmlDiv("offer_popularity");
             {
-                final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "offer_popularity_text");
+                final HtmlParagraph popularityText = new HtmlParagraph(tr("Popularity"), "offer_popularity_text");
                 final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(offer.getPopularity()), "offer_popularity_score");
 
                 offerSummaryPopularity.add(popularityText);

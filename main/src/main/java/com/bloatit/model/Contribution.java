@@ -76,20 +76,6 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
-     * CALLED by feature. You have to call {@link #accept(Offer)} when an offer
-     * is accepted. This will create the {@link Transaction} needed so that the
-     * developer of the offer become rich.
-     * 
-     * @param offer the validated offer.
-     * @throws NotEnoughMoneyException if there is a bug and then a person does
-     *             not have enough money.
-     */
-    public void accept(final Offer offer) throws NotEnoughMoneyException {
-        // TODO make me package visible !
-        getDao().validate(offer.getDao(), 100);
-    }
-
-    /**
      * CALLED by feature. You have to call {@link #cancel()} when the feature on
      * which this Contribution is made is canceled. It allows the user to take
      * back its money.

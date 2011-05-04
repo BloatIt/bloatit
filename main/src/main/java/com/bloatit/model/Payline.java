@@ -133,21 +133,6 @@ public final class Payline extends RestrictedObject {
         }
     }
 
-    // public void getTransactionDetails(final String token) throws
-    // TokenNotfoundException
-    // {
-    // final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
-    // final GetWebPaymentDetailsRequest request =
-    // createWebPaymementRequest(token);
-    // Transaction transaction =
-    // paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
-    //
-    // System.err.println(transaction.getExplanation());
-    // System.err.println(transaction.getFraudResult());
-    // System.err.println(transaction.getIsPossibleFraud());
-    // System.err.println(transaction.getScore());
-    // }
-
     public Reponse getPaymentDetails(final String token) throws TokenNotfoundException {
         final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
         final GetWebPaymentDetailsRequest parameters = createWebPaymementRequest(token);
@@ -203,7 +188,6 @@ public final class Payline extends RestrictedObject {
 
         final WebPaymentAPI_Service paylineService = new WebPaymentAPI_Service();
 
-        // TODO catch exceptions !!
         final DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
 
         final Reponse reponse = new Reponse(apiReponse);

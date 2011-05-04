@@ -228,8 +228,7 @@ public class Rights {
 
         @Override
         public Team visitAbstract(MoneyWithdrawal model) {
-            // FIXME
-            return null;
+            return visitAbstract(model.getActorUnprotected());
         }
 
     }
@@ -256,7 +255,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final UserContentInterface model) {
-            return member.isInTeam(model.getAsTeam());
+            return visitAbstract(model.getAuthor());
         }
 
         @Override

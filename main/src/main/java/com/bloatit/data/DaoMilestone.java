@@ -52,7 +52,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DaoMilestone.
  */

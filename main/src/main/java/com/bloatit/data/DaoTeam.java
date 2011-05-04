@@ -82,6 +82,28 @@ import com.bloatit.framework.utils.datetime.DateUtils;
                                     "AND id not in (from DaoKudos) " +
                                     "AND id not in (from DaoTranslation)" +
                                     "AND creationDate > :date"),
+                        @NamedQuery(
+                                name = "team.getUserTeamRights",
+                                query = "SELECT gm " +
+                                		"FROM com.bloatit.data.DaoTeam g " +
+                                		"JOIN g.teamMembership as gm " +
+                                		"JOIN gm.member as m " +
+                                		"WHERE g = :team " +
+                                		"AND m = :member"),
+                		@NamedQuery(
+                		        name = "team.getUserTeamRights.size",
+                		        query = "SELECT count(gm) " +
+                    		            "FROM com.bloatit.data.DaoTeam g " +
+                    		            "JOIN g.teamMembership as gm " +
+                    		            "JOIN gm.member as m " +
+                    		            "WHERE g = :team " +
+                    		            "AND m = :member"),
+    		            @NamedQuery(
+	                        name = "team.getMoneyWithdrawal",
+	                        query = "from DaoMoneyWithdrawal as x where x.actor = :actor"),
+    		            @NamedQuery(
+	                        name = "team.getMoneyWithdrawal.size",
+	                        query = "select count(*) from DaoMoneyWithdrawal as x where x.actor = :actor"),
                        }
              )
 // @formatter:on
@@ -135,7 +157,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Get a team using its name.
-     *
+     * 
      * @param name the name of the team we are lookong for.
      * @return the team named <code>name<code> or null if not found.
      */
@@ -152,7 +174,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Create a team and add it into the db.
-     *
+     * 
      * @param login it the unique and non updatable name of the team.
      * @param contact some contact information for that team.
      * @param description the desctiption of the team.
@@ -174,7 +196,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Create a DaoTeam
-     *
+     * 
      * @param login is the name of the team. It must be unique.
      * @param contact ...
      * @param right is the default right value for this team.
@@ -191,7 +213,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Change the type of team.
-     *
+     * 
      * @param right the new right of this team.
      */
     public void setRight(final Right right) {
@@ -200,7 +222,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Change the contact information on this team.
-     *
+     * 
      * @param contact the new contact information.
      */
     public void setContact(final String contact) {
@@ -209,7 +231,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Change the display name of this team.
-     *
+     * 
      * @param displayName
      */
     public void setDisplayName(final String displayName) {
@@ -219,7 +241,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Add a member in this team.
-     *
+     * 
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer
      *            this team. (This may change if the number of role change !)
@@ -230,7 +252,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Remove a member from the team
-     *
+     * 
      * @param member the member to remove
      */
     protected void removeMember(final DaoMember member) {
@@ -281,22 +303,14 @@ public class DaoTeam extends DaoActor {
         return new QueryCollection<DaoContribution>("team.getContributions").setEntity("this", this);
     }
 
-
     /**
-     * Gets the moneywithdrawals.
-     *
-     * @param asMemberOnly the result must contains only result that are not
-     *            done as name of a team.
-     * @return All the contributions created by this team.
+     * Gets the money withdrawals.
+     * 
+     * @return all the money withdrawals from this team.
      */
     public PageIterable<DaoMoneyWithdrawal> getMoneyWithdrawals() {
-
-        final Query query = SessionManager.createQuery("from DaoMoneyWithdrawal as x where x.actor = :actor");
-        final Query size = SessionManager.createQuery("SELECT count(*) from DaoMoneyWithdrawal as x where x.actor = :actor");
-
-        final QueryCollection<DaoMoneyWithdrawal> q = new QueryCollection<DaoMoneyWithdrawal>(query, size);
-        q.setEntity("actor", this);
-        return q;
+        // TODO rights
+        return new QueryCollection<DaoMoneyWithdrawal>("team.getMoneyWithdrawal").setEntity("actor", this);
     }
 
     /**
@@ -318,20 +332,14 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Finds if a member is in this team, and which is its status.
-     *
+     * 
      * @param member The member we want to know its status.
      * @return {@code null} if the member is not in this team, or a set
      *         otherwise. <br />
      *         Note, the returned set can be empty if the user is only a Member
      */
     public EnumSet<UserTeamRight> getUserTeamRight(final DaoMember member) {
-
-        // TODO externilize query
-
-
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("select gm from com.bloatit.data.DaoTeam g join g.teamMembership as gm join gm.member as m where g = :team and m = :member");
+        final Query q = SessionManager.getNamedQuery("team.getUserTeamRights");
         q.setEntity("member", member);
         q.setEntity("team", this);
         final DaoTeamMembership gm = (DaoTeamMembership) q.uniqueResult();
@@ -384,7 +392,6 @@ public class DaoTeam extends DaoActor {
     }
 
     public long getRecentActivityCount(final int numberOfDays) {
-        // TODO Auto-generated method stub
         final Query size = SessionManager.getNamedQuery("team.getRecentActivity.size");
         size.setEntity("team", this);
         size.setDate("date", DateUtils.nowMinusSomeDays(numberOfDays));

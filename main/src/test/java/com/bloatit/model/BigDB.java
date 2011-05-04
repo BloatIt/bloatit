@@ -130,11 +130,11 @@ public class BigDB {
                                               0));
                 if (pick(2) == 0) {
                     for (final DaoContribution contrib : feature.getContributions()) {
-                        try {
-                            contrib.validate(feature.getOffers().iterator().next(), 100);
-                        } catch (final NotEnoughMoneyException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            contrib.validate(feature.getOffers().iterator().next(), 100);
+//                        } catch (final NotEnoughMoneyException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 }
             }
