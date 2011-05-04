@@ -1827,7 +1827,8 @@ msgstr ""
 #: com/bloatit/web/linkable/offer/OfferAction.java:78
 #: com/bloatit/web/linkable/offer/OfferAction.java:84
 msgid "''%paramName%'' is a percent, and must be lesser or equal to 100."
-msgstr "\"%\" param est un pourcentage est doit être inférieur ou égal à 100."
+msgstr ""
+"\"%paramName%\" est un pourcentage est doit être inférieur ou égal à 100."
 
 #: com/bloatit/web/linkable/offer/OfferAction.java:71
 msgid "You must set a days count for validation."
@@ -3638,7 +3639,7 @@ msgstr "{0} (<0::voir les détails>)"
 
 #: com/bloatit/web/linkable/team/TeamPage.java:211
 msgid "Team's recent activity: "
-msgstr "Activité récente de l''équipe&nbsp;: "
+msgstr "Activité récente de l'équipe&nbsp;: "
 
 #: com/bloatit/web/linkable/team/TeamPage.java:223
 msgid "Bank informations"

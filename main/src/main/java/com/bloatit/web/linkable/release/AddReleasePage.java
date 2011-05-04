@@ -100,7 +100,7 @@ public final class AddReleasePage extends CreateUserContentPage {
                                                                DESCRIPTION_INPUT_NB_COLUMNS);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(tr("Enter a short comment on your release."));
+        descriptionInput.setComment(tr("Enter a short comment on your release. The description must have at least 10 chars."));
         form.add(descriptionInput);
 
         // Language

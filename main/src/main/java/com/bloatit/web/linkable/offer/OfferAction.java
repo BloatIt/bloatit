@@ -63,8 +63,7 @@ public final class OfferAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("You must add a description to your offer."),
-                     min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
-                     max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
+                     min = "1", minErrorMsg = @tr("You must add a description to your offer."))
     private final String description;
 
     @RequestParam(role = Role.POST, suggestedValue="7")
