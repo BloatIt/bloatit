@@ -249,13 +249,19 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         authorLabel.addText(tr("Author: "));
                         authorPara.add(authorLabel);
 
-                        HtmlLink author = null;
-                        author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
-                        author.setCssClass("offer_block_author");
-                        authorPara.add(author);
                         if (offer.getAsTeam() != null) {
-                            authorPara.addText(tr(" on the behalf of "));
-                            authorPara.add(new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getDisplayName()));
+                            HtmlLink author = null;
+                            author = new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getDisplayName());
+                            author.setCssClass("offer_block_author");
+                            authorPara.add(author);
+
+                            authorPara.addText(tr(" by "));
+                            authorPara.add(new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName()));
+                        } else {
+                            HtmlLink author = null;
+                            author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
+                            author.setCssClass("offer_block_author");
+                            authorPara.add(author);
                         }
                     }
                     offerRightTopColumn.add(authorPara);
