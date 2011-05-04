@@ -101,13 +101,8 @@ public final class TeamPage extends ElveosPage {
     protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        if (userToken.isAuthenticated()) {
-            final Member me = userToken.getMember();
-            layout.addLeft(generateTeamIDCard(me));
-        }
-
+        layout.addLeft(generateTeamIDCard(userToken));
         layout.addLeft(generateMain(userToken));
-
         layout.addRight(generateContactBox());
 
         if (activeTabKey.equals(ACCOUNT_TAB)) {
@@ -148,10 +143,17 @@ public final class TeamPage extends ElveosPage {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
-        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
+
+        String tabKey = activeTabKey;
+
+        if (activeTabKey.equals(ACCOUNT_TAB) && !targetTeam.canAccessBankTransaction(Action.READ)) {
+            tabKey = MEMBERS_TAB;
+        }
+        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, tabKey, secondUrl);
+
         master.add(tabPane);
 
-        if (userToken.isAuthenticated()){
+        if (userToken.isAuthenticated()) {
             tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
         }
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
@@ -169,9 +171,9 @@ public final class TeamPage extends ElveosPage {
      * @param me the connected member
      * @return the ID card
      */
-    private HtmlElement generateTeamIDCard(final Member me) {
+    private HtmlElement generateTeamIDCard(ElveosUserToken token) {
         final HtmlDiv master = new HtmlDiv("padding_box");
-        if (me.hasModifyTeamRight(targetTeam)) {
+        if (token.isAuthenticated() && token.getMember().hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
@@ -221,6 +223,14 @@ public final class TeamPage extends ElveosPage {
         description.add(hcmr);
 
         // Bank informations
+        if (token.isAuthenticated()) {
+            addBankInfos(master, token.getMember());
+        }
+
+        return master;
+    }
+
+    protected void addBankInfos(final HtmlDiv master, Member member) {
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
@@ -230,7 +240,10 @@ public final class TeamPage extends ElveosPage {
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam, me);
+                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(),
+                                                                                   true,
+                                                                                   targetTeam,
+                                                                                   member);
                     final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                      new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                        amount,
@@ -243,8 +256,6 @@ public final class TeamPage extends ElveosPage {
                 Log.web().error("Cannot access to bank informations, should not happen", e);
             }
         }
-
-        return master;
     }
 
     @Override

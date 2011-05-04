@@ -35,9 +35,9 @@ import com.bloatit.web.linkable.team.TeamPage;
 public class MoneyDisplayComponent extends HtmlSpan {
     /**
      * Creates a money display component with a link to user account page
-     *
+     * 
      * @param amount the amount of money to display (in euro)
-     * @param me 
+     * @param me
      */
     public MoneyDisplayComponent(final BigDecimal amount, Member me) {
         this(amount, true, me);
@@ -46,10 +46,10 @@ public class MoneyDisplayComponent extends HtmlSpan {
     /**
      * Creates a money display component with or without a link to user account
      * page
-     *
+     * 
      * @param amount the amount of money to display (in euro)
      * @param link <i>true</i> if the component should link to the user account
-     * @param me 
+     * @param me
      */
     public MoneyDisplayComponent(final BigDecimal amount, final boolean link, Member me) {
         this(amount, link, null, me);
@@ -58,12 +58,12 @@ public class MoneyDisplayComponent extends HtmlSpan {
     /**
      * Creates a money display component with or without a link to user or team
      * account page
-     *
+     * 
      * @param amount the amount of money to display (in euro)
      * @param link <i>true</i> if the component should link to the user account
      * @param teamAccount if not null, the link will point to the account page
      *            of the team page, <i>false</i> otherwise.
-     * @param me 
+     * @param me
      */
     public MoneyDisplayComponent(final BigDecimal amount, final boolean link, Team teamAccount, Member me) {
         super();
@@ -82,8 +82,6 @@ public class MoneyDisplayComponent extends HtmlSpan {
             } else {
                 money = MemberPage.MyAccountUrl(me).getHtmlLink(euroMoney);
             }
-
-
 
             money.setCssClass("money");
         } else {
