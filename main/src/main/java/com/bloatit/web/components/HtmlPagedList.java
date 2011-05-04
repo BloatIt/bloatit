@@ -85,7 +85,6 @@ public class HtmlPagedList<T> extends HtmlDiv {
             span.add(generateEmptyLongBlock());
         }
 
-
         if(pageCount <= NB_PAGES_TOTAL) {
             //Display all pages
             for (int i = 1; i < pageCount+1; i++) {
@@ -103,12 +102,8 @@ public class HtmlPagedList<T> extends HtmlDiv {
             int maxSlotForLeft =  currentPage - 1 - NB_PAGES_LEFT;
             int maxSlotForRight =  pageCount - currentPage - NB_PAGES_RIGHT;
 
-
-
             int slotForLeft =  maxSlotForLeft;
             int slotForRight =  maxSlotForRight;
-
-
 
             if(slotForLeft <= (slotForCenter-1)/2) {
                 slotForRight = slotForCenter - 1  - slotForLeft;
@@ -121,8 +116,6 @@ public class HtmlPagedList<T> extends HtmlDiv {
                 slotForRight = slotForCenter - 1  - slotForLeft;
             }
 
-
-
             boolean needLeftSpacer = true;
             boolean needRightSpacer = true;
             if(currentPage - slotForLeft -1 <= NB_PAGES_LEFT) {
@@ -133,8 +126,6 @@ public class HtmlPagedList<T> extends HtmlDiv {
                 needRightSpacer = false;
             }
 
-
-
             if(needLeftSpacer) {
                 slotForLeft--;
             }
@@ -143,64 +134,31 @@ public class HtmlPagedList<T> extends HtmlDiv {
                 slotForRight--;
             }
 
-
             //Begin
             for (int i = 1; i < NB_PAGES_LEFT +1 ; i++) {
                 span.add(generateLink(i, false));
             }
-
 
             //Begin spacer
             if(needLeftSpacer) {
                 span.add(generateShortBlock("…"));
             }
 
-
             for (int i = currentPage - slotForLeft; i < currentPage  + slotForRight+1 ; i++) {
                 span.add(generateLink(i, false));
             }
-
 
           //End spacer
             if(needRightSpacer) {
                 span.add(generateShortBlock("…"));
             }
 
-
-
           //End
             for (int i = pageCount-NB_PAGES_RIGHT+1; i < pageCount+1 ; i++) {
                 span.add(generateLink(i, false));
             }
-
-
-
-
         }
 
-
-
-
-
-
-        /*// first page
-        span.add(generateLink(1, false));
-
-        if (currentPage - NB_PAGES_RIGHT > 1) {
-            span.addText("…");
-        }
-        // center pages
-        for (int i = currentPage - NB_PAGES_CENTER; i < currentPage + NB_PAGES_CENTER; i++) {
-            if (i > 1 && i < pageCount) {
-                span.add(generateLink(i, false));
-            }
-        }
-        if (currentPage + NB_PAGES_LEFT < pageCount) {
-            span.addText("…");
-        }
-        // Last page
-        span.add(generateLink(pageCount, false));
-*/
         if (currentPage < pageCount) {
             span.add(generateLink(currentPage + 1, tr("Next"), true));
         } else {
