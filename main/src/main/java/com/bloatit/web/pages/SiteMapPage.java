@@ -100,13 +100,16 @@ public final class SiteMapPage extends MasterPage {
 
         if(Context.getSession().isLogged()) {
             personalLinkList.add(new MemberPageUrl(Context.getSession().getAuthToken().getMember()).getHtmlLink(Context.tr("My page")));
+            personalLinkList.add( MemberPage.MyAccountUrl().getHtmlLink(Context.tr("My account")));
+            personalLinkList.add( MemberPage.MyMessagesUrl().getHtmlLink(Context.tr("My messages")));
+
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
+            personalLinkList.add(new HtmlText(Context.tr("My account")));
+            personalLinkList.add(new HtmlText(Context.tr("My messages")));
         }
 
-        personalLinkList.add( MemberPage.MyAccountUrl().getHtmlLink(Context.tr("My account")));
-        personalLinkList.add( MemberPage.MyMessagesUrl().getHtmlLink(Context.tr("My messages")));
-        personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
+         personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
         personalLinkList.add(new  AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
         //TODO good page
         personalLinkList.add(new  PageNotFoundUrl().getHtmlLink(Context.tr("Withdraw money")));
