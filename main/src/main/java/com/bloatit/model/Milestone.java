@@ -140,10 +140,6 @@ public final class Milestone extends Identifiable<DaoMilestone> {
         if (file != null) {
             release.addFile(file);
         }
-        // TODO as team ?
-        // if (getOffer().getAsTeam() != null){
-        // release.setAsTeam(getOffer().getAsTeam());
-        // }
         getDao().addRelease(release.getDao());
         return release;
 

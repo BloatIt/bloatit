@@ -42,6 +42,8 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.web.HtmlTools;
 
 public final class HttpResponse {
+    private static final byte[] EOL = "\r\n".getBytes();
+
     /**
      * Describes the error level
      */
@@ -81,7 +83,6 @@ public final class HttpResponse {
 
     private boolean useGzip = false;
 
-    // TODO: use write line in all file
     public HttpResponse(final OutputStream output, final HttpHeader header) {
         httpDateformat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         httpDateformat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -132,9 +133,7 @@ public final class HttpResponse {
 
     public void writeRedirect(final String url) throws IOException {
         writeCookies();
-        output.write("Location: ".getBytes());
-        output.write(url.getBytes());
-        output.write("\r\n".getBytes());
+        writeLine("Location: " + url);
         closeHeaders();
     }
 
@@ -234,7 +233,7 @@ public final class HttpResponse {
     public void writeRestResource(final RestResource resource) throws IOException {
         try {
             final String resourceXml = resource.getXmlString();
-            output.write("Content-Type: text/xml\r\n".getBytes());
+            writeLine("Content-Type: text/xml");
             closeHeaders();
             final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
             htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
@@ -260,8 +259,8 @@ public final class HttpResponse {
     }
 
     private void writeLine(final String string) throws IOException {
-        final String line = string + "\r\n";
-        output.write(line.getBytes());
+        output.write(string.getBytes());
+        output.write(EOL);
     }
 
     /**
@@ -272,7 +271,7 @@ public final class HttpResponse {
      * @see {@link #writeRestError(RestException)}
      */
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {
-        output.write("Content-Type: text/xml\r\n".getBytes());
+        writeLine("Content-Type: text/xml");
         closeHeaders();
         final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
         htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
@@ -295,12 +294,10 @@ public final class HttpResponse {
     }
 
     private void closeHeaders() throws IOException {
-        output.write("\r\n".getBytes());
+        output.write(EOL);
     }
 
     private void writeCookies() throws IOException {
-        output.write("Set-Cookie: session_key=".getBytes());
-        output.write(Context.getSession().getKey().toString().getBytes());
-        output.write("; path=/; Max-Age=1296000; Version=1 \r\n".getBytes());
+        writeLine("Set-Cookie: session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; Version=1 ");
     }
 }

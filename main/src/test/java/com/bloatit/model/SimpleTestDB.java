@@ -168,14 +168,6 @@ public class SimpleTestDB {
 
             feature.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 
-            for (final DaoContribution contribution : feature.getContributions()) {
-                try {
-                    contribution.validate(feature.getOffers().iterator().next(), 100);
-                } catch (final NotEnoughMoneyException e) {
-                    e.printStackTrace();
-                }
-            }
-
             final DaoFeature feature1 = DaoFeature.createAndPersist(fred, null, DaoDescription.createAndPersist(fred,
                                                                                                                 null,
                                                                                                                 new Locale("en"),

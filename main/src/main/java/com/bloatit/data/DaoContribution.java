@@ -99,7 +99,6 @@ public class DaoContribution extends DaoUserContent {
      * on offer on his own offer -> no transaction)
      */
     @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST)
-    // TODO add a nullable contribution into daoTransaction to have a mapped by
     private final List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
 
     @Basic(optional = false)
@@ -167,7 +166,7 @@ public class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if there is not enough money to create
      *             the transaction.
      */
-    public void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
+    void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
         if (this.state != State.PENDING) {
             throw new BadProgrammerException("Cannot validate a contribution if its state isn't PENDING");
         }

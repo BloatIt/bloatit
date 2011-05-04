@@ -94,7 +94,6 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     @Enumerated
     private Level level;
 
-    // TODO make the comments mapped by DaoUserContent ?
     @OneToMany(mappedBy = "bug")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "id")

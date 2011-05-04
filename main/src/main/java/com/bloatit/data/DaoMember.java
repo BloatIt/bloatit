@@ -382,8 +382,7 @@ public class DaoMember extends DaoActor {
         if (link != null) {
             link.addUserRight(newRight);
         } else {
-            Log.data().error("Trying to give user some rights in a team he doesn't belong: team = " + aTeam.getId() + " member = " + getId());
-            // TODO should we throw an error here ?
+            throw new BadProgrammerException("Trying to give user some rights in a team he doesn't belong");
         }
     }
 
