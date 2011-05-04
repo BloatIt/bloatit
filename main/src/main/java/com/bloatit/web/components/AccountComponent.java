@@ -50,7 +50,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
@@ -62,6 +61,7 @@ import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.HtmlPageComponent;
+import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class AccountComponent extends HtmlPageComponent {
@@ -235,7 +235,7 @@ public class AccountComponent extends HtmlPageComponent {
             description.add(new HtmlDefineParagraph(tr("IBAN: "), moneyWithdrawal.getIBAN()));
             description.add(new HtmlDefineParagraph(tr("Reference: "), moneyWithdrawal.getReference()));
             if(moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
-                PageNotFoundUrl cancelUrl = new PageNotFoundUrl();
+                CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(moneyWithdrawal);
                 HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)",statusString), cancelUrl.getHtmlLink());
                 description.add(new HtmlDefineParagraph(tr("Status: "),statusWithCancel));
             } else {

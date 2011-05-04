@@ -81,7 +81,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED
      * </p>
-     * 
+     *
      * @throws UnauthorizedPrivateAccessException
      */
     public void setCanceled() throws UnauthorizedPrivateAccessException {
@@ -103,7 +103,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED or TREATED
      * </p>
-     * 
+     *
      * @throws UnauthorizedPrivateAccessException
      */
     public void setRefused() throws UnauthorizedPrivateAccessException {
@@ -124,7 +124,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED
      * </p>
-     * 
+     *
      * @throws UnauthorizedPrivateAccessException
      */
     public void setTreated() throws UnauthorizedPrivateAccessException {
@@ -146,7 +146,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state TREATED
      * </p>
-     * 
+     *
      * @throws UnauthorizedPrivateAccessException
      */
     public void setComplete() throws UnauthorizedPrivateAccessException {
@@ -195,6 +195,26 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
                 setRefused();
                 break;
         }
+    }
+
+    public boolean canSetCanceled() {
+        if (!canAccess(new RgtMoneyWithdrawal.Canceled(), Action.WRITE)) {
+            return false;
+        }
+        try {
+            switch (getState()) {
+                case COMPLETE:
+                case CANCELED:
+                case REFUSED:
+                case TREATED:
+                    return false;
+                default:
+                    break;
+            }
+        } catch (UnauthorizedPrivateAccessException e) {
+            return false;
+        }
+        return true;
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -281,7 +301,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * Last modification date is the last time the state of the money withdrawal
      * has been changed. If no change happened, this will be the same as
      * creation date.
-     * 
+     *
      * @return the last modification date of the money withdrawal
      * @throws UnauthorizedPrivateAccessException
      */
