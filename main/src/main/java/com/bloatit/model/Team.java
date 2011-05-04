@@ -123,11 +123,6 @@ public final class Team extends Actor<DaoTeam> {
         getDao().setRight(right);
     }
 
-    public void setDisplayName(final String displayName) throws UnauthorizedPublicAccessException {
-        tryAccess(new RgtTeam.DisplayName(), Action.WRITE);
-        getDao().setDisplayName(displayName);
-    }
-
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////

@@ -38,8 +38,6 @@ import com.bloatit.framework.webprocessor.components.form.DropDownElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User;
 
-// TODO break dependency to Member.
-
 /**
  * <p>
  * Class that encapsulates all translation tools

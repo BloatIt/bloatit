@@ -48,6 +48,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.data.queries.QueryCollection;
@@ -310,9 +311,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             Log.data().fatal("The comment of a contribution must be <= 140 chars long.");
             throw new BadProgrammerException("Comments length of Contribution must be < 140.", null);
         }
-
-        // TODO right management for contribution as a team.
-
+        if (team != null && !team.getUserTeamRight(member).contains(UserTeamRight.BANK)) {
+            throw new BadProgrammerException("This member cannot contribute as a team.");
+        }
         final DaoContribution newContribution = new DaoContribution(member, team, this, amount, comment);
         this.contributions.add(newContribution);
         this.contribution = this.contribution.add(amount);

@@ -100,10 +100,8 @@ public class ModifyTeamAction extends LoggedAction {
             // Display name
             if (isEmpty(displayName) && !isEmpty(team.getDisplayName())) {
                 session.notifyGood(Context.tr("Team's display name deleted."));
-                team.setDisplayName(null);
             } else if (!isEmpty(displayName) && !displayName.equals(team.getDisplayName())) {
                 session.notifyGood(Context.tr("Team's display updated."));
-                team.setDisplayName(displayName);
             }
 
             // Contact information

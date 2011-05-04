@@ -442,7 +442,6 @@ public class BloatitExampleDB { // NO_UCD
     }
 
     private void withdrawMoney(Member m, int amount, State completion) {
-        // TODO: this have not been tested yet.
         MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
         mw.authenticate(new AuthToken(admin));
         
@@ -451,7 +450,6 @@ public class BloatitExampleDB { // NO_UCD
                 case REQUESTED:
                     break;
                 case TREATED:
-
                     break;
                 case COMPLETE:
                     mw.setTreated();
@@ -470,11 +468,6 @@ public class BloatitExampleDB { // NO_UCD
         }
     }
 
-    // private void setFeatureInDiscardedState(final Feature feature) {
-    // final FeatureImplementation featureImpl = (FeatureImplementation)
-    // feature;
-    // featureImpl.getDao().setFeatureState(FeatureState.DISCARDED);
-    // }
     public void giveMoney(final Member member, final int amount) {
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),

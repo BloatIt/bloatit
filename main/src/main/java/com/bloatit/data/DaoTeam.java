@@ -125,8 +125,6 @@ public class DaoTeam extends DaoActor {
         PROTECTED;
     }
 
-    private String displayName;
-
     /**
      * WARNING right is a SQL keyword. This is mapped as "team_right".
      */
@@ -230,16 +228,6 @@ public class DaoTeam extends DaoActor {
     }
 
     /**
-     * Change the display name of this team.
-     * 
-     * @param displayName
-     */
-    public void setDisplayName(final String displayName) {
-        // TODO: remove me.
-        this.displayName = displayName;
-    }
-
-    /**
      * Add a member in this team.
      * 
      * @param member The member to add
@@ -309,7 +297,6 @@ public class DaoTeam extends DaoActor {
      * @return all the money withdrawals from this team.
      */
     public PageIterable<DaoMoneyWithdrawal> getMoneyWithdrawals() {
-        // TODO rights
         return new QueryCollection<DaoMoneyWithdrawal>("team.getMoneyWithdrawal").setEntity("actor", this);
     }
 
@@ -372,14 +359,6 @@ public class DaoTeam extends DaoActor {
      */
     protected List<DaoTeamMembership> getTeamMembership() {
         return this.teamMembership;
-    }
-
-    /**
-     * @return the display name value of this team. It coulb be null if not
-     *         setted.
-     */
-    public String getDisplayName() {
-        return displayName;
     }
 
     public PageIterable<DaoUserContent> getActivity() {

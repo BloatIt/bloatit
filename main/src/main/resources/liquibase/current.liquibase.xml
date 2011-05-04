@@ -27,6 +27,11 @@
 			</column>
 		</addColumn>
 	</changeSet>
+	<changeSet author="Thomas Guyard" id="Remove display name in team">
+		<comment>Remove the displayname column in the daoTeam table</comment>
+		<dropColumn tableName="daoteam" columnName="displayname" />
+	</changeSet>
+	
 	<changeSet author="Frédéric Bertolus"
 		id="Change bug description type from varchar 255 to TEXT">
 		<modifyDataType tableName="daobug" columnName="description"
