@@ -11,6 +11,9 @@
  */
 package com.bloatit.web.linkable.money;
 
+import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -18,8 +21,12 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.Team;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.team.TeamPage;
+import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
+import com.bloatit.web.url.TeamPageUrl;
 
 @ParamContainer("money/docancelwithdraw")
 public class CancelWithdrawMoneyAction extends LoggedAction {
@@ -37,27 +44,50 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
 
     @Override
     protected Url doCheckRightsAndEverything(Member me) {
+
+        if(!moneyWithdrawal.canSetCanceled()) {
+            session.notifyBad(Context.tr("Failed to cancel this withdrawal."));
+            return getBestReturnUrl();
+        }
+
         return NO_ERROR;
     }
 
     @Override
     protected Url doProcessRestricted(Member me) {
-        // TODO Auto-generated method stub
-        return null;
+
+        try {
+            moneyWithdrawal.setCanceled();
+        } catch (UnauthorizedPrivateAccessException e) {
+            Log.web().error("Fail to read the actor of a withdrawal");
+            throw new ShallNotPassException("Fail to read the actor of a withdrawal", e);
+        }
+        return getBestReturnUrl();
     }
 
     @Override
     protected Url doProcessErrors() {
-        if(moneyWithdrawal != null) {
+        return getBestReturnUrl();
 
-            /*if(moneyWithdrawal.getActor() instanceof Team) {
-                new TeamPageUrl(moneyWithdrawal.getActor());
+    }
+
+
+    private Url getBestReturnUrl() {
+        if (moneyWithdrawal != null) {
+
+            try {
+                if (moneyWithdrawal.getActor() instanceof Team) {
+                    TeamPageUrl teamPageUrl = new TeamPageUrl((Team) moneyWithdrawal.getActor());
+                    teamPageUrl.setActiveTabKey(TeamPage.ACCOUNT_TAB);
+                    teamPageUrl.setAnchor(TeamPage.TEAM_TAB_PANE);
+                    return teamPageUrl;
+                }
+            } catch (UnauthorizedPrivateAccessException e) {
+                Log.web().error("Fail to read the actor of a withdrawal");
+                throw new ShallNotPassException("Fail to read the actor of a withdrawal", e);
             }
-            return new AccountPageUrl();*/
-
         }
-        return null;
-
+        return new AccountPageUrl();
     }
 
     @Override

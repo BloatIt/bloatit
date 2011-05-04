@@ -83,6 +83,7 @@ import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.AccountPage;
+import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylineProcess;
@@ -128,6 +129,7 @@ import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.BugPageUrl;
+import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
@@ -501,6 +503,11 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(MoneyWithdrawalAdminActionUrl.getPageName())) {
             return new MoneyWithdrawalAdminAction(new MoneyWithdrawalAdminActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(CancelWithdrawMoneyActionUrl.getPageName())) {
+            return new CancelWithdrawMoneyAction(new CancelWithdrawMoneyActionUrl(params, session.getParameters()));
+        }
+
+
 
         // ////////
         // Process
