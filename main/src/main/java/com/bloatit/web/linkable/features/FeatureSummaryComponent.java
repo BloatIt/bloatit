@@ -40,6 +40,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
@@ -59,7 +60,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private final Feature feature;
 
-    protected FeatureSummaryComponent(final Feature feature) {
+    protected FeatureSummaryComponent(final Feature feature, Member me) {
         super();
         this.feature = feature;
 
@@ -156,7 +157,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature);
+                    featureSummaryProgress = generateProgressBlock(feature, me);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////
@@ -185,7 +186,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         }
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature, Member me) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -193,7 +194,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
             final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
             {
-                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature));
+                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, me));
                 featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
             }
 

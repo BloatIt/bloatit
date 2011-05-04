@@ -53,7 +53,7 @@ public final class ReleasePage extends MasterPage {
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addRight(new SideBarFeatureBlock(release.getFeature()));
+        layout.addRight(new SideBarFeatureBlock(release.getFeature(), getToken().getMember()));
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("date: "

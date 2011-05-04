@@ -47,16 +47,23 @@ public final class AddSoftwareAction extends LoggedAction {
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
     @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
+        min = "10",
+        minErrorMsg = @tr("The short description must have at least 10 chars."),
+        optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String shortDescription;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a description"))
+    @ParamConstraint(
+        min = "10",
+        minErrorMsg = @tr("The description must have at least 10 chars."),
+        optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
     @RequestParam(name = SOFTWARE_NAME_CODE, role = Role.POST)
     @ParamConstraint(max = "100", maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
-    min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."), optionalErrorMsg = @tr("The software name is required."))
+        min = "3",
+        minErrorMsg = @tr("The software name must have at least 3 chars."),
+        optionalErrorMsg = @tr("The software name is required."))
     private final String softwareName;
 
     @Optional
@@ -104,7 +111,7 @@ public final class AddSoftwareAction extends LoggedAction {
     public Url doProcessRestricted(final Member me) {
         final Locale langLocale = new Locale(lang);
 
-        final Software p = new Software(softwareName, session.getAuthToken().getMember(), langLocale, shortDescription, description);
+        final Software p = new Software(softwareName, me, langLocale, shortDescription, description);
 
         if (image != null) {
             final FileConstraintChecker fcc = new FileConstraintChecker(image);
@@ -114,11 +121,8 @@ public final class AddSoftwareAction extends LoggedAction {
                 }
                 return Context.getSession().pickPreferredPage();
             }
-            final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
-                                                                                  null,
-                                                                                  image,
-                                                                                  imageFileName,
-                                                                                  "Image for the software '" + softwareName + "'");
+            final FileMetadata fileImage = FileMetadataManager.createFromTempFile(me, null, image, imageFileName, "Image for the software '"
+                    + softwareName + "'");
             p.setImage(fileImage);
         }
 

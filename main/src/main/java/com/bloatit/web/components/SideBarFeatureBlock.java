@@ -24,6 +24,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -32,7 +33,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 
 public class SideBarFeatureBlock extends TitleSideBarElementLayout {
 
-    public SideBarFeatureBlock(final Feature feature, final BigDecimal amount) {
+    public SideBarFeatureBlock(final Feature feature, final BigDecimal amount, Member me) {
         setTitle(tr("Feature abstract"));
 
         try {
@@ -44,7 +45,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
             add(new HtmlDefineParagraph(tr("Software: "), SoftwaresTools.getSoftwareLink(feature.getSoftware())));
             add(new HtmlDefineParagraph(tr("Popularity: "), String.valueOf(feature.getPopularity())));
 
-            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, true, amount)));
+            add(new HtmlParagraph(FeaturesTools.generateProgress(feature, me, true, amount)));
 
             add(new HtmlParagraph(new FeaturePageUrl(feature).getHtmlLink(tr("more details..."))));
 
@@ -53,7 +54,7 @@ public class SideBarFeatureBlock extends TitleSideBarElementLayout {
         }
     }
 
-    public SideBarFeatureBlock(final Feature feature) {
-        this(feature, BigDecimal.ZERO);
+    public SideBarFeatureBlock(final Feature feature, Member me) {
+        this(feature, BigDecimal.ZERO, me);
     }
 }

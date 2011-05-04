@@ -64,10 +64,10 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
         filterHasOffer = url.getFilterHasOffer();
         filterHasContribution = url.getFilterHasContribution();
 
-        session.addParameter(url.getFilterByStateParameter());
-        session.addParameter(url.getFilterSelectedOfferParameter());
-        session.addParameter(url.getFilterHasOfferParameter());
-        session.addParameter(url.getFilterHasContributionParameter());
+        getSession().addParameter(url.getFilterByStateParameter());
+        getSession().addParameter(url.getFilterSelectedOfferParameter());
+        getSession().addParameter(url.getFilterHasOfferParameter());
+        getSession().addParameter(url.getFilterHasContributionParameter());
 
         // Add some filters
         if (filterByState != null && filterByState != DisplayableFeatureState.NO_FILTER) {

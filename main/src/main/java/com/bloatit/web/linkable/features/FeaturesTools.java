@@ -37,6 +37,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
@@ -59,7 +60,7 @@ public class FeaturesTools {
     /**
      * Convenience method for {@link #generateFeatureTitle(Feature, boolean)}
      * with <i>isTitle</i> set to false
-     *
+     * 
      * @param feature the feature for which a block will be generated
      * @return the generated block
      * @throws UnauthorizedOperationException when some operation cannot be
@@ -84,7 +85,7 @@ public class FeaturesTools {
      * <li>If <code>isTitle</code> is <i>true</i>, the whole block will be
      * rendered as a normal text, and a link to the feature page will be added</li>
      * </p>
-     *
+     * 
      * @param feature the feature for which we want to generate a description
      *            block
      * @param isTitle <i>true</i> if the block has to be rendered as a title,
@@ -113,14 +114,11 @@ public class FeaturesTools {
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature) throws UnauthorizedOperationException {
-        return generateProgress(feature, false, BigDecimal.ZERO);
+    public static HtmlDiv generateProgress(final Feature feature, Member me) throws UnauthorizedOperationException {
+        return generateProgress(feature, me, false, BigDecimal.ZERO);
     }
 
-    /**
-     * @throws UnauthorizedOperationException
-     */
-    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount)
+    public static HtmlDiv generateProgress(final Feature feature, Member me, final boolean slim, final BigDecimal futureAmount)
             throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
@@ -132,7 +130,7 @@ public class FeaturesTools {
             float futureProgressValue = 0;
 
             if (Context.getSession().isLogged()) {
-                myProgressValue = feature.getMemberProgression(Context.getSession().getAuthToken().getMember());
+                myProgressValue = feature.getMemberProgression(me);
                 if (myProgressValue > 0.0f && myProgressValue < 5f) {
                     myProgressValue = 5f;
 

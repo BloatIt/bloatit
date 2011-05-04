@@ -106,7 +106,7 @@ public final class MembersListPage extends MasterPage {
 
                 return box;
             } catch (final UnauthorizedOperationException e) {
-                session.notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
+                getSession().notifyError(Context.tr("An error prevented us from displaying user information. Please notify us."));
                 throw new ShallNotPassException("User cannot access user information", e);
             }
         }

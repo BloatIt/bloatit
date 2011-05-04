@@ -95,7 +95,7 @@ public final class CheckContributionPage extends QuotationPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), loggedUser));
         return layout;
     }
 
@@ -113,7 +113,7 @@ public final class CheckContributionPage extends QuotationPage {
                 generateNoMoneyContent(group, getActor(member), account);
             }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
 
@@ -146,7 +146,7 @@ public final class CheckContributionPage extends QuotationPage {
                         authorContributionSummary.add(new HtmlDefineParagraph(tr("Author: "), actor.getDisplayName()));
                     }
                 } catch (final UnauthorizedOperationException e) {
-                    session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+                    getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                     throw new ShallNotPassException("User cannot access user information", e);
                 }
 
@@ -196,14 +196,14 @@ public final class CheckContributionPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
         if (process.isLocked()) {
-            session.notifyBad(tr("You have a payment in progress. The contribution is locked."));
+            getSession().notifyBad(tr("You have a payment in progress. The contribution is locked."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("The preload amount is locked during the payment process."));
+            getSession().notifyBad(tr("The preload amount is locked during the payment process."));
         }
 
         // Total
@@ -215,7 +215,7 @@ public final class CheckContributionPage extends QuotationPage {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
+            getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
 
         HtmlLineTableModel model = new HtmlLineTableModel();
@@ -232,7 +232,7 @@ public final class CheckContributionPage extends QuotationPage {
             recalculateUrl.setPreload(null);
             model.addLine(new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
 

@@ -24,7 +24,9 @@ import javassist.NotFoundException;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.utils.SecuredHash;
+import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.framework.webprocessor.context.User;
+import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -32,22 +34,19 @@ import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.visitor.AnonymousVisitor;
 import com.bloatit.model.visitor.LoggedVisitor;
-import com.bloatit.model.visitor.Visitor;
 
 /**
  * An AuthToken is a token representing an authenticated user. You can use it to
  * tell a {@link RestrictedObject} class which user is using it.
  */
-public final class AuthToken {
+public final class AuthToken implements AbstractAuthToken {
     private Integer asTeamId;
     private final Visitor visitor;
     private final UUID key;
 
-    public static AuthToken ANONYMOUS_TOKEN = new AuthToken();
-
     /**
      * Create an authoToken using the login and password of a person.
-     *
+     * 
      * @throws NotFoundException if the login is not found or if the password is
      *             wrong.
      */
@@ -80,7 +79,7 @@ public final class AuthToken {
     /**
      * NEVER Use this method. It is used by the SessionManager to persist the
      * login session of a user even in case of a server restart.
-     *
+     * 
      * @param memberId
      * @throws NotFoundException
      */
@@ -108,13 +107,20 @@ public final class AuthToken {
 
     }
 
-    /**
-     * @return a unique key, identifying this authToken.
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.right.AbstractAuthToken#getKey()
      */
+    @Override
     public UUID getKey() {
         return key;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.right.AbstractAuthToken#getMember()
+     */
+    @Override
     public Member getMember() {
         return visitor.getMember();
     }
@@ -122,7 +128,7 @@ public final class AuthToken {
     /**
      * If a transaction is active, make sure the member has an internal
      * persistent dao.
-     *
+     * 
      * @return the visitor that is authenticated by this token.
      */
     public Visitor getVisitor() {
@@ -144,6 +150,7 @@ public final class AuthToken {
         return TeamManager.getById(asTeamId);
     }
 
+    @Override
     public boolean isAnonymous() {
         return visitor.isAnonymous();
     }

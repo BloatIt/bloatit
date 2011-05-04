@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.Member;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -40,7 +41,7 @@ public class IndexFeatureBlock extends HtmlDiv {
 
     private final PlaceHolderElement floatRight;
 
-    public IndexFeatureBlock(final HighlightFeature highlightFeature) {
+    public IndexFeatureBlock(final HighlightFeature highlightFeature, Member me) {
         super("index_element");
 
         add(new HtmlTitle(highlightFeature.getReason(), 2));
@@ -61,7 +62,7 @@ public class IndexFeatureBlock extends HtmlDiv {
                                                          SoftwaresTools.getSoftwareLink(highlightFeature.getFeature().getSoftware())));
 
             // Generate progess bar and text
-            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature()));
+            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), me));
 
             indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 

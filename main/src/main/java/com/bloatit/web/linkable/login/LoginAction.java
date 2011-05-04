@@ -17,7 +17,9 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.managers.LoginManager;
@@ -52,7 +54,7 @@ public final class LoginAction extends Action {
 
     @Override
     public Url doProcess() {
-        AuthToken token = null;
+        AbstractAuthToken token = null;
         token = LoginManager.loginByPassword(login.trim(), password);
 
         if (token != null) {
@@ -62,7 +64,7 @@ public final class LoginAction extends Action {
             return session.pickPreferredPage();
         }
 
-        session.setAuthToken(AuthToken.ANONYMOUS_TOKEN);
+        session.setAuthToken(Session.ANONYMOUS_TOKEN);
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
         url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your login.")));

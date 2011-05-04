@@ -32,6 +32,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.visitor.AnonymousVisitor;
 import com.bloatit.web.url.IndexPageUrl;
 
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -53,17 +54,34 @@ import edu.emory.mathcs.backport.java.util.Collections;
  */
 public final class Session {
     private static final int SHA1_SIZE = 20;
+    public static AbstractAuthToken ANONYMOUS_TOKEN = new AbstractAuthToken() {
+        @Override
+        public boolean isAnonymous() {
+            return true;
+        }
+
+        @Override
+        public User getMember() {
+            return null;
+        }
+
+        @Override
+        public UUID getKey() {
+            return null;
+        }
+    };
+
     private final UUID key;
     private long expirationTime;
 
     private final Deque<ErrorMessage> notificationList;
+    private final SessionParameters parameters = new SessionParameters();
+    private AbstractAuthToken authToken;
 
-    private AuthToken authToken;
     private UrlDump lastStablePage = null;
     private UrlDump targetPage = null;
     private UrlDump lastVisitedPage;
 
-    private final SessionParameters parameters = new SessionParameters();
 
     @SuppressWarnings("unchecked")
     private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
@@ -77,12 +95,12 @@ public final class Session {
 
     /**
      * Construct a session based on the information from <code>id</code>
-     *
+     * 
      * @param id the id of the session
      */
     protected Session(final UUID id) {
         this.key = id;
-        authToken = AuthToken.ANONYMOUS_TOKEN;
+        authToken = ANONYMOUS_TOKEN;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
@@ -99,17 +117,17 @@ public final class Session {
         }
     }
 
-    public synchronized void setAuthToken(final AuthToken token) {
+    public synchronized void setAuthToken(final AbstractAuthToken token) {
         authToken = token;
         resetExpirationTime();
     }
 
-    public synchronized AuthToken getAuthToken() {
+    public synchronized AbstractAuthToken getAuthToken() {
         return authToken;
     }
 
     public synchronized boolean isLogged() {
-        return authToken != AuthToken.ANONYMOUS_TOKEN;
+        return authToken != ANONYMOUS_TOKEN;
     }
 
     public synchronized boolean isExpired() {
@@ -117,7 +135,7 @@ public final class Session {
     }
 
     public synchronized void setLastStablePage(final Url p) {
-        if(p == null) {
+        if (p == null) {
             this.lastStablePage = null;
         } else {
             this.lastStablePage = new UrlDump(p);
@@ -132,7 +150,7 @@ public final class Session {
      * page visited in any tab, and can lead to <i>very</i> confusing result.
      * Avoid relying on this.
      * </p>
-     *
+     * 
      * @return the best page to redirect the user to
      */
     public synchronized Url pickPreferredPage() {
@@ -155,7 +173,7 @@ public final class Session {
      * page visited in any tab, and can lead to <i>very</i> confusing result.
      * Avoid relying on this.
      * </p>
-     *
+     * 
      * @return the last page the user visited
      */
     public synchronized Url getLastVisitedPage() {
@@ -163,7 +181,7 @@ public final class Session {
     }
 
     public synchronized void setLastVisitedPage(final Url lastVisitedPage) {
-        if(lastVisitedPage == null) {
+        if (lastVisitedPage == null) {
             this.lastVisitedPage = null;
         } else {
             this.lastVisitedPage = new UrlDump(lastVisitedPage);
@@ -171,7 +189,7 @@ public final class Session {
     }
 
     public final synchronized void setTargetPage(final Url targetPage) {
-        if(targetPage == null) {
+        if (targetPage == null) {
             this.targetPage = null;
         } else {
             this.targetPage = new UrlDump(targetPage);
@@ -209,7 +227,7 @@ public final class Session {
 
     /**
      * Finds all the session parameters
-     *
+     * 
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */

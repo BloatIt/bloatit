@@ -19,6 +19,7 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -42,11 +43,13 @@ import com.bloatit.web.url.LoginPageUrl;
 public abstract class LoggedAction extends Action {
     private final Url meUrl;
     private final Member member;
+    private final AuthToken authToken;
 
     public LoggedAction(final Url url) {
         super(url);
         this.meUrl = url;
-        this.member = session.getAuthToken().getMember();
+        this.authToken = (AuthToken) session.getAuthToken();
+        this.member = authToken.getMember();
     }
 
     @Override
@@ -71,10 +74,14 @@ public abstract class LoggedAction extends Action {
         return NO_ERROR;
     }
 
+    protected final AuthToken getToken() {
+        return authToken;
+    }
+
     /**
      * Called before creating the page, used to check if there are additional
      * errors that can't be spotted by Url.
-     *
+     * 
      * @param me the logged member
      * @return {@value Action#NO_ERROR} if there is no error, an Url to the page
      *         to handle errors otherwise
@@ -83,7 +90,7 @@ public abstract class LoggedAction extends Action {
 
     /**
      * Called when user is correctly authentified
-     *
+     * 
      * @param me the currently logged user
      */
     protected abstract Url doProcessRestricted(Member me);
@@ -96,7 +103,7 @@ public abstract class LoggedAction extends Action {
 
     /**
      * <b>Do not forget to localize</p>
-     *
+     * 
      * @return the error message to dislay to the user, informing him while he
      *         couldn't access the page
      */

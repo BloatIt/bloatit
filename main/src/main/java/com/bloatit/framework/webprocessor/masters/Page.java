@@ -46,13 +46,11 @@ public abstract class Page implements Linkable {
 
     private final Url thisUrl;
     private Header pageHeader;
-    protected final Session session;
 
     public Page(final Url url) {
         super();
         ModelAccessor.setReadOnly();
         this.thisUrl = url;
-        session = Context.getSession();
     }
 
     @Override
@@ -145,7 +143,7 @@ public abstract class Page implements Linkable {
         HtmlElement bodyContent;
         if (thisUrl.hasError()) {
             final Messages messages = thisUrl.getMessages();
-            session.notifyList(messages);
+            Context.getSession().notifyList(messages);
             for (final Message message : messages) {
                 Log.framework().trace("Error messages from Url system: " + message.getMessage());
             }
@@ -170,10 +168,10 @@ public abstract class Page implements Linkable {
         // Set the last stable page into the session
         // Abstract method cf: template method pattern
         if (isStable()) {
-            session.setTargetPage(null);
-            session.setLastStablePage(thisUrl);
+            Context.getSession().setTargetPage(null);
+            Context.getSession().setLastStablePage(thisUrl);
         }
-        session.setLastVisitedPage(thisUrl);
+        Context.getSession().setLastVisitedPage(thisUrl);
 
         // Display waiting notifications
         // Abstract method cf: template method pattern
@@ -191,7 +189,7 @@ public abstract class Page implements Linkable {
     }
 
     private void addWaitingNotifications() {
-        for (final ErrorMessage notification : session.getNotifications()) {
+        for (final ErrorMessage notification : Context.getSession().getNotifications()) {
             switch (notification.getLevel()) {
                 case FATAL:
                     addNotification(new HtmlNotification(Level.FATAL, notification.getMessage()));
@@ -206,6 +204,6 @@ public abstract class Page implements Linkable {
                     throw new BadProgrammerException("Unknown level: " + notification.getLevel());
             }
         }
-        session.flushNotifications();
+        Context.getSession().flushNotifications();
     }
 }

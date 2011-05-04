@@ -24,6 +24,7 @@ import java.util.Set;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.Image;
+import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
@@ -34,11 +35,13 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -46,11 +49,29 @@ public abstract class MasterPage extends Page {
 
     private HtmlBranch notifications;
     private final HtmlDiv notificationBlock;
+    private final Session session;
+    private final AuthToken token;
+    private final Localizator localizator;
 
     public MasterPage(final Url url) {
         super(url);
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
+        session = Context.getSession();
+        token = (AuthToken) Context.getSession().getAuthToken();
+        localizator = Context.getLocalizator();
+    }
+
+    protected final Session getSession() {
+        return session;
+    }
+
+    protected final AuthToken getToken() {
+        return token;
+    }
+
+    protected final Localizator getLocalizator() {
+        return localizator;
     }
 
     // -----------------------------------------------------------------------
@@ -105,7 +126,11 @@ public abstract class MasterPage extends Page {
         header.add(headerContent);
         header.add(new HtmlClearer());
 
-        headerContent.add(new SessionBar());
+        if (session.isLogged()) {
+            headerContent.add(new SessionBar(token.getMember()));
+        } else {
+            headerContent.add(new SessionBar());
+        }
         headerContent.add(generateLogo());
 
         body.add(new Menu());

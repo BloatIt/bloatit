@@ -125,12 +125,11 @@ public abstract class UserContentAction extends LoggedAction {
                     transmitParameters();
                     return doProcessErrors();
                 }
-                session.getAuthToken().setAsTeam(team);
+                getToken().setAsTeam(team);
             }
             return doDoProcessRestricted(me, team);
         } finally {
-            session.getAuthToken().setAsTeam(null);
-
+            getToken().setAsTeam(null);
         }
     }
 

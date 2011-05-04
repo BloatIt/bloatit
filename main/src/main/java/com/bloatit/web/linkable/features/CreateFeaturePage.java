@@ -64,11 +64,11 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-        if (FeatureManager.canCreate(session.getAuthToken())) {
+        if (FeatureManager.canCreate(getSession().getAuthToken())) {
             return generateFeatureCreationForm(loggedUser);
         }
         // TODO
-        session.notifyBad("//TODO");
+        getSession().notifyBad("//TODO");
         return new HtmlParagraph(Context.tr("You are not allowed to create a new feature"));
     }
 

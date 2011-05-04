@@ -195,7 +195,7 @@ public class ModifyMemberPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return generateBreadcrumb(Context.getSession().getAuthToken().getMember());
+        return generateBreadcrumb(getToken().getMember());
     }
 
     private static Breadcrumb generateBreadcrumb(final Member member) {

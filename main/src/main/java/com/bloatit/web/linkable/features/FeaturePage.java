@@ -20,13 +20,18 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.pages.tools.CommentTools;
+import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 @ParamContainer("feature")
@@ -39,12 +44,12 @@ public final class FeaturePage extends MasterPage {
     // Sub component.
     @SuppressWarnings("unused")
     private FeatureTabPane featureTabPane;
-    
+
     @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, generatedFrom = "feature")
     @Optional("Title")
     private final String title;
-    
+
     private final FeaturePageUrl url;
 
     public FeaturePage(final FeaturePageUrl url) {
@@ -80,9 +85,16 @@ public final class FeaturePage extends MasterPage {
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        layout.addLeft(new FeatureSummaryComponent(feature));
-        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
-        layout.addLeft(new FeatureCommentListComponent(feature));
+        layout.addLeft(new FeatureSummaryComponent(feature, getToken().getMember()));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, getToken().getMember()));
+
+        final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
+        {
+            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
+            commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), getToken().getMember()));
+        }
+        layout.addLeft(commentsBlock);
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
 

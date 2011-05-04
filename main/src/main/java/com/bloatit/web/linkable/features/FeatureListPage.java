@@ -32,6 +32,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFeatureSummary;
@@ -234,11 +235,11 @@ public final class FeatureListPage extends MasterPage {
         }
         layout.addLeft(featureSearchBlock);
 
-        ///////////////
+        // /////////////
         // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
+            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem(getToken().getMember());
             final FeatureListPageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, results, clonedUrl, clonedUrl.getPagedFeatureListUrl());
             layout.addLeft(pagedFeatureList);
@@ -250,7 +251,7 @@ public final class FeatureListPage extends MasterPage {
             layout.addLeft(noResultBlock);
         }
 
-        ////////////
+        // //////////
         // Right bar
         layout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
         layout.addRight(new SideBarDocumentationBlock("feature"));
@@ -269,16 +270,16 @@ public final class FeatureListPage extends MasterPage {
     }
 
     private static class FeaturesListItem implements HtmlRenderer<Feature> {
-        private Feature feature;
+        private Member me;
+
+        public FeaturesListItem(Member me) {
+            super();
+            this.me = me;
+        }
 
         @Override
         public XmlNode generate(final Feature feature) {
-            this.feature = feature;
-            return generateContent();
-        }
-
-        private XmlNode generateContent() {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, me);
         }
     };
 

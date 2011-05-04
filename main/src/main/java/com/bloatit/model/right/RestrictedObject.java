@@ -19,6 +19,7 @@ package com.bloatit.model.right;
 
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 
@@ -46,7 +47,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
     private void automaticAuthentication() {
         final Session session = Context.getSession();
         if (token == null && session != null && session.isLogged()) {
-            authenticate(session.getAuthToken());
+            authenticate((AuthToken) session.getAuthToken());
         }
     }
 

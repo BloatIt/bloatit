@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javassist.NotFoundException;
 
+import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.model.right.AuthToken;
 
 /**
@@ -48,7 +49,7 @@ public final class LoginManager {
      * @return the new {@link AuthToken} or <code>null</code> if the
      *         login/password does not match any user.
      */
-    public static AuthToken loginByPassword(final String login, final String password) {
+    public static AbstractAuthToken loginByPassword(final String login, final String password) {
         try {
             final AuthToken token = new AuthToken(login, password);
             AUTH_TOKEN_LIST.put(token.getKey(), token);
@@ -64,7 +65,7 @@ public final class LoginManager {
      * @param key the unique key
      * @return the found {@link AuthToken} or <code>null</code> if not found.
      */
-    public static AuthToken getByKey(final String key) {
+    public static AbstractAuthToken getByKey(final String key) {
         return AUTH_TOKEN_LIST.get(UUID.fromString(key));
     }
 }

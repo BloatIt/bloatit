@@ -3,6 +3,7 @@ package com.bloatit.model;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.RestrictedObject;
 import com.bloatit.model.visitor.HighLevelModelVisitor;

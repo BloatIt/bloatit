@@ -19,8 +19,8 @@ package com.bloatit.model.feature;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.model.Feature;
-import com.bloatit.model.right.AuthToken;
 
 /**
  * The Class FeatureManager is a class with only static member. Use it to do
@@ -85,7 +85,7 @@ public final class FeatureManager {
      *            feature.
      * @return true, if successful
      */
-    public static boolean canCreate(final AuthToken authToken) {
+    public static boolean canCreate(final AbstractAuthToken authToken) {
         return !authToken.isAnonymous();
     }
 

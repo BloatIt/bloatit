@@ -68,7 +68,7 @@ public final class AddReleasePage extends CreateUserContentPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), loggedUser));
         layout.addLeft(generateReleaseCreationForm());
         return layout;
     }

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.visitor;
+package com.bloatit.framework.webprocessor.context;
 
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;

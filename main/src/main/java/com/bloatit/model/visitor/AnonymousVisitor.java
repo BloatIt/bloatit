@@ -16,6 +16,7 @@
 //
 package com.bloatit.model.visitor;
 
+import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 

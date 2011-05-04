@@ -70,7 +70,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), loggedUser));
         return layout;
     }
 
@@ -84,7 +84,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
             }
             generateNoMoneyContent(group, getActor(member), account);
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
         return group;
@@ -110,7 +110,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
+            getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
         HtmlLineTableModel model = new HtmlLineTableModel();
         try {
@@ -120,7 +120,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
             }
             model.addLine(new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, null));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
 

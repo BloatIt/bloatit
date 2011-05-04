@@ -44,7 +44,7 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
-import com.bloatit.web.linkable.usercontent.CreateCommentForm;
+import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.MasterPage;
@@ -82,7 +82,7 @@ public final class BugPage extends MasterPage {
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        layout.addRight(new SideBarFeatureBlock(bug.getFeature()));
+        layout.addRight(new SideBarFeatureBlock(bug.getFeature(), getToken().getMember()));
 
         final HtmlDiv bugListDiv = new HtmlDiv("bug_list");
         layout.addLeft(bugListDiv);
@@ -150,7 +150,7 @@ public final class BugPage extends MasterPage {
 
         // Comments
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
-        layout.addLeft(new CreateCommentForm(new CreateCommentActionUrl(bug)));
+        layout.addLeft(new CommentForm(new CreateCommentActionUrl(bug), getToken().getMember()));
 
         return layout;
     }

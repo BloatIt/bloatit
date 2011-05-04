@@ -33,9 +33,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.visitor.Visitor;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -44,35 +44,35 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
 public class MembersTab extends HtmlTab {
     private final Team team;
     private final Session session = Context.getSession();
+    private final Visitor vistor;
 
-    public MembersTab(final Team team, final String title, final String tabKey) {
+    public MembersTab(final Team team, final String title, final String tabKey, Visitor vistor) {
         super(title, tabKey);
         this.team = team;
+        this.vistor = vistor;
     }
 
     @Override
     public XmlNode generateBody() {
-        final Visitor me = session.getAuthToken().getVisitor();
-
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Members
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", team.getMembers().size()), 2);
         master.add(memberTitle);
 
-        if (me.hasInviteTeamRight(team)) {
+        if (vistor.hasInviteTeamRight(team)) {
             final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(team);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
         }
 
-        if (team.isPublic() && !me.isInTeam(team)) {
+        if (team.isPublic() && !vistor.isInTeam(team)) {
             final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(team).urlString(), Context.tr("Join this team"));
             memberTitle.add(joinLink);
         }
 
         final PageIterable<Member> members = team.getMembers();
-        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
+        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members, vistor));
         membersTable.setCssClass("members_table");
         memberTitle.add(membersTable);
 
@@ -91,10 +91,10 @@ public class MembersTab extends HtmlTab {
         private static final int BANK = 5;
         private static final int PROMOTE = 6;
 
-        public MyTableModel(final PageIterable<Member> members) {
+        public MyTableModel(final PageIterable<Member> members, Visitor visitor) {
             this.members = members;
             if (session.getAuthToken() != null) {
-                this.visitor = session.getAuthToken().getVisitor();
+                this.visitor = visitor;
             }
             iterator = members.iterator();
         }

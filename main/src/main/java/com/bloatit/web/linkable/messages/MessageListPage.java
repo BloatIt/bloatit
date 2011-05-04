@@ -106,7 +106,7 @@ public final class MessageListPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return MessageListPage.generateBreadcrumb(session.getAuthToken().getMember());
+        return MessageListPage.generateBreadcrumb(getToken().getMember());
     }
 
     private static Breadcrumb generateBreadcrumb(final Member member) {

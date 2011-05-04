@@ -100,7 +100,7 @@ public final class SiteMapPage extends MasterPage {
         layout.addLeft(personalLinkList);
 
         if(Context.getSession().isLogged()) {
-            personalLinkList.add(new MemberPageUrl(Context.getSession().getAuthToken().getMember()).getHtmlLink(Context.tr("My page")));
+            personalLinkList.add(new MemberPageUrl(getToken().getMember()).getHtmlLink(Context.tr("My page")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
         }

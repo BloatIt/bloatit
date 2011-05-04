@@ -53,7 +53,7 @@ public final class MetaBugsListPage extends MasterPage {
 
         for (final MetaBug bug : bugList) {
             final HtmlDiv bugBox = new HtmlDiv("meta_bug_box");
-            if (session.isLogged()) {
+            if (getSession().isLogged()) {
                 final HtmlDiv editBox = new HtmlDiv("float_right");
                 bugBox.add(editBox);
                 editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));

@@ -82,7 +82,7 @@ public final class AccountPage extends LoggedPage {
         try {
             if (isTeamAccount()) {
                 if (!loggedUser.hasBankTeamRight(team)) {
-                    session.notifyBad(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));
+                    getSession().notifyBad(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));
                     throw new PageNotFoundException();
                 }
             }
@@ -114,7 +114,7 @@ public final class AccountPage extends LoggedPage {
         if (isTeamAccount()) {
             return AccountPage.generateBreadcrumb(team);
         }
-        return AccountPage.generateBreadcrumb(session.getAuthToken().getMember());
+        return AccountPage.generateBreadcrumb(getToken().getMember());
 
     }
 

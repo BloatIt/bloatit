@@ -48,7 +48,7 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
-@ParamContainer(value="payline/process", protocol=Protocol.HTTPS)
+@ParamContainer(value = "payline/process", protocol = Protocol.HTTPS)
 public class PaylineProcess extends WebProcess {
 
     @RequestParam
@@ -152,7 +152,9 @@ public class PaylineProcess extends WebProcess {
                 session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
                 // By mail
                 final ChargingAccountSuccess mail = new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
-                mail.sendMail(session.getAuthToken().getMember(), "payline-process");
+                // TODO reactivate the send mail
+                // mail.sendMail(bankTransaction.getAuthor(),
+                // "payline-process");
             } else {
                 payline.cancelPayement(token);
                 Log.framework().info("Payline transaction failure. (Reason: " + message + ")");

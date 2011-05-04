@@ -103,7 +103,7 @@ public final class MemberPage extends MasterPage {
         super(url);
         this.url = url;
         this.member = url.getMember();
-        if (!session.isLogged() || !member.equals(session.getAuthToken().getMember())) {
+        if (!getSession().isLogged() || !member.equals(getSession().getAuthToken().getMember())) {
             this.myPage = false;
         } else {
             this.myPage = true;
@@ -222,7 +222,7 @@ public final class MemberPage extends MasterPage {
             karma.addText(Context.tr("Karma: "));
             memberIdList.add(new PlaceHolderElement().add(karma).addText("" + member.getKarma()));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError("An error prevented us from displaying user information. Please notify us.");
+            getSession().notifyError("An error prevented us from displaying user information. Please notify us.");
             throw new ShallNotPassException("Error while gathering user information", e);
         }
 

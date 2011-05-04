@@ -38,10 +38,10 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.visitor.Visitor;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
@@ -90,7 +90,6 @@ public final class TeamPage extends MasterPage {
     @Optional("john-do")
     private final String login;
 
-    
     public TeamPage(final TeamPageUrl url) {
         super(url);
         this.url = url;
@@ -102,7 +101,7 @@ public final class TeamPage extends MasterPage {
     @Override
     protected HtmlElement createBodyContent() throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        final Visitor me = session.getAuthToken().getVisitor();
+        final Visitor me = getToken().getVisitor();
 
         layout.addLeft(generateTeamIDCard(me));
         layout.addLeft(generateMain());
@@ -150,7 +149,7 @@ public final class TeamPage extends MasterPage {
         final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));
+        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, getToken().getVisitor()));
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }

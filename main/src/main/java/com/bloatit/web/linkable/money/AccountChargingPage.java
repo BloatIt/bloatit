@@ -114,7 +114,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) {
         if (process.isLocked()) {
-            session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
@@ -127,7 +127,7 @@ public final class AccountChargingPage extends QuotationPage {
                 process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
         }
 
         // Total
@@ -179,7 +179,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
+        return generateBreadcrumb(getToken().getMember(), process.getTeam(), process);
     }
 
     protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {

@@ -55,7 +55,7 @@ public final class MetaReportBugAction extends Action {
     protected Url doProcess() {
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
-        bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getDisplayName() : "not logged") + "\n";
+        bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getUserLogin() : "not logged") + "\n";
         bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;

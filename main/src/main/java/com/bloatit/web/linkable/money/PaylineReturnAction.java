@@ -26,7 +26,7 @@ import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
-@ParamContainer(value="payline/doreturn", protocol=Protocol.HTTPS)
+@ParamContainer(value = "payline/doreturn", protocol = Protocol.HTTPS)
 public final class PaylineReturnAction extends Action {
 
     @RequestParam(name = "token")

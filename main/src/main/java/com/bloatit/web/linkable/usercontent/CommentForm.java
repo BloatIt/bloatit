@@ -23,14 +23,15 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
-public class CreateCommentForm extends HtmlDiv {
+public class CommentForm extends HtmlDiv {
 
     private static final int NB_COLUMNS = 80;
     private static final int NB_ROWS = 10;
 
-    public CreateCommentForm(final CreateCommentActionUrl targetUrl) {
+    public CommentForm(final CreateCommentActionUrl targetUrl, Member me) {
         super("new_comment_block");
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         add(form);
@@ -43,9 +44,8 @@ public class CreateCommentForm extends HtmlDiv {
         form.add(commentInput);
         commentInput.setComment(Context.tr("Add a new comment. If you want to reply to a previous comment, use the reply link."));
 
-        // TODO remove dependence to Context.getSession()
         form.add(new AsTeamField(targetUrl,
-                                 Context.getSession().getAuthToken().getMember(),
+                                 me,
                                  UserTeamRight.TALK,
                                  Context.tr("In the name of"),
                                  Context.tr("Write this comment in the name of this team.")));

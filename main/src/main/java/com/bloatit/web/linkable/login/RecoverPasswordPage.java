@@ -65,7 +65,7 @@ public class RecoverPasswordPage extends MasterPage {
         Member member = MemberManager.getMemberByLogin(login);
 
         if (member == null || !member.getResetKey().equals(resetKey)) {
-            session.notifyBad(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
+            getSession().notifyBad(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
             throw new PageNotFoundException();
         }
 

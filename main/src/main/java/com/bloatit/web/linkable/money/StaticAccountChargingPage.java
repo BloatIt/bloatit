@@ -85,7 +85,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
             getActor(member).getInternalAccount().getAmount();
             generateNoMoneyContent(group, getActor(member));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
 
@@ -154,7 +154,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
     @Override
     protected Breadcrumb createBreadcrumb() {
-        return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
+        return generateBreadcrumb(getToken().getMember(), process.getTeam(), process);
     }
 
     private static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {

@@ -94,7 +94,7 @@ public final class IndexPage extends MasterPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2);
                         if (highlightFeature != null) {
-                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature));
+                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, getToken().getMember()));
                         }
                     }
                     featureListRow.add(featureListLeftCase);
@@ -103,7 +103,7 @@ public final class IndexPage extends MasterPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2 + 1);
                         if (highlightFeature != null) {
-                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature));
+                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, getToken().getMember()));
                         }
                     }
                     featureListRow.add(featureListRightCase);

@@ -117,7 +117,7 @@ public class WithdrawMoneyPage extends LoggedPage {
         if (isTeamAccount()) {
             return generateBreadcrumb((Team) actor);
         }
-        return generateBreadcrumb(session.getAuthToken().getMember());
+        return generateBreadcrumb(getToken().getMember());
 
     }
 

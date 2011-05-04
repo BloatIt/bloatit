@@ -95,13 +95,13 @@ public final class ReportBugPage extends CreateUserContentPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        if (FeatureManager.canCreate(session.getAuthToken())) {
+        if (FeatureManager.canCreate(getToken())) {
             layout.addLeft(generateReportBugForm(loggedUser));
         } else {
             layout.addLeft(generateBadRightError());
         }
 
-        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), loggedUser));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
