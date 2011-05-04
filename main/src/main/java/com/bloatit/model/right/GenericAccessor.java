@@ -17,7 +17,6 @@
 package com.bloatit.model.right;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.Rights;
 
 /**

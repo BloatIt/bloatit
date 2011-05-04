@@ -7,9 +7,9 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
 public class ActorTest extends ModelTestUnit {
 

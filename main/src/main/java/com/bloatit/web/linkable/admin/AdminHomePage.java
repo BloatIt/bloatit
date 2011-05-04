@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.linkable.admin;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -27,6 +26,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;

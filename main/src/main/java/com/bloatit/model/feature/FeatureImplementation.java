@@ -30,8 +30,6 @@ import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
@@ -59,6 +57,8 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtFeature;
 import com.bloatit.model.right.RgtOffer;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 // TODO : delete comment.
 //

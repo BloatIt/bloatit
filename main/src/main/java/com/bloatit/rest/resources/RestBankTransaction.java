@@ -30,13 +30,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoBankTransaction.State;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.managers.BankTransactionManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestBankTransactionList;
 

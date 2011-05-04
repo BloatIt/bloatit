@@ -19,12 +19,12 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtUserContent;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.

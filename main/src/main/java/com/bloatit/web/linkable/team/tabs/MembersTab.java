@@ -33,7 +33,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.url.GiveRightActionUrl;

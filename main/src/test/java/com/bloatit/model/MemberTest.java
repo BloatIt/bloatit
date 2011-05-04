@@ -29,12 +29,12 @@ import org.junit.Test;
 
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 public class MemberTest extends ModelTestUnit {
 

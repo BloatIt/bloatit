@@ -27,7 +27,6 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
-import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.annotations.Loader;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -36,6 +35,7 @@ import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.IdentifiableInterface;
+import com.bloatit.web.actions.WebProcess;
 
 public final class Loaders {
 

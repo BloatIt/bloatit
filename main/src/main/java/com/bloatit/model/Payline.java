@@ -26,10 +26,10 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RestrictedObject;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.experian.payline.ws.impl.DoWebPaymentRequest;
 import com.experian.payline.ws.impl.DoWebPaymentResponse;
 import com.experian.payline.ws.impl.GetWebPaymentDetailsRequest;

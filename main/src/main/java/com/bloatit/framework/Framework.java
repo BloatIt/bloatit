@@ -22,22 +22,22 @@ import com.bloatit.common.CommonConfiguration;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
-import com.bloatit.framework.webprocessor.ModelAccessor;
+import com.bloatit.framework.model.Model;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.framework.xcgiserver.XcgiServer;
-import com.bloatit.model.AbstractModel;
 
 /**
  * This class represent the whole framework.
  */
 public class Framework {
 
-    private final AbstractModel model;
+    private final Model model;
     private final XcgiServer scgiServer;
     private final MailServer mailServer;
 
-    public Framework(final AbstractModel model) {
+    public Framework(final Model model) {
         this.model = model;
         this.scgiServer = new XcgiServer();
         this.mailServer = MailServer.getInstance();

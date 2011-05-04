@@ -21,11 +21,11 @@ import java.io.IOException;
 import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public abstract class ElveosMail {
 

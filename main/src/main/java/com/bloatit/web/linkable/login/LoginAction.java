@@ -64,7 +64,7 @@ public final class LoginAction extends ElveosAction {
             return session.pickPreferredPage();
         }
 
-        session.setAuthToken(AnonymousUserToken.TOKEN);
+        session.setAnonymousUserToken();
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
         url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your login.")));

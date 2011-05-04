@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public interface Linkable {
     void writeToHttp(final HttpResponse response, WebProcessor webServer) throws RedirectException, IOException;

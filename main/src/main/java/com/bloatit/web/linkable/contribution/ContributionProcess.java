@@ -20,14 +20,14 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.framework.webprocessor.PaymentProcess;
-import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;

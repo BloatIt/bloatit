@@ -2,7 +2,6 @@ package com.bloatit.web.linkable.admin.withdraw;
 
 import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -11,6 +10,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.linkable.admin.AdminAction;
 import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;

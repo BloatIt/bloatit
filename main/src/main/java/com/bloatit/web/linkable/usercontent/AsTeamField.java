@@ -18,7 +18,6 @@ package com.bloatit.web.linkable.usercontent;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -26,6 +25,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.UserContentActionUrl;
 
 public class AsTeamField extends PlaceHolderElement {

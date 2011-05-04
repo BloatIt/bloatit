@@ -20,7 +20,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import com.bloatit.data.SessionManager;
-import com.bloatit.framework.webprocessor.ModelAccessor;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.model.right.AuthenticatedUserToken;
 
 public class ModelTestUnit {

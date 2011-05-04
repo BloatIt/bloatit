@@ -1,7 +1,6 @@
 package com.bloatit.web.linkable.admin.withdraw;
 
 import com.bloatit.data.DaoMoneyWithdrawal.State;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -22,6 +21,7 @@ import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.managers.MoneyWithdrawalManager;
 import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.admin.AdminPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.AdminHomePageUrl;

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model;
+package com.bloatit.framework.model;
 
 /**
  * You have to implement a model manager in the model layer. The model manager
@@ -22,7 +22,7 @@ package com.bloatit.model;
  * 
  * @author Thomas Guyard
  */
-public interface AbstractModel {
+public interface Model {
 
     /**
      * Launch the model layer. This method will be called only once, before

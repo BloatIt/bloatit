@@ -16,12 +16,12 @@
 //
 package com.bloatit.web.linkable.money;
 
-import com.bloatit.framework.webprocessor.PaymentProcess;
-import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
+import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;

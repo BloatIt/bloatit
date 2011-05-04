@@ -24,10 +24,6 @@ import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MemberList;
@@ -35,6 +31,9 @@ import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTeam;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 /**
  * This is a team ... There are member in it.

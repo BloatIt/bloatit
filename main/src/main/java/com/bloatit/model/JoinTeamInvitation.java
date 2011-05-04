@@ -17,11 +17,11 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoJoinTeamInvitation;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtJoinTeamInvitation;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateReadOnlyAccessException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
  * This is an invitation to join a team. Some teams are not public, and you have

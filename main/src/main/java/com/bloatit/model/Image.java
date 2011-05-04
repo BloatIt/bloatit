@@ -10,14 +10,14 @@
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.framework.utils;
+package com.bloatit.model;
 
-import com.bloatit.model.FileMetadata;
+
 
 /**
  * A container for images in the bloatit website
  */
-public class Image {
+public class Image implements com.bloatit.framework.model.Image {
     private String identifier;
     private FileMetadata metadata;
 
@@ -44,6 +44,7 @@ public class Image {
      * 
      * @return the identifier of the image
      */
+    @Override
     public final String getIdentifier() {
         if (metadata != null) {
             return metadata.getUrl();
@@ -55,6 +56,7 @@ public class Image {
         return metadata;
     }
 
+    @Override
     public boolean isNull() {
         return this.metadata == null;
     }

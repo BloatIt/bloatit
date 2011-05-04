@@ -33,11 +33,6 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.SecuredHash;
 import com.bloatit.framework.webprocessor.context.User;
@@ -54,6 +49,10 @@ import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.RightManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 public final class Member extends Actor<DaoMember> implements User {
 
@@ -402,10 +401,9 @@ public final class Member extends Actor<DaoMember> implements User {
         return getDao().getFullname();
     }
 
-    @Override
     // no right management: this is public data
-    public Image
-            getAvatar() {
+    @Override
+    public Image getAvatar() {
         final DaoFileMetadata avatar = getDao().getAvatar();
         if (avatar != null) {
             return new Image(FileMetadata.create(avatar));

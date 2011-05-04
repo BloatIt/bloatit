@@ -23,7 +23,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.util.List;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
@@ -51,6 +50,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;

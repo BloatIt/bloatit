@@ -30,12 +30,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoExternalAccount.AccountType;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.managers.ExternalAccountManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestTransactionList;

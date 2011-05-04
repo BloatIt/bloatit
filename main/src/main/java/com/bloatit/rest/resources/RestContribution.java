@@ -31,14 +31,14 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.managers.ContributionManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestContributionList;
 

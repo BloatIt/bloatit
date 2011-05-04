@@ -17,13 +17,13 @@
 package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.url.LoginPageUrl;

@@ -16,7 +16,7 @@
 //
 package com.bloatit.framework.restprocessor.exception;
 
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
 
 /**
  * <p>

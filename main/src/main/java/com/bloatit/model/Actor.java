@@ -19,15 +19,14 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoActor;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtActor;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
 // TODO: Auto-generated Javadoc
 /**

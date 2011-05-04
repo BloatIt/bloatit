@@ -26,13 +26,13 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtOffer;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 // TODO rightManagement
 public final class Offer extends Kudosable<DaoOffer> {

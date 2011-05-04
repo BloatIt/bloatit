@@ -23,7 +23,6 @@ import java.util.Set;
 
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -38,11 +37,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.Image;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -51,7 +50,7 @@ public abstract class ElveosPage extends Page {
     private HtmlBranch notifications;
     private final HtmlDiv notificationBlock;
     private final Session session;
-    private final AuthenticatedUserToken token;
+    private final ElveosUserToken token;
     private final Localizator localizator;
 
     public ElveosPage(final Url url) {
@@ -59,7 +58,7 @@ public abstract class ElveosPage extends Page {
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
         session = Context.getSession();
-        token = (AuthenticatedUserToken) Context.getSession().getUserToken();
+        token = (ElveosUserToken) Context.getSession().getUserToken();
         localizator = Context.getLocalizator();
     }
 

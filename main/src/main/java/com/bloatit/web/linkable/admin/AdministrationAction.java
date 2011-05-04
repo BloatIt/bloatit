@@ -20,7 +20,6 @@ import java.util.List;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -35,6 +34,7 @@ import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.UserContent;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 

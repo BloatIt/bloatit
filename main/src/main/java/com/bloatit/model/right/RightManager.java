@@ -18,11 +18,6 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
 import com.bloatit.model.Rights;
 
 /**

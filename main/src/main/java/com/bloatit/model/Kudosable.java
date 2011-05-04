@@ -22,11 +22,11 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtKudosable;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface {
 

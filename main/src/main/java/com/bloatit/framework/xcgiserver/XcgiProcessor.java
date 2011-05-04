@@ -18,7 +18,6 @@ package com.bloatit.framework.xcgiserver;
 
 import java.io.IOException;
 
-import com.bloatit.framework.webprocessor.masters.HttpResponse;
 
 public interface XcgiProcessor {
 

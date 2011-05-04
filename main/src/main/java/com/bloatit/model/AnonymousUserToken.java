@@ -4,9 +4,7 @@ import java.util.UUID;
 
 public class AnonymousUserToken implements ElveosUserToken {
 
-    public static AnonymousUserToken TOKEN = new AnonymousUserToken();
-
-    protected AnonymousUserToken() {
+    public AnonymousUserToken() {
         super();
     }
 

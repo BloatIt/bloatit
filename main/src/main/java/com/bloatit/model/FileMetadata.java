@@ -21,9 +21,9 @@ import java.io.File;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtFileMetadata;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 public final class FileMetadata extends UserContent<DaoFileMetadata> {
 

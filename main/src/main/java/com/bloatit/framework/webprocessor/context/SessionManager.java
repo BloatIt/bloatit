@@ -172,6 +172,7 @@ public final class SessionManager {
         final UUID uuidKey = UUID.fromString(key);
         final Session session = new Session(uuidKey);
         try {
+            // TODO remove back reference to AuthenticatedUserToken
             session.setAuthToken(new AuthenticatedUserToken(memberId));
         } catch (final NotFoundException e) {
             Log.framework().error("Session not found", e);

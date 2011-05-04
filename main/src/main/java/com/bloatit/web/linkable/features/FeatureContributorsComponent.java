@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -33,6 +32,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.ContributionProcessUrl;
 
 @ParamContainer(value = "FeatureContributorsComponent", isComponent = true)

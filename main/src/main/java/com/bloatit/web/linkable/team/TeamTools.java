@@ -20,11 +20,11 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Image;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.FileResourceUrl;

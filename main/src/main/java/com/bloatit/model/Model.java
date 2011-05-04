@@ -23,7 +23,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
 
-public class Model implements AbstractModel {
+public class Model implements com.bloatit.framework.model.Model {
     public Model() {
         // do nothing
     }

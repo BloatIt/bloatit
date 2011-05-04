@@ -14,12 +14,11 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.framework.webprocessor;
+package com.bloatit.framework.model;
 
 import java.util.concurrent.Semaphore;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.model.AbstractModel;
 
 /**
  * Thread safe class. It calls to the model initialization and open close
@@ -35,9 +34,9 @@ public class ModelAccessor {
     /**
      * This static variable is protected by the {@link #mutex}.
      */
-    private static AbstractModel model = null;
+    private static Model model = null;
 
-    private static void setModelManager(final AbstractModel manager) {
+    private static void setModelManager(final Model manager) {
         if (model == null) {
             model = manager;
         } else {
@@ -49,9 +48,9 @@ public class ModelAccessor {
      * This method is the init method. Call it only once, in a non MultiThreaded
      * environment.
      * 
-     * @see com.bloatit.model.AbstractModel#initialize()
+     * @see com.bloatit.framework.model.Model#initialize()
      */
-    public static void initialize(final AbstractModel manager) {
+    public static void initialize(final Model manager) {
         try {
             mutex.acquire();
             setModelManager(manager);
@@ -64,7 +63,7 @@ public class ModelAccessor {
     }
 
     /**
-     * @see com.bloatit.model.AbstractModel#shutdown()
+     * @see com.bloatit.framework.model.Model#shutdown()
      */
     public static void shutdown() {
         if (model != null) {
@@ -80,7 +79,7 @@ public class ModelAccessor {
     }
 
     /**
-     * @see com.bloatit.model.AbstractModel#setReadOnly()
+     * @see com.bloatit.framework.model.Model#setReadOnly()
      */
     public static void setReadOnly() {
         try {
@@ -94,7 +93,7 @@ public class ModelAccessor {
     }
 
     /**
-     * @see com.bloatit.model.AbstractModel#open()
+     * @see com.bloatit.framework.model.Model#open()
      */
     public static void open() {
         try {
@@ -108,7 +107,7 @@ public class ModelAccessor {
     }
 
     /**
-     * @see com.bloatit.model.AbstractModel#close()
+     * @see com.bloatit.framework.model.Model#close()
      */
     public static void close() {
         try {
@@ -122,9 +121,9 @@ public class ModelAccessor {
     }
 
     /**
-     * @see com.bloatit.model.AbstractModel#close()
+     * @see com.bloatit.framework.model.Model#close()
      */
-    protected static void rollback() {
+    public static void rollback() {
         try {
             mutex.acquire();
             model.rollback();

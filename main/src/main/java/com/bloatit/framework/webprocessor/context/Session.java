@@ -12,6 +12,7 @@
 
 package com.bloatit.framework.webprocessor.context;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -22,15 +23,16 @@ import java.util.UUID;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
-import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.IndexPageUrl;
 
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -52,7 +54,8 @@ import edu.emory.mathcs.backport.java.util.Collections;
  */
 public final class Session {
     private static final int SHA1_SIZE = 20;
-    
+    private static final UserToken ANONYMOUS_USER_TOKEN = createAnonymousUserToken();
+
     private long expirationTime;
     private final UUID key;
 
@@ -64,7 +67,6 @@ public final class Session {
     private UrlDump targetPage = null;
     private UrlDump lastVisitedPage;
 
-
     @SuppressWarnings("unchecked")
     private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
 
@@ -75,6 +77,34 @@ public final class Session {
         this(UUID.randomUUID());
     }
 
+    private static UserToken createAnonymousUserToken() {
+        String classString = FrameworkConfiguration.getAnonymousUserTokenClass();
+        if (classString == null || classString.isEmpty()) {
+            return new AnonymousUserToken();
+        }
+        try {
+            Class<?> userTokenClass = Class.forName(classString);
+            if (userTokenClass.isAssignableFrom(UserToken.class)) {
+                throw new BadProgrammerException("The specified class is not a UserToken: " + classString);
+            }
+            return (UserToken) userTokenClass.getConstructor().newInstance();
+        } catch (ClassNotFoundException e) {
+            throw new BadProgrammerException(e);
+        } catch (IllegalArgumentException e) {
+            throw new BadProgrammerException(e);
+        } catch (SecurityException e) {
+            throw new BadProgrammerException(e);
+        } catch (InstantiationException e) {
+            throw new BadProgrammerException(e);
+        } catch (IllegalAccessException e) {
+            throw new BadProgrammerException(e);
+        } catch (InvocationTargetException e) {
+            throw new BadProgrammerException(e);
+        } catch (NoSuchMethodException e) {
+            throw new BadProgrammerException(e);
+        }
+    }
+
     /**
      * Construct a session based on the information from <code>id</code>
      * 
@@ -82,7 +112,7 @@ public final class Session {
      */
     protected Session(final UUID id) {
         this.key = id;
-        userToken = null;
+        this.userToken = ANONYMOUS_USER_TOKEN;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
@@ -99,7 +129,15 @@ public final class Session {
         }
     }
 
+    public synchronized void setAnonymousUserToken() {
+        userToken = ANONYMOUS_USER_TOKEN;
+        resetExpirationTime();
+    }
+
     public synchronized void setAuthToken(final UserToken token) {
+        if (token == null){
+            throw new BadProgrammerException("Token must be non null.");
+        }
         userToken = token;
         resetExpirationTime();
     }

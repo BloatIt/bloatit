@@ -14,13 +14,12 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.framework.webprocessor;
+package com.bloatit.web.actions;
 
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.web.actions.ElveosAction;
 
 public abstract class WebProcess extends ElveosAction {
 

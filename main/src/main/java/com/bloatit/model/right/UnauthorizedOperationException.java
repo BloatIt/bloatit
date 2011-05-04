@@ -14,11 +14,9 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.framework.exceptions.lowlevel;
+package com.bloatit.model.right;
 
 import com.bloatit.model.JoinTeamInvitation;
-import com.bloatit.model.right.Action;
-import com.bloatit.model.right.RestrictedObject;
 
 /**
  * This exception is thrown when you try to access a property without the having
@@ -46,7 +44,7 @@ public class UnauthorizedOperationException extends Exception {
          * You try to access a method that require authentication without
          * authenticating the object.
          * 
-         * @see RestrictedObject#authenticate(com.bloatit.model.right.AuthToken)
+         * @see RestrictedObject#authenticate(com.bloatit.model.right.AuthenticatedUserToken)
          */
         AUTHENTICATION_NEEDED,
 
@@ -122,8 +120,8 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You tried to remove a member from a team with having the right
          */
-        TEAM_PROMOTE_RIGHT_MISSING, 
-        
+        TEAM_PROMOTE_RIGHT_MISSING,
+
         /**
          * You tried to modify team without having the right to
          */

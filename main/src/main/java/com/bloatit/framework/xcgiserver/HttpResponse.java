@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.framework.webprocessor.masters;
+package com.bloatit.framework.xcgiserver;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,7 +38,6 @@ import com.bloatit.framework.webprocessor.components.writers.IndentedHtmlStream;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 import com.bloatit.framework.webprocessor.components.writers.SimpleHtmlStream;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.web.HtmlTools;
 
 public final class HttpResponse {
@@ -144,7 +143,7 @@ public final class HttpResponse {
         return new IndentedHtmlStream(outputStream);
     }
 
-    protected void writePage(final HtmlElement page) throws IOException {
+    public void writePage(final HtmlElement page) throws IOException {
         writeLine("Status: " + status);
         writeCookies();
         writeLine("Vary: Accept-Encoding");
@@ -175,7 +174,7 @@ public final class HttpResponse {
 
     }
 
-    protected void writeResource(final String path, final long size, final String fileName) throws IOException {
+    public void writeResource(final String path, final long size, final String fileName) throws IOException {
         writeLine("Content-Disposition: inline; filename=" + fileName);
         writeLine("Vary: Accept-Encoding");
         // writeLine("Cache-Control: max-age=31104000");

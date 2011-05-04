@@ -17,11 +17,10 @@
 
 package com.bloatit.model.right;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 /**
  * A restricted object is an object that contains some properties which accesses

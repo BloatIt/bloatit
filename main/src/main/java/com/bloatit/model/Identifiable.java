@@ -18,10 +18,10 @@ package com.bloatit.model;
 
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.GenericAccessor;
 import com.bloatit.model.right.RestrictedObject;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * An identifiable is the base class for each class that map a dao class.

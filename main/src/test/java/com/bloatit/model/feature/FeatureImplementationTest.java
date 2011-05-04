@@ -42,9 +42,8 @@ import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.Feature;
 import com.bloatit.model.ModelTestUnit;
@@ -52,6 +51,7 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class FeatureImplementationTest extends ModelTestUnit {
 

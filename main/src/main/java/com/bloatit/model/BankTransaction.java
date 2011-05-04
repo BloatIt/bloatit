@@ -23,10 +23,10 @@ import javax.persistence.Entity;
 
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBankTransaction.State;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtBankTransaction;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 /**
  * The Class BankTransaction.

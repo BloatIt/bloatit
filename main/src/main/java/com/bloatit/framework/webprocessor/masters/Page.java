@@ -23,9 +23,9 @@ import java.util.Set;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
-import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -37,9 +37,10 @@ import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.url.Messages;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.xcgiserver.HttpResponse;
+import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
 import com.bloatit.web.pages.master.HtmlNotification;
 
 public abstract class Page implements Linkable {

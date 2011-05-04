@@ -24,9 +24,9 @@ import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtAccount;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 

@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -23,6 +22,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountPageUrl;

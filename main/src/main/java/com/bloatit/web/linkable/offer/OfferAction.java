@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webprocessor.annotations.Message;
@@ -33,6 +32,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.FeaturePageUrl;

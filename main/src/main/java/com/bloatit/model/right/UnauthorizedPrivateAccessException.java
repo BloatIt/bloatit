@@ -1,6 +1,5 @@
-package com.bloatit.framework.exceptions.lowlevel;
+package com.bloatit.model.right;
 
-import com.bloatit.model.right.Action;
 
 public class UnauthorizedPrivateAccessException extends UnauthorizedOperationException {
 

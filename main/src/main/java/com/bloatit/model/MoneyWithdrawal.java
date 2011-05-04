@@ -9,12 +9,12 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.mails.ElveosMail.WithdrawalCompleteMail;
 import com.bloatit.framework.mails.ElveosMail.WithdrawalRequestedMail;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtMoneyWithdrawal;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 /**
  * Money withdrawals represent requests to withdraw money from the user internal

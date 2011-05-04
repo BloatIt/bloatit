@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.release;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -27,6 +26,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.AddReleaseActionUrl;
 

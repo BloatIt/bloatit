@@ -18,7 +18,6 @@ package com.bloatit.web.linkable.team.tabs;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -38,6 +37,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Comment.ParentType;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
