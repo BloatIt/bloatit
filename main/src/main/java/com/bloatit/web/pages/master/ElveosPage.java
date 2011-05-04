@@ -41,7 +41,6 @@ import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.ElveosUser;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.WebConfiguration;
