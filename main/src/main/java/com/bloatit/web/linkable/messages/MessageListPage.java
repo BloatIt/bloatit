@@ -33,6 +33,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -105,8 +106,8 @@ public final class MessageListPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
-        return MessageListPage.generateBreadcrumb(getToken().getMember());
+    protected Breadcrumb createBreadcrumb(Member member) {
+        return MessageListPage.generateBreadcrumb(member);
     }
 
     private static Breadcrumb generateBreadcrumb(final Member member) {

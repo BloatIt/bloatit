@@ -28,6 +28,7 @@ import com.bloatit.model.Software;
 import com.bloatit.model.Team;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -66,11 +67,7 @@ public final class CreateFeatureAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            session.notifyError(Context.tr("You are not authorized to create a feature."));
-            return new CreateFeaturePageUrl();
-        }
+    protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
             return new CreateFeaturePageUrl();
@@ -94,7 +91,7 @@ public final class CreateFeatureAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new CreateFeaturePageUrl();
     }
 

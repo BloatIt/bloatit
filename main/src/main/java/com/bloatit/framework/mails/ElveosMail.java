@@ -46,8 +46,8 @@ public abstract class ElveosMail {
         try {
             content.addNamedParameter("member", to.getDisplayName());
             MailServer.getInstance().send(new Mail(to.getEmail(),
-                                                   new Localizator(to.getUserLocale()).tr(title),
-                                                   content.getContent(to.getUserLocale()),
+                                                   new Localizator(to.getLocale()).tr(title),
+                                                   content.getContent(to.getLocale()),
                                                    mailSenderID));
         } catch (final IOException e) {
             throw new BadProgrammerException(e);

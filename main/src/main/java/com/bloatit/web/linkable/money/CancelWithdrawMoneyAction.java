@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountPageUrl;
@@ -43,7 +44,7 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(Member me) {
 
         if(!moneyWithdrawal.canSetCanceled()) {
             session.notifyBad(Context.tr("Failed to cancel this withdrawal."));
@@ -66,7 +67,7 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return getBestReturnUrl();
 
     }

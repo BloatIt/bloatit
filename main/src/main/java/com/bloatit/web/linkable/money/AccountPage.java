@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.AccountComponent;
 import com.bloatit.web.components.SideBarButton;
@@ -110,11 +111,11 @@ public final class AccountPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         if (isTeamAccount()) {
             return AccountPage.generateBreadcrumb(team);
         }
-        return AccountPage.generateBreadcrumb(getToken().getMember());
+        return AccountPage.generateBreadcrumb(member);
 
     }
 

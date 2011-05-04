@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.url.PaymentProcessUrl;
 
@@ -46,7 +47,7 @@ public abstract class PaymentProcess extends WebProcess {
     }
 
     @Override
-    protected final Url doProcessErrors() {
+    protected final Url doProcessErrors(AuthToken authToken) {
         return session.getLastVisitedPage();
     }
 

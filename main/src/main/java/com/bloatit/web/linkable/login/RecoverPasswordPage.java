@@ -31,8 +31,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
@@ -44,7 +45,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * </p>
  */
 @ParamContainer(value="password/recover", protocol=Protocol.HTTPS)
-public class RecoverPasswordPage extends MasterPage {
+public class RecoverPasswordPage extends ElveosPage {
     private final RecoverPasswordPageUrl url;
 
     @RequestParam(role = Role.GET)
@@ -61,7 +62,7 @@ public class RecoverPasswordPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         Member member = MemberManager.getMemberByLogin(login);
 
         if (member == null || !member.getResetKey().equals(resetKey)) {
@@ -101,7 +102,7 @@ public class RecoverPasswordPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return generateBreadcrumb();
     }
 

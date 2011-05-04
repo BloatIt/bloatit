@@ -31,7 +31,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
@@ -94,16 +93,9 @@ public final class ReportBugPage extends CreateUserContentPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-
-        if (FeatureManager.canCreate(getToken())) {
-            layout.addLeft(generateReportBugForm(loggedUser));
-        } else {
-            layout.addLeft(generateBadRightError());
-        }
-
+        layout.addLeft(generateReportBugForm(loggedUser));
         layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), loggedUser));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-
         return layout;
     }
 
@@ -163,19 +155,13 @@ public final class ReportBugPage extends CreateUserContentPage {
         return group;
     }
 
-    private HtmlElement generateBadRightError() {
-        final HtmlDiv group = new HtmlDiv();
-
-        return group;
-    }
-
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to report a new bug.");
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return ReportBugPage.generateBreadcrumb(milestone.getOffer());
     }
 

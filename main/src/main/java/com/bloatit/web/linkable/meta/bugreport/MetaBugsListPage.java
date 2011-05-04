@@ -27,16 +27,17 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.masters.Header;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 
 @ParamContainer("meta/bug/list")
-public final class MetaBugsListPage extends MasterPage {
+public final class MetaBugsListPage extends ElveosPage {
     private final MetaBugsListPageUrl url;
 
     public MetaBugsListPage(final MetaBugsListPageUrl url) {
@@ -45,7 +46,7 @@ public final class MetaBugsListPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final List<MetaBug> bugList = MetaBugManager.getOpenBugs();
 
@@ -88,7 +89,7 @@ public final class MetaBugsListPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return MetaBugsListPage.generateBreadcrumb();
     }
 

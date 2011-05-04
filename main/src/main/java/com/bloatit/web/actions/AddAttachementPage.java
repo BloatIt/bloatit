@@ -25,6 +25,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.SideBarUserContentBlock;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -84,7 +85,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return AddAttachementPage.generateBreadcrumb(userContent);
     }
 

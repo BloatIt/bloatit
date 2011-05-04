@@ -26,9 +26,10 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.LoginActionUrl;
@@ -37,7 +38,7 @@ import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
 @ParamContainer(value = "login", protocol = Protocol.HTTPS)
-public final class LoginPage extends MasterPage {
+public final class LoginPage extends ElveosPage {
 
     private final LoginPageUrl url;
 
@@ -47,7 +48,7 @@ public final class LoginPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
 
@@ -107,7 +108,7 @@ public final class LoginPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return LoginPage.generateBreadcrumb();
     }
 

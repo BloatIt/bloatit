@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 
@@ -54,7 +55,7 @@ public class ConfigurationAdminAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return null;
     }
 
@@ -64,7 +65,7 @@ public class ConfigurationAdminAction extends AdminAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 }

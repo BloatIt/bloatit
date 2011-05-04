@@ -33,6 +33,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
 
@@ -43,7 +44,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * </p>
  */
 @ParamContainer(value="password/dorecover", protocol=Protocol.HTTPS)
-public class RecoverPasswordAction extends Action {
+public class RecoverPasswordAction extends ElveosAction {
     private final RecoverPasswordActionUrl url;
 
     private Member member;
@@ -76,7 +77,7 @@ public class RecoverPasswordAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(AuthToken token) {
         session.setAuthToken(new AuthToken(member));
         try {
             member.setPassword(newPassword);
@@ -88,7 +89,7 @@ public class RecoverPasswordAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken token) {
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(resetKey)) {
             session.notifyBad(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
@@ -97,7 +98,7 @@ public class RecoverPasswordAction extends Action {
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(AuthToken token) {
         if (!newPassword.equals(checkNewPassword)) {
             session.notifyBad(Context.tr("Password doesn't match confirmation."));
             url.getNewPasswordParameter().getCustomMessages().add(new Message(Context.tr("New password doesn't match with confirmation.")));

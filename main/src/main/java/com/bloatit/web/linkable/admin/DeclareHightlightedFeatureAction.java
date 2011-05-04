@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Feature;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.DeclareHightlightedFeatureActionUrl;
 import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 
@@ -61,13 +62,13 @@ public final class DeclareHightlightedFeatureAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new HightlightedFeatureAdminPageUrl();
     }
 
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(Member me) {
         return NO_ERROR;
     }
 

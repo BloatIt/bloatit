@@ -28,6 +28,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
@@ -35,7 +36,7 @@ import com.bloatit.web.components.TeamListRenderer;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
@@ -46,7 +47,7 @@ import com.bloatit.web.url.TeamsPageUrl;
  * </p>
  */
 @ParamContainer("team/list")
-public final class TeamsPage extends MasterPage {
+public final class TeamsPage extends ElveosPage {
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Team> pagedTeamList;
     private final TeamsPageUrl url;
@@ -57,7 +58,7 @@ public final class TeamsPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
 
@@ -93,7 +94,7 @@ public final class TeamsPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return TeamsPage.generateBreadcrumb();
     }
 

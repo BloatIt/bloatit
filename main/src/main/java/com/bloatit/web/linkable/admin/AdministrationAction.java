@@ -34,6 +34,7 @@ import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.UserContent;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -150,7 +151,7 @@ public class AdministrationAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return session.pickPreferredPage();
     }
 
@@ -160,7 +161,7 @@ public class AdministrationAction extends AdminAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 }

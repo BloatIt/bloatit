@@ -28,10 +28,11 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LostPasswordActionUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
@@ -44,7 +45,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * </p>
  */
 @ParamContainer(value="password/dolost", protocol=Protocol.HTTPS)
-public class LostPasswordAction extends Action {
+public class LostPasswordAction extends ElveosAction {
     private final LostPasswordActionUrl url;
 
     @RequestParam(role = Role.POST)
@@ -59,7 +60,7 @@ public class LostPasswordAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(AuthToken authToken) {
         //TODO check all template at startup
         final TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
@@ -67,7 +68,7 @@ public class LostPasswordAction extends Action {
         templateFile.addNamedParameter("recovery_url", resetUrl);
         templateFile.addNamedParameter("member", m.getDisplayName());
 
-        final String title = new Localizator(m.getUserLocale()).tr("Elveos password recovery");
+        final String title = new Localizator(m.getLocale()).tr("Elveos password recovery");
         String content;
         try {
             content = templateFile.getContent(m.getLocaleUnprotected());
@@ -83,7 +84,7 @@ public class LostPasswordAction extends Action {
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(AuthToken authToken) {
         m = MemberManager.getMemberByEmail(email);
         if (m == null) {
             session.notifyBad(Context.tr("No account match this email address. Please input another one."));
@@ -93,7 +94,7 @@ public class LostPasswordAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new LostPasswordPageUrl();
     }
 

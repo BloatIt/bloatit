@@ -38,6 +38,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -78,7 +79,7 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(AuthToken authToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -88,7 +89,7 @@ public final class CheckContributionPage extends QuotationPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
-        return createBodyContent();
+        return createBodyContent(authToken);
     }
 
     @Override
@@ -293,7 +294,7 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
     }
 

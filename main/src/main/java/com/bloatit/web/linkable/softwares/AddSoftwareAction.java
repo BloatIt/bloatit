@@ -27,6 +27,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AddSoftwareActionUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
@@ -98,12 +99,7 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use SoftwareManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to add a software."));
-            return new AddSoftwarePageUrl();
-        }
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
@@ -132,7 +128,7 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new AddSoftwarePageUrl();
     }
 

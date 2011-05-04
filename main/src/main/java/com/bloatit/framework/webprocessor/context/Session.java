@@ -56,17 +56,12 @@ public final class Session {
     private static final int SHA1_SIZE = 20;
     public static AbstractAuthToken ANONYMOUS_TOKEN = new AbstractAuthToken() {
         @Override
-        public boolean isAnonymous() {
-            return true;
-        }
-
-        @Override
-        public User getMember() {
+        public UUID getKey() {
             return null;
         }
 
         @Override
-        public UUID getKey() {
+        public User getMember() {
             return null;
         }
     };

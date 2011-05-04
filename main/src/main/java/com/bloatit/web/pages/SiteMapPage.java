@@ -22,8 +22,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
@@ -45,7 +46,7 @@ import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 
 @ParamContainer("sitemap")
-public final class SiteMapPage extends MasterPage {
+public final class SiteMapPage extends ElveosPage {
 
     private final SiteMapPageUrl url;
 
@@ -56,7 +57,7 @@ public final class SiteMapPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
 
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -100,7 +101,7 @@ public final class SiteMapPage extends MasterPage {
         layout.addLeft(personalLinkList);
 
         if(Context.getSession().isLogged()) {
-            personalLinkList.add(new MemberPageUrl(getToken().getMember()).getHtmlLink(Context.tr("My page")));
+            personalLinkList.add(new MemberPageUrl(authToken.getMember()).getHtmlLink(Context.tr("My page")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
         }
@@ -136,7 +137,7 @@ public final class SiteMapPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return SiteMapPage.generateBreadcrumb();
     }
 

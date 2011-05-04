@@ -35,6 +35,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
@@ -199,7 +200,7 @@ public class ModifyMemberAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         // TODO: link error messages to form field, so they an be red
         boolean error = false;
 
@@ -243,7 +244,7 @@ public class ModifyMemberAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new ModifyMemberPageUrl();
     }
 

@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 
@@ -51,7 +52,7 @@ public final class ChangeAvatarAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         // TODO create a member.canAccessAvatar.
         return NO_ERROR;
     }
@@ -69,7 +70,7 @@ public final class ChangeAvatarAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         // TODO can we use something else than pickPreferredPage
         return Context.getSession().pickPreferredPage();
     }

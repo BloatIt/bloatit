@@ -29,17 +29,18 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 
 @ParamContainer("member/list")
-public final class MembersListPage extends MasterPage {
+public final class MembersListPage extends ElveosPage {
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Member> pagedMemberList;
     private final MembersListPageUrl url;
@@ -50,7 +51,7 @@ public final class MembersListPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
@@ -113,7 +114,7 @@ public final class MembersListPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return MembersListPage.generateBreadcrumb();
     }
 

@@ -47,8 +47,10 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminHomePageUrl;
@@ -150,7 +152,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink("Admin"));
         breadcrumb.pushLink(url.getHtmlLink("Hightlighted features"));

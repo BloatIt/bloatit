@@ -29,6 +29,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
@@ -85,7 +86,7 @@ public final class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
 
         if (TeamManager.exist(login)) {
             session.notifyError(Context.tr("The team name ''{0}''already used. Find another name.", login));
@@ -113,7 +114,7 @@ public final class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new CreateTeamPageUrl();
     }
 

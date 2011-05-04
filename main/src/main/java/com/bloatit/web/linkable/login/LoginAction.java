@@ -20,10 +20,10 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.AbstractAuthToken;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.managers.LoginManager;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -31,7 +31,7 @@ import com.bloatit.web.url.LoginPageUrl;
  * A response to a form used to log into the website
  */
 @ParamContainer(value="action/login", protocol=Protocol.HTTPS)
-public final class LoginAction extends Action {
+public final class LoginAction extends ElveosAction {
 
     private static final String LOGIN_CODE = "bloatit_login";
     protected static final String PASSWORD_CODE = "bloatit_password";
@@ -53,7 +53,7 @@ public final class LoginAction extends Action {
     }
 
     @Override
-    public Url doProcess() {
+    public Url doProcess(AuthToken authToken) {
         AbstractAuthToken token = null;
         token = LoginManager.loginByPassword(login.trim(), password);
 
@@ -74,12 +74,12 @@ public final class LoginAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(AuthToken authToken) {
         return NO_ERROR; // Nothing else to check
     }
 

@@ -42,6 +42,7 @@ import com.bloatit.framework.webprocessor.context.Visitor;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
@@ -51,7 +52,7 @@ import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -67,7 +68,7 @@ import com.bloatit.web.url.WithdrawMoneyPageUrl;
  * </p>
  */
 @ParamContainer("team")
-public final class TeamPage extends MasterPage {
+public final class TeamPage extends ElveosPage {
     public final static String TEAM_TAB_PANE = "tab";
     public final static String MEMBERS_TAB = "members";
     public final static String ACTIVITY_TAB = "activity";
@@ -99,12 +100,12 @@ public final class TeamPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        final Visitor me = getToken().getVisitor();
+        final Visitor me = authToken.getVisitor();
 
         layout.addLeft(generateTeamIDCard(me));
-        layout.addLeft(generateMain());
+        layout.addLeft(generateMain(authToken));
 
         layout.addRight(generateContactBox());
 
@@ -142,14 +143,14 @@ public final class TeamPage extends MasterPage {
         return contacts;
     }
 
-    private HtmlElement generateMain() {
+    private HtmlElement generateMain(AuthToken authToken) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
         final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, getToken().getVisitor()));
+        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, authToken.getVisitor()));
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }
@@ -246,7 +247,7 @@ public final class TeamPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return TeamPage.generateBreadcrumb(targetTeam);
     }
 

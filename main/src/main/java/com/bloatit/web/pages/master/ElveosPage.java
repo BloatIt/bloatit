@@ -41,11 +41,12 @@ import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.masters.Page;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUser;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.url.IndexPageUrl;
 
-public abstract class MasterPage extends Page {
+public abstract class ElveosPage extends Page {
 
     private HtmlBranch notifications;
     private final HtmlDiv notificationBlock;
@@ -53,7 +54,7 @@ public abstract class MasterPage extends Page {
     private final AuthToken token;
     private final Localizator localizator;
 
-    public MasterPage(final Url url) {
+    public ElveosPage(final Url url) {
         super(url);
         notifications = null;
         notificationBlock = new HtmlDiv("notifications");
@@ -66,10 +67,6 @@ public abstract class MasterPage extends Page {
         return session;
     }
 
-    protected final AuthToken getToken() {
-        return token;
-    }
-
     protected final Localizator getLocalizator() {
         return localizator;
     }
@@ -77,14 +74,14 @@ public abstract class MasterPage extends Page {
     // -----------------------------------------------------------------------
     // Template method pattern: Abstract methods
     // -----------------------------------------------------------------------
-    protected abstract HtmlElement createBodyContent() throws RedirectException;
+    protected abstract HtmlElement createBodyContent(AuthToken authToken) throws RedirectException;
 
     protected abstract String createPageTitle();
 
-    protected abstract Breadcrumb createBreadcrumb();
+    protected abstract Breadcrumb createBreadcrumb(AuthToken authToken);
 
     // There is a default behavior here. You can overload it.
-    protected HtmlElement createBodyContentOnParameterError() throws RedirectException {
+    protected HtmlElement createBodyContentOnParameterError(AuthToken authToken) throws RedirectException {
         throw new PageNotFoundException();
     }
 
@@ -93,7 +90,7 @@ public abstract class MasterPage extends Page {
     // -----------------------------------------------------------------------
     @Override
     protected final HtmlElement createBody() throws RedirectException {
-        return doCreateBody(createBodyContent());
+        return doCreateBody(createBodyContent(token));
     }
 
     /**
@@ -110,7 +107,7 @@ public abstract class MasterPage extends Page {
 
     @Override
     protected final HtmlElement createBodyOnParameterError() throws RedirectException {
-        return doCreateBody(createBodyContentOnParameterError());
+        return doCreateBody(createBodyContentOnParameterError(token));
     }
 
     private HtmlElement doCreateBody(final HtmlElement bodyContent) {
@@ -150,7 +147,7 @@ public abstract class MasterPage extends Page {
 
         body.add(new Footer());
 
-        breacrumbPlaceHolder.add(createBreadcrumb().toHtmlElement());
+        breacrumbPlaceHolder.add(createBreadcrumb(token).toHtmlElement());
         return body;
     }
 

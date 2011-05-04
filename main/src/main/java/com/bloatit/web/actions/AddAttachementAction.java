@@ -22,6 +22,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddAttachementPageUrl;
@@ -51,12 +52,7 @@ public final class AddAttachementAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use UserContentManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to report a bug."));
-            return new AddAttachementPageUrl(userContent);
-        }
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
@@ -67,7 +63,7 @@ public final class AddAttachementAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return Context.getSession().getLastVisitedPage();
     }
 

@@ -11,7 +11,4 @@ public interface AbstractAuthToken {
     public abstract UUID getKey();
 
     public abstract User getMember();
-
-
-    public abstract boolean isAnonymous();
 }

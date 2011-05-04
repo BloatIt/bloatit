@@ -24,9 +24,9 @@ public interface User {
         VALIDATING, ACTIVE, DELETED
     }
 
-    public abstract String getUserLogin();
+    public abstract String getLogin();
 
-    public abstract Locale getUserLocale();
+    public abstract Locale getLocale();
 
     public abstract ActivationState getActivationState();
 

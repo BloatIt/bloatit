@@ -26,17 +26,18 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 
 @ParamContainer("release")
-public final class ReleasePage extends MasterPage {
+public final class ReleasePage extends ElveosPage {
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a release number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the release number: ''%value%''."))
@@ -51,9 +52,10 @@ public final class ReleasePage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addRight(new SideBarFeatureBlock(release.getFeature(), getToken().getMember()));
+        // TODO directly use the authToken
+        layout.addRight(new SideBarFeatureBlock(release.getFeature(), authToken.getMember()));
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("date: "
@@ -87,7 +89,7 @@ public final class ReleasePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return ReleasePage.generateBreadcrumb(release);
     }
 

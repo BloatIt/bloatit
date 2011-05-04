@@ -18,31 +18,32 @@ package com.bloatit.web.linkable.errors;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.NotFoundActionUrl;
 
 @ParamContainer("dopagenotfound")
-public class NotFoundAction extends Action {
+public class NotFoundAction extends ElveosAction{
 
     public NotFoundAction(NotFoundActionUrl url) {
         super(url);
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(AuthToken authToken) {
         Context.getLocalizator().forceLanguageReset();
         return new PageNotFoundUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(AuthToken authToken) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         // Doesn't happen
         return null;
     }

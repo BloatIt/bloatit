@@ -29,6 +29,7 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -64,7 +65,7 @@ public final class GiveRightAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (right == UserTeamRight.CONSULT && !give) {
             if (!targetMember.canBeKickFromTeam(targetTeam, me)) {
                 session.notifyBad(Context.tr("You are not allowed to remove people in the team"));
@@ -109,7 +110,7 @@ public final class GiveRightAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new PageNotFoundUrl();
     }
 

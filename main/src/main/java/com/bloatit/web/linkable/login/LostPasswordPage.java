@@ -28,8 +28,9 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.LostPasswordActionUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
@@ -42,7 +43,7 @@ import com.bloatit.web.url.LostPasswordPageUrl;
  * </p>
  */
 @ParamContainer(value="password/lost", protocol=Protocol.HTTPS)
-public class LostPasswordPage extends MasterPage {
+public class LostPasswordPage extends ElveosPage {
     private final LostPasswordPageUrl url;
 
     public LostPasswordPage(LostPasswordPageUrl url) {
@@ -51,7 +52,7 @@ public class LostPasswordPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
@@ -77,7 +78,7 @@ public class LostPasswordPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return generateBreadcrumb();
     }
 

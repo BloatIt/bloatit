@@ -34,13 +34,14 @@ import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.model.managers.ReleaseManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -51,7 +52,7 @@ import com.bloatit.web.url.IndexPageUrl;
  * Index of elveos website
  */
 @ParamContainer("index")
-public final class IndexPage extends MasterPage {
+public final class IndexPage extends ElveosPage {
 
     private final IndexPageUrl url;
 
@@ -61,7 +62,7 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
@@ -94,7 +95,7 @@ public final class IndexPage extends MasterPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2);
                         if (highlightFeature != null) {
-                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, getToken().getMember()));
+                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, authToken.getMember()));
                         }
                     }
                     featureListRow.add(featureListLeftCase);
@@ -103,7 +104,7 @@ public final class IndexPage extends MasterPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2 + 1);
                         if (highlightFeature != null) {
-                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, getToken().getMember()));
+                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, authToken.getMember()));
                         }
                     }
                     featureListRow.add(featureListRightCase);
@@ -171,7 +172,7 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return generateBreadcrumb();
     }
 }

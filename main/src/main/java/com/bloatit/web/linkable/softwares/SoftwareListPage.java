@@ -26,18 +26,19 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
 @ParamContainer("software/list")
-public final class SoftwareListPage extends MasterPage {
+public final class SoftwareListPage extends ElveosPage {
 
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Software> pagedSoftwareList;
@@ -49,7 +50,7 @@ public final class SoftwareListPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
@@ -107,7 +108,7 @@ public final class SoftwareListPage extends MasterPage {
     };
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return SoftwareListPage.generateBreadcrumb();
     }
 

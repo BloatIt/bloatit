@@ -97,16 +97,6 @@ public final class AuthToken implements AbstractAuthToken {
         key = UUID.randomUUID();
     }
 
-    /**
-     * Anonymous auth token
-     */
-    private AuthToken() {
-        visitor = new AnonymousVisitor();
-        // this.memberId = -1;
-        this.key = null;
-
-    }
-
     /*
      * (non-Javadoc)
      * @see com.bloatit.model.right.AbstractAuthToken#getKey()
@@ -116,11 +106,6 @@ public final class AuthToken implements AbstractAuthToken {
         return key;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.right.AbstractAuthToken#getMember()
-     */
-    @Override
     public Member getMember() {
         return visitor.getMember();
     }
@@ -150,7 +135,6 @@ public final class AuthToken implements AbstractAuthToken {
         return TeamManager.getById(asTeamId);
     }
 
-    @Override
     public boolean isAnonymous() {
         return visitor.isAnonymous();
     }

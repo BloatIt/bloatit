@@ -417,7 +417,7 @@ public final class Localizator {
      */
     public void forceMemberChoice() {
         final User user = Context.getSession().getAuthToken().getMember();
-        locale = user.getUserLocale();
+        locale = user.getLocale();
         this.i18n = localesCache.get(locale);
     }
 
@@ -455,7 +455,7 @@ public final class Localizator {
             String country;
             if (Context.getSession().isLogged()) {
                 final User user = Context.getSession().getAuthToken().getMember();
-                country = user.getUserLocale().getCountry();
+                country = user.getLocale().getCountry();
             } else {
                 country = browserLocaleHeuristic(browserLangs).getCountry();
             }
@@ -477,7 +477,7 @@ public final class Localizator {
             // Other cases
             if (Context.getSession().isLogged()) {
                 final User user = Context.getSession().getAuthToken().getMember();
-                locale = user.getUserLocale();
+                locale = user.getLocale();
             } else {
                 locale = browserLocaleHeuristic(browserLangs);
             }

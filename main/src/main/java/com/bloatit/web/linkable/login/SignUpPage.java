@@ -27,11 +27,12 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
@@ -42,7 +43,7 @@ import com.bloatit.web.url.SignUpPageUrl;
  * </p>
  */
 @ParamContainer(value="member/signup", protocol=Protocol.HTTPS)
-public final class SignUpPage extends MasterPage {
+public final class SignUpPage extends ElveosPage {
     private final SignUpPageUrl url;
 
     public SignUpPage(final SignUpPageUrl url) {
@@ -51,7 +52,7 @@ public final class SignUpPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
         layout.addRight(new SideBarDocumentationBlock("privacy"));
@@ -130,7 +131,7 @@ public final class SignUpPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return SignUpPage.generateBreadcrumb();
     }
 

@@ -34,6 +34,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
@@ -152,7 +153,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(Member me) {
         // TODO: link error messages to form field, so they can be red
         boolean error = false;
 
@@ -191,7 +192,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return new ModifyTeamPageUrl(team);
     }
 

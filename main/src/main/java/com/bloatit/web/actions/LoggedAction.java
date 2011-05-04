@@ -40,7 +40,7 @@ import com.bloatit.web.url.LoginPageUrl;
  * children classes should most likely save all parameters into the session</li>
  * </p>
  */
-public abstract class LoggedAction extends Action {
+public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
     private final Member member;
     private final AuthToken authToken;
@@ -53,8 +53,8 @@ public abstract class LoggedAction extends Action {
     }
 
     @Override
-    protected final Url doProcess() {
-        if (session.isLogged()) {
+    protected final Url doProcess(AuthToken authToken) {
+        if (!authToken.isAnonymous()) {
             return doProcessRestricted(member);
         }
         session.notifyBad(getRefusalReason());
@@ -64,18 +64,14 @@ public abstract class LoggedAction extends Action {
     }
 
     @Override
-    protected final Url checkRightsAndEverything() {
-        if (member != null) {
-            return doCheckRightsAndEverything(member);
+    protected final Url checkRightsAndEverything(AuthToken authToken) {
+        if (!authToken.isAnonymous()) {
+            return checkRightsAndEverything(member);
         }
 
         // If member is null, let the Logged action do its work (return to the
         // logged page...)
         return NO_ERROR;
-    }
-
-    protected final AuthToken getToken() {
-        return authToken;
     }
 
     /**
@@ -86,7 +82,7 @@ public abstract class LoggedAction extends Action {
      * @return {@value Action#NO_ERROR} if there is no error, an Url to the page
      *         to handle errors otherwise
      */
-    protected abstract Url doCheckRightsAndEverything(Member me);
+    protected abstract Url checkRightsAndEverything(Member me);
 
     /**
      * Called when user is correctly authentified
@@ -99,7 +95,7 @@ public abstract class LoggedAction extends Action {
      * Called when some RequestParams contain erroneous parameters.
      */
     @Override
-    protected abstract Url doProcessErrors();
+    protected abstract Url doProcessErrors(AuthToken authToken);
 
     /**
      * <b>Do not forget to localize</p>

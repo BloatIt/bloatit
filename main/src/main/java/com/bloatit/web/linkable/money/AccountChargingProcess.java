@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AccountPageUrl;
@@ -37,7 +38,7 @@ public class AccountChargingProcess extends PaymentProcess {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(AuthToken authToken) {
         return new AccountChargingPageUrl(this);
     }
 

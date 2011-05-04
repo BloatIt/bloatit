@@ -22,13 +22,14 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.IndexPageUrl;
 
-public class PageNotFound extends MasterPage {
+public class PageNotFound extends ElveosPage {
     private final PageNotFoundUrl url;
 
     public PageNotFound(final PageNotFoundUrl url) {
@@ -47,7 +48,7 @@ public class PageNotFound extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final HtmlDiv box = new HtmlDiv("page_not_found");
         layout.addLeft(box);
@@ -76,7 +77,7 @@ public class PageNotFound extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return PageNotFound.generateBreadcrumb();
     }
 

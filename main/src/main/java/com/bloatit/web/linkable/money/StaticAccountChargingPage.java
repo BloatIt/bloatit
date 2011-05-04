@@ -33,6 +33,7 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlPayBlock;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
@@ -153,8 +154,8 @@ public final class StaticAccountChargingPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
-        return generateBreadcrumb(getToken().getMember(), process.getTeam(), process);
+    protected Breadcrumb createBreadcrumb(Member member) {
+        return generateBreadcrumb(member, process.getTeam(), process);
     }
 
     private static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {

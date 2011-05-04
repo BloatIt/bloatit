@@ -43,6 +43,7 @@ import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
@@ -76,13 +77,13 @@ public class PaylineProcess extends WebProcess {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(AuthToken authToken) {
         url.getParentProcess().addChildProcess(this);
         return new PaylineActionUrl(this);
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return session.getLastVisitedPage();
     }
 

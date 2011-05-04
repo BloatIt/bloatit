@@ -30,6 +30,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -64,12 +65,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
-        if (FeatureManager.canCreate(getSession().getAuthToken())) {
-            return generateFeatureCreationForm(loggedUser);
-        }
-        // TODO
-        getSession().notifyBad("//TODO");
-        return new HtmlParagraph(Context.tr("You are not allowed to create a new feature"));
+        return generateFeatureCreationForm(loggedUser);
     }
 
     private HtmlElement generateFeatureCreationForm(final Member loggedUser) {
@@ -182,7 +178,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return CreateFeaturePage.generateBreadcrumb();
     }
 

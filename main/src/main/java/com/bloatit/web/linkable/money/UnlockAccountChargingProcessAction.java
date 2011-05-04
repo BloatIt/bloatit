@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
@@ -38,7 +39,7 @@ public final class UnlockAccountChargingProcessAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
@@ -49,7 +50,7 @@ public final class UnlockAccountChargingProcessAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         return session.pickPreferredPage();
     }
 

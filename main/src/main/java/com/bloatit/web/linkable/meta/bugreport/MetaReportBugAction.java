@@ -20,15 +20,16 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.MetaReportBugActionUrl;
 
 /**
  * An action used to create a bug
  */
 @ParamContainer("meta/bugreport/doreport")
-public final class MetaReportBugAction extends Action {
+public final class MetaReportBugAction extends ElveosAction {
 
     private static final String BUG_DESCRIPTION = "bug_description";
     protected static final String BUG_URL = "bug_url";
@@ -52,10 +53,10 @@ public final class MetaReportBugAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(AuthToken authToken) {
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
-        bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getUserLogin() : "not logged") + "\n";
+        bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getLogin() : "not logged") + "\n";
         bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;
@@ -71,13 +72,13 @@ public final class MetaReportBugAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(AuthToken authToken) {
         return NO_ERROR; // Nothing else to check
     }
 

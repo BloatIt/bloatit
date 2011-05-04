@@ -25,17 +25,18 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 @ParamContainer("feature")
-public final class FeaturePage extends MasterPage {
+public final class FeaturePage extends ElveosPage {
 
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the feature number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a feature number."))
@@ -77,7 +78,7 @@ public final class FeaturePage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         // The feature page is composed of 3 parts:
         // - The summary
         // - The tab panel
@@ -85,14 +86,15 @@ public final class FeaturePage extends MasterPage {
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        layout.addLeft(new FeatureSummaryComponent(feature, getToken().getMember()));
-        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, getToken().getMember()));
+        // TODO for the next lines directly use the authToken.
+        layout.addLeft(new FeatureSummaryComponent(feature, authToken.getMember()));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, authToken.getMember()));
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
             commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
-            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), getToken().getMember()));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), authToken.getMember()));
         }
         layout.addLeft(commentsBlock);
 
@@ -157,7 +159,7 @@ public final class FeaturePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }

@@ -16,7 +16,9 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -29,7 +31,7 @@ import com.bloatit.web.url.LoginPageUrl;
  * <code>{@link #getRefusalReason()}</code>
  * </p>
  */
-public abstract class LoggedPage extends MasterPage {
+public abstract class LoggedPage extends ElveosPage {
 
     public LoggedPage(final Url url) {
         super(url);
@@ -43,9 +45,9 @@ public abstract class LoggedPage extends MasterPage {
      * warning to the user
      */
     @Override
-    protected final HtmlElement createBodyContent() throws RedirectException {
+    protected final HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         if (getSession().isLogged()) {
-            return createRestrictedContent((Member) getToken().getMember());
+            return createRestrictedContent(authToken.getMember());
         }
         getSession().notifyBad(getRefusalReason());
         getSession().setTargetPage(getUrl());
@@ -61,7 +63,7 @@ public abstract class LoggedPage extends MasterPage {
      * is not logged, a redirection to <code>LoginPage</code> will happen, and
      * user will be warned with <code>{@link #getRefusalReason()}</code>
      * </p>
-     *
+     * 
      * @param loggedUser TODO
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
@@ -75,16 +77,22 @@ public abstract class LoggedPage extends MasterPage {
      * </p>
      * <p>
      * Standard example :
-     *
+     * 
      * <pre>
      * public String getRefusalReason() {
      *     return tr(&quot;You need to be logged to access %pagename%&quot;);
      * }
      * </pre>
-     *
+     * 
      * </p>
-     *
+     * 
      * @return a String indicating to the user why he cannot access this page
      */
     public abstract String getRefusalReason();
+
+    protected final Breadcrumb createBreadcrumb(AuthToken token) {
+        return createBreadcrumb(token.getMember());
+    }
+
+    protected abstract Breadcrumb createBreadcrumb(Member member);
 }

@@ -26,6 +26,7 @@ import com.bloatit.model.Bug;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -82,7 +83,7 @@ public final class ReportBugAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyBad(Context.tr("You have to specify the description language."));
             return new ReportBugPageUrl(milestone.getOffer());
@@ -91,7 +92,7 @@ public final class ReportBugAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         if (milestone != null) {
             return new ReportBugPageUrl(milestone.getOffer());
         }

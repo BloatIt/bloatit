@@ -55,6 +55,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.SideBarButton;
@@ -62,7 +63,7 @@ import com.bloatit.web.components.activity.ActivityVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.BugPageUrl;
@@ -82,7 +83,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * </p>
  */
 @ParamContainer("member")
-public final class MemberPage extends MasterPage {
+public final class MemberPage extends ElveosPage {
     private final MemberPageUrl url;
 
     @SuppressWarnings("unused")
@@ -112,7 +113,7 @@ public final class MemberPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(AuthToken authToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
 
@@ -422,7 +423,7 @@ public final class MemberPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(AuthToken authToken) {
         return MemberPage.generateBreadcrumb(member);
     }
 

@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -113,11 +114,11 @@ public class WithdrawMoneyPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         if (isTeamAccount()) {
             return generateBreadcrumb((Team) actor);
         }
-        return generateBreadcrumb(getToken().getMember());
+        return generateBreadcrumb(member);
 
     }
 

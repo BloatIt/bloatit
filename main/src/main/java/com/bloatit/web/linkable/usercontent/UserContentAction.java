@@ -34,6 +34,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.UserContentActionUrl;
 
@@ -125,11 +126,11 @@ public abstract class UserContentAction extends LoggedAction {
                     transmitParameters();
                     return doProcessErrors();
                 }
-                getToken().setAsTeam(team);
+                ((AuthToken) Context.getSession().getAuthToken()).setAsTeam(team);
             }
             return doDoProcessRestricted(me, team);
         } finally {
-            getToken().setAsTeam(null);
+            ((AuthToken) Context.getSession().getAuthToken()).setAsTeam(null);
         }
     }
 

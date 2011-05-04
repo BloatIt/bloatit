@@ -19,8 +19,10 @@ package com.bloatit.framework.webprocessor;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.ElveosAction;
 
-public abstract class WebProcess extends Action {
+public abstract class WebProcess extends ElveosAction {
 
     private final String processId;
 
@@ -75,7 +77,7 @@ public abstract class WebProcess extends Action {
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(AuthToken token) {
         return NO_ERROR;
     }
 

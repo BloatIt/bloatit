@@ -16,6 +16,7 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountPageUrl;
@@ -64,7 +65,7 @@ public class WithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(Member me) {
         if (actor instanceof Member) {
             if (!me.equals(actor)) {
                 session.notifyBad(Context.tr("You cannot withdraw money on someone else account."));
@@ -103,7 +104,7 @@ public class WithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(AuthToken authToken) {
         if (actor != null) {
             return new WithdrawMoneyPageUrl(actor);
         } else {

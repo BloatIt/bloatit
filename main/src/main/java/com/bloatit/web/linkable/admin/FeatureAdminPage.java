@@ -30,7 +30,9 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
 import com.bloatit.model.admin.FeatureAdminListFactory;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.FeatureAdminPageUrl;
@@ -187,7 +189,7 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return FeatureAdminPage.generateBreadcrumb();
     }
 

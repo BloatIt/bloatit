@@ -36,6 +36,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
@@ -73,7 +74,7 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(AuthToken authToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -83,7 +84,7 @@ public final class AccountChargingPage extends QuotationPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
-        return createBodyContent();
+        return createBodyContent(authToken);
     }
 
     @Override
@@ -178,8 +179,8 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
-        return generateBreadcrumb(getToken().getMember(), process.getTeam(), process);
+    protected Breadcrumb createBreadcrumb(Member member) {
+        return generateBreadcrumb(member, process.getTeam(), process);
     }
 
     protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
