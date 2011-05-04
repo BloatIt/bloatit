@@ -60,7 +60,7 @@ public class LostPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         //TODO check all template at startup
         final TemplateFile templateFile = new TemplateFile("recover-password.mail");
 
@@ -84,7 +84,7 @@ public class LostPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         m = MemberManager.getMemberByEmail(email);
         if (m == null) {
             session.notifyBad(Context.tr("No account match this email address. Please input another one."));
@@ -94,7 +94,7 @@ public class LostPasswordAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new LostPasswordPageUrl();
     }
 

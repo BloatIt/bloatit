@@ -70,7 +70,7 @@ public final class ChangeAvatarAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         // TODO can we use something else than pickPreferredPage
         return Context.getSession().pickPreferredPage();
     }

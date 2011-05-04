@@ -102,12 +102,12 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        final Member me = authToken.getMember();
+        final Member me = userToken.getMember();
 
         layout.addLeft(generateTeamIDCard(me));
-        layout.addLeft(generateMain(authToken));
+        layout.addLeft(generateMain(userToken));
 
         layout.addRight(generateContactBox());
 
@@ -145,14 +145,14 @@ public final class TeamPage extends ElveosPage {
         return contacts;
     }
 
-    private HtmlElement generateMain(ElveosUserToken authToken) {
+    private HtmlElement generateMain(ElveosUserToken userToken) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
         final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, authToken.getMember()));
+        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }
@@ -249,7 +249,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return TeamPage.generateBreadcrumb(targetTeam);
     }
 

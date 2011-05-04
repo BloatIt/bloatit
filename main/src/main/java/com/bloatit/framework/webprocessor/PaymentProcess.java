@@ -47,7 +47,7 @@ public abstract class PaymentProcess extends WebProcess {
     }
 
     @Override
-    protected final Url doProcessErrors(ElveosUserToken authToken) {
+    protected final Url doProcessErrors(ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 

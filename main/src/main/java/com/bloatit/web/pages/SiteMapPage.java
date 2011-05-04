@@ -57,7 +57,7 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
 
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -101,7 +101,7 @@ public final class SiteMapPage extends ElveosPage {
         layout.addLeft(personalLinkList);
 
         if(Context.getSession().getUserToken().isAuthenticated()) {
-            personalLinkList.add(new MemberPageUrl(authToken.getMember()).getHtmlLink(Context.tr("My page")));
+            personalLinkList.add(new MemberPageUrl(userToken.getMember()).getHtmlLink(Context.tr("My page")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
         }
@@ -137,7 +137,7 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return SiteMapPage.generateBreadcrumb();
     }
 

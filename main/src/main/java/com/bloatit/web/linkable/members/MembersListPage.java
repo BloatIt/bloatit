@@ -51,7 +51,7 @@ public final class MembersListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
@@ -114,7 +114,7 @@ public final class MembersListPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return MembersListPage.generateBreadcrumb();
     }
 

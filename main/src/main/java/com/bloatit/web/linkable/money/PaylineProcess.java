@@ -77,13 +77,13 @@ public class PaylineProcess extends WebProcess {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         url.getParentProcess().addChildProcess(this);
         return new PaylineActionUrl(this);
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 

@@ -6,7 +6,7 @@ import java.util.UUID;
 public interface UserToken {
 
     /**
-     * @return a unique key, identifying this authToken.
+     * @return a unique key, identifying this userToken.
      */
     public abstract UUID getKey();
 

@@ -65,7 +65,7 @@ public final class MetaBugDeleteAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 

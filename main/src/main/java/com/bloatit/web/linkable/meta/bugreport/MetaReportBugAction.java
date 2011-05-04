@@ -53,10 +53,10 @@ public final class MetaReportBugAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
-        bugReport += "* **Author:** " + (authToken.isAuthenticated() ? authToken.getMember().getLogin() : "not logged") + "\n";
+        bugReport += "* **Author:** " + (userToken.isAuthenticated() ? userToken.getMember().getLogin() : "not logged") + "\n";
         bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;
@@ -72,13 +72,13 @@ public final class MetaReportBugAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

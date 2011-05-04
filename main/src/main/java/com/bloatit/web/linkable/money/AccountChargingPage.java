@@ -74,7 +74,7 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(ElveosUserToken authToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(ElveosUserToken userToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -84,7 +84,7 @@ public final class AccountChargingPage extends QuotationPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
-        return createBodyContent(authToken);
+        return createBodyContent(userToken);
     }
 
     @Override

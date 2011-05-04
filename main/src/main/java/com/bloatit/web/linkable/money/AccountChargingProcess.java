@@ -38,7 +38,7 @@ public class AccountChargingProcess extends PaymentProcess {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         return new AccountChargingPageUrl(this);
     }
 

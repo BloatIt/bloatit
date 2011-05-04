@@ -175,7 +175,7 @@ public final class OfferAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         if (feature != null) {
             transmitParameters();
             final MakeOfferPageUrl redirectUrl = new MakeOfferPageUrl(feature);

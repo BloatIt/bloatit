@@ -62,7 +62,7 @@ public final class DeclareHightlightedFeatureAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new HightlightedFeatureAdminPageUrl();
     }
 

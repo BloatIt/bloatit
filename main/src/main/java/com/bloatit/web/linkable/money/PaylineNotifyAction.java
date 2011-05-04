@@ -48,7 +48,7 @@ public final class PaylineNotifyAction extends ElveosAction{
     }
 
     @Override
-    public Url doProcess(ElveosUserToken authToken) {
+    public Url doProcess(ElveosUserToken userToken) {
         Log.web().info("Get a payline notification: " + token);
         
         try {
@@ -66,13 +66,13 @@ public final class PaylineNotifyAction extends ElveosAction{
     }
 
     @Override
-    public Url doProcessErrors(ElveosUserToken authToken) {
+    public Url doProcessErrors(ElveosUserToken userToken) {
         Log.web().error("Payline notification with parameter errors ! ");
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

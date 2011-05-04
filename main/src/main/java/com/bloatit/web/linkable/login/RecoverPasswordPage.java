@@ -62,7 +62,7 @@ public class RecoverPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         Member member = MemberManager.getMemberByLogin(login);
 
         if (member == null || !member.getResetKey().equals(resetKey)) {
@@ -102,7 +102,7 @@ public class RecoverPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return generateBreadcrumb();
     }
 

@@ -63,7 +63,7 @@ public final class AddAttachementAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return Context.getSession().getLastVisitedPage();
     }
 

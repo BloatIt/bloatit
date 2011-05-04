@@ -52,7 +52,7 @@ public final class TestPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(tr("Html testing page"), 1);
         pageTitle.add(new HtmlTitleBlock(tr("Common markups"), 2).add(variousElements()));
         pageTitle.add(new HtmlTitleBlock(tr("Formulaires"), 2).add(generateForm()));
@@ -150,7 +150,7 @@ public final class TestPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return TestPage.generateBreadcrumb();
     }
 

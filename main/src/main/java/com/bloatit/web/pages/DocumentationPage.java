@@ -67,7 +67,7 @@ public final class DocumentationPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(url);
         final BoxLayout box = new BoxLayout();
         final HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
@@ -86,7 +86,7 @@ public final class DocumentationPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         if (docTarget.equals(DEFAULT_DOC)) {
             return DocumentationPage.generateBreadcrumb();
         }

@@ -56,7 +56,7 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         if (target == null) {
             return new PageNotFoundUrl();
         }

@@ -48,7 +48,7 @@ public class PageNotFound extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final HtmlDiv box = new HtmlDiv("page_not_found");
         layout.addLeft(box);
@@ -77,7 +77,7 @@ public class PageNotFound extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return PageNotFound.generateBreadcrumb();
     }
 

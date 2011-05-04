@@ -75,7 +75,7 @@ public class ContributionProcess extends PaymentProcess {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         return new ContributePageUrl(this);
     }
 

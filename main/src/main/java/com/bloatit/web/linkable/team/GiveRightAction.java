@@ -110,7 +110,7 @@ public final class GiveRightAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new PageNotFoundUrl();
     }
 

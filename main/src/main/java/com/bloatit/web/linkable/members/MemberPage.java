@@ -113,7 +113,7 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMemberPageMain());
 
@@ -423,7 +423,7 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return MemberPage.generateBreadcrumb(member);
     }
 

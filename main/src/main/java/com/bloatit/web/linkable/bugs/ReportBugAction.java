@@ -92,7 +92,7 @@ public final class ReportBugAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         if (milestone != null) {
             return new ReportBugPageUrl(milestone.getOffer());
         }

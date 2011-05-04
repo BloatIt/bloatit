@@ -51,7 +51,7 @@ public final class ChangeLanguagePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateChangeLanguagePageMain());
         layout.addRight(new SideBarDocumentationBlock("change_language"));
@@ -93,7 +93,7 @@ public final class ChangeLanguagePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         final Breadcrumb br = new Breadcrumb();
         br.pushLink(new IndexPageUrl().getHtmlLink(Context.tr("Index")));
         br.pushLink(url.getHtmlLink(Context.tr("Change language")));

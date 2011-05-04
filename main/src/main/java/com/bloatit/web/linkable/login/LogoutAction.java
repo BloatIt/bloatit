@@ -53,7 +53,7 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessErrors(ElveosUserToken authToken) {
+    public Url doProcessErrors(ElveosUserToken userToken) {
         return new IndexPageUrl();
     }
 

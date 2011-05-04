@@ -55,7 +55,7 @@ public final class MemberActivationAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         final Member member = MemberManager.getMemberByLogin(login);
 
         final Url to = new IndexPageUrl();
@@ -83,12 +83,12 @@ public final class MemberActivationAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

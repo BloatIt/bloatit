@@ -32,18 +32,18 @@ public class NotFoundAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         Context.getLocalizator().forceLanguageReset();
         return new PageNotFoundUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         // Doesn't happen
         return null;
     }

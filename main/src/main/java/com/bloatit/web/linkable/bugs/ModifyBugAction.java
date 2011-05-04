@@ -74,7 +74,7 @@ public final class ModifyBugAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         final Level currentLevel = bug.getErrorLevel();
         final BugState currentState = bug.getState();
 
@@ -118,12 +118,12 @@ public final class ModifyBugAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return Context.getSession().getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         if (session.getUserToken() == null) {
             session.notifyError(Context.tr("You must be logged in to modify a bug report."));
             return new ModifyBugPageUrl(bug);

@@ -53,7 +53,7 @@ public final class LoginAction extends ElveosAction {
     }
 
     @Override
-    public Url doProcess(ElveosUserToken authToken) {
+    public Url doProcess(ElveosUserToken userToken) {
         UserToken token = null;
         token = LoginManager.loginByPassword(login.trim(), password);
 
@@ -74,12 +74,12 @@ public final class LoginAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

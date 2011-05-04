@@ -70,7 +70,7 @@ public final class MetaEditBugAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }

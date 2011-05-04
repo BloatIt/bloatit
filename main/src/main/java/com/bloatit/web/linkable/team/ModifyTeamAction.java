@@ -192,7 +192,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new ModifyTeamPageUrl(team);
     }
 

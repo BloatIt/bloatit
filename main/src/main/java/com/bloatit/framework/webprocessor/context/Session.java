@@ -58,7 +58,7 @@ public final class Session {
 
     private final Deque<ErrorMessage> notificationList;
     private final SessionParameters parameters = new SessionParameters();
-    private UserToken authToken;
+    private UserToken userToken;
 
     private UrlDump lastStablePage = null;
     private UrlDump targetPage = null;
@@ -82,7 +82,7 @@ public final class Session {
      */
     protected Session(final UUID id) {
         this.key = id;
-        authToken = null;
+        userToken = null;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
@@ -92,7 +92,7 @@ public final class Session {
     }
 
     public synchronized void resetExpirationTime() {
-        if (authToken.isAuthenticated()) {
+        if (userToken.isAuthenticated()) {
             expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration() * DateUtils.SECOND_PER_DAY;
         } else {
             expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionDefaultDuration() * DateUtils.SECOND_PER_DAY;
@@ -100,12 +100,12 @@ public final class Session {
     }
 
     public synchronized void setAuthToken(final UserToken token) {
-        authToken = token;
+        userToken = token;
         resetExpirationTime();
     }
 
     public synchronized UserToken getUserToken() {
-        return authToken;
+        return userToken;
     }
 
     public synchronized boolean isExpired() {

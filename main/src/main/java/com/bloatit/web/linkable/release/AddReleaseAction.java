@@ -95,7 +95,7 @@ public final class AddReleaseAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 

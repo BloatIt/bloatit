@@ -244,13 +244,13 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     @Override
     public int getUserVoteValue() {
-        final AuthenticatedUserToken authToken = getAuthTokenUnprotected();
+        final AuthenticatedUserToken userToken = getAuthTokenUnprotected();
 
         if (getAuthTokenUnprotected() == null) {
             return 0;
         }
 
-        return getDao().getVote(authToken.getMember().getDao());
+        return getDao().getVote(userToken.getMember().getDao());
     }
 
     /**

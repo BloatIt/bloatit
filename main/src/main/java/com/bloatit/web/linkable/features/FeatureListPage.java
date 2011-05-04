@@ -88,7 +88,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         // Search block
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -240,7 +240,7 @@ public final class FeatureListPage extends ElveosPage {
         // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem(authToken.getMember());
+            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem(userToken.getMember());
             final FeatureListPageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, results, clonedUrl, clonedUrl.getPagedFeatureListUrl());
             layout.addLeft(pagedFeatureList);
@@ -323,7 +323,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return FeatureListPage.generateBreadcrumb();
     }
 }

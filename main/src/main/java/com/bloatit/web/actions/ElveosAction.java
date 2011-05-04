@@ -5,26 +5,26 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 
 public abstract class ElveosAction extends Action {
-    private final ElveosUserToken authToken;
+    private final ElveosUserToken userToken;
 
     public ElveosAction(Url url) {
         super(url);
-        this.authToken = (ElveosUserToken) session.getUserToken();
+        this.userToken = (ElveosUserToken) session.getUserToken();
     }
 
     @Override
     protected final Url checkRightsAndEverything() {
-        return checkRightsAndEverything(authToken);
+        return checkRightsAndEverything(userToken);
     }
 
     @Override
     protected final Url doProcess() {
-        return doProcess(authToken);
+        return doProcess(userToken);
     }
 
     @Override
     protected final Url doProcessErrors() {
-        return doProcessErrors(authToken);
+        return doProcessErrors(userToken);
     }
 
     protected abstract Url checkRightsAndEverything(ElveosUserToken token);

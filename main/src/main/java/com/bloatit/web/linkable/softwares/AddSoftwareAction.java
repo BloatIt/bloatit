@@ -128,7 +128,7 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new AddSoftwarePageUrl();
     }
 

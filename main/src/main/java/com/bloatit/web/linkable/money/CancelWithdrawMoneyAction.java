@@ -67,7 +67,7 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return getBestReturnUrl();
 
     }

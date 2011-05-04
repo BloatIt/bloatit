@@ -62,7 +62,7 @@ public final class IndexPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
@@ -95,7 +95,7 @@ public final class IndexPage extends ElveosPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2);
                         if (highlightFeature != null) {
-                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, authToken.getMember()));
+                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, userToken.getMember()));
                         }
                     }
                     featureListRow.add(featureListLeftCase);
@@ -104,7 +104,7 @@ public final class IndexPage extends ElveosPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2 + 1);
                         if (highlightFeature != null) {
-                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, authToken.getMember()));
+                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, userToken.getMember()));
                         }
                     }
                     featureListRow.add(featureListRightCase);
@@ -172,7 +172,7 @@ public final class IndexPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return generateBreadcrumb();
     }
 }

@@ -52,10 +52,10 @@ public final class ReleasePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        // TODO directly use the authToken
-        layout.addRight(new SideBarFeatureBlock(release.getFeature(), authToken.getMember()));
+        // TODO directly use the userToken
+        layout.addRight(new SideBarFeatureBlock(release.getFeature(), userToken.getMember()));
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("date: "
@@ -89,7 +89,7 @@ public final class ReleasePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return ReleasePage.generateBreadcrumb(release);
     }
 

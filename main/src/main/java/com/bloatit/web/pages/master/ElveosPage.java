@@ -74,14 +74,14 @@ public abstract class ElveosPage extends Page {
     // -----------------------------------------------------------------------
     // Template method pattern: Abstract methods
     // -----------------------------------------------------------------------
-    protected abstract HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException;
+    protected abstract HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException;
 
     protected abstract String createPageTitle();
 
-    protected abstract Breadcrumb createBreadcrumb(ElveosUserToken authToken);
+    protected abstract Breadcrumb createBreadcrumb(ElveosUserToken userToken);
 
     // There is a default behavior here. You can overload it.
-    protected HtmlElement createBodyContentOnParameterError(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContentOnParameterError(ElveosUserToken userToken) throws RedirectException {
         throw new PageNotFoundException();
     }
 

@@ -78,7 +78,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         // The feature page is composed of 3 parts:
         // - The summary
         // - The tab panel
@@ -86,15 +86,15 @@ public final class FeaturePage extends ElveosPage {
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        // TODO for the next lines directly use the authToken.
-        layout.addLeft(new FeatureSummaryComponent(feature, authToken.getMember()));
-        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, authToken.getMember()));
+        // TODO for the next lines directly use the userToken.
+        layout.addLeft(new FeatureSummaryComponent(feature, userToken.getMember()));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, userToken.getMember()));
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
             commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
-            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), authToken.getMember()));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), userToken.getMember()));
         }
         layout.addLeft(commentsBlock);
 
@@ -159,7 +159,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }

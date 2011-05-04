@@ -52,7 +52,7 @@ public class LostPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
@@ -78,7 +78,7 @@ public class LostPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken authToken) {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return generateBreadcrumb();
     }
 

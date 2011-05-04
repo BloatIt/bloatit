@@ -45,9 +45,9 @@ public abstract class LoggedPage extends ElveosPage {
      * warning to the user
      */
     @Override
-    protected final HtmlElement createBodyContent(ElveosUserToken authToken) throws RedirectException {
+    protected final HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         if (getSession().getUserToken().isAuthenticated()) {
-            return createRestrictedContent(authToken.getMember());
+            return createRestrictedContent(userToken.getMember());
         }
         getSession().notifyBad(getRefusalReason());
         getSession().setTargetPage(getUrl());

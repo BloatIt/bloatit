@@ -86,7 +86,7 @@ public final class ContributionAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new CheckContributionPageUrl(process);
     }
 

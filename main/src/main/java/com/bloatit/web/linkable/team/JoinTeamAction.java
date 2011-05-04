@@ -69,7 +69,7 @@ public final class JoinTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         if (targetTeam != null) {
             return new TeamPageUrl(targetTeam);
         }

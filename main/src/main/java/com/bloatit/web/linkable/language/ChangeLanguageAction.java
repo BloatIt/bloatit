@@ -45,7 +45,7 @@ public final class ChangeLanguageAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken authToken) {
+    protected Url doProcess(ElveosUserToken userToken) {
         if (Arrays.asList(Locale.getISOLanguages()).contains(language)) {
             final Locale l = new Locale(language);
             Context.getLocalizator().forceLanguage(l);
@@ -56,12 +56,12 @@ public final class ChangeLanguageAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken authToken) {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new ChangeLanguagePageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken authToken) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

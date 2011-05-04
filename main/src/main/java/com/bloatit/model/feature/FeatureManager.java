@@ -81,12 +81,12 @@ public final class FeatureManager {
     /**
      * Tells if a user can create a feature.
      *
-     * @param authToken the auth token representing the user wanting to create a
+     * @param userToken the auth token representing the user wanting to create a
      *            feature.
      * @return true, if successful
      */
-    public static boolean canCreate(final AuthenticatedUserToken authToken) {
-        return authToken.isAuthenticated();
+    public static boolean canCreate(final AuthenticatedUserToken userToken) {
+        return userToken.isAuthenticated();
     }
 
 }
