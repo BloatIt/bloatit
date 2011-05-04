@@ -30,6 +30,7 @@ import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.annotations.Loader;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.Commentable;
 import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;

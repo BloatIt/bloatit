@@ -43,20 +43,18 @@ import com.bloatit.web.url.LoginPageUrl;
  */
 public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
-    private final Member member;
-    private final AuthenticatedUserToken userToken;
+    private final ElveosUserToken userToken;
 
     public LoggedAction(final Url url) {
         super(url);
         this.meUrl = url;
-        this.userToken = (AuthenticatedUserToken) session.getUserToken();
-        this.member = userToken.getMember();
+        this.userToken = (ElveosUserToken) session.getUserToken();
     }
 
     @Override
     protected final Url doProcess(ElveosUserToken userToken) {
         if (userToken.isAuthenticated()) {
-            return doProcessRestricted(member);
+            return doProcessRestricted(userToken.getMember());
         }
         session.notifyBad(getRefusalReason());
         session.setTargetPage(meUrl);
@@ -67,7 +65,7 @@ public abstract class LoggedAction extends ElveosAction {
     @Override
     protected final Url checkRightsAndEverything(ElveosUserToken userToken) {
         if (userToken.isAuthenticated()) {
-            return checkRightsAndEverything(member);
+            return checkRightsAndEverything(userToken.getMember());
         }
 
         // If member is null, let the Logged action do its work (return to the

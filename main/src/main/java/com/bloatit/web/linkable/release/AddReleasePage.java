@@ -69,7 +69,7 @@ public final class AddReleasePage extends CreateUserContentPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), loggedUser));
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), new AuthenticatedUserToken(loggedUser)));
         layout.addLeft(generateReleaseCreationForm());
         return layout;
     }
@@ -101,7 +101,7 @@ public final class AddReleasePage extends CreateUserContentPage {
                                                                DESCRIPTION_INPUT_NB_COLUMNS);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(tr("Enter a short comment on your release."));
+        descriptionInput.setComment(tr("Enter a short comment on your release. The description must have at least 10 chars."));
         form.add(descriptionInput);
 
         // Language

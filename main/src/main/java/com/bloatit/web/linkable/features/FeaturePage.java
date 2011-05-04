@@ -87,14 +87,14 @@ public final class FeaturePage extends ElveosPage {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
         // TODO for the next lines directly use the userToken.
-        layout.addLeft(new FeatureSummaryComponent(feature, userToken.getMember()));
-        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, userToken.getMember()));
+        layout.addLeft(new FeatureSummaryComponent(feature, userToken));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, userToken));
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
             commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
-            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), userToken.getMember()));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), userToken));
         }
         layout.addLeft(commentsBlock);
 

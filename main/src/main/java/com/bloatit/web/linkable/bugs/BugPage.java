@@ -83,7 +83,7 @@ public final class BugPage extends ElveosPage {
     protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        layout.addRight(new SideBarFeatureBlock(bug.getFeature(), userToken.getMember()));
+        layout.addRight(new SideBarFeatureBlock(bug.getFeature(), userToken));
 
         final HtmlDiv bugListDiv = new HtmlDiv("bug_list");
         layout.addLeft(bugListDiv);
@@ -151,7 +151,7 @@ public final class BugPage extends ElveosPage {
 
         // Comments
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
-        layout.addLeft(new CommentForm(new CreateCommentActionUrl(bug), userToken.getMember()));
+        layout.addLeft(new CommentForm(new CreateCommentActionUrl(bug), userToken));
 
         return layout;
     }

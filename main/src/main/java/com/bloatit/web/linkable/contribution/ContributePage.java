@@ -62,7 +62,7 @@ public final class ContributePage extends CreateUserContentPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), loggedUser));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), new AuthenticatedUserToken(loggedUser)));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;

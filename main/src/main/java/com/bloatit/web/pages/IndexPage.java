@@ -95,7 +95,7 @@ public final class IndexPage extends ElveosPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2);
                         if (highlightFeature != null) {
-                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, userToken.getMember()));
+                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, userToken));
                         }
                     }
                     featureListRow.add(featureListLeftCase);
@@ -104,7 +104,7 @@ public final class IndexPage extends ElveosPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2 + 1);
                         if (highlightFeature != null) {
-                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, userToken.getMember()));
+                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, userToken));
                         }
                     }
                     featureListRow.add(featureListRightCase);
@@ -134,10 +134,13 @@ public final class IndexPage extends ElveosPage {
         if (moneyRaised == null) {
             moneyRaised = BigDecimal.ZERO;
         }
-        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false);
-        final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
-        final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
-        summaryBox.add(contributionRaised);
+        
+        if (userToken.isAuthenticated()){
+            final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, userToken.getMember());
+            final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
+            final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
+            summaryBox.add(contributionRaised);
+        }
 
         // Count of offers
         final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ",

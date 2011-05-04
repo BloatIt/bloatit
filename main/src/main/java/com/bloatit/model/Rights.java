@@ -90,19 +90,19 @@ public class Rights {
     // Team Rights
 
     public boolean hasModifyTeamRight() {
-        return token != null && currentTeam != null && hasModifyTeamRight(token.getMember(), currentTeam);
+        return token != null && token.isAuthenticated() && currentTeam != null && hasModifyTeamRight(token.getMember(), currentTeam);
     }
 
     public boolean hasConsultTeamRight() {
         if (isTeamOwner()) {
-            return token != null && currentTeam != null && hasConsultTeamRight(token.getMember(), currentTeam);
+            return token != null && token.isAuthenticated() && currentTeam != null && hasConsultTeamRight(token.getMember(), currentTeam);
         }
         return false;
     }
 
     public boolean hasBankTeamRight() {
         if (isTeamOwner()) {
-            return token != null && currentTeam != null && hasBankTeamRight(token.getMember(), currentTeam);
+            return token != null && token.isAuthenticated() && currentTeam != null && hasBankTeamRight(token.getMember(), currentTeam);
         }
         return false;
     }
@@ -165,7 +165,7 @@ public class Rights {
     }
 
     private final boolean hasUserPrivilege(final DaoMember.Role role) {
-        return token != null && token.getMember().getRole() == role;
+        return token != null && token.isAuthenticated() && token.getMember().getRole() == role;
     }
 
     // ///////////////////////////////////////

@@ -42,6 +42,8 @@ import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
+import com.bloatit.web.linkable.members.MemberPage;
+import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -186,9 +188,9 @@ public final class AccountChargingPage extends QuotationPage {
     protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
         final Breadcrumb breadcrumb;
         if (asTeam != null) {
-            breadcrumb = AccountPage.generateBreadcrumb(asTeam);
+            breadcrumb = TeamPage.generateAccountBreadcrumb(asTeam);
         } else {
-            breadcrumb = AccountPage.generateBreadcrumb(member);
+            breadcrumb = MemberPage.generateAccountBreadcrumb(member);
         }
         final AccountChargingPageUrl url = new AccountChargingPageUrl(process);
         breadcrumb.pushLink(url.getHtmlLink(tr("Charging")));

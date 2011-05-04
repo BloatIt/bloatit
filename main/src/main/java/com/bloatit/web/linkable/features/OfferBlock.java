@@ -21,6 +21,8 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.UserToken;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
@@ -39,12 +41,10 @@ import com.bloatit.web.url.TeamPageUrl;
 public final class OfferBlock extends HtmlDiv {
 
     private final Offer offer;
-    private final Member me;
 
-    public OfferBlock(final Offer offer, final boolean selected, Member me) {
+    public OfferBlock(final Offer offer, final boolean selected, ElveosUserToken userToken) {
         super((selected ? "offer_selected_block" : "offer_unselected_block"));
         this.offer = offer;
-        this.me = me;
 
         final HtmlDiv offerTopBlock = new HtmlDiv("offer_top_block");
         {
@@ -152,7 +152,7 @@ public final class OfferBlock extends HtmlDiv {
                     }
                     offerRightBottomColumn.add(description);
 
-                    generateAddReleaseLink(lot, offerRightBottomColumn);
+                    generateAddReleaseLink(lot, offerRightBottomColumn, userToken);
 
                     generateReleaseList(lot, offerRightBottomColumn);
 
@@ -198,7 +198,7 @@ public final class OfferBlock extends HtmlDiv {
                             description.addText(lot.getDescription());
                             lotBlock.add(description);
 
-                            generateAddReleaseLink(lot, lotBlock);
+                            generateAddReleaseLink(lot, lotBlock, userToken);
 
                             generateReleaseList(lot, lotBlock);
 
@@ -266,16 +266,16 @@ public final class OfferBlock extends HtmlDiv {
         showHideValidationDetails.apply();
     }
 
-    private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock) {
-        if (isDeveloper() && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
+    private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock, ElveosUserToken userToken) {
+        if (isDeveloper(userToken) && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
             final HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("Add a release"));
             link.setCssClass("button");
             lotBlock.add(link);
         }
     }
 
-    private boolean isDeveloper() {
-        if (!Context.getSession().getUserToken().isAuthenticated()) {
+    private boolean isDeveloper(ElveosUserToken userToken) {
+        if (!userToken.isAuthenticated()) {
             return false;
         }
         final Offer selectedOffer = offer.getFeature().getSelectedOffer();
@@ -283,9 +283,9 @@ public final class OfferBlock extends HtmlDiv {
             return false;
         }
         if (selectedOffer.getAsTeam() != null) {
-            return me.hasModifyTeamRight(selectedOffer.getAsTeam());
+            return userToken.getMember().hasModifyTeamRight(selectedOffer.getAsTeam());
         }
-        if (Context.getSession().getUserToken().getMember().equals(selectedOffer.getMember())) {
+        if (selectedOffer.getMember().equals(userToken.getMember())) {
             return true;
         }
         return false;

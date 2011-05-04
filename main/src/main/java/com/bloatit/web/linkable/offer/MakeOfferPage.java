@@ -87,7 +87,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateOfferForm(loggedUser));
 
-        layout.addRight(new SideBarFeatureBlock(feature, loggedUser));
+        layout.addRight(new SideBarFeatureBlock(feature, new AuthenticatedUserToken(loggedUser)));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
@@ -97,7 +97,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
         if (offer != null) {
-            offerPageContainer.add(new OfferBlock(offer, true, me));
+            offerPageContainer.add(new OfferBlock(offer, true, new AuthenticatedUserToken(me)));
         }
 
         // Create offer form

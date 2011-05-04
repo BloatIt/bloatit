@@ -240,7 +240,7 @@ public final class FeatureListPage extends ElveosPage {
         // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem(userToken.getMember());
+            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem(userToken);
             final FeatureListPageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, results, clonedUrl, clonedUrl.getPagedFeatureListUrl());
             layout.addLeft(pagedFeatureList);
@@ -271,16 +271,16 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     private static class FeaturesListItem implements HtmlRenderer<Feature> {
-        private Member me;
+        private final ElveosUserToken userToken;
 
-        public FeaturesListItem(Member me) {
+        public FeaturesListItem(ElveosUserToken userToken) {
             super();
-            this.me = me;
+            this.userToken = userToken;
         }
 
         @Override
         public XmlNode generate(final Feature feature) {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL, me);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, userToken);
         }
     };
 

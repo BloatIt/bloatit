@@ -26,10 +26,10 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
 public class SessionBar extends HtmlDiv {
@@ -68,7 +68,7 @@ public class SessionBar extends HtmlDiv {
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));
 
         try {
-            add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(new MoneyDisplayComponent(me.getInternalAccount().getAmount())));
+            add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(new MoneyDisplayComponent(me.getInternalAccount().getAmount(), me)));
         } catch (final UnauthorizedOperationException e) {
             Context.getSession()
                    .notifyBad(Context.tr("An unexpected error prevent us from displaying your internal account amount. Please notify us."));
@@ -77,7 +77,7 @@ public class SessionBar extends HtmlDiv {
         // Display link to private messages
         long nb;
         if ((nb = me.getInvitationCount()) > 0) {
-            final HtmlLink messagesLink = new MessageListPageUrl().getHtmlLink(Context.tr("Invitations ({0})", nb));
+            final HtmlLink messagesLink = MemberPage.MyMessagesUrl(me).getHtmlLink(Context.tr("Invitations ({0})", nb));
             messagesLink.setCssClass("bold");
             HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
             add(componentSpan);

@@ -71,7 +71,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), loggedUser));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), new AuthenticatedUserToken(loggedUser)));
         return layout;
     }
 

@@ -21,7 +21,9 @@ import static com.bloatit.framework.utils.StringUtils.isEmpty;
 import java.util.List;
 import java.util.Locale;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -35,6 +37,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.MemberPageUrl;
@@ -193,6 +196,7 @@ public class ModifyMemberAction extends LoggedAction {
             }
 
         } catch (final UnauthorizedOperationException e) {
+            //TODO better catch
             e.printStackTrace();
         }
 
@@ -226,6 +230,18 @@ public class ModifyMemberAction extends LoggedAction {
                 session.notifyBad(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
                 error = true;
             }
+        }
+
+        try {
+            if(email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && MemberManager.emailExists(email)) {
+                session.notifyBad(Context.tr("This email is already used."));
+                url.getEmailParameter().getCustomMessages().add(new Message(Context.tr("Email already used.")));
+                error = true;
+            }
+        } catch (UnauthorizedOperationException e) {
+            session.notifyBad(Context.tr("Fail to read your email."));
+            Log.web().error("Fail to read an email",e);
+            error = true;
         }
 
         // Avatar and delete avatar

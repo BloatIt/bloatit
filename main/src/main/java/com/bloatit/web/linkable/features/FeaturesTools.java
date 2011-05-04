@@ -34,9 +34,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Image;
-import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
@@ -114,11 +114,11 @@ public class FeaturesTools {
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, Member me) throws UnauthorizedOperationException {
-        return generateProgress(feature, me, false, BigDecimal.ZERO);
+    public static HtmlDiv generateProgress(final Feature feature, ElveosUserToken userToken) throws UnauthorizedOperationException {
+        return generateProgress(feature, userToken, false, BigDecimal.ZERO);
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, Member me, final boolean slim, final BigDecimal futureAmount)
+    public static HtmlDiv generateProgress(final Feature feature, ElveosUserToken userToken, final boolean slim, final BigDecimal futureAmount)
             throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
@@ -130,7 +130,7 @@ public class FeaturesTools {
             float futureProgressValue = 0;
 
             if (Context.getSession().getUserToken().isAuthenticated()) {
-                myProgressValue = feature.getMemberProgression(me);
+                myProgressValue = feature.getMemberProgression(userToken.getMember());
                 if (myProgressValue > 0.0f && myProgressValue < 5f) {
                     myProgressValue = 5f;
 

@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
@@ -60,10 +61,9 @@ public final class MembersListPage extends ElveosPage {
 
         // TODO: avoid conflict
         final MembersListPageUrl clonedUrl = url.clone();
-        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
-
+        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl(), new PlaceHolderElement(), new HtmlClearer());
         pageTitle.add(pagedMemberList);
-        pageTitle.add(new HtmlClearer());
+
 
         layout.addLeft(pageTitle);
 

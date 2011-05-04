@@ -56,7 +56,6 @@ import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
@@ -83,7 +82,7 @@ public final class TeamPage extends ElveosPage {
 
     @RequestParam(name = TEAM_TAB_PANE)
     @Optional(MEMBERS_TAB)
-    private String activeTabKey;
+    private final String activeTabKey;
 
     @SuppressWarnings("unused")
     @RequestParam(name = "name", role = Role.PRETTY, generatedFrom = "targetTeam")
@@ -101,9 +100,12 @@ public final class TeamPage extends ElveosPage {
     @Override
     protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        final Member me = userToken.getMember();
 
-        layout.addLeft(generateTeamIDCard(me));
+        if (userToken.isAuthenticated()) {
+            final Member me = userToken.getMember();
+            layout.addLeft(generateTeamIDCard(me));
+        }
+
         layout.addLeft(generateMain(userToken));
 
         layout.addRight(generateContactBox());
@@ -149,7 +151,9 @@ public final class TeamPage extends ElveosPage {
         final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
+        if (userToken.isAuthenticated()){
+            tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
+        }
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }
@@ -226,13 +230,11 @@ public final class TeamPage extends ElveosPage {
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam);
-                    final AccountPageUrl accountPageUrl = new AccountPageUrl();
-                    accountPageUrl.setTeam(targetTeam);
+                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam, me);
                     final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                      new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                        amount,
-                                                                                                                       accountPageUrl.getHtmlLink())));
+                                                                                                                       AccountUrl(targetTeam).getHtmlLink())));
                     bankInformationsList.add(accountBalanceItem);
 
                 }
@@ -253,6 +255,14 @@ public final class TeamPage extends ElveosPage {
     public static Breadcrumb generateBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamsPage.generateBreadcrumb();
         breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getDisplayName()));
+        return breadcrumb;
+    }
+
+    public static Breadcrumb generateAccountBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+        TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+        teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        breadcrumb.pushLink(teamPageUrl.getHtmlLink(Context.tr("Account")));
         return breadcrumb;
     }
 
@@ -285,5 +295,12 @@ public final class TeamPage extends ElveosPage {
             add(new HtmlDefineParagraph(tr("Note: "),
                                         tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
+    }
+
+    public static TeamPageUrl AccountUrl(Team team) {
+        TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+        teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        teamPageUrl.setAnchor(TEAM_TAB_PANE);
+        return teamPageUrl;
     }
 }

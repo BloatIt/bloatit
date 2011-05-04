@@ -416,9 +416,11 @@ public final class Localizator {
      * </p>
      */
     public void forceMemberChoice() {
-        final User user = Context.getSession().getUserToken().getMember();
-        locale = user.getLocale();
-        this.i18n = localesCache.get(locale);
+        if (Context.getSession().getUserToken().isAuthenticated()) {
+            final User user = Context.getSession().getUserToken().getMember();
+            locale = user.getLocale();
+            this.i18n = localesCache.get(locale);
+        }
     }
 
     /**

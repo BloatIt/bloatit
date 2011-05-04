@@ -91,7 +91,10 @@ public abstract class LoggedPage extends ElveosPage {
     public abstract String getRefusalReason();
 
     protected final Breadcrumb createBreadcrumb(ElveosUserToken token) {
-        return createBreadcrumb(token.getMember());
+        if (token.isAuthenticated()) {
+            return createBreadcrumb(token.getMember());
+        }
+        return createBreadcrumb((Member) null);
     }
 
     protected abstract Breadcrumb createBreadcrumb(Member member);

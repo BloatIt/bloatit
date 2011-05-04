@@ -57,7 +57,7 @@ public final class LoginAction extends ElveosAction {
         UserToken token = null;
         token = LoginManager.loginByPassword(login.trim(), password);
 
-        if (token != null) {
+        if (token != null && token.isAuthenticated()) {
             session.setAuthToken(token);
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceMemberChoice();

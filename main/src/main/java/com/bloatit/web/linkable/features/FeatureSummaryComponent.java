@@ -38,6 +38,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
@@ -60,7 +61,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private final Feature feature;
 
-    protected FeatureSummaryComponent(final Feature feature, Member me) {
+    protected FeatureSummaryComponent(final Feature feature, ElveosUserToken userToken) {
         super();
         this.feature = feature;
 
@@ -157,7 +158,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature, me);
+                    featureSummaryProgress = generateProgressBlock(feature, userToken);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////
@@ -186,7 +187,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         }
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature, Member me) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature, ElveosUserToken userToken) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -194,7 +195,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
             final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
             {
-                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, me));
+                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, userToken));
                 featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
             }
 

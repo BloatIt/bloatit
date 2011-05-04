@@ -18,15 +18,19 @@ package com.bloatit.web.linkable.money;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.Member;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.linkable.members.MemberPage;
+import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
+import com.bloatit.web.url.IndexPageUrl;
 
-@ParamContainer(value="account/charging/process", protocol=Protocol.HTTPS)
+@ParamContainer(value = "account/charging/process", protocol = Protocol.HTTPS)
 public class AccountChargingProcess extends PaymentProcess {
 
     @SuppressWarnings("unused")
@@ -50,11 +54,13 @@ public class AccountChargingProcess extends PaymentProcess {
                 // Redirects to the contribution action which will perform the
                 // actual contribution
 
-                AccountPageUrl accountPageUrl = new AccountPageUrl();
-                if(getTeam() != null) {
-                    accountPageUrl.setTeam(getTeam());
+                if (getTeam() != null) {
+                    return TeamPage.AccountUrl(getTeam());
                 }
-                return accountPageUrl;
+                if (Context.getSession().getUserToken().isAuthenticated()) {
+                    return MemberPage.MyAccountUrl((Member) Context.getSession().getUserToken().getMember());
+                }
+                return new IndexPageUrl();
             }
             unlock();
             return new AccountChargingPageUrl(this);

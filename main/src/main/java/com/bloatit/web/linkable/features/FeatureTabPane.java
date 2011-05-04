@@ -24,6 +24,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Translation;
@@ -49,7 +50,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
     @SuppressWarnings("unused")
     private FeatureContributorsComponent contribution;
 
-    protected FeatureTabPane(final FeatureTabPaneUrlComponent url, final Feature feature, final Member me) {
+    protected FeatureTabPane(final FeatureTabPaneUrlComponent url, final Feature feature, final ElveosUserToken userToken) {
         super();
         activeTabKey = url.getActiveTabKey();
 
@@ -78,7 +79,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), OFFERS_TAB) {
             @Override
             public XmlNode generateBody() {
-                return new FeatureOfferListComponent(feature, me);
+                return new FeatureOfferListComponent(feature, userToken);
             }
         });
 

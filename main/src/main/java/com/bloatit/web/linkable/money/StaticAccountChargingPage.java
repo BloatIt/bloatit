@@ -41,6 +41,7 @@ import com.bloatit.web.linkable.contribution.MoneyVariationBlock;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -163,7 +164,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         if (asTeam != null) {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, process);
         } else {
-            breadcrumb = AccountPage.generateBreadcrumb(member);
+            breadcrumb = MemberPage.generateAccountBreadcrumb(member);
         }
         final AccountChargingPageUrl url = new AccountChargingPageUrl(process);
 

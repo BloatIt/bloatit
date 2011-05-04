@@ -14,57 +14,43 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.web.linkable.messages;
-
-import static com.bloatit.framework.webprocessor.context.Context.tr;
+package com.bloatit.web.linkable.members.tabs;
 
 import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedPrivateReadOnlyAccessException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
-import com.bloatit.web.linkable.members.MemberPage;
-import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 
-/**
- * A plain list of messages received by the user
- */
-@ParamContainer("messages/list")
-public final class MessageListPage extends LoggedPage {
-    private final MessageListPageUrl url;
+public class InvitationsTab extends HtmlTab {
+    private final Member member;
 
-    public MessageListPage(final MessageListPageUrl url) {
-        super(url);
-        this.url = url;
+    public InvitationsTab(final Member member, final String title, final String tabKey) {
+        super(title, tabKey);
+        this.member = member;
     }
 
     @Override
-    public HtmlElement createRestrictedContent(final Member me) throws RedirectException {
-        final TwoColumnLayout master = new TwoColumnLayout(true, url);
+    public XmlNode generateBody() {
 
-        final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Elveos private messages"), 1);
-        master.addLeft(main);
+        final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Generating links to team invites
         final HtmlTitleBlock teamInvites = new HtmlTitleBlock(Context.tr("Team invites"), 2);
-        main.add(teamInvites);
+        master.add(teamInvites);
 
-        final PageIterable<JoinTeamInvitation> invitations = me.getReceivedInvitation(State.PENDING);
+        final PageIterable<JoinTeamInvitation> invitations = member.getReceivedInvitation(State.PENDING);
         for (final JoinTeamInvitation invitation : invitations) {
             final HtmlParagraph p = new HtmlParagraph();
             try {
@@ -90,31 +76,4 @@ public final class MessageListPage extends LoggedPage {
         return master;
     }
 
-    @Override
-    public String getRefusalReason() {
-        return Context.tr("You must be logged to check your messages.");
-    }
-
-    @Override
-    protected String createPageTitle() {
-        return Context.tr("Elveos private messages.");
-    }
-
-    @Override
-    public boolean isStable() {
-        return true;
-    }
-
-    @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
-        return MessageListPage.generateBreadcrumb(member);
-    }
-
-    private static Breadcrumb generateBreadcrumb(final Member member) {
-        final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
-
-        breadcrumb.pushLink(new MessageListPageUrl().getHtmlLink(tr("Message list")));
-
-        return breadcrumb;
-    }
 }

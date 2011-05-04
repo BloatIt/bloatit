@@ -27,9 +27,11 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Image;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -41,7 +43,7 @@ public class IndexFeatureBlock extends HtmlDiv {
 
     private final PlaceHolderElement floatRight;
 
-    public IndexFeatureBlock(final HighlightFeature highlightFeature, Member me) {
+    public IndexFeatureBlock(final HighlightFeature highlightFeature, ElveosUserToken token) {
         super("index_element");
 
         add(new HtmlTitle(highlightFeature.getReason(), 2));
@@ -62,7 +64,7 @@ public class IndexFeatureBlock extends HtmlDiv {
                                                          SoftwaresTools.getSoftwareLink(highlightFeature.getFeature().getSoftware())));
 
             // Generate progess bar and text
-            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), me));
+            indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), token));
 
             indexBodyElement.add(FeaturesTools.generateDetails(highlightFeature.getFeature(), false));
 

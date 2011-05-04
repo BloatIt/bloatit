@@ -17,7 +17,6 @@
 
 package com.bloatit.model.right;
 
-import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;

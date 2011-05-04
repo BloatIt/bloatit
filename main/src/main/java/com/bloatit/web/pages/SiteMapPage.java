@@ -21,13 +21,14 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.ElveosUserToken;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -39,7 +40,6 @@ import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
@@ -100,15 +100,17 @@ public final class SiteMapPage extends ElveosPage {
         HtmlList personalLinkList = new HtmlList();
         layout.addLeft(personalLinkList);
 
-        if(Context.getSession().getUserToken().isAuthenticated()) {
+        if(userToken.isAuthenticated()) {
             personalLinkList.add(new MemberPageUrl(userToken.getMember()).getHtmlLink(Context.tr("My page")));
+            personalLinkList.add( MemberPage.MyAccountUrl(userToken.getMember()).getHtmlLink(Context.tr("My account")));
+            personalLinkList.add( MemberPage.MyMessagesUrl(userToken.getMember()).getHtmlLink(Context.tr("My messages")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
+            personalLinkList.add(new HtmlText(Context.tr("My account")));
+            personalLinkList.add(new HtmlText(Context.tr("My messages")));
         }
 
-        personalLinkList.add( new AccountPageUrl().getHtmlLink(Context.tr("My account")));
-        personalLinkList.add( new MessageListPageUrl().getHtmlLink(Context.tr("My messages")));
-        personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
+         personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
         personalLinkList.add(new  AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
         //TODO good page
         personalLinkList.add(new  PageNotFoundUrl().getHtmlLink(Context.tr("Withdraw money")));

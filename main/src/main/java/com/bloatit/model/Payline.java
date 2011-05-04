@@ -221,10 +221,10 @@ public final class Payline extends RestrictedObject {
         }
     }
 
-    private String addOrderDetails(final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) {
+    private String addOrderDetails(final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) throws UnauthorizedOperationException {
         // Order details
         final Order order = new Order();
-        final Member member = getAuthTokenUnprotected().getMember();
+        final Member member = getAuthToken().getMember();
         final String orderReference = createOrderRef(member);
         order.setRef(orderReference);
         order.setOrigin(ORDER_ORIGINE);

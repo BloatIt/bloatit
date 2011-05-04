@@ -55,7 +55,7 @@ public final class ReleasePage extends ElveosPage {
     protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         // TODO directly use the userToken
-        layout.addRight(new SideBarFeatureBlock(release.getFeature(), userToken.getMember()));
+        layout.addRight(new SideBarFeatureBlock(release.getFeature(), userToken));
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("date: "

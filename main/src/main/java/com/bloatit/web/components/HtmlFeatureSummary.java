@@ -25,10 +25,12 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Translation;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -56,7 +58,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     // "feature_summary"
-    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, Member me) {
+    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, ElveosUserToken userToken) {
         super(compacity.getCssClass());
         this.feature = feature;
         if (feature == null) {
@@ -69,10 +71,10 @@ public final class HtmlFeatureSummary extends HtmlDiv {
         try {
             switch (compacity) {
                 case NORMAL:
-                    generateNormalStructure(me);
+                    generateNormalStructure(userToken);
                     break;
                 case COMPACT:
-                    generateCompactStructure(me);
+                    generateCompactStructure(userToken);
                     break;
                 case LINE:
                     throw new NotImplementedException();
@@ -88,9 +90,10 @@ public final class HtmlFeatureSummary extends HtmlDiv {
 
     /**
      * @param me 
+     * @param userToken 
      * @throws UnauthorizedOperationException
      */
-    private void generateCompactStructure(Member me) throws UnauthorizedOperationException {
+    private void generateCompactStructure(ElveosUserToken userToken) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             featureSummaryTop.add(generateTitle());
@@ -109,7 +112,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
 
             final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
             {
-                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature, me);
+                final HtmlDiv featureummaryProgress = FeaturesTools.generateProgress(feature, userToken);
                 featureummaryProgress.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryCenter.add(featureummaryProgress);
             }
@@ -124,7 +127,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @param me 
      * @throws UnauthorizedOperationException
      */
-    private void generateNormalStructure(Member me) throws UnauthorizedOperationException {
+    private void generateNormalStructure(ElveosUserToken userToken) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
@@ -150,7 +153,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             final HtmlDiv featureSummaryBottomCenter = new HtmlDiv("feature_summary_bottom_center");
             {
 
-                featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature, me));
+                featureSummaryBottomCenter.add(FeaturesTools.generateProgress(feature, userToken));
 
                 featureSummaryBottomCenter.add(FeaturesTools.generateDetails(feature, false));
                 featureSummaryBottomCenter.add(FeaturesTools.generateState(feature));

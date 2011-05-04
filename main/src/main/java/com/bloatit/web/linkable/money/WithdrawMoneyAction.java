@@ -18,9 +18,8 @@ import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
-import com.bloatit.web.url.AccountPageUrl;
-import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
@@ -55,12 +54,10 @@ public class WithdrawMoneyAction extends LoggedAction {
         String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
         if (actor instanceof Member) {
             session.notifyGood(Context.tr("Requested to withdraw {0} from your account.", amountStr));
-            return new AccountPageUrl();
+            return MemberPage.MyAccountUrl(me);
         } else {
             session.notifyGood(Context.tr("Requested to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
-            TeamPageUrl teamPageUrl = new TeamPageUrl((Team) actor);
-            teamPageUrl.setActiveTabKey(TeamPage.ACCOUNT_TAB);
-            return teamPageUrl;
+            return TeamPage.AccountUrl(((Team) actor));
         }
     }
 
