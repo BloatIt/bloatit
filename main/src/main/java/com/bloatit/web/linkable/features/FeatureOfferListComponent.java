@@ -107,7 +107,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                             final HtmlSpan timeSpan = new HtmlSpan("bold");
                             timeSpan.addText(renderer.getTimeString());
                             final HtmlMixedText timeToValid = new HtmlMixedText(tr("This offer will be validated in about <0::>. After this time, the offer will go into development as soon as the requested amount is available ({0} left).",
-                                                                                   currency.toString()),
+                                                                                   currency.getSimpleEuroString()),
                                                                                 timeSpan);
                             final HtmlParagraph element = new HtmlParagraph(timeToValid);
                             block.addInLeftColumn(element);
