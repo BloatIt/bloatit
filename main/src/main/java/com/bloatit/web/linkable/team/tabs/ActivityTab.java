@@ -84,6 +84,11 @@ public class ActivityTab extends HtmlTab {
         recent.add(recentActivity);
 
         final PageIterable<UserContent<? extends DaoUserContent>> activity = team.getActivity();
+
+        if(activity.size() == 0) {
+            recent.add(new HtmlParagraph(Context.tr("No recent activity")));
+        }
+
         final TeamPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
         feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl()
@@ -203,7 +208,7 @@ public class ActivityTab extends HtmlTab {
 
         /**
          * Generates a second line of a feed
-         * 
+         *
          * @param item the String to display at the start of the second line
          * @param target the element to display after <code>item</code>
          * @return the element to add as a second line
@@ -220,7 +225,7 @@ public class ActivityTab extends HtmlTab {
          * {@link #generateFeedStructure(HtmlElement, HtmlElement, UserContentInterface)}
          * that avoids having to create the feature second line
          * </p>
-         * 
+         *
          * @param firstLine the element to show on the first line
          * @param feature the <code>feature</code> to display on the second line
          * @param content the UserContent that originates everything, so we can
@@ -239,7 +244,7 @@ public class ActivityTab extends HtmlTab {
 
         /**
          * Creates a complete feed item to add to the feed
-         * 
+         *
          * @param firstLine the first line of the feed item
          * @param secondLine the second line of the feed item
          * @param content the UserContent that originates everything, so we can

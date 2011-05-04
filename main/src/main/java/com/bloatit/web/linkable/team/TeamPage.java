@@ -145,7 +145,15 @@ public final class TeamPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
-        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
+
+
+        String tabKey = activeTabKey;
+
+        if (activeTabKey.equals(ACCOUNT_TAB) && !targetTeam.canAccessBankTransaction(Action.READ)) {
+            tabKey = MEMBERS_TAB;
+        }
+        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, tabKey, secondUrl);
+
         master.add(tabPane);
 
         tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));

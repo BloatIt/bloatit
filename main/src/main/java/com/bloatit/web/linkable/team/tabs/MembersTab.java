@@ -157,7 +157,7 @@ public class MembersTab extends HtmlTab {
 
             if (right == UserTeamRight.CONSULT) {
                 if (member.canBeKickFromTeam(team, visitor.getMember())) {
-                    if (member.equals(visitor)) { // FIXME : Invalid equals ?
+                    if (member.equals(visitor.getMember())) {
                         ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Leave")));
                     } else {
                         ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Kick")));

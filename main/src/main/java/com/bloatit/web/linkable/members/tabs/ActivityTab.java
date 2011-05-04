@@ -89,6 +89,11 @@ public class ActivityTab extends HtmlTab {
         final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
 
         final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
+
+        if(activity.size() == 0) {
+            recentActivity.add(new HtmlParagraph(Context.tr("No recent activity")));
+        }
+
         final MemberPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
         feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl()

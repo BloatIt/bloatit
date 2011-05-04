@@ -18,6 +18,7 @@ import java.util.Locale;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -26,6 +27,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
@@ -110,14 +112,20 @@ public final class MemberPage extends MasterPage {
             if (myPage) {
                 teamBlock.setTitle(Context.tr("My teams"));
             } else {
-                teamBlock.setTitle(Context.tr("{0} teams", member.getDisplayName()));
+                teamBlock.setTitle(Context.tr("{0}''s teams", member.getDisplayName()));
             }
 
             final HtmlList teamList = new HtmlList();
             teamList.setCssClass("member_teams_list");
             teamBlock.add(teamList);
 
-            for (final Team team : member.getTeams()) {
+            PageIterable<Team> teams = member.getTeams();
+
+            if(teams.size() == 0) {
+                teamBlock.add(new HtmlParagraph(Context.tr("No team.")));
+            }
+
+            for (final Team team : teams) {
                 teamList.add(new TeamPageUrl(team).getHtmlLink(team.getDisplayName()));
             }
         } catch (final UnauthorizedOperationException e) {

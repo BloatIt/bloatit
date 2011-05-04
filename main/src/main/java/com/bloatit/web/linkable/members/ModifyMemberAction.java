@@ -69,7 +69,7 @@ public class ModifyMemberAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(min = "6", minErrorMsg = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."),//
+    @ParamConstraint(min = "1", minErrorMsg = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."),//
     max = "30", maxErrorMsg = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String fullname;
 
