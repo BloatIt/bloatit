@@ -36,9 +36,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContent;
-import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
 import com.bloatit.web.linkable.members.tabs.ActivityTab;
 import com.bloatit.web.linkable.members.tabs.InvitationsTab;
@@ -109,15 +107,6 @@ public final class MemberPage extends MasterPage {
 
         if (myPage) {
             layout.addLeft(generateTabPane());
-        }
-
-        // Buttons private message & invite in team
-        if (myPage) {
-            layout.addRight(new SideBarButton(Context.tr("View my private messages"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("View my team invitations"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgTeam()));
-        } else {
-            layout.addRight(new SideBarButton(Context.tr("Send a private message"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("Invite to join a team"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgTeam()));
         }
 
         // Adding list of teams
