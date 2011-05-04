@@ -24,7 +24,8 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Team;
-import com.bloatit.web.url.AccountPageUrl;
+import com.bloatit.web.linkable.members.MemberPage;
+import com.bloatit.web.linkable.team.TeamPage;
 
 /**
  * Small component that displays an amount of money in euro with and in locale
@@ -72,11 +73,14 @@ public class MoneyDisplayComponent extends HtmlSpan {
 
         HtmlBranch money;
         if (link) {
-            AccountPageUrl accountPageUrl = new AccountPageUrl();
             if (teamAccount != null) {
-                accountPageUrl.setTeam(teamAccount);
+                money = TeamPage.AccountUrl(teamAccount).getHtmlLink(euroMoney);
+            } else {
+                money = MemberPage.MyAccountUrl().getHtmlLink(euroMoney);
             }
-            money = accountPageUrl.getHtmlLink(euroMoney);
+
+
+
             money.setCssClass("money");
         } else {
             money = new HtmlSpan("money").add(euroMoney);

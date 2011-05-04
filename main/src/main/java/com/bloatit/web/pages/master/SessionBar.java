@@ -26,10 +26,10 @@ import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.Member;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
 public class SessionBar extends HtmlDiv {
@@ -71,7 +71,7 @@ public class SessionBar extends HtmlDiv {
             Member me = session.getAuthToken().getMember();
             long nb;
             if ((nb = me.getInvitationCount()) > 0) {
-                final HtmlLink messagesLink = new MessageListPageUrl().getHtmlLink(Context.tr("Invitations ({0})", nb));
+                final HtmlLink messagesLink = MemberPage.MyMessagesUrl().getHtmlLink(Context.tr("Invitations ({0})", nb));
                 messagesLink.setCssClass("bold");
                 HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
                 add(componentSpan);

@@ -21,9 +21,10 @@ import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.web.linkable.members.MemberPage;
+import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
 
 @ParamContainer(value="account/charging/process", protocol=Protocol.HTTPS)
 public class AccountChargingProcess extends PaymentProcess {
@@ -49,11 +50,10 @@ public class AccountChargingProcess extends PaymentProcess {
                 // Redirects to the contribution action which will perform the
                 // actual contribution
 
-                AccountPageUrl accountPageUrl = new AccountPageUrl();
                 if(getTeam() != null) {
-                    accountPageUrl.setTeam(getTeam());
+                    return TeamPage.AccountUrl(getTeam());
                 }
-                return accountPageUrl;
+                return MemberPage.MyAccountUrl();
             }
             unlock();
             return new AccountChargingPageUrl(this);

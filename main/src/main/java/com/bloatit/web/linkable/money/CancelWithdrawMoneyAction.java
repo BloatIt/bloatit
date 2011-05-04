@@ -23,10 +23,9 @@ import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
-import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
-import com.bloatit.web.url.TeamPageUrl;
 
 @ParamContainer("money/docancelwithdraw")
 public class CancelWithdrawMoneyAction extends LoggedAction {
@@ -77,17 +76,14 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
 
             try {
                 if (moneyWithdrawal.getActor() instanceof Team) {
-                    TeamPageUrl teamPageUrl = new TeamPageUrl((Team) moneyWithdrawal.getActor());
-                    teamPageUrl.setActiveTabKey(TeamPage.ACCOUNT_TAB);
-                    teamPageUrl.setAnchor(TeamPage.TEAM_TAB_PANE);
-                    return teamPageUrl;
+                    return TeamPage.AccountUrl((Team) moneyWithdrawal.getActor());
                 }
             } catch (UnauthorizedPrivateAccessException e) {
                 Log.web().error("Fail to read the actor of a withdrawal");
                 throw new ShallNotPassException("Fail to read the actor of a withdrawal", e);
             }
         }
-        return new AccountPageUrl();
+        return MemberPage.MyAccountUrl();
     }
 
     @Override

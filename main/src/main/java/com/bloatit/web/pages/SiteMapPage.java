@@ -22,11 +22,11 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -38,7 +38,6 @@ import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
@@ -105,8 +104,8 @@ public final class SiteMapPage extends MasterPage {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
         }
 
-        personalLinkList.add( new AccountPageUrl().getHtmlLink(Context.tr("My account")));
-        personalLinkList.add( new MessageListPageUrl().getHtmlLink(Context.tr("My messages")));
+        personalLinkList.add( MemberPage.MyAccountUrl().getHtmlLink(Context.tr("My account")));
+        personalLinkList.add( MemberPage.MyMessagesUrl().getHtmlLink(Context.tr("My messages")));
         personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
         personalLinkList.add(new  AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
         //TODO good page

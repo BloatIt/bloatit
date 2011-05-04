@@ -74,7 +74,6 @@ import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.members.MembersListPage;
 import com.bloatit.web.linkable.members.ModifyMemberAction;
 import com.bloatit.web.linkable.members.ModifyMemberPage;
-import com.bloatit.web.linkable.messages.MessageListPage;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugDeleteAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugEditPage;
 import com.bloatit.web.linkable.meta.bugreport.MetaBugsListPage;
@@ -82,7 +81,6 @@ import com.bloatit.web.linkable.meta.bugreport.MetaEditBugAction;
 import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
-import com.bloatit.web.linkable.money.AccountPage;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
@@ -119,7 +117,6 @@ import com.bloatit.web.pages.SiteMapPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
@@ -167,7 +164,6 @@ import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.MetaBugDeleteActionUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
@@ -297,9 +293,6 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(CreateTeamPageUrl.getPageName())) {
             return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(MessageListPageUrl.getPageName())) {
-            return new MessageListPage(new MessageListPageUrl(params, session.getParameters()));
-        }
         if (pageCode.equals(SendTeamInvitationPageUrl.getPageName())) {
             return new SendTeamInvitationPage(new SendTeamInvitationPageUrl(params, session.getParameters()));
         }
@@ -347,9 +340,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(ChangeLanguagePageUrl.getPageName())) {
             return new ChangeLanguagePage(new ChangeLanguagePageUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(AccountPageUrl.getPageName())) {
-            return new AccountPage(new AccountPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ModifyMemberPageUrl.getPageName())) {
             return new ModifyMemberPage(new ModifyMemberPageUrl(params, session.getParameters()));

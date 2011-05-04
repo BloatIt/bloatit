@@ -38,7 +38,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.visitor.Visitor;
@@ -56,7 +55,6 @@ import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
@@ -83,14 +81,14 @@ public final class TeamPage extends MasterPage {
 
     @RequestParam(name = TEAM_TAB_PANE)
     @Optional(MEMBERS_TAB)
-    private String activeTabKey;
+    private final String activeTabKey;
 
     @SuppressWarnings("unused")
     @RequestParam(name = "name", role = Role.PRETTY, generatedFrom = "targetTeam")
     @Optional("john-do")
     private final String login;
 
-    
+
     public TeamPage(final TeamPageUrl url) {
         super(url);
         this.url = url;
@@ -162,7 +160,7 @@ public final class TeamPage extends MasterPage {
 
     /**
      * Generates the team block displaying it's ID
-     * 
+     *
      * @param me the connected member
      * @return the ID card
      */
@@ -228,12 +226,10 @@ public final class TeamPage extends MasterPage {
 
                     // Account balance
                     final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam);
-                    final AccountPageUrl accountPageUrl = new AccountPageUrl();
-                    accountPageUrl.setTeam(targetTeam);
                     final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                      new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                        amount,
-                                                                                                                       accountPageUrl.getHtmlLink())));
+                                                                                                                       AccountUrl(targetTeam).getHtmlLink())));
                     bankInformationsList.add(accountBalanceItem);
 
                 }
@@ -256,6 +252,15 @@ public final class TeamPage extends MasterPage {
         breadcrumb.pushLink(new TeamPageUrl(team).getHtmlLink(team.getDisplayName()));
         return breadcrumb;
     }
+
+    public static Breadcrumb generateAccountBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+        TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+        teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        breadcrumb.pushLink(teamPageUrl.getHtmlLink(Context.tr("Account")));
+        return breadcrumb;
+    }
+
 
     private long getActivityCount() {
         return targetTeam.getRecentActivityCount();
@@ -286,5 +291,12 @@ public final class TeamPage extends MasterPage {
             add(new HtmlDefineParagraph(tr("Note: "),
                                         tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
+    }
+
+    public static TeamPageUrl AccountUrl(Team team) {
+        TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+        teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        teamPageUrl.setAnchor(TEAM_TAB_PANE);
+        return teamPageUrl;
     }
 }

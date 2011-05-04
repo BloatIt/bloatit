@@ -47,7 +47,6 @@ import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -114,11 +113,11 @@ public final class MemberPage extends MasterPage {
 
         // Buttons private message & invite in team
         if (myPage) {
-            layout.addRight(new SideBarButton(Context.tr("View my private messages"), new MessageListPageUrl(), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("View my team invitations"), new MessageListPageUrl(), WebConfiguration.getImgTeam()));
+            layout.addRight(new SideBarButton(Context.tr("View my private messages"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgMessage()));
+            layout.addRight(new SideBarButton(Context.tr("View my team invitations"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgTeam()));
         } else {
-            layout.addRight(new SideBarButton(Context.tr("Send a private message"), new MessageListPageUrl(), WebConfiguration.getImgMessage()));
-            layout.addRight(new SideBarButton(Context.tr("Invite to join a team"), new MessageListPageUrl(), WebConfiguration.getImgTeam()));
+            layout.addRight(new SideBarButton(Context.tr("Send a private message"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgMessage()));
+            layout.addRight(new SideBarButton(Context.tr("Invite to join a team"), MemberPage.MyMessagesUrl(), WebConfiguration.getImgTeam()));
         }
 
         // Adding list of teams
@@ -273,5 +272,31 @@ public final class MemberPage extends MasterPage {
         final Breadcrumb breadcrumb = MembersListPage.generateBreadcrumb();
         breadcrumb.pushLink(new MemberPageUrl(member).getHtmlLink(member.getDisplayName()));
         return breadcrumb;
+    }
+
+    public static Breadcrumb generateAccountBreadcrumb(final Member member) {
+        final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
+        MemberPageUrl memberPageUrl = new MemberPageUrl(member);
+        memberPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        breadcrumb.pushLink(memberPageUrl.getHtmlLink(Context.tr("Account")));
+        return breadcrumb;
+    }
+
+    public static MemberPageUrl AccountUrl(Member member) {
+        MemberPageUrl memberPageUrl = new MemberPageUrl(member);
+        memberPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        //memberPageUrl.setAnchor(MEMBER_TAB_PANE);
+        return memberPageUrl;
+    }
+
+    public static MemberPageUrl MyAccountUrl() {
+        return AccountUrl(Context.getSession().getAuthToken().getMember());
+    }
+
+    public static MemberPageUrl MyMessagesUrl() {
+        MemberPageUrl memberPageUrl = new MemberPageUrl(Context.getSession().getAuthToken().getMember());
+        memberPageUrl.setActiveTabKey(INVITATIONS_TAB);
+        //memberPageUrl.setAnchor(MEMBER_TAB_PANE);
+        return memberPageUrl;
     }
 }
