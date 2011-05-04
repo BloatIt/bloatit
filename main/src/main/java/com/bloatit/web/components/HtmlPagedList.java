@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -51,6 +52,12 @@ public class HtmlPagedList<T> extends HtmlDiv {
      * Do not forget to clone the Url !!!
      */
     public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Url url2, final HtmlPagedListUrlComponent url) {
+        this(itemRenderer, itemList, url2, url, new PlaceHolderElement(), new PlaceHolderElement());
+    }
+
+
+    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Url url2, final HtmlPagedListUrlComponent url, XmlNode preListElement, XmlNode postListElement) {
+
         super("paged_list");
         this.currentPage = url.getCurrentPage();
         this.pageSize = url.getPageSize();
@@ -64,6 +71,7 @@ public class HtmlPagedList<T> extends HtmlDiv {
         if (pageCount > 1) {
             add(generateLinksBar());
         }
+        add(preListElement);
 
         final HtmlList items = new HtmlList();
         items.setCssClass("items_list");
@@ -71,6 +79,7 @@ public class HtmlPagedList<T> extends HtmlDiv {
             items.add(itemRenderer.generate(item));
         }
         add(items);
+        add(postListElement);
 
         if (pageCount > 1) {
             add(generateLinksBar());
@@ -195,5 +204,4 @@ public class HtmlPagedList<T> extends HtmlDiv {
     private XmlNode generateShortBlock(String text) {
         return new HtmlSpan("short_block").addText(text);
     }
-
 }
