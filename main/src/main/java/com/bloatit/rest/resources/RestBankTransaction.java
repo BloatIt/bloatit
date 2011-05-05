@@ -36,7 +36,6 @@ import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestBankTransactionList;
 
@@ -148,7 +147,7 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     public BigDecimal getValuePaid() {
         try {
             return model.getValuePaid();
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
         }
     }
@@ -160,7 +159,7 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     public BigDecimal getValue() {
         try {
             return model.getValue();
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
         }
     }
@@ -172,7 +171,7 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     public String getMessage() {
         try {
             return model.getMessage();
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
         }
     }
@@ -184,7 +183,7 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     public State getTransactionState() {
         try {
             return model.getState();
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
         }
     }
@@ -222,7 +221,7 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     public String getReference() {
         try {
             return model.getReference();
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
         }
     }

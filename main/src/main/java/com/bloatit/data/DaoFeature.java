@@ -126,13 +126,19 @@ import com.bloatit.framework.utils.PageIterable;
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
                         @NamedQuery(
-                                    name = "feature.getComments.size",
-                                    query = "SELECT count(*) "+
-                                            "FROM com.bloatit.data.DaoComment  "+
-                                            "WHERE feature = :this "+
-                                            "OR father.id in ( "+
-                                                "FROM com.bloatit.data.DaoComment  "+
-                                                "WHERE feature = :this )"),
+                            name = "feature.getComments.size",
+                            query = "SELECT count(*) "+
+                                    "FROM com.bloatit.data.DaoComment  "+
+                                    "WHERE feature = :this "+
+                                    "OR father.id in ( "+
+                                        "FROM com.bloatit.data.DaoComment  "+
+                                        "WHERE feature = :this )"),
+                        @NamedQuery(
+                            name = "feature.getContributionOf",
+                            query = "SELECT sum(amount) "+
+                                    "FROM com.bloatit.data.DaoContribution  "+
+                                    "WHERE feature = :this "+
+                                    "AND feature.member = :member"),
                      }
              )
 // @formatter:on
@@ -211,7 +217,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded
     private DaoOffer selectedOffer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @IndexedEmbedded
@@ -257,16 +263,26 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     private DaoFeature(final DaoMember member, final DaoTeam team, final DaoDescription description, final DaoSoftware software) {
         super(member, team);
-        if (description == null || software == null) {
+        if (description == null) {
             throw new NonOptionalParameterException();
         }
-        this.software = software;
-        software.addFeature(this);
+        if (software != null) {
+            this.software = software;
+            software.addFeature(this);
+        }
         this.description = description;
         this.validationDate = null;
         setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
         setFeatureState(FeatureState.PENDING);
+    }
+
+    public void setSoftware(final DaoSoftware soft) {
+        if (software != null) {
+            this.software.removeFeature(this);
+        }
+        this.software = soft;
+        software.addFeature(this);
     }
 
     /**
@@ -298,8 +314,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the new {@link DaoContribution}
      * @throws NotEnoughMoneyException the not enough money exception
      */
-    public DaoContribution addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment)
-            throws NotEnoughMoneyException {
+    public DaoContribution
+            addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }
@@ -541,6 +557,14 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     public BigDecimal getContributionAvg() {
         return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg").setEntity("this", this).uniqueResult();
+    }
+
+    public BigDecimal getContributionOf(final DaoMember member) {
+        final BigDecimal contributions = (BigDecimal) SessionManager.getNamedQuery("feature.getContributionOf")
+                                                                    .setEntity("this", this)
+                                                                    .setEntity("member", member)
+                                                                    .uniqueResult();
+        return contributions != null ? contributions : BigDecimal.ZERO;
     }
 
     /**

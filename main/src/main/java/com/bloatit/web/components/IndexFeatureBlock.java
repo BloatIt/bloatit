@@ -30,8 +30,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Image;
-import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -43,7 +41,7 @@ public class IndexFeatureBlock extends HtmlDiv {
 
     private final PlaceHolderElement floatRight;
 
-    public IndexFeatureBlock(final HighlightFeature highlightFeature, ElveosUserToken token) {
+    public IndexFeatureBlock(final HighlightFeature highlightFeature, final ElveosUserToken token) {
         super("index_element");
 
         add(new HtmlTitle(highlightFeature.getReason(), 2));
@@ -55,13 +53,12 @@ public class IndexFeatureBlock extends HtmlDiv {
 
         try {
 
-            setFloatRight(SoftwaresTools.getSoftwareLogo(highlightFeature.getFeature().getSoftware()));
+            setFloatRight(new SoftwaresTools.Logo(highlightFeature.getFeature().getSoftware()));
 
             indexBodyElement.add(new HtmlTitle(new FeaturePageUrl(highlightFeature.getFeature()).getHtmlLink(FeaturesTools.getTitle(highlightFeature.getFeature())),
                                                3));
 
-            indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "),
-                                                         SoftwaresTools.getSoftwareLink(highlightFeature.getFeature().getSoftware())));
+            indexBodyElement.add(new HtmlDefineParagraph(tr("Software: "), new SoftwaresTools.Link(highlightFeature.getFeature().getSoftware())));
 
             // Generate progess bar and text
             indexBodyElement.add(FeaturesTools.generateProgress(highlightFeature.getFeature(), token));

@@ -16,10 +16,6 @@
 //
 package com.bloatit.model.managers;
 
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import javassist.NotFoundException;
 
 import com.bloatit.framework.webprocessor.context.UserToken;
@@ -29,10 +25,6 @@ import com.bloatit.model.right.AuthenticatedUserToken;
  * The Class LoginManager is an utility class containing static methods.
  */
 public final class LoginManager {
-
-    // TODO: clear
-    /** The Constant AUTH_TOKEN_LIST. */
-    private static final ConcurrentMap<UUID, AuthenticatedUserToken> AUTH_TOKEN_LIST = new ConcurrentHashMap<UUID, AuthenticatedUserToken>();
 
     /**
      * Desactivated constructor on utility class.
@@ -52,20 +44,9 @@ public final class LoginManager {
     public static UserToken loginByPassword(final String login, final String password) {
         try {
             final AuthenticatedUserToken token = new AuthenticatedUserToken(login, password);
-            AUTH_TOKEN_LIST.put(token.getKey(), token);
             return token;
         } catch (final NotFoundException e) {
             return null;
         }
-    }
-
-    /**
-     * Gets an {@link AuthenticatedUserToken} using its key.
-     * 
-     * @param key the unique key
-     * @return the found {@link AuthenticatedUserToken} or <code>null</code> if not found.
-     */
-    public static UserToken getByKey(final String key) {
-        return AUTH_TOKEN_LIST.get(UUID.fromString(key));
     }
 }

@@ -157,12 +157,12 @@ public class Generator {
             sb.append(";\n");
 
             if (generateGetter) {
-                final Method getter = new Method(type, "get" + Utils.toCamelCase(name, true));
+                final Method getter = new Method(type, "get" + Utils.firstCharUpper(name));
                 getter.addLine("return this." + name + ";");
                 sb.append(getter);
             }
             if (generateSetter) {
-                final Method setter = new Method(type, "set" + Utils.toCamelCase(name, true));
+                final Method setter = new Method(type, "set" + Utils.firstCharUpper(name));
                 setter.addParameter(type, "other");
                 setter.addLine("this." + name + " = other;\n");
                 sb.append(setter);

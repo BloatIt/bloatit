@@ -37,7 +37,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Comment.ParentType;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
@@ -49,6 +48,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.activity.ActivityVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -111,8 +111,6 @@ public class ActivityTab extends HtmlTab {
             return content.accept(new ActivityVisitor() {
                 @Override
                 public HtmlElement visit(final Translation model) {
-                    // TODO: After implementing correct translation stuff, do
-                    // something in here
                     return new HtmlParagraph("translation");
                 }
 

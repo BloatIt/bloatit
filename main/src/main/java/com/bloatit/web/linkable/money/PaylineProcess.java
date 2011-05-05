@@ -41,7 +41,6 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.PaylineActionUrl;
@@ -77,13 +76,13 @@ public class PaylineProcess extends WebProcess {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken userToken) {
+    protected Url doProcess(final ElveosUserToken userToken) {
         url.getParentProcess().addChildProcess(this);
         return new PaylineActionUrl(this);
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 
@@ -129,7 +128,7 @@ public class PaylineProcess extends WebProcess {
         return ((PaymentProcess) getFather()).getAmountToPay();
     }
 
-    void validatePayment(final String token) throws UnauthorizedPrivateAccessException {
+    void validatePayment(final String token) throws UnauthorizedOperationException {
         try {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
@@ -187,7 +186,7 @@ public class PaylineProcess extends WebProcess {
         }
         try {
             return bankTransaction.getReference();
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             Log.web().fatal("Cannot find a reference.", e);
             return "Reference-not-Found";
         }

@@ -42,6 +42,7 @@ import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -76,7 +77,7 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(ElveosUserToken userToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -93,7 +94,7 @@ public final class AccountChargingPage extends QuotationPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        // TODO layout.addRight();
+        layout.addRight(new SideBarDocumentationBlock("account_charging"));
         return layout;
     }
 
@@ -136,7 +137,7 @@ public final class AccountChargingPage extends QuotationPage {
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToPay());
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
 
         final AccountChargingPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
@@ -181,7 +182,7 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return generateBreadcrumb(member, process.getTeam(), process);
     }
 

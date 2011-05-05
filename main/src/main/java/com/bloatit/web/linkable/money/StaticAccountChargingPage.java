@@ -32,7 +32,6 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlPayBlock;
@@ -40,6 +39,7 @@ import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.MoneyVariationBlock;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -54,7 +54,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer(value="account/charging/check", protocol=Protocol.HTTPS)
+@ParamContainer(value = "account/charging/check", protocol = Protocol.HTTPS)
 public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -72,7 +72,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        // TODO layout.addRight();
+        layout.addRight(new SideBarDocumentationBlock("account_charging"));
         return layout;
     }
 
@@ -105,7 +105,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
         model.addLine(new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, null));
 
         final HtmlTable lines = new HtmlTable(model);
@@ -130,7 +130,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
             final HtmlDiv changeLine = new HtmlDiv("change_line");
             {
-                changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                changeLine.add(new SoftwaresTools.Logo(feature.getSoftware()));
                 changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmountToCharge())));
             }
             featureContributionSummary.add(changeLine);
@@ -155,7 +155,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return generateBreadcrumb(member, process.getTeam(), process);
     }
 

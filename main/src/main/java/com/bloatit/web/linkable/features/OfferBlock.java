@@ -40,7 +40,7 @@ public final class OfferBlock extends HtmlDiv {
 
     private final Offer offer;
 
-    public OfferBlock(final Offer offer, final boolean selected, ElveosUserToken userToken) {
+    public OfferBlock(final Offer offer, final boolean selected, final ElveosUserToken userToken) {
         super((selected ? "offer_selected_block" : "offer_unselected_block"));
         this.offer = offer;
 
@@ -117,7 +117,6 @@ public final class OfferBlock extends HtmlDiv {
         }
         add(offerTopBlock);
 
-        // TODO: choose to display the title or not
         final HtmlDiv offerBottomBlock = new HtmlDiv("offer_bottom_block");
         {
             final HtmlDiv offerLeftBottomColumn = new HtmlDiv("offer_left_bottom_column");
@@ -140,7 +139,6 @@ public final class OfferBlock extends HtmlDiv {
                         dateLabel.addText(tr("Delivery Date: "));
                         datePara.add(dateLabel);
 
-                        // TODO: use scheduled e date
                         final HtmlSpan date = new HtmlSpan("offer_block_date");
                         date.addText(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
                         datePara.add(date);
@@ -192,7 +190,6 @@ public final class OfferBlock extends HtmlDiv {
                                 dateLabel.addText(tr("Delivery Date: "));
                                 datePara.add(dateLabel);
 
-                                // TODO: use scheduled release date
                                 final HtmlSpan date = new HtmlSpan("offer_block_date");
                                 date.addText(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
                                 datePara.add(date);
@@ -271,7 +268,7 @@ public final class OfferBlock extends HtmlDiv {
         showHideValidationDetails.apply();
     }
 
-    private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock, ElveosUserToken userToken) {
+    private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock, final ElveosUserToken userToken) {
         if (isDeveloper(userToken) && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
             final HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("Add a release"));
             link.setCssClass("button");
@@ -279,7 +276,7 @@ public final class OfferBlock extends HtmlDiv {
         }
     }
 
-    private boolean isDeveloper(ElveosUserToken userToken) {
+    private boolean isDeveloper(final ElveosUserToken userToken) {
         if (!userToken.isAuthenticated()) {
             return false;
         }

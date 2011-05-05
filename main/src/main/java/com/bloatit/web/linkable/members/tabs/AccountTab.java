@@ -16,6 +16,7 @@
 //
 package com.bloatit.web.linkable.members.tabs;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
@@ -26,27 +27,19 @@ import com.bloatit.web.components.AccountComponent;
 public class AccountTab extends HtmlTab {
     private final Member member;
 
-    public AccountTab(Member member, String title, String tabKey) {
+    public AccountTab(final Member member, final String title, final String tabKey) {
         super(title, tabKey);
         this.member = member;
     }
 
     @Override
     public XmlNode generateBody() {
-        // TODO rights.
-        // if (!team.hasTeamPrivilege(UserTeamRight.BANK)) {
-        // throw new
-        // ShallNotPassException("You cannot access team bank information.");
-        // }
-
-        HtmlDiv master = new HtmlDiv("tab_pane");
-
+        final HtmlDiv master = new HtmlDiv("tab_pane");
         try {
             master.add(new AccountComponent(member));
-        } catch (UnauthorizedOperationException e) {
-            e.printStackTrace();
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException(e);
         }
-
         return master;
     }
 }

@@ -105,7 +105,11 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumb(final Feature feature) {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
+        if (feature.getSoftware() != null) {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
+        } else {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature {0}", String.valueOf(feature.getId()))));
+        }
         return breadcrumb;
     }
 

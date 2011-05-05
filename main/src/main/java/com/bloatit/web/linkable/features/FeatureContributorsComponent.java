@@ -181,7 +181,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                         value = contribution.getAuthor().getDisplayName();
                         break;
                     case 1:
-                        // TODO: align money at right in CSS
                         value = Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString();
                         break;
                     case 2:

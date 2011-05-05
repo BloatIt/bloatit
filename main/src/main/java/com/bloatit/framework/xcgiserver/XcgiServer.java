@@ -119,7 +119,7 @@ public final class XcgiServer {
                 try {
                     socket.close();
                 } catch (final IOException e) {
-                    e.printStackTrace();
+                    Log.framework().fatal("Cannot close the socket.", e);
                 }
             }
         }
@@ -144,7 +144,7 @@ public final class XcgiServer {
             Log.framework().debug(env);
 
             // LOGGING REQUESTS
-            StringBuilder request = new StringBuilder();
+            final StringBuilder request = new StringBuilder();
             request.append(header.getRequestMethod());
             request.append(' ');
             request.append(header.getRequestUri());
@@ -164,7 +164,6 @@ public final class XcgiServer {
             request.append(']');
             Log.framework().info(request.toString());
 
-            // TODO: use timer ?
             SessionManager.clearExpiredSessions();
 
             try {
@@ -194,7 +193,6 @@ public final class XcgiServer {
     }
 
     public void stop() {
-        // TODO: lock to wait transaction end
         for (final XcgiThread thread : threads) {
             if (thread.isAlive()) {
                 thread.kill();

@@ -108,18 +108,19 @@ public class FeaturesTools {
         } else {
             master.add(new FeaturePageUrl(feature).getHtmlLink(getTitle(feature)));
         }
-        final HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(feature.getSoftware());
+        final HtmlSpan softwareLink = new SoftwaresTools.Link(feature.getSoftware());
         final HtmlMixedText mixed = new HtmlMixedText(Context.tr(" (<0:software:>)"), softwareLink);
         master.add(mixed);
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, ElveosUserToken userToken) throws UnauthorizedOperationException {
+    public static HtmlDiv generateProgress(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
         return generateProgress(feature, userToken, false, BigDecimal.ZERO);
     }
 
-    public static HtmlDiv generateProgress(final Feature feature, ElveosUserToken userToken, final boolean slim, final BigDecimal futureAmount)
-            throws UnauthorizedOperationException {
+    public static HtmlDiv
+            generateProgress(final Feature feature, final ElveosUserToken userToken, final boolean slim, final BigDecimal futureAmount)
+                                                                                                                                       throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 

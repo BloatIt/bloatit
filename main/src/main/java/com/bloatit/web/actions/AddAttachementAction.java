@@ -22,10 +22,8 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.AddAttachementActionUrl;
-import com.bloatit.web.url.AddAttachementPageUrl;
 
 /**
  * A response to a form used to create a new feature
@@ -63,7 +61,7 @@ public final class AddAttachementAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return Context.getSession().getLastVisitedPage();
     }
 
@@ -74,7 +72,6 @@ public final class AddAttachementAction extends UserContentAction {
 
     @Override
     protected void doTransmitParameters() {
-        // TODO make sure all the parameters are transmitted.
         session.addParameter(url.getUserContentParameter());
         session.addParameter(url.getAttachmentDescriptionParameter());
     }

@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
@@ -55,7 +53,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -102,13 +99,14 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
     private HtmlElement generateAccountMovementList(final PageIterable<Contribution> contributions,
-                                                    final PageIterable<BankTransaction> bankTransactions, PageIterable<MoneyWithdrawal> moneyWithdrawals) {
+                                                    final PageIterable<BankTransaction> bankTransactions,
+                                                    final PageIterable<MoneyWithdrawal> moneyWithdrawals) {
         final List<HtmlTableLine> lineList = new ArrayList<HtmlTableLine>();
         final Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
 
         try {
 
-            for (final MoneyWithdrawal moneyWithdrawal: moneyWithdrawals) {
+            for (final MoneyWithdrawal moneyWithdrawal : moneyWithdrawals) {
                 sorter.add(new MoneyWithdrawalLine(moneyWithdrawal), moneyWithdrawal.getCreationDate());
             }
 
@@ -129,9 +127,6 @@ public class AccountComponent extends HtmlPageComponent {
                             sorter.add(new ChargeAccountAbordedLine(bankTransaction), bankTransaction.getModificationDate());
                         }
                     }
-                } else {
-                    // TODO withdraw
-                    throw new NotImplementedException();
                 }
             }
         } catch (final UnauthorizedOperationException e) {
@@ -162,7 +157,7 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateContributionDescription() {
             final HtmlDiv description = new HtmlDiv("description");
-            final HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(contribution.getFeature().getSoftware());
+            final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
             final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
 
             String statusString = "";
@@ -197,7 +192,6 @@ public class AccountComponent extends HtmlPageComponent {
         }
     }
 
-
     private static class MoneyWithdrawalLine extends HtmlTableLine {
 
         private final MoneyWithdrawal moneyWithdrawal;
@@ -210,7 +204,7 @@ public class AccountComponent extends HtmlPageComponent {
             addCell(new MoneyCell(moneyWithdrawal.getAmountWithdrawn().negate()));
         }
 
-        private HtmlDiv generateContributionDescription() throws UnauthorizedPrivateAccessException {
+        private HtmlDiv generateContributionDescription() throws UnauthorizedOperationException {
             final HtmlDiv description = new HtmlDiv("description");
 
             String statusString = "";
@@ -234,12 +228,12 @@ public class AccountComponent extends HtmlPageComponent {
 
             description.add(new HtmlDefineParagraph(tr("IBAN: "), moneyWithdrawal.getIBAN()));
             description.add(new HtmlDefineParagraph(tr("Reference: "), moneyWithdrawal.getReference()));
-            if(moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
-                CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(moneyWithdrawal);
-                HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)",statusString), cancelUrl.getHtmlLink());
-                description.add(new HtmlDefineParagraph(tr("Status: "),statusWithCancel));
+            if (moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
+                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(moneyWithdrawal);
+                final HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)", statusString), cancelUrl.getHtmlLink());
+                description.add(new HtmlDefineParagraph(tr("Status: "), statusWithCancel));
             } else {
-                description.add(new HtmlDefineParagraph(tr("Status: "),statusString));
+                description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
             }
             return description;
         }
@@ -250,7 +244,6 @@ public class AccountComponent extends HtmlPageComponent {
             return title;
         }
     }
-
 
     private static class ChargeAccountLine extends HtmlTableLine {
 
@@ -264,7 +257,6 @@ public class AccountComponent extends HtmlPageComponent {
                 addCell(new DescriptionCell(tr("Account loading summary"), generateChargeAccountDescription()));
                 addCell(new MoneyCell(bankTransaction.getValue()));
             } catch (final UnauthorizedOperationException e) {
-                // TODO test the fallback
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
@@ -273,7 +265,7 @@ public class AccountComponent extends HtmlPageComponent {
             }
         }
 
-        private HtmlDiv generateChargeAccountDescription() throws UnauthorizedPrivateAccessException {
+        private HtmlDiv generateChargeAccountDescription() throws UnauthorizedOperationException {
             final HtmlDiv description = new HtmlDiv("description");
             description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
                                                                                .getCurrency(bankTransaction.getValuePaid())

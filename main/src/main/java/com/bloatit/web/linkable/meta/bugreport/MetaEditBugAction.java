@@ -63,14 +63,11 @@ public final class MetaEditBugAction extends LoggedAction {
             session.notifyError("A problem occur during the bug update process! Please report this bug! :)");
             return doProcessErrors();
         }
-
-        // TODO: add link system in documentation
-
         return new MetaBugsListPageUrl();
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }

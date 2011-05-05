@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
 public class ActorTest extends ModelTestUnit {
@@ -47,27 +46,27 @@ public class ActorTest extends ModelTestUnit {
             tom.authenticate(null);
             tom.getInternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(fredAuthToken);
             tom.getInternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(loser);
             tom.getInternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(tomAuthToken);
             assertEquals(tom.getInternalAccount().getId(), db.getTom().getInternalAccount().getId());
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
@@ -76,7 +75,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(null);
             publicTeam.getInternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
@@ -84,7 +83,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(yoAuthToken);
             publicTeam.getInternalAccount();
             assertTrue(true);
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             fail();
         }
         try {
@@ -92,7 +91,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(loser);
             publicTeam.getInternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
@@ -100,14 +99,14 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(fredAuthToken);
             publicTeam.getInternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             // bank right
             publicTeam.authenticate(tomAuthToken);
             assertEquals(publicTeam.getInternalAccount().getId(), db.getPublicGroup().getInternalAccount().getId());
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             fail();
         }
     }
@@ -120,27 +119,27 @@ public class ActorTest extends ModelTestUnit {
             tom.authenticate(null);
             tom.getExternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(fredAuthToken);
             tom.getExternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(loser);
             tom.getExternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(tomAuthToken);
             assertEquals(tom.getExternalAccount().getId(), db.getTom().getExternalAccount().getId());
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
@@ -149,7 +148,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(null);
             publicTeam.getExternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
@@ -157,7 +156,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(yoAuthToken);
             publicTeam.getExternalAccount();
             assertTrue(true);
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             fail();
         }
         try {
@@ -165,7 +164,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(loser);
             publicTeam.getExternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
@@ -173,14 +172,14 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(fredAuthToken);
             publicTeam.getExternalAccount();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             // bank right
             publicTeam.authenticate(tomAuthToken);
             assertEquals(publicTeam.getExternalAccount().getId(), db.getPublicGroup().getExternalAccount().getId());
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             fail();
         }
     }
@@ -193,27 +192,27 @@ public class ActorTest extends ModelTestUnit {
             tom.authenticate(null);
             tom.getBankTransactions();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(fredAuthToken);
             tom.getBankTransactions();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(loser);
             tom.getBankTransactions();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             tom.authenticate(tomAuthToken);
             assertEquals(tom.getBankTransactions().size(), db.getTom().getBankTransactions().size());
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
@@ -222,7 +221,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(null);
             publicTeam.getBankTransactions();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
@@ -230,7 +229,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(yoAuthToken);
             publicTeam.getBankTransactions();
             assertTrue(true);
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             fail();
         }
         try {
@@ -238,7 +237,7 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(loser);
             publicTeam.getBankTransactions();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
@@ -246,14 +245,14 @@ public class ActorTest extends ModelTestUnit {
             publicTeam.authenticate(fredAuthToken);
             publicTeam.getBankTransactions();
             fail();
-        } catch (final UnauthorizedPrivateAccessException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             assertTrue(true);
         }
         try {
             // bank right
             publicTeam.authenticate(tomAuthToken);
             assertEquals(publicTeam.getBankTransactions().size(), db.getPublicGroup().getBankTransactions().size());
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             fail();
         }
     }

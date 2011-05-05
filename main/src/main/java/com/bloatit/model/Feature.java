@@ -157,7 +157,7 @@ public interface Feature extends KudosableInterface, Commentable {
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
      * @throws UnauthorizedOperationException
      */
-    float getMemberProgression(Actor<?> author) throws UnauthorizedOperationException;
+    float getMemberProgression(Member author) throws UnauthorizedOperationException;
 
     /**
      * Return the progression due by the amount in percent. It compare the
@@ -235,4 +235,6 @@ public interface Feature extends KudosableInterface, Commentable {
     void computeSelectedOffer() throws UnauthorizedOperationException;
 
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
+
+    BigDecimal getContributionOf(Member member);
 }

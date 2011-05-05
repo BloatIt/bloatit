@@ -48,7 +48,6 @@ import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 public class BloatitExampleDB { // NO_UCD
 
@@ -441,8 +440,8 @@ public class BloatitExampleDB { // NO_UCD
         featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
-    private void withdrawMoney(Member m, int amount, State completion) {
-        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
+    private void withdrawMoney(final Member m, final int amount, final State completion) {
+        final MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
         mw.authenticate(new AuthenticatedUserToken(admin));
         
         try {
@@ -463,7 +462,7 @@ public class BloatitExampleDB { // NO_UCD
                     break;
             }
             mw.setTreated();
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Right error in creating money withdrawal", e);
         }
     }

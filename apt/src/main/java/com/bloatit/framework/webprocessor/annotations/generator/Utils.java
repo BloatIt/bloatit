@@ -13,11 +13,11 @@ public class Utils {
         return "\"" + str + "\"";
     }
 
-    public static String toCamelCase(final String str, final boolean firstUpper) {
-        // TODO make me work correctly
-        if (firstUpper) {
+    public static String firstCharUpper(final String str) {
             return str.substring(0, 1).toUpperCase() + str.substring(1);
-        }
+    }
+    
+    public static String firstCharLower(final String str) {
         return str.substring(0, 1).toLowerCase() + str.substring(1);
     }
 

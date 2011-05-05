@@ -33,7 +33,6 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlFeatureSummary;
@@ -88,7 +87,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         // Search block
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -273,7 +272,7 @@ public final class FeatureListPage extends ElveosPage {
     private static class FeaturesListItem implements HtmlRenderer<Feature> {
         private final ElveosUserToken userToken;
 
-        public FeaturesListItem(ElveosUserToken userToken) {
+        public FeaturesListItem(final ElveosUserToken userToken) {
             super();
             this.userToken = userToken;
         }
@@ -323,7 +322,7 @@ public final class FeatureListPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return FeatureListPage.generateBreadcrumb();
     }
 }
