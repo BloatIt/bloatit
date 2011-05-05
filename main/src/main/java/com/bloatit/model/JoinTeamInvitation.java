@@ -20,8 +20,6 @@ import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtJoinTeamInvitation;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
  * This is an invitation to join a team. Some teams are not public, and you have
@@ -52,7 +50,7 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         return new MyCreator().create(dao);
     }
 
-    public Member getSender() throws UnauthorizedPrivateReadOnlyAccessException, UnauthorizedPublicAccessException {
+    public Member getSender() throws UnauthorizedOperationException {
         tryAccess(new RgtJoinTeamInvitation.Sender(), Action.READ);
         return Member.create(getDao().getSender());
     }
@@ -62,7 +60,7 @@ public final class JoinTeamInvitation extends Identifiable<DaoJoinTeamInvitation
         return Member.create(getDao().getReceiver());
     }
 
-    public Team getTeam() throws UnauthorizedPrivateReadOnlyAccessException, UnauthorizedPublicAccessException {
+    public Team getTeam() throws UnauthorizedOperationException {
         tryAccess(new RgtJoinTeamInvitation.Team(), Action.READ);
         return getTeamUnprotected();
     }

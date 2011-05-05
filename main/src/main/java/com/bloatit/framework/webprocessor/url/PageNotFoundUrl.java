@@ -21,7 +21,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 
 public final class PageNotFoundUrl extends Url implements Cloneable {
     public static String getName() {
-        return "forbidden";
+        return "pagenotfound";
     }
 
     public PageNotFoundUrl() {
