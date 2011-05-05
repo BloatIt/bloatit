@@ -41,8 +41,10 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
@@ -175,7 +177,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     private BigDecimal contribution;
 
     @Basic(optional = false)
-    @Field(store = Store.NO)
+    @Field(store = Store.YES, index = Index.UN_TOKENIZED, boost = @Boost(value = 1000))
     @Enumerated
     private FeatureState featureState;
 
@@ -428,6 +430,27 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // ======================================================================
     // Getters.
     // ======================================================================
+
+    /** The Constant PROGRESSION_COEF. */
+    private static final int PROGRESSION_COEF = 42;
+
+    /** The Constant PROGRESSION_CONTRIBUTION_DIVISOR. */
+    private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
+
+    /** The Constant PROGRESSION_PERCENT. */
+    public static final int PROGRESSION_PERCENT = 100;
+
+    @Field(store = Store.YES)
+    public float getProgress() {
+        final DaoOffer currentOffer = getSelectedOffer();
+        if (currentOffer == null) {
+            return PROGRESSION_COEF * (1 - 1 / (1 + getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
+        }
+        if (currentOffer.getAmount().floatValue() != 0) {
+            return (getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
+        }
+        return Float.POSITIVE_INFINITY;
+    }
 
     /**
      * Gets the a description is a translatable text with an title.

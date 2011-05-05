@@ -145,13 +145,12 @@ public final class FeatureListPage extends ElveosPage {
             {
                 // XXX : Do not delete the following comments
 
-                // final FeatureListPageUrl relevanceSortUrl = url.clone();
-                // relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
-                // final HtmlLink relevanceSort =
-                // relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
-                // if (sort.equals(SORT_BY_RELEVANCE)) {
-                // relevanceSort.setCssClass("selected");
-                // }
+                final FeatureListPageUrl relevanceSortUrl = url.clone();
+                relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
+                final HtmlLink relevanceSort = relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
+                if (sort.equals(SORT_BY_RELEVANCE)) {
+                    relevanceSort.setCssClass("selected");
+                }
 
                 final FeatureListPageUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
@@ -169,13 +168,12 @@ public final class FeatureListPage extends ElveosPage {
 
                 // XXX : Do not delete the following comments
 
-                // final FeatureListPageUrl progressSortUrl = url.clone();
-                // progressSortUrl.setSort(SORT_BY_PROGRESS);
-                // final HtmlLink progressSort =
-                // progressSortUrl.getHtmlLink(Context.tr("progress"));
-                // if (sort.equals(SORT_BY_PROGRESS)) {
-                // progressSort.setCssClass("selected");
-                // }
+                final FeatureListPageUrl progressSortUrl = url.clone();
+                progressSortUrl.setSort(SORT_BY_PROGRESS);
+                final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
+                if (sort.equals(SORT_BY_PROGRESS)) {
+                    progressSort.setCssClass("selected");
+                }
 
                 final FeatureListPageUrl creationDateSortUrl = url.clone();
                 creationDateSortUrl.setSort(SORT_BY_CREATION_DATE);
@@ -186,26 +184,25 @@ public final class FeatureListPage extends ElveosPage {
 
                 // XXX : Do not delete the following comments
 
-                // final FeatureListPageUrl expirationDateSortUrl = url.clone();
-                // expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
-                // final HtmlLink expirationDateSort =
-                // expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
-                // if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
-                // expirationDateSort.setCssClass("selected");
-                // }
+                final FeatureListPageUrl expirationDateSortUrl = url.clone();
+                expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
+                final HtmlLink expirationDateSort = expirationDateSortUrl.getHtmlLink(Context.tr("estimated end date"));
+                if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
+                    expirationDateSort.setCssClass("selected");
+                }
 
                 featureSort.addText(Context.tr("Sort by: "));
                 featureSort.add(popularitySort);
                 featureSort.addText(" – ");
-                // featureSort.add(relevanceSort);
-                // featureSort.addText(" – ");
+                featureSort.add(relevanceSort);
+                featureSort.addText(" – ");
                 featureSort.add(contributionSort);
                 featureSort.addText(" – ");
-                // featureSort.add(progressSort);
-                // featureSort.addText(" – ");
+                featureSort.add(progressSort);
+                featureSort.addText(" – ");
                 featureSort.add(creationDateSort);
-                // featureSort.addText(" – ");
-                // featureSort.add(expirationDateSort);
+                featureSort.addText(" – ");
+                featureSort.add(expirationDateSort);
 
             }
             featureSearchBlock.add(featureSort);
