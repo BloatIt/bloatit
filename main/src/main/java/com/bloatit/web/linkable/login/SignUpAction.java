@@ -8,7 +8,6 @@ import java.util.Locale;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -75,7 +74,7 @@ public final class SignUpAction extends ElveosAction {
     }
 
     @Override
-    protected final Url doProcess(ElveosUserToken token) {
+    protected final Url doProcess(final ElveosUserToken token) {
 
         final Locale locale = new Locale(lang, country);
         final Member m = new Member(login, password, email, locale);
@@ -94,38 +93,38 @@ public final class SignUpAction extends ElveosAction {
     }
 
     @Override
-    protected final Url doProcessErrors(ElveosUserToken token) {
+    protected final Url doProcessErrors(final ElveosUserToken token) {
         return new SignUpPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken token) {
+    protected Url checkRightsAndEverything(final ElveosUserToken token) {
         if (MemberManager.loginExists(login)) {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
-            url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login already used.")));
+            url.getLoginParameter().addErrorMessage(Context.tr("Login already used."));
             return doProcessErrors();
         }
         if (MemberManager.emailExists(email)) {
             session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
-            url.getEmailParameter().getCustomMessages().add(new Message(Context.tr("Email already used.")));
+            url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
             return doProcessErrors();
         }
         if (!MailUtils.isValidEmail(email)) {
             session.notifyError(Context.tr("Invalid email address: {0}.", email));
-            url.getEmailParameter().getCustomMessages().add(new Message(Context.tr("Invalid email.")));
+            url.getEmailParameter().addErrorMessage(Context.tr("Invalid email."));
             return doProcessErrors();
         }
 
         if (!login.matches("[^\\p{Space}]+")) {
             session.notifyError(Context.tr("Invalid login: {0}. Make sure it doesn't contain space characters.", login));
-            url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login contains spaces.")));
+            url.getLoginParameter().addErrorMessage(Context.tr("Login contains spaces."));
             return doProcessErrors();
         }
 
         if (!password.equals(passwordCheck)) {
             session.notifyError(Context.tr("Password doesn't match confirmation."));
-            url.getPasswordParameter().getCustomMessages().add(new Message(Context.tr("Password doesn't match confirmation.")));
-            url.getPasswordCheckParameter().getCustomMessages().add(new Message(Context.tr("Confirmation doesn't match password.")));
+            url.getPasswordParameter().addErrorMessage(Context.tr("Password doesn't match confirmation."));
+            url.getPasswordCheckParameter().addErrorMessage(Context.tr("Confirmation doesn't match password."));
             return doProcessErrors();
         }
 

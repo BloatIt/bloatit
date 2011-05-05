@@ -11,7 +11,6 @@
  */
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -20,7 +19,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.AnonymousUserToken;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.managers.LoginManager;
 import com.bloatit.web.actions.ElveosAction;
@@ -53,7 +51,7 @@ public final class LoginAction extends ElveosAction {
     }
 
     @Override
-    public Url doProcess(ElveosUserToken userToken) {
+    public Url doProcess(final ElveosUserToken userToken) {
         UserToken token = null;
         token = LoginManager.loginByPassword(login.trim(), password);
 
@@ -67,19 +65,19 @@ public final class LoginAction extends ElveosAction {
         session.setAnonymousUserToken();
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
-        url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your login.")));
-        url.getPasswordParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your password.")));
+        url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
+        url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
         transmitParameters();
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

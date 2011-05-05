@@ -162,7 +162,6 @@ public class ModifyTeamAction extends LoggedAction {
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
-        // TODO: link error messages to form field, so they can be red
         boolean error = false;
 
         if (!me.hasModifyTeamRight(team)) {
@@ -172,23 +171,18 @@ public class ModifyTeamAction extends LoggedAction {
 
         if (isEmpty(contact)) {
             error = true;
-            session.notifyBad(Context.tr("Cannot delete team's display name."));
-        }
-
-        if (isEmpty(contact)) {
-            error = true;
-            session.notifyBad(Context.tr("Cannot delete team's contact information."));
+            url.getContactParameter().addErrorMessage(Context.tr("Cannot delete team's display name."));
         }
 
         if (isEmpty(description)) {
             error = true;
-            session.notifyBad(Context.tr("Cannot delete team's description."));
+            url.getDescriptionParameter().addErrorMessage(Context.tr("Cannot delete team's description."));
         }
 
         // Avatar and delete avatar
         if (deleteAvatar != null && deleteAvatar.booleanValue() && me.getAvatar() != null && !me.getAvatar().isNull()) {
             if (!isEmpty(avatar)) {
-                session.notifyBad(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
+                url.getAvatarParameter().addErrorMessage(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
                 error = true;
             }
         }

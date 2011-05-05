@@ -65,7 +65,7 @@ public abstract class Action implements Linkable {
             return doProcessErrors();
         }
         final Url checkParameters = checkRightsAndEverything();
-        if (checkParameters != null) {
+        if (checkParameters != NO_ERROR) {
             transmitParameters();
             return checkParameters;
         }

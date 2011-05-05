@@ -13,6 +13,7 @@
 package com.bloatit.framework.webprocessor.context;
 
 import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -78,29 +79,29 @@ public final class Session {
     }
 
     private static UserToken createAnonymousUserToken() {
-        String classString = FrameworkConfiguration.getAnonymousUserTokenClass();
+        final String classString = FrameworkConfiguration.getAnonymousUserTokenClass();
         if (classString == null || classString.isEmpty()) {
             return new AnonymousUserToken();
         }
         try {
-            Class<?> userTokenClass = Class.forName(classString);
+            final Class<?> userTokenClass = Class.forName(classString);
             if (userTokenClass.isAssignableFrom(UserToken.class)) {
                 throw new BadProgrammerException("The specified class is not a UserToken: " + classString);
             }
             return (UserToken) userTokenClass.getConstructor().newInstance();
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             throw new BadProgrammerException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new BadProgrammerException(e);
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             throw new BadProgrammerException(e);
-        } catch (InstantiationException e) {
+        } catch (final InstantiationException e) {
             throw new BadProgrammerException(e);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             throw new BadProgrammerException(e);
-        } catch (InvocationTargetException e) {
+        } catch (final InvocationTargetException e) {
             throw new BadProgrammerException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             throw new BadProgrammerException(e);
         }
     }
@@ -135,7 +136,7 @@ public final class Session {
     }
 
     public synchronized void setAuthToken(final UserToken token) {
-        if (token == null){
+        if (token == null) {
             throw new BadProgrammerException("Token must be non null.");
         }
         userToken = token;
@@ -260,6 +261,7 @@ public final class Session {
     public final synchronized void addParameter(final UrlParameter<?, ?> param) {
         if (!(param.getValue() == null && param.getStringValue() == null)) {
             parameters.add(param.getName(), param);
+            notifyList(param.getMessages());
         }
     }
 

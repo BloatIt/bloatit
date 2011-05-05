@@ -7,7 +7,7 @@ import com.bloatit.model.ElveosUserToken;
 public abstract class ElveosAction extends Action {
     private final ElveosUserToken userToken;
 
-    public ElveosAction(Url url) {
+    public ElveosAction(final Url url) {
         super(url);
         this.userToken = (ElveosUserToken) session.getUserToken();
     }
@@ -33,5 +33,6 @@ public abstract class ElveosAction extends Action {
 
     protected abstract Url doProcessErrors(ElveosUserToken token);
 
+    @Override
     protected abstract void transmitParameters();
 }

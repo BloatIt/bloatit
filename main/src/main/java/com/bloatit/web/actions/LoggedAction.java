@@ -20,7 +20,6 @@ import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -43,16 +42,14 @@ import com.bloatit.web.url.LoginPageUrl;
  */
 public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
-    private final ElveosUserToken userToken;
 
     public LoggedAction(final Url url) {
         super(url);
         this.meUrl = url;
-        this.userToken = (ElveosUserToken) session.getUserToken();
     }
 
     @Override
-    protected final Url doProcess(ElveosUserToken userToken) {
+    protected final Url doProcess(final ElveosUserToken userToken) {
         if (userToken.isAuthenticated()) {
             return doProcessRestricted(userToken.getMember());
         }
@@ -63,7 +60,7 @@ public abstract class LoggedAction extends ElveosAction {
     }
 
     @Override
-    protected final Url checkRightsAndEverything(ElveosUserToken userToken) {
+    protected final Url checkRightsAndEverything(final ElveosUserToken userToken) {
         if (userToken.isAuthenticated()) {
             return checkRightsAndEverything(userToken.getMember());
         }
