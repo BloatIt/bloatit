@@ -21,9 +21,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
@@ -75,14 +73,21 @@ public final class OfferBlock extends HtmlDiv {
                     authorLabel.addText(tr("Author: "));
                     authorPara.add(authorLabel);
 
-                    HtmlLink author = null;
-                    author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
-                    author.setCssClass("offer_block_author");
-                    authorPara.add(author);
                     if (offer.getAsTeam() != null) {
-                        authorPara.addText(tr(" on the behalf of "));
-                        authorPara.add(new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getDisplayName()));
+                        HtmlLink author = null;
+                        author = new TeamPageUrl(offer.getAsTeam()).getHtmlLink(offer.getAsTeam().getDisplayName());
+                        author.setCssClass("offer_block_author");
+                        authorPara.add(author);
+
+                        authorPara.addText(tr(" by "));
+                        authorPara.add(new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName()));
+                    } else {
+                        HtmlLink author = null;
+                        author = new MemberPageUrl(offer.getMember()).getHtmlLink(offer.getMember().getDisplayName());
+                        author.setCssClass("offer_block_author");
+                        authorPara.add(author);
                     }
+
                 }
                 offerRightTopColumn.add(authorPara);
 
