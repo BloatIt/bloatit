@@ -30,13 +30,12 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Image;
-import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeaturesTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
+import com.bloatit.web.pages.tools.HightlightedFeaturesTools;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class IndexFeatureBlock extends HtmlDiv {
@@ -46,7 +45,7 @@ public class IndexFeatureBlock extends HtmlDiv {
     public IndexFeatureBlock(final HighlightFeature highlightFeature, ElveosUserToken token) {
         super("index_element");
 
-        add(new HtmlTitle(highlightFeature.getReason(), 2));
+        add(new HtmlTitle(HightlightedFeaturesTools.getReason(highlightFeature), 2));
 
         final HtmlDiv indexBodyElement = new HtmlDiv("index_body_element");
         add(indexBodyElement);
