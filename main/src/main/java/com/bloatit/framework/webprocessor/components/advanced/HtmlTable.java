@@ -24,7 +24,9 @@ import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 /**
- * TODO : Fred has to comment this
+ * This class display an html table using a data model (HtmlTableModel) For the
+ * header then for each line, the table object will call the next method then
+ * use the different getter to get the informations for the current line.
  */
 public class HtmlTable extends HtmlGenericElement {
 
@@ -89,6 +91,11 @@ public class HtmlTable extends HtmlGenericElement {
 
         public abstract XmlNode getBody(int column);
 
+        /**
+         * Switch to next line and indicate if the next line exist
+         *
+         * @return true if there is more line
+         */
         public abstract boolean next();
 
         public boolean hasHeader() {
