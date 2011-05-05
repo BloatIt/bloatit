@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.masters.Linkable;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
-import com.bloatit.web.actions.AddAttachementPage;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.linkable.admin.AdminHomePage;
@@ -118,7 +117,6 @@ import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
-import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AddSoftwareActionUrl;
@@ -334,9 +332,6 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(HightlightedFeatureAdminPageUrl.getPageName())) {
             return new HightlightedFeatureAdminPage(new HightlightedFeatureAdminPageUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(AddAttachementPageUrl.getPageName())) {
-            return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ChangeLanguagePageUrl.getPageName())) {
             return new ChangeLanguagePage(new ChangeLanguagePageUrl(params, session.getParameters()));

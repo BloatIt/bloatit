@@ -12,6 +12,8 @@
 package com.bloatit.web.linkable.features;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -98,8 +100,7 @@ public final class CreateFeatureAction extends UserContentAction {
 
     @Override
     protected boolean verifyFile(final String filename) {
-        // TODO verify the file.
-        return true;
+        return new FileConstraintChecker(filename).isFileSmaller(CreateFeaturePage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE);
     }
 
 }

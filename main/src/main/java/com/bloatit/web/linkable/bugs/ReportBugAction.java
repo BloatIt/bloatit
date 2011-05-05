@@ -13,6 +13,8 @@ package com.bloatit.web.linkable.bugs;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -92,7 +94,7 @@ public final class ReportBugAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if (milestone != null) {
             return new ReportBugPageUrl(milestone.getOffer());
         }
@@ -115,8 +117,7 @@ public final class ReportBugAction extends UserContentAction {
 
     @Override
     protected boolean verifyFile(final String filename) {
-        // TODO verify the file
-        return true;
+        return new FileConstraintChecker(filename).isFileSmaller(ReportBugPage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE);
     }
 
 }

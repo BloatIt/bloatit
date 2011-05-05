@@ -24,15 +24,15 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.Member;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
 public class CommentForm extends HtmlDiv {
 
     private static final int NB_COLUMNS = 80;
     private static final int NB_ROWS = 10;
+    public static final int FILE_MAX_SIZE_MIO = 2;
 
-    public CommentForm(final CreateCommentActionUrl targetUrl, ElveosUserToken userToken) {
+    public CommentForm(final CreateCommentActionUrl targetUrl, final ElveosUserToken userToken) {
         super("new_comment_block");
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         add(form);
@@ -52,7 +52,7 @@ public class CommentForm extends HtmlDiv {
                                  Context.tr("Write this comment in the name of this team.")));
 
         form.enableFileUpload();
-        form.add(new AttachmentField(targetUrl, "2 Mio"));
+        form.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio"));
 
         form.add(new HtmlSubmit(Context.tr("Submit comment")));
     }

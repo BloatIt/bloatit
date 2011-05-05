@@ -46,6 +46,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
  */
 @ParamContainer("feature/bug/report")
 public final class ReportBugPage extends CreateUserContentPage {
+    public static final int FILE_MAX_SIZE_MIO = 2;
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
@@ -147,7 +148,7 @@ public final class ReportBugPage extends CreateUserContentPage {
         reportBugForm.add(levelInput);
 
         // File
-        addAddAttachmentField(reportBugForm, "2 Mio");
+        addAddAttachmentField(reportBugForm, String.valueOf(FILE_MAX_SIZE_MIO) + " Mio");
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
@@ -162,7 +163,7 @@ public final class ReportBugPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return ReportBugPage.generateBreadcrumb(milestone.getOffer());
     }
 

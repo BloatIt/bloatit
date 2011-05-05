@@ -43,6 +43,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 20;
     private static final int SPECIF_INPUT_NB_COLUMNS = 100;
+    public static final int FILE_MAX_SIZE_MIO = 2;
     private final CreateFeaturePageUrl url;
 
     public CreateFeaturePage(final CreateFeaturePageUrl url) {
@@ -149,7 +150,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         addLanguageField(createFeatureForm, tr("Description language"), tr("The language of the description you just wrote."));
 
         // Attachment
-        addAddAttachmentField(createFeatureForm, "2 Mio");
+        addAddAttachmentField(createFeatureForm, FILE_MAX_SIZE_MIO + " Mio");
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));
