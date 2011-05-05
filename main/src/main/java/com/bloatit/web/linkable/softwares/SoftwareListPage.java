@@ -53,7 +53,7 @@ public final class SoftwareListPage extends ElveosPage {
     protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Software list"), 1);
 
         final PageIterable<Software> softwareList = SoftwareManager.getAll();
         final HtmlRenderer<Software> softwareItemRenderer = new SoftwareRenderer();
