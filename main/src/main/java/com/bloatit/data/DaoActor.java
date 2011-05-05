@@ -76,7 +76,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * (means that a team cannot have the same name as a user)
      */
     @Basic(optional = false)
-    @Column(unique = true, updatable = false)
+    @Column(unique = true)
     private String login;
 
     @Basic(optional = false)
@@ -155,6 +155,16 @@ public abstract class DaoActor extends DaoIdentifiable {
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);
         this.externalAccount = new DaoExternalAccount(this);
+    }
+    
+    public void setLogin(final String login) {
+        if (login.length() < 3) {
+            throw new MalformedArgumentException("login length must be > 2");
+        }
+        if (!login.trim().equals(login)) {
+            throw new MalformedArgumentException("The login cannot begin or end with spaces.");
+        }
+        this.login = login;
     }
 
     // ======================================================================

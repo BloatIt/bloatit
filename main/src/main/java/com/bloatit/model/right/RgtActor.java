@@ -25,6 +25,14 @@ import com.bloatit.model.Actor;
 public class RgtActor extends RightManager {
 
     /**
+     * The Class <code>Login</code> is a {@link RightManager.Public} accessor for the
+     * <code>Login</code> property.
+     */
+    public static class Login extends Public {
+        // nothing this is just a rename.
+    }
+    
+    /**
      * The Class ExternalAccount is a {@link RightManager.Private} accessor for
      * the ExternalAccount property.
      */

@@ -26,6 +26,7 @@ import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtActor;
 import com.bloatit.model.right.UnauthorizedBankDataAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
 /**
@@ -47,6 +48,11 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     // /////////////////
     // Get / set ...
+    
+    public final void setLogin(final String login) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtActor.Login(), Action.WRITE);
+        getDao().setLogin(login);
+    }
 
     /**
      * Gets the login. This method is not protected by the right manager because
