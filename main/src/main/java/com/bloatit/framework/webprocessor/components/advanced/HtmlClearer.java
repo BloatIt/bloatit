@@ -19,7 +19,9 @@ package com.bloatit.framework.webprocessor.components.advanced;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 
 /**
- * TODO : Fred has to comment this
+ * HtmlClearer add to a page an invisible element with the clear:both css
+ * property. This is useful to be sure that the next blocks will be displayed
+ * below some float blocks.
  */
 public class HtmlClearer extends HtmlGenericElement {
 
