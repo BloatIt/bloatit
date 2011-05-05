@@ -261,7 +261,6 @@ public final class Session {
     public final synchronized void addParameter(final UrlParameter<?, ?> param) {
         if (!(param.getValue() == null && param.getStringValue() == null)) {
             parameters.add(param.getName(), param);
-            notifyList(param.getMessages());
         }
     }
 

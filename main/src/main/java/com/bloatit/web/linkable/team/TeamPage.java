@@ -47,7 +47,6 @@ import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
-import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
 import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
@@ -57,7 +56,6 @@ import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
@@ -105,19 +103,12 @@ public final class TeamPage extends ElveosPage {
 
         layout.addLeft(generateTeamIDCard(userToken));
         layout.addLeft(generateMain(userToken));
+        
         layout.addRight(generateContactBox());
-
-        if (activeTabKey.equals(ACCOUNT_TAB)) {
-            layout.addRight(new SideBarTeamWithdrawMoneyBlock(targetTeam));
-            layout.addRight(new SideBarTeamChargeAccountBlock(targetTeam));
-        } else if (activeTabKey.equals(ACTIVITY_TAB)) {
-            layout.addRight(new SideBarDocumentationBlock("team_role"));
-        } else if (activeTabKey.equals(MEMBERS_TAB)) {
-            layout.addRight(new SideBarDocumentationBlock("team_role"));
-        }
+        layout.addRight(new SideBarDocumentationBlock("team_role"));
         if (userToken.isAuthenticated() && userToken.getMember().hasBankTeamRight(targetTeam)) {
+            layout.addRight(new SideBarTeamWithdrawMoneyBlock(targetTeam));
             layout.addRight(new SideBarLoadAccountBlock(targetTeam));
-            layout.addRight(new SideBarWithdrawMoneyBlock(targetTeam));
         }
         return layout;
     }
@@ -294,23 +285,8 @@ public final class TeamPage extends ElveosPage {
             add(new HtmlParagraph(tr("Like users, teams have an elveos account where they can store money.")));
             add(new HtmlParagraph(tr("People with the talk right can decide to make developments under the name of the team to let it earn money.")));
             add(new HtmlParagraph(tr("People with the bank right can withdraw money from the elveos account back to the team bank account.")));
-            // TODO good URL
             add(new SideBarButton(tr("Withdraw money"), new WithdrawMoneyPageUrl(team), WebConfiguration.getImgAccountWithdraw()).asElement());
 
-        }
-    }
-
-    private static class SideBarTeamChargeAccountBlock extends TitleSideBarElementLayout {
-        SideBarTeamChargeAccountBlock(final Team team) {
-            setTitle(tr("Load account"));
-
-            add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
-            // TODO good URL
-            final AccountChargingProcessUrl chargingAccountUrl = new AccountChargingProcessUrl();
-            chargingAccountUrl.setTeam(team);
-            add(new SideBarButton(tr("Charge your account"), chargingAccountUrl, WebConfiguration.getImgAccountCharge()).asElement());
-            add(new HtmlDefineParagraph(tr("Note: "),
-                                        tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
         }
     }
 

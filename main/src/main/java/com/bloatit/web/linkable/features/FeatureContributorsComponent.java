@@ -56,8 +56,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             // Display contribution count
             contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
 
-            // TODO: generate contribution graph
-
             // Display contribution list
             final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
             contributorsBlock.add(table);

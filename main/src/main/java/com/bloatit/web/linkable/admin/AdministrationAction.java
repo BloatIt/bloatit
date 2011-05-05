@@ -151,13 +151,13 @@ public class AdministrationAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return session.pickPreferredPage();
     }
 
     @Override
     protected void transmitParameters() {
-        // TODO redo this page
+        // Ok your are an admin. do it yourself...
     }
 
     @Override

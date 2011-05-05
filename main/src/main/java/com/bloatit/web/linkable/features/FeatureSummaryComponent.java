@@ -166,7 +166,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     {
                         @SuppressWarnings("unused") final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')",
                                                                                                      Context.tr("+ Share"));
-                        // TODO: enable share button
                         // featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);

@@ -220,14 +220,17 @@ public class ModifyMemberAction extends LoggedAction {
 
         // Password
         if (!((isEmpty(password) && isEmpty(passwordCheck)) || (password != null && password.equals(passwordCheck)))) {
+            session.notifyError(Context.tr("New password must be equal to password verification."));
             url.getPasswordCheckParameter().addErrorMessage(Context.tr("New password must be equal to password verification."));
             error = true;
         }
         if (!isEmpty(password)) {
             if (isEmpty(currentPassword)) {
+                session.notifyError(Context.tr("You must input your current password to change password."));
                 url.getCurrentPasswordParameter().addErrorMessage(Context.tr("You must input your current password to change password."));
                 error = true;
             } else if (!me.checkPassword(currentPassword)) {
+                session.notifyError(Context.tr("Your input for current password doesn't match your password."));
                 url.getCurrentPasswordParameter().addErrorMessage(Context.tr("Your input for current password doesn't match your password."));
                 error = true;
             }
@@ -237,6 +240,7 @@ public class ModifyMemberAction extends LoggedAction {
         // statement ...
         if (!isEmpty(me.getFullname()) && !isEmpty(fullname) && !me.getFullname().equals(fullname)) {
             if (deleteFullName != null && deleteFullName.booleanValue()) {
+                session.notifyError(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
                 url.getFullnameParameter().addErrorMessage(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
                 error = true;
             }

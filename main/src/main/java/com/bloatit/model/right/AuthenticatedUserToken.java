@@ -26,7 +26,6 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.framework.utils.SecuredHash;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
-import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -65,7 +64,6 @@ public final class AuthenticatedUserToken implements ElveosUserToken {
         }
 
         if (tmp.getActivationState() != ActivationState.ACTIVE) {
-            // TODO: display a different notification error
             Log.model().warn("Authentication with inactive or deleted account with login " + login);
             throw new NotFoundException("Authentication with inactive or deleted account.");
         }

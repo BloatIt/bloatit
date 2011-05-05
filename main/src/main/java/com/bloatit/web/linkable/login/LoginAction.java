@@ -85,7 +85,6 @@ public final class LoginAction extends ElveosAction {
     protected void transmitParameters() {
         session.addParameter(url.getLoginParameter());
 
-        //TODO: clear the password for all password fields
         if(url.getPasswordParameter().getValue() != null) {
             url.getPasswordParameter().setValue("");
         }

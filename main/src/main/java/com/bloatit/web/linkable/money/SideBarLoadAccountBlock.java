@@ -16,7 +16,6 @@ public class SideBarLoadAccountBlock extends TitleSideBarElementLayout {
         setTitle(tr("Load account"));
 
         add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
-        // TODO good URL
         final AccountChargingProcessUrl chargingAccountUrl = new AccountChargingProcessUrl();
         chargingAccountUrl.setTeam(asTeam);
         add(new SideBarButton(tr("Charge your account"), chargingAccountUrl, WebConfiguration.getImgAccountCharge()).asElement());
