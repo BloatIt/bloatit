@@ -81,7 +81,7 @@ public final class XcgiServer {
             try {
                 thread.join();
             } catch (final InterruptedException e) {
-                e.printStackTrace();
+                Log.framework().fatal("", e);
             }
         }
     }

@@ -20,6 +20,7 @@ import static com.bloatit.framework.utils.StringUtils.isEmpty;
 
 import java.util.List;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -46,21 +47,28 @@ public class ModifyTeamAction extends LoggedAction {
     private final Team team;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "50", maxErrorMsg = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."),//
-    optionalErrorMsg = @tr("You forgot to write a team name"))
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "50",
+                     maxErrorMsg = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."),//
+                     optionalErrorMsg = @tr("You forgot to write a team name"))
     private final String displayName;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "300", maxErrorMsg = @tr("The contact size has to be inferior to %constraint%."),//
-    optionalErrorMsg = @tr("You forgot to write a specification"))
+    @ParamConstraint(min = "4",
+                     minErrorMsg = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "300", maxErrorMsg = @tr("The contact size has to be inferior to %constraint%."),//
+                     optionalErrorMsg = @tr("You forgot to write a specification"))
     private final String contact;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
-    optionalErrorMsg = @tr("You forgot to write a description"))
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "5000",
+                     maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
+                     optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
     @RequestParam(role = Role.POST)
@@ -82,7 +90,7 @@ public class ModifyTeamAction extends LoggedAction {
 
     private ModifyTeamActionUrl url;
 
-    public ModifyTeamAction(ModifyTeamActionUrl url) {
+    public ModifyTeamAction(final ModifyTeamActionUrl url) {
         super(url);
         this.team = url.getTeam();
         this.avatar = url.getAvatar();
@@ -96,7 +104,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessRestricted(Member me) {
+    protected Url doProcessRestricted(final Member me) {
         try {
             // Display name
             if (isEmpty(displayName) && !isEmpty(team.getDisplayName())) {
@@ -119,10 +127,10 @@ public class ModifyTeamAction extends LoggedAction {
 
             // AVATAR
             if (avatar != null) {
-                FileConstraintChecker fcc = new FileConstraintChecker(avatar);
-                List<String> imageErr = fcc.isImageAvatar();
+                final FileConstraintChecker fcc = new FileConstraintChecker(avatar);
+                final List<String> imageErr = fcc.isImageAvatar();
                 if (!isEmpty(avatarFileName) && imageErr == null) {
-                    FileMetadata file = FileMetadataManager.createFromTempFile(me, null, avatar, avatarFileName, "");
+                    final FileMetadata file = FileMetadataManager.createFromTempFile(me, null, avatar, avatarFileName, "");
                     team.setAvatar(file);
                     session.notifyGood(Context.tr("Avatar updated."));
                 } else {
@@ -145,15 +153,15 @@ public class ModifyTeamAction extends LoggedAction {
                 team.setAvatar(null);
             }
 
-        } catch (UnauthorizedOperationException e) {
-            e.printStackTrace();
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException(e);
         }
 
         return new TeamPageUrl(team);
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         // TODO: link error messages to form field, so they can be red
         boolean error = false;
 
@@ -192,7 +200,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new ModifyTeamPageUrl(team);
     }
 

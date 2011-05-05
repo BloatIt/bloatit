@@ -105,9 +105,7 @@ public final class SessionManager {
 
                     fileOutputStream.close();
                 } catch (final IOException e) {
-                    Log.framework().error("Failed to close the file after an other exception.");
-                    Log.framework().error(e);
-                    e.printStackTrace();
+                    Log.framework().error("Failed to close the file after an other exception.", e);
                 }
             }
             com.bloatit.data.SessionManager.endWorkUnitAndFlush();
