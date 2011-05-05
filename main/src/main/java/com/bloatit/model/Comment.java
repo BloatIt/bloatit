@@ -18,7 +18,6 @@ package com.bloatit.model;
 
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtComment;

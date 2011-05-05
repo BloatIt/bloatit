@@ -19,8 +19,6 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtContribution;
@@ -80,8 +78,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * which this Contribution is made is canceled. It allows the user to take
      * back its money.
      */
-    public void cancel() {
-        // TODO make me package visible !
+    void cancel() {
         getDao().cancel();
     }
 

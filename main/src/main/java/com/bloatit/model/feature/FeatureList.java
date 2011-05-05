@@ -21,6 +21,7 @@ import java.util.Iterator;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Feature;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.lists.ListBinder;
 
 /**

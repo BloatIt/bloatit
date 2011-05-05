@@ -20,6 +20,7 @@ import java.util.Date;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.PlannedTask;
 
 /**
@@ -47,7 +48,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
      *            "development time out".
      * @param time the date when this task will be run.
      */
-    protected TaskDevelopmentTimeOut(final int featureId, final Date time) {
+    public TaskDevelopmentTimeOut(final int featureId, final Date time) {
         super(time, featureId);
         this.featureId = featureId;
     }

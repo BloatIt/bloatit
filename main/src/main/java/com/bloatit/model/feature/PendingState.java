@@ -17,6 +17,7 @@
 package com.bloatit.model.feature;
 
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.model.FeatureImplementation;
 
 /**
  * The Class PendingState.
@@ -28,7 +29,7 @@ public class PendingState extends CanContributeMetaState {
      * 
      * @param feature the feature on which this state apply.
      */
-    protected PendingState(final FeatureImplementation feature) {
+    public PendingState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

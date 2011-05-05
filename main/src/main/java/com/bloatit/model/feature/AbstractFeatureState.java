@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Offer;
 
 /**
@@ -27,7 +28,7 @@ import com.bloatit.model.Offer;
  * design pattern. Each method in it is an event that can change the
  * featureState. Each sub-class is a state.
  */
-abstract class AbstractFeatureState {
+public abstract class AbstractFeatureState {
 
     /** The feature. */
     protected final FeatureImplementation feature;

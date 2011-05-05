@@ -16,8 +16,8 @@
 //
 package com.bloatit.model.right;
 
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Offer;
-import com.bloatit.model.feature.FeatureImplementation;
 
 /**
  * The Class OfferRight store the properties accessor for the {@link Offer}
