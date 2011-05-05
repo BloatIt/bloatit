@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarUserContentBlock;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -36,6 +35,8 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 
 @ParamContainer("usercontent/attachfile")
 public final class AddAttachementPage extends CreateUserContentPage {
+
+    public static final int FILE_MAX_SIZE_MIO = 2;
 
     @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
@@ -76,7 +77,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
         final HtmlForm form = new HtmlForm(formUrl.urlString());
 
         form.enableFileUpload();
-        addAddAttachmentField(form, "2 Mio");
+        addAddAttachmentField(form, FILE_MAX_SIZE_MIO + " Mio");
         form.add(new HtmlSubmit(tr("Submit")));
 
         group.add(title);
@@ -85,7 +86,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return AddAttachementPage.generateBreadcrumb(userContent);
     }
 

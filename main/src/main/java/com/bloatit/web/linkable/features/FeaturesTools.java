@@ -115,11 +115,11 @@ public class FeaturesTools {
     }
 
     public static HtmlDiv generateProgress(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
-        return generateProgress(feature, userToken, false, BigDecimal.ZERO);
+        return generateProgress(feature, userToken, BigDecimal.ZERO);
     }
 
     public static HtmlDiv
-            generateProgress(final Feature feature, final ElveosUserToken userToken, final boolean slim, final BigDecimal futureAmount)
+            generateProgress(final Feature feature, final ElveosUserToken userToken, final BigDecimal futureAmount)
                                                                                                                                        throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
@@ -269,7 +269,6 @@ public class FeaturesTools {
                 featureSummaryDetails.addText(" – ");
                 featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} open bug", "{0} open bugs", bugCount, bugCount)));
 
-                // TODO: go to the correct page
                 final FeaturePageUrl releasesFeatureUrl = new FeaturePageUrl(feature);
                 releasesFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
                 releasesFeatureUrl.setAnchor("feature_tab_pane");

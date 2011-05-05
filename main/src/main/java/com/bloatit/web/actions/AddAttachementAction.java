@@ -12,6 +12,8 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -56,7 +58,11 @@ public final class AddAttachementAction extends UserContentAction {
 
     @Override
     protected boolean verifyFile(final String filename) {
-        // TODO make some generic check (file size ...)
+        final FileConstraintChecker fcc = new FileConstraintChecker(filename);
+        if (!fcc.exists() || !fcc.isFileSmaller(AddAttachementPage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE)) {
+            session.notifyBad(Context.tr("File format error: Your file is to big."));
+            return false;
+        }
         return true;
     }
 

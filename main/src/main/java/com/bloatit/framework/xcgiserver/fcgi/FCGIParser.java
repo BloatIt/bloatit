@@ -302,7 +302,7 @@ public class FCGIParser implements XcgiParser {
         final String name = new String(nameArray);
 
         final byte[] valueArray = new byte[(int) valueLength];
-        dataInput.read(valueArray); // XXX Why is this ignored ?
+        dataInput.read(valueArray);
         usedLength += valueLength;
         final String value = new String(valueArray);
 
