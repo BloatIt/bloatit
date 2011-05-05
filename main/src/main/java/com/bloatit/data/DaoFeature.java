@@ -41,10 +41,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
-import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
@@ -177,7 +175,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     private BigDecimal contribution;
 
     @Basic(optional = false)
-    @Field(store = Store.YES, index = Index.UN_TOKENIZED, boost = @Boost(value = 1000))
+    @Field
     @Enumerated
     private FeatureState featureState;
 

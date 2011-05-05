@@ -143,8 +143,6 @@ public final class FeatureListPage extends ElveosPage {
 
             final HtmlDiv featureSort = new HtmlDiv("feature_sort");
             {
-                // XXX : Do not delete the following comments
-
                 final FeatureListPageUrl relevanceSortUrl = url.clone();
                 relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
                 final HtmlLink relevanceSort = relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
@@ -166,8 +164,6 @@ public final class FeatureListPage extends ElveosPage {
                     contributionSort.setCssClass("selected");
                 }
 
-                // XXX : Do not delete the following comments
-
                 final FeatureListPageUrl progressSortUrl = url.clone();
                 progressSortUrl.setSort(SORT_BY_PROGRESS);
                 final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
@@ -182,15 +178,6 @@ public final class FeatureListPage extends ElveosPage {
                     creationDateSort.setCssClass("selected");
                 }
 
-                // XXX : Do not delete the following comments
-
-                final FeatureListPageUrl expirationDateSortUrl = url.clone();
-                expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
-                final HtmlLink expirationDateSort = expirationDateSortUrl.getHtmlLink(Context.tr("estimated end date"));
-                if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
-                    expirationDateSort.setCssClass("selected");
-                }
-
                 featureSort.addText(Context.tr("Sort by: "));
                 featureSort.add(popularitySort);
                 featureSort.addText(" – ");
@@ -201,8 +188,6 @@ public final class FeatureListPage extends ElveosPage {
                 featureSort.add(progressSort);
                 featureSort.addText(" – ");
                 featureSort.add(creationDateSort);
-                featureSort.addText(" – ");
-                featureSort.add(expirationDateSort);
 
             }
             featureSearchBlock.add(featureSort);
