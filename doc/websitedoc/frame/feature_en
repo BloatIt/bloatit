@@ -12,6 +12,6 @@ Features states
 During its life, a feature has various states: 
 
  * Funding, the initial state. Lasts until enough money is raised.
- * Offer validation, a short time span allowing contributors to accept or refuse an offer to develop
- * In development, until the request is fully developed (this phase includes validation)
- * Success, when the validation happened successfully
+ * Offer validation, a short time span allowing contributors to accept or refuse an offer to develop.
+ * In development, until the request is fully developed (this phase includes validation).
+ * Success, when the validation happened successfully.
