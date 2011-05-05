@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
@@ -111,7 +112,11 @@ public class AccountComponent extends HtmlPageComponent {
             }
 
             for (final Contribution contribution : contributions) {
-                sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
+                if(contribution.getFeature().getFeatureState() != FeatureState.DISCARDED) {
+                    sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
+                } else {
+                    sorter.add(new ContributionFailedLine(contribution), contribution.getCreationDate());
+                }
             }
 
             for (final BankTransaction bankTransaction : bankTransactions) {
@@ -191,6 +196,58 @@ public class AccountComponent extends HtmlPageComponent {
             return title;
         }
     }
+
+
+    private static class ContributionFailedLine extends HtmlTableLine {
+
+        private final Contribution contribution;
+
+        public ContributionFailedLine(final Contribution contribution) throws UnauthorizedOperationException {
+            setCssClass("failed_line");
+            this.contribution = contribution;
+            addCell(new EmptyCell());
+            addCell(new TitleCell(contribution.getCreationDate(), generateContributionTitle()));
+            addCell(new EmptyCell());
+            addCell(new MoneyCell(contribution.getAmount().negate()));
+        }
+
+        private HtmlDiv generateContributionDescription() {
+            final HtmlDiv description = new HtmlDiv("description");
+            final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
+            final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
+
+            String statusString = "";
+            switch (contribution.getFeature().getFeatureState()) {
+                case DEVELOPPING:
+                    statusString = tr("In development");
+                    break;
+                case FINISHED:
+                    statusString = tr("Success");
+                    break;
+                case DISCARDED:
+                    statusString = tr("Failed");
+                    break;
+                case PENDING:
+                case PREPARING:
+                    statusString = tr("Funding");
+                    break;
+            }
+
+            description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
+            description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
+            return description;
+        }
+
+        private HtmlDiv generateContributionTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature());
+            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+            featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
+            title.add(new HtmlMixedText(tr("Contributed to a failed <0::feature>"), featurePageUrl.getHtmlLink()));
+            return title;
+        }
+    }
+
 
     private static class MoneyWithdrawalLine extends HtmlTableLine {
 
