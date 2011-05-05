@@ -207,7 +207,7 @@ public class DaoContribution extends DaoUserContent {
         if ((percent + this.percentDone) == 100) {
             moneyToGive = this.amount.subtract(this.alreadyGivenMoney);
         } else {
-            moneyToGive = this.amount.multiply(new BigDecimal((this.amount.floatValue() * percent) / 100));
+            moneyToGive = new BigDecimal((this.amount.floatValue() * percent) / 100).scaleByPowerOfTen(-2);
         }
         return moneyToGive;
     }

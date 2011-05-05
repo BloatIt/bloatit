@@ -281,11 +281,6 @@ public class ActorTest extends ModelTestUnit {
         assertEquals(tom.getDisplayName(), db.getTom().getFullname());
     }
 
-    // TODO
-    // public final void testGetAvatar() {
-    // fail("Not yet implemented");
-    // }
-
     @Test
     public final void testCanAccessDateCreation() {
         final Member tom = Member.create(db.getTom());
