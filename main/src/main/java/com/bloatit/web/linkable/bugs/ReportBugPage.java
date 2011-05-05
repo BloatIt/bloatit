@@ -35,6 +35,7 @@ import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -148,7 +149,8 @@ public final class ReportBugPage extends CreateUserContentPage {
         reportBugForm.add(levelInput);
 
         // File
-        addAddAttachmentField(reportBugForm, String.valueOf(FILE_MAX_SIZE_MIO) + " Mio");
+        reportBugForm.add(new AttachmentField(doReportUrl, FILE_MAX_SIZE_MIO + " Mio"));
+        reportBugForm.enableFileUpload();
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
