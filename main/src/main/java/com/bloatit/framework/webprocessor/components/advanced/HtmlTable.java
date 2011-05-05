@@ -56,6 +56,10 @@ public class HtmlTable extends HtmlGenericElement {
                     td.setCssClass(model.getColumnCss(i));
                 }
 
+                if (model.getId(i) != null) {
+                    td.setId(model.getId(i));
+                }
+
                 if (model.getColspan(i) != 1) {
                     td.addAttribute("colspan", String.valueOf(model.getColspan(i)));
                 }
@@ -81,7 +85,6 @@ public class HtmlTable extends HtmlGenericElement {
     public static abstract class HtmlTableModel {
         public abstract int getColumnCount();
 
-
         public abstract XmlNode getHeader(int column);
 
         public abstract XmlNode getBody(int column);
@@ -103,8 +106,12 @@ public class HtmlTable extends HtmlGenericElement {
             return null;
         }
 
-        public int getColspan(int i) {
+        public int getColspan(int column) {
             return 1;
+        }
+
+        public String getId(int column) {
+            return null;
         }
 
     }
@@ -159,6 +166,11 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         @Override
+        public String getId(int column) {
+            return lines.get(currentLine).getCells().get(column).getId();
+        }
+
+        @Override
         public int getColspan(final int column) {
             return lines.get(currentLine).getCells().get(column).getColspan();
         }
@@ -192,6 +204,7 @@ public class HtmlTable extends HtmlGenericElement {
         public static abstract class HtmlTableCell {
 
             private final String css;
+            private String id = null;
 
             public HtmlTableCell(final String css) {
                 this.css = css;
@@ -205,6 +218,14 @@ public class HtmlTable extends HtmlGenericElement {
 
             public int getColspan() {
                 return 1;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getId() {
+                return id;
             }
 
         }

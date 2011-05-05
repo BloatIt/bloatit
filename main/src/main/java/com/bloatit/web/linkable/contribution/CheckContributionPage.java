@@ -222,6 +222,7 @@ public final class CheckContributionPage extends QuotationPage {
 
         HtmlLineTableModel model = new HtmlLineTableModel();
 
+        HtmlChargeAccountLine line;
         try {
             final ContributePageUrl contributePageUrl = new ContributePageUrl(process);
             model.addLine(new HtmlContributionLine(process.getFeature(), process.getAmount(), contributePageUrl));
@@ -232,7 +233,8 @@ public final class CheckContributionPage extends QuotationPage {
 
             final CheckContributionPageUrl recalculateUrl = url.clone();
             recalculateUrl.setPreload(null);
-            model.addLine(new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl));
+            line = new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl);
+            model.addLine(line);
         } catch (final UnauthorizedOperationException e) {
             getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
@@ -255,7 +257,7 @@ public final class CheckContributionPage extends QuotationPage {
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account) , line.getMoneyField()));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);

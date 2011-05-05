@@ -47,6 +47,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
     private final BigDecimal amountToCharge;
     private final Url recalculateTargetForm;
     private final boolean isContributing;
+    private HtmlMoneyField moneyField;
 
     public HtmlChargeAccountLine(boolean isContributing, final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
         this.isContributing = isContributing;
@@ -82,6 +83,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
         public BeforeMoneyCell() {
             super("quotation_detail_line_money");
+            setId("input_money");
         }
 
         @Override
@@ -105,6 +107,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
         public AfterMoneyCell() {
             super("quotation_detail_line_money");
+            setId("output_money");
         }
 
         @Override
@@ -167,6 +170,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
     private class AmountCell extends HtmlTableCell {
 
+
         public AmountCell() {
             super("quotation_detail_line_amount");
         }
@@ -183,7 +187,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
                 amountBlock = new HtmlDiv("quotation_detail_line_field");
                 final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.GET);
 
-                final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
+                moneyField = new HtmlMoneyField("preload");
                 if (amountToCharge == null) {
                     moneyField.setDefaultValue("0");
                 } else {
@@ -199,4 +203,9 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
             return amountBlock;
         }
     }
+
+    public HtmlMoneyField getMoneyField() {
+        return moneyField;
+    }
+
 }

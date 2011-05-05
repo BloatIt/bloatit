@@ -140,7 +140,9 @@ public final class AccountChargingPage extends QuotationPage {
 
         final AccountChargingPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
-        model.addLine(new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, recalculateUrl));
+        HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, recalculateUrl);
+
+        model.addLine(line);
 
         // Pay block
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
@@ -158,7 +160,7 @@ public final class AccountChargingPage extends QuotationPage {
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, BigDecimal.ZERO, line.getMoneyField()));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);
