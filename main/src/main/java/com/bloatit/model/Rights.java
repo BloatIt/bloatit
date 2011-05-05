@@ -3,7 +3,6 @@ package com.bloatit.model;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RestrictedObject;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
@@ -223,12 +222,11 @@ public class Rights {
 
         @Override
         public Team visitAbstract(final Transaction model) {
-            // FIXME !!
             return null;
         }
 
         @Override
-        public Team visitAbstract(MoneyWithdrawal model) {
+        public Team visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
         }
 
@@ -295,7 +293,7 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(MoneyWithdrawal model) {
+        public Boolean visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
         }
     }
@@ -361,7 +359,7 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(MoneyWithdrawal model) {
+        public Boolean visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
         }
     }

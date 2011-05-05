@@ -17,7 +17,6 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 
@@ -32,20 +31,20 @@ public abstract class WebProcess extends ElveosAction {
         processId = Context.getSession().createWebProcess(this);
     }
 
-    public String getId() {
+    public synchronized String getId() {
         return processId;
     }
 
-    public void addChildProcess(final WebProcess child) {
+    public synchronized void addChildProcess(final WebProcess child) {
         child.father = this;
         child.notifyChildAdded(child);
     }
 
-    public WebProcess getFather() {
+    public synchronized WebProcess getFather() {
         return father;
     }
 
-    public void load() {
+    public synchronized void load() {
         if (father != null) {
             father.load();
         }
@@ -53,12 +52,11 @@ public abstract class WebProcess extends ElveosAction {
     }
 
     /**
-     * Call after session extraction. Used to reload database objects TODO:
-     * verify if this is thread safe
+     * Call after session extraction. Used to reload database objects
      */
     protected abstract void doLoad();
 
-    public Url close() {
+    public synchronized Url close() {
         Context.getSession().destroyWebProcess(this);
         if (father != null) {
             return father.notifyChildClosed(this);
@@ -66,22 +64,22 @@ public abstract class WebProcess extends ElveosAction {
         return null;
     }
 
-    protected void notifyChildAdded(final WebProcess subProcess) {
+    protected synchronized void notifyChildAdded(final WebProcess subProcess) {
         // Implement me in subclass if you wish.
     }
 
-    protected Url notifyChildClosed(final WebProcess subProcess) {
+    protected synchronized Url notifyChildClosed(final WebProcess subProcess) {
         // Implement me in subclass if you wish.
         return null;
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken token) {
+    protected synchronized Url checkRightsAndEverything(final ElveosUserToken token) {
         return NO_ERROR;
     }
 
     @Override
-    protected void transmitParameters() {
+    protected synchronized void transmitParameters() {
         // Nothing to do
     }
 }

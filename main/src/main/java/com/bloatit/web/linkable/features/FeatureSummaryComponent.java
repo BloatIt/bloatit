@@ -223,11 +223,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
                         break;
                     case DISCARDED:
-                        // TODO
-                        // actionsButtons.add(new
-                        // HtmlDiv("contribute_block").add(generatePendingRightActions()));
-                        // actionsButtons.add(new
-                        // HtmlDiv("make_offer_block").add(generatePendingLeftActions()));
+                        // 2 columns are empty: Ok
                         break;
                     default:
                         break;

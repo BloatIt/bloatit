@@ -21,7 +21,7 @@ import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.Payline;
+import com.bloatit.model.BankTransaction;
 import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
@@ -49,8 +49,8 @@ public class HtmlTotalSummary extends HtmlDiv {
     public HtmlTotalSummary(final StandardQuotation quotation,
                             final boolean showFeesDetails,
                             final QuotationPageUrl myUrl,
-                            BigDecimal staticAmount,
-                            HtmlElement variableField) {
+                            final BigDecimal staticAmount,
+                            final HtmlElement variableField) {
         super("quotation_totals_lines");
 
 
@@ -59,7 +59,7 @@ public class HtmlTotalSummary extends HtmlDiv {
             subtotal.add(new HtmlDiv("label").addText(tr("Subtotal TTC")));
 
 
-            HtmlDiv quotationSubTotalTTC = new HtmlDiv("money");
+            final HtmlDiv quotationSubTotalTTC = new HtmlDiv("money");
             bind(quotationSubTotalTTC,quotation.subTotalTTCEntry);
             subtotal.add(quotationSubTotalTTC.addText(Context.getLocalizator()
                                                              .getCurrency(quotation.subTotalTTCEntry.getValue())
@@ -78,7 +78,7 @@ public class HtmlTotalSummary extends HtmlDiv {
             detailSpan.add(showDetailLink);
 
             feesHT.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees HT <0::>"), detailSpan)));
-            HtmlDiv htmlDiv = new HtmlDiv("money");
+            final HtmlDiv htmlDiv = new HtmlDiv("money");
             bind(htmlDiv, quotation.feesHT);
             feesHT.add(htmlDiv.addText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getTwoDecimalEuroString()));
 
@@ -89,7 +89,7 @@ public class HtmlTotalSummary extends HtmlDiv {
         final HtmlDiv feesBank = new HtmlDiv("quotation_total_line_details");
         {
             feesBank.add(new HtmlDiv("label").addText(tr("Bank fees")));
-            HtmlDiv htmlDiv = new HtmlDiv("money");
+            final HtmlDiv htmlDiv = new HtmlDiv("money");
             bind(htmlDiv, quotation.bank);
             feesBank.add(htmlDiv.addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getTwoDecimalEuroString()));
         }
@@ -98,7 +98,7 @@ public class HtmlTotalSummary extends HtmlDiv {
         final HtmlDiv elveosCommission = new HtmlDiv("quotation_total_line_details");
         {
             elveosCommission.add(new HtmlDiv("label").addText(tr("Elveos's commission")));
-            HtmlDiv htmlDiv = new HtmlDiv("money");
+            final HtmlDiv htmlDiv = new HtmlDiv("money");
             bind(htmlDiv, quotation.commission);
             elveosCommission.add(htmlDiv.addText(Context.getLocalizator()
                                                                      .getCurrency(quotation.commission.getValue())
@@ -119,11 +119,11 @@ public class HtmlTotalSummary extends HtmlDiv {
 
             final HtmlSpan detailSpan = new HtmlSpan("details");
             detailSpan.addText(tr("({0}% + {1})",
-                                  Payline.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
-                                  Context.getLocalizator().getCurrency(Payline.COMMISSION_FIX_RATE).getTwoDecimalEuroString()));
+                                  BankTransaction.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
+                                  Context.getLocalizator().getCurrency(BankTransaction.COMMISSION_FIX_RATE).getTwoDecimalEuroString()));
 
             feesTTC.add(new HtmlDiv("label").add(new HtmlMixedText(tr("Fees TTC <0::>"), detailSpan)));
-            HtmlDiv htmlDiv = new HtmlDiv("money");
+            final HtmlDiv htmlDiv = new HtmlDiv("money");
             bind(htmlDiv, quotation.feesTTC);
             feesTTC.add(htmlDiv.addText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getTwoDecimalEuroString()));
         }
@@ -132,7 +132,7 @@ public class HtmlTotalSummary extends HtmlDiv {
         final HtmlDiv totalHT = new HtmlDiv("quotation_total_line_ht");
         {
             totalHT.add(new HtmlDiv("label").addText(tr("Total HT")));
-            HtmlDiv htmlDiv = new HtmlDiv("money");
+            final HtmlDiv htmlDiv = new HtmlDiv("money");
             bind(htmlDiv, quotation.totalHT);
             totalHT.add(htmlDiv.addText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getTwoDecimalEuroString()));
         }
@@ -141,7 +141,7 @@ public class HtmlTotalSummary extends HtmlDiv {
         final HtmlDiv totalTTC = new HtmlDiv("quotation_total_line_total");
         {
             totalTTC.add(new HtmlDiv("label").addText(tr("Total TTC")));
-            HtmlDiv htmlDiv = new HtmlDiv("money");
+            final HtmlDiv htmlDiv = new HtmlDiv("money");
             bind(htmlDiv, quotation.totalTTC);
             totalTTC.add(htmlDiv.addText(Context.getLocalizator().getCurrency(quotation.totalTTC.getValue()).getTwoDecimalEuroString()));
         }
@@ -151,20 +151,20 @@ public class HtmlTotalSummary extends HtmlDiv {
 
             variableField.setId(rng.nextString());
 
-            HtmlScript quotationUpdateScript = new HtmlScript();
+            final HtmlScript quotationUpdateScript = new HtmlScript();
 
-            TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quotation.js");
+            final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quotation.js");
             quotationUpdateScriptTemplate.addNamedParameter("pre_total", staticAmount.toPlainString());
             quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", variableField.getId());
             quotationUpdateScriptTemplate.addNamedParameter("fallback_url", myUrl.urlString());
-            quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(Payline.COMMISSION_VARIABLE_RATE));
-            quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(Payline.COMMISSION_FIX_RATE));
+            quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(BankTransaction.COMMISSION_VARIABLE_RATE));
+            quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(BankTransaction.COMMISSION_FIX_RATE));
             quotationUpdateScriptTemplate.addNamedParameter("input_offset", "0");
             quotationUpdateScriptTemplate.addNamedParameter("output_offset", "5");
 
 
 
-            for (Entry<QuotationEntry, String> entryQuotation : idQuotationMap.entrySet()) {
+            for (final Entry<QuotationEntry, String> entryQuotation : idQuotationMap.entrySet()) {
 
                 export(entryQuotation.getKey(), entryQuotation.getValue());
 
@@ -178,7 +178,7 @@ public class HtmlTotalSummary extends HtmlDiv {
 
             try {
                 quotationUpdateScript.append(quotationUpdateScriptTemplate.getContent(null));
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.web().error("Fail to generate quotation update script", e);
             }
 
@@ -190,7 +190,7 @@ public class HtmlTotalSummary extends HtmlDiv {
 
     }
 
-    private void export(QuotationEntry key, final String value) {
+    private void export(final QuotationEntry key, final String value) {
 
         if(jsQuotationEntryReference.containsKey(key)) {
             return;
@@ -202,35 +202,35 @@ public class HtmlTotalSummary extends HtmlDiv {
         key.accept(new QuotationVisitor() {
 
             @Override
-            public void visit(Quotation quotation) {
+            public void visit(final Quotation quotation) {
                 quotationEntryString.append(quotationEntryStringId + " = new Quotation('"+value+"', "+quotation.total+");\n");
             }
 
             @Override
-            public void visit(QuotationDifferenceEntry entry) {
+            public void visit(final QuotationDifferenceEntry entry) {
                 quotationEntryString.append(quotationEntryStringId + " = new QuotationDifferenceEntry('"+value+"', "+getJsQuotationEntryReference(entry.reference1)+", "+getJsQuotationEntryReference(entry.reference2)+");\n");
             }
 
             @Override
-            public void visit(QuotationPercentEntry entry) {
+            public void visit(final QuotationPercentEntry entry) {
                 quotationEntryString.append(quotationEntryStringId + " = new QuotationPercentEntry('"+value+"', "+getJsQuotationEntryReference(entry.reference)+", "+entry.percent+");\n");
             }
 
             @Override
-            public void visit(QuotationProxyEntry entry) {
+            public void visit(final QuotationProxyEntry entry) {
                 quotationEntryString.append(quotationEntryStringId + " = new QuotationProxyEntry('"+value+"', "+getJsQuotationEntryReference(entry.reference)+");\n");
             }
 
             @Override
-            public void visit(QuotationAmountEntry entry) {
+            public void visit(final QuotationAmountEntry entry) {
                 quotationEntryString.append(quotationEntryStringId + " = new QuotationAmountEntry('"+value+"', "+entry.amount+");\n");
             }
 
             @Override
-            public void visit(QuotationTotalEntry entry) {
+            public void visit(final QuotationTotalEntry entry) {
                 quotationEntryString.append(quotationEntryStringId + " = new QuotationTotalEntry('"+value+"');\n");
 
-                for(QuotationEntry childEntry : entry.getChildren()) {
+                for(final QuotationEntry childEntry : entry.getChildren()) {
                     quotationEntryString.append(quotationEntryStringId + ".addEntry("+getJsQuotationEntryReference(childEntry)+");\n");
                 }
             }
@@ -241,7 +241,7 @@ public class HtmlTotalSummary extends HtmlDiv {
 
     }
 
-    private String getJsQuotationEntryReference(QuotationEntry reference) {
+    private String getJsQuotationEntryReference(final QuotationEntry reference) {
         if(!jsQuotationEntryReference.containsKey(reference)) {
             export(reference, idQuotationMap.get(reference));
         }
@@ -251,8 +251,8 @@ public class HtmlTotalSummary extends HtmlDiv {
 
     }
 
-    private void bind(HtmlDiv div, QuotationEntry entry) {
-        String id = rng.nextString();
+    private void bind(final HtmlDiv div, final QuotationEntry entry) {
+        final String id = rng.nextString();
         div.setId(id);
         idQuotationMap.put(entry, id);
 

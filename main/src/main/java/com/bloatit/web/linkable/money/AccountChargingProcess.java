@@ -42,12 +42,12 @@ public class AccountChargingProcess extends PaymentProcess {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken userToken) {
+    protected Url doProcess(final ElveosUserToken userToken) {
         return new AccountChargingPageUrl(this);
     }
 
     @Override
-    public Url notifyChildClosed(final WebProcess subProcess) {
+    public synchronized Url notifyChildClosed(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
             final PaylineProcess subPro = (PaylineProcess) subProcess;
             if (subPro.isSuccessful()) {

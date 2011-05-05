@@ -71,23 +71,23 @@ public class PaylineProcess extends WebProcess {
         actor = url.getActor();
     }
 
-    public boolean isSuccessful() {
+    public synchronized boolean isSuccessful() {
         return success;
     }
 
     @Override
-    protected Url doProcess(final ElveosUserToken userToken) {
+    protected synchronized Url doProcess(final ElveosUserToken userToken) {
         url.getParentProcess().addChildProcess(this);
         return new PaylineActionUrl(this);
     }
 
     @Override
-    protected Url doProcessErrors(final ElveosUserToken userToken) {
+    protected synchronized Url doProcessErrors(final ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 
     @Override
-    public void doLoad() {
+    public synchronized void doLoad() {
         if (actor instanceof Member) {
             actor = MemberManager.getById(actor.getId());
         } else if (actor instanceof Team) {
@@ -97,7 +97,7 @@ public class PaylineProcess extends WebProcess {
         // actor.getId()).accept(new DataVisitorConstructor());
     }
 
-    Url initiatePayment() {
+    synchronized Url initiatePayment() {
         // Constructing the urls.
         final PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok", this);
         final String returnUrl = paylineReturnActionUrl.externalUrlString();
@@ -106,20 +106,18 @@ public class PaylineProcess extends WebProcess {
         final PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl(this);
         final String notificationUrl = paylineNotifyActionUrl.externalUrlString();
 
-        if (payline.canMakePayment()) {
-            Reponse reponse;
-            try {
-                reponse = payline.doPayment(actor, getAmount(), cancelUrl, returnUrl, notificationUrl);
-                SessionManager.storeTemporarySession(reponse.getToken(), session);
+        Reponse reponse;
+        try {
+            reponse = payline.doPayment(actor, getAmount(), cancelUrl, returnUrl, notificationUrl);
+            SessionManager.storeTemporarySession(reponse.getToken(), session);
 
-                // Normal case It is accepted !
-                if (reponse.isAccepted()) {
-                    return new UrlString(reponse.getRedirectUrl());
-                }
-                session.notifyBad(reponse.getMessage());
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Not authorized", e);
+            // Normal case It is accepted !
+            if (reponse.isAccepted()) {
+                return new UrlString(reponse.getRedirectUrl());
             }
+            session.notifyBad(reponse.getMessage());
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Not authorized", e);
         }
         return Context.getSession().pickPreferredPage();
     }
@@ -128,7 +126,7 @@ public class PaylineProcess extends WebProcess {
         return ((PaymentProcess) getFather()).getAmountToPay();
     }
 
-    void validatePayment(final String token) throws UnauthorizedOperationException {
+    synchronized void validatePayment(final String token) throws UnauthorizedOperationException {
         try {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
@@ -166,7 +164,7 @@ public class PaylineProcess extends WebProcess {
         }
     }
 
-    void refusePayment(final String token) {
+    synchronized void refusePayment(final String token) {
         try {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
@@ -179,7 +177,7 @@ public class PaylineProcess extends WebProcess {
         }
     }
 
-    public String getPaymentReference(final String token) {
+    public synchronized String getPaymentReference(final String token) {
         final BankTransaction bankTransaction = BankTransaction.getByToken(token);
         if (bankTransaction == null) {
             return "";

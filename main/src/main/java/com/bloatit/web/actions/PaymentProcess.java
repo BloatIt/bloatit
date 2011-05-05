@@ -47,59 +47,59 @@ public abstract class PaymentProcess extends WebProcess {
     }
 
     @Override
-    protected final Url doProcessErrors(ElveosUserToken userToken) {
+    protected final Url doProcessErrors(final ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected final void notifyChildAdded(final WebProcess subProcess) {
+    protected final synchronized void notifyChildAdded(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
             locked = true;
         }
     }
 
-    public final BigDecimal getAmountToPay() {
+    public final synchronized BigDecimal getAmountToPay() {
         return amountToPay;
     }
 
-    public final void setAmountToPay(final BigDecimal amount) throws IllegalWriteException {
+    public final synchronized void setAmountToPay(final BigDecimal amount) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
         this.amountToPay = amount;
     }
 
-    public final void setAmountToCharge(final BigDecimal amount) throws IllegalWriteException {
+    public final synchronized void setAmountToCharge(final BigDecimal amount) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
         this.amountToCharge = amount;
     }
 
-    public final BigDecimal getAmountToCharge() {
+    public final synchronized BigDecimal getAmountToCharge() {
         return amountToCharge;
     }
 
-    public final void setTeam(final Team team) throws IllegalWriteException {
+    public final synchronized void setTeam(final Team team) throws IllegalWriteException {
         if (locked) {
             throw new IllegalWriteException();
         }
         this.team = team;
     }
 
-    public final Team getTeam() {
+    public final synchronized Team getTeam() {
         return team;
     }
 
-    public final void setLock(final boolean islocked) {
+    public final synchronized void setLock(final boolean islocked) {
         locked = islocked;
     }
 
-    public final boolean isLocked() {
+    public final synchronized boolean isLocked() {
         return locked;
     }
     
-    protected final void unlock() {
+    protected synchronized final void unlock() {
         locked = false;
     }
 

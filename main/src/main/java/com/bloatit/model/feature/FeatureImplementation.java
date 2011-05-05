@@ -532,22 +532,12 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         return new ContributionList(getDao().getContributions());
     }
 
-    /** The Constant PROGRESSION_COEF. */
-    private static final int PROGRESSION_COEF = 42;
-
-    /** The Constant PROGRESSION_CONTRIBUTION_DIVISOR. */
-    private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
-
     /** The Constant PROGRESSION_PERCENT. */
     public static final int PROGRESSION_PERCENT = 100;
 
     @Override
     public float getProgression() {
-        final Offer currentOffer = getSelectedOffer();
-        if (currentOffer == null) {
-            return PROGRESSION_COEF * (1 - 1 / (1 + getDao().getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
-        }
-        return currentOffer.getProgression();
+        return getDao().getProgress();
     }
 
     @Override

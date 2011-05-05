@@ -18,7 +18,7 @@ package com.bloatit.web.linkable.contribution;
 
 import java.math.BigDecimal;
 
-import com.bloatit.model.Payline;
+import com.bloatit.model.BankTransaction;
 import com.bloatit.web.linkable.money.Quotation;
 import com.bloatit.web.linkable.money.Quotation.QuotationAmountEntry;
 import com.bloatit.web.linkable.money.Quotation.QuotationDifferenceEntry;
@@ -42,14 +42,14 @@ public class StandardQuotation {
         final String variableBank = "0.03";
         final String TVAInvertedRate = "0.836120401";
 
-        final Quotation quotation = new Quotation(Payline.computateAmountToPay(amount));
+        final Quotation quotation = new Quotation(BankTransaction.computateAmountToPay(amount));
 
         subTotalTTCEntry = new QuotationAmountEntry("Subtotal TTC", null, amount);
 
         // Fees TTC
         final QuotationTotalEntry feesTotal = new QuotationTotalEntry(null, null, null);
-        final QuotationPercentEntry feesVariable = new QuotationPercentEntry("Fees", null, subTotalTTCEntry, Payline.COMMISSION_VARIABLE_RATE);
-        final QuotationAmountEntry feesFix = new QuotationAmountEntry("Fees", null, Payline.COMMISSION_FIX_RATE);
+        final QuotationPercentEntry feesVariable = new QuotationPercentEntry("Fees", null, subTotalTTCEntry, BankTransaction.COMMISSION_VARIABLE_RATE);
+        final QuotationAmountEntry feesFix = new QuotationAmountEntry("Fees", null, BankTransaction.COMMISSION_FIX_RATE);
         feesTotal.addEntry(feesVariable);
         feesTotal.addEntry(feesFix);
 
