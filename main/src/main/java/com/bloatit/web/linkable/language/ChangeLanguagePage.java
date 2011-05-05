@@ -60,7 +60,7 @@ public final class ChangeLanguagePage extends ElveosPage {
     }
 
     private HtmlElement generateChangeLanguagePageMain() {
-        final HtmlTitleBlock master = new HtmlTitleBlock("Change language", 1);
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Change language"), 1);
         final ChangeLanguageActionUrl targetAction = new ChangeLanguageActionUrl();
         final HtmlForm form = new HtmlForm(targetAction.urlString());
         master.add(form);
@@ -73,7 +73,7 @@ public final class ChangeLanguagePage extends ElveosPage {
         }
         form.add(language);
 
-        form.add(new HtmlSubmit("Change language"));
+        form.add(new HtmlSubmit(Context.tr("Change language")));
 
         // Link map
         final HtmlDiv linkMap = new HtmlDiv("language_link_map");
