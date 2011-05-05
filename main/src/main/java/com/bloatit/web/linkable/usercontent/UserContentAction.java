@@ -134,7 +134,6 @@ public abstract class UserContentAction extends LoggedAction {
         }
     }
 
-    // TODO correct me.
     protected final boolean propagateAttachedFileIfPossible(final UserContentInterface content) {
         if (getFile() != null && content.canAddFile()) {
             try {

@@ -53,7 +53,6 @@ public final class ChangeAvatarAction extends UserContentAction {
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
-        // TODO create a member.canAccessAvatar.
         return NO_ERROR;
     }
 
@@ -70,8 +69,7 @@ public final class ChangeAvatarAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
-        // TODO can we use something else than pickPreferredPage
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return Context.getSession().pickPreferredPage();
     }
 

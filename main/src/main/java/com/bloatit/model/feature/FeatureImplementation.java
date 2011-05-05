@@ -60,12 +60,6 @@ import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
-// TODO : delete comment.
-//
-
-/**
- * A feature is an feature :). It represent a feature made by one user.
- */
 public final class FeatureImplementation extends Kudosable<DaoFeature> implements Feature {
 
     /** The state object. */

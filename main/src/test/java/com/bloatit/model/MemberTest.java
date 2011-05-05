@@ -96,22 +96,6 @@ public class MemberTest extends ModelTestUnit {
     }
 
     @Test
-    public void testInviteIntoProtectedAndRefuseGroup() {
-        MemberManager.getMemberByLogin("Yoann");
-        MemberManager.getMemberByLogin("Fred");
-
-        // TODO
-        // yo.authenticate(yoAuthToken);
-        // yo.sendInvitation(fred, GroupManager.getByName("other"));
-        // assertFalse(fred.isInGroup(GroupManager.getByName("other")));
-        //
-        // fred.authenticate(fredAuthToken);
-        // fred.refuseInvitation(GroupManager.getInvitation(GroupManager.getByName("other"),
-        // fred));
-        // assertFalse(fred.isInGroup(GroupManager.getByName("other")));
-    }
-
-    @Test
     public void testGetKarma() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yoann");
 

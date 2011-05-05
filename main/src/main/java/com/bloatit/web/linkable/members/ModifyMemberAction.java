@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -196,8 +197,7 @@ public class ModifyMemberAction extends LoggedAction {
             }
 
         } catch (final UnauthorizedOperationException e) {
-            //TODO better catch
-            e.printStackTrace();
+           throw new ShallNotPassException(e);
         }
 
         return new MemberPageUrl(me);
@@ -238,7 +238,7 @@ public class ModifyMemberAction extends LoggedAction {
                 url.getEmailParameter().getCustomMessages().add(new Message(Context.tr("Email already used.")));
                 error = true;
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("Fail to read your email."));
             Log.web().error("Fail to read an email",e);
             error = true;
@@ -260,7 +260,7 @@ public class ModifyMemberAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new ModifyMemberPageUrl();
     }
 

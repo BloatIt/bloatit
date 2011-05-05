@@ -45,7 +45,7 @@ public abstract class LoggedPage extends ElveosPage {
      * warning to the user
      */
     @Override
-    protected final HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected final HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         if (getSession().getUserToken().isAuthenticated()) {
             return createRestrictedContent(userToken.getMember());
         }
@@ -64,7 +64,7 @@ public abstract class LoggedPage extends ElveosPage {
      * user will be warned with <code>{@link #getRefusalReason()}</code>
      * </p>
      * 
-     * @param loggedUser TODO
+     * @param loggedUser the current loggedUser. Cannot be null.
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
      *             content generation and redirect to another page
@@ -90,7 +90,8 @@ public abstract class LoggedPage extends ElveosPage {
      */
     public abstract String getRefusalReason();
 
-    protected final Breadcrumb createBreadcrumb(ElveosUserToken token) {
+    @Override
+    protected final Breadcrumb createBreadcrumb(final ElveosUserToken token) {
         if (token.isAuthenticated()) {
             return createBreadcrumb(token.getMember());
         }

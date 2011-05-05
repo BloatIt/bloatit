@@ -46,6 +46,8 @@ import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
+import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
 import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
@@ -98,7 +100,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
         layout.addLeft(generateTeamIDCard(userToken));
@@ -112,6 +114,10 @@ public final class TeamPage extends ElveosPage {
             layout.addRight(new SideBarDocumentationBlock("team_role"));
         } else if (activeTabKey.equals(MEMBERS_TAB)) {
             layout.addRight(new SideBarDocumentationBlock("team_role"));
+        }
+        if (userToken.isAuthenticated() && userToken.getMember().hasBankTeamRight(targetTeam)) {
+            layout.addRight(new SideBarLoadAccountBlock(targetTeam));
+            layout.addRight(new SideBarWithdrawMoneyBlock(targetTeam));
         }
         return layout;
     }
@@ -139,7 +145,7 @@ public final class TeamPage extends ElveosPage {
         return contacts;
     }
 
-    private HtmlElement generateMain(ElveosUserToken userToken) {
+    private HtmlElement generateMain(final ElveosUserToken userToken) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
@@ -171,7 +177,7 @@ public final class TeamPage extends ElveosPage {
      * @param me the connected member
      * @return the ID card
      */
-    private HtmlElement generateTeamIDCard(ElveosUserToken token) {
+    private HtmlElement generateTeamIDCard(final ElveosUserToken token) {
         final HtmlDiv master = new HtmlDiv("padding_box");
         if (token.isAuthenticated() && token.getMember().hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
@@ -230,7 +236,7 @@ public final class TeamPage extends ElveosPage {
         return master;
     }
 
-    protected void addBankInfos(final HtmlDiv master, Member member) {
+    protected void addBankInfos(final HtmlDiv master, final Member member) {
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
@@ -259,7 +265,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return TeamPage.generateBreadcrumb(targetTeam);
     }
 
@@ -271,7 +277,7 @@ public final class TeamPage extends ElveosPage {
 
     public static Breadcrumb generateAccountBreadcrumb(final Team team) {
         final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
-        TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+        final TeamPageUrl teamPageUrl = new TeamPageUrl(team);
         teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
         breadcrumb.pushLink(teamPageUrl.getHtmlLink(Context.tr("Account")));
         return breadcrumb;
@@ -282,7 +288,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     private static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
-        SideBarTeamWithdrawMoneyBlock(Team team) {
+        SideBarTeamWithdrawMoneyBlock(final Team team) {
             setTitle(tr("Team account"));
 
             add(new HtmlParagraph(tr("Like users, teams have an elveos account where they can store money.")));
@@ -308,8 +314,8 @@ public final class TeamPage extends ElveosPage {
         }
     }
 
-    public static TeamPageUrl AccountUrl(Team team) {
-        TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+    public static TeamPageUrl AccountUrl(final Team team) {
+        final TeamPageUrl teamPageUrl = new TeamPageUrl(team);
         teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
         teamPageUrl.setAnchor(TEAM_TAB_PANE);
         return teamPageUrl;

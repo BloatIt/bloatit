@@ -37,9 +37,12 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
 import com.bloatit.web.linkable.members.tabs.ActivityTab;
 import com.bloatit.web.linkable.members.tabs.InvitationsTab;
+import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
+import com.bloatit.web.linkable.money.SideBarWithdrawMoneyBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
@@ -97,7 +100,7 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
         layout.addLeft(generateMemberPageMain());
 
@@ -118,9 +121,9 @@ public final class MemberPage extends ElveosPage {
             teamList.setCssClass("member_teams_list");
             teamBlock.add(teamList);
 
-            PageIterable<Team> teams = member.getTeams();
+            final PageIterable<Team> teams = member.getTeams();
 
-            if(teams.size() == 0) {
+            if (teams.size() == 0) {
                 teamBlock.add(new HtmlParagraph(Context.tr("No team.")));
             }
 
@@ -131,6 +134,11 @@ public final class MemberPage extends ElveosPage {
             throw new ShallNotPassException("Cannot access member team information", e);
         }
         layout.addRight(teamBlock);
+        if (userToken.isAuthenticated()) {
+            layout.addRight(new SideBarDocumentationBlock("internal_account"));
+            layout.addRight(new SideBarLoadAccountBlock(null));
+            layout.addRight(new SideBarWithdrawMoneyBlock(userToken.getMember()));
+        }
 
         return layout;
     }
@@ -251,7 +259,7 @@ public final class MemberPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return MemberPage.generateBreadcrumb(member);
     }
 
@@ -263,25 +271,25 @@ public final class MemberPage extends ElveosPage {
 
     public static Breadcrumb generateAccountBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = MemberPage.generateBreadcrumb(member);
-        MemberPageUrl memberPageUrl = new MemberPageUrl(member);
+        final MemberPageUrl memberPageUrl = new MemberPageUrl(member);
         memberPageUrl.setActiveTabKey(ACCOUNT_TAB);
         breadcrumb.pushLink(memberPageUrl.getHtmlLink(Context.tr("Account")));
         return breadcrumb;
     }
 
-    public static MemberPageUrl AccountUrl(Member member) {
-        MemberPageUrl memberPageUrl = new MemberPageUrl(member);
+    public static MemberPageUrl AccountUrl(final Member member) {
+        final MemberPageUrl memberPageUrl = new MemberPageUrl(member);
         memberPageUrl.setActiveTabKey(ACCOUNT_TAB);
         // memberPageUrl.setAnchor(MEMBER_TAB_PANE);
         return memberPageUrl;
     }
 
-    public static MemberPageUrl MyAccountUrl(Member member) {
+    public static MemberPageUrl MyAccountUrl(final Member member) {
         return AccountUrl(member);
     }
 
-    public static MemberPageUrl MyMessagesUrl(Member member) {
-        MemberPageUrl memberPageUrl = new MemberPageUrl(member);
+    public static MemberPageUrl MyMessagesUrl(final Member member) {
+        final MemberPageUrl memberPageUrl = new MemberPageUrl(member);
         memberPageUrl.setActiveTabKey(INVITATIONS_TAB);
         // memberPageUrl.setAnchor(MEMBER_TAB_PANE);
         return memberPageUrl;
