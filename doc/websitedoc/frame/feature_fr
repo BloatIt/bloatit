@@ -1,0 +1,18 @@
+Demande ?
+===========================
+
+Les demandes sont crées quand un utilisateur a besoin de quelque chose dans un logiciel libre. Dans une demande, l'utilisateur explique son besoin et ces exigences.
+
+Les autres utilisateurs d'elveos sont alors invités à **contribuer** à la demande, jusqu'à ce qu'assez d'argent soit rassemblé.
+
+Un développeur pourra alors **faire une offre** pour implémenter la demande.
+
+
+États des demandes
+---------------
+Durant sa vie, une demande peut avoir différents états :
+
+ * Financement, l'état initial. Dure jusqu'a ce qu'assez d'argent soit levé.
+ * Validation de l'offre, un court moment permettant aux contributeurs d'accepter ou de refuser une offre de développement.
+ * En développement, jusqu'à ce que la demande soit totalement développée (cette phase inclus la validation).
+ * Succès, quand tout s'est bien passé.
