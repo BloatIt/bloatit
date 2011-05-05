@@ -21,8 +21,6 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.UserToken;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -57,22 +55,22 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
 
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        HtmlTitle title = new HtmlTitle(Context.tr("Site map"), 1);
+        final HtmlTitle title = new HtmlTitle(Context.tr("Site map"), 1);
         layout.addLeft(title);
 
-        HtmlParagraph goal = new HtmlParagraph(Context.tr("This page should list all page in this website. However, some dynamic pages are numerous and cannot be all listed here."));
+        final HtmlParagraph goal = new HtmlParagraph(Context.tr("This page should list all page in this website. However, some dynamic pages are numerous and cannot be all listed here."));
         layout.addLeft(goal);
 
-        HtmlTitle titleContent = new HtmlTitle(Context.tr("Content pages"), 2);
+        final HtmlTitle titleContent = new HtmlTitle(Context.tr("Content pages"), 2);
         layout.addLeft(titleContent);
-        HtmlList contentLinkList = new HtmlList();
+        final HtmlList contentLinkList = new HtmlList();
         layout.addLeft(contentLinkList);
 
-        contentLinkList.add( new FeatureListPageUrl().getHtmlLink(Context.tr("Feature request list")));
+        contentLinkList.add(new FeatureListPageUrl().getHtmlLink(Context.tr("Feature request list")));
         contentLinkList.add(new TeamsPageUrl().getHtmlLink(Context.tr("Team list")));
         contentLinkList.add(new MembersListPageUrl().getHtmlLink(Context.tr("Member list")));
         contentLinkList.add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares list")));
@@ -80,10 +78,9 @@ public final class SiteMapPage extends ElveosPage {
         contentLinkList.add(new CreateTeamPageUrl().getHtmlLink(Context.tr("Create a team")));
         contentLinkList.add(new AddSoftwarePageUrl().getHtmlLink(Context.tr("Add a software")));
 
-
-        HtmlTitle titleUseful = new HtmlTitle(Context.tr("Useful pages"), 2);
+        final HtmlTitle titleUseful = new HtmlTitle(Context.tr("Useful pages"), 2);
         layout.addLeft(titleUseful);
-        HtmlList usefulLinkList = new HtmlList();
+        final HtmlList usefulLinkList = new HtmlList();
         layout.addLeft(usefulLinkList);
 
         usefulLinkList.add(new LoginPageUrl().getHtmlLink(Context.tr("Login")));
@@ -93,37 +90,31 @@ public final class SiteMapPage extends ElveosPage {
         usefulLinkList.add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language")));
         usefulLinkList.add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Signal a bug")));
 
-
-        HtmlTitle titlePersonal = new HtmlTitle(Context.tr("Personal informations pages"), 2);
+        final HtmlTitle titlePersonal = new HtmlTitle(Context.tr("Personal informations pages"), 2);
         layout.addLeft(titlePersonal);
         layout.addLeft(new HtmlParagraph(Context.tr("You must be logged to use these pages.")));
-        HtmlList personalLinkList = new HtmlList();
+        final HtmlList personalLinkList = new HtmlList();
         layout.addLeft(personalLinkList);
 
-        if(userToken.isAuthenticated()) {
+        if (userToken.isAuthenticated()) {
             personalLinkList.add(new MemberPageUrl(userToken.getMember()).getHtmlLink(Context.tr("My page")));
-            personalLinkList.add( MemberPage.MyAccountUrl(userToken.getMember()).getHtmlLink(Context.tr("My account")));
-            personalLinkList.add( MemberPage.MyMessagesUrl(userToken.getMember()).getHtmlLink(Context.tr("My messages")));
+            personalLinkList.add(MemberPage.MyAccountUrl(userToken.getMember()).getHtmlLink(Context.tr("My account")));
+            personalLinkList.add(MemberPage.MyMessagesUrl(userToken.getMember()).getHtmlLink(Context.tr("My messages")));
         } else {
             personalLinkList.add(new HtmlText(Context.tr("My page")));
             personalLinkList.add(new HtmlText(Context.tr("My account")));
             personalLinkList.add(new HtmlText(Context.tr("My messages")));
         }
 
-         personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
-        personalLinkList.add(new  AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
-        //TODO good page
-        personalLinkList.add(new  PageNotFoundUrl().getHtmlLink(Context.tr("Withdraw money")));
+        personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
+        personalLinkList.add(new AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
 
-
-
-        HtmlTitle titleDocumenation = new HtmlTitle(Context.tr("Main documentation pages"), 2);
+        final HtmlTitle titleDocumenation = new HtmlTitle(Context.tr("Main documentation pages"), 2);
         layout.addLeft(titleDocumenation);
-        HtmlList documentationLinkList = new HtmlList();
+        final HtmlList documentationLinkList = new HtmlList();
         layout.addLeft(documentationLinkList);
 
-        documentationLinkList.add( new  DocumentationPageUrl().getHtmlLink(Context.tr("Documentation home")));
-
+        documentationLinkList.add(new DocumentationPageUrl().getHtmlLink(Context.tr("Documentation home")));
 
         return layout;
     }
@@ -139,7 +130,7 @@ public final class SiteMapPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return SiteMapPage.generateBreadcrumb();
     }
 

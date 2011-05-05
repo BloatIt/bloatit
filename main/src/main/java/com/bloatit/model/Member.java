@@ -246,8 +246,8 @@ public final class Member extends Actor<DaoMember> implements User {
         getDao().setFullname(fullname);
     }
 
-    public void setAvatar(final FileMetadata fileImage) {
-        // TODO: right management
+    public void setAvatar(final FileMetadata fileImage) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtMember.Avatar(), Action.WRITE);
         if (fileImage == null) {
             getDao().setAvatar(null);
         } else {
@@ -392,6 +392,7 @@ public final class Member extends Actor<DaoMember> implements User {
     }
 
     // no right management: this is public data
+    @Override
     public Locale getLocale() {
         return getDao().getLocale();
     }
@@ -481,6 +482,16 @@ public final class Member extends Actor<DaoMember> implements User {
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Tells if the authenticated user can access the <i>Avatar</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>Avatar</i> property.
+     * @return true if you can access the <i>Avatar</i> property.
+     */
+    public final boolean canAccessAvatar(final Action action) {
+        return canAccess(new RgtMember.Avatar(), action);
+    }
+    
     public boolean canGetKarma() {
         return canAccess(new RgtMember.Karma(), Action.READ);
     }

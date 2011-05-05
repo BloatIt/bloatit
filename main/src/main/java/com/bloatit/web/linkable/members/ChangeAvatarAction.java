@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.members;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -24,6 +25,8 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 
@@ -46,15 +49,22 @@ public final class ChangeAvatarAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-        member.setAvatar(getFile());
-        session.notifyGood(tr("Avatar change to ''{0}''", getAttachementFileName()));
+        try {
+            member.setAvatar(getFile());
+            session.notifyGood(tr("Avatar change to ''{0}''", getAttachementFileName()));
+        } catch (final UnauthorizedPublicAccessException e) {
+            throw new ShallNotPassException(e);
+        }
         return Context.getSession().pickPreferredPage();
     }
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
-        // TODO create a member.canAccessAvatar.
-        return NO_ERROR;
+        if (member.canAccessAvatar(Action.WRITE)) {
+            return NO_ERROR;
+        }
+        session.notifyGood(tr("You are not allowed to change this avatar."));
+        return doProcessErrors();
     }
 
     @Override
@@ -70,8 +80,7 @@ public final class ChangeAvatarAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
-        // TODO can we use something else than pickPreferredPage
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return Context.getSession().pickPreferredPage();
     }
 

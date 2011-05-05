@@ -34,7 +34,6 @@ import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
-// TODO rightManagement
 public final class Offer extends Kudosable<DaoOffer> {
 
     // ////////////////////////////////////////////////////////////////////////
@@ -63,10 +62,10 @@ public final class Offer extends Kudosable<DaoOffer> {
                  final Date dateExpire,
                  final int secondsBeforeValidation) {
         super(new DaoOffer(member.getDao(),
-                           DaoGetter.getTeam(team),
+                           DaoGetter.get(team),
                            ((FeatureImplementation) feature).getDao(),
                            amount,
-                           DaoDescription.createAndPersist(member.getDao(), DaoGetter.getTeam(team), local, "RFU", description),
+                           DaoDescription.createAndPersist(member.getDao(), DaoGetter.get(team), local, "RFU", description),
                            dateExpire,
                            secondsBeforeValidation));
     }
@@ -87,7 +86,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                                            amount,
                                                            DaoDescription.createAndPersist(getDao().getMember(),
-                                                                                           DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                                                           DaoGetter.get(getAuthToken().getAsTeam()),
                                                                                            local,
                                                                                            "RFU",
                                                                                            description),

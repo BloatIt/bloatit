@@ -30,4 +30,12 @@ public class RgtMilestone extends RightManager {
         // nothing this is just a rename.
     }
     
+    /**
+     * The Class <code>Release</code> is a {@link RightManager.Public} accessor for the
+     * <code>Release</code> property.
+     */
+    public static class Release extends Public {
+        // nothing this is just a rename.
+    }
+    
 }

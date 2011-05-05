@@ -43,204 +43,108 @@ import com.bloatit.data.DaoTranslation;
  */
 public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.ExternalAccount
-     * )
-     */
     @Override
     public Class<?> visit(final ExternalAccount model) {
         return DaoExternalAccount.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.InternalAccount
-     * )
-     */
     @Override
     public Class<?> visit(final InternalAccount model) {
         return DaoInternalAccount.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Member)
-     */
     @Override
     public Class<?> visit(final Member model) {
         return DaoMember.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.BankTransaction
-     * )
-     */
     @Override
     public Class<?> visit(final BankTransaction model) {
         return DaoBankTransaction.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Milestone)
-     */
     @Override
     public Class<?> visit(final Milestone model) {
         return DaoMilestone.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Description)
-     */
     @Override
     public Class<?> visit(final Description model) {
         return DaoDescription.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Team)
-     */
     @Override
     public Class<?> visit(final Team model) {
         return DaoTeam.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.HighlightFeature
-     * )
-     */
     @Override
     public Class<?> visit(final HighlightFeature model) {
         return DaoHighlightFeature.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.
-     * JoinTeamInvitation)
-     */
     @Override
     public Class<?> visit(final JoinTeamInvitation model) {
         return DaoJoinTeamInvitation.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Software)
-     */
     @Override
     public Class<?> visit(final Software model) {
         return DaoSoftware.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Transaction)
-     */
     @Override
     public Class<?> visit(final Transaction model) {
         return DaoTransaction.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Bug)
-     */
     @Override
     public Class<?> visit(final Bug model) {
         return DaoBug.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Contribution)
-     */
     @Override
     public Class<?> visit(final Contribution model) {
         return DaoContribution.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.FileMetadata)
-     */
     @Override
     public Class<?> visit(final FileMetadata model) {
         return DaoFileMetadata.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Kudos)
-     */
     @Override
     public Class<?> visit(final Kudos model) {
         return DaoKudos.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Comment)
-     */
     @Override
     public Class<?> visit(final Comment model) {
         return DaoComment.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Feature)
-     */
     @Override
     public Class<?> visit(final Feature model) {
         return DaoFeature.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Offer)
-     */
     @Override
     public Class<?> visit(final Offer model) {
         return DaoOffer.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Translation)
-     */
     @Override
     public Class<?> visit(final Translation model) {
         return DaoTranslation.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.ModelClassVisitor#visit(com.bloatit.model.Release)
-     */
     @Override
     public Class<?> visit(final Release model) {
         return DaoRelease.class;
     }
 
     @Override
-    public Class<?> visit(MoneyWithdrawal moneyWithdrawal) {
+    public Class<?> visit(final MoneyWithdrawal moneyWithdrawal) {
         return DaoMoneyWithdrawal.class;
     }
 }

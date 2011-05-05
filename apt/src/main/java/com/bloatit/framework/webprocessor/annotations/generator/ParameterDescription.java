@@ -66,8 +66,6 @@ class ParameterDescription extends Description {
 
     private String getTypeOrTemplate(final Element attribute) {
         String string = attribute.asType().toString().replaceAll("\\<.*\\>", "");
-
-        // TODO use inherit from collection
         if (string.endsWith("List")) {
             string = attribute.asType().toString();
             final int start = string.indexOf("<") + 1;

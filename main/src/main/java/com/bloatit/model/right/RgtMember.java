@@ -25,6 +25,14 @@ import com.bloatit.model.Member;
 public class RgtMember extends RightManager {
 
     /**
+     * The Class <code>Avatar</code> is a {@link RightManager.Public} accessor for the
+     * <code>Avatar</code> property.
+     */
+    public static class Avatar extends Public {
+        // nothing this is just a rename.
+    }
+    
+    /**
      * The Class Karma is a {@link RightManager.Public} accessor for the Karma
      * property.
      */

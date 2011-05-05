@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -44,12 +44,15 @@ import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
-@ParamContainer(value="member/domodify", protocol=Protocol.HTTPS)
+@ParamContainer(value = "member/domodify", protocol = Protocol.HTTPS)
 public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "15",
+                     maxErrorMsg = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String password;
 
     @RequestParam(role = Role.POST)
@@ -58,20 +61,29 @@ public class ModifyMemberAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "15",
+                     maxErrorMsg = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "30", maxErrorMsg = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @ParamConstraint(
+                     min = "4",
+                     minErrorMsg = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "30",
+                     maxErrorMsg = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String email;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(min = "1", minErrorMsg = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "30", maxErrorMsg = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @ParamConstraint(
+                     min = "1",
+                     minErrorMsg = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."),//
+                     max = "30",
+                     maxErrorMsg = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String fullname;
 
     @RequestParam(role = Role.POST)
@@ -196,8 +208,7 @@ public class ModifyMemberAction extends LoggedAction {
             }
 
         } catch (final UnauthorizedOperationException e) {
-            //TODO better catch
-            e.printStackTrace();
+            throw new ShallNotPassException(e);
         }
 
         return new MemberPageUrl(me);
@@ -205,20 +216,22 @@ public class ModifyMemberAction extends LoggedAction {
 
     @Override
     protected Url checkRightsAndEverything(final Member me) {
-        // TODO: link error messages to form field, so they an be red
         boolean error = false;
 
         // Password
         if (!((isEmpty(password) && isEmpty(passwordCheck)) || (password != null && password.equals(passwordCheck)))) {
-            session.notifyBad(Context.tr("New password must be equal to password verification."));
+            session.notifyError(Context.tr("New password must be equal to password verification."));
+            url.getPasswordCheckParameter().addErrorMessage(Context.tr("New password must be equal to password verification."));
             error = true;
         }
         if (!isEmpty(password)) {
             if (isEmpty(currentPassword)) {
-                session.notifyBad(Context.tr("You must input your current password to change password."));
+                session.notifyError(Context.tr("You must input your current password to change password."));
+                url.getCurrentPasswordParameter().addErrorMessage(Context.tr("You must input your current password to change password."));
                 error = true;
             } else if (!me.checkPassword(currentPassword)) {
-                session.notifyBad(Context.tr("Your input for current password doesn't match your password."));
+                session.notifyError(Context.tr("Your input for current password doesn't match your password."));
+                url.getCurrentPasswordParameter().addErrorMessage(Context.tr("Your input for current password doesn't match your password."));
                 error = true;
             }
         }
@@ -227,27 +240,27 @@ public class ModifyMemberAction extends LoggedAction {
         // statement ...
         if (!isEmpty(me.getFullname()) && !isEmpty(fullname) && !me.getFullname().equals(fullname)) {
             if (deleteFullName != null && deleteFullName.booleanValue()) {
-                session.notifyBad(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
+                session.notifyError(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
+                url.getFullnameParameter().addErrorMessage(Context.tr("You cannot delete your fullname, and indicate a new value at the same time."));
                 error = true;
             }
         }
 
         try {
-            if(email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && MemberManager.emailExists(email)) {
-                session.notifyBad(Context.tr("This email is already used."));
-                url.getEmailParameter().getCustomMessages().add(new Message(Context.tr("Email already used.")));
+            if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && MemberManager.emailExists(email)) {
+                url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
                 error = true;
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("Fail to read your email."));
-            Log.web().error("Fail to read an email",e);
+            Log.web().error("Fail to read an email", e);
             error = true;
         }
 
         // Avatar and delete avatar
         if (deleteAvatar != null && deleteAvatar.booleanValue() && me.getAvatar() != null && !me.getAvatar().isNull()) {
             if (!isEmpty(avatar)) {
-                session.notifyBad(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
+                url.getAvatarParameter().addErrorMessage(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
                 error = true;
             }
         }
@@ -260,7 +273,7 @@ public class ModifyMemberAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new ModifyMemberPageUrl();
     }
 

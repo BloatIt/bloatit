@@ -17,7 +17,6 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -146,14 +145,14 @@ public final class OfferAction extends UserContentAction {
 
         if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
             session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
-            url.getPercentMajorParameter().getCustomMessages().add(new Message(Context.tr("You have to specify both the Major and Fatal percent.")));
-            url.getPercentFatalParameter().getCustomMessages().add(new Message(Context.tr("You have to specify both the Major and Fatal percent.")));
+            url.getPercentMajorParameter().addErrorMessage(Context.tr("You have to specify both the Major and Fatal percent."));
+            url.getPercentFatalParameter().addErrorMessage(Context.tr("You have to specify both the Major and Fatal percent."));
             everythingIsRight = false;
         }
         if (percentFatal != null && percentFatal + percentMajor > 100) {
             session.notifyBad(Context.tr("Major + Fatal percent cannot be > 100 !!"));
-            url.getPercentMajorParameter().getCustomMessages().add(new Message(Context.tr("Major + Fatal percent cannot be > 100 !!")));
-            url.getPercentFatalParameter().getCustomMessages().add(new Message(Context.tr("Major + Fatal percent cannot be > 100 !!")));
+            url.getPercentMajorParameter().addErrorMessage(Context.tr("Major + Fatal percent cannot be > 100 !!"));
+            url.getPercentFatalParameter().addErrorMessage(Context.tr("Major + Fatal percent cannot be > 100 !!"));
             everythingIsRight = false;
         }
         if (draftOffer != null && !draftOffer.isDraft()) {
@@ -162,7 +161,7 @@ public final class OfferAction extends UserContentAction {
         }
         if(!expiryDate.isFuture()){
             session.notifyBad(Context.tr("The date must be in the future."));
-            url.getExpiryDateParameter().getCustomMessages().add(new Message(Context.tr("The date must be in the future.")));
+            url.getExpiryDateParameter().addErrorMessage(Context.tr("The date must be in the future."));
             everythingIsRight = false;
         }
 
@@ -174,7 +173,7 @@ public final class OfferAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if (feature != null) {
             transmitParameters();
             final MakeOfferPageUrl redirectUrl = new MakeOfferPageUrl(feature);

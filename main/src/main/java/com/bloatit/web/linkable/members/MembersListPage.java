@@ -52,14 +52,13 @@ public final class MembersListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
         final PageIterable<Member> memberList = MemberManager.getAll();
         final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
 
-        // TODO: avoid conflict
         final MembersListPageUrl clonedUrl = url.clone();
         pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl(), new PlaceHolderElement(), new HtmlClearer());
         pageTitle.add(pagedMemberList);
@@ -114,7 +113,7 @@ public final class MembersListPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return MembersListPage.generateBreadcrumb();
     }
 

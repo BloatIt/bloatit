@@ -26,7 +26,6 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AddSoftwareActionUrl;
@@ -128,7 +127,7 @@ public final class AddSoftwareAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new AddSoftwarePageUrl();
     }
 
@@ -139,7 +138,6 @@ public final class AddSoftwareAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        // TODO make sure all the parameters are transmitted
         session.addParameter(url.getShortDescriptionParameter());
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSoftwareNameParameter());

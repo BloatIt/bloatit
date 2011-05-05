@@ -97,7 +97,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
         final String description,
         final Locale locale,
         final Level errorLevel) {
-        super(DaoBug.createAndPersist(member.getDao(), DaoGetter.getTeam(team), milestone.getDao(), title, description, locale, errorLevel));
+        super(DaoBug.createAndPersist(member.getDao(), DaoGetter.get(team), milestone.getDao(), title, description, locale, errorLevel));
     }
 
     /**
@@ -143,7 +143,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtBug.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               DaoGetter.get(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
                                                                text);
         getDao().addComment(comment);

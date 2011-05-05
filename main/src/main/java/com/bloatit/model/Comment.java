@@ -102,7 +102,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtComment.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               DaoGetter.get(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
                                                                text);
         getDao().addChildComment(comment);

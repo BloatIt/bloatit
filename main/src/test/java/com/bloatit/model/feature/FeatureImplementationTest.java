@@ -413,31 +413,6 @@ public class FeatureImplementationTest extends ModelTestUnit {
         return feature;
     }
 
-//    public void testFinishedDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-//        final Feature feature = createFeatureAddOffer120AddContribution120BeginDev();
-//
-//        try {
-//            feature.getSelectedOffer();
-//            fail();
-//        } catch (final UnauthorizedOperationException e) {
-//            assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED, e.getCode());
-//        }
-//
-//        try {
-//            feature.authenticate(yoAuthToken);
-//            feature.releaseCurrentMilestone();
-//            fail();
-//        } catch (final UnauthorizedOperationException e) {
-//            assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_FEATURE, e.getCode());
-//        }
-//
-//        feature.authenticate(tomAuthToken);
-//        feature.releaseCurrentMilestone();
-//
-//        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-//        assertEquals(120, feature.getContribution().intValue());
-//    }
-
     @Test
     public void testOfferWithALotOfMilestone() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Feature feature = createFeatureByThomas();
@@ -464,51 +439,28 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
 
-        // feature.authenticate(tomAuthToken);
-        // feature.releaseCurrentMilestone();
-        //
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentMilestone(true));
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        //
-        // feature.releaseCurrentMilestone();
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentMilestone(true));
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        //
-        // feature.releaseCurrentMilestone();
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentMilestone(true));
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        //
-        // feature.releaseCurrentMilestone();
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentMilestone(true));
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        //
-        // feature.releaseCurrentMilestone();
-        // assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
-        // assertTrue(feature.validateCurrentMilestone(true));
-        // assertEquals(FeatureState.FINISHED, feature.getFeatureState());
-        // TODO
+        feature.authenticate(tomAuthToken);
+        feature.getSelectedOffer().authenticate(tomAuthToken);
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        feature.getSelectedOffer().validateCurrentMilestone(true);
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
 
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        feature.getSelectedOffer().validateCurrentMilestone(true);
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        feature.getSelectedOffer().validateCurrentMilestone(true);
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        feature.getSelectedOffer().validateCurrentMilestone(true);
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+
+        assertEquals(FeatureState.DEVELOPPING, feature.getFeatureState());
+        feature.getSelectedOffer().validateCurrentMilestone(true);
+        assertEquals(FeatureState.FINISHED, feature.getFeatureState());
     }
-
-    // public void testAddComment() {
-    // fail("Not yet implemented");
-    // }
-    //
-    // public void testGetContributionMax() {
-    // fail("Not yet implemented");
-    // }
-    //
-    // public void testGetContributionMin() {
-    // fail("Not yet implemented");
-    // }
-    //
-    // public void testGetSelectedOffer() {
-    // fail("Not yet implemented");
-    // }
 
     // Passe into dev simulate the 1 day time to wait.
     // We assume that all the model has been closed, then the time out append,

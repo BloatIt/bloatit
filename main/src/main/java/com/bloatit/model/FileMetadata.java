@@ -56,7 +56,7 @@ public final class FileMetadata extends UserContent<DaoFileMetadata> {
      *      int)
      */
     public FileMetadata(final Member author, final Team team, final String filename, final String url, final FileType type, final int size) {
-        this(DaoFileMetadata.createAndPersist(author.getDao(), DaoGetter.getTeam(team), null, filename, url, type, size));
+        this(DaoFileMetadata.createAndPersist(author.getDao(), DaoGetter.get(team), null, filename, url, type, size));
     }
 
     /**

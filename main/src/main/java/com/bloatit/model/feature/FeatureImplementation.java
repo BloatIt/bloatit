@@ -33,7 +33,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
@@ -60,12 +59,6 @@ import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
-// TODO : delete comment.
-//
-
-/**
- * A feature is an feature :). It represent a feature made by one user.
- */
 public final class FeatureImplementation extends Kudosable<DaoFeature> implements Feature {
 
     /** The state object. */
@@ -115,9 +108,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                  final String description,
                                  final Software software) {
         this(DaoFeature.createAndPersist(author.getDao(),
-                                         DaoGetter.getTeam(team),
-                                         DaoDescription.createAndPersist(author.getDao(), DaoGetter.getTeam(team), locale, title, description),
-                                         software.getDao()));
+                                         DaoGetter.get(team),
+                                         DaoDescription.createAndPersist(author.getDao(), DaoGetter.get(team), locale, title, description),
+                                         DaoGetter.get(software)));
     }
 
     /**
@@ -164,7 +157,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             }
         }
         final DaoContribution contribution = getDao().addContribution(getAuthToken().getMember().getDao(),
-                                                                      DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                                      DaoGetter.get(getAuthToken().getAsTeam()),
                                                                       amount,
                                                                       comment);
         setStateObject(getStateObject().eventAddContribution());
@@ -218,7 +211,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtFeature.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               DaoGetter.get(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
                                                                text);
         getDao().addComment(comment);
@@ -558,22 +551,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     }
 
     @Override
-    public float getMemberProgression(final Actor<?> author) throws UnauthorizedOperationException {
-
-        final PageIterable<Contribution> contributions = getContributions();
-
-        BigDecimal memberAmount = BigDecimal.ZERO;
-        // TODO: optimize to avoid to kill the server
-        for (final Contribution contribution : contributions) {
-            if (contribution.getAuthor().equals(author)) {
-                memberAmount = memberAmount.add(contribution.getAmount());
-            }
-        }
-
+    public float getMemberProgression(final Member author) throws UnauthorizedOperationException {
+        final BigDecimal memberAmount = getContributionOf(author);
         final float memberAmountFloat = memberAmount.floatValue();
         final float totalAmountFloat = getContribution().floatValue();
         final float progression = getProgression();
-
         return progression * memberAmountFloat / totalAmountFloat;
     }
 
@@ -599,6 +581,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public BigDecimal getContributionMin()  {
         return getDao().getContributionMin();
+    }
+    
+    @Override
+    public BigDecimal getContributionOf(final Member member)  {
+        return getDao().getContributionOf(member.getDao());
     }
 
     @Override

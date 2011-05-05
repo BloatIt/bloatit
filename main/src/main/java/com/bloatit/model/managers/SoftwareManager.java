@@ -54,8 +54,4 @@ public final class SoftwareManager {
     public static PageIterable<Software> getAll() {
         return new SoftwareList(DBRequests.getAll(DaoSoftware.class));
     }
-
-    public static Software getDefaultSoftware() {
-        return Software.create(DaoSoftware.getByName("no-software"));
-    }
 }

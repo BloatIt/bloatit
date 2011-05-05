@@ -40,7 +40,6 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
@@ -61,7 +60,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private final Feature feature;
 
-    protected FeatureSummaryComponent(final Feature feature, ElveosUserToken userToken) {
+    protected FeatureSummaryComponent(final Feature feature, final ElveosUserToken userToken) {
         super();
         this.feature = feature;
 
@@ -78,7 +77,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_left
                     final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
                     {
-                        featureSummaryLeft.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                        featureSummaryLeft.add(new SoftwaresTools.Logo(feature.getSoftware()));
                     }
                     featureSummaryTop.add(featureSummaryLeft);
 
@@ -90,7 +89,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("feature_title");
-                        title.add(SoftwaresTools.getSoftwareLink(feature.getSoftware()));
+                        title.add(new SoftwaresTools.Link(feature.getSoftware()));
                         title.addText(" – ");
                         title.addText(FeaturesTools.getTitle(feature));
 
@@ -167,7 +166,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     {
                         @SuppressWarnings("unused") final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')",
                                                                                                      Context.tr("+ Share"));
-                        // TODO: enable share button
                         // featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
@@ -187,7 +185,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         }
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature, ElveosUserToken userToken) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");

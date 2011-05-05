@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
-import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
@@ -28,9 +27,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.SoftwareManager;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -92,11 +89,10 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Linked software
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
+        softwareInput.addDropDownElement("", Context.tr("Select a software"));
         for (final Software software : SoftwareManager.getAll()) {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
-
-        // TODO: set the default value to "select a software"
         createFeatureForm.add(softwareInput);
 
         // As team input
@@ -178,7 +174,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return CreateFeaturePage.generateBreadcrumb();
     }
 

@@ -12,7 +12,6 @@
 package com.bloatit.web.linkable.features;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -27,8 +26,6 @@ import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
-import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -77,21 +74,13 @@ public final class CreateFeatureAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-
-        final Software softwareToUse = (software==null? SoftwareManager.getDefaultSoftware(): software);
-        if(softwareToUse == null) {
-            //The default software do not exist
-            session.notifyError(Context.tr("The default software doesn't exist. Impossible to create the feature."));
-            throw new BadProgrammerException("The default software doesn't exist. Impossible to create the feature. Create quickly the default feature!");
-        }
-
-        final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, softwareToUse);
+        final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
         propagateAttachedFileIfPossible(feature);
         return new FeaturePageUrl(feature);
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new CreateFeaturePageUrl();
     }
 

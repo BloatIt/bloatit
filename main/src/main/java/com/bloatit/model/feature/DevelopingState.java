@@ -55,7 +55,6 @@ public class DevelopingState extends AbstractFeatureState {
 
     @Override
     public AbstractFeatureState eventDevelopmentTimeOut() {
-        // TODO: make Penality.
         return this;
     }
 

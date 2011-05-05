@@ -55,17 +55,14 @@ public class HtmlContributionLine extends HtmlTableLine {
         addCell(new MoneyImageCell());
         addCell(new AfterMoneyCell());
 
-
         addCell(new CategorieCell());
         addCell(new DescriptionCell());
 
         addCell(new AmountCell());
 
-
-
     }
 
-    private class SoftwareLogoCell extends HtmlTableCell{
+    private class SoftwareLogoCell extends HtmlTableCell {
 
         public SoftwareLogoCell() {
             super("");
@@ -73,11 +70,11 @@ public class HtmlContributionLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-                return SoftwaresTools.getSoftwareLogoSmall(feature.getSoftware());
+            return new SoftwaresTools.SmallLogo(feature.getSoftware());
         }
     }
 
-    private class BeforeMoneyCell extends HtmlTableCell{
+    private class BeforeMoneyCell extends HtmlTableCell {
 
         public BeforeMoneyCell() {
             super("quotation_detail_line_money");
@@ -89,7 +86,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
     }
 
-    private class AfterMoneyCell extends HtmlTableCell{
+    private class AfterMoneyCell extends HtmlTableCell {
 
         public AfterMoneyCell() {
             super("quotation_detail_line_money");
@@ -101,7 +98,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
     }
 
-    private class MoneyImageCell extends HtmlTableCell{
+    private class MoneyImageCell extends HtmlTableCell {
 
         public MoneyImageCell() {
             super("quotation_detail_line_money_image");
@@ -113,7 +110,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
     }
 
-    private class CategorieCell extends HtmlTableCell{
+    private class CategorieCell extends HtmlTableCell {
 
         public CategorieCell() {
             super("quotation_detail_line_categorie");
@@ -125,7 +122,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
     }
 
-    private class DescriptionCell extends HtmlTableCell{
+    private class DescriptionCell extends HtmlTableCell {
 
         public DescriptionCell() {
             super("quotation_detail_line_description");
@@ -137,7 +134,7 @@ public class HtmlContributionLine extends HtmlTableLine {
         }
     }
 
-    private class AmountCell extends HtmlTableCell{
+    private class AmountCell extends HtmlTableCell {
 
         public AmountCell() {
             super("quotation_detail_line_amount");
@@ -145,7 +142,6 @@ public class HtmlContributionLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-
 
             final HtmlDiv amountBlock = new HtmlDiv();
             amountBlock.add(new HtmlDiv("quotation_detail_line_amount_money").addText(localizator.getCurrency(amount).getTwoDecimalEuroString()));

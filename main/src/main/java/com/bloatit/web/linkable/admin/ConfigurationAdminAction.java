@@ -55,13 +55,13 @@ public class ConfigurationAdminAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return null;
     }
 
     @Override
     protected void transmitParameters() {
-        // TODO
+        // Nothing to do
     }
 
     @Override

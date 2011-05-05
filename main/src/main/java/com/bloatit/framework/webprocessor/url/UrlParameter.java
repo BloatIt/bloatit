@@ -78,8 +78,8 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
-    public Messages getCustomMessages() {
-        return customMessages;
+    public void addErrorMessage(final String message) {
+        customMessages.add(new Message(message));
     }
 
     public String getStringValue() {

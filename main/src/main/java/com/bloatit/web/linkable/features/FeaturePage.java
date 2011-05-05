@@ -78,7 +78,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         // The feature page is composed of 3 parts:
         // - The summary
         // - The tab panel
@@ -86,7 +86,6 @@ public final class FeaturePage extends ElveosPage {
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        // TODO for the next lines directly use the userToken.
         layout.addLeft(new FeatureSummaryComponent(feature, userToken));
         layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, userToken));
 
@@ -106,7 +105,11 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumb(final Feature feature) {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
+        if (feature.getSoftware() != null) {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
+        } else {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature {0}", String.valueOf(feature.getId()))));
+        }
         return breadcrumb;
     }
 
@@ -159,7 +162,7 @@ public final class FeaturePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }

@@ -50,7 +50,7 @@ public final class MemberManager {
         return Member.create(daoMember);
     }
 
-    public static Member getMemberByEmail(String email) {
+    public static Member getMemberByEmail(final String email) {
         final DaoMember daoMember = DaoMember.getByEmail(email);
         if(daoMember == null){
             return null;
@@ -74,7 +74,6 @@ public final class MemberManager {
      * @param email the email
      * @return <code>true</code>, if it exists, <code>false</code> otherwise.
      */
-    // TODO make sure i am working.
     public static boolean emailExists(final String email) {
         return DaoActor.emailExists(email);
     }

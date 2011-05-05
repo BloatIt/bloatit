@@ -222,7 +222,7 @@ public class MimeElement {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
 
         for (final Entry<String, String> headerField : header.entrySet()) {
             result.append("[" + headerField.getKey() + "]: " + headerField.getValue() + "\n");
@@ -238,9 +238,9 @@ public class MimeElement {
                 }
                 result.append('\n');
             } catch (final FileNotFoundException e) {
-                e.printStackTrace();
+                Log.framework().fatal("error in mime Element", e);
             } catch (final IOException e) {
-                e.printStackTrace();
+                Log.framework().fatal("error in mime Element", e);
             }
         }
 

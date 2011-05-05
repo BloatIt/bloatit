@@ -17,7 +17,6 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.data.DaoTeam.Right;
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -90,7 +89,7 @@ public final class CreateTeamAction extends LoggedAction {
 
         if (TeamManager.exist(login)) {
             session.notifyError(Context.tr("The team name ''{0}''already used. Find another name.", login));
-            url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Team name already used.")));
+            url.getLoginParameter().addErrorMessage(Context.tr("Team name already used."));
             return doProcessErrors();
         }
 
@@ -114,7 +113,7 @@ public final class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new CreateTeamPageUrl();
     }
 

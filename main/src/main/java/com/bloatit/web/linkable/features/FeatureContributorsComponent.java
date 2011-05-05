@@ -56,8 +56,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
             // Display contribution count
             contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
 
-            // TODO: generate contribution graph
-
             // Display contribution list
             final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
             contributorsBlock.add(table);
@@ -181,7 +179,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                         value = contribution.getAuthor().getDisplayName();
                         break;
                     case 1:
-                        // TODO: align money at right in CSS
                         value = Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString();
                         break;
                     case 2:

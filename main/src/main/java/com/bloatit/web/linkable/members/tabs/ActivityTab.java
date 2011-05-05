@@ -85,7 +85,7 @@ public class ActivityTab extends HtmlTab {
         return master;
     }
 
-    public static HtmlElement generateActivities(Member member, MemberPageUrl url) {
+    public static HtmlElement generateActivities(final Member member, final MemberPageUrl url) {
         final HtmlDiv recentActivity = new HtmlDiv("recent_activity");
 
         final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
@@ -116,8 +116,6 @@ public class ActivityTab extends HtmlTab {
             return content.accept(new ActivityVisitor() {
                 @Override
                 public HtmlElement visit(final Translation model) {
-                    // TODO: After implementing correct translation stuff, do
-                    // something in here
                     return new HtmlParagraph("translation");
                 }
 

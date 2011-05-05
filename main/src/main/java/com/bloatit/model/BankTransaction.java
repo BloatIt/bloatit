@@ -26,7 +26,7 @@ import com.bloatit.data.DaoBankTransaction.State;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtBankTransaction;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
 
 /**
  * The Class BankTransaction.
@@ -168,7 +168,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     protected Actor<?> getAuthorUnprotected() {
-        Integer id = getDao().getAuthor().getId();
+        final Integer id = getDao().getAuthor().getId();
 
         try {
             Team team;
@@ -176,7 +176,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
             if(team != null) {
                 return team;
             }
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
         }
 
         try {
@@ -185,7 +185,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
             if(member != null) {
                 return member;
             }
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
         }
         return null;
     }
@@ -195,9 +195,9 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * bank during a transaction.
      *
      * @return the message
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedReadOnlyBankDataAccessException
      */
-    public String getMessage() throws UnauthorizedPrivateAccessException {
+    public String getMessage() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.Message(), Action.READ);
         return getDao().getMessage();
     }
@@ -206,9 +206,9 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Gets the paid value.
      *
      * @return the value
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedReadOnlyBankDataAccessException
      */
-    public BigDecimal getValuePaid() throws UnauthorizedPrivateAccessException {
+    public BigDecimal getValuePaid() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.ValuePaid(), Action.READ);
         return getDao().getValuePaid();
     }
@@ -217,9 +217,9 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Gets the value.
      *
      * @return the value
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedReadOnlyBankDataAccessException
      */
-    public BigDecimal getValue() throws UnauthorizedPrivateAccessException {
+    public BigDecimal getValue() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.Value(), Action.READ);
         return getDao().getValue();
     }
@@ -228,9 +228,9 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Gets the state.
      *
      * @return the state
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedReadOnlyBankDataAccessException
      */
-    public State getState() throws UnauthorizedPrivateAccessException {
+    public State getState() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.State(), Action.READ);
         return getDao().getState();
     }
@@ -261,14 +261,14 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Gets the reference. This is the generated purchase reference.
      *
      * @return the reference
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedReadOnlyBankDataAccessException
      */
-    public String getReference() throws UnauthorizedPrivateAccessException {
+    public String getReference() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.Reference(), Action.READ);
         return getDao().getReference();
     }
 
-    public Actor<?> getAuthor() throws UnauthorizedPrivateAccessException {
+    public Actor<?> getAuthor() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtBankTransaction.Author(), Action.READ);
         return getAuthorUnprotected();
     }

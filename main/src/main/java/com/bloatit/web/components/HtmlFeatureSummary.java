@@ -18,24 +18,19 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
-import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Member;
 import com.bloatit.model.Translation;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.FileResourceUrl;
 
 public final class HtmlFeatureSummary extends HtmlDiv {
 
@@ -58,7 +53,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
     }
 
     // "feature_summary"
-    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, ElveosUserToken userToken) {
+    public HtmlFeatureSummary(final Feature feature, final Compacity compacity, final ElveosUserToken userToken) {
         super(compacity.getCssClass());
         this.feature = feature;
         if (feature == null) {
@@ -93,7 +88,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @param userToken 
      * @throws UnauthorizedOperationException
      */
-    private void generateCompactStructure(ElveosUserToken userToken) throws UnauthorizedOperationException {
+    private void generateCompactStructure(final ElveosUserToken userToken) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             featureSummaryTop.add(generateTitle());
@@ -106,7 +101,7 @@ public final class HtmlFeatureSummary extends HtmlDiv {
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
             {
                 // Add software image
-                featureSummaryLeft.add(generateSoftwareImage());
+                featureSummaryLeft.add(new SoftwaresTools.Logo(feature.getSoftware()));
             }
             featureSummaryBottom.add(featureSummaryLeft);
 
@@ -127,13 +122,13 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @param me 
      * @throws UnauthorizedOperationException
      */
-    private void generateNormalStructure(ElveosUserToken userToken) throws UnauthorizedOperationException {
+    private void generateNormalStructure(final ElveosUserToken userToken) throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryTop = new HtmlDiv("feature_summary_top");
         {
             final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
             {
                 // Add software image
-                featureSummaryLeft.add(generateSoftwareImage());
+                featureSummaryLeft.add(new SoftwaresTools.Logo(feature.getSoftware()));
             }
             featureSummaryTop.add(featureSummaryLeft);
 
@@ -182,26 +177,14 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      * @return
      * @throws UnauthorizedOperationException
      */
-    private XmlNode generateSoftwareImage() throws UnauthorizedOperationException {
-        // TODO: set a fixed size block to not depend of the image
-        // size
-        final FileMetadata image = feature.getSoftware().getImage();
-        if (image != null) {
-            final FileResourceUrl imageUrl = new FileResourceUrl(image);
-            return new HtmlImage(imageUrl, image.getShortDescription(), "software_image");
-        }
-        // TODO: add a fallback image
-        return new PlaceHolderElement();
-    }
-
-    /**
-     * @return
-     * @throws UnauthorizedOperationException
-     */
     private XmlNode generateTitle() throws UnauthorizedOperationException {
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
         final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
-        softwareSpan.addText(feature.getSoftware().getName());
+        if (feature.getSoftware() != null) {
+            softwareSpan.addText(feature.getSoftware().getName());
+        }else {
+            softwareSpan.addText(Context.tr("No software"));
+        }
         final HtmlTitle title = new HtmlTitle(1);
         title.setCssClass("feature_title");
         title.add(softwareSpan);

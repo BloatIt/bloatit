@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,7 +208,7 @@ public class DaoContribution extends DaoUserContent {
         if ((percent + this.percentDone) == 100) {
             moneyToGive = this.amount.subtract(this.alreadyGivenMoney);
         } else {
-            moneyToGive = this.amount.multiply(new BigDecimal((this.amount.floatValue() * percent) / 100));
+            moneyToGive = new BigDecimal((this.amount.floatValue() * percent) / 100).setScale(2, RoundingMode.HALF_EVEN);
         }
         return moneyToGive;
     }

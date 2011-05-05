@@ -66,8 +66,8 @@ public final class CheckContributionPage extends QuotationPage {
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
     @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
-    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final CheckContributionPageUrl url;
@@ -80,7 +80,7 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError(ElveosUserToken userToken) throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -220,7 +220,7 @@ public final class CheckContributionPage extends QuotationPage {
             getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
 
         HtmlChargeAccountLine line;
         try {
@@ -251,7 +251,6 @@ public final class CheckContributionPage extends QuotationPage {
             payBlock.add(payContributionLink);
         }
 
-
         final HtmlTable lines = new HtmlTable(model);
         lines.setCssClass("quotation_details_lines");
         group.add(lines);
@@ -272,7 +271,7 @@ public final class CheckContributionPage extends QuotationPage {
             final HtmlDiv changeLine = new HtmlDiv("change_line");
             {
 
-                changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                changeLine.add(new SoftwaresTools.Logo(feature.getSoftware()));
                 changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
             }
             featureContributionSummary.add(changeLine);
@@ -297,7 +296,7 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
     }
 

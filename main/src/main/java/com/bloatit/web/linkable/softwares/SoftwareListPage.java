@@ -50,7 +50,7 @@ public final class SoftwareListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
@@ -58,7 +58,6 @@ public final class SoftwareListPage extends ElveosPage {
         final PageIterable<Software> softwareList = SoftwareManager.getAll();
         final HtmlRenderer<Software> softwareItemRenderer = new SoftwareRenderer();
 
-        // TODO: avoid conflict
         final SoftwareListPageUrl clonedUrl = url.clone();
         pagedSoftwareList = new HtmlPagedList<Software>(softwareItemRenderer, softwareList, clonedUrl, clonedUrl.getPagedSoftwareListUrl());
 
@@ -67,7 +66,7 @@ public final class SoftwareListPage extends ElveosPage {
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
-        
+
         layout.addRight(new SideBarDocumentationBlock("software"));
 
         return layout;
@@ -84,7 +83,7 @@ public final class SoftwareListPage extends ElveosPage {
     }
 
     private class SoftwareRenderer implements HtmlRenderer<Software> {
-        
+
         public SoftwareRenderer() {
             super();
         }
@@ -94,7 +93,7 @@ public final class SoftwareListPage extends ElveosPage {
             final SoftwarePageUrl softwareUrl = new SoftwarePageUrl(software);
             final HtmlDiv box = new HtmlDiv("software_box");
 
-            box.add(new HtmlDiv("float_right").add(SoftwaresTools.getSoftwareLogo(software)));
+            box.add(new HtmlDiv("float_right").add(new SoftwaresTools.Logo(software)));
 
             final HtmlDiv textBox = new HtmlDiv("software_text");
             HtmlLink htmlLink;
@@ -108,7 +107,7 @@ public final class SoftwareListPage extends ElveosPage {
     };
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return SoftwareListPage.generateBreadcrumb();
     }
 

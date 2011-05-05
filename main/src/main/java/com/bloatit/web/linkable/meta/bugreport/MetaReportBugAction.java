@@ -53,7 +53,7 @@ public final class MetaReportBugAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken userToken) {
+    protected Url doProcess(final ElveosUserToken userToken) {
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
         bugReport += "* **Author:** " + (userToken.isAuthenticated() ? userToken.getMember().getLogin() : "not logged") + "\n";
@@ -66,19 +66,17 @@ public final class MetaReportBugAction extends ElveosAction {
         } else {
             session.notifyError("A problem occur during the bug report process! Please report this bug! :)");
         }
-
-        // TODO: add link system in documentation
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 
