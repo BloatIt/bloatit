@@ -1,10 +1,26 @@
+
 Accueil de la documentation
 ===========================
 
+Bienvenue sur la page de documentation d'elveos.
 
-Table of contents
------------------
+Table des matières
+------------------
 
-[Présentation courte](documentation/doc-short)
+- Géneral
+  - [Présentation d'Elveos](/fr/documentation/doc-presentation)
+  - [FAQ](/fr/documentation/doc-faq)
+  - Vision et éthique
+  - [Nos Conditions Générales](/fr/documentation/doc-cgu)
 
-[FAQ](documentation/doc-faq)
+
+- Fonctionnement détaillé d'elveos
+  - Cycle de vie d'une demande  
+
+- Informations techniques
+  - API
+  - Bloatit, le moteur d'elveos
+  - Licence du site et du contenu
+
+
+

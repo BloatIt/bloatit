@@ -77,7 +77,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
         final HtmlForm form = new HtmlForm(formUrl.urlString());
 
         form.enableFileUpload();
-        addAddAttachmentField(form, FILE_MAX_SIZE_MIO + " Mio");
+        addAddAttachmentField(form, FILE_MAX_SIZE_MIO + " Mio", false);
         form.add(new HtmlSubmit(tr("Submit")));
 
         group.add(title);

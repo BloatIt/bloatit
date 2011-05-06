@@ -44,7 +44,7 @@ public abstract class CreateUserContentPage extends LoggedPage {
 
     /**
      * Add a asTeam field into the form (see: {@link #getForm()}).
-     * 
+     *
      * @param me The user creating this userContent
      * @param right The type of action we are doing. For example if this
      *            userContent is a comment you should use
@@ -61,7 +61,7 @@ public abstract class CreateUserContentPage extends LoggedPage {
 
     /**
      * Add a language selector into the {@link #getForm()} form.
-     * 
+     *
      * @param label the label of the language selector.
      * @param comment the comment on the language selector field.
      */
@@ -70,7 +70,11 @@ public abstract class CreateUserContentPage extends LoggedPage {
     }
 
     protected void addAddAttachmentField(final HtmlForm form, final String size) {
-        form.add(new AttachmentField(targetUrl, size));
+        addAddAttachmentField(form,size,true);
+    }
+
+    protected void addAddAttachmentField(final HtmlForm form, final String size, boolean jsShowDown) {
+        form.add(new AttachmentField(targetUrl, size, jsShowDown));
         form.enableFileUpload();
     }
 

@@ -14,8 +14,9 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
+
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -134,7 +135,7 @@ public final class IndexPage extends ElveosPage {
         if (moneyRaised == null) {
             moneyRaised = BigDecimal.ZERO;
         }
-        
+
         if (userToken.isAuthenticated()){
             final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, userToken.getMember());
             final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
@@ -159,7 +160,7 @@ public final class IndexPage extends ElveosPage {
 
     @Override
     protected String createPageTitle() {
-        return "Finance free software";
+        return Context.tr("Finance free softwares");
     }
 
     @Override
