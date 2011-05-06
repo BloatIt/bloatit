@@ -58,7 +58,17 @@ then
 	exit 1
 fi
 
-MVN="echo -f $REPOS_DIR/pom.xml" 
+MVN="mvn -q -f $REPOS_DIR/pom.xml" 
+
+if [ -n "$(git status --porcelain)" ] ; then
+	echo there is non commited data. abording.
+	exit
+fi
+
+if [ -n "$(git tag | grep "^elveos-$_RELEASE_VERSION$")" ] ; then
+	echo I found a tag with this current version. Make sure you have not make any mistakes. abording."
+	exit
+fi
 
 echo "RELEASE_VERSION=$RELEASE_VERSION
 NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
@@ -82,12 +92,14 @@ changePomVersion(){
 
 	for i in ${_dirs[@]} ; do
 		$_xmls ed -L  $_xmlstarlet_opt -u "/mvn:project/mvn:version" -v "$_version" "$_repos_dir/$i/pom.xml"
+		exit_on_failure $?
 		_artifacts="$_artifacts $( $_xmls sel $_xmlstarlet_opt -t -v "/mvn:project/mvn:artifactId" "$_repos_dir/$i/pom.xml")"
 	done
 	_artifacts=( $_artifacts )
 	for i in ${_dirs[@]} ; do
 		for j in ${_artifacts[@]} ; do
 			$_xmls ed -L $_xmlstarlet_opt -u "//mvn:dependency[mvn:artifactId='$j']/mvn:version" -v "$_version" "$_repos_dir/$i/pom.xml"
+			exit_on_failure $?
 		done
 	done
 }
@@ -103,7 +115,7 @@ changePomVersion(){
 performMvnRelease() {
     local _prefix="$1"
     local _release_version="$2"
-    local _next_snapshot_version="$3"
+    local _next_snapshot_version="$3-SNAPSHOT"
 	local _repos_dir="$4"
     local _mvn="$3"
 
@@ -111,25 +123,34 @@ performMvnRelease() {
     read -p "I need the master password: " _password ; echo
     stty echo
 
+	#
+	# Create the realease
+	#
 	log_date "Change the versions in the poms to: $_release_version"
 	changePomVersion "$_repos_dir" "$_release_version"
+    exit_on_failure $?
 
     log_date "Mvn clean install + tests"
     $_mvn clean install
     exit_on_failure $?
 
 	log_date "Create a git tag on this current version: $_release_version"
+	git commit -a -m "release the $_release_version"
+	git tag "elveos-$_release_version"
 
-	
-    $_mvn --batch-mode \
-        -Dtag=$_prefix-$_release_version release:prepare \
-        -DreleaseVersion=$_release_version \
-        -DdevelopmentVersion=$_next_snapshot_version-SNAPSHOT \
-        -DautoVersionSubmodules=true \
-        -Darguments="-DargLine=-DmasterPassword=$_password" \
-        && $_mvn release:clean \
-        || ( $_mvn release:rollback ; false )
+	#
+	# Go back to working version
+	#
+	log_date "Going to the new snapshot version (pom): $_next_snapshot_version"
+	changePomVersion "$_repos_dir" "$_next_snapshot_version"
+    exit_on_failure $?
 
+	log_date "Mvn install"
+	$_mvn install -Dmaven.test.skip=true
+    exit_on_failure $?
+
+	log_date "Commit the new pom"
+	git commit -a -m "Going to the dev version: $_next_snapshot_version"
     exit_on_failure $?
 }
 
