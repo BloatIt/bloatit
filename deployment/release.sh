@@ -58,7 +58,7 @@ then
 	exit 1
 fi
 
-MVN="mvn -f $REPOS_DIR/pom.xml" 
+MVN="echo -f $REPOS_DIR/pom.xml" 
 
 echo "RELEASE_VERSION=$RELEASE_VERSION
 NEXT_SNAPSHOT_VERSION=$NEXT_SNAPSHOT_VERSION
@@ -66,27 +66,61 @@ REPOS_DIR=$REPOS_DIR"
 log_ok "You are about to create a new release and send it to a distant server" 
 abort_if_non_zero $?
 
+
+##
+## Change the versions in the poms files
+##    REPOS_DIR the directory where the main pom.xml is
+##    VERSION : the version string of the release.
+changePomVersion(){
+	local _repos_dir="$1"
+    local _version="$2"
+
+	local _xmls=xmlstarlet
+	local _xmlstarlet_opt="-N mvn=http://maven.apache.org/POM/4.0.0" 
+
+	local _dirs=( $( $_xmls sel $_xmlstarlet_opt -t -v "/mvn:project/mvn:modules" "$_repos_dir"/pom.xml) "." ) 
+
+	for i in ${_dirs[@]} ; do
+		$_xmls ed -L  $_xmlstarlet_opt -u "/mvn:project/mvn:version" -v "$_version" "$_repos_dir/$i/pom.xml"
+		_artifacts="$_artifacts $( $_xmls sel $_xmlstarlet_opt -t -v "/mvn:project/mvn:artifactId" "$_repos_dir/$i/pom.xml")"
+	done
+	_artifacts=( $_artifacts )
+	for i in ${_dirs[@]} ; do
+		for j in ${_artifacts[@]} ; do
+			$_xmls ed -L $_xmlstarlet_opt -u "//mvn:dependency[mvn:artifactId='$j']/mvn:version" -v "$_version" "$_repos_dir/$i/pom.xml"
+		done
+	done
+}
+
 ##
 ## Perform the mvn release.
 ## Ordered parameters :
 ##    PREFIX : the tag prefix name (For example "elveos").
 ##    RELEASE_VERSION : the version string of the release.
 ##    NEXT_SNAPSHOT_VERSION : the version of the next snapshot.
+##    REPOS_DIR the directory where the main pom.xml is
 ##    MVN : the mvn command to launch (for example "mvn -f ../pom.xml") 
 performMvnRelease() {
     local _prefix="$1"
     local _release_version="$2"
     local _next_snapshot_version="$3"
-    local _mvn="$4"
+	local _repos_dir="$4"
+    local _mvn="$3"
 
     stty -echo
     read -p "I need the master password: " _password ; echo
     stty echo
 
-    log_date "Make a mvn release." 
-    $_mvn install -Dmaven.test.skip=true
+	log_date "Change the versions in the poms to: $_release_version"
+	changePomVersion "$_repos_dir" "$_release_version"
+
+    log_date "Mvn clean install + tests"
+    $_mvn clean install
     exit_on_failure $?
 
+	log_date "Create a git tag on this current version: $_release_version"
+
+	
     $_mvn --batch-mode \
         -Dtag=$_prefix-$_release_version release:prepare \
         -DreleaseVersion=$_release_version \
@@ -99,7 +133,7 @@ performMvnRelease() {
     exit_on_failure $?
 }
 
-performMvnRelease "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$MVN"
+performMvnRelease "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$REPOS_DIR" "$MVN"
 
 success "Release done."
 
