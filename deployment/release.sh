@@ -66,7 +66,7 @@ if [ -n "$(git status --porcelain)" ] ; then
 fi
 
 if [ -n "$(git tag | grep "^elveos-$_RELEASE_VERSION$")" ] ; then
-	echo I found a tag with this current version. Make sure you have not make any mistakes. abording."
+	echo "I found a tag with this current version. Make sure you have not make any mistakes. abording."
 	exit
 fi
 
