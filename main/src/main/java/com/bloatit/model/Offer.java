@@ -27,7 +27,6 @@ import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtOffer;
@@ -105,8 +104,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         getDao().setDraft(false);
     }
 
-    // TODO make me protected
-    public boolean validateCurrentMilestone(final boolean force) {
+    boolean validateCurrentMilestone(final boolean force) {
         // If the validation is not complete, there is nothing to do in the
         // feature
         final DaoMilestone currentMilestone = findCurrentDaoMilestone();
@@ -145,8 +143,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         return currentMilestone.shouldValidatePart(level);
     }
 
-    // TODO make me protected
-    public void cancelEverythingLeft() {
+    void cancelEverythingLeft() {
         getDao().cancelEverythingLeft();
     }
 
@@ -179,7 +176,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
-    // TODO make me protected
+    // Public data, no right management.
     public boolean isFinished() {
         return !hasMilestoneLeft();
     }

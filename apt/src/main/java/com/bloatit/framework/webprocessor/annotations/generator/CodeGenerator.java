@@ -205,7 +205,6 @@ public class CodeGenerator {
             if (param.getTypeOrTemplateType().equals(param.getTypeWithoutTemplate())) {
                 newParam.addParameter("null");
             } else {
-                // TODO change to a collection !
                 newParam.addParameter("new ArrayList()");
             }
             newParam.addParameter("new " + newParamDescription);

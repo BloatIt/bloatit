@@ -52,6 +52,7 @@ public final class JoinTeamAction extends LoggedAction {
         if (targetTeam.isPublic()) {
             try {
                 me.addToPublicTeam(targetTeam);
+                session.notifyGood(Context.tr("You are now a member of team ''{0}''.", targetTeam.getDisplayName()));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyBad(Context.tr("Oops we had an internal issue preventing you to join team. It's a bug, please notify us."));
                 throw new ShallNotPassException("User tries to join public team, but is not allowed to", e);
@@ -69,7 +70,7 @@ public final class JoinTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if (targetTeam != null) {
             return new TeamPageUrl(targetTeam);
         }

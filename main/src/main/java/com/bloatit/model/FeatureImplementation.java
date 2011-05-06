@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.feature;
+package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -33,21 +33,15 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
-import com.bloatit.model.Bug;
-import com.bloatit.model.Comment;
-import com.bloatit.model.Contribution;
-import com.bloatit.model.Creator;
-import com.bloatit.model.DaoGetter;
-import com.bloatit.model.Description;
-import com.bloatit.model.Feature;
-import com.bloatit.model.Kudosable;
-import com.bloatit.model.Member;
-import com.bloatit.model.ModelClassVisitor;
-import com.bloatit.model.ModelConfiguration;
-import com.bloatit.model.Offer;
-import com.bloatit.model.PlannedTask;
-import com.bloatit.model.Software;
-import com.bloatit.model.Team;
+import com.bloatit.model.feature.AbstractFeatureState;
+import com.bloatit.model.feature.DevelopingState;
+import com.bloatit.model.feature.DiscardedState;
+import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.feature.FinishedState;
+import com.bloatit.model.feature.PendingState;
+import com.bloatit.model.feature.PreparingState;
+import com.bloatit.model.feature.TaskDevelopmentTimeOut;
+import com.bloatit.model.feature.TaskUpdateDevelopingState;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
@@ -259,7 +253,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         setFeatureStateUnprotected(featureState);
     }
 
-    void setFeatureStateUnprotected(final FeatureState featureState) {
+    public void setFeatureStateUnprotected(final FeatureState featureState) {
         if (getFeatureState() != featureState) {
             switch (featureState) {
                 case PENDING:
@@ -354,7 +348,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * Called by a {@link PlannedTask}. For now do nothing... A development
      * TimeOut is called when the expiration date arrive
      */
-    void developmentTimeOut() {
+    public void developmentTimeOut() {
         setStateObject(getStateObject().eventDevelopmentTimeOut());
     }
 

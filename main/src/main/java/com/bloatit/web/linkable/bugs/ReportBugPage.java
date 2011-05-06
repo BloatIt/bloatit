@@ -35,6 +35,7 @@ import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -46,6 +47,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
  */
 @ParamContainer("feature/bug/report")
 public final class ReportBugPage extends CreateUserContentPage {
+    public static final int FILE_MAX_SIZE_MIO = 2;
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
@@ -147,7 +149,8 @@ public final class ReportBugPage extends CreateUserContentPage {
         reportBugForm.add(levelInput);
 
         // File
-        addAddAttachmentField(reportBugForm, "2 Mio");
+        reportBugForm.add(new AttachmentField(doReportUrl, FILE_MAX_SIZE_MIO + " Mio"));
+        reportBugForm.enableFileUpload();
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
@@ -162,7 +165,7 @@ public final class ReportBugPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return ReportBugPage.generateBreadcrumb(milestone.getOffer());
     }
 

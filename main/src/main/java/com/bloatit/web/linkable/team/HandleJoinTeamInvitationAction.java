@@ -29,7 +29,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -69,7 +68,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
             } catch (final UnauthorizedPrivateReadOnlyAccessException e1) {
                 session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
                 return session.getLastVisitedPage();
-            } catch (UnauthorizedPublicAccessException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
                 return session.getLastVisitedPage();
             }
@@ -108,7 +107,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 

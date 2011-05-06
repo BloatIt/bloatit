@@ -35,6 +35,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.managers.TeamManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.ModifyTeamActionUrl;
@@ -107,10 +108,9 @@ public class ModifyTeamAction extends LoggedAction {
     protected Url doProcessRestricted(final Member me) {
         try {
             // Display name
-            if (isEmpty(displayName) && !isEmpty(team.getDisplayName())) {
-                session.notifyGood(Context.tr("Team's display name deleted."));
-            } else if (!isEmpty(displayName) && !displayName.equals(team.getDisplayName())) {
+            if (!isEmpty(displayName) && !displayName.equals(team.getLogin())) {
                 session.notifyGood(Context.tr("Team's display updated."));
+                team.setLogin(displayName);
             }
 
             // Contact information
@@ -169,6 +169,11 @@ public class ModifyTeamAction extends LoggedAction {
             return new ModifyTeamPageUrl(team);
         }
 
+        if (!isEmpty(displayName) && !displayName.equals(team.getLogin()) && TeamManager.exist(displayName)) {
+            error = true;
+            session.notifyError(Context.tr("This team name already exists."));
+            url.getDisplayNameParameter().addErrorMessage(Context.tr("This team name already exists."));
+        }
         if (isEmpty(contact)) {
             error = true;
             session.notifyError(Context.tr("Cannot delete team's display name."));

@@ -20,6 +20,7 @@ import java.util.Date;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.WrongStateException;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.PlannedTask;
 
 /**

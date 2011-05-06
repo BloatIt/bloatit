@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License along
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
-package com.bloatit.model.feature;
+package com.bloatit.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -46,9 +46,11 @@ import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.Feature;
-import com.bloatit.model.ModelTestUnit;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
+import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.feature.TaskUpdateDevelopingState;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;

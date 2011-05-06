@@ -29,8 +29,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 
 public class InvitationsTab extends HtmlTab {
@@ -56,12 +55,9 @@ public class InvitationsTab extends HtmlTab {
             try {
                 p.addText("Received an invitation to team '" + invitation.getTeam().getDisplayName() + "' from: '"
                         + invitation.getSender().getDisplayName() + "'");
-            } catch (final UnauthorizedPrivateReadOnlyAccessException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
-            } catch (UnauthorizedPublicAccessException e) {
-                throw new ShallNotPassException(e);
-            }
-
+            } 
             final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
             final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
             final HtmlGenericElement empty = new HtmlGenericElement();

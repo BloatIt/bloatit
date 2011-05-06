@@ -25,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
                        ActorTest.class,
                        AccountTest.class,
                        BankTransactionTest.class,
-                       com.bloatit.model.feature.TestAll.class, })
+                       FeatureImplementationTest.class, })
 public class TestAll {
     // nothing
     @Before
@@ -33,7 +33,7 @@ public class TestAll {
         System.out.println("--------------------------");
         System.out.println("Begin tests of Model layer");
     }
-    
+
     @After
     public void after() {
         System.out.println("End tests of Model layer");

@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.masters.Linkable;
+import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddAttachementPage;
@@ -51,7 +52,7 @@ import com.bloatit.web.linkable.contribution.ContributionAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
-import com.bloatit.web.linkable.errors.NotFoundAction;
+import com.bloatit.web.linkable.errors.PageForbidden;
 import com.bloatit.web.linkable.errors.PageNotFound;
 import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
@@ -178,7 +179,6 @@ import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
-import com.bloatit.web.url.NotFoundActionUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
@@ -208,8 +208,6 @@ import com.bloatit.web.url.UserContentAdminPageUrl;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
-
-
 public class BloatitWebServer extends WebProcessor {
 
     public BloatitWebServer() {
@@ -221,6 +219,9 @@ public class BloatitWebServer extends WebProcessor {
     public Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
 
         // Pages
+        if (pageCode.equals(PageForbiddenUrl.getPageName())) {
+            return new PageForbidden(new PageForbiddenUrl());
+        }
         if (pageCode.equals(IndexPageUrl.getPageName())) {
             return new IndexPage(new IndexPageUrl(params, session.getParameters()));
         }
@@ -335,9 +336,6 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(HightlightedFeatureAdminPageUrl.getPageName())) {
             return new HightlightedFeatureAdminPage(new HightlightedFeatureAdminPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(AddAttachementPageUrl.getPageName())) {
-            return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
-        }
         if (pageCode.equals(ChangeLanguagePageUrl.getPageName())) {
             return new ChangeLanguagePage(new ChangeLanguagePageUrl(params, session.getParameters()));
         }
@@ -424,14 +422,17 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(SendTeamInvitationActionUrl.getPageName())) {
             return new SendTeamInvitationAction(new SendTeamInvitationActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(AddAttachementActionUrl.getPageName())) {
+            return new AddAttachementAction(new AddAttachementActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AddAttachementPageUrl.getPageName())) {
+            return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
+        }
         if (pageCode.equals(HandleJoinTeamInvitationActionUrl.getPageName())) {
             return new HandleJoinTeamInvitationAction(new HandleJoinTeamInvitationActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ReportBugActionUrl.getPageName())) {
             return new ReportBugAction(new ReportBugActionUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(AddAttachementActionUrl.getPageName())) {
-            return new AddAttachementAction(new AddAttachementActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(AddReleaseActionUrl.getPageName())) {
             return new AddReleaseAction(new AddReleaseActionUrl(params, session.getParameters()));
@@ -478,9 +479,6 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(RecoverPasswordActionUrl.getPageName())) {
             return new RecoverPasswordAction(new RecoverPasswordActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(NotFoundActionUrl.getPageName())) {
-            return new NotFoundAction(new NotFoundActionUrl(params, session.getParameters()));
-        }
         if (pageCode.equals(ModifyTeamActionUrl.getPageName())) {
             return new ModifyTeamAction(new ModifyTeamActionUrl(params, session.getParameters()));
         }
@@ -496,8 +494,6 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(CancelWithdrawMoneyActionUrl.getPageName())) {
             return new CancelWithdrawMoneyAction(new CancelWithdrawMoneyActionUrl(params, session.getParameters()));
         }
-
-
 
         // ////////
         // Process

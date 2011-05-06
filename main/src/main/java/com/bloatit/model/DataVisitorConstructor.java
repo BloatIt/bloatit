@@ -39,7 +39,6 @@ import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.DataClassVisitor;
-import com.bloatit.model.feature.FeatureImplementation;
 
 /**
  * The Class ConstructorVisitor is a visitor that visit the Dao layer and

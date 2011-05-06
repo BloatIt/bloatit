@@ -22,10 +22,10 @@ import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.feature.FeatureImplementation;
 
 /**
  * The Class KudosableManager is an utility class containing static methods for

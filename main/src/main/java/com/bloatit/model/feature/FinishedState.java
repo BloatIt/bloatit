@@ -17,6 +17,7 @@
 package com.bloatit.model.feature;
 
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.model.FeatureImplementation;
 
 /**
  * The Class FinishedState. It is the final state. You cannot change of state
@@ -29,7 +30,7 @@ public class FinishedState extends AbstractFeatureState {
      * 
      * @param feature the feature on which this state apply.
      */
-    protected FinishedState(final FeatureImplementation feature) {
+    public FinishedState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

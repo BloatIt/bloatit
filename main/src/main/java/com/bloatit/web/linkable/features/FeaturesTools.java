@@ -36,11 +36,11 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Image;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
@@ -115,11 +115,11 @@ public class FeaturesTools {
     }
 
     public static HtmlDiv generateProgress(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
-        return generateProgress(feature, userToken, false, BigDecimal.ZERO);
+        return generateProgress(feature, userToken, BigDecimal.ZERO);
     }
 
     public static HtmlDiv
-            generateProgress(final Feature feature, final ElveosUserToken userToken, final boolean slim, final BigDecimal futureAmount)
+            generateProgress(final Feature feature, final ElveosUserToken userToken, final BigDecimal futureAmount)
                                                                                                                                        throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
@@ -269,7 +269,6 @@ public class FeaturesTools {
                 featureSummaryDetails.addText(" – ");
                 featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} open bug", "{0} open bugs", bugCount, bugCount)));
 
-                // TODO: go to the correct page
                 final FeaturePageUrl releasesFeatureUrl = new FeaturePageUrl(feature);
                 releasesFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
                 releasesFeatureUrl.setAnchor("feature_tab_pane");

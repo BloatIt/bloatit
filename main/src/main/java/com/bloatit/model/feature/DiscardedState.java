@@ -17,6 +17,7 @@
 package com.bloatit.model.feature;
 
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.model.FeatureImplementation;
 
 /**
  * The Class DiscardedState.
@@ -28,7 +29,7 @@ public class DiscardedState extends AbstractFeatureState {
      * 
      * @param feature the feature on which this state apply.
      */
-    protected DiscardedState(final FeatureImplementation feature) {
+    public DiscardedState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }
