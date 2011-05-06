@@ -117,7 +117,7 @@ performMvnRelease() {
     local _release_version="$2"
     local _next_snapshot_version="$3-SNAPSHOT"
 	local _repos_dir="$4"
-    local _mvn="$3"
+    local _mvn="$5"
 
     stty -echo
     read -p "I need the master password: " _password ; echo
