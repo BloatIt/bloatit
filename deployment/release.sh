@@ -152,6 +152,11 @@ performMvnRelease() {
 	log_date "Commit the new pom"
 	git commit -a -m "Going to the dev version: $_next_snapshot_version"
     exit_on_failure $?
+
+    read -p "Do you want to push the tag: elveos-$_release_version. (y/N)" _reponse
+    if [ "$_reponse" = "y" ] || [ "$_reponse" = "Y" ] ; then
+        git push origin "elveos-$_release_version"
+    fi
 }
 
 performMvnRelease "$PREFIX" "$RELEASE_VERSION" "$NEXT_SNAPSHOT_VERSION" "$REPOS_DIR" "$MVN"
