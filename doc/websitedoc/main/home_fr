@@ -12,6 +12,7 @@ Table des matières
   - [FAQ](/fr/documentation/doc-faq)
   - Vision, ouverture et éthique
   - [Nos Conditions Générales](/fr/documentation/doc-cgu)
+  - Glossaire
 
 
 - Fonctionnement détaillé d'elveos
@@ -22,7 +23,7 @@ Table des matières
   - Brainstorms
 
 - Informations techniques
-  - API
+  - [API](/fr/documentation/doc-api)
   - Architecture technique
   - Bloatit, le moteur d'elveos
   - Licence du site et du contenu
