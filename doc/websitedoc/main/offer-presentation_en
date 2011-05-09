@@ -8,7 +8,7 @@ Offres sélectionnés
 -------------------
 
 Sur une demande il peut y avoir plusieurs offres. Pour les départager, et pour s'assurer que l'offre qui sera développé correspond bien à la demande, les contributeurs peuvent voter. 
-Pour cela on utilise le système de [karma / popularité](/fr/documentation/doc-karma-poplarity) du site. Pour qu'une offre soit sélectionnée, elle doit avoir une popularité supérieure à zéro, et aux autres offres sur cette demande. 
+Pour cela on utilise le système de [reputation / popularité](/fr/documentation/doc-reputation-popularity) du site. Pour qu'une offre soit sélectionnée, elle doit avoir une popularité supérieure à zéro, et aux autres offres sur cette demande. 
 
 
 Les offres contenant plusieurs lots
