@@ -1,0 +1,67 @@
+API REST
+========
+
+Ceci est une vue d'ensemble très simplifiée de l'api REST.
+
+Lister les entités
+------------------
+
+Tout commence avec l'url suivante : [https://elveos.org/rest/](/rest/)
+
+Ensuite, il faut ajouter le code d'une entity comme 'features' pour lister toutes les demandes (le vocabulaire anglais est celui utilisé dans l'api REST) :
+
+[https://elveos.org/rest/features](/rest/features)
+
+que nous noterons :
+
+    /rest/features
+
+Consulter une entité
+--------------------
+
+Pour consulter une entité spécifique et non pas toute la liste, il faut seulement ajouter l'id de cette entité :
+
+    /rest/features/12
+
+Dans le résultat, tous les éléments de listes sont définis par leur id. Si une requête sur une demande (comme  /rest/features/12)  renvoie une liste de contribution  tel que :
+
+    ...
+    <contributions>
+        <contribution>132</contribution>
+        <contribution>133</contribution>
+        <contribution>134</contribution>
+        <contribution>225</contribution>
+        <contribution>226</contribution>
+        <contribution>236</contribution>
+    </contributions>
+    ...
+    
+    
+vous pouvez obtenir les détails des contributions en interrogeant l'entité nommée "contributions" avec l'id correspondant :
+
+    /rest/contributions/132
+
+Liste des entités
+-----------------
+
+Il y a un grand nombre d'entité différente :
+
+ * features (demandes)
+ * members (membres)
+ * milestones (lots)
+ * banktransactions (transaction banquaires)
+ * bugs
+ * contributions
+ * descriptions
+ * externalaccounts (compte externes)
+ * filemetadatas (métadonnées de fichiers)
+ * teams (équipes)
+ * highlightfeatures (demandes importantes)
+ * internalaccounts (comptes internes)
+ * jointeaminvitations (invitations dans des équipes)
+ * kudos
+ * offers (offres)
+ * softwares (logiciels)
+ * releases (livraisons)
+ * transactions
+ * translations (traductions)
