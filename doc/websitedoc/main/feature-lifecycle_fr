@@ -2,7 +2,7 @@
 Cycle de vie d'une demande
 ==========================
 
-Une demande passe par plusieurs états avant d'être finie.
+![demande cycle de vie](/resources/fr/img/process_doc.png)
 
 Demande en préparation
 ---------------------
