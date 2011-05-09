@@ -16,10 +16,9 @@ Table des matières
 
 
 - Fonctionnement détaillé d'elveos
-  - Cycle de vie d'une demande
-  - Validation des livraisons et paiement
-  - Système de lot
-  - Équipes et délégation
+  - [Cycle de vie d'une demande](/fr/documentation/doc-feature-lifecycle)
+  - [Les offres](/fr/documentation/doc-offer-presentation)
+  - [Équipes et délégation](/fr/documentation/doc-team-presentation)
   - [Brainstorms](/fr/documentation/doc-brainstorm)
 
 - Informations techniques

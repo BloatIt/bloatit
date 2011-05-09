@@ -1,0 +1,20 @@
+
+Les équipes
+===========
+
+Les Membre d'elveos peuvent ce regrouper dans des équipes. Chaque membre peut appartenir a autant d'équipes qu'il le souhaite. 
+Il existe deux type d'équipe différents : les équipes publiques et les équipes privées. N'importe qui peut intégrer une équipe publique alors qu'il faut être invité pour pouvoir rejoindre une équipe privées.
+
+Les membres d'une équipe peuvent avoir des rôles séparés. Le créateur d'une équipe en est l'administrateur, et il peut donner (ou supprimer) des droits aux autres membres. 
+
+Voici les droits que l'on peut avoir quand on est dans une équipe : 
+ - Consulter : droit de voir les informations relatives à cette équipe
+ - Parler : droit de s'exprimer au nom de cette équipe
+ - Inviter : droit d'inviter de nouveaux membres dans l'équipe
+ - Modifier : droit de modifier les informations de l'équipe
+ - Promouvoir : droit de donner (ou retirer) des droits aux autres membres de l'équipe
+ - Banque : droit d'accéder, de modifier les informations bancaires de l'équipe (y compris retirer l'argent, ou faire des contributions)
+
+
+
+
