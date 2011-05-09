@@ -24,7 +24,7 @@ Ceci est une description rapide du process. Beaucoup plus de détails sur chaque
 
 Ce schéma montre en version encore plus simplifiée du process :
 
-![présentation elveos](/resources/fr/img/presentation.png)
+![présentation elveos](/resources/fr/img/presentation_800px.png)
 
 Origines de demandes
 --------------------
@@ -32,7 +32,7 @@ Origines de demandes
 Les demandes peuvent être ajouté par n'importe qui :
 
  * Un particulier, utilisateur de logiciel libre qui aimerait voir une nouvelle fonctionnalité dans un logiciel, ou simplement soutenir un projet open source.
- * Un développeur qui n'a pas le temps ou le budjet pour implémenter certains point de sa roadmap, qui ajoute ces points à Elveos afin de sse financer.
+ * Un développeur qui n'a pas le temps ou le budjet pour implémenter certains point de sa roadmap, qui ajoute ces points à Elveos afin de se financer.
  * Une entreprise qui a besoin d'une fonctionnalité ou d'une correction de bug dans un logiciel qu'elle utilise mais ne souhaitant pas assumer seule le coût de l'évolution.
  
 
