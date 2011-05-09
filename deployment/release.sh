@@ -131,7 +131,7 @@ performMvnRelease() {
     exit_on_failure $?
 
     log_date "Mvn clean install + tests"
-    $_mvn clean install
+    $_mvn clean install -DargLine="-DmasterPassword=$_password"
     exit_on_failure $?
 
 	log_date "Create a git tag on this current version: $_release_version"
