@@ -7,19 +7,21 @@ STAMP_OUTPUT_WIDTH=100
 LANG_LIST="en fr"
 STAMP_LIST="stamp_success stamp_failed"
 
-for STAMP in $STAMP_LIST ; do
-
-
-
+generateRessources() {
     for LANG in $LANG_LIST ; do
-        OUTPUT_FILE=$OUTPUT_DIR_PREFIX$LANG$OUTPUT_DIR_SUFFIX$STAMP.png
+        OUTPUT_FILE=$OUTPUT_DIR_PREFIX$LANG$OUTPUT_DIR_SUFFIX$1.png
 
         mkdir -p $(dirname $OUTPUT_FILE)
-        inkscape -e $OUTPUT_FILE -C -w $STAMP_OUTPUT_WIDTH $STAMP"_"$LANG.svg
+        inkscape -e $OUTPUT_FILE -C -w $2 $1"_"$LANG.svg
         optipng $OUTPUT_FILE
     done
+}
+
+for STAMP in $STAMP_LIST ; do
+    generateRessources $STAMP $STAMP_OUTPUT_WIDTH
 done
 
+generateRessources process_doc 800
 
 inkscape -e $OUTPUT_DIR_PREFIX"commons/img/idea.png" -C -w 40 idea.svg
 optipng $OUTPUT_DIR_PREFIX"commons/img/idea.png"
