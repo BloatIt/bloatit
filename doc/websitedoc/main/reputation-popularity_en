@@ -1,0 +1,17 @@
+
+Réputation, popularité
+=================
+
+Elveos contient un système de réputation et popularité, pour noter les contenus créés par les utilisateurs.
+
+Chaque utilisateur a un réputation de zéro lors de l'ouverture de son compte. Plus il va créer des contenus populaire plus sa réputation va augmenter. Les contenus peuvent être des demandes, des offres, des commentaire ... 
+
+Chaque contenus à une valeur de popularité. Les utilisateurs peuvent voté pour dire si un contenus lui semble pertinent ou inutile. Un vote positif augmentera la popularité du contenu, alors qu'un vote négatif la diminuera. Plus l'utilisateur à une réputation élevé, plus son vote aura d'influence. 
+
+Un utilisateur ne peut voter qu'une fois par contenus, et il ne peut pas voter pour les éléments qu'il a créé.
+
+
+
+Les éléments dont la popularité est trop faible seront automatiquement cachés.
+Les utilisateurs avec une grande popularité se verront proposer des droits de modération.
+
