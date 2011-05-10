@@ -1,0 +1,22 @@
+Bloatit, le moteur d'Elveos
+===========================
+
+Le site elveos.org utilise un framework web en Java nommé Bloatit.
+
+Ce framework a été développé spécifiquement pour l'occasion et utilise FCGI ou SCGI pour communiquer avec un serveur web. Bloatit a été pensé pour être utilisable avec d'autre site et même si le framework n'est pas encore dissocié dans le code source d'elveos, il n'y a pas de référence inverse entre les différentes couches.
+
+
+Dépendances
+-----------
+
+Elveos a quelques dépendances :
+
+ - Hibernate pour les connexions à la base de données
+ - Liquibase pour la migration de la base de données.
+ - Log4j pour les logs
+ - et quelques autres dépendances moins importantes ...
+
+Choix du langage
+-----------------
+
+Initialement, le développement de bloatit a commencé en Python. Cependant, la difficulté de refactoring et de renommage nous ont rapidement amené à réécrire le programme en un langage à typage statique, permettant un bien meilleur contrôle de cohérence.

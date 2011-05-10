@@ -7,7 +7,7 @@ Bienvenue sur la page de documentation d'elveos.
 Table des matières
 ------------------
 
-- Géneral
+- Général
   - [Présentation d'Elveos](/fr/documentation/doc-presentation)
   - [FAQ](/fr/documentation/doc-faq)
   - [Vision, ouverture et éthique](/fr/documentation/doc-ethics)
@@ -24,7 +24,7 @@ Table des matières
 - Informations techniques
   - [API](/fr/documentation/doc-api)
   - [Architecture système](/fr/documentation/doc-architecture)
-  - Bloatit, le moteur d'elveos
+  - [Bloatit, le moteur d'elveos](/fr/documentation/doc-bloatit)
   - Licence du site et du contenu
   - Contribuer
 
@@ -33,6 +33,5 @@ Table des matières
   - Nous
   - Détails des coûts
   - Prévision financières
-  
 
 
