@@ -128,7 +128,7 @@ public class ModifyTeamPage extends LoggedPage {
 
      // PUBLIC / PRIVATE
         final FieldData rightData = targetUrl.getRightParameter().pickFieldData();
-        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Visibility of the team : "));
+        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Join right of the team: "));
         rightInput.setDefaultValue(rightData.getSuggestedValue());
         rightInput.addErrorMessages(rightData.getErrorMessages());
         rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Public"));

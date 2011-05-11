@@ -175,7 +175,7 @@ public final class Team extends Actor<DaoTeam> {
     }
 
 
-    public DaoTeam.Right getVisibilityRight() {
+    public DaoTeam.Right getJoinRight() {
         return getDao().getRight();
     }
 

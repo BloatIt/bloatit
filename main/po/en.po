@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-06 13:08+0200\n"
+"POT-Creation-Date: 2011-05-11 17:48+0200\n"
 "PO-Revision-Date: 2010-09-22 02:42+0100\n"
 "Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
 "Language-Team: French\n"
@@ -296,10 +296,10 @@ msgstr ""
 #: com/bloatit/web/linkable/admin/ConfigurationAdminPage.java:75
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:171
 #: com/bloatit/web/linkable/team/SendTeamInvitationPage.java:79
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:128
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:139
 #: com/bloatit/web/linkable/team/CreateTeamPage.java:128
 #: com/bloatit/web/linkable/login/LostPasswordPage.java:71
-#: com/bloatit/web/linkable/login/SignUpPage.java:116
+#: com/bloatit/web/linkable/login/SignUpPage.java:117
 #: com/bloatit/web/linkable/money/WithdrawMoneyPage.java:92
 msgid "Submit"
 msgstr ""
@@ -857,7 +857,7 @@ msgstr ""
 #: com/bloatit/web/linkable/softwares/AddSoftwarePage.java:117
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:150
 #: com/bloatit/web/linkable/release/AddReleasePage.java:108
-#: com/bloatit/web/linkable/login/SignUpPage.java:111
+#: com/bloatit/web/linkable/login/SignUpPage.java:112
 msgid "Language"
 msgstr ""
 
@@ -1344,8 +1344,8 @@ msgid "Greater or equal"
 msgstr ""
 
 #: com/bloatit/web/linkable/softwares/AddSoftwareAction.java:59
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:72
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:70
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:66
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:68
 #: com/bloatit/web/linkable/release/AddReleaseAction.java:42
 msgid "You forgot to write a description"
 msgstr ""
@@ -2013,18 +2013,18 @@ msgid "Country updated."
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:189
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:135
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:134
 msgid "Avatar updated."
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:197
 #: com/bloatit/web/linkable/usercontent/UserContentAction.java:113
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:143
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:142
 msgid "Filename is empty. Could you report that bug?"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:206
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:152
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:157
 msgid "Deleted avatar."
 msgstr ""
 
@@ -2059,13 +2059,13 @@ msgid "Fail to read your email."
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:263
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:192
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:193
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:197
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:198
 msgid "You cannot delete your avatar, and indicate a new one at the same time."
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberAction.java:282
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:211
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:216
 msgid "You must be logged to modify your account settings"
 msgstr ""
 
@@ -2301,27 +2301,27 @@ msgid "Reenter new password"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:126
-#: com/bloatit/web/linkable/login/SignUpPage.java:93
+#: com/bloatit/web/linkable/login/SignUpPage.java:94
 msgid "Email"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:137
-#: com/bloatit/web/linkable/login/SignUpPage.java:99
+#: com/bloatit/web/linkable/login/SignUpPage.java:100
 msgid "Country"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:157
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:114
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:115
 msgid "Avatar image file"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:158
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:115
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:116
 msgid "64px x 64px. 50Kb max. Accepted formats: png, jpg"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:164
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:121
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:122
 msgid "Delete avatar"
 msgstr ""
 
@@ -2340,7 +2340,7 @@ msgid "Modify member information"
 msgstr ""
 
 #: com/bloatit/web/linkable/members/ModifyMemberPage.java:204
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:156
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:167
 msgid "modify"
 msgstr ""
 
@@ -2814,8 +2814,8 @@ msgid "The specification must have at least 10 chars."
 msgstr ""
 
 #: com/bloatit/web/linkable/features/CreateFeatureAction.java:49
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:63
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:60
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:60
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:58
 msgid "You forgot to write a specification"
 msgstr ""
 
@@ -3267,32 +3267,52 @@ msgstr ""
 msgid "You must be logged before you try to join a team."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:66
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:67
 #, java-format
 msgid "Change {0} settings"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:76
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:77
 msgid "Display name"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:88
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:89
 msgid "Contact information"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:101
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:102
 msgid "Team description"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:125
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:126
 msgid "Checking this box will delete team's avatar."
 msgstr ""
 
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:131
+msgid "Join right of the team: "
+msgstr ""
+
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:134
+#: com/bloatit/web/linkable/team/TeamPage.java:192
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:123
+msgid "Public"
+msgstr ""
+
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:135
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:124
+msgid "Protected"
+msgstr ""
+
 #: com/bloatit/web/linkable/team/ModifyTeamPage.java:136
+#: com/bloatit/web/linkable/team/CreateTeamPage.java:125
+msgid "Public teams can be joined by anybody without an invitation."
+msgstr ""
+
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:147
 msgid "You must be logged to change team's information"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamPage.java:141
+#: com/bloatit/web/linkable/team/ModifyTeamPage.java:152
 msgid "Modify team information"
 msgstr ""
 
@@ -3368,73 +3388,77 @@ msgstr ""
 msgid "You must be logged to send an invitation"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:53
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:52
 msgid ""
 "The team display name size has to be superior to %constraint% but your text "
 "is %valueLength% characters long."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:55
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:53
 msgid ""
 "The team display name size has to be inferior to %constraint% your text is "
 "%valueLength% characters long."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:56
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:53
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:54
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:51
 msgid "You forgot to write a team name"
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:61
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:58
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:58
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:56
 msgid ""
 "The contact size has to be superior to %constraint% but your text is "
 "%valueLength% characters long."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:62
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:59
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:59
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:57
 msgid "The contact size has to be inferior to %constraint%."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:69
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:67
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:64
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:65
 msgid ""
 "Number of characters for description has to be superior to %constraint% but "
 "your text is %valueLength% characters long."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:71
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:69
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:65
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:67
 msgid ""
 "Number of characters for description has to be inferior to %constraint% but "
 "your text is %valueLength% characters long."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:112
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:111
 msgid "Team's display updated."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:118
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:117
 msgid "Team's contact information changed."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:124
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:123
 msgid "Team's description changed."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:174
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:175
-msgid "This team name already exists."
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:151
+msgid "Team's join right changed."
 msgstr ""
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:179
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:180
+msgid "This team name already exists."
+msgstr ""
+
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:184
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:185
 msgid "Cannot delete team's display name."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:185
-#: com/bloatit/web/linkable/team/ModifyTeamAction.java:186
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:190
+#: com/bloatit/web/linkable/team/ModifyTeamAction.java:191
 msgid "Cannot delete team's description."
 msgstr ""
 
@@ -3453,11 +3477,6 @@ msgstr ""
 
 #: com/bloatit/web/linkable/team/TeamPage.java:192
 msgid "Visibility: "
-msgstr ""
-
-#: com/bloatit/web/linkable/team/TeamPage.java:192
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:123
-msgid "Public"
 msgstr ""
 
 #: com/bloatit/web/linkable/team/TeamPage.java:193
@@ -3564,42 +3583,28 @@ msgstr ""
 msgid "Type of the team : "
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:124
-msgid "Protected"
-msgstr ""
-
-#: com/bloatit/web/linkable/team/CreateTeamPage.java:125
-msgid "Public teams can be joined by anybody without an invitation."
-msgstr ""
-
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:50
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:48
 msgid ""
 "The team unique name size has to be superior to %constraint% but your text "
 "is %valueLength% characters long."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:52
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:50
 msgid ""
 "The team unique name size has to be inferior to %constraint% your text is "
 "%valueLength% characters long."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:91
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:89
 #, java-format
 msgid "The team name ''{0}''already used. Find another name."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:92
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:90
 msgid "Team name already used."
 msgstr ""
 
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:107
-msgid ""
-"A team can either be public or protected (and dude, stop playing with our "
-"post data)."
-msgstr ""
-
-#: com/bloatit/web/linkable/team/CreateTeamAction.java:122
+#: com/bloatit/web/linkable/team/CreateTeamAction.java:111
 msgid "You must be logged to create a new team"
 msgstr ""
 
@@ -3776,32 +3781,45 @@ msgstr ""
 msgid "Reset password"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:66
+#: com/bloatit/web/linkable/login/SignUpPage.java:67
 #: com/bloatit/web/linkable/login/LoginPage.java:85
 msgid "Sign up"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:73
+#: com/bloatit/web/linkable/login/SignUpPage.java:74
 #: com/bloatit/web/linkable/login/LoginPage.java:70
 msgctxt "Login (noun)"
 msgid "Login"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:75
+#: com/bloatit/web/linkable/login/SignUpPage.java:76
 msgid "When you login, case of login field be will be ignored."
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:81
+#: com/bloatit/web/linkable/login/SignUpPage.java:82
 #: com/bloatit/web/linkable/login/LoginPage.java:76
 msgid "Password"
 msgstr ""
 
-#: com/bloatit/web/linkable/login/SignUpPage.java:87
+#: com/bloatit/web/linkable/login/SignUpPage.java:88
 msgid "Reenter your password"
 msgstr ""
 
+#: com/bloatit/web/linkable/login/SignUpPage.java:124
+msgid ""
+"This website is un beta phase. It's here to be tested. Don't worry about "
+"create some content, all will be cleaned at the end of the beta."
+msgstr ""
+
 #: com/bloatit/web/linkable/login/SignUpPage.java:125
-#: com/bloatit/web/linkable/login/SignUpPage.java:141
+msgid ""
+" During the beta, there is no real money. However, you can simulate payment "
+"and withdraw money, a test credit card number or a test IBAN will be provide "
+"where you will need it."
+msgstr ""
+
+#: com/bloatit/web/linkable/login/SignUpPage.java:134
+#: com/bloatit/web/linkable/login/SignUpPage.java:150
 msgid "Sign-in"
 msgstr ""
 

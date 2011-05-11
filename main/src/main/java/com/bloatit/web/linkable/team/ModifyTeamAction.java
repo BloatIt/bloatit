@@ -147,8 +147,8 @@ public class ModifyTeamAction extends LoggedAction {
             }
 
             // Description
-            if (right != null && !right.equals(team.getVisibilityRight())) {
-                session.notifyGood(Context.tr("Team's visibility changed."));
+            if (right != null && !right.equals(team.getJoinRight())) {
+                session.notifyGood(Context.tr("Team's join right changed."));
                 team.setRight(right);
             }
 
