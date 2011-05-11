@@ -32,8 +32,8 @@ import com.bloatit.model.lists.UserContentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtTeam;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
  * This is a team ... There are member in it.
@@ -172,6 +172,11 @@ public final class Team extends Actor<DaoTeam> {
      */
     public boolean isPublic() {
         return (getDao().getRight() == Right.PUBLIC);
+    }
+
+
+    public DaoTeam.Right getVisibilityRight() {
+        return getDao().getRight();
     }
 
     /**

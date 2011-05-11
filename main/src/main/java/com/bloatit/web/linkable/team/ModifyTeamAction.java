@@ -20,6 +20,7 @@ import static com.bloatit.framework.utils.StringUtils.isEmpty;
 
 import java.util.List;
 
+import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -48,28 +49,21 @@ public class ModifyTeamAction extends LoggedAction {
     private final Team team;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(
-                     min = "4",
-                     minErrorMsg = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "50",
-                     maxErrorMsg = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."),//
-                     optionalErrorMsg = @tr("You forgot to write a team name"))
+    @ParamConstraint(min = "4", minErrorMsg = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
+    max = "50", maxErrorMsg = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."),//
+    optionalErrorMsg = @tr("You forgot to write a team name"))
     private final String displayName;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4",
-                     minErrorMsg = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "300", maxErrorMsg = @tr("The contact size has to be inferior to %constraint%."),//
-                     optionalErrorMsg = @tr("You forgot to write a specification"))
+    @ParamConstraint(min = "4", minErrorMsg = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."),//
+    max = "300", maxErrorMsg = @tr("The contact size has to be inferior to %constraint%."),//
+    optionalErrorMsg = @tr("You forgot to write a specification"))
     private final String contact;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(
-                     min = "4",
-                     minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "5000",
-                     maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
-                     optionalErrorMsg = @tr("You forgot to write a description"))
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
+    max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
+    optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
     @RequestParam(role = Role.POST)
@@ -89,7 +83,11 @@ public class ModifyTeamAction extends LoggedAction {
     @Optional
     private final String avatarContentType;
 
-    private ModifyTeamActionUrl url;
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Right right;
+
+    private final ModifyTeamActionUrl url;
 
     public ModifyTeamAction(final ModifyTeamActionUrl url) {
         super(url);
@@ -101,6 +99,7 @@ public class ModifyTeamAction extends LoggedAction {
         this.displayName = url.getDisplayName();
         this.contact = url.getContact();
         this.description = url.getDescription();
+        this.right = url.getRight();
         this.url = url;
     }
 
@@ -145,6 +144,12 @@ public class ModifyTeamAction extends LoggedAction {
                     transmitParameters();
                     return doProcessErrors();
                 }
+            }
+
+            // Description
+            if (right != null && !right.equals(team.getVisibilityRight())) {
+                session.notifyGood(Context.tr("Team's visibility changed."));
+                team.setRight(right);
             }
 
             // DELETE AVATAR

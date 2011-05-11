@@ -41,8 +41,6 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team/docreate")
 public final class CreateTeamAction extends LoggedAction {
-    protected final static String PROTECTED = "PROTECTED";
-    protected final static String PUBLIC = "PUBLIC";
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(
@@ -71,7 +69,7 @@ public final class CreateTeamAction extends LoggedAction {
     private final String description;
 
     @RequestParam(role = Role.POST)
-    private final String right;
+    private final Right right;
 
     private final CreateTeamActionUrl url;
 
@@ -98,17 +96,8 @@ public final class CreateTeamAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        Right teamRight = Right.PUBLIC;
-        if (right.equals(PUBLIC)) {
-            teamRight = Right.PUBLIC;
-        } else if (right.equals(PROTECTED)) {
-            teamRight = Right.PROTECTED;
-        } else {
-            session.notifyBad(Context.tr("A team can either be public or protected (and dude, stop playing with our post data)."));
-            transmitParameters();
-            return new CreateTeamPageUrl();
-        }
-        final Team newTeam = new Team(login, contact, description, teamRight, me);
+
+        final Team newTeam = new Team(login, contact, description, right, me);
         return new TeamPageUrl(newTeam);
     }
 

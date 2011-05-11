@@ -114,6 +114,7 @@ public class DaoTeam extends DaoActor {
      * in. The PROTECTED that everybody can see, but require an invitation to go
      * in.
      */
+    //TODO: rename to visibility or somethings else
     public enum Right {
         /**
          * Everybody can see this team and can go into it.
@@ -155,7 +156,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Get a team using its name.
-     * 
+     *
      * @param name the name of the team we are lookong for.
      * @return the team named <code>name<code> or null if not found.
      */
@@ -172,7 +173,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Create a team and add it into the db.
-     * 
+     *
      * @param login it the unique and non updatable name of the team.
      * @param contact some contact information for that team.
      * @param description the desctiption of the team.
@@ -194,7 +195,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Create a DaoTeam
-     * 
+     *
      * @param login is the name of the team. It must be unique.
      * @param contact ...
      * @param right is the default right value for this team.
@@ -211,7 +212,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Change the type of team.
-     * 
+     *
      * @param right the new right of this team.
      */
     public void setRight(final Right right) {
@@ -220,7 +221,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Change the contact information on this team.
-     * 
+     *
      * @param contact the new contact information.
      */
     public void setContact(final String contact) {
@@ -229,7 +230,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Add a member in this team.
-     * 
+     *
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer
      *            this team. (This may change if the number of role change !)
@@ -240,7 +241,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Remove a member from the team
-     * 
+     *
      * @param member the member to remove
      */
     protected void removeMember(final DaoMember member) {
@@ -293,7 +294,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Gets the money withdrawals.
-     * 
+     *
      * @return all the money withdrawals from this team.
      */
     public PageIterable<DaoMoneyWithdrawal> getMoneyWithdrawals() {
@@ -319,7 +320,7 @@ public class DaoTeam extends DaoActor {
 
     /**
      * Finds if a member is in this team, and which is its status.
-     * 
+     *
      * @param member The member we want to know its status.
      * @return {@code null} if the member is not in this team, or a set
      *         otherwise. <br />
