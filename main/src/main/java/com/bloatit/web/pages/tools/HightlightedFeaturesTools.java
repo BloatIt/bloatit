@@ -18,6 +18,7 @@ public class HightlightedFeaturesTools {
         reasonMap.put("need_help", Context.tr("Need your help quickly"));
         reasonMap.put("random", Context.tr("Random"));
         reasonMap.put("success", Context.tr("Success"));
+        reasonMap.put("no_reason", "");
 
 
         return reasonMap;
