@@ -19,4 +19,4 @@ Elveos a quelques dépendances :
 Choix du langage
 -----------------
 
-Initialement, le développement de bloatit a commencé en Python. Cependant, la difficulté de refactoring et de renommage nous ont rapidement amené à réécrire le programme en un langage à typage statique, permettant un bien meilleur contrôle de cohérence.
+Initialement, le développement de bloatit a commencé en Python. Cependant, la difficulté de refactoring et de renommage nous ont rapidement amené à réécrire le programme en un langage à typage statique, permettant un bien meilleur contrôle de cohérence, comme Java.
