@@ -155,7 +155,7 @@ public final class Payline {
         if (!userToken.isAuthenticated()) {
             throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
         }
-        if (!targetActor.equals(((ElveosUserToken) userToken).getMember()) || !targetActor.equals(((ElveosUserToken) userToken).getAsTeam())) {
+        if (!targetActor.equals(((ElveosUserToken) userToken).getMember()) && !targetActor.equals(((ElveosUserToken) userToken).getAsTeam())) {
             throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
         }
 
