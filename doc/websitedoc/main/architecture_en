@@ -1,0 +1,54 @@
+System architecture
+===================
+
+Elveos.org website has for now only one server.
+
+
+![system architecture](/resources/en/img/archi_doc.png)
+
+
+Bloatit framework
+-----------------
+
+It's the application core. Bloatit is developed in Java. Contrary to the usual Java website, Bloat does not need application server and does not use servlet. It uses a "classical" web server with [FCGI](http://www.fastcgi.com/devkit/doc/fcgi-spec.html).
+
+Bloat uses a relational database to store most of the information.
+
+More information on the site engine are available on this documentation page : [Bloatit, engine of elveos](/en/documentation/doc-bloatit))
+
+
+
+
+Database server
+---------------
+
+Bloatit currently uses PostgreSQL as relational database. This choice was made because of doubts about the durability of the freedom of MySQL.
+
+The use Hibernate make that we can quite easily change the database in case of problems.
+
+Web server
+---------
+Bloatit currently uses  Lighttpd as web server. The choice of this server has no real justification except that which is known to be good. By digging, we could say that this is a revenge against Apache, because it has a relationship with Maven and maven is evil ! We will soon begin experiments with Ngix.
+
+The use FCGI make that we can easily change the web server.
+
+Operating system
+----------------
+
+The site runs on a Debian Squeeze. This choice is mainly justified by our own skills.
+
+Host
+----
+
+We chose OVH as host, because they are based in France and have always been effective for previous services.
+
+
+The choose of the VPS ([http://www.ovh.com/fr/vps/](http://www.ovh.com/fr/vps/)) rather than a normal dedicated server is due to facilities to increase the charge for a virtualized solution.
+
+Currently, the theorical characteristics are:
+
+- CPU : 2.5 GHz - 4 core
+- RAM : 3 Go
+- Storage : 50 Go	
+- Sla :  99.9% (9h of downtime for a year)
+- Price : 50€/month

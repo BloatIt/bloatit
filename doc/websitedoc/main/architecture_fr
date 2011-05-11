@@ -14,7 +14,7 @@ C'est le coeur applicatif du site. Il s'agit un programme Java. Contrairement au
 
 Bloatit utilise une base de donnée relationnelle pour stocker la majorité des informations.
 
-Plus d'information sur le moteur du site sur cette page de documentation : [Bloatit, le moteur d'elveos](/fr/documentation/doc-bloatit))
+Plus d'information sur le moteur du site sont disponibles sur cette page de documentation : [Bloatit, le moteur d'elveos](/fr/documentation/doc-bloatit))
 
 
 Serveur de base de donnée
