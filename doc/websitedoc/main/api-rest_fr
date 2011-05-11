@@ -8,7 +8,7 @@ Lister les entités
 
 Tout commence avec l'url suivante : [https://elveos.org/rest/](/rest/)
 
-Ensuite, il faut ajouter le code d'une entity comme 'features' pour lister toutes les demandes (le vocabulaire anglais est celui utilisé dans l'api REST) :
+Ensuite, il faut ajouter le code d'une entité comme 'features' pour lister toutes les demandes (le vocabulaire anglais est celui utilisé dans l'api REST) :
 
 [https://elveos.org/rest/features](/rest/features)
 
