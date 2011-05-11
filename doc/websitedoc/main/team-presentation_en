@@ -1,20 +1,42 @@
 
-Les équipes
+Teams
 ===========
 
-Les Membre d'elveos peuvent ce regrouper dans des équipes. Chaque membre peut appartenir a autant d'équipes qu'il le souhaite. 
-Il existe deux type d'équipe différents : les équipes publiques et les équipes privées. N'importe qui peut intégrer une équipe publique alors qu'il faut être invité pour pouvoir rejoindre une équipe privées.
+Members of elveos can be grouped into teams. Each member can belong to as many teams as they wish.
 
-Les membres d'une équipe peuvent avoir des rôles séparés. Le créateur d'une équipe en est l'administrateur, et il peut donner (ou supprimer) des droits aux autres membres. 
+A team may represent an association, a company or any group of people. A team has an account, and can contribute to feature request or receive money.
 
-Voici les droits que l'on peut avoir quand on est dans une équipe : 
- - Consulter : droit de voir les informations relatives à cette équipe
- - Parler : droit de s'exprimer au nom de cette équipe
- - Inviter : droit d'inviter de nouveaux membres dans l'équipe
- - Modifier : droit de modifier les informations de l'équipe
- - Promouvoir : droit de donner (ou retirer) des droits aux autres membres de l'équipe
- - Banque : droit d'accéder, de modifier les informations bancaires de l'équipe (y compris retirer l'argent, ou faire des contributions)
+There are two different kind of teams: public teams and private teams. Anyone can join a public team, but we have to be invited to join a private team.
 
+Rights
+----------
 
+The team members may have separate roles. The team creator is the team administrator, and he can give (or remove) the rights of other members.
 
+Here are the rights that you may have when you're in a team:
+
+  - Consult: right to see informations about this team
+
+  - Talk: right to speak on the behalf of the team
+
+  - Invite: right to invite new members into the team
+
+  - Edit: right to change team information
+
+  - Promote: right to give (or remove) rights to other team members
+
+  - Banking: the right to access, to change this team bank information (including cash out, or make contributions)
+
+Act on behalf of a team
+------------------------
+
+In elveos many actions can be made on the behalf of a team.
+
+For example: 
+
+ - A developer may make an offer on the behalf of an association. In this case, it is not the developer who gets the money, but the association.
+
+ - A user can write a comment on the  behalf of his company, thereby he act as  ahis company spokesman.
+
+ - Almost all actions are feasible in the name of a team. 
 
