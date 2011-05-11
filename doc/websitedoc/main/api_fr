@@ -4,7 +4,7 @@ API
 Pour le moment, il n'y a qu'une seule api externe pour elveos.org. Il s'agit de l'api REST et il n'est possible que de lire les informations publiques.
 
 
-Il est prévu d'ajouter est action d'authentification et d'écriture dans un futur proche.
+Il est prévu d'ajouter les actions d'authentification et d'écriture dans un futur proche.
 
 
  * [API REST](/fr/documentation/doc-api-rest)
