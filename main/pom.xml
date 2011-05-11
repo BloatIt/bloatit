@@ -4,7 +4,7 @@
   <groupId>com.bloatit</groupId>
   <artifactId>BloatIt</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.9-SNAPSHOT</version>
+  <version>1.0.10-beta</version>
   <name>BloatIt</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -224,12 +224,12 @@
     <dependency>
       <groupId>com.bloatit</groupId>
       <artifactId>BloatItApt</artifactId>
-      <version>1.0.9-SNAPSHOT</version>
+      <version>1.0.10-beta</version>
     </dependency>
     <dependency>
       <groupId>com.bloatit</groupId>
       <artifactId>BloatItPaypalBinding</artifactId>
-      <version>1.0.9-SNAPSHOT</version>
+      <version>1.0.10-beta</version>
     </dependency>
     <!-- Jakarta language commons (to escape string) -->
     <dependency>
