@@ -75,7 +75,9 @@ public final class HighlightFeatureManager {
                 if (hightlightFeatureArray.get(position) == null) {
                     hightlightFeatureArray.set(position, highlightFeature);
                 } else {
-                    if (!hightlightFeatureArray.get(position).getActivationDate().after(highlightFeature.getActivationDate())) {
+                    if (highlightFeature.getActivationDate().after(hightlightFeatureArray.get(position).getActivationDate())) {
+                        hightlightFeatureArray.set(position, highlightFeature);
+                    } else if (highlightFeature.getActivationDate().equals(hightlightFeatureArray.get(position).getActivationDate()) && highlightFeature.getId() > hightlightFeatureArray.get(position).getId()) {
                         hightlightFeatureArray.set(position, highlightFeature);
                     }
                 }
