@@ -90,10 +90,10 @@ public final class MemberPage extends ElveosPage {
         super(url);
         this.url = url;
         this.member = url.getMember();
-        if (!getSession().getUserToken().isAuthenticated() || !member.equals(getSession().getUserToken().getMember())) {
-            this.myPage = false;
-        } else {
+        if (getSession().getUserToken().isAuthenticated() && member != null &&  member.equals(getSession().getUserToken().getMember())) {
             this.myPage = true;
+        } else {
+            this.myPage = false;
         }
         this.displayName = url.getDisplayName();
         this.activeTabKey = url.getActiveTabKey();
