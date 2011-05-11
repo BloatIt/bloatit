@@ -1,8 +1,8 @@
 API
 ===
 
-For instance, there is only one extern api for elveos.org. This is a REST api and you can only read public things with it.
+For now, there is only one extern API for elveos.org. This is a REST API and you can only read public things with it.
 
-Soon, you will be able to authenticate and write with the REST api.
+Soon, you will be able to authenticate and write new data with the REST API.
 
  * [API REST](/en/documentation/doc-api-rest)
