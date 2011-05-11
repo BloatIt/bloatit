@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.net.URLCodec;
+
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.parameters.HttpParameter;
@@ -190,7 +193,12 @@ public class UrlParameter<T, U> extends UrlNode {
         final String stringValue = getStringValue();
         if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
-                sb.append('/').append(getName()).append('-').append(stringValue);
+                final URLCodec urlCodec = new URLCodec();
+                try {
+                    sb.append('/').append(urlCodec.encode(getName())).append('-').append(urlCodec.encode(stringValue));
+                } catch (final EncoderException e) {
+                    throw new BadProgrammerException(e);
+                }
             }
         }
     }
@@ -271,7 +279,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         *
+         * 
          * @param parameter a parameter to find or use.
          */
         private FieldDataFromUrl(final UrlParameter<T, U> parameter) {
@@ -303,7 +311,5 @@ public class UrlParameter<T, U> extends UrlNode {
             return messages;
         }
     }
-
-
 
 }
