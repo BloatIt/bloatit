@@ -3,7 +3,7 @@ Bloatit, Elveos's engine
 
 The elveos.org website uses a Java framework nammed Bloatit.
 
-This framework has been developed specifically for the occasion and uses FCGI or SCGI to contact a web server. Bloatit was thought to be usable with another site and even if the framework is not yet dissociated in source code from elveos.
+This framework has been developed especially for the elveos website and uses FCGI or SCGI to communicate with a web server. Bloatit was thought to be usable with another site and even if the framework is not yet dissociated in source code from elveos.
 
 Dependancies
 -----------
@@ -13,7 +13,7 @@ Elveos has some depedencies :
  - Hibernate for  the connexions to the database
  - Liquibase for database migration.
  - Log4j for logs
- - and few other small dependancies ...
+ - and few other small dependencies ...
 
 Language choose
 ----------------
