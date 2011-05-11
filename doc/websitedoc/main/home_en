@@ -1,17 +1,36 @@
 Documentation home
 ==================
 
-Welcome to the elveos documentation page.
+Welcome on the elveos's documentation home page.
 
-Table of contents
+Table of content
 -----------------
 
 - General
-  - [Presentation of Elveos](/en/documentation/doc-presentation)
+  - [Elveos's presentation](/en/documentation/doc-presentation)
   - [FAQ](/en/documentation/doc-faq)
-  - [Our sales agreement](/en/documentation/doc-cgu)
-- Rest API
-  - [General presentation of the REST API](/en/documentation/doc-rest-home)
-  - [A first example](/en/documentation/doc-rest-first-example)
-  - [REST API documentation](/en/documentation/doc-api)
-  - [Available libraries](/en/documentation/doc-rest-libraries)
+  - [Ethics and opening](/en/documentation/doc-ethics)
+  - [Term of use](/en/documentation/doc-cgu)
+  - [Glossary](/en/documentation/doc-glossary)
+
+
+- Elveos's internal mechanism
+  - [Life cycle of a feature request](/en/documentation/doc-feature-lifecycle)
+  - [Offers](/en/documentation/doc-offer-presentation)
+  - [Team and delegate](/en/documentation/doc-team-presentation)
+  - [Brainstorms](/en/documentation/doc-brainstorm)
+
+- Informations techniques
+  - [API](/en/documentation/doc-api)
+  - [System architecture](/en/documentation/doc-architecture)
+  - [Bloatit, elveos's engine](/en/documentation/doc-bloatit)
+  - Licence du site et du contenu
+  - Contribuer
+
+- Informations administratives
+  - Linkeos
+  - Nous
+  - Détails des coûts
+  - Prévision financières
+
+
