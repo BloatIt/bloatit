@@ -1,27 +1,26 @@
 Elveos's presentation
 =====================
 
-
 What's Elveos ?
 ---------------
 
 Elveos is a website where open source's users and developers are related to improve or create open source softwares.
 
-This site use a system similar to group buy.
+This site use a similar system to group buy.
 
 If you are an open source software user, you can find here people that share your needs and with whom share the costs of developments.
-If you are an open source software developer, you can be paid to develop feature requests from others users.
+If you are an open source software developer, you can be paid to develop features requested from others users.
 
 Next, a short description of how Elveos is working:
 
- 1. An user, an organisation or a developer add a *feature request* that describe his needs on the website.
- 2. All persons or organisations interested in the realisation of this feature can financially participate with an amount of choice.
- 3. At same time, developers can make development offers for this feature. These developers indicate various informations, as the price, the release date and the specifications.
- 4. Then the contributors choose one offer with vote, depending of price, date of release or confidence for the developer.
+ 1. A user, an organisation or a developer add a *feature request* that describe his needs on the website.
+ 2. Every person or organisation interested in the realisation of this feature can financially contribute with an amount of his choice.
+ 3. In the same time, developers can make development offers for this feature request. The developers indicate various informations, as the price he ask for the development of the feature, the estimated release date and the specifications.
+ 4. The contributors vote for their preferred offer.
  5. As soon as the requested amount is gathered, the developer can begin to work.
  6. Once the feature is done, the contributors determine the quality of the work. The developer is paid as soon as all major bugs are fixed.
 
-This is a simplified description of the process. More details are available in the others page of this documentation.
+This is a simplified description of the process. More details are available in the [Feature life cycle page](http://localhost/en/documentation/doc-feature-lifecycle)
 
 The following diagram show an more simplified view of the process
 
@@ -34,30 +33,30 @@ The feature requests can be add to the website by:
 
  * An individual, user for open source software, who would like to see a new feature in a software he uses, or just support a project he likes.
  * A developer who doesn't have the time or the money to realise some item of his roadmap. He can add this item to Elveos to be financed or get more developers.
- * A company who need a new feature or a bug fix in a software it use but wanting share the costs of the developments.
+ * A company who need a new feature or a bug fix in a software it uses and wants to share the costs of the developments.
 
 Kind of feature requests
 ------------------------
 
-The description of the feature requests made until now can let think that they are only development features. In fact, any task can be add on Elveos, while the result will be available on a open source licence:
+The description of the feature requests made until now can let think that they are only development features. In fact, any task can be add on Elveos, the result has to be available in an open source licence:
 
 - Add a feature in an existing software
 - Bug fixes
 - Create a small software
 - Create a plug-in, extension or an add-on
 - Create a test suite
-- Write a documentation, an RFC, a tutorial, ...
+- Write a documentation, a RFC, a tutorial, ...
 - Create resources as graphics or sounds, subtitles
 - Translate a software or document
 - Add a package for a distribution
 
 Teams
-----
+-----
 
-On Elveos, many actions can be make on behalf of a team (project team, association, company, ...). 
+On Elveos, many actions can be made on the behalf of a team (project team, association, company, ...). 
 
-* A developer can make an offer on behalf of an organisation to which he belongs. In this case, it's not him who get money but his organisation. 
-* An user can write a comment on behalf of his company, as spokesman.
+* A developer can make an offer on the behalf of an organisation to which he belongs. In this case, it's not him who gets the money but his organisation. 
+* A user can write a comment on the behalf of his company, as spokesman.
 
-Various other actions can be make on behalf of a team. On the web site, the author, member or team, is always indicated.
+Various other actions can be made on the behalf of a team. On the web site, the author, member or team, is always indicated.
 
