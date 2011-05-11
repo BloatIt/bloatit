@@ -1,0 +1,13 @@
+Contribuer
+==========
+
+Le site web Elveos.org est un projet open source et nous sommes ouvert à toute forme d'aide.
+
+Vous pouvez :
+
+ * Signaler un bug, suggérer une nouvelle fonctionnalité, reporter une erreur de traduction en utilisant le formulaire de rapport de bug dans la colonne de droite.
+ * Créer ou mettre à jour une traduction en utilisant les [fichiers po](https://gitorious.org/bloatit/bloatit/trees/master/main/po)
+ * Envoyer un patch
+ * ...
+ 
+Le dépôt public peut être trouvé sur gitorious : [elveos repository](https://gitorious.org/bloatit)

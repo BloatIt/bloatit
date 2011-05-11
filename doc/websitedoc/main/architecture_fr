@@ -10,11 +10,11 @@ Le site elveos.org dispose pour le momemt d'un seul serveur.
 Bloatit framework
 -----------------
 
-C'est le coeur applicatif du site. Il s'agit un programme Java. Contrairement aux habitude java, Bloatit n'a pas besoin de serveur d'application et n'utilise pas de servlet. Il utilise un server web "classique" via [FCGI](http://www.fastcgi.com/devkit/doc/fcgi-spec.html).
+C'est le coeur applicatif du site. Il s'agit un programme Java. Contrairement aux habitudes java, Bloatit n'a pas besoin de serveur d'application et n'utilise pas de servlet. Il utilise un server web "classique" via [FCGI](http://www.fastcgi.com/devkit/doc/fcgi-spec.html).
 
 Bloatit utilise une base de donnée relationnelle pour stocker la majorité des informations.
 
-Plus d'information sur le moteur du site sur cette page de documentation : [Bloatit, le moteur d'elveos](/fr/documentation/doc-bloatit-engine))
+Plus d'information sur le moteur du site sur cette page de documentation : [Bloatit, le moteur d'elveos](/fr/documentation/doc-bloatit))
 
 
 Serveur de base de donnée
@@ -40,7 +40,7 @@ Le site tourne sur un système Debian Squeeze. Ce choix est principalement justi
 Hébergeur
 ---------
 
-Nous avons choisi OVH comme hébergeur, parce qu'il sont basé en france et on toujours été efficace sur de précédent services.
+Nous avons choisi OVH comme hébergeur, parce qu'ils sont basés en france et ont toujours été efficace sur de précédent services.
 
 Le choix du vps ([http://www.ovh.com/fr/vps/](http://www.ovh.com/fr/vps/)) plutot qu'un serveur dédié normal est dû à des facilités de monté en charge de la solution virtualisée. 
 
