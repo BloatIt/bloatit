@@ -19,7 +19,6 @@ import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -35,6 +34,8 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -70,7 +71,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         }
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), new AuthenticatedUserToken(loggedUser)));
         return layout;
     }
 
@@ -84,7 +85,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
             }
             generateNoMoneyContent(group, getActor(member), account);
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
         return group;
@@ -110,7 +111,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
+            getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
         HtmlLineTableModel model = new HtmlLineTableModel();
         try {
@@ -120,7 +121,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
             }
             model.addLine(new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, null));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
 
@@ -158,7 +159,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(process.getFeature());
         final CheckContributionActionUrl returnUrl = new CheckContributionActionUrl(process);
         returnUrl.setAmount(process.getAmount());

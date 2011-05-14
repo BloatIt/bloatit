@@ -23,8 +23,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -36,11 +34,14 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
+import com.bloatit.model.FeatureImplementation;
+import com.bloatit.model.Image;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.feature.FeatureImplementation;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
@@ -59,7 +60,7 @@ public class FeaturesTools {
     /**
      * Convenience method for {@link #generateFeatureTitle(Feature, boolean)}
      * with <i>isTitle</i> set to false
-     *
+     * 
      * @param feature the feature for which a block will be generated
      * @return the generated block
      * @throws UnauthorizedOperationException when some operation cannot be
@@ -84,7 +85,7 @@ public class FeaturesTools {
      * <li>If <code>isTitle</code> is <i>true</i>, the whole block will be
      * rendered as a normal text, and a link to the feature page will be added</li>
      * </p>
-     *
+     * 
      * @param feature the feature for which we want to generate a description
      *            block
      * @param isTitle <i>true</i> if the block has to be rendered as a title,
@@ -107,21 +108,19 @@ public class FeaturesTools {
         } else {
             master.add(new FeaturePageUrl(feature).getHtmlLink(getTitle(feature)));
         }
-        final HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(feature.getSoftware());
+        final HtmlSpan softwareLink = new SoftwaresTools.Link(feature.getSoftware());
         final HtmlMixedText mixed = new HtmlMixedText(Context.tr(" (<0:software:>)"), softwareLink);
         master.add(mixed);
         return master;
     }
 
-    public static HtmlDiv generateProgress(final Feature feature) throws UnauthorizedOperationException {
-        return generateProgress(feature, false, BigDecimal.ZERO);
+    public static HtmlDiv generateProgress(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
+        return generateProgress(feature, userToken, BigDecimal.ZERO);
     }
 
-    /**
-     * @throws UnauthorizedOperationException
-     */
-    public static HtmlDiv generateProgress(final Feature feature, final boolean slim, final BigDecimal futureAmount)
-            throws UnauthorizedOperationException {
+    public static HtmlDiv
+            generateProgress(final Feature feature, final ElveosUserToken userToken, final BigDecimal futureAmount)
+                                                                                                                                       throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 
@@ -131,8 +130,8 @@ public class FeaturesTools {
             float myProgressValue = 0;
             float futureProgressValue = 0;
 
-            if (Context.getSession().isLogged()) {
-                myProgressValue = feature.getMemberProgression(Context.getSession().getAuthToken().getMember());
+            if (Context.getSession().getUserToken().isAuthenticated()) {
+                myProgressValue = feature.getMemberProgression(userToken.getMember());
                 if (myProgressValue > 0.0f && myProgressValue < 5f) {
                     myProgressValue = 5f;
 
@@ -270,7 +269,6 @@ public class FeaturesTools {
                 featureSummaryDetails.addText(" – ");
                 featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} open bug", "{0} open bugs", bugCount, bugCount)));
 
-                // TODO: go to the correct page
                 final FeaturePageUrl releasesFeatureUrl = new FeaturePageUrl(feature);
                 releasesFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
                 releasesFeatureUrl.setAnchor("feature_tab_pane");

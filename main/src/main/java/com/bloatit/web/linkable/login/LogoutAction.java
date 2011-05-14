@@ -17,6 +17,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.IndexPageUrl;
@@ -47,12 +48,12 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    public Url doProcessErrors() {
+    public Url doProcessErrors(ElveosUserToken userToken) {
         return new IndexPageUrl();
     }
 

@@ -36,10 +36,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.linkable.features.FeatureOfferListComponent;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.features.OfferBlock;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -86,7 +87,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateOfferForm(loggedUser));
 
-        layout.addRight(new SideBarFeatureBlock(feature));
+        layout.addRight(new SideBarFeatureBlock(feature, new AuthenticatedUserToken(loggedUser)));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
@@ -96,7 +97,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
         if (offer != null) {
-            offerPageContainer.add(new FeatureOfferListComponent.OfferBlock(offer, true));
+            offerPageContainer.add(new OfferBlock(offer, true, new AuthenticatedUserToken(me)));
         }
 
         // Create offer form
@@ -201,7 +202,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return MakeOfferPage.generateBreadcrumb(feature);
     }
 

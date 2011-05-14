@@ -20,7 +20,8 @@ import com.bloatit.data.DaoFeature;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Feature;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.FeatureImplementation;
+import com.bloatit.model.right.AuthenticatedUserToken;
 
 /**
  * The Class FeatureManager is a class with only static member. Use it to do
@@ -81,12 +82,12 @@ public final class FeatureManager {
     /**
      * Tells if a user can create a feature.
      *
-     * @param authToken the auth token representing the user wanting to create a
+     * @param userToken the auth token representing the user wanting to create a
      *            feature.
      * @return true, if successful
      */
-    public static boolean canCreate(final AuthToken authToken) {
-        return !authToken.isAnonymous();
+    public static boolean canCreate(final AuthenticatedUserToken userToken) {
+        return userToken.isAuthenticated();
     }
 
 }

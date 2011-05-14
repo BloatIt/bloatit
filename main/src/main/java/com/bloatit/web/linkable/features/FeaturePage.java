@@ -20,17 +20,23 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.pages.tools.CommentTools;
+import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 @ParamContainer("feature")
-public final class FeaturePage extends MasterPage {
+public final class FeaturePage extends ElveosPage {
 
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the feature number: ''%value%''."))
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a feature number."))
@@ -39,12 +45,12 @@ public final class FeaturePage extends MasterPage {
     // Sub component.
     @SuppressWarnings("unused")
     private FeatureTabPane featureTabPane;
-    
+
     @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, generatedFrom = "feature")
     @Optional("Title")
     private final String title;
-    
+
     private final FeaturePageUrl url;
 
     public FeaturePage(final FeaturePageUrl url) {
@@ -72,7 +78,7 @@ public final class FeaturePage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         // The feature page is composed of 3 parts:
         // - The summary
         // - The tab panel
@@ -80,9 +86,16 @@ public final class FeaturePage extends MasterPage {
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        layout.addLeft(new FeatureSummaryComponent(feature));
-        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature));
-        layout.addLeft(new FeatureCommentListComponent(feature));
+        layout.addLeft(new FeatureSummaryComponent(feature, userToken));
+        layout.addLeft(new FeatureTabPane(url.getFeatureTabPaneUrl(), feature, userToken));
+
+        final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
+        {
+            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
+            commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), userToken));
+        }
+        layout.addLeft(commentsBlock);
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
 
@@ -92,7 +105,11 @@ public final class FeaturePage extends MasterPage {
     public static Breadcrumb generateBreadcrumb(final Feature feature) {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
         final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-        breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
+        if (feature.getSoftware() != null) {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
+        } else {
+            breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature {0}", String.valueOf(feature.getId()))));
+        }
         return breadcrumb;
     }
 
@@ -145,7 +162,7 @@ public final class FeaturePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }

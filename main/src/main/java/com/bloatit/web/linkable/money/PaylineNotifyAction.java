@@ -18,18 +18,19 @@ package com.bloatit.web.linkable.money;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 
 @ParamContainer(value="payline/donotify", protocol=Protocol.HTTPS)
-public final class PaylineNotifyAction extends Action {
+public final class PaylineNotifyAction extends ElveosAction{
     public static final String TOKEN_CODE = "token";
 
     @RequestParam(name = TOKEN_CODE)
@@ -46,12 +47,12 @@ public final class PaylineNotifyAction extends Action {
     }
 
     @Override
-    public Url doProcess() {
+    public Url doProcess(final ElveosUserToken userToken) {
         Log.web().info("Get a payline notification: " + token);
         
         try {
             process.validatePayment(token);
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new BadProgrammerException(e);
         }
         
@@ -64,13 +65,13 @@ public final class PaylineNotifyAction extends Action {
     }
 
     @Override
-    public Url doProcessErrors() {
+    public Url doProcessErrors(final ElveosUserToken userToken) {
         Log.web().error("Payline notification with parameter errors ! ");
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

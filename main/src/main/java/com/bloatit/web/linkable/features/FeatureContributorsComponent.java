@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -33,6 +32,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Feature;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.ContributionProcessUrl;
 
 @ParamContainer(value = "FeatureContributorsComponent", isComponent = true)
@@ -55,8 +55,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
 
             // Display contribution count
             contributorsBlock.add(new HtmlTitle(Context.trn("{0} contribution", "{0} contributions", contributionCount, contributionCount), 1));
-
-            // TODO: generate contribution graph
 
             // Display contribution list
             final HtmlTable table = new HtmlTable(new ContributionTableModel(feature.getContributions()));
@@ -181,7 +179,6 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                         value = contribution.getAuthor().getDisplayName();
                         break;
                     case 1:
-                        // TODO: align money at right in CSS
                         value = Context.getLocalizator().getCurrency(contribution.getAmount()).getSimpleEuroString();
                         break;
                     case 2:

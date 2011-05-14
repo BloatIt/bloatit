@@ -32,7 +32,7 @@ public final class TemplateFile {
     private static String FOLDER = ConfigurationManager.SHARE_DIR + "/templates/";
 
     private final String filename;
-    private Map<String, String> parameters = new HashMap<String, String>();
+    private final Map<String, String> parameters = new HashMap<String, String>();
 
     public TemplateFile(final String filename) {
         super();
@@ -44,10 +44,15 @@ public final class TemplateFile {
     }
 
     public String getContent(final Locale language) throws IOException {
-        File file = new File(FOLDER + language.getLanguage() + "/" + filename);
-        if (!file.canRead()) {
-            Log.framework().warn("File in default language not readable, using en instead");
-            file = new File(FOLDER + "en/" + filename);
+        File file;
+        if(language == null) {
+            file = new File(FOLDER + "commons/" + filename);
+        } else {
+            file = new File(FOLDER + language.getLanguage() + "/" + filename);
+            if (!file.canRead()) {
+                Log.framework().warn("File in default language not readable, using en instead");
+                file = new File(FOLDER + "en/" + filename);
+            }
         }
         final StringBuilder contents = new StringBuilder();
         BufferedReader reader = null;

@@ -23,7 +23,6 @@ import org.hibernate.Query;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.utils.PageIterable;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CommentManager contain some useful methods to manage comments.
  */

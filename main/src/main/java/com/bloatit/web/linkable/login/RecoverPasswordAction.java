@@ -17,9 +17,7 @@
 package com.bloatit.web.linkable.login;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.StringUtils;
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -27,12 +25,14 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.RecoverPasswordActionUrl;
 import com.bloatit.web.url.RecoverPasswordPageUrl;
 
@@ -43,7 +43,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * </p>
  */
 @ParamContainer(value="password/dorecover", protocol=Protocol.HTTPS)
-public class RecoverPasswordAction extends Action {
+public class RecoverPasswordAction extends ElveosAction {
     private final RecoverPasswordActionUrl url;
 
     private Member member;
@@ -66,7 +66,7 @@ public class RecoverPasswordAction extends Action {
     @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."))
     private final String checkNewPassword;
 
-    public RecoverPasswordAction(RecoverPasswordActionUrl url) {
+    public RecoverPasswordAction(final RecoverPasswordActionUrl url) {
         super(url);
         this.url = url;
         this.newPassword = url.getNewPassword();
@@ -76,11 +76,11 @@ public class RecoverPasswordAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        session.setAuthToken(new AuthToken(member));
+    protected Url doProcess(final ElveosUserToken token) {
+        session.setAuthToken(new AuthenticatedUserToken(member));
         try {
             member.setPassword(newPassword);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Error setting user password.", e);
         }
         session.notifyGood(Context.tr("Password change successful, you are now logged."));
@@ -88,7 +88,7 @@ public class RecoverPasswordAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken token) {
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(resetKey)) {
             session.notifyBad(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
@@ -97,11 +97,11 @@ public class RecoverPasswordAction extends Action {
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(final ElveosUserToken token) {
         if (!newPassword.equals(checkNewPassword)) {
             session.notifyBad(Context.tr("Password doesn't match confirmation."));
-            url.getNewPasswordParameter().getCustomMessages().add(new Message(Context.tr("New password doesn't match with confirmation.")));
-            url.getCheckNewPasswordParameter().getCustomMessages().add(new Message(Context.tr("Confirmation doesn't match with new password.")));
+            url.getNewPasswordParameter().addErrorMessage(Context.tr("New password doesn't match with confirmation."));
+            url.getCheckNewPasswordParameter().addErrorMessage(Context.tr("Confirmation doesn't match with new password."));
             return new RecoverPasswordPageUrl(resetKey, login);
         }
         member = MemberManager.getMemberByLogin(login);

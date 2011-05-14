@@ -12,7 +12,8 @@
 package com.bloatit.web.linkable.features;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -21,13 +22,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
-import com.bloatit.model.feature.FeatureManager;
-import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -66,11 +66,7 @@ public final class CreateFeatureAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            session.notifyError(Context.tr("You are not authorized to create a feature."));
-            return new CreateFeaturePageUrl();
-        }
+    protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyError(Context.tr("You have to specify a valid language."));
             return new CreateFeaturePageUrl();
@@ -80,21 +76,13 @@ public final class CreateFeatureAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-
-        final Software softwareToUse = (software==null? SoftwareManager.getDefaultSoftware(): software);
-        if(softwareToUse == null) {
-            //The default software do not exist
-            session.notifyError(Context.tr("The default software doesn't exist. Impossible to create the feature."));
-            throw new BadProgrammerException("The default software doesn't exist. Impossible to create the feature. Create quickly the default feature!");
-        }
-
-        final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, softwareToUse);
+        final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
         propagateAttachedFileIfPossible(feature);
         return new FeaturePageUrl(feature);
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new CreateFeaturePageUrl();
     }
 
@@ -112,8 +100,7 @@ public final class CreateFeatureAction extends UserContentAction {
 
     @Override
     protected boolean verifyFile(final String filename) {
-        // TODO verify the file.
-        return true;
+        return new FileConstraintChecker(filename).isFileSmaller(CreateFeaturePage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE);
     }
 
 }

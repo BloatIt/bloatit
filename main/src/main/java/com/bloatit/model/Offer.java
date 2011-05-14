@@ -26,15 +26,13 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtOffer;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
-// TODO rightManagement
 public final class Offer extends Kudosable<DaoOffer> {
 
     // ////////////////////////////////////////////////////////////////////////
@@ -63,10 +61,10 @@ public final class Offer extends Kudosable<DaoOffer> {
                  final Date dateExpire,
                  final int secondsBeforeValidation) {
         super(new DaoOffer(member.getDao(),
-                           DaoGetter.getTeam(team),
+                           DaoGetter.get(team),
                            ((FeatureImplementation) feature).getDao(),
                            amount,
-                           DaoDescription.createAndPersist(member.getDao(), DaoGetter.getTeam(team), local, "RFU", description),
+                           DaoDescription.createAndPersist(member.getDao(), DaoGetter.get(team), local, "RFU", description),
                            dateExpire,
                            secondsBeforeValidation));
     }
@@ -87,7 +85,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         final DaoMilestone daoMilestone = new DaoMilestone(dateExpire,
                                                            amount,
                                                            DaoDescription.createAndPersist(getDao().getMember(),
-                                                                                           DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                                                           DaoGetter.get(getAuthToken().getAsTeam()),
                                                                                            local,
                                                                                            "RFU",
                                                                                            description),
@@ -106,8 +104,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         getDao().setDraft(false);
     }
 
-    // TODO make me protected
-    public boolean validateCurrentMilestone(final boolean force) {
+    boolean validateCurrentMilestone(final boolean force) {
         // If the validation is not complete, there is nothing to do in the
         // feature
         final DaoMilestone currentMilestone = findCurrentDaoMilestone();
@@ -146,8 +143,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         return currentMilestone.shouldValidatePart(level);
     }
 
-    // TODO make me protected
-    public void cancelEverythingLeft() {
+    void cancelEverythingLeft() {
         getDao().cancelEverythingLeft();
     }
 
@@ -180,7 +176,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
-    // TODO make me protected
+    // Public data, no right management.
     public boolean isFinished() {
         return !hasMilestoneLeft();
     }

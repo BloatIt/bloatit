@@ -24,6 +24,7 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public abstract class Resource implements Linkable {
 

@@ -4,7 +4,7 @@ import com.bloatit.model.Rights;
 
 public interface RestrictedInterface {
 
-    void authenticate(final AuthToken token);
+    void authenticate(final AuthenticatedUserToken token);
 
     Rights getRights();
 }

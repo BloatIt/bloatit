@@ -17,11 +17,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 
@@ -29,7 +30,7 @@ import com.bloatit.web.url.MemberActivationActionUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer(value="member/activate", protocol=Protocol.HTTPS)
-public final class MemberActivationAction extends Action {
+public final class MemberActivationAction extends ElveosAction {
 
     private static final String MEMBER_CODE = "member";
     private static final String KEY_CODE = "key";
@@ -54,7 +55,7 @@ public final class MemberActivationAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(ElveosUserToken userToken) {
         final Member member = MemberManager.getMemberByLogin(login);
 
         final Url to = new IndexPageUrl();
@@ -65,7 +66,7 @@ public final class MemberActivationAction extends Action {
                     member.activate(key);
 
                     // Auto login after activation
-                    session.setAuthToken(new AuthToken(member));
+                    session.setAuthToken(new AuthenticatedUserToken(member));
                     session.notifyGood(Context.tr("Activation sucess, you are now logged."));
 
                 } else {
@@ -82,12 +83,12 @@ public final class MemberActivationAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

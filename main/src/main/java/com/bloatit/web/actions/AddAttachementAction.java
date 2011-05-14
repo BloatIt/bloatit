@@ -12,19 +12,20 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.AddAttachementActionUrl;
-import com.bloatit.web.url.AddAttachementPageUrl;
 
 /**
  * A response to a form used to create a new feature
@@ -51,23 +52,22 @@ public final class AddAttachementAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
-        if (!FeatureManager.canCreate(session.getAuthToken())) {
-            // TODO: use UserContentManager and not FeatureManager here
-            session.notifyError(Context.tr("You must be logged in to report a bug."));
-            return new AddAttachementPageUrl(userContent);
-        }
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
     protected boolean verifyFile(final String filename) {
-        // TODO make some generic check (file size ...)
+        final FileConstraintChecker fcc = new FileConstraintChecker(filename);
+        if (!fcc.exists() || !fcc.isFileSmaller(AddAttachementPage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE)) {
+            session.notifyBad(Context.tr("File format error: Your file is to big."));
+            return false;
+        }
         return true;
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return Context.getSession().getLastVisitedPage();
     }
 
@@ -78,7 +78,6 @@ public final class AddAttachementAction extends UserContentAction {
 
     @Override
     protected void doTransmitParameters() {
-        // TODO make sure all the parameters are transmitted.
         session.addParameter(url.getUserContentParameter());
         session.addParameter(url.getAttachmentDescriptionParameter());
     }

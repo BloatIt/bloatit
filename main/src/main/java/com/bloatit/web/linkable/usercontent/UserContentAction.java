@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -34,6 +33,8 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.UserContentActionUrl;
 
@@ -125,16 +126,14 @@ public abstract class UserContentAction extends LoggedAction {
                     transmitParameters();
                     return doProcessErrors();
                 }
-                session.getAuthToken().setAsTeam(team);
+                ((AuthenticatedUserToken) Context.getSession().getUserToken()).setAsTeam(team);
             }
             return doDoProcessRestricted(me, team);
         } finally {
-            session.getAuthToken().setAsTeam(null);
-
+            ((AuthenticatedUserToken) Context.getSession().getUserToken()).setAsTeam(null);
         }
     }
 
-    // TODO correct me.
     protected final boolean propagateAttachedFileIfPossible(final UserContentInterface content) {
         if (getFile() != null && content.canAddFile()) {
             try {

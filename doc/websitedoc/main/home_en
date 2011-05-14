@@ -1,17 +1,31 @@
 Documentation home
 ==================
 
-Welcome to the elveos documentation page.
+Welcome on the elveos's documentation home page.
 
-Table of contents
+Table of content
 -----------------
 
 - General
-  - [Presentation of Elveos](/en/documentation/doc-presentation)
-  - [FAQ](/en/documentation/doc-faq)
-  - [Our sales agreement](/en/documentation/doc-cgu)
-- Rest API
-  - [General presentation of the REST API](/en/documentation/doc-rest-home)
-  - [A first example](/en/documentation/doc-rest-first-example)
-  - [REST API documentation](/en/documentation/doc-rest-api)
-  - [Available libraries](/en/documentation/doc-rest-libraries)
+  - [Elveos's presentation](/en/documentation/doc-presentation)
+  - [Ethics and openness](/en/documentation/doc-ethics)
+  - [Term of use](/en/documentation/doc-cgu)
+<!--  - [Glossary](/en/documentation/doc-glossary)-->
+<!--  - [FAQ](/en/documentation/doc-faq)-->
+
+
+- Elveos's internal mechanism
+  - [A feature request life cycle](/en/documentation/doc-feature-lifecycle)
+  - [Offers](/en/documentation/doc-offer-presentation)
+  - [Reputation and popularity](/en/documentation/doc-reputation-popularity)
+  - [Teams and delegate](/en/documentation/doc-team-presentation)
+  - [Brainstorms](/en/documentation/doc-brainstorm)
+
+- Technical informations
+  - [API](/en/documentation/doc-api)
+  - [System architecture](/en/documentation/doc-architecture)
+  - [Bloatit, elveos's engine](/en/documentation/doc-bloatit)
+  - [Licence for website and content](/en/documentation/doc-licenses)
+  - [Contribute](/en/documentation/doc-contribute)
+
+

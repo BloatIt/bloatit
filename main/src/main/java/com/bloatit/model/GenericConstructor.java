@@ -49,7 +49,6 @@ import com.bloatit.data.queries.DBRequests;
 public class GenericConstructor {
 
     public static IdentifiableInterface create(final Class<? extends IdentifiableInterface> clazz, final Integer id) throws ClassNotFoundException {
-        // TODO: Crash if not found
         final Class<?> daoClass = getDaoClass(clazz);
         if (daoClass == null) {
             throw new ClassNotFoundException("Cannot find a dao class for the class " + clazz);
@@ -59,10 +58,9 @@ public class GenericConstructor {
             if (byId != null) {
                 return byId.accept(new DataVisitorConstructor());
             }
-        } catch(ObjectNotFoundException e) {
+        } catch (final ObjectNotFoundException e) {
             return null;
         }
-
 
         return null;
     }

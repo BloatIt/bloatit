@@ -20,7 +20,8 @@ import static com.bloatit.framework.utils.StringUtils.isEmpty;
 
 import java.util.List;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.data.DaoTeam.Right;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -30,10 +31,13 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
@@ -79,9 +83,13 @@ public class ModifyTeamAction extends LoggedAction {
     @Optional
     private final String avatarContentType;
 
-    private ModifyTeamActionUrl url;
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Right right;
 
-    public ModifyTeamAction(ModifyTeamActionUrl url) {
+    private final ModifyTeamActionUrl url;
+
+    public ModifyTeamAction(final ModifyTeamActionUrl url) {
         super(url);
         this.team = url.getTeam();
         this.avatar = url.getAvatar();
@@ -91,19 +99,17 @@ public class ModifyTeamAction extends LoggedAction {
         this.displayName = url.getDisplayName();
         this.contact = url.getContact();
         this.description = url.getDescription();
+        this.right = url.getRight();
         this.url = url;
     }
 
     @Override
-    protected Url doProcessRestricted(Member me) {
+    protected Url doProcessRestricted(final Member me) {
         try {
             // Display name
-            if (isEmpty(displayName) && !isEmpty(team.getDisplayName())) {
-                session.notifyGood(Context.tr("Team's display name deleted."));
-                team.setDisplayName(null);
-            } else if (!isEmpty(displayName) && !displayName.equals(team.getDisplayName())) {
+            if (!isEmpty(displayName) && !displayName.equals(team.getLogin())) {
                 session.notifyGood(Context.tr("Team's display updated."));
-                team.setDisplayName(displayName);
+                team.setLogin(displayName);
             }
 
             // Contact information
@@ -120,10 +126,10 @@ public class ModifyTeamAction extends LoggedAction {
 
             // AVATAR
             if (avatar != null) {
-                FileConstraintChecker fcc = new FileConstraintChecker(avatar);
-                List<String> imageErr = fcc.isImageAvatar();
+                final FileConstraintChecker fcc = new FileConstraintChecker(avatar);
+                final List<String> imageErr = fcc.isImageAvatar();
                 if (!isEmpty(avatarFileName) && imageErr == null) {
-                    FileMetadata file = FileMetadataManager.createFromTempFile(me, null, avatar, avatarFileName, "");
+                    final FileMetadata file = FileMetadataManager.createFromTempFile(me, null, avatar, avatarFileName, "");
                     team.setAvatar(file);
                     session.notifyGood(Context.tr("Avatar updated."));
                 } else {
@@ -140,22 +146,27 @@ public class ModifyTeamAction extends LoggedAction {
                 }
             }
 
+            // Description
+            if (right != null && !right.equals(team.getJoinRight())) {
+                session.notifyGood(Context.tr("Team's join right changed."));
+                team.setRight(right);
+            }
+
             // DELETE AVATAR
             if (deleteAvatar != null && deleteAvatar.booleanValue()) {
                 session.notifyGood(Context.tr("Deleted avatar."));
                 team.setAvatar(null);
             }
 
-        } catch (UnauthorizedOperationException e) {
-            e.printStackTrace();
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException(e);
         }
 
         return new TeamPageUrl(team);
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
-        // TODO: link error messages to form field, so they can be red
+    protected Url checkRightsAndEverything(final Member me) {
         boolean error = false;
 
         if (!me.hasModifyTeamRight(team)) {
@@ -163,25 +174,28 @@ public class ModifyTeamAction extends LoggedAction {
             return new ModifyTeamPageUrl(team);
         }
 
-        if (isEmpty(contact)) {
+        if (!isEmpty(displayName) && !displayName.equals(team.getLogin()) && TeamManager.exist(displayName)) {
             error = true;
-            session.notifyBad(Context.tr("Cannot delete team's display name."));
+            session.notifyError(Context.tr("This team name already exists."));
+            url.getDisplayNameParameter().addErrorMessage(Context.tr("This team name already exists."));
         }
-
         if (isEmpty(contact)) {
             error = true;
-            session.notifyBad(Context.tr("Cannot delete team's contact information."));
+            session.notifyError(Context.tr("Cannot delete team's display name."));
+            url.getContactParameter().addErrorMessage(Context.tr("Cannot delete team's display name."));
         }
 
         if (isEmpty(description)) {
             error = true;
-            session.notifyBad(Context.tr("Cannot delete team's description."));
+            session.notifyError(Context.tr("Cannot delete team's description."));
+            url.getDescriptionParameter().addErrorMessage(Context.tr("Cannot delete team's description."));
         }
 
         // Avatar and delete avatar
         if (deleteAvatar != null && deleteAvatar.booleanValue() && me.getAvatar() != null && !me.getAvatar().isNull()) {
             if (!isEmpty(avatar)) {
-                session.notifyBad(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
+                session.notifyError(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
+                url.getAvatarParameter().addErrorMessage(Context.tr("You cannot delete your avatar, and indicate a new one at the same time."));
                 error = true;
             }
         }
@@ -193,7 +207,7 @@ public class ModifyTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new ModifyTeamPageUrl(team);
     }
 

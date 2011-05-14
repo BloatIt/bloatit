@@ -24,8 +24,11 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
+import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.WebConfiguration;
@@ -35,7 +38,7 @@ import com.bloatit.web.components.TeamListRenderer;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
@@ -46,7 +49,7 @@ import com.bloatit.web.url.TeamsPageUrl;
  * </p>
  */
 @ParamContainer("team/list")
-public final class TeamsPage extends MasterPage {
+public final class TeamsPage extends ElveosPage {
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Team> pagedTeamList;
     private final TeamsPageUrl url;
@@ -57,7 +60,7 @@ public final class TeamsPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
 
@@ -75,7 +78,7 @@ public final class TeamsPage extends MasterPage {
         final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
 
         final TeamsPageUrl clonedUrl = url.clone();
-        pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
+        pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl(), new PlaceHolderElement(), new HtmlClearer());
 
         master.add(pagedTeamList);
 
@@ -93,7 +96,7 @@ public final class TeamsPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return TeamsPage.generateBreadcrumb();
     }
 

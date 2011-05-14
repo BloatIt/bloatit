@@ -13,7 +13,8 @@ package com.bloatit.web.actions;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -23,8 +24,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Commentable;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateCommentActionUrl;
 
@@ -53,7 +57,7 @@ public final class CreateCommentAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         // add a can access comment.
         return NO_ERROR;
     }
@@ -79,7 +83,7 @@ public final class CreateCommentAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return redirectWithError();
     }
 
@@ -95,7 +99,6 @@ public final class CreateCommentAction extends UserContentAction {
 
     @Override
     protected boolean verifyFile(final String filename) {
-        // TODO verify the file.
-        return false;
+        return new FileConstraintChecker(filename).isFileSmaller(CommentForm.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE);
     }
 }

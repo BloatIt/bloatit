@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.net.URLCodec;
+
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.parameters.HttpParameter;
@@ -78,8 +81,8 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
-    public Messages getCustomMessages() {
-        return customMessages;
+    public void addErrorMessage(final String message) {
+        customMessages.add(new Message(message));
     }
 
     public String getStringValue() {
@@ -96,7 +99,7 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     private String makeStringPretty(final String theValue) {
-        String tmp = theValue.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+]", "-");
+        String tmp = theValue.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+#]", "-");
         tmp = tmp.replaceAll("--+", "-");
         tmp = tmp.subSequence(0, Math.min(tmp.length(), 80)).toString();
         tmp = tmp.replaceAll("-+$", "");
@@ -135,13 +138,11 @@ public class UrlParameter<T, U> extends UrlNode {
                 final StringBuilder sb = new StringBuilder();
                 @SuppressWarnings("rawtypes") final List casted = List.class.cast(this.value);
                 for (final String aValue : httpParam) {
-                    // TODO make me works !
                     sb.append('&').append(getName()).append('=').append(aValue);
                     casted.add(Loaders.fromStr(description.getConvertInto(), aValue));
                 }
                 strValue = sb.toString();
             } else {
-                // TODO make sure this is working
                 strValue = httpParam.getSimpleValue();
                 if (value == null || getValueClass().isAssignableFrom(value.getClass())) {
                     setValueUnprotected((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
@@ -192,7 +193,12 @@ public class UrlParameter<T, U> extends UrlNode {
         final String stringValue = getStringValue();
         if (getRole() == Role.GET || getRole() == Role.PRETTY || getRole() == Role.POSTGET) {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
-                sb.append('/').append(getName()).append('-').append(stringValue);
+                final URLCodec urlCodec = new URLCodec();
+                try {
+                    sb.append('/').append(urlCodec.encode(getName())).append('-').append(urlCodec.encode(stringValue));
+                } catch (final EncoderException e) {
+                    throw new BadProgrammerException(e);
+                }
             }
         }
     }
@@ -273,7 +279,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         *
+         * 
          * @param parameter a parameter to find or use.
          */
         private FieldDataFromUrl(final UrlParameter<T, U> parameter) {
@@ -305,7 +311,5 @@ public class UrlParameter<T, U> extends UrlNode {
             return messages;
         }
     }
-
-
 
 }

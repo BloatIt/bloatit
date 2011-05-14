@@ -21,9 +21,10 @@ package com.bloatit.web.linkable.admin;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
@@ -40,17 +41,19 @@ import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm.Method;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
 import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.pages.tools.HightlightedFeaturesTools;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.DeclareHightlightedFeatureActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
@@ -118,7 +121,11 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
         //Reason
         final FieldData reasonFieldData = actionUrl.getTitleParameter().pickFieldData();
-        final HtmlTextField reasonInput = new HtmlTextField(reasonFieldData.getName(), "Reason");
+        final HtmlDropDown reasonInput = new HtmlDropDown(reasonFieldData.getName(), "Reason");
+        Map<String, String> reasonsMap = HightlightedFeaturesTools.getReasonsMap();
+        for(Entry<String,String> reason : reasonsMap.entrySet()) {
+            reasonInput.addDropDownElement(reason.getKey(), reason.getValue());
+        }
         reasonInput.setDefaultValue(reasonFieldData.getSuggestedValue());
         newHightlightedFeatureForm.add(reasonInput);
 
@@ -150,7 +157,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink("Admin"));
         breadcrumb.pushLink(url.getHtmlLink("Hightlighted features"));
@@ -192,7 +199,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
                 @Override
                 public XmlNode getBody() {
-                    return new HtmlText(feature.getReason());
+                    return new HtmlText(HightlightedFeaturesTools.getReason(feature));
                 }
             });
 

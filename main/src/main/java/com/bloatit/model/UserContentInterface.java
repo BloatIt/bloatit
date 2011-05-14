@@ -18,8 +18,8 @@ package com.bloatit.model;
 
 import java.util.Date;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.model.right.RestrictedInterface;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * The Interface UserContentInterface. A User content is a content created by a

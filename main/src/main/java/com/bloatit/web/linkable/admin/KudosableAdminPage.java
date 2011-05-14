@@ -23,7 +23,6 @@ import java.util.EnumSet;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -36,6 +35,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.KudosableInterface;
 import com.bloatit.model.admin.KudosableAdminListFactory;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 
 @ParamContainer("admin/kudosable")

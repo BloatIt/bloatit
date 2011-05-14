@@ -18,6 +18,7 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoTeam;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -27,6 +28,7 @@ import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownE
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownPreviewer;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlCheckbox;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlFormField.LabelPosition;
@@ -44,7 +46,7 @@ import com.bloatit.web.url.ModifyTeamPageUrl;
 
 @ParamContainer("team/modify")
 public class ModifyTeamPage extends LoggedPage {
-    private ModifyTeamPageUrl url;
+    private final ModifyTeamPageUrl url;
 
     @RequestParam(role = Role.GET)
     private final Team team;
@@ -124,6 +126,16 @@ public class ModifyTeamPage extends LoggedPage {
         deleteAvatar.setComment(Context.tr("Checking this box will delete team's avatar."));
         form.add(deleteAvatar);
 
+     // PUBLIC / PRIVATE
+        final FieldData rightData = targetUrl.getRightParameter().pickFieldData();
+        final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Join right of the team: "));
+        rightInput.setDefaultValue(rightData.getSuggestedValue());
+        rightInput.addErrorMessages(rightData.getErrorMessages());
+        rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Public"));
+        rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("Protected"));
+        rightInput.setComment(Context.tr("Public teams can be joined by anybody without an invitation."));
+        form.add(rightInput);
+
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
         form.add(submit);
 
@@ -146,7 +158,7 @@ public class ModifyTeamPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return generateBreadcrumb(team);
     }
 

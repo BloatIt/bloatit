@@ -27,14 +27,14 @@ import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.data.DaoRelease;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtMilestone;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
  * A milestone is a part of an offer. Simple offers are only composed of one
@@ -122,6 +122,17 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     // ////////////////////////////////////////////////////////////////////////
 
     /**
+     * Tells if the authenticated user can access the <i>Release</i> property.
+     * 
+     * @param action the type of access you want to do on the <i>Release</i>
+     *            property.
+     * @return true if you can access the <i>Release</i> property.
+     */
+    public final boolean canAccessRelease(final Action action) {
+        return canAccess(new RgtMilestone.Release(), action);
+    }
+
+    /**
      * <p>
      * Add a release on the current milestone. A milestone can have multiple
      * release. Each release reset the releasedDate of this milestone.
@@ -136,14 +147,11 @@ public final class Milestone extends Identifiable<DaoMilestone> {
     public Release
             addRelease(final String description, final String version, final Locale locale, final FileMetadata file)
                                                                                                                     throws UnauthorizedOperationException {
+        tryAccess(new RgtMilestone.Release(), Action.WRITE);
         final Release release = new Release(getOffer().getMember(), getAuthToken().getAsTeam(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
         }
-        // TODO as team ?
-        // if (getOffer().getAsTeam() != null){
-        // release.setAsTeam(getOffer().getAsTeam());
-        // }
         getDao().addRelease(release.getDao());
         return release;
 

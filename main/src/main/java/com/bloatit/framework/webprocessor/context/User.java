@@ -16,6 +16,7 @@
 //
 package com.bloatit.framework.webprocessor.context;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 public interface User {
@@ -24,11 +25,11 @@ public interface User {
         VALIDATING, ACTIVE, DELETED
     }
 
-    public abstract String getUserLogin();
+    public abstract String getLogin();
 
-    public abstract Locale getUserLocale();
+    public abstract Locale getLocale();
 
     public abstract ActivationState getActivationState();
 
-    public abstract Integer getId();
+    public abstract Serializable getId();
 }

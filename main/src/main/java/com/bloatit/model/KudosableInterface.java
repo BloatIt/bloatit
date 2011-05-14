@@ -19,8 +19,8 @@ package com.bloatit.model;
 import java.util.EnumSet;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 public interface KudosableInterface extends UserContentInterface {
 

@@ -19,9 +19,9 @@ package com.bloatit.model.feature;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.Offer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PreparingState.
  */
@@ -32,7 +32,7 @@ public class PreparingState extends CanContributeMetaState {
      * 
      * @param feature the feature on which this state apply.
      */
-    protected PreparingState(final FeatureImplementation feature) {
+    public PreparingState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }

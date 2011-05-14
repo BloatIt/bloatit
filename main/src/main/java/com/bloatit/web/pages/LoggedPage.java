@@ -15,8 +15,10 @@ package com.bloatit.web.pages;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -29,7 +31,7 @@ import com.bloatit.web.url.LoginPageUrl;
  * <code>{@link #getRefusalReason()}</code>
  * </p>
  */
-public abstract class LoggedPage extends MasterPage {
+public abstract class LoggedPage extends ElveosPage {
 
     public LoggedPage(final Url url) {
         super(url);
@@ -43,12 +45,12 @@ public abstract class LoggedPage extends MasterPage {
      * warning to the user
      */
     @Override
-    protected final HtmlElement createBodyContent() throws RedirectException {
-        if (session.isLogged()) {
-            return createRestrictedContent(session.getAuthToken().getMember());
+    protected final HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+        if (getSession().getUserToken().isAuthenticated()) {
+            return createRestrictedContent(userToken.getMember());
         }
-        session.notifyBad(getRefusalReason());
-        session.setTargetPage(getUrl());
+        getSession().notifyBad(getRefusalReason());
+        getSession().setTargetPage(getUrl());
         throw new RedirectException(new LoginPageUrl());
     }
 
@@ -61,8 +63,8 @@ public abstract class LoggedPage extends MasterPage {
      * is not logged, a redirection to <code>LoginPage</code> will happen, and
      * user will be warned with <code>{@link #getRefusalReason()}</code>
      * </p>
-     *
-     * @param loggedUser TODO
+     * 
+     * @param loggedUser the current loggedUser. Cannot be null.
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
      *             content generation and redirect to another page
@@ -75,16 +77,26 @@ public abstract class LoggedPage extends MasterPage {
      * </p>
      * <p>
      * Standard example :
-     *
+     * 
      * <pre>
      * public String getRefusalReason() {
      *     return tr(&quot;You need to be logged to access %pagename%&quot;);
      * }
      * </pre>
-     *
+     * 
      * </p>
-     *
+     * 
      * @return a String indicating to the user why he cannot access this page
      */
     public abstract String getRefusalReason();
+
+    @Override
+    protected final Breadcrumb createBreadcrumb(final ElveosUserToken token) {
+        if (token.isAuthenticated()) {
+            return createBreadcrumb(token.getMember());
+        }
+        return createBreadcrumb((Member) null);
+    }
+
+    protected abstract Breadcrumb createBreadcrumb(Member member);
 }

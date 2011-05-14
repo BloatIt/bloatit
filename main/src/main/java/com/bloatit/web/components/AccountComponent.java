@@ -23,14 +23,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Sorter;
 import com.bloatit.framework.utils.Sorter.Order;
@@ -50,18 +46,20 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.Image;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.HtmlPageComponent;
+import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 public class AccountComponent extends HtmlPageComponent {
@@ -102,18 +100,23 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
     private HtmlElement generateAccountMovementList(final PageIterable<Contribution> contributions,
-                                                    final PageIterable<BankTransaction> bankTransactions, PageIterable<MoneyWithdrawal> moneyWithdrawals) {
+                                                    final PageIterable<BankTransaction> bankTransactions,
+                                                    final PageIterable<MoneyWithdrawal> moneyWithdrawals) {
         final List<HtmlTableLine> lineList = new ArrayList<HtmlTableLine>();
         final Sorter<HtmlTableLine, Date> sorter = new Sorter<HtmlTableLine, Date>(lineList);
 
         try {
 
-            for (final MoneyWithdrawal moneyWithdrawal: moneyWithdrawals) {
+            for (final MoneyWithdrawal moneyWithdrawal : moneyWithdrawals) {
                 sorter.add(new MoneyWithdrawalLine(moneyWithdrawal), moneyWithdrawal.getCreationDate());
             }
 
             for (final Contribution contribution : contributions) {
-                sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
+                if(contribution.getFeature().getFeatureState() != FeatureState.DISCARDED) {
+                    sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
+                } else {
+                    sorter.add(new ContributionFailedLine(contribution), contribution.getCreationDate());
+                }
             }
 
             for (final BankTransaction bankTransaction : bankTransactions) {
@@ -129,9 +132,6 @@ public class AccountComponent extends HtmlPageComponent {
                             sorter.add(new ChargeAccountAbordedLine(bankTransaction), bankTransaction.getModificationDate());
                         }
                     }
-                } else {
-                    // TODO withdraw
-                    throw new NotImplementedException();
                 }
             }
         } catch (final UnauthorizedOperationException e) {
@@ -162,7 +162,7 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateContributionDescription() {
             final HtmlDiv description = new HtmlDiv("description");
-            final HtmlSpan softwareLink = SoftwaresTools.getSoftwareLink(contribution.getFeature().getSoftware());
+            final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
             final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
 
             String statusString = "";
@@ -198,6 +198,57 @@ public class AccountComponent extends HtmlPageComponent {
     }
 
 
+    private static class ContributionFailedLine extends HtmlTableLine {
+
+        private final Contribution contribution;
+
+        public ContributionFailedLine(final Contribution contribution) throws UnauthorizedOperationException {
+            setCssClass("failed_line");
+            this.contribution = contribution;
+            addCell(new EmptyCell());
+            addCell(new TitleCell(contribution.getCreationDate(), generateContributionTitle()));
+            addCell(new EmptyCell());
+            addCell(new MoneyCell(contribution.getAmount().negate()));
+        }
+
+        private HtmlDiv generateContributionDescription() {
+            final HtmlDiv description = new HtmlDiv("description");
+            final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
+            final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
+
+            String statusString = "";
+            switch (contribution.getFeature().getFeatureState()) {
+                case DEVELOPPING:
+                    statusString = tr("In development");
+                    break;
+                case FINISHED:
+                    statusString = tr("Success");
+                    break;
+                case DISCARDED:
+                    statusString = tr("Failed");
+                    break;
+                case PENDING:
+                case PREPARING:
+                    statusString = tr("Funding");
+                    break;
+            }
+
+            description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
+            description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
+            return description;
+        }
+
+        private HtmlDiv generateContributionTitle() {
+            final HtmlDiv title = new HtmlDiv("title");
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature());
+            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+            featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
+            title.add(new HtmlMixedText(tr("Contributed to a failed <0::feature>"), featurePageUrl.getHtmlLink()));
+            return title;
+        }
+    }
+
+
     private static class MoneyWithdrawalLine extends HtmlTableLine {
 
         private final MoneyWithdrawal moneyWithdrawal;
@@ -210,7 +261,7 @@ public class AccountComponent extends HtmlPageComponent {
             addCell(new MoneyCell(moneyWithdrawal.getAmountWithdrawn().negate()));
         }
 
-        private HtmlDiv generateContributionDescription() throws UnauthorizedPrivateAccessException {
+        private HtmlDiv generateContributionDescription() throws UnauthorizedOperationException {
             final HtmlDiv description = new HtmlDiv("description");
 
             String statusString = "";
@@ -234,12 +285,12 @@ public class AccountComponent extends HtmlPageComponent {
 
             description.add(new HtmlDefineParagraph(tr("IBAN: "), moneyWithdrawal.getIBAN()));
             description.add(new HtmlDefineParagraph(tr("Reference: "), moneyWithdrawal.getReference()));
-            if(moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
-                PageNotFoundUrl cancelUrl = new PageNotFoundUrl();
-                HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)",statusString), cancelUrl.getHtmlLink());
-                description.add(new HtmlDefineParagraph(tr("Status: "),statusWithCancel));
+            if (moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
+                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(moneyWithdrawal);
+                final HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)", statusString), cancelUrl.getHtmlLink());
+                description.add(new HtmlDefineParagraph(tr("Status: "), statusWithCancel));
             } else {
-                description.add(new HtmlDefineParagraph(tr("Status: "),statusString));
+                description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
             }
             return description;
         }
@@ -250,7 +301,6 @@ public class AccountComponent extends HtmlPageComponent {
             return title;
         }
     }
-
 
     private static class ChargeAccountLine extends HtmlTableLine {
 
@@ -264,7 +314,6 @@ public class AccountComponent extends HtmlPageComponent {
                 addCell(new DescriptionCell(tr("Account loading summary"), generateChargeAccountDescription()));
                 addCell(new MoneyCell(bankTransaction.getValue()));
             } catch (final UnauthorizedOperationException e) {
-                // TODO test the fallback
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
@@ -273,7 +322,7 @@ public class AccountComponent extends HtmlPageComponent {
             }
         }
 
-        private HtmlDiv generateChargeAccountDescription() throws UnauthorizedPrivateAccessException {
+        private HtmlDiv generateChargeAccountDescription() throws UnauthorizedOperationException {
             final HtmlDiv description = new HtmlDiv("description");
             description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
                                                                                .getCurrency(bankTransaction.getValuePaid())

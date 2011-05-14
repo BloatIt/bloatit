@@ -25,11 +25,12 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer;
 import com.bloatit.web.linkable.documentation.HtmlDocumentationRenderer.DocumentationType;
 import com.bloatit.web.pages.master.BoxLayout;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.DocumentationPageUrl;
 
@@ -45,7 +46,7 @@ import com.bloatit.web.url.DocumentationPageUrl;
  * </p>
  */
 @ParamContainer("documentation")
-public final class DocumentationPage extends MasterPage {
+public final class DocumentationPage extends ElveosPage {
 
     private final static String DEFAULT_DOC = "home";
 
@@ -66,7 +67,7 @@ public final class DocumentationPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(url);
         final BoxLayout box = new BoxLayout();
         final HtmlDocumentationRenderer docRenderer = new HtmlDocumentationRenderer(DocumentationType.MAIN_DOC, docTarget);
@@ -85,7 +86,7 @@ public final class DocumentationPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         if (docTarget.equals(DEFAULT_DOC)) {
             return DocumentationPage.generateBreadcrumb();
         }

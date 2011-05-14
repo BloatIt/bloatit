@@ -23,8 +23,6 @@ import java.util.EnumSet;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -39,9 +37,13 @@ import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Release;
 import com.bloatit.model.admin.MilestoneAdminListFactory;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.MilestoneAdminPageUrl;
@@ -149,7 +151,7 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return MilestoneAdminPage.generateBreadcrumb();
     }
 

@@ -17,13 +17,14 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -51,6 +52,7 @@ public final class JoinTeamAction extends LoggedAction {
         if (targetTeam.isPublic()) {
             try {
                 me.addToPublicTeam(targetTeam);
+                session.notifyGood(Context.tr("You are now a member of team ''{0}''.", targetTeam.getDisplayName()));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyBad(Context.tr("Oops we had an internal issue preventing you to join team. It's a bug, please notify us."));
                 throw new ShallNotPassException("User tries to join public team, but is not allowed to", e);
@@ -63,12 +65,12 @@ public final class JoinTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if (targetTeam != null) {
             return new TeamPageUrl(targetTeam);
         }

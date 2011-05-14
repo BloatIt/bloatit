@@ -17,7 +17,6 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.data.DaoTeam.Right;
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -26,6 +25,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
@@ -41,8 +41,6 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team/docreate")
 public final class CreateTeamAction extends LoggedAction {
-    protected final static String PROTECTED = "PROTECTED";
-    protected final static String PUBLIC = "PUBLIC";
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(
@@ -71,7 +69,7 @@ public final class CreateTeamAction extends LoggedAction {
     private final String description;
 
     @RequestParam(role = Role.POST)
-    private final String right;
+    private final Right right;
 
     private final CreateTeamActionUrl url;
 
@@ -85,11 +83,11 @@ public final class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
 
         if (TeamManager.exist(login)) {
             session.notifyError(Context.tr("The team name ''{0}''already used. Find another name.", login));
-            url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Team name already used.")));
+            url.getLoginParameter().addErrorMessage(Context.tr("Team name already used."));
             return doProcessErrors();
         }
 
@@ -98,22 +96,13 @@ public final class CreateTeamAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        Right teamRight = Right.PUBLIC;
-        if (right.equals(PUBLIC)) {
-            teamRight = Right.PUBLIC;
-        } else if (right.equals(PROTECTED)) {
-            teamRight = Right.PROTECTED;
-        } else {
-            session.notifyBad(Context.tr("A team can either be public or protected (and dude, stop playing with our post data)."));
-            transmitParameters();
-            return new CreateTeamPageUrl();
-        }
-        final Team newTeam = new Team(login, contact, description, teamRight, me);
+
+        final Team newTeam = new Team(login, contact, description, right, me);
         return new TeamPageUrl(newTeam);
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new CreateTeamPageUrl();
     }
 

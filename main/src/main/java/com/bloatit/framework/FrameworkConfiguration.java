@@ -79,12 +79,15 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String jsDatePicker;
     private String jsShowdown;
     private String jsShowdownUi;
+    
+    private String bloatitLibravatarURI;
 
     // OTHERS
     private AtomicBoolean htmlIndent;
     private AtomicBoolean https;
     private int memoryCacheMaxSize;
     private String imgFavicon;
+    private String anonymousUserTokenClass;
 
     private FrameworkConfiguration() {
         super();
@@ -273,6 +276,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return FrameworkConfiguration.getCommonsDir() + configuration.imgFavicon;
     }
 
+    public static String getLibravatarURI() {
+        return configuration.bloatitLibravatarURI;
+    }
+
     // ----------------------------------------------------------
     // OTHERS
     // ----------------------------------------------------------
@@ -293,9 +300,14 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         return configuration.memoryCacheMaxSize;
     }
 
+    public static String getAnonymousUserTokenClass() {
+        return configuration.anonymousUserTokenClass;
+    }
+    
     public static String getCommonsDir() {
         return configuration.resourcesDir + "/commons";
     }
+    
 
     private void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("framework.properties");
@@ -340,6 +352,8 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         jsDatePicker = properties.getString("bloatit.js.datepicker");
         jsShowdown = properties.getString("bloatit.js.showdown");
         jsShowdownUi = properties.getString("bloatit.js.showdown.ui");
+        
+        bloatitLibravatarURI = properties.getString("bloatit.libravatar.uri");
 
         // DIRECTORIES
         documentationDir = properties.getString("bloatit.documentation.dir");
@@ -351,6 +365,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         https = new AtomicBoolean(properties.getBoolean("bloatit.https"));
         memoryCacheMaxSize = properties.getInt("bloatit.memory.cache.max.size");
         imgFavicon = properties.getString("bloatit.img.favicon");
+        anonymousUserTokenClass = properties.getString("bloatit.anonymousUserToken.class");
     }
 
     protected static void load() {

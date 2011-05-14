@@ -86,7 +86,7 @@ public class FCGIParser implements XcgiParser {
     /**
      * Input stream
      */
-    private DataInputStream dataInput;
+    private final DataInputStream dataInput;
 
     /**
      * Status of param input stream. The param input stream is closed when a
@@ -118,7 +118,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Create a fcgi parser with the 2 stream of the web server's socket.
-     * 
+     *
      * @param input stream containing data from the web server
      * @param output stream where to write the response to the web server
      * @throws IOException
@@ -160,10 +160,14 @@ public class FCGIParser implements XcgiParser {
         return env;
     }
 
+    /**
+     * Fetch one post record if possible
+     * @throws IOException
+     */
     protected void fetchPostRecord() throws IOException {
 
-        while (postStreamOpen && !(parseRecord() == FCGI_STDIN)) {
-            // TODO: comment that
+        while (postStreamOpen && parseRecord() != FCGI_STDIN) {
+            // If the post stream is not closed, parse some record until finding a new post record.
         }
     }
 
@@ -298,7 +302,7 @@ public class FCGIParser implements XcgiParser {
         final String name = new String(nameArray);
 
         final byte[] valueArray = new byte[(int) valueLength];
-        dataInput.read(valueArray); // XXX Why is this ignored ?
+        dataInput.read(valueArray);
         usedLength += valueLength;
         final String value = new String(valueArray);
 
@@ -330,7 +334,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Converts a 4 byte array of unsigned bytes to an long
-     * 
+     *
      * @param b an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */

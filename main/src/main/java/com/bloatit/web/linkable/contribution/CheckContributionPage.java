@@ -19,7 +19,6 @@ import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -36,8 +35,11 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLine
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -64,8 +66,8 @@ public final class CheckContributionPage extends QuotationPage {
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
     @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
-    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final CheckContributionPageUrl url;
@@ -78,7 +80,7 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -88,14 +90,14 @@ public final class CheckContributionPage extends QuotationPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
-        return createBodyContent();
+        return createBodyContent(userToken);
     }
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount()));
+        layout.addRight(new SideBarFeatureBlock(process.getFeature(), process.getAmount(), new AuthenticatedUserToken(loggedUser)));
         return layout;
     }
 
@@ -113,7 +115,7 @@ public final class CheckContributionPage extends QuotationPage {
                 generateNoMoneyContent(group, getActor(member), account);
             }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
 
@@ -146,7 +148,7 @@ public final class CheckContributionPage extends QuotationPage {
                         authorContributionSummary.add(new HtmlDefineParagraph(tr("Author: "), actor.getDisplayName()));
                     }
                 } catch (final UnauthorizedOperationException e) {
-                    session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+                    getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
                     throw new ShallNotPassException("User cannot access user information", e);
                 }
 
@@ -196,14 +198,14 @@ public final class CheckContributionPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
         if (process.isLocked()) {
-            session.notifyBad(tr("You have a payment in progress. The contribution is locked."));
+            getSession().notifyBad(tr("You have a payment in progress. The contribution is locked."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("The preload amount is locked during the payment process."));
+            getSession().notifyBad(tr("The preload amount is locked during the payment process."));
         }
 
         // Total
@@ -215,11 +217,12 @@ public final class CheckContributionPage extends QuotationPage {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("The contribution's total amount is locked during the payment process."));
+            getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
 
+        HtmlChargeAccountLine line;
         try {
             final ContributePageUrl contributePageUrl = new ContributePageUrl(process);
             model.addLine(new HtmlContributionLine(process.getFeature(), process.getAmount(), contributePageUrl));
@@ -230,9 +233,10 @@ public final class CheckContributionPage extends QuotationPage {
 
             final CheckContributionPageUrl recalculateUrl = url.clone();
             recalculateUrl.setPreload(null);
-            model.addLine(new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl));
+            line = new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl);
+            model.addLine(line);
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from accessing user's info. Please notify us."));
             throw new ShallNotPassException("User cannot access user information", e);
         }
 
@@ -247,13 +251,12 @@ public final class CheckContributionPage extends QuotationPage {
             payBlock.add(payContributionLink);
         }
 
-
         final HtmlTable lines = new HtmlTable(model);
         lines.setCssClass("quotation_details_lines");
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account) , line.getMoneyField()));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);
@@ -268,7 +271,7 @@ public final class CheckContributionPage extends QuotationPage {
             final HtmlDiv changeLine = new HtmlDiv("change_line");
             {
 
-                changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                changeLine.add(new SoftwaresTools.Logo(feature.getSoftware()));
                 changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmount())));
             }
             featureContributionSummary.add(changeLine);
@@ -293,7 +296,7 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
     }
 

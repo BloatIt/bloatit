@@ -18,7 +18,6 @@ package com.bloatit.web.linkable.team.tabs;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -49,6 +48,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.Translation;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.activity.ActivityVisitor;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -84,6 +84,11 @@ public class ActivityTab extends HtmlTab {
         recent.add(recentActivity);
 
         final PageIterable<UserContent<? extends DaoUserContent>> activity = team.getActivity();
+
+        if(activity.size() == 0) {
+            recent.add(new HtmlParagraph(Context.tr("No recent activity")));
+        }
+
         final TeamPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
         feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl()
@@ -106,8 +111,6 @@ public class ActivityTab extends HtmlTab {
             return content.accept(new ActivityVisitor() {
                 @Override
                 public HtmlElement visit(final Translation model) {
-                    // TODO: After implementing correct translation stuff, do
-                    // something in here
                     return new HtmlParagraph("translation");
                 }
 
@@ -203,7 +206,7 @@ public class ActivityTab extends HtmlTab {
 
         /**
          * Generates a second line of a feed
-         * 
+         *
          * @param item the String to display at the start of the second line
          * @param target the element to display after <code>item</code>
          * @return the element to add as a second line
@@ -220,7 +223,7 @@ public class ActivityTab extends HtmlTab {
          * {@link #generateFeedStructure(HtmlElement, HtmlElement, UserContentInterface)}
          * that avoids having to create the feature second line
          * </p>
-         * 
+         *
          * @param firstLine the element to show on the first line
          * @param feature the <code>feature</code> to display on the second line
          * @param content the UserContent that originates everything, so we can
@@ -239,7 +242,7 @@ public class ActivityTab extends HtmlTab {
 
         /**
          * Creates a complete feed item to add to the feed
-         * 
+         *
          * @param firstLine the first line of the feed item
          * @param secondLine the second line of the feed item
          * @param content the UserContent that originates everything, so we can

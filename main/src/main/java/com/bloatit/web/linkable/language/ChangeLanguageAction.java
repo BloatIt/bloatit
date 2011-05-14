@@ -25,13 +25,14 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 
 @ParamContainer("language/dochange")
-public final class ChangeLanguageAction extends Action {
+public final class ChangeLanguageAction extends ElveosAction {
     private final ChangeLanguageActionUrl url;
 
     @RequestParam(role = Role.POSTGET)
@@ -44,7 +45,7 @@ public final class ChangeLanguageAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(ElveosUserToken userToken) {
         if (Arrays.asList(Locale.getISOLanguages()).contains(language)) {
             final Locale l = new Locale(language);
             Context.getLocalizator().forceLanguage(l);
@@ -55,12 +56,12 @@ public final class ChangeLanguageAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new ChangeLanguagePageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

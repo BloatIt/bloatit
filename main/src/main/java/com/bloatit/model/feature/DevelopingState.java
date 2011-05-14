@@ -17,6 +17,7 @@
 package com.bloatit.model.feature;
 
 import com.bloatit.data.DaoFeature.FeatureState;
+import com.bloatit.model.FeatureImplementation;
 
 /**
  * The Class DeveloppingState.
@@ -28,7 +29,7 @@ public class DevelopingState extends AbstractFeatureState {
      * 
      * @param feature the feature on which this state apply.
      */
-    protected DevelopingState(final FeatureImplementation feature) {
+    public DevelopingState(final FeatureImplementation feature) {
         super(feature);
         feature.setFeatureStateUnprotected(getState());
     }
@@ -55,7 +56,6 @@ public class DevelopingState extends AbstractFeatureState {
 
     @Override
     public AbstractFeatureState eventDevelopmentTimeOut() {
-        // TODO: make Penality.
         return this;
     }
 

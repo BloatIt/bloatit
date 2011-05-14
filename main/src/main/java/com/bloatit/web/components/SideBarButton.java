@@ -16,12 +16,12 @@
 //
 package com.bloatit.web.components;
 
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Image;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 
 public class SideBarButton extends SideBarElementLayout {

@@ -34,6 +34,7 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlLine
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.WebConfiguration;
@@ -41,6 +42,9 @@ import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.members.MemberPage;
+import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -73,7 +77,7 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    public HtmlElement createBodyContentOnParameterError() throws RedirectException {
+    public HtmlElement createBodyContentOnParameterError(final ElveosUserToken userToken) throws RedirectException {
         if (url.getMessages().hasMessage()) {
             if (url.getProcessParameter().getMessages().isEmpty()) {
                 if (!url.getPreloadParameter().getMessages().isEmpty()) {
@@ -83,14 +87,14 @@ public final class AccountChargingPage extends QuotationPage {
                 throw new RedirectException(Context.getSession().pickPreferredPage());
             }
         }
-        return createBodyContent();
+        return createBodyContent(userToken);
     }
 
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        // TODO layout.addRight();
+        layout.addRight(new SideBarDocumentationBlock("account_charging"));
         return layout;
     }
 
@@ -114,7 +118,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) {
         if (process.isLocked()) {
-            session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
@@ -127,17 +131,19 @@ public final class AccountChargingPage extends QuotationPage {
                 process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
         }
 
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToPay());
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
 
         final AccountChargingPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
-        model.addLine(new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, recalculateUrl));
+        HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, recalculateUrl);
+
+        model.addLine(line);
 
         // Pay block
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
@@ -155,7 +161,7 @@ public final class AccountChargingPage extends QuotationPage {
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, BigDecimal.ZERO, line.getMoneyField()));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);
@@ -178,16 +184,16 @@ public final class AccountChargingPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
-        return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
+    protected Breadcrumb createBreadcrumb(final Member member) {
+        return generateBreadcrumb(member, process.getTeam(), process);
     }
 
     protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
         final Breadcrumb breadcrumb;
         if (asTeam != null) {
-            breadcrumb = AccountPage.generateBreadcrumb(asTeam);
+            breadcrumb = TeamPage.generateAccountBreadcrumb(asTeam);
         } else {
-            breadcrumb = AccountPage.generateBreadcrumb(member);
+            breadcrumb = MemberPage.generateAccountBreadcrumb(member);
         }
         final AccountChargingPageUrl url = new AccountChargingPageUrl(process);
         breadcrumb.pushLink(url.getHtmlLink(tr("Charging")));

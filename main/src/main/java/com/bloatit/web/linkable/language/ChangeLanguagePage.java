@@ -31,17 +31,18 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("language/change")
-public final class ChangeLanguagePage extends MasterPage {
+public final class ChangeLanguagePage extends ElveosPage {
     private final ChangeLanguagePageUrl url;
 
     public ChangeLanguagePage(final ChangeLanguagePageUrl url) {
@@ -50,7 +51,7 @@ public final class ChangeLanguagePage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateChangeLanguagePageMain());
         layout.addRight(new SideBarDocumentationBlock("change_language"));
@@ -59,7 +60,7 @@ public final class ChangeLanguagePage extends MasterPage {
     }
 
     private HtmlElement generateChangeLanguagePageMain() {
-        final HtmlTitleBlock master = new HtmlTitleBlock("Change language", 1);
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Change language"), 1);
         final ChangeLanguageActionUrl targetAction = new ChangeLanguageActionUrl();
         final HtmlForm form = new HtmlForm(targetAction.urlString());
         master.add(form);
@@ -72,7 +73,7 @@ public final class ChangeLanguagePage extends MasterPage {
         }
         form.add(language);
 
-        form.add(new HtmlSubmit("Change language"));
+        form.add(new HtmlSubmit(Context.tr("Change language")));
 
         // Link map
         final HtmlDiv linkMap = new HtmlDiv("language_link_map");
@@ -92,7 +93,7 @@ public final class ChangeLanguagePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         final Breadcrumb br = new Breadcrumb();
         br.pushLink(new IndexPageUrl().getHtmlLink(Context.tr("Index")));
         br.pushLink(url.getHtmlLink(Context.tr("Change language")));

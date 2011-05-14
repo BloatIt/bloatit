@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -23,9 +22,11 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ModifyBugActionUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
@@ -34,7 +35,7 @@ import com.bloatit.web.url.ModifyBugPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/bug/domodify")
-public final class ModifyBugAction extends Action {
+public final class ModifyBugAction extends ElveosAction{
 
     private static final String BUG_STATE = "bug_state";
     private static final String BUG_REASON = "reason";
@@ -73,7 +74,7 @@ public final class ModifyBugAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(ElveosUserToken userToken) {
         final Level currentLevel = bug.getErrorLevel();
         final BugState currentState = bug.getState();
 
@@ -117,13 +118,13 @@ public final class ModifyBugAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return Context.getSession().getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
-        if (session.getAuthToken() == null) {
+    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
+        if (session.getUserToken() == null) {
             session.notifyError(Context.tr("You must be logged in to modify a bug report."));
             return new ModifyBugPageUrl(bug);
         }

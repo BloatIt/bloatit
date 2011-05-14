@@ -20,12 +20,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bloatit.data.DaoAccount;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.TransactionList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtAccount;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * An account represent a way to store money. To transfer money from an account
@@ -56,7 +56,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return true if the authenticated user can access the
      *         <code>Transaction</code> property (It is a read only property).
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     public final boolean canAccessTransaction() {
         return canAccess(new RgtAccount.Transaction(), Action.READ);
@@ -67,7 +67,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return true if the authenticated user can access the <code>Amount</code>
      *         property (It is a read only property).
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     public final boolean canAccessAmount() {
         return canAccess(new RgtAccount.Amount(), Action.READ);
@@ -78,7 +78,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return true if the authenticated user can access the <code>Actor</code>
      *         property (It is a read only property).
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     public final boolean canAccessActor() {
         return canAccess(new RgtAccount.Actor(), Action.READ);
@@ -89,7 +89,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return true if the authenticated user can access the
      *         <code>CreationDate</code> property (It is a read only property).
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     public final boolean canAccessCreationDate() {
         return canAccess(new RgtAccount.CreationDate(), Action.READ);
@@ -101,7 +101,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @return true if the authenticated user can access the
      *         <code>LastModificationDate</code> property (It is a read only
      *         property).
-     * @see #authenticate(AuthToken)
+     * @see #authenticate(AuthenticatedUserToken)
      */
     public final boolean canAccessLastModificationDate() {
         return canAccess(new RgtAccount.LastModificationDate(), Action.READ);

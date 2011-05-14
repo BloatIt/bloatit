@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.MetaBugsListPageUrl;
@@ -62,14 +63,11 @@ public final class MetaEditBugAction extends LoggedAction {
             session.notifyError("A problem occur during the bug update process! Please report this bug! :)");
             return doProcessErrors();
         }
-
-        // TODO: add link system in documentation
-
         return new MetaBugsListPageUrl();
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
@@ -80,7 +78,7 @@ public final class MetaEditBugAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 

@@ -19,20 +19,19 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoActor;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtActor;
+import com.bloatit.model.right.UnauthorizedBankDataAccessException;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Actor.
- *
+ * 
  * @param <T> the Dao version of this model layer object.
  * @see DaoActor
  */
@@ -40,7 +39,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Instantiates a new actor.
-     *
+     * 
      * @param id the id
      */
     protected Actor(final T id) {
@@ -49,11 +48,16 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     // /////////////////
     // Get / set ...
+    
+    public final void setLogin(final String login) throws UnauthorizedPublicAccessException {
+        tryAccess(new RgtActor.Login(), Action.WRITE);
+        getDao().setLogin(login);
+    }
 
     /**
      * Gets the login. This method is not protected by the right manager because
      * we think it is not needed, and it make our code not readable.
-     *
+     * 
      * @return the login
      * @see DaoActor#getLogin()
      */
@@ -63,11 +67,11 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Gets the creation date of this {@link Actor}.
-     *
+     * 
      * @return the creation date
      * @see DaoActor#getDateCreation()
      */
-    public final Date getDateCreation() throws UnauthorizedPublicReadOnlyAccessException  {
+    public final Date getDateCreation() throws UnauthorizedPublicReadOnlyAccessException {
         tryAccess(new RgtActor.DateCreation(), Action.READ);
         return getDao().getDateCreation();
     }
@@ -76,68 +80,68 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * The internal account is the account we manage internally. Users can
      * add/get money to/from it, and can use this money to contribute on
      * softwares.
-     *
+     * 
      * @return the internal account
-     * @throws UnauthorizedPrivateAccessException the unauthorized operation
+     * @throws UnauthorizedBankDataAccessException the unauthorized operation
      *             exception
      * @throw UnauthorizedOperationException if you do not have the right to
      *        access the <code>InternalAccount</code> property.
      */
-    public final InternalAccount getInternalAccount() throws UnauthorizedPrivateAccessException {
+    public final InternalAccount getInternalAccount() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtActor.InternalAccount(), Action.READ);
         return InternalAccount.create(getDao().getInternalAccount());
     }
 
     /**
      * Gets the external account.
-     *
+     * 
      * @return the external account
-     * @throws UnauthorizedPrivateAccessException if you haven't the right to
+     * @throws UnauthorizedBankDataAccessException if you haven't the right to
      *             access the <code>ExtenralAccount</code> property.
      */
-    public final ExternalAccount getExternalAccount() throws UnauthorizedPrivateAccessException {
+    public final ExternalAccount getExternalAccount() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtActor.ExternalAccount(), Action.READ);
         return ExternalAccount.create(getDao().getExternalAccount());
     }
 
     /**
      * Gets the bank transactions.
-     *
+     * 
      * @return all the bank transactions this actor has done.
-     * @throws UnauthorizedPrivateAccessException if you haven't the right to
+     * @throws UnauthorizedBankDataAccessException if you haven't the right to
      *             access the <code>ExtenralAccount</code> property.
      * @see DaoActor#getBankTransactions()
      */
-    public final PageIterable<BankTransaction> getBankTransactions() throws UnauthorizedPrivateAccessException {
+    public final PageIterable<BankTransaction> getBankTransactions() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtActor.BankTransaction(), Action.READ);
         return new BankTransactionList(getDao().getBankTransactions());
     }
 
     /**
      * Returns the contributions done by this actor.
-     *
+     * 
      * @return the contributions done by this actor
      * @throws UnauthorizedOperationException
      */
-    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException  {
+    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
         tryAccess(new RgtActor.Contribution(), Action.READ);
         return doGetContributions();
     }
 
-    public abstract PageIterable<Contribution> doGetContributions()throws UnauthorizedOperationException;
+    public abstract PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException;
 
     /**
      * Returns the money withdraw done by this actor.
-     *
+     * 
      * @return the witdraws done by this actor
      * @throws UnauthorizedOperationException
      */
-    public PageIterable<MoneyWithdrawal> getMoneyWithdrawals() throws UnauthorizedOperationException  {
+    public PageIterable<MoneyWithdrawal> getMoneyWithdrawals() throws UnauthorizedOperationException {
         tryAccess(new RgtActor.MoneyWithdrawal(), Action.READ);
         return doGetMoneyWithdrawals();
     }
 
-    public abstract PageIterable<MoneyWithdrawal> doGetMoneyWithdrawals()throws UnauthorizedOperationException;
+    public abstract PageIterable<MoneyWithdrawal> doGetMoneyWithdrawals() throws UnauthorizedOperationException;
 
     /**
      * @return the display name
@@ -154,7 +158,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can access date creation.
-     *
+     * 
      * @return true if you can access the DateCreation property.
      * @see Actor#getDateCreation()
      */
@@ -164,10 +168,10 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get internal account.
-     *
+     * 
      * @return true if you can access the <code>InternalAccount</code> property.
      * @see Actor#getInternalAccount()
-     * @see Actor#authenticate(AuthToken)
+     * @see Actor#authenticate(AuthenticatedUserToken)
      */
     public final boolean canGetInternalAccount() {
         return canAccess(new RgtActor.InternalAccount(), Action.READ);
@@ -175,7 +179,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get external account.
-     *
+     * 
      * @return true if you can access the <code>ExternalAccount</code> property.
      */
     public final boolean canGetExternalAccount() {
@@ -184,7 +188,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get the bank transaction.
-     *
+     * 
      * @return true if you can access the <code>BankTransaction</code> property
      *         (READ right).
      */

@@ -47,7 +47,7 @@ public class Release extends UserContent<DaoRelease> {
     }
 
     Release(final Member member, final Team team, final Milestone milestone, final String description, final String version, final Locale locale) {
-        this(DaoRelease.createAndPersist(member.getDao(), DaoGetter.getTeam(team), milestone.getDao(), description, version, locale));
+        this(DaoRelease.createAndPersist(member.getDao(), DaoGetter.get(team), milestone.getDao(), description, version, locale));
     }
 
     // no right management: this is public data

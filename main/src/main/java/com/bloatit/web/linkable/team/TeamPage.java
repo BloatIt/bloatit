@@ -20,7 +20,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -38,25 +37,25 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.visitor.Visitor;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.money.SideBarLoadAccountBlock;
 import com.bloatit.web.linkable.team.tabs.AccountTab;
 import com.bloatit.web.linkable.team.tabs.ActivityTab;
 import com.bloatit.web.linkable.team.tabs.MembersTab;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TitleSideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AccountPageUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
@@ -67,7 +66,7 @@ import com.bloatit.web.url.WithdrawMoneyPageUrl;
  * </p>
  */
 @ParamContainer("team")
-public final class TeamPage extends MasterPage {
+public final class TeamPage extends ElveosPage {
     public final static String TEAM_TAB_PANE = "tab";
     public final static String MEMBERS_TAB = "members";
     public final static String ACTIVITY_TAB = "activity";
@@ -83,14 +82,13 @@ public final class TeamPage extends MasterPage {
 
     @RequestParam(name = TEAM_TAB_PANE)
     @Optional(MEMBERS_TAB)
-    private String activeTabKey;
+    private final String activeTabKey;
 
     @SuppressWarnings("unused")
     @RequestParam(name = "name", role = Role.PRETTY, generatedFrom = "targetTeam")
     @Optional("john-do")
     private final String login;
 
-    
     public TeamPage(final TeamPageUrl url) {
         super(url);
         this.url = url;
@@ -100,22 +98,17 @@ public final class TeamPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        final Visitor me = session.getAuthToken().getVisitor();
 
-        layout.addLeft(generateTeamIDCard(me));
-        layout.addLeft(generateMain());
-
+        layout.addLeft(generateTeamIDCard(userToken));
+        layout.addLeft(generateMain(userToken));
+        
         layout.addRight(generateContactBox());
-
-        if (activeTabKey.equals(ACCOUNT_TAB)) {
+        layout.addRight(new SideBarDocumentationBlock("team_role"));
+        if (userToken.isAuthenticated() && userToken.getMember().hasBankTeamRight(targetTeam)) {
             layout.addRight(new SideBarTeamWithdrawMoneyBlock(targetTeam));
-            layout.addRight(new SideBarTeamChargeAccountBlock(targetTeam));
-        } else if (activeTabKey.equals(ACTIVITY_TAB)) {
-            layout.addRight(new SideBarDocumentationBlock("team_role"));
-        } else if (activeTabKey.equals(MEMBERS_TAB)) {
-            layout.addRight(new SideBarDocumentationBlock("team_role"));
+            layout.addRight(new SideBarLoadAccountBlock(targetTeam));
         }
         return layout;
     }
@@ -143,14 +136,23 @@ public final class TeamPage extends MasterPage {
         return contacts;
     }
 
-    private HtmlElement generateMain() {
+    private HtmlElement generateMain(final ElveosUserToken userToken) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
         final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
-        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, activeTabKey, secondUrl);
+
+        String tabKey = activeTabKey;
+
+        if (activeTabKey.equals(ACCOUNT_TAB) && !targetTeam.canAccessBankTransaction(Action.READ)) {
+            tabKey = MEMBERS_TAB;
+        }
+        final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, tabKey, secondUrl);
+
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB));
+        if (userToken.isAuthenticated()) {
+            tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
+        }
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }
@@ -166,9 +168,9 @@ public final class TeamPage extends MasterPage {
      * @param me the connected member
      * @return the ID card
      */
-    private HtmlElement generateTeamIDCard(final Visitor me) {
+    private HtmlElement generateTeamIDCard(final ElveosUserToken token) {
         final HtmlDiv master = new HtmlDiv("padding_box");
-        if (me.hasModifyTeamRight(targetTeam)) {
+        if (token.isAuthenticated() && token.getMember().hasModifyTeamRight(targetTeam)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
@@ -218,6 +220,14 @@ public final class TeamPage extends MasterPage {
         description.add(hcmr);
 
         // Bank informations
+        if (token.isAuthenticated()) {
+            addBankInfos(master, token.getMember());
+        }
+
+        return master;
+    }
+
+    protected void addBankInfos(final HtmlDiv master, final Member member) {
         if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
@@ -227,13 +237,14 @@ public final class TeamPage extends MasterPage {
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(), true, targetTeam);
-                    final AccountPageUrl accountPageUrl = new AccountPageUrl();
-                    accountPageUrl.setTeam(targetTeam);
+                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(),
+                                                                                   true,
+                                                                                   targetTeam,
+                                                                                   member);
                     final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                      new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                        amount,
-                                                                                                                       accountPageUrl.getHtmlLink())));
+                                                                                                                       AccountUrl(targetTeam).getHtmlLink())));
                     bankInformationsList.add(accountBalanceItem);
 
                 }
@@ -242,12 +253,10 @@ public final class TeamPage extends MasterPage {
                 Log.web().error("Cannot access to bank informations, should not happen", e);
             }
         }
-
-        return master;
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return TeamPage.generateBreadcrumb(targetTeam);
     }
 
@@ -257,34 +266,34 @@ public final class TeamPage extends MasterPage {
         return breadcrumb;
     }
 
+    public static Breadcrumb generateAccountBreadcrumb(final Team team) {
+        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
+        final TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+        teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        breadcrumb.pushLink(teamPageUrl.getHtmlLink(Context.tr("Account")));
+        return breadcrumb;
+    }
+
     private long getActivityCount() {
         return targetTeam.getRecentActivityCount();
     }
 
     private static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
-        SideBarTeamWithdrawMoneyBlock(Team team) {
+        SideBarTeamWithdrawMoneyBlock(final Team team) {
             setTitle(tr("Team account"));
 
             add(new HtmlParagraph(tr("Like users, teams have an elveos account where they can store money.")));
             add(new HtmlParagraph(tr("People with the talk right can decide to make developments under the name of the team to let it earn money.")));
             add(new HtmlParagraph(tr("People with the bank right can withdraw money from the elveos account back to the team bank account.")));
-            // TODO good URL
             add(new SideBarButton(tr("Withdraw money"), new WithdrawMoneyPageUrl(team), WebConfiguration.getImgAccountWithdraw()).asElement());
 
         }
     }
 
-    private static class SideBarTeamChargeAccountBlock extends TitleSideBarElementLayout {
-        SideBarTeamChargeAccountBlock(final Team team) {
-            setTitle(tr("Load account"));
-
-            add(new HtmlParagraph(tr("You can charge your account with a credit card using the following link: ")));
-            // TODO good URL
-            final AccountChargingProcessUrl chargingAccountUrl = new AccountChargingProcessUrl();
-            chargingAccountUrl.setTeam(team);
-            add(new SideBarButton(tr("Charge your account"), chargingAccountUrl, WebConfiguration.getImgAccountCharge()).asElement());
-            add(new HtmlDefineParagraph(tr("Note: "),
-                                        tr("We have charge to pay every time you charge your account, hence we will perceive our 10% commission, even if you withdraw the money as soon as you have loaded it.")));
-        }
+    public static TeamPageUrl AccountUrl(final Team team) {
+        final TeamPageUrl teamPageUrl = new TeamPageUrl(team);
+        teamPageUrl.setActiveTabKey(ACCOUNT_TAB);
+        teamPageUrl.setAnchor(TEAM_TAB_PANE);
+        return teamPageUrl;
     }
 }

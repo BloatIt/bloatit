@@ -16,18 +16,19 @@
 //
 package com.bloatit.web.linkable.money;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
-@ParamContainer(value="payline/doreturn", protocol=Protocol.HTTPS)
-public final class PaylineReturnAction extends Action {
+@ParamContainer(value = "payline/doreturn", protocol = Protocol.HTTPS)
+public final class PaylineReturnAction extends ElveosAction {
 
     @RequestParam(name = "token")
     @Optional
@@ -47,11 +48,11 @@ public final class PaylineReturnAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(final ElveosUserToken userToken) {
         if (ack.equals("ok")) {
             try {
                 process.validatePayment(token);
-            } catch (final UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyBad(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
             }
         } else if (ack.equals("cancel")) {
@@ -65,12 +66,12 @@ public final class PaylineReturnAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return Context.getSession().pickPreferredPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

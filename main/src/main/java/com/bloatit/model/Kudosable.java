@@ -22,22 +22,13 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtKudosable;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface {
-
-    // TODO make sure those variables are reloaded when needed.
-    private static final int TURN_VALID = ModelConfiguration.getKudosableDefaultTurnValid();
-    private static final int TURN_REJECTED = ModelConfiguration.getKudosableDefaultTurnRejected();
-    private static final int TURN_HIDDEN = ModelConfiguration.getKudosableDefaultTurnHidden();
-    private static final int TURN_PENDING = ModelConfiguration.getKudosableDefaultTurnPending();
-
-    private static final int MIN_INFLUENCE_TO_UNKUDOS = ModelConfiguration.getKudosableMinInfluenceToUnkudos();
-    private static final int MIN_INFLUENCE_TO_KUDOS = ModelConfiguration.getKudosableMinInfluenceToKudos();
 
     public Kudosable(final T dao) {
         super(dao);
@@ -98,10 +89,10 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         // Make sure we are in the right position
         final Member member = getAuthTokenUnprotected().getMember();
         final int influence = member.calculateInfluence();
-        if (sign == -1 && influence < MIN_INFLUENCE_TO_UNKUDOS) {
+        if (sign == -1 && influence < ModelConfiguration.getKudosableMinInfluenceToUnkudos()) {
             errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN);
         }
-        if (sign == 1 && influence < MIN_INFLUENCE_TO_KUDOS) {
+        if (sign == 1 && influence < ModelConfiguration.getKudosableMinInfluenceToKudos()) {
             errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP);
         }
         return errors;
@@ -134,16 +125,16 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         if (!canKudos.isEmpty()) {
             throw new UnauthorizedOperationException(canKudos.iterator().next());
         }
-    
+
         // Make sure we are in the right position
         final Member member = getAuthToken().getMember();
         final int influence = member.calculateInfluence();
-    
+
         if (influence > 0) {
             getMember().addToKarma(influence);
-            calculateNewState(getDao().addKudos(member.getDao(), DaoGetter.getTeam(getAuthToken().getAsTeam()), sign * influence));
+            calculateNewState(getDao().addKudos(member.getDao(), DaoGetter.get(getAuthToken().getAsTeam()), sign * influence));
         }
-    
+
         return influence * sign;
     }
 
@@ -219,10 +210,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         getDao().unlockPopularity();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.KudosableInterface#getState()
-     */
     @Override
     public final PopularityState getState() {
         return getDao().getState();
@@ -233,10 +220,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return getDao().isPopularityLocked();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.KudosableInterface#getPopularity()
-     */
     @Override
     public final int getPopularity() {
         return getDao().getPopularity();
@@ -244,62 +227,62 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     @Override
     public int getUserVoteValue() {
-        final AuthToken authToken = getAuthTokenUnprotected();
+        final AuthenticatedUserToken userToken = getAuthTokenUnprotected();
 
         if (getAuthTokenUnprotected() == null) {
             return 0;
         }
 
-        return getDao().getVote(authToken.getMember().getDao());
+        return getDao().getVote(userToken.getMember().getDao());
     }
 
     /**
      * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_PENDING}.
-     *
+     * limits.
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#PENDING} state.
      */
     protected int turnPending() {
-        return TURN_PENDING;
+        return ModelConfiguration.getKudosableDefaultTurnPending();
     }
 
     /**
      * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_VALID}.
-     *
+     * limits.
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#VALIDATED} state.
      */
     protected int turnValid() {
-        return TURN_VALID;
+        return ModelConfiguration.getKudosableDefaultTurnValid();
     }
 
     /**
      * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_REJECTED}.
-     *
+     * limits.
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#REJECTED} state.
      */
     protected int turnRejected() {
-        return TURN_REJECTED;
+        return ModelConfiguration.getKudosableDefaultTurnRejected();
     }
 
     /**
      * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_HIDDEN}.
-     *
+     * limits.
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#HIDDEN} state.
      */
     protected int turnHidden() {
-        return TURN_HIDDEN;
+        return ModelConfiguration.getKudosableDefaultTurnHidden();
     }
 
     /**
      * This method is called each time this Kudosable is kudosed.
-     *
+     * 
      * @param positif true if it is a kudos false if it is an unKudos.
      */
     protected void notifyKudos(final boolean positif) {

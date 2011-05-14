@@ -12,6 +12,8 @@
 
 package com.bloatit.framework.webprocessor.context;
 
+import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -22,16 +24,16 @@ import java.util.UUID;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
-import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.IndexPageUrl;
 
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -53,17 +55,18 @@ import edu.emory.mathcs.backport.java.util.Collections;
  */
 public final class Session {
     private static final int SHA1_SIZE = 20;
-    private final UUID key;
+    private static final UserToken ANONYMOUS_USER_TOKEN = createAnonymousUserToken();
+
     private long expirationTime;
+    private final UUID key;
 
     private final Deque<ErrorMessage> notificationList;
+    private final SessionParameters parameters = new SessionParameters();
+    private UserToken userToken;
 
-    private AuthToken authToken;
     private UrlDump lastStablePage = null;
     private UrlDump targetPage = null;
     private UrlDump lastVisitedPage;
-
-    private final SessionParameters parameters = new SessionParameters();
 
     @SuppressWarnings("unchecked")
     private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
@@ -75,14 +78,42 @@ public final class Session {
         this(UUID.randomUUID());
     }
 
+    private static UserToken createAnonymousUserToken() {
+        final String classString = FrameworkConfiguration.getAnonymousUserTokenClass();
+        if (classString == null || classString.isEmpty()) {
+            return new AnonymousUserToken();
+        }
+        try {
+            final Class<?> userTokenClass = Class.forName(classString);
+            if (userTokenClass.isAssignableFrom(UserToken.class)) {
+                throw new BadProgrammerException("The specified class is not a UserToken: " + classString);
+            }
+            return (UserToken) userTokenClass.getConstructor().newInstance();
+        } catch (final ClassNotFoundException e) {
+            throw new BadProgrammerException(e);
+        } catch (final IllegalArgumentException e) {
+            throw new BadProgrammerException(e);
+        } catch (final SecurityException e) {
+            throw new BadProgrammerException(e);
+        } catch (final InstantiationException e) {
+            throw new BadProgrammerException(e);
+        } catch (final IllegalAccessException e) {
+            throw new BadProgrammerException(e);
+        } catch (final InvocationTargetException e) {
+            throw new BadProgrammerException(e);
+        } catch (final NoSuchMethodException e) {
+            throw new BadProgrammerException(e);
+        }
+    }
+
     /**
      * Construct a session based on the information from <code>id</code>
-     *
+     * 
      * @param id the id of the session
      */
     protected Session(final UUID id) {
         this.key = id;
-        authToken = AuthToken.ANONYMOUS_TOKEN;
+        this.userToken = ANONYMOUS_USER_TOKEN;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
@@ -92,24 +123,28 @@ public final class Session {
     }
 
     public synchronized void resetExpirationTime() {
-        if (isLogged()) {
+        if (userToken.isAuthenticated()) {
             expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionLoggedDuration() * DateUtils.SECOND_PER_DAY;
         } else {
             expirationTime = Context.getResquestTime() + FrameworkConfiguration.getSessionDefaultDuration() * DateUtils.SECOND_PER_DAY;
         }
     }
 
-    public synchronized void setAuthToken(final AuthToken token) {
-        authToken = token;
+    public synchronized void setAnonymousUserToken() {
+        userToken = ANONYMOUS_USER_TOKEN;
         resetExpirationTime();
     }
 
-    public synchronized AuthToken getAuthToken() {
-        return authToken;
+    public synchronized void setAuthToken(final UserToken token) {
+        if (token == null) {
+            throw new BadProgrammerException("Token must be non null.");
+        }
+        userToken = token;
+        resetExpirationTime();
     }
 
-    public synchronized boolean isLogged() {
-        return authToken != AuthToken.ANONYMOUS_TOKEN;
+    public synchronized UserToken getUserToken() {
+        return userToken;
     }
 
     public synchronized boolean isExpired() {
@@ -117,7 +152,7 @@ public final class Session {
     }
 
     public synchronized void setLastStablePage(final Url p) {
-        if(p == null) {
+        if (p == null) {
             this.lastStablePage = null;
         } else {
             this.lastStablePage = new UrlDump(p);
@@ -132,7 +167,7 @@ public final class Session {
      * page visited in any tab, and can lead to <i>very</i> confusing result.
      * Avoid relying on this.
      * </p>
-     *
+     * 
      * @return the best page to redirect the user to
      */
     public synchronized Url pickPreferredPage() {
@@ -155,7 +190,7 @@ public final class Session {
      * page visited in any tab, and can lead to <i>very</i> confusing result.
      * Avoid relying on this.
      * </p>
-     *
+     * 
      * @return the last page the user visited
      */
     public synchronized Url getLastVisitedPage() {
@@ -163,7 +198,7 @@ public final class Session {
     }
 
     public synchronized void setLastVisitedPage(final Url lastVisitedPage) {
-        if(lastVisitedPage == null) {
+        if (lastVisitedPage == null) {
             this.lastVisitedPage = null;
         } else {
             this.lastVisitedPage = new UrlDump(lastVisitedPage);
@@ -171,7 +206,7 @@ public final class Session {
     }
 
     public final synchronized void setTargetPage(final Url targetPage) {
-        if(targetPage == null) {
+        if (targetPage == null) {
             this.targetPage = null;
         } else {
             this.targetPage = new UrlDump(targetPage);
@@ -209,7 +244,7 @@ public final class Session {
 
     /**
      * Finds all the session parameters
-     *
+     * 
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */
@@ -227,7 +262,6 @@ public final class Session {
         if (!(param.getValue() == null && param.getStringValue() == null)) {
             parameters.add(param.getName(), param);
         }
-        // Maybe auto notify here ?
     }
 
     public final synchronized String createWebProcess(final WebProcess process) {

@@ -1,0 +1,53 @@
+Architecture système
+====================
+
+Le site elveos.org dispose pour le momemt d'un seul serveur.
+
+
+![architecture système](/resources/fr/img/archi_doc.png)
+
+
+Bloatit framework
+-----------------
+
+C'est le coeur applicatif du site. Il s'agit un programme Java. Contrairement aux habitudes java, Bloatit n'a pas besoin de serveur d'application et n'utilise pas de servlet. Il utilise un server web "classique" via [FCGI](http://www.fastcgi.com/devkit/doc/fcgi-spec.html).
+
+Bloatit utilise une base de donnée relationnelle pour stocker la majorité des informations.
+
+Plus d'information sur le moteur du site sont disponibles sur cette page de documentation : [Bloatit, le moteur d'elveos](/fr/documentation/doc-bloatit))
+
+
+Serveur de base de donnée
+-------------------------
+
+Bloatit utilise actuellement PostgreSQL comme base de donnée relationnelle. Ce choix a été fait à cause des doutes sur la pérénité de la liberté de MySQL.
+
+L'utilisation d'hibernate nous permet de pourvoir changer assez facilement de base de données en cas de problèmes.
+
+Serveur Web
+---------
+
+Bloatit utilise actuellement Lighttpd comme serveur Web. Le choix de ce serveur n'a pas de réel justification si ce n'est qui est réputé être bien. En creusant, on pourrait dire que c'est une vengeance contre Apache, parce qu'il a un lien de parenté avec Maven qui nous en a fait bavé ! Nous allons bientôt commencer des expérimentations avec ngix.
+
+L'utilisation de FCGI permet de pourvoir facilement changer de serveur Web. 
+
+Système d'exploitation
+----------------------
+
+Le site tourne sur un système Debian Squeeze. Ce choix est principalement justifié par nos propres compétences.
+
+
+Hébergeur
+---------
+
+Nous avons choisi OVH comme hébergeur, parce qu'ils sont basés en france et ont toujours été efficace sur de précédent services.
+
+Le choix du vps ([http://www.ovh.com/fr/vps/](http://www.ovh.com/fr/vps/)) plutot qu'un serveur dédié normal est dû à des facilités de monté en charge de la solution virtualisée. 
+
+Actuellement les caractéristiques théoriques sont :
+
+- CPU : 2.5 GHz - 4 coeurs
+- RAM : 3 Go
+- Espace de stockage : 50 Go	
+- Sla :  99.9% (9h de downtime par an)
+- Prix : 50€/mois

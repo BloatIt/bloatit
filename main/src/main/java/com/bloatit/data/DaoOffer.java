@@ -59,6 +59,13 @@ import com.bloatit.framework.utils.PageIterable;
                         @NamedQuery(
                            name = "offer.getMilestones.size",
                            query = "SELECT count(*) FROM DaoMilestone WHERE offer = :this"),
+                       @NamedQuery(
+                           name = "offer.getLastRelease",
+                           query = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
+                                       "FROM DaoOffer as o " + //
+                                       "INNER JOIN o.milestones as b " + //
+                                       "INNER JOIN b.releases as r " + //
+                                       "WHERE o=:this)"),
                        }
              )
 // @formatter:on
@@ -296,15 +303,7 @@ public class DaoOffer extends DaoKudosable {
      * @return the last release on this offer.
      */
     public DaoRelease getLastRelease() {
-        // TODO externalize HQL request
-        final String q = "FROM DaoRelease WHERE creationDate = (SELECT max(r.creationDate) " + //
-                "FROM DaoOffer as o " + //
-                "INNER JOIN o.milestones as b " + //
-                "INNER JOIN b.releases as r " + //
-                "WHERE o=:this)";
-
-        final Query query = SessionManager.createQuery(q).setEntity("this", this);
-
+        final Query query = SessionManager.getNamedQuery("offer.getLastRelease").setEntity("this", this);
         return (DaoRelease) query.uniqueResult();
     }
 

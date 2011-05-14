@@ -44,15 +44,12 @@ public class DaoFeatureSearchFilter extends Filter {
 
         if (filteredTerms != null) {
             for (final Pair<String, String> pair : filteredTerms) {
-
                 final TermDocs termDocs = reader.termDocs(new Term(pair.key, pair.value.toLowerCase()));
-
                 while (termDocs.next()) {
                     bitSet.clear(termDocs.doc());
                 }
             }
         }
-
         return bitSet;
     }
 

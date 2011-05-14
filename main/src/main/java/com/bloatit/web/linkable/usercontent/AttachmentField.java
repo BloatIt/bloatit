@@ -28,17 +28,27 @@ import com.bloatit.web.url.UserContentActionUrl;
 
 public class AttachmentField extends PlaceHolderElement {
 
+    public AttachmentField(final UserContentActionUrl targetUrl, final String size, final boolean jsAutoHide) {
+        this(targetUrl,
+             Context.tr("Join a file"),
+             Context.tr("Max size {0}. When you join a file, you have to add a description.", size),
+             Context.tr("File description"),
+             Context.tr("Input a short description of the file you want to upload."),
+             jsAutoHide);
+    }
+
     public AttachmentField(final UserContentActionUrl targetUrl, final String size) {
         this(targetUrl,
              Context.tr("Join a file"),
              Context.tr("Max size {0}. When you join a file, you have to add a description.", size),
              Context.tr("File description"),
-             Context.tr("Input a short description of the file you want to upload."));
+             Context.tr("Input a short description of the file you want to upload."),
+             true);
     }
 
     /**
      * Do not forget the: form.enableFileUpload();
-     *
+     * 
      * @param targetUrl
      * @param attachmentLabel
      * @param attachmentComment
@@ -46,16 +56,22 @@ public class AttachmentField extends PlaceHolderElement {
      * @param descriptionComment
      */
     private AttachmentField(final UserContentActionUrl targetUrl,
-                           final String attachmentLabel,
-                           final String attachmentComment,
-                           final String descriptionLabel,
-                           final String descriptionComment) {
+                            final String attachmentLabel,
+                            final String attachmentComment,
+                            final String descriptionLabel,
+                            final String descriptionComment,
+                            final boolean jsAutoHide) {
         super();
-        // Attachment
-        HtmlParagraph addAttachementLink = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");
-        add(addAttachementLink);
 
-        HtmlDiv attachmentDiv = new HtmlDiv();
+        final JsShowHide showHide = new JsShowHide(false);
+        showHide.setHasFallback(false);
+        if (jsAutoHide) {
+            final HtmlParagraph addAttachementLink = new HtmlParagraph(Context.tr("+ add attachement"), "fake_link");
+            add(addAttachementLink);
+            showHide.addActuator(addAttachementLink);
+        }
+
+        final HtmlDiv attachmentDiv = new HtmlDiv();
         add(attachmentDiv);
 
         final FieldData attachedFileData = targetUrl.getAttachmentParameter().pickFieldData();
@@ -72,12 +88,10 @@ public class AttachmentField extends PlaceHolderElement {
         attachmentDescriptionInput.setComment(descriptionComment);
         attachmentDiv.add(attachmentDescriptionInput);
 
-        JsShowHide showHide = new JsShowHide(false);
-        showHide.setHasFallback(false);
-
-        showHide.addActuator(addAttachementLink);
-        showHide.addListener(attachmentDiv);
-        showHide.apply();
+        if (jsAutoHide) {
+            showHide.addListener(attachmentDiv);
+            showHide.apply();
+        }
 
     }
 

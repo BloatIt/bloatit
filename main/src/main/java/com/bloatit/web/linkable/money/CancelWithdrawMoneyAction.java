@@ -11,14 +11,21 @@
  */
 package com.bloatit.web.linkable.money;
 
+import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.members.MemberPage;
+import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 
 @ParamContainer("money/docancelwithdraw")
@@ -29,35 +36,52 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
 
     private final CancelWithdrawMoneyActionUrl url;
 
-    public CancelWithdrawMoneyAction(CancelWithdrawMoneyActionUrl url) {
+    public CancelWithdrawMoneyAction(final CancelWithdrawMoneyActionUrl url) {
         super(url);
         this.url = url;
         moneyWithdrawal = url.getMoneyWithdrawal();
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
+        if (!moneyWithdrawal.canSetCanceled()) {
+            session.notifyBad(Context.tr("Failed to cancel this withdrawal."));
+            return getBestReturnUrl(me);
+        }
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessRestricted(Member me) {
-        // TODO Auto-generated method stub
-        return null;
+    protected Url doProcessRestricted(final Member me) {
+
+        try {
+            moneyWithdrawal.setCanceled();
+        } catch (final UnauthorizedOperationException e) {
+            Log.web().error("Fail to read the actor of a withdrawal");
+            throw new ShallNotPassException("Fail to read the actor of a withdrawal", e);
+        }
+        return getBestReturnUrl(me);
     }
 
     @Override
-    protected Url doProcessErrors() {
-        if(moneyWithdrawal != null) {
-
-            /*if(moneyWithdrawal.getActor() instanceof Team) {
-                new TeamPageUrl(moneyWithdrawal.getActor());
-            }
-            return new AccountPageUrl();*/
-
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
+        if (userToken.isAuthenticated()) {
+            return getBestReturnUrl(userToken.getMember());
         }
-        return null;
+        return session.pickPreferredPage();
+    }
 
+    private Url getBestReturnUrl(final Member me) {
+        if (moneyWithdrawal != null) {
+            try {
+                if (moneyWithdrawal.getActor() instanceof Team) {
+                    return TeamPage.AccountUrl((Team) moneyWithdrawal.getActor());
+                }
+            } catch (final UnauthorizedOperationException e) {
+                throw new ShallNotPassException("Fail to read the actor of a withdrawal", e);
+            }
+        }
+        return MemberPage.MyAccountUrl(me);
     }
 
     @Override

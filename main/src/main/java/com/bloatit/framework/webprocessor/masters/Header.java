@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.model.ModelConfiguration;
 import com.bloatit.web.WebConfiguration;
 
 public final class Header extends HtmlElement {
@@ -140,7 +139,7 @@ public final class Header extends HtmlElement {
         add(jsPh);
 
         // Javascript to handle libravatar
-        final String liburi = ModelConfiguration.getLibravatarURI();
+        final String liburi = FrameworkConfiguration.getLibravatarURI();
         final HtmlScript js = new HtmlScript();
         js.append("$(document).ready(function(){");
         js.append("$(\".libravatar\").each(function() {");

@@ -1,8 +1,6 @@
 #!/bin/sh
 
 OUTPUT_DIR_PREFIX=../../www/resources/
-OUTPUT_DIR_SUFFIX=/img/presentation.png
-OUTPUT_WIDTH=1024
 BASE_FILE=presentation_base.svg
 TEMP_BASE_OUTPUT=tempbase.png
 TEMP_WORK_FILE=tempworkfile.svg
@@ -10,6 +8,8 @@ TEMP_OUTPUT_FILE=tempoutputfile.png
 
 LANG_LIST="en fr"
 
+
+generate_presentation() {
 #Generate base with the right size
 inkscape -e $TEMP_BASE_OUTPUT -C -w $OUTPUT_WIDTH $BASE_FILE
 
@@ -32,3 +32,16 @@ for LANG in $LANG_LIST ; do
 done
 
 rm $TEMP_BASE_OUTPUT
+}
+
+
+OUTPUT_WIDTH=1024
+OUTPUT_DIR_SUFFIX=/img/presentation.png
+generate_presentation
+
+
+OUTPUT_WIDTH=800
+OUTPUT_DIR_SUFFIX=/img/presentation_800px.png
+generate_presentation
+
+

@@ -35,7 +35,6 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.visitor.Visitor;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
@@ -44,35 +43,35 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
 public class MembersTab extends HtmlTab {
     private final Team team;
     private final Session session = Context.getSession();
+    private final Member vistor;
 
-    public MembersTab(final Team team, final String title, final String tabKey) {
+    public MembersTab(final Team team, final String title, final String tabKey, Member member) {
         super(title, tabKey);
         this.team = team;
+        this.vistor = member;
     }
 
     @Override
     public XmlNode generateBody() {
-        final Visitor me = session.getAuthToken().getVisitor();
-
         final HtmlDiv master = new HtmlDiv("tab_pane");
 
         // Members
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", team.getMembers().size()), 2);
         master.add(memberTitle);
 
-        if (me.hasInviteTeamRight(team)) {
+        if (vistor.hasInviteTeamRight(team)) {
             final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(team);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
         }
 
-        if (team.isPublic() && !me.isInTeam(team)) {
+        if (team.isPublic() && !vistor.isInTeam(team)) {
             final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(team).urlString(), Context.tr("Join this team"));
             memberTitle.add(joinLink);
         }
 
         final PageIterable<Member> members = team.getMembers();
-        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
+        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members, vistor));
         membersTable.setCssClass("members_table");
         memberTitle.add(membersTable);
 
@@ -83,7 +82,7 @@ public class MembersTab extends HtmlTab {
         private final PageIterable<Member> members;
         private Member member;
         private Iterator<Member> iterator;
-        private Visitor visitor;
+        private Member visitor;
         private static final int CONSULT = 1;
         private static final int TALK = 2;
         private static final int MODIFY = 4;
@@ -91,10 +90,10 @@ public class MembersTab extends HtmlTab {
         private static final int BANK = 5;
         private static final int PROMOTE = 6;
 
-        public MyTableModel(final PageIterable<Member> members) {
+        public MyTableModel(final PageIterable<Member> members, Member member2) {
             this.members = members;
-            if (session.getAuthToken() != null) {
-                this.visitor = session.getAuthToken().getVisitor();
+            if (session.getUserToken() != null) {
+                this.visitor = member2;
             }
             iterator = members.iterator();
         }
@@ -156,17 +155,17 @@ public class MembersTab extends HtmlTab {
             final PlaceHolderElement ph = new PlaceHolderElement();
 
             if (right == UserTeamRight.CONSULT) {
-                if (member.canBeKickFromTeam(team, visitor.getMember())) {
-                    if (member.equals(visitor)) { // FIXME : Invalid equals ?
+                if (member.canBeKickFromTeam(team, visitor)) {
+                    if (member.equals(visitor)) {
                         ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Leave")));
                     } else {
                         ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Kick")));
                     }
                 }
             } else {
-                if (team.canChangeRight(visitor.getMember(), member, right, true)) {
+                if (team.canChangeRight(visitor, member, right, true)) {
                     ph.add(new GiveRightActionUrl(team, member, right, true).getHtmlLink(Context.tr("Grant")));
-                } else if (team.canChangeRight(visitor.getMember(), member, right, false)) {
+                } else if (team.canChangeRight(visitor, member, right, false)) {
                     ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Remove")));
                 }
             }

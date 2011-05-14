@@ -15,7 +15,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -33,13 +32,16 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.contribution.HtmlChargeAccountLine;
 import com.bloatit.web.linkable.contribution.HtmlPayBlock;
 import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.MoneyVariationBlock;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
+import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
@@ -52,7 +54,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer(value="account/charging/check", protocol=Protocol.HTTPS)
+@ParamContainer(value = "account/charging/check", protocol = Protocol.HTTPS)
 public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -70,7 +72,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateCheckContributeForm(loggedUser));
-        // TODO layout.addRight();
+        layout.addRight(new SideBarDocumentationBlock("account_charging"));
         return layout;
     }
 
@@ -85,7 +87,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
             getActor(member).getInternalAccount().getAmount();
             generateNoMoneyContent(group, getActor(member));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
+            getSession().notifyError(Context.tr("An error prevented us from displaying getting your account balance. Please notify us."));
             throw new ShallNotPassException("User cannot access user's account balance", e);
         }
 
@@ -103,7 +105,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
         model.addLine(new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, null));
 
         final HtmlTable lines = new HtmlTable(model);
@@ -128,7 +130,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
             final HtmlDiv changeLine = new HtmlDiv("change_line");
             {
-                changeLine.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                changeLine.add(new SoftwaresTools.Logo(feature.getSoftware()));
                 changeLine.add(new MoneyVariationBlock(feature.getContribution(), feature.getContribution().add(process.getAmountToCharge())));
             }
             featureContributionSummary.add(changeLine);
@@ -153,8 +155,8 @@ public final class StaticAccountChargingPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
-        return generateBreadcrumb(session.getAuthToken().getMember(), process.getTeam(), process);
+    protected Breadcrumb createBreadcrumb(final Member member) {
+        return generateBreadcrumb(member, process.getTeam(), process);
     }
 
     private static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final AccountChargingProcess process) {
@@ -162,7 +164,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         if (asTeam != null) {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, process);
         } else {
-            breadcrumb = AccountPage.generateBreadcrumb(member);
+            breadcrumb = MemberPage.generateAccountBreadcrumb(member);
         }
         final AccountChargingPageUrl url = new AccountChargingPageUrl(process);
 

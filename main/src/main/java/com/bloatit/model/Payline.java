@@ -26,10 +26,11 @@ import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.right.Action;
-import com.bloatit.model.right.RestrictedObject;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.UserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 import com.experian.payline.ws.impl.DoWebPaymentRequest;
 import com.experian.payline.ws.impl.DoWebPaymentResponse;
 import com.experian.payline.ws.impl.GetWebPaymentDetailsRequest;
@@ -38,10 +39,7 @@ import com.experian.payline.ws.obj.Order;
 import com.experian.payline.ws.obj.Payment;
 import com.experian.payline.ws.obj.Result;
 
-public final class Payline extends RestrictedObject {
-
-    public static final BigDecimal COMMISSION_VARIABLE_RATE = new BigDecimal("0.1");
-    public static final BigDecimal COMMISSION_FIX_RATE = new BigDecimal("0.3");
+public final class Payline {
 
     private static final String ACCEPTED_CODE = "00000";
     private static final String ORDER_ORIGINE = "payline";
@@ -118,10 +116,6 @@ public final class Payline extends RestrictedObject {
         // Votre ou vos contrats de vente à distance : 42
     }
 
-    public boolean canMakePayment() {
-        return getAuthTokenUnprotected() != null;
-    }
-
     public void validatePayment(final String token) throws TokenNotfoundException {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
@@ -132,21 +126,6 @@ public final class Payline extends RestrictedObject {
             throw new TokenNotfoundException("Token is not found in DB: " + token);
         }
     }
-
-    // public void getTransactionDetails(final String token) throws
-    // TokenNotfoundException
-    // {
-    // final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
-    // final GetWebPaymentDetailsRequest request =
-    // createWebPaymementRequest(token);
-    // Transaction transaction =
-    // paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
-    //
-    // System.err.println(transaction.getExplanation());
-    // System.err.println(transaction.getFraudResult());
-    // System.err.println(transaction.getIsPossibleFraud());
-    // System.err.println(transaction.getScore());
-    // }
 
     public Reponse getPaymentDetails(final String token) throws TokenNotfoundException {
         final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
@@ -171,16 +150,21 @@ public final class Payline extends RestrictedObject {
                              final String cancelUrl,
                              final String returnUrl,
                              final String notificationUrl) throws UnauthorizedOperationException {
+
+        final UserToken userToken = Context.getSession().getUserToken();
+        if (!userToken.isAuthenticated()) {
+            throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
+        }
+        if (!targetActor.equals(((ElveosUserToken) userToken).getMember()) && !targetActor.equals(((ElveosUserToken) userToken).getAsTeam())) {
+            throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
+        }
+
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);
         paymentRequest.setNotificationURL(notificationUrl);
 
-        final BigDecimal amountToPay = computateAmountToPay(amount);
-
-        if (getAuthToken() == null) {
-            throw new UnauthorizedOperationException(Action.READ);
-        }
+        final BigDecimal amountToPay = BankTransaction.computateAmountToPay(amount);
 
         if (amountToPay.scale() > 2) {
             throw new BadProgrammerException("The amount to pay cannot have more than 2 digit after the '.'.");
@@ -195,7 +179,7 @@ public final class Payline extends RestrictedObject {
         final BigDecimal amountX100 = amountToPay.scaleByPowerOfTen(2);
 
         addPaymentDetails(amountX100, paymentRequest);
-        final String orderReference = addOrderDetails(amountX100, paymentRequest);
+        final String orderReference = addOrderDetails(targetActor, amountX100, paymentRequest);
 
         // paymentRequest.setCustomPaymentPageCode("");
         paymentRequest.setLanguageCode(Locale.FRENCH.getISO3Language());
@@ -203,17 +187,11 @@ public final class Payline extends RestrictedObject {
 
         final WebPaymentAPI_Service paylineService = new WebPaymentAPI_Service();
 
-        // TODO catch exceptions !!
         final DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
 
         final Reponse reponse = new Reponse(apiReponse);
         createBankTransaction(targetActor, amount, amountToPay, orderReference, reponse);
         return reponse;
-    }
-
-    public static BigDecimal computateAmountToPay(final BigDecimal amount) {
-        // TODO migrate me in bankTransaction and store me.
-        return amount.add(amount.multiply(COMMISSION_VARIABLE_RATE)).add(COMMISSION_FIX_RATE).setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
     private void createBankTransaction(final Actor<?> targetActor,
@@ -237,11 +215,10 @@ public final class Payline extends RestrictedObject {
         }
     }
 
-    private String addOrderDetails(final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) {
+    private String addOrderDetails(final Actor<?> actor, final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) {
         // Order details
         final Order order = new Order();
-        final Member member = getAuthTokenUnprotected().getMember();
-        final String orderReference = createOrderRef(member);
+        final String orderReference = createOrderRef(actor);
         order.setRef(orderReference);
         order.setOrigin(ORDER_ORIGINE);
         order.setCountry(Locale.FRANCE.getCountry());
@@ -267,22 +244,22 @@ public final class Payline extends RestrictedObject {
     /**
      * Return a unique ref.
      * 
-     * @param member
+     * @param actor
      * @return
      */
-    private String createOrderRef(final Member member) {
+    private String createOrderRef(final Actor<?> actor) {
         final StringBuilder ref = new StringBuilder();
         // It is a payline action
         ref.append("PAYLINE-");
 
         // Add the member id
-        ref.append(member.getId());
+        ref.append(actor.getId());
         ref.append('-');
 
         PageIterable<BankTransaction> bankTransaction;
         try {
             // Add the last bankTransaction + 1
-            bankTransaction = member.getBankTransactions();
+            bankTransaction = actor.getBankTransactions();
             if (bankTransaction.size() == 0) {
                 ref.append('0');
             } else {
@@ -306,12 +283,6 @@ public final class Payline extends RestrictedObject {
         } else {
             throw new TokenNotfoundException("Token is not found in DB: " + token);
         }
-    }
-
-    @Override
-    public Rights getRights() {
-        // FIXME should not return null.
-        return null;
     }
 
 }

@@ -23,12 +23,12 @@ import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoComment;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtBug;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
  * This is a bug report. A bug report is associated with a milestone. it is
@@ -97,7 +97,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
         final String description,
         final Locale locale,
         final Level errorLevel) {
-        super(DaoBug.createAndPersist(member.getDao(), DaoGetter.getTeam(team), milestone.getDao(), title, description, locale, errorLevel));
+        super(DaoBug.createAndPersist(member.getDao(), DaoGetter.get(team), milestone.getDao(), title, description, locale, errorLevel));
     }
 
     /**
@@ -143,7 +143,7 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtBug.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               DaoGetter.get(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
                                                                text);
         getDao().addComment(comment);

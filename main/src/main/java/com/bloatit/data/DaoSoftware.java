@@ -133,6 +133,10 @@ public class DaoSoftware extends DaoIdentifiable {
     protected void addFeature(final DaoFeature feature) {
         this.features.add(feature);
     }
+    
+    protected void removeFeature(final DaoFeature feature) {
+        this.features.remove(feature);
+    }
 
     /**
      * Change the logo of this soft.

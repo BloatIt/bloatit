@@ -18,11 +18,6 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicReadOnlyAccessException;
 import com.bloatit.model.Rights;
 
 /**
@@ -154,8 +149,7 @@ public abstract class RightManager {
         }
     }
 
-    // TODO change the UnauthorizedPrivateAccessException
-    public static class BankData extends GenericAccessor<UnauthorizedPrivateAccessException> {
+    public static class BankData extends GenericAccessor<UnauthorizedBankDataAccessException> {
         @Override
         protected final boolean can(final Rights role, final Action action) {
             if (teamOwnerCanRead(role, action) && role.hasBankTeamRight()) {
@@ -168,13 +162,12 @@ public abstract class RightManager {
         }
 
         @Override
-        protected UnauthorizedPrivateAccessException exception(final Action action) {
-            return new UnauthorizedPrivateAccessException(action);
+        protected UnauthorizedBankDataAccessException exception(final Action action) {
+            return new UnauthorizedBankDataAccessException(action);
         }
     }
 
-    // TODO change the UnauthorizedPrivateAccessException
-    public static class ReadOnlyBankData extends GenericAccessor<UnauthorizedPrivateAccessException> {
+    public static class ReadOnlyBankData extends GenericAccessor<UnauthorizedReadOnlyBankDataAccessException> {
         @Override
         protected final boolean can(final Rights role, final Action action) {
             if (teamOwnerCanRead(role, action) && role.hasBankTeamRight()) {
@@ -184,8 +177,8 @@ public abstract class RightManager {
         }
 
         @Override
-        protected UnauthorizedPrivateAccessException exception(final Action action) {
-            return new UnauthorizedPrivateAccessException(action);
+        protected UnauthorizedReadOnlyBankDataAccessException exception(final Action action) {
+            return new UnauthorizedReadOnlyBankDataAccessException(action);
         }
     }
 
@@ -245,7 +238,7 @@ public abstract class RightManager {
     
     public static class AdminOnly extends Accessor {
         @Override
-        protected boolean can(Rights object, Action action) {
+        protected boolean can(final Rights object, final Action action) {
             return false;
         }
     }

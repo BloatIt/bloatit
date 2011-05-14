@@ -55,7 +55,7 @@ public abstract class Search<T> {
      *            field are relative to the persistent class.
      * @param searchStr is the string we are looking for.
      */
-    protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
+    protected final void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
         this.persistent = persistent;
         this.fields = fields;
         this.searchStr = searchStr != null ? searchStr : "";

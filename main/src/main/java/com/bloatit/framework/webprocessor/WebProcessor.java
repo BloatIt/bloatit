@@ -17,16 +17,18 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.context.WebHeader;
-import com.bloatit.framework.webprocessor.masters.HttpResponse;
 import com.bloatit.framework.webprocessor.masters.Linkable;
+import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
+import com.bloatit.framework.xcgiserver.HttpResponse;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 public abstract class WebProcessor implements XcgiProcessor {
@@ -58,9 +60,7 @@ public abstract class WebProcessor implements XcgiProcessor {
                 linkable.writeToHttp(response, this);
             } catch (final ShallNotPassException e) {
                 Log.framework().fatal("Right management error", e);
-                // TODO create a page dedicated to handling this
-                Context.getSession().notifyError("TODO : This page is a placeholder used to handle right management errors.");
-                final Linkable linkable = constructLinkable(PageNotFoundUrl.getName(), parameters, session);
+                final Linkable linkable = constructLinkable(PageForbiddenUrl.getPageName(), parameters, session);
                 try {
                     linkable.writeToHttp(response, this);
                 } catch (final RedirectException e1) {

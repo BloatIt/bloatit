@@ -31,6 +31,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.web.WebConfiguration;
@@ -41,13 +42,13 @@ import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 
 @ParamContainer("feature/list")
-public final class FeatureListPage extends MasterPage {
+public final class FeatureListPage extends ElveosPage {
 
     private static final String FILTER_ALL = "all";
     private static final String FILTER_IN_PROGRESS = "in_progress";
@@ -86,7 +87,7 @@ public final class FeatureListPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         // Search block
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
@@ -142,15 +143,12 @@ public final class FeatureListPage extends MasterPage {
 
             final HtmlDiv featureSort = new HtmlDiv("feature_sort");
             {
-                // XXX : Do not delete the following comments
-
-                // final FeatureListPageUrl relevanceSortUrl = url.clone();
-                // relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
-                // final HtmlLink relevanceSort =
-                // relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
-                // if (sort.equals(SORT_BY_RELEVANCE)) {
-                // relevanceSort.setCssClass("selected");
-                // }
+                final FeatureListPageUrl relevanceSortUrl = url.clone();
+                relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
+                final HtmlLink relevanceSort = relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
+                if (sort.equals(SORT_BY_RELEVANCE)) {
+                    relevanceSort.setCssClass("selected");
+                }
 
                 final FeatureListPageUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
@@ -166,15 +164,12 @@ public final class FeatureListPage extends MasterPage {
                     contributionSort.setCssClass("selected");
                 }
 
-                // XXX : Do not delete the following comments
-
-                // final FeatureListPageUrl progressSortUrl = url.clone();
-                // progressSortUrl.setSort(SORT_BY_PROGRESS);
-                // final HtmlLink progressSort =
-                // progressSortUrl.getHtmlLink(Context.tr("progress"));
-                // if (sort.equals(SORT_BY_PROGRESS)) {
-                // progressSort.setCssClass("selected");
-                // }
+                final FeatureListPageUrl progressSortUrl = url.clone();
+                progressSortUrl.setSort(SORT_BY_PROGRESS);
+                final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
+                if (sort.equals(SORT_BY_PROGRESS)) {
+                    progressSort.setCssClass("selected");
+                }
 
                 final FeatureListPageUrl creationDateSortUrl = url.clone();
                 creationDateSortUrl.setSort(SORT_BY_CREATION_DATE);
@@ -183,28 +178,16 @@ public final class FeatureListPage extends MasterPage {
                     creationDateSort.setCssClass("selected");
                 }
 
-                // XXX : Do not delete the following comments
-
-                // final FeatureListPageUrl expirationDateSortUrl = url.clone();
-                // expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
-                // final HtmlLink expirationDateSort =
-                // expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
-                // if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
-                // expirationDateSort.setCssClass("selected");
-                // }
-
                 featureSort.addText(Context.tr("Sort by: "));
                 featureSort.add(popularitySort);
                 featureSort.addText(" – ");
-                // featureSort.add(relevanceSort);
-                // featureSort.addText(" – ");
+                featureSort.add(relevanceSort);
+                featureSort.addText(" – ");
                 featureSort.add(contributionSort);
                 featureSort.addText(" – ");
-                // featureSort.add(progressSort);
-                // featureSort.addText(" – ");
+                featureSort.add(progressSort);
+                featureSort.addText(" – ");
                 featureSort.add(creationDateSort);
-                // featureSort.addText(" – ");
-                // featureSort.add(expirationDateSort);
 
             }
             featureSearchBlock.add(featureSort);
@@ -234,11 +217,11 @@ public final class FeatureListPage extends MasterPage {
         }
         layout.addLeft(featureSearchBlock);
 
-        ///////////////
+        // /////////////
         // Feature list
         final FeatureList results = searchResult();
         if (results.size() > 0) {
-            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem();
+            final HtmlRenderer<Feature> featureItemRenderer = new FeaturesListItem(userToken);
             final FeatureListPageUrl clonedUrl = url.clone();
             pagedFeatureList = new HtmlPagedList<Feature>(featureItemRenderer, results, clonedUrl, clonedUrl.getPagedFeatureListUrl());
             layout.addLeft(pagedFeatureList);
@@ -250,7 +233,7 @@ public final class FeatureListPage extends MasterPage {
             layout.addLeft(noResultBlock);
         }
 
-        ////////////
+        // //////////
         // Right bar
         layout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
         layout.addRight(new SideBarDocumentationBlock("feature"));
@@ -269,16 +252,16 @@ public final class FeatureListPage extends MasterPage {
     }
 
     private static class FeaturesListItem implements HtmlRenderer<Feature> {
-        private Feature feature;
+        private final ElveosUserToken userToken;
+
+        public FeaturesListItem(final ElveosUserToken userToken) {
+            super();
+            this.userToken = userToken;
+        }
 
         @Override
         public XmlNode generate(final Feature feature) {
-            this.feature = feature;
-            return generateContent();
-        }
-
-        private XmlNode generateContent() {
-            return new HtmlFeatureSummary(feature, Compacity.NORMAL);
+            return new HtmlFeatureSummary(feature, Compacity.NORMAL, userToken);
         }
     };
 
@@ -321,7 +304,7 @@ public final class FeatureListPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return FeatureListPage.generateBreadcrumb();
     }
 }

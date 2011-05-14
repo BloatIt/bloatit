@@ -18,6 +18,10 @@ a {
     text-decoration: none;
     margin: 0;
     padding: 0;
+    
+    img {
+        border: none;
+    }
 }
 
 .selected {
@@ -71,6 +75,12 @@ h2 {
        margin-top:20px;
 }
 
+h3 {
+font-size: 1.1em;
+font-weight: normal;
+color: @title_color;   
+//text-decoration: underline;
+}
 
 .karma {
     color: @default_karma_color;
@@ -401,10 +411,7 @@ a.submit:focus{
         vertical-align: middle;
     }
 
-    .progress_bar_block {
-        margin-left: 0em;
-        max-width: 400px;
-    }
+    
 
     .idea_karma {
         margin: 0px;
@@ -577,4 +584,12 @@ form .fake_link {
 
 .bold{
 	font-weight:bold
+}
+
+
+.debug {
+    text-align: left;
+    max-width: 400px;
+    font-size: 0.8em;
+    color: @error_color;
 }

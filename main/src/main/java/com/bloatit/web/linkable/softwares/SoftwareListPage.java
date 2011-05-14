@@ -24,20 +24,21 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlClearer;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AddSoftwarePageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
 @ParamContainer("software/list")
-public final class SoftwareListPage extends MasterPage {
+public final class SoftwareListPage extends ElveosPage {
 
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Software> pagedSoftwareList;
@@ -49,15 +50,14 @@ public final class SoftwareListPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Software list", 1);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Software list"), 1);
 
         final PageIterable<Software> softwareList = SoftwareManager.getAll();
         final HtmlRenderer<Software> softwareItemRenderer = new SoftwareRenderer();
 
-        // TODO: avoid conflict
         final SoftwareListPageUrl clonedUrl = url.clone();
         pagedSoftwareList = new HtmlPagedList<Software>(softwareItemRenderer, softwareList, clonedUrl, clonedUrl.getPagedSoftwareListUrl());
 
@@ -66,7 +66,7 @@ public final class SoftwareListPage extends MasterPage {
         pageTitle.add(new HtmlClearer());
 
         layout.addLeft(pageTitle);
-        
+
         layout.addRight(new SideBarDocumentationBlock("software"));
 
         return layout;
@@ -83,7 +83,7 @@ public final class SoftwareListPage extends MasterPage {
     }
 
     private class SoftwareRenderer implements HtmlRenderer<Software> {
-        
+
         public SoftwareRenderer() {
             super();
         }
@@ -93,7 +93,7 @@ public final class SoftwareListPage extends MasterPage {
             final SoftwarePageUrl softwareUrl = new SoftwarePageUrl(software);
             final HtmlDiv box = new HtmlDiv("software_box");
 
-            box.add(new HtmlDiv("float_right").add(SoftwaresTools.getSoftwareLogo(software)));
+            box.add(new HtmlDiv("float_right").add(new SoftwaresTools.Logo(software)));
 
             final HtmlDiv textBox = new HtmlDiv("software_text");
             HtmlLink htmlLink;
@@ -107,7 +107,7 @@ public final class SoftwareListPage extends MasterPage {
     };
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return SoftwareListPage.generateBreadcrumb();
     }
 

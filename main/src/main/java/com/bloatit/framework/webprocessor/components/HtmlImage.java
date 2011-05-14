@@ -12,7 +12,7 @@
 
 package com.bloatit.framework.webprocessor.components;
 
-import com.bloatit.framework.utils.Image;
+import com.bloatit.framework.model.Image;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
 import com.bloatit.framework.webprocessor.url.Url;
 

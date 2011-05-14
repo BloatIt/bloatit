@@ -19,12 +19,10 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.right.Action;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtContribution;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * This is a financial contribution.
@@ -76,26 +74,11 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
-     * CALLED by feature. You have to call {@link #accept(Offer)} when an offer
-     * is accepted. This will create the {@link Transaction} needed so that the
-     * developer of the offer become rich.
-     * 
-     * @param offer the validated offer.
-     * @throws NotEnoughMoneyException if there is a bug and then a person does
-     *             not have enough money.
-     */
-    public void accept(final Offer offer) throws NotEnoughMoneyException {
-        // TODO make me package visible !
-        getDao().validate(offer.getDao(), 100);
-    }
-
-    /**
      * CALLED by feature. You have to call {@link #cancel()} when the feature on
      * which this Contribution is made is canceled. It allows the user to take
      * back its money.
      */
-    public void cancel() {
-        // TODO make me package visible !
+    void cancel() {
         getDao().cancel();
     }
 
@@ -104,7 +87,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * 
      * @return true, if successful
      * @see #getAmount()
-     * @see Contribution#authenticate(AuthToken)
+     * @see Contribution#authenticate(AuthenticatedUserToken)
      */
     public boolean canAccessAmount() {
         return canAccess(new RgtContribution.Amount(), Action.READ);
@@ -115,7 +98,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * 
      * @return true, if successful
      * @see #getComment()
-     * @see Contribution#authenticate(AuthToken)
+     * @see Contribution#authenticate(AuthenticatedUserToken)
      */
     public boolean canAccessComment() {
         return canAccess(new RgtContribution.Comment(), Action.READ);
@@ -127,7 +110,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @return the amount.
      * @throws UnauthorizedOperationException if you do not have the right to
      *             access the <code>Amount</code> property.
-     * @see Contribution#authenticate(AuthToken)
+     * @see Contribution#authenticate(AuthenticatedUserToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
         tryAccess(new RgtContribution.Amount(), Action.READ);

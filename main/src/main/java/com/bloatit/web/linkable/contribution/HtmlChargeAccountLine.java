@@ -21,8 +21,6 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -37,6 +35,8 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
+import com.bloatit.model.Image;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.members.MembersTools;
 
@@ -47,6 +47,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
     private final BigDecimal amountToCharge;
     private final Url recalculateTargetForm;
     private final boolean isContributing;
+    private HtmlMoneyField moneyField;
 
     public HtmlChargeAccountLine(boolean isContributing, final BigDecimal amountToCharge, final Actor<?> actor, final Url recalculateTargetForm) {
         this.isContributing = isContributing;
@@ -82,6 +83,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
         public BeforeMoneyCell() {
             super("quotation_detail_line_money");
+            setId("input_money");
         }
 
         @Override
@@ -105,6 +107,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
         public AfterMoneyCell() {
             super("quotation_detail_line_money");
+            setId("output_money");
         }
 
         @Override
@@ -167,6 +170,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
     private class AmountCell extends HtmlTableCell {
 
+
         public AmountCell() {
             super("quotation_detail_line_amount");
         }
@@ -183,7 +187,7 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
                 amountBlock = new HtmlDiv("quotation_detail_line_field");
                 final HtmlForm form = new HtmlForm(recalculateTargetForm.urlString(), Method.GET);
 
-                final HtmlMoneyField moneyField = new HtmlMoneyField("preload");
+                moneyField = new HtmlMoneyField("preload");
                 if (amountToCharge == null) {
                     moneyField.setDefaultValue("0");
                 } else {
@@ -199,4 +203,9 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
             return amountBlock;
         }
     }
+
+    public HtmlMoneyField getMoneyField() {
+        return moneyField;
+    }
+
 }

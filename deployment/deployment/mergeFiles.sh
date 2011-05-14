@@ -67,6 +67,11 @@ if [ ! -e "$FROM" ] || [ ! -e "$TO" ] ; then
     exit 1
 fi
 
+updateNewOldFile() {
+	new_hidden_file="$(dirname "$1")/.$(basename "$1").new"
+	old_hidden_file="$(dirname "$1")/.$(basename "$1").old"
+}
+
 #
 # Ask a user what to do with the a unique file to copy.
 # OPTIONS:
@@ -78,6 +83,8 @@ performMerge() {
     echo "    2 -> use new ($1) and erase $2"
     echo "    3 -> use vimdiff"
     echo "    4 -> merge the files by yourself (exit or ^D to finish)."
+    echo "    d -> diff between old and new version from the REPOSITORY"
+    echo "    h -> see vimdiff help."
     read _reponse
     case $_reponse in
         1)
@@ -93,9 +100,7 @@ performMerge() {
             echo "    1 -> finish."
             echo "    2 -> Back to menu."
             read _new_reponse
-            if [ "$_new_reponse" = "1" ] ; then
-                exit
-            else
+            if [ "$_new_reponse" = "2" ] ; then
                 performMerge "$1" "$2"
             fi
             ;;
@@ -108,15 +113,32 @@ performMerge() {
             echo "    1 -> finish."
             echo "    2 -> Back to menu."
             read _new_reponse
-            if [ "$_new_reponse" = "1" ] ; then
-                exit
-            else
+            if [ "$_new_reponse" = "2" ] ; then
                 performMerge "$1" "$2"
             fi
             ;;
-        ?)
+		d)
+			updateNewOldFile "$2"
+			if [ -e "$new_hidden_file" ] && [ -e "$old_hidden_file" ] ; then
+				echo diff "$new_hidden_file" "$old_hidden_file"
+				diff "$new_hidden_file" "$old_hidden_file"
+			else
+				echo "Cannot find the previous installed version."
+			fi
             performMerge "$1" "$2"
-            exit
+			;;
+		h)
+			echo
+			echo ":diffget get the current diff from the other file"
+			echo ":diffput put the current diff to the other file"
+			echo "[c ou ]c -> sauter d'une différence à l'autre"
+			echo ":diffupdate -> forcer la mise à jour"
+			echo
+            performMerge "$1" "$2"
+			;;
+        ?)
+			echo "I cannot understand you ..."
+            performMerge "$1" "$2"
             ;;
     esac
 }
@@ -153,12 +175,16 @@ tryMerge(){
 
         if [ -e "$_old_file" ] ; then
 
+			updateNewOldFile "$_old_file"
             if [ "$(filesEqual "$_old_file" "$_new_file")" = "true" ] ; then
                 echo "    No modification in: $_old_file. Do nothing"
-            elif [ "$(filesEqual "$_old_file.new" "$_new_file")" = "true" ] ; then
+            elif [ "$(filesEqual "$new_hidden_file" "$_new_file")" = "true" ] ; then
                 echo "    No modification since prevous transfer. Do nothing"
             else
-                cp "$_new_file" "$_old_file.new"
+				if [ -e "$new_hidden_file" ] ; then
+					cp "$new_hidden_file" "$old_hidden_file"
+				fi
+                cp "$_new_file" "$new_hidden_file"
                 performMerge "$_new_file" "$_old_file" 
             fi
         else

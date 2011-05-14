@@ -21,7 +21,6 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -36,6 +35,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Team;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.admin.UserContentAdminListFactory;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/usercontent")
@@ -162,7 +162,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
                 try {
                     return String.valueOf(element.isDeleted());
                 } catch (final UnauthorizedOperationException e) {
-                    session.notifyBad("HAHAHA !");
+                    getSession().notifyBad("HAHAHA !");
                     throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }
             }

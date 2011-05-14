@@ -1,0 +1,47 @@
+
+Les offres 
+==========
+
+Les offres sont faite par les développeurs. Il explique dans leur offre comment il compte répondre à la demande, dans quels délais et pour quelle somme d'argent. 
+
+Offres sélectionnés
+-------------------
+
+Sur une demande il peut y avoir plusieurs offres. Pour les départager, et pour s'assurer que l'offre qui sera développé correspond bien à la demande, les contributeurs peuvent voter. 
+Pour cela on utilise le système de [réputation / popularité](/fr/documentation/doc-reputation-popularity) du site. Pour qu'une offre soit sélectionnée, elle doit avoir une popularité supérieure à zéro, et aux autres offres sur cette demande. 
+
+
+Les offres contenant plusieurs lots
+-----------------------------------
+
+Lorsqu'un développeur créer une offre il peut proposer de la faire en plusieurs lots. Chaque lot fera office de 'sous offre'.
+
+Le développeur demande une somme pour chaque lot, décrit ce qu'il livrera dans chaque lot et quand il souhaite le faire.
+Lorsque un lot est validé, le développeur reçoit la somme assigné à ce lot. 
+
+
+La recette d'une offre
+-------------------------
+
+Lorsqu'une offre (ou un lot) a une livraison, elle entre en mode recette. Dans ce mode, on cherche a savoir si l'offre ou le lot correspond bien à l'attente des utilisateurs. Pour cela, les utilisateurs peuvent signaler des bugs. 
+
+Il existe 3 niveau de bugs : CRITIQUE, MAJEUR, MINEUR. Par défaut, le développeur pourra recevoir l'ensemble des contributions uniquement si tous les bugs CRITIQUE sont résolus. 
+Cependant, lors de la création de l'offre le développeur peut proposer plus de garanties à l'utilisateur. Il peut ainsi choisir de la quantité d'argent qu'il reçoit lorsque chaque catégorie de bugs sont résolus. 
+
+Par exemple, il pourrait choisir :
+
+ - de recevoir 70 % du montant des contributions lorsque tous les bugs CRITIQUE sont résolus
+
+ - de recevoir 10 % du montant des contributions lorsque tous les bugs MAJEUR sont résolus
+
+ - de recevoir les 20 % restant lorsque tous les bugs MINEURS sont résolus
+
+
+Le développeur peut aussi choisir combien de temps les utilisateurs ont pour reporter le premier bug. Par défaut, les utilisateurs ont une semaine pour tester le logiciel et signaler des bugs. Si après ce temps, aucun bug n'est signalé, alors on considèrera le développement validé.
+
+La validation d'une offre
+-------------------------
+
+Lorsque tous les critères sont remplis, l'équipe elveos valide l'offre et le développeur reçoit l'argent issue des contributions.
+L'étape de validation de l'offre est manuelle pour éviter toutes les tentatives de détournement qui pourrait permettre à des personnes mal intentionnés de récupérer des contributions sans faire le développement.
+Bien entendu, s'il y a des désaccords lors de la phase de recette, l'équipe elveos s'engage à décider de la validation en toute transparance, et en prenant en compte les avis de chaque partie. De plus, nous garentissons n'accepter aucun accord, ou avantage qui pourrait compromaitre notre impartialité lors de la validation d'une offre.

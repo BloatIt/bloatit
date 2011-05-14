@@ -1,0 +1,37 @@
+
+Feature requests life cycle
+=================
+
+![feature life cycle](/resources/en/img/process_doc.png)
+
+Preparing feature requests
+---------------------
+
+A feature that is in preparing state doesn't have an offer from a developer yet. Contributing is already possible, and the more contributions you make the more chance you have to see a developer make an offer quickly.
+
+Validating offer
+----------------------
+
+When a developer make an offer, the contributors can vote up and down to make the popularity of the offer goes up or down. If there are more than one offer for one feature request then the offer with the biggest popularity will be selected and will be developed. 
+The contributors have always at least one day to go vote for or against the selected offer.
+
+Developing feature requests
+----------------------
+
+When the selected offer has enough contributions, the developer begin the development. Nobody can contribute on this feature request, and the offer popularity is blocked. 
+
+A release is added by the developer
+------------------------------------------
+
+As soon as the developer finish the development of the feature he adds a release. This release can be a file, or whatever has been specified during the offer creation.
+The contributor can check for bugs in the release and report them.
+
+In the case of a [multiple milestone offer](/en/documentation/doc-offer-presentation#lesoffrescontenantplusieurslots), there is a release by milestone.
+
+Success
+-----------------------
+
+When the number of non resolved bugs becomes sufficiently low, the elveos team validate the feature, and the contributions money is transfered on the developer accont.
+
+In the case of a [multiple milestone offer](/en/documentation/doc-offer-presentation#lesoffrescontenantplusieurslots), each milestone is validated alone, and the feature requests is successful when all the milestones are validated.
+

@@ -24,19 +24,20 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Release;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 
 @ParamContainer("release")
-public final class ReleasePage extends MasterPage {
+public final class ReleasePage extends ElveosPage {
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a release number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the release number: ''%value%''."))
@@ -51,9 +52,9 @@ public final class ReleasePage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-        layout.addRight(new SideBarFeatureBlock(release.getFeature()));
+        layout.addRight(new SideBarFeatureBlock(release.getFeature(), userToken));
 
         layout.addLeft(new HtmlTitleBlock(Context.tr("Release"), 1));
         layout.addLeft(new HtmlDiv().add(new HtmlParagraph(tr("date: "
@@ -87,7 +88,7 @@ public final class ReleasePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return ReleasePage.generateBreadcrumb(release);
     }
 

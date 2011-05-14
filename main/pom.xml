@@ -1,342 +1,309 @@
+<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.bloatit</groupId>
-	<artifactId>BloatIt</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0.6-SNAPSHOT</version>
-	<name>BloatIt</name>
-	<url>http://maven.apache.org</url>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<hibernate.version>3.6.1.Final</hibernate.version>
-	</properties>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-
-			<!-- Tests -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<test>com.bloatit.TestAll</test>
-				</configuration>
-			</plugin>
-
-			<!-- Run annotation processors on src/main/java sources -->
-			<plugin>
-				<groupId>org.bsc.maven</groupId>
-				<artifactId>maven-processor-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>process</id>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<processors>
-								<!-- list of processors to use -->
-								<processor>com.bloatit.framework.webprocessor.annotations.generator.ParamContainerProcessor</processor>
-							</processors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- i18n GetText -->
-			<plugin>
-				<groupId>org.xnap.commons</groupId>
-				<artifactId>maven-gettext-plugin</artifactId>
-				<version>1.2.3</version>
-				<configuration>
-					<poDirectory>${basedir}/po</poDirectory>
-					<targetBundle>i18n.Messages</targetBundle>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>dist</goal>
-						</goals>
-						<phase>generate-sources</phase>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Exec -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2</version>
-				<configuration>
-					<mainClass>com.bloatit.BloatitServer</mainClass>
-					<arguments>
-						<argument>-classpath</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-
-
-
-			<!-- Jar creation -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.bloatit.BloatitServer</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.2</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-							<includeScope>runtime</includeScope>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> 
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.bloatit</groupId>
+  <artifactId>BloatIt</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.10-SNAPSHOT</version>
+  <name>BloatIt</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hibernate.version>3.6.1.Final</hibernate.version>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <!-- Tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.8.1</version>
+        <configuration>
+          <test>com.bloatit.TestAll</test>
+        </configuration>
+      </plugin>
+      <!-- Run annotation processors on src/main/java sources -->
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <processors>
+                <!-- list of processors to use -->
+                <processor>com.bloatit.framework.webprocessor.annotations.generator.ParamContainerProcessor</processor>
+              </processors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- i18n GetText -->
+      <plugin>
+        <groupId>org.xnap.commons</groupId>
+        <artifactId>maven-gettext-plugin</artifactId>
+        <version>1.2.3</version>
+        <configuration>
+          <poDirectory>${basedir}/po</poDirectory>
+          <targetBundle>i18n.Messages</targetBundle>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>dist</goal>
+            </goals>
+            <phase>generate-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Exec -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2</version>
+        <configuration>
+          <mainClass>com.bloatit.BloatitServer</mainClass>
+          <arguments>
+            <argument>-classpath</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+      <!-- Jar creation -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.bloatit.BloatitServer</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+              <includeScope>runtime</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!--<plugin> <groupId>org.liquibase</groupId> <artifactId>liquibase-plugin</artifactId> 
 				<version>1.9.5.0</version> <executions> <execution> <phase>process-resources</phase> 
 				<configuration> <changeLogFile>src/main/resources/liquiabse/current.liquibase.xml</changeLogFile> 
 				<url>jdbc:postgresql://localhost/bloatit</url> <username>bloatit</username> 
 				<password>passe</password> <driver>org.postgresql.Driver</driver> <liquibase.propertyFile>src/main/resources/liquibase.properties</liquibase.propertyFile> 
 				</configuration> <goals> <goal>update</goal> </goals> </execution> </executions> 
 				</plugin> -->
-		</plugins>
-
-		<resources>
-			<resource>
-				<directory>${basedir}/src/main/resources/</directory>
-			</resource>
-			<resource>
-				<targetPath>${project.build.directory}/classes</targetPath>
-				<filtering>true</filtering>
-				<directory>${basedir}</directory>
-				<includes>
-					<include>build.properties</include>
-				</includes>
-			</resource>
-
-		</resources>
-	</build>
-
-	<repositories>
-		<repository>
-			<id>gettext-commons-site</id>
-			<url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<name>Maven Repository Switchboard</name>
-			<layout>default</layout>
-			<url>http://repo1.maven.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>jboss-public-repository-group</id>
-			<name>JBoss Public Maven Repository Group</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<dependencies>
-		<!-- tests -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.dspace.dependencies.jmockit</groupId>
-			<artifactId>dspace-jmockit</artifactId>
-			<version>0.999.4</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- gettext -->
-		<dependency>
-			<groupId>org.xnap.commons</groupId>
-			<artifactId>gettext-commons</artifactId>
-			<version>0.9.6</version>
-		</dependency>
-
-		<!-- For hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-search</artifactId>
-			<version>3.3.0.Final</version>
-		</dependency>
-
-		<!-- we need sl4j for logging with hibernate -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.0</version>
-		</dependency>
-
-		<!-- We need postgresql -->
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>8.4-701.jdbc4</version>
-		</dependency>
-
-		<!-- we need information from the APT project -->
-		<dependency>
-			<groupId>com.bloatit</groupId>
-			<artifactId>BloatItApt</artifactId>
-			<version>1.0.6-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.bloatit</groupId>
-			<artifactId>BloatItPaypalBinding</artifactId>
-			<version>1.0.6-SNAPSHOT</version>
-		</dependency>
-
-		<!-- Jakarta language commons (to escape string) -->
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.3</version>
-		</dependency>
-
-		<!-- Web services -->
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxws</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-
-		<!-- Java mail -->
-		<dependency>
-			<groupId>org.apache.geronimo.javamail</groupId>
-			<artifactId>geronimo-javamail_1.4_provider</artifactId>
-			<version>1.7</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-javamail_1.4_spec</artifactId>
-			<version>1.6</version>
-		</dependency>
-
-		<!-- Encrypting the conf file arguments. -->
-		<dependency>
-			<groupId>org.jasypt</groupId>
-			<artifactId>jasypt</artifactId>
-			<version>1.7</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- Encrypt/decrypt md5 sha1 etc.. -->
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.5</version>
-		</dependency>
-	</dependencies>
-
-
-	<pluginRepositories>
-
-		<pluginRepository>
-			<id>gettext-commons-site</id>
-			<url>http://gettext-commons.googlecode.com/svn/maven-repository</url>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>jboss-public-repository-group</id>
-			<name>JBoss Public Maven Repository Group</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
-			<layout>default</layout>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
-			</snapshots>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-			<layout>default</layout>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>central</id>
-			<name>Maven Plugin Repository</name>
-			<url>http://repo1.maven.org/maven2</url>
-			<layout>default</layout>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</pluginRepository>
-
-	</pluginRepositories>
-
+    </plugins>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources/</directory>
+      </resource>
+      <resource>
+        <targetPath>${project.build.directory}/classes</targetPath>
+        <filtering>true</filtering>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>build.properties</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+  <repositories>
+    <repository>
+      <id>gettext-commons-site</id>
+      <url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
+    </repository>
+    <repository>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <layout>default</layout>
+      <url>http://repo1.maven.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Maven Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+  <dependencies>
+    <!-- tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.dspace.dependencies.jmockit</groupId>
+      <artifactId>dspace-jmockit</artifactId>
+      <version>0.999.4</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <!-- gettext -->
+    <dependency>
+      <groupId>org.xnap.commons</groupId>
+      <artifactId>gettext-commons</artifactId>
+      <version>0.9.6</version>
+    </dependency>
+    <!-- For hibernate -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-ehcache</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search</artifactId>
+      <version>3.3.0.Final</version>
+    </dependency>
+    <!-- we need sl4j for logging with hibernate -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.0</version>
+    </dependency>
+    <!-- We need postgresql -->
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>8.4-701.jdbc4</version>
+    </dependency>
+    <!-- we need information from the APT project -->
+    <dependency>
+      <groupId>com.bloatit</groupId>
+      <artifactId>BloatItApt</artifactId>
+      <version>1.0.10-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.bloatit</groupId>
+      <artifactId>BloatItPaypalBinding</artifactId>
+      <version>1.0.10-SNAPSHOT</version>
+    </dependency>
+    <!-- Jakarta language commons (to escape string) -->
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.3</version>
+    </dependency>
+    <!-- Web services -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+    <!-- Java mail -->
+    <dependency>
+      <groupId>org.apache.geronimo.javamail</groupId>
+      <artifactId>geronimo-javamail_1.4_provider</artifactId>
+      <version>1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-javamail_1.4_spec</artifactId>
+      <version>1.6</version>
+    </dependency>
+    <!-- Encrypting the conf file arguments. -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
+    </dependency>
+    <!-- Encrypt/decrypt md5 sha1 etc.. -->
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.5</version>
+    </dependency>
+  </dependencies>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gettext-commons-site</id>
+      <url>http://gettext-commons.googlecode.com/svn/maven-repository</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Maven Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Repository for Maven</name>
+      <url>http://download.java.net/maven/2/</url>
+      <layout>default</layout>
+    </pluginRepository>
+    <pluginRepository>
+      <id>central</id>
+      <name>Maven Plugin Repository</name>
+      <url>http://repo1.maven.org/maven2</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 </project>

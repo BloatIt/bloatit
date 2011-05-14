@@ -20,7 +20,6 @@ public class CodeGenerator {
             clazz.setExtends(desc.getFather().getClassName());
         }
 
-        // TODO make me final
         clazz.addAttribute(desc.getComponent().getClassName(), "component");
 
         final Method staticGetName = clazz.addMethod("String", "getPageName");
@@ -108,27 +107,27 @@ public class CodeGenerator {
         clone.addLine("return new " + clazz.getName() + "(this);");
 
         for (final ParameterDescription param : desc.getComponent().getParameters()) {
-            final String getterName = "get" + Utils.toCamelCase(param.getAttributeName(), true);
+            final String getterName = "get" + Utils.firstCharUpper(param.getAttributeName());
             final Method getter = clazz.addMethod(param.getTypeWithoutTemplate(), getterName);
             getter.addLine("return this.component." + getterName + "();");
 
-            final String getParameterName = "get" + Utils.toCamelCase(param.getAttributeName(), true) + "Parameter";
+            final String getParameterName = "get" + Utils.firstCharUpper(param.getAttributeName()) + "Parameter";
             final String template = "<" + param.getTypeWithoutTemplate() + ", " + param.getTypeOrTemplateType() + ">";
             final Method getParameter = clazz.addMethod("UrlParameter" + template, getParameterName);
             getParameter.addLine("return this.component." + getParameterName + "();");
 
-            final String setterName = "set" + Utils.toCamelCase(param.getAttributeName(), true);
+            final String setterName = "set" + Utils.firstCharUpper(param.getAttributeName());
             final Method setter = clazz.addMethod("void", setterName);
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
             setter.addLine("this.component." + setterName + "(other);");
         }
 
         for (final ComponentDescription subComponent : desc.getComponent().getSubComponents()) {
-            final String getParameterName = "get" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url";
+            final String getParameterName = "get" + Utils.firstCharUpper(subComponent.getAttributeName()) + "Url";
             final Method getParameter = clazz.addMethod(subComponent.getClassName(), getParameterName);
             getParameter.addLine("return this.component." + getParameterName + "();");
 
-            final String setterName = "set" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url";
+            final String setterName = "set" + Utils.firstCharUpper(subComponent.getAttributeName()) + "Url";
             final Method setter = clazz.addMethod("void", setterName);
             setter.addParameter(subComponent.getClassName(), "other");
             setter.addLine("this.component." + setterName + "(other);");
@@ -160,7 +159,7 @@ public class CodeGenerator {
         final Method generatedConstructor = clazz.addConstructor();
         for (final ParameterDescription param : desc.getUrlParameters()) {
             generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
-            generatedConstructor.addLine("this.set" + Utils.toCamelCase(param.getAttributeName(), true) + "(" + param.getAttributeName() + ");");
+            generatedConstructor.addLine("this.set" + Utils.firstCharUpper(param.getAttributeName()) + "(" + param.getAttributeName() + ");");
         }
 
         final Method doRegister = clazz.addMethod("void", "doRegister");
@@ -177,7 +176,7 @@ public class CodeGenerator {
             final Attribute attribute = clazz.addAttribute("UrlParameter" + template, param.getAttributeName());
 
             // Getter
-            final Method getter = clazz.addMethod("UrlParameter" + template, "get" + Utils.toCamelCase(param.getAttributeName(), true) + "Parameter");
+            final Method getter = clazz.addMethod("UrlParameter" + template, "get" + Utils.firstCharUpper(param.getAttributeName()) + "Parameter");
             getter.addLine("return this." + param.getAttributeName() + ";");
 
             // Static equals ( = new UrlParameter ...)
@@ -206,7 +205,6 @@ public class CodeGenerator {
             if (param.getTypeOrTemplateType().equals(param.getTypeWithoutTemplate())) {
                 newParam.addParameter("null");
             } else {
-                // TODO change to a collection !
                 newParam.addParameter("new ArrayList()");
             }
             newParam.addParameter("new " + newParamDescription);
@@ -214,17 +212,17 @@ public class CodeGenerator {
             attribute.setStaticEquals("new " + newParam);
 
             // Value getter
-            final Method valueGetter = clazz.addMethod(param.getTypeWithoutTemplate(), "get" + Utils.toCamelCase(param.getAttributeName(), true));
+            final Method valueGetter = clazz.addMethod(param.getTypeWithoutTemplate(), "get" + Utils.firstCharUpper(param.getAttributeName()));
             valueGetter.addLine("return this." + param.getAttributeName() + ".getValue();");
 
             // Value Setter
-            final Method setter = clazz.addMethod("void", "set" + Utils.toCamelCase(param.getAttributeName(), true));
+            final Method setter = clazz.addMethod("void", "set" + Utils.firstCharUpper(param.getAttributeName()));
             setter.addParameter(param.getTypeWithoutTemplate(), "other");
             setter.addLine("this." + param.getAttributeName() + ".setValue(other);");
             for (final ParameterDescription generatedParam : desc.getParameterGeneratedFromMe(param)) {
                 setter.addLine("try {");
                 setter.addLine("    " + generatedParam.getAttributeName() + ".setValue(" + param.getAttributeName() + ".getValue().get"
-                        + Utils.toCamelCase(generatedParam.getAttributeName(), true) + "());");
+                        + Utils.firstCharUpper(generatedParam.getAttributeName()) + "());");
                 setter.addLine("} catch (final Exception e) {");
                 setter.addLine("    Log.framework().warn(\"Error in pretty value generation.\", e);");
                 setter.addLine("}");
@@ -236,12 +234,12 @@ public class CodeGenerator {
         }
 
         for (final ComponentDescription subComponent : desc.getSubComponents()) {
-            final String subComponentName = Utils.toCamelCase(subComponent.getClassName(), false);
+            final String subComponentName = Utils.firstCharLower(subComponent.getClassName());
 
             // Add an attribute
             clazz.addAttribute(subComponent.getClassName(), subComponentName, //
-                               "get" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url", //
-                               "set" + Utils.toCamelCase(subComponent.getAttributeName(), true) + "Url");
+                               "get" + Utils.firstCharUpper(subComponent.getAttributeName()) + "Url", //
+                               "set" + Utils.firstCharUpper(subComponent.getAttributeName()) + "Url");
 
             // register it
             doRegister.addLine("register(" + subComponentName + ");");

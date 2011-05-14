@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
@@ -85,7 +86,7 @@ public final class CheckContributionAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
@@ -96,7 +97,7 @@ public final class CheckContributionAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         return new ContributePageUrl(process);
     }
 

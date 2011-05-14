@@ -82,6 +82,28 @@ import com.bloatit.framework.utils.datetime.DateUtils;
                                     "AND id not in (from DaoKudos) " +
                                     "AND id not in (from DaoTranslation)" +
                                     "AND creationDate > :date"),
+                        @NamedQuery(
+                                name = "team.getUserTeamRights",
+                                query = "SELECT gm " +
+                                		"FROM com.bloatit.data.DaoTeam g " +
+                                		"JOIN g.teamMembership as gm " +
+                                		"JOIN gm.member as m " +
+                                		"WHERE g = :team " +
+                                		"AND m = :member"),
+                		@NamedQuery(
+                		        name = "team.getUserTeamRights.size",
+                		        query = "SELECT count(gm) " +
+                    		            "FROM com.bloatit.data.DaoTeam g " +
+                    		            "JOIN g.teamMembership as gm " +
+                    		            "JOIN gm.member as m " +
+                    		            "WHERE g = :team " +
+                    		            "AND m = :member"),
+    		            @NamedQuery(
+	                        name = "team.getMoneyWithdrawal",
+	                        query = "from DaoMoneyWithdrawal as x where x.actor = :actor"),
+    		            @NamedQuery(
+	                        name = "team.getMoneyWithdrawal.size",
+	                        query = "select count(*) from DaoMoneyWithdrawal as x where x.actor = :actor"),
                        }
              )
 // @formatter:on
@@ -92,6 +114,7 @@ public class DaoTeam extends DaoActor {
      * in. The PROTECTED that everybody can see, but require an invitation to go
      * in.
      */
+    //TODO: rename to visibility or somethings else
     public enum Right {
         /**
          * Everybody can see this team and can go into it.
@@ -102,8 +125,6 @@ public class DaoTeam extends DaoActor {
          */
         PROTECTED;
     }
-
-    private String displayName;
 
     /**
      * WARNING right is a SQL keyword. This is mapped as "team_right".
@@ -208,16 +229,6 @@ public class DaoTeam extends DaoActor {
     }
 
     /**
-     * Change the display name of this team.
-     *
-     * @param displayName
-     */
-    public void setDisplayName(final String displayName) {
-        // TODO: remove me.
-        this.displayName = displayName;
-    }
-
-    /**
      * Add a member in this team.
      *
      * @param member The member to add
@@ -281,22 +292,13 @@ public class DaoTeam extends DaoActor {
         return new QueryCollection<DaoContribution>("team.getContributions").setEntity("this", this);
     }
 
-
     /**
-     * Gets the moneywithdrawals.
+     * Gets the money withdrawals.
      *
-     * @param asMemberOnly the result must contains only result that are not
-     *            done as name of a team.
-     * @return All the contributions created by this team.
+     * @return all the money withdrawals from this team.
      */
     public PageIterable<DaoMoneyWithdrawal> getMoneyWithdrawals() {
-
-        final Query query = SessionManager.createQuery("from DaoMoneyWithdrawal as x where x.actor = :actor");
-        final Query size = SessionManager.createQuery("SELECT count(*) from DaoMoneyWithdrawal as x where x.actor = :actor");
-
-        final QueryCollection<DaoMoneyWithdrawal> q = new QueryCollection<DaoMoneyWithdrawal>(query, size);
-        q.setEntity("actor", this);
-        return q;
+        return new QueryCollection<DaoMoneyWithdrawal>("team.getMoneyWithdrawal").setEntity("actor", this);
     }
 
     /**
@@ -325,13 +327,7 @@ public class DaoTeam extends DaoActor {
      *         Note, the returned set can be empty if the user is only a Member
      */
     public EnumSet<UserTeamRight> getUserTeamRight(final DaoMember member) {
-
-        // TODO externilize query
-
-
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("select gm from com.bloatit.data.DaoTeam g join g.teamMembership as gm join gm.member as m where g = :team and m = :member");
+        final Query q = SessionManager.getNamedQuery("team.getUserTeamRights");
         q.setEntity("member", member);
         q.setEntity("team", this);
         final DaoTeamMembership gm = (DaoTeamMembership) q.uniqueResult();
@@ -366,14 +362,6 @@ public class DaoTeam extends DaoActor {
         return this.teamMembership;
     }
 
-    /**
-     * @return the display name value of this team. It coulb be null if not
-     *         setted.
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-
     public PageIterable<DaoUserContent> getActivity() {
         final Query query = SessionManager.getNamedQuery("team.getActivity");
         final Query size = SessionManager.getNamedQuery("team.getActivity.size");
@@ -384,7 +372,6 @@ public class DaoTeam extends DaoActor {
     }
 
     public long getRecentActivityCount(final int numberOfDays) {
-        // TODO Auto-generated method stub
         final Query size = SessionManager.getNamedQuery("team.getRecentActivity.size");
         size.setEntity("team", this);
         size.setDate("date", DateUtils.nowMinusSomeDays(numberOfDays));

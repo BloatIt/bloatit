@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 
 public class Quotation extends QuotationEntry {
 
-    private final BigDecimal total;
+    public final BigDecimal total;
 
     public Quotation(final BigDecimal total) {
         super(null, null);
@@ -60,7 +60,7 @@ public class Quotation extends QuotationEntry {
 
     public static class QuotationAmountEntry extends QuotationEntry {
 
-        private final BigDecimal amount;
+        public final BigDecimal amount;
 
         public QuotationAmountEntry(final String label, final String comment, final BigDecimal amount) {
             super(label, comment);
@@ -81,7 +81,7 @@ public class Quotation extends QuotationEntry {
 
     public static class QuotationProxyEntry extends QuotationEntry { // NO_UCD
 
-        private final QuotationEntry reference;
+        public final QuotationEntry reference;
 
         public QuotationProxyEntry(final String label, final String comment, final QuotationEntry reference) {
             super(label, comment);
@@ -101,8 +101,8 @@ public class Quotation extends QuotationEntry {
 
     public static class QuotationPercentEntry extends QuotationEntry {
 
-        private final BigDecimal percent;
-        private final QuotationEntry reference;
+        public final BigDecimal percent;
+        public final QuotationEntry reference;
 
         public QuotationPercentEntry(final String label, final String comment, final QuotationEntry reference, final BigDecimal percent) {
             super(label, comment);
@@ -123,8 +123,8 @@ public class Quotation extends QuotationEntry {
 
     public static class QuotationDifferenceEntry extends QuotationEntry {
 
-        private final QuotationEntry reference1;
-        private final QuotationEntry reference2;
+        public final QuotationEntry reference1;
+        public final QuotationEntry reference2;
 
         public QuotationDifferenceEntry(final String label, final String comment, final QuotationEntry reference1, final QuotationEntry reference2) {
             super(label, comment);

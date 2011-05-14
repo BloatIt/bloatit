@@ -18,6 +18,7 @@ package com.bloatit.web.linkable.team;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.data.DaoTeam;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -119,8 +120,8 @@ public final class CreateTeamPage extends LoggedPage {
         final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Type of the team : "));
         rightInput.setDefaultValue(rightData.getSuggestedValue());
         rightInput.addErrorMessages(rightData.getErrorMessages());
-        rightInput.addDropDownElement(CreateTeamAction.PUBLIC, Context.tr("Public"));
-        rightInput.addDropDownElement(CreateTeamAction.PROTECTED, Context.tr("Protected"));
+        rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Public"));
+        rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("Protected"));
         rightInput.setComment(Context.tr("Public teams can be joined by anybody without an invitation."));
         form.add(rightInput);
 
@@ -140,7 +141,7 @@ public final class CreateTeamPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         return CreateTeamPage.generateBreadcrumb();
     }
 

@@ -20,13 +20,14 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
-import com.bloatit.framework.webprocessor.PaymentProcess;
-import com.bloatit.framework.webprocessor.WebProcess;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -47,26 +48,26 @@ public class ContributionProcess extends PaymentProcess {
         feature = url.getFeature();
     }
 
-    public String getComment() {
+    public synchronized String getComment() {
         return comment;
     }
 
-    public BigDecimal getAmount() {
+    public synchronized BigDecimal getAmount() {
         return amount;
     }
 
-    public Feature getFeature() {
+    public synchronized Feature getFeature() {
         return feature;
     }
 
-    public void setAmount(final BigDecimal amount) throws IllegalWriteException {
+    public synchronized void setAmount(final BigDecimal amount) throws IllegalWriteException {
         if (isLocked()) {
             throw new IllegalWriteException();
         }
         this.amount = amount;
     }
 
-    public void setComment(final String comment) throws IllegalWriteException {
+    public synchronized void setComment(final String comment) throws IllegalWriteException {
         if (isLocked()) {
             throw new IllegalWriteException();
         }
@@ -74,7 +75,7 @@ public class ContributionProcess extends PaymentProcess {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(final ElveosUserToken userToken) {
         return new ContributePageUrl(this);
     }
 
@@ -84,7 +85,7 @@ public class ContributionProcess extends PaymentProcess {
     }
 
     @Override
-    public Url notifyChildClosed(final WebProcess subProcess) {
+    public synchronized Url notifyChildClosed(final WebProcess subProcess) {
         if (subProcess.getClass().equals(PaylineProcess.class)) {
             final PaylineProcess subPro = (PaylineProcess) subProcess;
             if (subPro.isSuccessful()) {

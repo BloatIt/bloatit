@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bloatit.data.DaoOffer;
+import com.bloatit.model.FeatureImplementation;
 
 /**
  * The Class CanContributeMetaState is not a real state. Every state that allows

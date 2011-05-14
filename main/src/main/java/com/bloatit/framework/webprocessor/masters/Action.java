@@ -22,6 +22,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.xcgiserver.HttpResponse;
 
 /**
  * The mother of all actions
@@ -64,7 +65,7 @@ public abstract class Action implements Linkable {
             return doProcessErrors();
         }
         final Url checkParameters = checkRightsAndEverything();
-        if (checkParameters != null) {
+        if (checkParameters != NO_ERROR) {
             transmitParameters();
             return checkParameters;
         }

@@ -48,6 +48,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.data.queries.EmptyPageIterable;
 import com.bloatit.data.queries.QueryCollection;
@@ -125,13 +126,19 @@ import com.bloatit.framework.utils.PageIterable;
                                     "WHERE offer_ = :offer " +
                                     "AND bugs_.state = :state "),
                         @NamedQuery(
-                                    name = "feature.getComments.size",
-                                    query = "SELECT count(*) "+
-                                            "FROM com.bloatit.data.DaoComment  "+
-                                            "WHERE feature = :this "+
-                                            "OR father.id in ( "+
-                                                "FROM com.bloatit.data.DaoComment  "+
-                                                "WHERE feature = :this )"),
+                            name = "feature.getComments.size",
+                            query = "SELECT count(*) "+
+                                    "FROM com.bloatit.data.DaoComment  "+
+                                    "WHERE feature = :this "+
+                                    "OR father.id in ( "+
+                                        "FROM com.bloatit.data.DaoComment  "+
+                                        "WHERE feature = :this )"),
+                        @NamedQuery(
+                            name = "feature.getContributionOf",
+                            query = "SELECT sum(amount) "+
+                                    "FROM com.bloatit.data.DaoContribution  "+
+                                    "WHERE feature = :this "+
+                                    "AND feature.member = :member"),
                      }
              )
 // @formatter:on
@@ -168,7 +175,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     private BigDecimal contribution;
 
     @Basic(optional = false)
-    @Field(store = Store.NO)
+    @Field
     @Enumerated
     private FeatureState featureState;
 
@@ -210,7 +217,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded
     private DaoOffer selectedOffer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @IndexedEmbedded
@@ -256,16 +263,26 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     private DaoFeature(final DaoMember member, final DaoTeam team, final DaoDescription description, final DaoSoftware software) {
         super(member, team);
-        if (description == null || software == null) {
+        if (description == null) {
             throw new NonOptionalParameterException();
         }
-        this.software = software;
-        software.addFeature(this);
+        if (software != null) {
+            this.software = software;
+            software.addFeature(this);
+        }
         this.description = description;
         this.validationDate = null;
         setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
         setFeatureState(FeatureState.PENDING);
+    }
+
+    public void setSoftware(final DaoSoftware soft) {
+        if (software != null) {
+            this.software.removeFeature(this);
+        }
+        this.software = soft;
+        software.addFeature(this);
     }
 
     /**
@@ -297,8 +314,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the new {@link DaoContribution}
      * @throws NotEnoughMoneyException the not enough money exception
      */
-    public DaoContribution addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment)
-            throws NotEnoughMoneyException {
+    public DaoContribution
+            addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }
@@ -310,9 +327,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
             Log.data().fatal("The comment of a contribution must be <= 140 chars long.");
             throw new BadProgrammerException("Comments length of Contribution must be < 140.", null);
         }
-
-        // TODO right management for contribution as a team.
-
+        if (team != null && !team.getUserTeamRight(member).contains(UserTeamRight.BANK)) {
+            throw new BadProgrammerException("This member cannot contribute as a team.");
+        }
         final DaoContribution newContribution = new DaoContribution(member, team, this, amount, comment);
         this.contributions.add(newContribution);
         this.contribution = this.contribution.add(amount);
@@ -411,6 +428,27 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     // ======================================================================
     // Getters.
     // ======================================================================
+
+    /** The Constant PROGRESSION_COEF. */
+    private static final int PROGRESSION_COEF = 42;
+
+    /** The Constant PROGRESSION_CONTRIBUTION_DIVISOR. */
+    private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
+
+    /** The Constant PROGRESSION_PERCENT. */
+    public static final int PROGRESSION_PERCENT = 100;
+
+    @Field(store = Store.YES)
+    public float getProgress() {
+        final DaoOffer currentOffer = getSelectedOffer();
+        if (currentOffer == null) {
+            return PROGRESSION_COEF * (1 - 1 / (1 + getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
+        }
+        if (currentOffer.getAmount().floatValue() != 0) {
+            return (getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
+        }
+        return Float.POSITIVE_INFINITY;
+    }
 
     /**
      * Gets the a description is a translatable text with an title.
@@ -540,6 +578,14 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     public BigDecimal getContributionAvg() {
         return (BigDecimal) SessionManager.getNamedQuery("feature.getAmounts.avg").setEntity("this", this).uniqueResult();
+    }
+
+    public BigDecimal getContributionOf(final DaoMember member) {
+        final BigDecimal contributions = (BigDecimal) SessionManager.getNamedQuery("feature.getContributionOf")
+                                                                    .setEntity("this", this)
+                                                                    .setEntity("member", member)
+                                                                    .uniqueResult();
+        return contributions != null ? contributions : BigDecimal.ZERO;
     }
 
     /**

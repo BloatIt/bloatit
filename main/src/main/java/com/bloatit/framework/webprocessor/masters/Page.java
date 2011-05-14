@@ -23,9 +23,9 @@ import java.util.Set;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
-import com.bloatit.framework.webprocessor.ModelAccessor;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -37,22 +37,21 @@ import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.webprocessor.url.Messages;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.xcgiserver.HttpResponse;
+import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
 import com.bloatit.web.pages.master.HtmlNotification;
 
 public abstract class Page implements Linkable {
 
     private final Url thisUrl;
     private Header pageHeader;
-    protected final Session session;
 
     public Page(final Url url) {
         super();
         ModelAccessor.setReadOnly();
         this.thisUrl = url;
-        session = Context.getSession();
     }
 
     @Override
@@ -145,7 +144,7 @@ public abstract class Page implements Linkable {
         HtmlElement bodyContent;
         if (thisUrl.hasError()) {
             final Messages messages = thisUrl.getMessages();
-            session.notifyList(messages);
+            Context.getSession().notifyList(messages);
             for (final Message message : messages) {
                 Log.framework().trace("Error messages from Url system: " + message.getMessage());
             }
@@ -170,10 +169,10 @@ public abstract class Page implements Linkable {
         // Set the last stable page into the session
         // Abstract method cf: template method pattern
         if (isStable()) {
-            session.setTargetPage(null);
-            session.setLastStablePage(thisUrl);
+            Context.getSession().setTargetPage(null);
+            Context.getSession().setLastStablePage(thisUrl);
         }
-        session.setLastVisitedPage(thisUrl);
+        Context.getSession().setLastVisitedPage(thisUrl);
 
         // Display waiting notifications
         // Abstract method cf: template method pattern
@@ -191,7 +190,7 @@ public abstract class Page implements Linkable {
     }
 
     private void addWaitingNotifications() {
-        for (final ErrorMessage notification : session.getNotifications()) {
+        for (final ErrorMessage notification : Context.getSession().getNotifications()) {
             switch (notification.getLevel()) {
                 case FATAL:
                     addNotification(new HtmlNotification(Level.FATAL, notification.getMessage()));
@@ -206,6 +205,6 @@ public abstract class Page implements Linkable {
                     throw new BadProgrammerException("Unknown level: " + notification.getLevel());
             }
         }
-        session.flushNotifications();
+        Context.getSession().flushNotifications();
     }
 }

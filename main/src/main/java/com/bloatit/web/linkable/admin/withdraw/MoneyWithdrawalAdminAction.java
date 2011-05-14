@@ -1,15 +1,15 @@
 package com.bloatit.web.linkable.admin.withdraw;
 
 import com.bloatit.data.DaoMoneyWithdrawal.State;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.admin.AdminAction;
 import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
@@ -28,7 +28,7 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
     @RequestParam(role = Role.GET)
     private final MoneyWithdrawal target;
 
-    public MoneyWithdrawalAdminAction(MoneyWithdrawalAdminActionUrl url) {
+    public MoneyWithdrawalAdminAction(final MoneyWithdrawalAdminActionUrl url) {
         super(url);
         this.url = url;
         this.newState = url.getNewState();
@@ -37,26 +37,25 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessAdmin() throws UnauthorizedPrivateAccessException {
+    protected Url doProcessAdmin() throws UnauthorizedOperationException {
         State old;
         old = target.getState();
 
         target.setState(newState);
         session.notifyGood("Successfuly modified withdraw request from " + target.getActor().getDisplayName() + " of "
                 + target.getAmountWithdrawn().toPlainString() + "€ from State " + old + " to state " + newState + ".");
-        MoneyWithdrawalAdminPageUrl back = new MoneyWithdrawalAdminPageUrl();
+        final MoneyWithdrawalAdminPageUrl back = new MoneyWithdrawalAdminPageUrl();
         back.setFilter(backTo);
         return back;
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors() {
-        session.notifyBad("Plop");
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if (target == null) {
             return new PageNotFoundUrl();
         }

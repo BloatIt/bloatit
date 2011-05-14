@@ -17,18 +17,18 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateReadOnlyAccessException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -68,7 +68,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
             } catch (final UnauthorizedPrivateReadOnlyAccessException e1) {
                 session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
                 return session.getLastVisitedPage();
-            } catch (UnauthorizedPublicAccessException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
                 return session.getLastVisitedPage();
             }
@@ -102,12 +102,12 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 

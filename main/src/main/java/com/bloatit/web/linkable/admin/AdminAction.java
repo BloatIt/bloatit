@@ -20,10 +20,10 @@ package com.bloatit.web.linkable.admin;
 
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -60,7 +60,7 @@ public abstract class AdminAction extends LoggedAction {
 
     @Override
     protected final String getRefusalReason() {
-        if (session.isLogged()) {
+        if (session.getUserToken().isAuthenticated()) {
             return Context.tr("You must be logged as an admin to access this page");
         }
         return Context.tr("You must be logged to access an admin page");

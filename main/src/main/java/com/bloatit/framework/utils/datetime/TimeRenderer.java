@@ -124,10 +124,6 @@ public class TimeRenderer {
         return (milliseconds - (getTime() * base.getCoef())) / getSubBase().getCoef();
     }
 
-    // private long getTime(TimeBase base, long time){
-    // return time / base.getCoef();
-    // }
-
     public TimeRenderer.TimeBase getSubBase() {
         switch (base) {
             case WEEK:
@@ -153,13 +149,13 @@ public class TimeRenderer {
      * 
      * @param limit the limit after which the date will be rendered as a date
      * @param style the style applied to date rendering when limit is reached
+     * @return a string corresponding to the range we want to render.
      */
     @SuppressWarnings("synthetic-access")
     public String renderRange(final TimeBase limit, final DateLocale.FormatStyle style) {
         if (milliseconds > limit.coef) {
             return new DateLocale(new Date(milliseconds), Context.getLocalizator().getLocale()).toDateTimeString(style, style);
         }
-        // TODO improve rendering
         return getTimeString();
     }
 }

@@ -26,6 +26,6 @@ import com.bloatit.model.Team;
 public final class TeamList extends ListBinder<Team, DaoTeam> {
     public TeamList(final PageIterable<DaoTeam> daoCollection) {
         super(daoCollection);
-        // TODO Auto-generated constructor stub
+        // RAS
     }
 }

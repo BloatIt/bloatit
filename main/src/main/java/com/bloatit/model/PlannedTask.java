@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.webprocessor.ModelAccessor;
+import com.bloatit.framework.model.ModelAccessor;
 
 /**
  * <p>
@@ -46,6 +46,8 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
      */
     private static final Timer timer = new Timer();
 
+    private Id myId;
+
     /**
      * An id = 1 planed task.
      * 
@@ -55,11 +57,12 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     public PlannedTask(final Date time, final int id) {
         super();
         schedule(time);
-        final PlannedTask plannedTask = PlannedTask.tasks.get(new Id(id, getClass()));
+        myId = new Id(id, getClass());
+        final PlannedTask plannedTask = PlannedTask.tasks.get(myId);
         if (plannedTask != null) {
             plannedTask.cancel();
         }
-        PlannedTask.tasks.put(new Id(id, getClass()), this);
+        PlannedTask.tasks.put(myId, this);
         Log.model().info("Scheduling a " + getClass().getSimpleName());
     }
 
@@ -80,14 +83,14 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
         } catch (final RuntimeException ex) {
             throw ex;
         } finally {
-            remove(this);
+            remove(this, this.myId);
             ModelAccessor.close();
         }
     }
 
-    private void remove(final PlannedTask task) {
-        tasks.remove(task); //FIXME: remove will remove nothing (PlannedTask is not an id)
-        task.cancel();
+    private void remove(final PlannedTask plannedTask, final Id id) {
+        tasks.remove(id); 
+        plannedTask.cancel();
     }
 
     public abstract void doRun();

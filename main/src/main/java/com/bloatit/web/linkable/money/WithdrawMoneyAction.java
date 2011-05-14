@@ -3,7 +3,6 @@ package com.bloatit.web.linkable.money;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -13,13 +12,14 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
-import com.bloatit.web.url.AccountPageUrl;
-import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
@@ -54,17 +54,15 @@ public class WithdrawMoneyAction extends LoggedAction {
         String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
         if (actor instanceof Member) {
             session.notifyGood(Context.tr("Requested to withdraw {0} from your account.", amountStr));
-            return new AccountPageUrl();
+            return MemberPage.MyAccountUrl(me);
         } else {
-            session.notifyGood(Context.tr("Requestrd to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
-            TeamPageUrl teamPageUrl = new TeamPageUrl((Team) actor);
-            teamPageUrl.setActiveTabKey(TeamPage.ACCOUNT_TAB);
-            return teamPageUrl;
+            session.notifyGood(Context.tr("Requested to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
+            return TeamPage.AccountUrl(((Team) actor));
         }
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(Member me) {
         if (actor instanceof Member) {
             if (!me.equals(actor)) {
                 session.notifyBad(Context.tr("You cannot withdraw money on someone else account."));
@@ -103,7 +101,7 @@ public class WithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(ElveosUserToken userToken) {
         if (actor != null) {
             return new WithdrawMoneyPageUrl(actor);
         } else {

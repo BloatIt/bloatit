@@ -25,14 +25,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateReadOnlyAccessException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPublicAccessException;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.managers.JoinTeamInvitationManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.rest.list.RestJoinTeamInvitationList;
 
 /**
@@ -155,11 +153,9 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
     public RestTeam getTeam() {
         try {
             return new RestTeam(model.getTeam());
-        } catch (final UnauthorizedPrivateReadOnlyAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
-        } catch (UnauthorizedPublicAccessException e) {
-            return null;
-        }
+        } 
     }
 
     /**
@@ -169,11 +165,9 @@ public class RestJoinTeamInvitation extends RestElement<JoinTeamInvitation> {
     public RestMember getSender() {
         try {
             return new RestMember(model.getSender());
-        } catch (final UnauthorizedPrivateReadOnlyAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             return null;
-        } catch (UnauthorizedPublicAccessException e) {
-            return null;
-        }
+        } 
     }
 
     // ---------------------------------------------------------------------------------------

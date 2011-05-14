@@ -13,7 +13,8 @@ package com.bloatit.web.linkable.bugs;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
+import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -23,9 +24,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Bug;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -82,7 +85,7 @@ public final class ReportBugAction extends UserContentAction {
     }
 
     @Override
-    protected Url doCheckRightsAndEverything(final Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
             session.notifyBad(Context.tr("You have to specify the description language."));
             return new ReportBugPageUrl(milestone.getOffer());
@@ -91,7 +94,7 @@ public final class ReportBugAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if (milestone != null) {
             return new ReportBugPageUrl(milestone.getOffer());
         }
@@ -114,8 +117,7 @@ public final class ReportBugAction extends UserContentAction {
 
     @Override
     protected boolean verifyFile(final String filename) {
-        // TODO verify the file
-        return true;
+        return new FileConstraintChecker(filename).isFileSmaller(ReportBugPage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE);
     }
 
 }

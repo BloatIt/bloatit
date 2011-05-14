@@ -38,16 +38,17 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdownRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
-import com.bloatit.web.linkable.usercontent.CreateCommentForm;
+import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
@@ -58,7 +59,9 @@ import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 
 @ParamContainer("feature/bug")
-public final class BugPage extends MasterPage {
+public final class BugPage extends ElveosPage {
+
+    private static final int FILE_MAX_SIZE_MIO = 2;
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
@@ -79,10 +82,10 @@ public final class BugPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        layout.addRight(new SideBarFeatureBlock(bug.getFeature()));
+        layout.addRight(new SideBarFeatureBlock(bug.getFeature(), userToken));
 
         final HtmlDiv bugListDiv = new HtmlDiv("bug_list");
         layout.addLeft(bugListDiv);
@@ -150,7 +153,7 @@ public final class BugPage extends MasterPage {
 
         // Comments
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
-        layout.addLeft(new CreateCommentForm(new CreateCommentActionUrl(bug)));
+        layout.addLeft(new CommentForm(new CreateCommentActionUrl(bug), userToken));
 
         return layout;
     }
@@ -189,15 +192,14 @@ public final class BugPage extends MasterPage {
     private HtmlElement generateNewAttachementForm() {
         final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
-
         addAttachementForm.enableFileUpload();
-        addAttachementForm.add(new AttachmentField(targetUrl, "2 Gio"));
+        addAttachementForm.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio", false));
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachment")));
         return addAttachementForm;
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return BugPage.generateBreadcrumb(bug);
     }
 

@@ -1,0 +1,25 @@
+Vision, ouverture et éthique
+============================
+
+
+Elveos a un but simple : promouvoir et développer le logiciel libre en lui offrant une nouvelle source de de financement.
+
+Les logiciels libres ont actuellement deux mode de financement principaux :
+
+ - Les dons, qui sont une forme de soutien qui sont souvent décorrélé du besoin réel du donateurs mais qui ont une réelle notion collaborative.
+ - Le support et les prestations de services qui sont directement relié au besoin mais qui perdent la notion collaborative.
+ 
+Elveos se place entre les deux en aidant les personnes voulant soutenir ou financer des logiciels libre, à exprimer leurs besoins tout à gardant l'aspect collaboratif qui caractérise le logiciel libre.
+
+Moyens
+------
+
+Pour atteindre ces objectifs, Elveos se doit d'être exemplaire en matière d'ouverture et de transparence :
+
+- Le [code source d'elveos](https://gitorious.org/bloatit) est public sous licences libre (AGPLv3), de même que les versions de travail.
+- Sauf les informations personnelles, toutes les données du site sont publiques permettant une totale transparence des process.
+- La communauté est partie intégrante d'Elveos, et est invitée à participer autant que possible à la vie du site, à travers la modération, les commentaires et bientôt les traductions.
+- Pour plus de transparence, Linkeos publiera un maximum d'informations à propos de son fonctionnement. Notamment les budget, recettes et dépenses afin de justifier les commissions.
+- Tous les outils utilisés pour le développement sont libres. Les exceptions sont les outils de notre hébergeur actuel (VMware par exemple) et dans de très rare cas, un outil de bureautique pour certains formalités administratives.
+
+

@@ -21,7 +21,6 @@ import java.util.List;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.datetime.TimeRenderer;
@@ -39,10 +38,12 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.linkable.members.MembersTools;
@@ -59,7 +60,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
     private final Feature feature;
 
-    protected FeatureSummaryComponent(final Feature feature) {
+    protected FeatureSummaryComponent(final Feature feature, final ElveosUserToken userToken) {
         super();
         this.feature = feature;
 
@@ -76,7 +77,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_left
                     final HtmlDiv featureSummaryLeft = new HtmlDiv("feature_summary_left");
                     {
-                        featureSummaryLeft.add(SoftwaresTools.getSoftwareLogo(feature.getSoftware()));
+                        featureSummaryLeft.add(new SoftwaresTools.Logo(feature.getSoftware()));
                     }
                     featureSummaryTop.add(featureSummaryLeft);
 
@@ -88,7 +89,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("feature_title");
-                        title.add(SoftwaresTools.getSoftwareLink(feature.getSoftware()));
+                        title.add(new SoftwaresTools.Link(feature.getSoftware()));
                         title.addText(" – ");
                         title.addText(FeaturesTools.getTitle(feature));
 
@@ -156,7 +157,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     featureSummaryBottom.add(featureSummaryPopularity);
 
                     HtmlDiv featureSummaryProgress;
-                    featureSummaryProgress = generateProgressBlock(feature);
+                    featureSummaryProgress = generateProgressBlock(feature, userToken);
                     featureSummaryBottom.add(featureSummaryProgress);
 
                     // ////////////////////
@@ -165,7 +166,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     {
                         @SuppressWarnings("unused") final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')",
                                                                                                      Context.tr("+ Share"));
-                        // TODO: enable share button
                         // featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
@@ -185,7 +185,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         }
     }
 
-    private HtmlDiv generateProgressBlock(final Feature feature) throws UnauthorizedOperationException {
+    private HtmlDiv generateProgressBlock(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
         // ////////////////////
         // Div feature_summary_progress
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
@@ -193,7 +193,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
             final HtmlDiv featureSummaryProgressAndState = new HtmlDiv("feature_summary_progress_and_state");
             {
-                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature));
+                featureSummaryProgressAndState.add(FeaturesTools.generateProgress(feature, userToken));
                 featureSummaryProgressAndState.add(FeaturesTools.generateState(feature));
             }
 
@@ -223,11 +223,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                         actionsButtons.add(new HtmlDiv("developer_description_block").add(generateReportBugAction()));
                         break;
                     case DISCARDED:
-                        // TODO
-                        // actionsButtons.add(new
-                        // HtmlDiv("contribute_block").add(generatePendingRightActions()));
-                        // actionsButtons.add(new
-                        // HtmlDiv("make_offer_block").add(generatePendingLeftActions()));
+                        // 2 columns are empty: Ok
                         break;
                     default:
                         break;
@@ -322,7 +318,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             element.add(link);
         }
 
-        if (selectedOffer.getAuthor().equals(Context.getSession().getAuthToken().getMember())) {
+        if (selectedOffer.getAuthor().equals(Context.getSession().getUserToken().getMember())) {
             final HtmlLink link = new AddReleasePageUrl(currentMilestone).getHtmlLink(Context.tr("Add a release"));
             link.setCssClass("button");
             element.add(link);

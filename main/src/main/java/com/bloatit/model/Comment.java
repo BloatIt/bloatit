@@ -17,12 +17,11 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoComment;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtComment;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * The Class Comment.
@@ -102,7 +101,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new RgtComment.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(this.getDao(),
-                                                               DaoGetter.getTeam(getAuthToken().getAsTeam()),
+                                                               DaoGetter.get(getAuthToken().getAsTeam()),
                                                                getAuthToken().getMember().getDao(),
                                                                text);
         getDao().addChildComment(comment);

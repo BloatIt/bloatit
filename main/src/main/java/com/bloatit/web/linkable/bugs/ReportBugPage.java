@@ -31,10 +31,11 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
-import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -46,6 +47,7 @@ import com.bloatit.web.url.ReportBugPageUrl;
  */
 @ParamContainer("feature/bug/report")
 public final class ReportBugPage extends CreateUserContentPage {
+    public static final int FILE_MAX_SIZE_MIO = 2;
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
@@ -94,16 +96,9 @@ public final class ReportBugPage extends CreateUserContentPage {
     @Override
     public HtmlElement createRestrictedContent(final Member loggedUser) {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
-
-        if (FeatureManager.canCreate(session.getAuthToken())) {
-            layout.addLeft(generateReportBugForm(loggedUser));
-        } else {
-            layout.addLeft(generateBadRightError());
-        }
-
-        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature()));
+        layout.addLeft(generateReportBugForm(loggedUser));
+        layout.addRight(new SideBarFeatureBlock(milestone.getOffer().getFeature(), new AuthenticatedUserToken(loggedUser)));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
-
         return layout;
     }
 
@@ -154,18 +149,13 @@ public final class ReportBugPage extends CreateUserContentPage {
         reportBugForm.add(levelInput);
 
         // File
-        addAddAttachmentField(reportBugForm, "2 Mio");
+        reportBugForm.add(new AttachmentField(doReportUrl, FILE_MAX_SIZE_MIO + " Mio"));
+        reportBugForm.enableFileUpload();
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
         final HtmlDiv group = new HtmlDiv();
         group.add(formTitle);
-        return group;
-    }
-
-    private HtmlElement generateBadRightError() {
-        final HtmlDiv group = new HtmlDiv();
-
         return group;
     }
 
@@ -175,7 +165,7 @@ public final class ReportBugPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return ReportBugPage.generateBreadcrumb(milestone.getOffer());
     }
 

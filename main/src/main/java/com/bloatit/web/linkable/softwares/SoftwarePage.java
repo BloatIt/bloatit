@@ -27,17 +27,18 @@ import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Software;
 import com.bloatit.model.Translation;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
 @ParamContainer("software")
-public final class SoftwarePage extends MasterPage {
+public final class SoftwarePage extends ElveosPage {
 
     @ParamConstraint(optionalErrorMsg = @tr("You have to specify a software number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the software number: ''%value%''."))
@@ -58,7 +59,7 @@ public final class SoftwarePage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         HtmlTitle softwareName;
@@ -93,7 +94,7 @@ public final class SoftwarePage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return SoftwarePage.generateBreadcrumb(software);
     }
 

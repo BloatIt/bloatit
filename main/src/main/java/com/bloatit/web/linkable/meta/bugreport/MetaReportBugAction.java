@@ -20,21 +20,22 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
-import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.MetaReportBugActionUrl;
 
 /**
  * An action used to create a bug
  */
 @ParamContainer("meta/bugreport/doreport")
-public final class MetaReportBugAction extends Action {
+public final class MetaReportBugAction extends ElveosAction {
 
     private static final String BUG_DESCRIPTION = "bug_description";
     protected static final String BUG_URL = "bug_url";
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
-    @ParamConstraint(max = "800", maxErrorMsg = @tr("The title must be 800 chars length max."), //
+    @ParamConstraint(max = "80000", maxErrorMsg = @tr("The title must be 800 chars length max."), //
                      min = "1", minErrorMsg = @tr("The title must have at least 10 chars."), //
                      optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
@@ -52,10 +53,10 @@ public final class MetaReportBugAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
+    protected Url doProcess(final ElveosUserToken userToken) {
         String bugReport = "";
         bugReport += "* **Url:** " + bugUrl + "\n";
-        bugReport += "* **Author:** " + (session.isLogged() ? session.getAuthToken().getMember().getDisplayName() : "not logged") + "\n";
+        bugReport += "* **Author:** " + (userToken.isAuthenticated() ? userToken.getMember().getLogin() : "not logged") + "\n";
         bugReport += "* **Date:** " + new SimpleDateFormat().format(new Date()) + "\n";
         bugReport += "\n";
         bugReport += description;
@@ -65,19 +66,17 @@ public final class MetaReportBugAction extends Action {
         } else {
             session.notifyError("A problem occur during the bug report process! Please report this bug! :)");
         }
-
-        // TODO: add link system in documentation
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         session.addParameter(url.getDescriptionParameter());
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

@@ -30,14 +30,13 @@ import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FeatureFactory;
+import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
@@ -46,9 +45,9 @@ import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class BloatitExampleDB { // NO_UCD
 
@@ -123,15 +122,15 @@ public class BloatitExampleDB { // NO_UCD
 
         // Add teams
         final Team other = new Team("other", "plop@elveos.org", "An other team", Right.PROTECTED, yoann);
-        other.authenticate(new AuthToken(yoann));
+        other.authenticate(new AuthenticatedUserToken(yoann));
         other.setAvatar(getImage(yoann, "teams/other.png"));
 
         final Team b219 = new Team("b219", "b219@elveos.org", "The team for b219", Right.PROTECTED, fred);
-        b219.authenticate(new AuthToken(fred));
+        b219.authenticate(new AuthenticatedUserToken(fred));
         b219.setAvatarUnprotected(getImage(fred, "teams/b219.png"));
 
         final Team ubuntuUsers = new Team("ubuntuUsers", "ubuntu.users@elveos.org", "The team for ubuntu users", Right.PUBLIC, thomas);
-        ubuntuUsers.authenticate(new AuthToken(thomas));
+        ubuntuUsers.authenticate(new AuthenticatedUserToken(thomas));
         ubuntuUsers.setAvatarUnprotected(getImage(thomas, "teams/ubuntuUsers.png"));
 
         // Generate softwares
@@ -225,37 +224,37 @@ public class BloatitExampleDB { // NO_UCD
                                                                               twoSubtitlesInVlcFeatureDescription,
                                                                               vlc);
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthToken(cerbere));
+        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(cerbere));
         final Comment comment1 = twoSubtitlesInVlcFeature.addComment("Super idée !\n"
                 + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
-        comment1.authenticate(new AuthToken(hydre));
+        comment1.authenticate(new AuthenticatedUserToken(hydre));
         comment1.addComment("Je suis l'ami de Cerbère qui a posté ci-dessus et qui apprend des langues mortes. Je trouverais ça génial , mais il est indispensable de pouvoir réduire la taille du texte.\n"
                 + "Je propose de forker cette demande pour inclure les demandes de changement (nombre de sous-titre non défini et taille des sous-titre définissable) ");
 
-        comment1.authenticate(new AuthToken(chogall));
+        comment1.authenticate(new AuthenticatedUserToken(chogall));
         comment1.addComment("OK pour moi, j'aurais dû y penser dès le début, j'ai merdé, j'avais mon cerveau gauche qui avait bu trop de vodka. ");
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthToken(elephantman));
+        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(elephantman));
         final Comment comment2 = twoSubtitlesInVlcFeature.addComment("Elle est naze votre idée, moi j'apprends une langue en 2.53 minutes (moyenne vérifiée sur un échantillon de 353 langues) du coup autant afficher un seul sous-titre à la fois");
 
-        comment2.authenticate(new AuthToken(chogall));
+        comment2.authenticate(new AuthenticatedUserToken(chogall));
         comment2.addComment("On ne peut pas vaincre un éléphant ! Abandonnons cette demande !");
 
         final String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
-        twoSubtitlesInVlcFeature.authenticate(new AuthToken(rataxes));
+        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(rataxes));
         final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
                                                                      rataxesOfferDescription,
                                                                      rataxes.getLocale(),
                                                                      DateUtils.tomorrow(),
                                                                      0);
 
-        rataxesOffer.authenticate(new AuthToken(chogall));
+        rataxesOffer.authenticate(new AuthenticatedUserToken(chogall));
         rataxesOffer.voteUp();
-        rataxesOffer.authenticate(new AuthToken(hydre));
+        rataxesOffer.authenticate(new AuthenticatedUserToken(hydre));
         rataxesOffer.voteUp();
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthToken(celeste));
+        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(celeste));
         final String celesteMilestone1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
         final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
@@ -264,24 +263,24 @@ public class BloatitExampleDB { // NO_UCD
                                                                      DateUtils.nowPlusSomeDays(2),
                                                                      0);
 
-        celesteOffer.authenticate(new AuthToken(celeste));
+        celesteOffer.authenticate(new AuthenticatedUserToken(celeste));
         final String celesteMilestone2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
         celesteOffer.addMilestone(new BigDecimal(1000), celesteMilestone2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
 
         final String celesteMilestone3Description = "Pour finir, je vais faire le packaging en tar.gz, deb, rpm et exe de la version patché pour une utilisatation immédiate. Je vais aussi proposer le patch upstream et créer un petit jeu de test fonctionnels.";
         celesteOffer.addMilestone(new BigDecimal(700), celesteMilestone3Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(4), 0);
 
-        celesteOffer.authenticate(new AuthToken(cerbere));
+        celesteOffer.authenticate(new AuthenticatedUserToken(cerbere));
         celesteOffer.voteUp();
 
         // Contributions
-        twoSubtitlesInVlcFeature.authenticate(new AuthToken(chogall));
+        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(chogall));
         twoSubtitlesInVlcFeature.addContribution(new BigDecimal("800"), "On est prêts, non moi j'suis pas prêt !");
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthToken(cerbere));
+        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(cerbere));
         twoSubtitlesInVlcFeature.addContribution(new BigDecimal("500"), "Grrrrrr");
 
-        twoSubtitlesInVlcFeature.authenticate(new AuthToken(hydre));
+        twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(hydre));
         twoSubtitlesInVlcFeature.addContribution(new BigDecimal("300"), "");
 
         return twoSubtitlesInVlcFeature;
@@ -307,28 +306,28 @@ public class BloatitExampleDB { // NO_UCD
                                                                                  mageia);
 
         final String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
-        addPerroquetInMageiaFeature.authenticate(new AuthToken(hydre));
+        addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(hydre));
         addPerroquetInMageiaFeature.addOffer(new BigDecimal(200), hydrePerroquetOfferDescription, hydre.getLocale(), DateUtils.tomorrow(), 0);
         // Contributions
-        addPerroquetInMageiaFeature.authenticate(new AuthToken(hydre));
+        addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(hydre));
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("10"), "");
 
-        addPerroquetInMageiaFeature.authenticate(new AuthToken(fred));
+        addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(fred));
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("230"), "");
 
         // Add bugs
         setFeatureInDevelopmentState(addPerroquetInMageiaFeature);
 
         final Milestone firstMilestone = addPerroquetInMageiaFeature.getSelectedOffer().getMilestones().iterator().next();
-        firstMilestone.authenticate(new AuthToken(fred));
+        firstMilestone.authenticate(new AuthenticatedUserToken(fred));
         firstMilestone.addBug("Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
-        firstMilestone.authenticate(new AuthToken(elephantman));
+        firstMilestone.authenticate(new AuthenticatedUserToken(elephantman));
         firstMilestone.addBug("Faible qualité graphique pour les éléphants",
                               "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau",
                               elephantman.getLocale(),
                               Level.MINOR);
 
-        firstMilestone.authenticate(new AuthToken(yoann));
+        firstMilestone.authenticate(new AuthenticatedUserToken(yoann));
         firstMilestone.addBug("Fichier de conf système manquant",
                               "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger",
                               yoann.getLocale(),
@@ -366,14 +365,14 @@ public class BloatitExampleDB { // NO_UCD
         final Feature feature = FeatureFactory.createFeature(yoann, null, yoann.getLocale(), featureTitle, featureDescription, libreOffice);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
-        feature.authenticate(new AuthToken(celeste));
+        feature.authenticate(new AuthenticatedUserToken(celeste));
         feature.addOffer(new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
-        feature.authenticate(new AuthToken(chogall));
+        feature.authenticate(new AuthenticatedUserToken(chogall));
         feature.addContribution(new BigDecimal("10"), "");
 
         return feature;
@@ -390,11 +389,11 @@ public class BloatitExampleDB { // NO_UCD
         final Feature feature = FeatureFactory.createFeature(yoann, null, yoann.getLocale(), featureTitle, featureDescription, perroquet);
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
-        feature.authenticate(new AuthToken(fred));
+        feature.authenticate(new AuthenticatedUserToken(fred));
         feature.addOffer(new BigDecimal(750), offerDescription, fred.getLocale(), DateUtils.tomorrow(), 0);
 
         // Contributions
-        feature.authenticate(new AuthToken(yoann));
+        feature.authenticate(new AuthenticatedUserToken(yoann));
         feature.addContribution(new BigDecimal("760"), "");
 
         return feature;
@@ -411,14 +410,14 @@ public class BloatitExampleDB { // NO_UCD
         final Feature feature = FeatureFactory.createFeature(thomas, null, thomas.getLocale(), featureTitle, featureDescription, mageia);
 
         final String offerDescription = "Oui, vive vim !";
-        feature.authenticate(new AuthToken(cerbere));
+        feature.authenticate(new AuthenticatedUserToken(cerbere));
         feature.addOffer(new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
 
         // Contributions
-        feature.authenticate(new AuthToken(thomas));
+        feature.authenticate(new AuthenticatedUserToken(thomas));
         feature.addContribution(new BigDecimal("400"), "");
 
         setFeatureInFinishedState(feature);
@@ -441,17 +440,15 @@ public class BloatitExampleDB { // NO_UCD
         featureImpl.getDao().setFeatureState(FeatureState.FINISHED);
     }
 
-    private void withdrawMoney(Member m, int amount, State completion) {
-        // TODO: this have not been tested yet.
-        MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
-        mw.authenticate(new AuthToken(admin));
+    private void withdrawMoney(final Member m, final int amount, final State completion) {
+        final MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
+        mw.authenticate(new AuthenticatedUserToken(admin));
         
         try {
             switch (completion) {
                 case REQUESTED:
                     break;
                 case TREATED:
-
                     break;
                 case COMPLETE:
                     mw.setTreated();
@@ -465,16 +462,11 @@ public class BloatitExampleDB { // NO_UCD
                     break;
             }
             mw.setTreated();
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Right error in creating money withdrawal", e);
         }
     }
 
-    // private void setFeatureInDiscardedState(final Feature feature) {
-    // final FeatureImplementation featureImpl = (FeatureImplementation)
-    // feature;
-    // featureImpl.getDao().setFeatureState(FeatureState.DISCARDED);
-    // }
     public void giveMoney(final Member member, final int amount) {
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),
@@ -488,7 +480,7 @@ public class BloatitExampleDB { // NO_UCD
 
     public Member createMember(final String login, final String name, final Locale locale) throws UnauthorizedOperationException {
         final Member member = new Member(login, "plop", login + "@elveos.org", locale);
-        member.authenticate(new AuthToken(member));
+        member.authenticate(new AuthenticatedUserToken(member));
         member.setFullname(name);
         member.getDao().setActivationState(ActivationState.ACTIVE);
         return member;

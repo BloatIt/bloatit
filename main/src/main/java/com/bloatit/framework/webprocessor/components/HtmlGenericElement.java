@@ -51,7 +51,6 @@ public class HtmlGenericElement extends HtmlBranch {
 
     @Override
     protected List<String> getCustomCss() {
-        // TODO Auto-generated method stub
         return customCss;
     }
 

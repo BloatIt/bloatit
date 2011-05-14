@@ -29,12 +29,12 @@ import org.junit.Test;
 
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 public class MemberTest extends ModelTestUnit {
 
@@ -47,7 +47,7 @@ public class MemberTest extends ModelTestUnit {
         daouser.setActivationState(ActivationState.ACTIVE);
         final Member user = Member.create(daouser);
 
-        user.authenticate(new AuthToken(user));
+        user.authenticate(new AuthenticatedUserToken(user));
         user.addToPublicTeam(TeamManager.getByName("publicGroup"));
         assertTrue(user.isInTeam(TeamManager.getByName("publicGroup")));
 
@@ -93,22 +93,6 @@ public class MemberTest extends ModelTestUnit {
     public void testInviteIntoProtectedGroup() {
         MemberManager.getMemberByLogin("Yoann");
         MemberManager.getMemberByLogin("Fred");
-    }
-
-    @Test
-    public void testInviteIntoProtectedAndRefuseGroup() {
-        MemberManager.getMemberByLogin("Yoann");
-        MemberManager.getMemberByLogin("Fred");
-
-        // TODO
-        // yo.authenticate(yoAuthToken);
-        // yo.sendInvitation(fred, GroupManager.getByName("other"));
-        // assertFalse(fred.isInGroup(GroupManager.getByName("other")));
-        //
-        // fred.authenticate(fredAuthToken);
-        // fred.refuseInvitation(GroupManager.getInvitation(GroupManager.getByName("other"),
-        // fred));
-        // assertFalse(fred.isInGroup(GroupManager.getByName("other")));
     }
 
     @Test
@@ -173,7 +157,7 @@ public class MemberTest extends ModelTestUnit {
         yo.setPassword("Coucou");
 
         try {
-            new AuthToken("Yoann", "Coucou");
+            new AuthenticatedUserToken("Yoann", "Coucou");
         } catch (final NotFoundException e) {
             fail();
         }

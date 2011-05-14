@@ -1,0 +1,50 @@
+
+The offers
+==========
+
+The offers are made by the developers. The developer explain in his offer how he will answer to the feature request, when he will finish the development and for how much money.
+
+Selected offers
+-------------------
+
+On a feature request there must have only one offer. To make sure the selected offer is corresponding to what the user are waiting for, the contributors can vote. 
+The [reputation / popularity system](/en/documentation/doc-reputation-popularity) is used. To be selected an offer have to have a popularity superior to zero, and to the other offers on this feature request.
+
+Multiple milestone offers
+-----------------------------------
+
+When a developer create an offer, he can cut it in different milestones. Each milestone will be like a sub-offer. 
+
+The developer specify an amount for each milestone, describe what he will release on each milestone and when the release will be added. 
+
+When a milestone is validated, the developer get the amount associated with this milestone.
+
+The User Acceptance Testing phase (UAT)
+-------------------------
+
+When an offer (or a milestone) has a release, it enter the UAT state. In this state, we are willing to know if the release answer to the feature request. 
+The user can then report bugs.
+
+There are 3 bug levels: FATAL, MAJOR, MINOR. By default, the developer gets all the contributions money when all the FATAL bugs are resolved. 
+however, during the offer creation, the developer can offer more warranty to the users. He can choose how much money he will get when each level of bugs will be resolved.
+
+For example, he could choose:
+
+ - to receive 70 % of the contributions amount when all the FATAL bugs are resolved
+
+ - to receive 10 % of the contributions amount when all the MAJOR bugs are resolved
+
+ - to receive 20 % of the contributions amount when all the MINOR bugs are resolved
+
+The developer can also choose how much time the users have to report the first bug. The default value is one week. After that time, if no bugs are reported the release will be validated.
+
+
+Validating an offer
+-------------------
+
+When all the criteria are fulfilled, the elveos team validate the offer and the developer gets the amount from the contributions. 
+
+This step is done by hand to make sure that every hijacking attempt (A dishonest developer could try to get the contributions without making the development).
+
+Of course if there is a disagreement between the developer and the contributors, the elveos team will make sure that the validation decision will be taken in transparency, and taking into account the opinion of each side. 
+Furthermore we ensure that we will never accept any agreement that could compromise our impartiality when validating an offer.

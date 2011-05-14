@@ -18,6 +18,7 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -39,20 +40,18 @@ import com.bloatit.web.url.LoginPageUrl;
  * children classes should most likely save all parameters into the session</li>
  * </p>
  */
-public abstract class LoggedAction extends Action {
+public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
-    private final Member member;
 
     public LoggedAction(final Url url) {
         super(url);
         this.meUrl = url;
-        this.member = session.getAuthToken().getMember();
     }
 
     @Override
-    protected final Url doProcess() {
-        if (session.isLogged()) {
-            return doProcessRestricted(member);
+    protected final Url doProcess(final ElveosUserToken userToken) {
+        if (userToken.isAuthenticated()) {
+            return doProcessRestricted(userToken.getMember());
         }
         session.notifyBad(getRefusalReason());
         session.setTargetPage(meUrl);
@@ -61,9 +60,9 @@ public abstract class LoggedAction extends Action {
     }
 
     @Override
-    protected final Url checkRightsAndEverything() {
-        if (member != null) {
-            return doCheckRightsAndEverything(member);
+    protected final Url checkRightsAndEverything(final ElveosUserToken userToken) {
+        if (userToken.isAuthenticated()) {
+            return checkRightsAndEverything(userToken.getMember());
         }
 
         // If member is null, let the Logged action do its work (return to the
@@ -74,16 +73,16 @@ public abstract class LoggedAction extends Action {
     /**
      * Called before creating the page, used to check if there are additional
      * errors that can't be spotted by Url.
-     *
+     * 
      * @param me the logged member
      * @return {@value Action#NO_ERROR} if there is no error, an Url to the page
      *         to handle errors otherwise
      */
-    protected abstract Url doCheckRightsAndEverything(Member me);
+    protected abstract Url checkRightsAndEverything(Member me);
 
     /**
      * Called when user is correctly authentified
-     *
+     * 
      * @param me the currently logged user
      */
     protected abstract Url doProcessRestricted(Member me);
@@ -92,11 +91,11 @@ public abstract class LoggedAction extends Action {
      * Called when some RequestParams contain erroneous parameters.
      */
     @Override
-    protected abstract Url doProcessErrors();
+    protected abstract Url doProcessErrors(ElveosUserToken userToken);
 
     /**
      * <b>Do not forget to localize</p>
-     *
+     * 
      * @return the error message to dislay to the user, informing him while he
      *         couldn't access the page
      */

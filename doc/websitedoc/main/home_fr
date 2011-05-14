@@ -1,10 +1,38 @@
+
 Accueil de la documentation
 ===========================
 
+Bienvenue sur la page de documentation d'elveos.
 
-Table of contents
------------------
+Table des matières
+------------------
 
-[Présentation courte](documentation/doc-short)
+- Général
+  - [Présentation d'Elveos](/fr/documentation/doc-presentation)
+  - [Vision, ouverture et éthique](/fr/documentation/doc-ethics)
+  - [Nos Conditions Générales](/fr/documentation/doc-cgu)
+ <!-- - [Glossaire](/fr/documentation/doc-glossary)-->
+<!--  - [FAQ](/fr/documentation/doc-faq)-->
 
-[FAQ](documentation/doc-faq)
+
+- Fonctionnement détaillé d'elveos
+  - [Cycle de vie d'une demande](/fr/documentation/doc-feature-lifecycle)
+  - [Les offres](/fr/documentation/doc-offer-presentation)
+  - [Réputation et popularité](/fr/documentation/doc-reputation-popularity)
+  - [Équipes et délégation](/fr/documentation/doc-team-presentation)
+  - [Brainstorms](/fr/documentation/doc-brainstorm)
+
+- Informations techniques
+  - [API](/fr/documentation/doc-api)
+  - [Architecture système](/fr/documentation/doc-architecture)
+  - [Bloatit, le moteur d'elveos](/fr/documentation/doc-bloatit)
+  - [Licence du site et du contenu](/fr/documentation/doc-licenses)
+  - [Contribuer](/fr/documentation/doc-contribute)
+
+<!-- - Informations administratives
+  - Linkeos
+  - Nous 
+  - Détails des coûts
+  - Prévision financières
+-->
+

@@ -35,7 +35,9 @@ public class FeatureSearch extends Search<DaoFeature> {
         sortMethod = SortMethod.SORT_BY_RELEVANCE;
         configure(DaoFeature.class, new String[] { "description.translations.title",
                                                   "description.translations.text",
-                                                  "offers.description.translations.title" }, searchText);
+                                                  "offers.description.translations.title",
+                                                  "offers.description.translations.text",
+                                                  "featureState" }, searchText);
     }
 
     /**
@@ -55,22 +57,22 @@ public class FeatureSearch extends Search<DaoFeature> {
 
         switch (sortMethod) {
             case SORT_BY_CONTRIBUTION:
-                sort.setSort(new SortField("contribution", SortField.FLOAT, true));
+                sort.setSort(new SortField("contribution", SortField.FLOAT, true), new SortField("progress", SortField.FLOAT, true));
                 break;
             case SORT_BY_CREATION_DATE:
                 sort.setSort(new SortField("creationDate", SortField.STRING, false));
                 break;
             case SORT_BY_EXPIRATION_DATE:
-                // TODO implement
+                sort.setSort(new SortField("selectedOffer.expirationDate", SortField.LONG, true));
                 break;
             case SORT_BY_POPULARITY:
                 sort.setSort(new SortField("popularity", SortField.INT, true));
                 break;
             case SORT_BY_PROGRESS:
-                // TODO index progress
+                sort.setSort(new SortField("featureState", SortField.STRING), new SortField("progress", SortField.FLOAT, true));
                 break;
             case SORT_BY_RELEVANCE:
-                // TODO relevance score based on multiple variable
+                sort.setSort(SortField.FIELD_SCORE);
                 break;
         }
 

@@ -82,7 +82,7 @@ public class DBRequests {
 
     public static <T extends DaoIdentifiable> PageIterable<T> getAll(final Class<T> persistent) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        final Query query = SessionManager.createQuery("FROM " + meta.getEntityName());
+        final Query query = SessionManager.createQuery("FROM " + meta.getEntityName() + " ORDER BY id DESC");
         final Query size = SessionManager.createQuery("SELECT count(*) FROM " + meta.getEntityName());
         return new QueryCollection<T>(query, size);
     }

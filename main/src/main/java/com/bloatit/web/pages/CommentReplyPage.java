@@ -32,6 +32,7 @@ import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.release.ReleasePage;
+import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -91,7 +92,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         form.add(commentInput);
 
         // as team
-        addAddAttachmentField(form, "2 Mio");
+        addAddAttachmentField(form, CommentForm.FILE_MAX_SIZE_MIO + " Mio");
 
         // submit
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
@@ -119,7 +120,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return CommentReplyPage.generateBreadcrumb(targetComment);
     }
 

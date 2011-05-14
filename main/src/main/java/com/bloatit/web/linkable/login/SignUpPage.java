@@ -18,6 +18,7 @@ import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
@@ -27,11 +28,12 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.SignUpActionUrl;
 import com.bloatit.web.url.SignUpPageUrl;
@@ -42,7 +44,7 @@ import com.bloatit.web.url.SignUpPageUrl;
  * </p>
  */
 @ParamContainer(value="member/signup", protocol=Protocol.HTTPS)
-public final class SignUpPage extends MasterPage {
+public final class SignUpPage extends ElveosPage {
     private final SignUpPageUrl url;
 
     public SignUpPage(final SignUpPageUrl url) {
@@ -51,7 +53,7 @@ public final class SignUpPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
         layout.addRight(new SideBarDocumentationBlock("privacy"));
@@ -116,6 +118,14 @@ public final class SignUpPage extends MasterPage {
         form.add(button);
 
         master.add(container);
+
+
+
+        master.add(new HtmlParagraph(Context.tr("This website is un beta phase. It's here to be tested. Don't worry about create some content, all will be cleaned at the end of the beta."), "debug"));
+        master.add(new HtmlParagraph(Context.tr(" During the beta, there is no real money. However, you can simulate payment and withdraw money, a test credit card number or a test IBAN will be provide where you will need it."), "debug"));
+
+
+
         return master;
     }
 
@@ -130,7 +140,7 @@ public final class SignUpPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return SignUpPage.generateBreadcrumb();
     }
 

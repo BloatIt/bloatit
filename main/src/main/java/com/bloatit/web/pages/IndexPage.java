@@ -14,10 +14,10 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
+
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
@@ -28,7 +28,9 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.Image;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
@@ -40,7 +42,7 @@ import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
-import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -51,7 +53,7 @@ import com.bloatit.web.url.IndexPageUrl;
  * Index of elveos website
  */
 @ParamContainer("index")
-public final class IndexPage extends MasterPage {
+public final class IndexPage extends ElveosPage {
 
     private final IndexPageUrl url;
 
@@ -61,7 +63,7 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent() throws RedirectException {
+    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
         final PlaceHolderElement element = new PlaceHolderElement();
         final HtmlDiv globalDescription = new HtmlDiv("global_description");
         {
@@ -94,7 +96,7 @@ public final class IndexPage extends MasterPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2);
                         if (highlightFeature != null) {
-                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature));
+                            featureListLeftCase.add(new IndexFeatureBlock(highlightFeature, userToken));
                         }
                     }
                     featureListRow.add(featureListLeftCase);
@@ -103,7 +105,7 @@ public final class IndexPage extends MasterPage {
                     {
                         final HighlightFeature highlightFeature = hightlightFeatureArray.get(i * 2 + 1);
                         if (highlightFeature != null) {
-                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature));
+                            featureListRightCase.add(new IndexFeatureBlock(highlightFeature, userToken));
                         }
                     }
                     featureListRow.add(featureListRightCase);
@@ -133,10 +135,13 @@ public final class IndexPage extends MasterPage {
         if (moneyRaised == null) {
             moneyRaised = BigDecimal.ZERO;
         }
-        final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false);
-        final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
-        final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
-        summaryBox.add(contributionRaised);
+
+        if (userToken.isAuthenticated()){
+            final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, userToken.getMember());
+            final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
+            final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);
+            summaryBox.add(contributionRaised);
+        }
 
         // Count of offers
         final HtmlBranch offerCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Development&nbsp;offers, ",
@@ -155,7 +160,7 @@ public final class IndexPage extends MasterPage {
 
     @Override
     protected String createPageTitle() {
-        return "Finance free software";
+        return Context.tr("Finance free softwares");
     }
 
     @Override
@@ -171,7 +176,7 @@ public final class IndexPage extends MasterPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
         return generateBreadcrumb();
     }
 }

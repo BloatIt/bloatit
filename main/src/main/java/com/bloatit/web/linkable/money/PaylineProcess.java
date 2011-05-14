@@ -20,13 +20,9 @@ import java.math.BigDecimal;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.mails.ElveosMail;
 import com.bloatit.framework.mails.ElveosMail.ChargingAccountSuccess;
-import com.bloatit.framework.webprocessor.ModelAccessor;
-import com.bloatit.framework.webprocessor.PaymentProcess;
-import com.bloatit.framework.webprocessor.WebProcess;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -36,6 +32,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
@@ -43,12 +40,15 @@ import com.bloatit.model.Payline.TokenNotfoundException;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.actions.PaymentProcess;
+import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
 
-@ParamContainer(value="payline/process", protocol=Protocol.HTTPS)
+@ParamContainer(value = "payline/process", protocol = Protocol.HTTPS)
 public class PaylineProcess extends WebProcess {
 
     @RequestParam
@@ -71,23 +71,23 @@ public class PaylineProcess extends WebProcess {
         actor = url.getActor();
     }
 
-    public boolean isSuccessful() {
+    public synchronized boolean isSuccessful() {
         return success;
     }
 
     @Override
-    protected Url doProcess() {
+    protected synchronized Url doProcess(final ElveosUserToken userToken) {
         url.getParentProcess().addChildProcess(this);
         return new PaylineActionUrl(this);
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected synchronized Url doProcessErrors(final ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 
     @Override
-    public void doLoad() {
+    public synchronized void doLoad() {
         if (actor instanceof Member) {
             actor = MemberManager.getById(actor.getId());
         } else if (actor instanceof Team) {
@@ -97,7 +97,7 @@ public class PaylineProcess extends WebProcess {
         // actor.getId()).accept(new DataVisitorConstructor());
     }
 
-    Url initiatePayment() {
+    synchronized Url initiatePayment() {
         // Constructing the urls.
         final PaylineReturnActionUrl paylineReturnActionUrl = new PaylineReturnActionUrl("ok", this);
         final String returnUrl = paylineReturnActionUrl.externalUrlString();
@@ -106,20 +106,18 @@ public class PaylineProcess extends WebProcess {
         final PaylineNotifyActionUrl paylineNotifyActionUrl = new PaylineNotifyActionUrl(this);
         final String notificationUrl = paylineNotifyActionUrl.externalUrlString();
 
-        if (payline.canMakePayment()) {
-            Reponse reponse;
-            try {
-                reponse = payline.doPayment(actor, getAmount(), cancelUrl, returnUrl, notificationUrl);
-                SessionManager.storeTemporarySession(reponse.getToken(), session);
+        Reponse reponse;
+        try {
+            reponse = payline.doPayment(actor, getAmount(), cancelUrl, returnUrl, notificationUrl);
+            SessionManager.storeTemporarySession(reponse.getToken(), session);
 
-                // Normal case It is accepted !
-                if (reponse.isAccepted()) {
-                    return new UrlString(reponse.getRedirectUrl());
-                }
-                session.notifyBad(reponse.getMessage());
-            } catch (final UnauthorizedOperationException e) {
-                throw new ShallNotPassException("Not authorized", e);
+            // Normal case It is accepted !
+            if (reponse.isAccepted()) {
+                return new UrlString(reponse.getRedirectUrl());
             }
+            session.notifyBad(reponse.getMessage());
+        } catch (final UnauthorizedOperationException e) {
+            throw new ShallNotPassException("Not authorized", e);
         }
         return Context.getSession().pickPreferredPage();
     }
@@ -128,7 +126,7 @@ public class PaylineProcess extends WebProcess {
         return ((PaymentProcess) getFather()).getAmountToPay();
     }
 
-    void validatePayment(final String token) throws UnauthorizedPrivateAccessException {
+    synchronized void validatePayment(final String token) throws UnauthorizedOperationException {
         try {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
@@ -152,7 +150,9 @@ public class PaylineProcess extends WebProcess {
                 session.notifyGood(Context.tr("Payment of {0} accepted.", paidValueStr));
                 // By mail
                 final ChargingAccountSuccess mail = new ElveosMail.ChargingAccountSuccess(bankTransaction.getReference(), paidValueStr, valueStr);
-                mail.sendMail(session.getAuthToken().getMember(), "payline-process");
+                // TODO reactivate the send mail
+                // mail.sendMail(bankTransaction.getAuthor(),
+                // "payline-process");
             } else {
                 payline.cancelPayement(token);
                 Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
@@ -164,7 +164,7 @@ public class PaylineProcess extends WebProcess {
         }
     }
 
-    void refusePayment(final String token) {
+    synchronized void refusePayment(final String token) {
         try {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
@@ -177,14 +177,14 @@ public class PaylineProcess extends WebProcess {
         }
     }
 
-    public String getPaymentReference(final String token) {
+    public synchronized String getPaymentReference(final String token) {
         final BankTransaction bankTransaction = BankTransaction.getByToken(token);
         if (bankTransaction == null) {
             return "";
         }
         try {
             return bankTransaction.getReference();
-        } catch (final UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedOperationException e) {
             Log.web().fatal("Cannot find a reference.", e);
             return "Reference-not-Found";
         }

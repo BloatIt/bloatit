@@ -23,16 +23,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.restprocessor.annotations.REST;
 import com.bloatit.framework.restprocessor.exception.RestException;
 import com.bloatit.framework.utils.parameters.HttpParameter;
 import com.bloatit.framework.utils.parameters.Parameters;
-import com.bloatit.framework.webprocessor.ModelAccessor;
-import com.bloatit.framework.webprocessor.masters.HttpResponse;
-import com.bloatit.framework.webprocessor.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
+import com.bloatit.framework.xcgiserver.HttpResponse;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
+import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
 
 /**
  * <p>

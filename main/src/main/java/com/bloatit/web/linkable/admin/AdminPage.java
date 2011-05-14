@@ -21,10 +21,10 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -40,7 +40,7 @@ public abstract class AdminPage extends LoggedPage {
             try {
                 return createAdminContent();
             } catch (final UnauthorizedOperationException e) {
-                session.notifyError(tr("Are you sure you are admin?"));
+                getSession().notifyError(tr("Are you sure you are admin?"));
                 throw new ShallNotPassException("Admin content got a UnauthorizedOperationException", e);
             }
         }

@@ -1,0 +1,16 @@
+
+Reputation, popularity
+=================
+
+Elveos contain a reputation and popularity system, design to note the contents created by the users.
+
+Each user has a reputation of zero when opening its account. The more popular his contents become, the more reputation he will get. 
+
+Each content has a popularity value. The users can vote to tell if a content seems to be useless or useful. A positive vote will make the popularity grows up, and a negative one will make the popularity goes done.
+The more reputation a user have the more influence his vote will have.
+
+A user can vote only once on each content, and he cannot vote for the elements he has created. 
+
+
+The elements with a low popularity will be automatically hidden. The users with a high popularity will have some moderation rights.
+

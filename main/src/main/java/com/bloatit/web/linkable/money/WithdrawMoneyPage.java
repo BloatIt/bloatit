@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -22,6 +21,8 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -113,23 +114,23 @@ public class WithdrawMoneyPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(Member member) {
         if (isTeamAccount()) {
             return generateBreadcrumb((Team) actor);
         }
-        return generateBreadcrumb(session.getAuthToken().getMember());
+        return generateBreadcrumb(member);
 
     }
 
     protected static Breadcrumb generateBreadcrumb(final Member member) {
-        final Breadcrumb breadcrumb = AccountPage.generateBreadcrumb(member);
+        final Breadcrumb breadcrumb = MemberPage.generateAccountBreadcrumb(member);
         breadcrumb.pushLink(new WithdrawMoneyPageUrl(member).getHtmlLink(tr("Withdraw money")));
         return breadcrumb;
     }
 
     protected static Breadcrumb generateBreadcrumb(final Team team) {
-        final Breadcrumb breadcrumb = TeamPage.generateBreadcrumb(team);
-        breadcrumb.pushLink(new WithdrawMoneyPageUrl(team).getHtmlLink(tr("Account informations")));
+        final Breadcrumb breadcrumb = TeamPage.generateAccountBreadcrumb(team);
+        breadcrumb.pushLink(new WithdrawMoneyPageUrl(team).getHtmlLink(tr("Withdraw money")));
         return breadcrumb;
     }
 

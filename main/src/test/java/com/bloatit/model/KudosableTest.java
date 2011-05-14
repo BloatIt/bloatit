@@ -22,9 +22,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.model.feature.FeatureImplementation;
 import com.bloatit.model.feature.FeatureManager;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public class KudosableTest extends ModelTestUnit {
 

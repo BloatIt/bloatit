@@ -9,12 +9,14 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedPrivateAccessException;
 import com.bloatit.framework.mails.ElveosMail.WithdrawalCompleteMail;
 import com.bloatit.framework.mails.ElveosMail.WithdrawalRequestedMail;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtMoneyWithdrawal;
+import com.bloatit.model.right.UnauthorizedBankDataAccessException;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
 
 /**
  * Money withdrawals represent requests to withdraw money from the user internal
@@ -54,13 +56,13 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * @param reference
      * @param amountWithdrawn
      */
-    public MoneyWithdrawal(Actor<? extends DaoActor> actor, final String IBAN, final BigDecimal amountWithdrawn) {
+    public MoneyWithdrawal(final Actor<? extends DaoActor> actor, final String IBAN, final BigDecimal amountWithdrawn) {
         super(DaoMoneyWithdrawal.createAndPersist(actor.getDao(), IBAN, generateReference(), amountWithdrawn));
         if (!checkIban(IBAN)) {
             throw new BadProgrammerException("Invalid IBAN format!");
         }
         if (getActorUnprotected() instanceof Member) {
-            Member to = (Member) getActorUnprotected();
+            final Member to = (Member) getActorUnprotected();
             new WithdrawalRequestedMail(getReferenceUnprotected(), getAmountWithdrawnUnprotected().toPlainString(), getIBANUnprotected()).sendMail(to,
                                                                                                                                                    "withdrawal-request");
         } else {
@@ -68,7 +70,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         }
     }
 
-    private MoneyWithdrawal(DaoMoneyWithdrawal dao) {
+    private MoneyWithdrawal(final DaoMoneyWithdrawal dao) {
         super(dao);
     }
 
@@ -81,10 +83,10 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED
      * </p>
-     * 
-     * @throws UnauthorizedPrivateAccessException
+     *
+     * @throws UnauthorizedOperationException
      */
-    public void setCanceled() throws UnauthorizedPrivateAccessException {
+    public void setCanceled() throws UnauthorizedOperationException {
         tryAccess(new RgtMoneyWithdrawal.Canceled(), Action.WRITE);
         switch (getState()) {
             case COMPLETE:
@@ -103,10 +105,10 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED or TREATED
      * </p>
-     * 
-     * @throws UnauthorizedPrivateAccessException
+     *
+     * @throws UnauthorizedOperationException
      */
-    public void setRefused() throws UnauthorizedPrivateAccessException {
+    public void setRefused() throws UnauthorizedOperationException {
         tryAccess(new RgtMoneyWithdrawal.State(), Action.WRITE);
         switch (getState()) {
             case COMPLETE:
@@ -124,10 +126,10 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED
      * </p>
-     * 
-     * @throws UnauthorizedPrivateAccessException
+     *
+     * @throws UnauthorizedOperationException
      */
-    public void setTreated() throws UnauthorizedPrivateAccessException {
+    public void setTreated() throws UnauthorizedOperationException {
         tryAccess(new RgtMoneyWithdrawal.State(), Action.WRITE);
         switch (getState()) {
             case COMPLETE:
@@ -146,10 +148,10 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state TREATED
      * </p>
-     * 
-     * @throws UnauthorizedPrivateAccessException
+     *
+     * @throws UnauthorizedOperationException 
      */
-    public void setComplete() throws UnauthorizedPrivateAccessException {
+    public void setComplete() throws UnauthorizedOperationException {
         tryAccess(new RgtMoneyWithdrawal.State(), Action.WRITE);
         switch (getState()) {
             case COMPLETE:
@@ -163,7 +165,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         getDao().setComplete();
 
         if (getActor() instanceof Member) {
-            Member to = (Member) getActor();
+            final Member to = (Member) getActor();
             new WithdrawalCompleteMail(getReference(), getAmountWithdrawn().toPlainString(), getIBAN()).sendMail(to, "withdrawal-complete");
         } else {
             // TODO send a mail to some people in team ...
@@ -178,7 +180,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * @throws BadProgrammerException whenever <code>newState</code> is not
      *             compatible with current withdrawal state.
      */
-    public void setState(State newState) throws UnauthorizedPrivateAccessException {
+    public void setState(final State newState) throws UnauthorizedOperationException {
         switch (newState) {
             case REQUESTED:
                 throw new BadProgrammerException("Cannot go back to Requested");
@@ -197,28 +199,48 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         }
     }
 
+    public boolean canSetCanceled() {
+        if (!canAccess(new RgtMoneyWithdrawal.Canceled(), Action.WRITE)) {
+            return false;
+        }
+        try {
+            switch (getState()) {
+                case COMPLETE:
+                case CANCELED:
+                case REFUSED:
+                case TREATED:
+                    return false;
+                default:
+                    break;
+            }
+        } catch (final UnauthorizedOperationException e) {
+            return false;
+        }
+        return true;
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return the actor of the request (either a member or a team)
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedBankDataAccessException 
      */
-    public Actor<?> getActor() throws UnauthorizedPrivateAccessException {
+    public Actor<?> getActor() throws UnauthorizedBankDataAccessException  {
         tryAccess(new RgtMoneyWithdrawal.Actor(), Action.READ);
         return getActorUnprotected();
     }
 
     protected Actor<?> getActorUnprotected() {
-        Integer id = getDao().getActor().getId();
+        final Integer id = getDao().getActor().getId();
         try {
             Team team;
             team = Team.class.cast(GenericConstructor.create(Team.class, id));
             if (team != null) {
                 return team;
             }
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
         }
 
         try {
@@ -227,7 +249,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
             if (member != null) {
                 return member;
             }
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
         }
         return null;
     }
@@ -235,18 +257,18 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     /**
      * @return the {@link MoneyWithdrawal} transaction, or <i>null</i> if there
      *         is no transaction yet
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedBankDataAccessException 
      */
-    public Transaction getTransaction() throws UnauthorizedPrivateAccessException {
+    public Transaction getTransaction() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.Transaction(), Action.READ);
         return Transaction.create(getDao().getTransaction());
     }
 
     /**
      * @return the money transaction IBAN
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedBankDataAccessException
      */
-    public String getIBAN() throws UnauthorizedPrivateAccessException {
+    public String getIBAN() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.Iban(), Action.READ);
         return getIBANUnprotected();
     }
@@ -257,9 +279,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * @return the amount of the money withdrawal
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedBankDataAccessException
      */
-    public BigDecimal getAmountWithdrawn() throws UnauthorizedPrivateAccessException {
+    public BigDecimal getAmountWithdrawn() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.Amount(), Action.READ);
         return getAmountWithdrawnUnprotected();
     }
@@ -270,9 +292,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * @return the creation date of the money withdrawal
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedBankDataAccessException
      */
-    public Date getCreationDate() throws UnauthorizedPrivateAccessException {
+    public Date getCreationDate() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.CreationDate(), Action.READ);
         return getDao().getCreationDate();
     }
@@ -281,20 +303,20 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * Last modification date is the last time the state of the money withdrawal
      * has been changed. If no change happened, this will be the same as
      * creation date.
-     * 
+     *
      * @return the last modification date of the money withdrawal
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedBankDataAccessException
      */
-    public Date getLastModificationDate() throws UnauthorizedPrivateAccessException {
+    public Date getLastModificationDate() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.LastModificationDate(), Action.READ);
         return getDao().getLastModificationDate();
     }
 
     /**
      * @return the unique reference of the Money Withdrawal
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedBankDataAccessException
      */
-    public String getReference() throws UnauthorizedPrivateAccessException {
+    public String getReference() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.Reference(), Action.READ);
         return getReferenceUnprotected();
     }
@@ -314,9 +336,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * @return the current state of the withdrawal
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedReadOnlyBankDataAccessException
      */
-    public State getState() throws UnauthorizedPrivateAccessException {
+    public State getState() throws UnauthorizedReadOnlyBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.State(), Action.READ);
         return getDao().getState();
     }
@@ -324,9 +346,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     /**
      * @return the reason why this request has been refused by admins, or null
      *         if it is not refused
-     * @throws UnauthorizedPrivateAccessException
+     * @throws UnauthorizedOperationException
      */
-    public String getRefusalReason() throws UnauthorizedPrivateAccessException {
+    public String getRefusalReason() throws UnauthorizedOperationException {
         tryAccess(new RgtMoneyWithdrawal.RefusalReason(), Action.READ);
         return getDao().getRefusalReason();
     }
@@ -350,18 +372,18 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     public static boolean checkIban(String iban) {
         iban = iban.replace(" ", "");
         iban = iban.replace("-", "");
-        StringBuffer sbIban = new StringBuffer(iban.substring(4));
+        final StringBuffer sbIban = new StringBuffer(iban.substring(4));
         sbIban.append(iban.substring(0, 4));
         iban = sbIban.toString();
 
-        StringBuilder extendedIban = new StringBuilder(iban.length());
-        for (char currentChar : iban.toCharArray()) {
+        final StringBuilder extendedIban = new StringBuilder(iban.length());
+        for (final char currentChar : iban.toCharArray()) {
             extendedIban.append(Character.digit(currentChar, Character.MAX_RADIX));
         }
 
         try {
             return new BigDecimal(extendedIban.toString()).remainder(ibanCheckingConstant).intValue() == 1;
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             return false;
         }
 

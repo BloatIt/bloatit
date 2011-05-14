@@ -21,11 +21,11 @@ import java.io.IOException;
 import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.exceptions.lowlevel.UnauthorizedOperationException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public abstract class ElveosMail {
 
@@ -46,8 +46,8 @@ public abstract class ElveosMail {
         try {
             content.addNamedParameter("member", to.getDisplayName());
             MailServer.getInstance().send(new Mail(to.getEmail(),
-                                                   new Localizator(to.getUserLocale()).tr(title),
-                                                   content.getContent(to.getUserLocale()),
+                                                   new Localizator(to.getLocale()).tr(title),
+                                                   content.getContent(to.getLocale()),
                                                    mailSenderID));
         } catch (final IOException e) {
             throw new BadProgrammerException(e);

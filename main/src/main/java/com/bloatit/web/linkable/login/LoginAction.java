@@ -11,17 +11,17 @@
  */
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Action;
+import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.managers.LoginManager;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -29,7 +29,7 @@ import com.bloatit.web.url.LoginPageUrl;
  * A response to a form used to log into the website
  */
 @ParamContainer(value="action/login", protocol=Protocol.HTTPS)
-public final class LoginAction extends Action {
+public final class LoginAction extends ElveosAction {
 
     private static final String LOGIN_CODE = "bloatit_login";
     protected static final String PASSWORD_CODE = "bloatit_password";
@@ -51,33 +51,33 @@ public final class LoginAction extends Action {
     }
 
     @Override
-    public Url doProcess() {
-        AuthToken token = null;
+    public Url doProcess(final ElveosUserToken userToken) {
+        UserToken token = null;
         token = LoginManager.loginByPassword(login.trim(), password);
 
-        if (token != null) {
+        if (token != null && token.isAuthenticated()) {
             session.setAuthToken(token);
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
         }
 
-        session.setAuthToken(AuthToken.ANONYMOUS_TOKEN);
+        session.setAnonymousUserToken();
         session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
-        url.getLoginParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your login.")));
-        url.getPasswordParameter().getCustomMessages().add(new Message(Context.tr("Login failed. Check your password.")));
+        url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
+        url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
         transmitParameters();
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url doProcessErrors() {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new LoginPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything() {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 
@@ -85,7 +85,6 @@ public final class LoginAction extends Action {
     protected void transmitParameters() {
         session.addParameter(url.getLoginParameter());
 
-        //TODO: clear the password for all password fields
         if(url.getPasswordParameter().getValue() != null) {
             url.getPasswordParameter().setValue("");
         }

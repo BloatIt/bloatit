@@ -3,7 +3,7 @@ package com.bloatit.model;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.model.right.AuthToken;
+import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RestrictedObject;
 import com.bloatit.model.visitor.HighLevelModelVisitor;
 
@@ -36,13 +36,13 @@ public class Rights {
     }
 
     private final OwningState owningState;
-    private final AuthToken token;
+    private final AuthenticatedUserToken token;
     private Team currentTeam;
 
-    public Rights(final AuthToken token, final IdentifiableInterface identifiable) {
+    public Rights(final AuthenticatedUserToken token, final IdentifiableInterface identifiable) {
         this.token = token;
         currentTeam = null;
-        if (token == null || token.isAnonymous()) {
+        if (token == null || !token.isAuthenticated()) {
             owningState = OwningState.NOBODY;
         } else {
             if (token.getAsTeam() != null || identifiable.accept(new GetCreatedByTeamVisitor()) != null) {
@@ -89,19 +89,19 @@ public class Rights {
     // Team Rights
 
     public boolean hasModifyTeamRight() {
-        return token != null && currentTeam != null && hasModifyTeamRight(token.getMember(), currentTeam);
+        return token != null && token.isAuthenticated() && currentTeam != null && hasModifyTeamRight(token.getMember(), currentTeam);
     }
 
     public boolean hasConsultTeamRight() {
         if (isTeamOwner()) {
-            return token != null && currentTeam != null && hasConsultTeamRight(token.getMember(), currentTeam);
+            return token != null && token.isAuthenticated() && currentTeam != null && hasConsultTeamRight(token.getMember(), currentTeam);
         }
         return false;
     }
 
     public boolean hasBankTeamRight() {
         if (isTeamOwner()) {
-            return token != null && currentTeam != null && hasBankTeamRight(token.getMember(), currentTeam);
+            return token != null && token.isAuthenticated() && currentTeam != null && hasBankTeamRight(token.getMember(), currentTeam);
         }
         return false;
     }
@@ -164,7 +164,7 @@ public class Rights {
     }
 
     private final boolean hasUserPrivilege(final DaoMember.Role role) {
-        return token != null && token.getMember().getRole() == role;
+        return token != null && token.isAuthenticated() && token.getMember().getRole() == role;
     }
 
     // ///////////////////////////////////////
@@ -222,14 +222,12 @@ public class Rights {
 
         @Override
         public Team visitAbstract(final Transaction model) {
-            // FIXME !!
             return null;
         }
 
         @Override
-        public Team visitAbstract(MoneyWithdrawal model) {
-            // FIXME
-            return null;
+        public Team visitAbstract(final MoneyWithdrawal model) {
+            return visitAbstract(model.getActorUnprotected());
         }
 
     }
@@ -256,7 +254,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final UserContentInterface model) {
-            return member.isInTeam(model.getAsTeam());
+            return visitAbstract(model.getAuthor());
         }
 
         @Override
@@ -295,7 +293,7 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(MoneyWithdrawal model) {
+        public Boolean visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
         }
     }
@@ -361,7 +359,7 @@ public class Rights {
         }
 
         @Override
-        public Boolean visitAbstract(MoneyWithdrawal model) {
+        public Boolean visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
         }
     }

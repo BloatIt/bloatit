@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Member;
 import com.bloatit.model.admin.FeatureAdminListFactory;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -64,10 +65,10 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
         filterHasOffer = url.getFilterHasOffer();
         filterHasContribution = url.getFilterHasContribution();
 
-        session.addParameter(url.getFilterByStateParameter());
-        session.addParameter(url.getFilterSelectedOfferParameter());
-        session.addParameter(url.getFilterHasOfferParameter());
-        session.addParameter(url.getFilterHasContributionParameter());
+        getSession().addParameter(url.getFilterByStateParameter());
+        getSession().addParameter(url.getFilterSelectedOfferParameter());
+        getSession().addParameter(url.getFilterHasOfferParameter());
+        getSession().addParameter(url.getFilterHasContributionParameter());
 
         // Add some filters
         if (filterByState != null && filterByState != DisplayableFeatureState.NO_FILTER) {
@@ -181,13 +182,13 @@ public final class FeatureAdminPage extends KudosableAdminPage<DaoFeature, Featu
         tableModel.addColumn(tr("software"), new StringColumnGenerator<Feature>() {
             @Override
             public String getStringBody(final Feature element) {
-                return element.getSoftware().getName();
+                return element.getSoftware() == null ? "No software" : element.getSoftware().getName();
             }
         });
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb() {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return FeatureAdminPage.generateBreadcrumb();
     }
 
