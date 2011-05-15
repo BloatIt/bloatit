@@ -41,6 +41,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
 
     // XCGI
     private int xcgiListenport;
+    private String xcgiListenAddress;
     private int xcgiThreadsNumber;
 
     // DIRECTORIES
@@ -181,6 +182,10 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static int getXcgiListenport() {
         return configuration.xcgiListenport;
     }
+    
+    public static String getXcgiListenAddress() {
+        return configuration.xcgiListenAddress;
+    }
 
     public static int getXcgiThreadsNumber() {
         return configuration.xcgiThreadsNumber;
@@ -315,6 +320,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         // Server
         xcgiThreadsNumber = properties.getInt("xcgi.threads.number");
         xcgiListenport = properties.getInt("xcgi.listenport");
+        xcgiListenAddress = properties.getString("xcgi.listenAddress");
 
         // Resources
         ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
