@@ -3038,11 +3038,11 @@ msgstr "Durée minimum de la validation&nbsp;: "
 #: com/bloatit/web/linkable/features/OfferBlock.java:253
 #: com/bloatit/web/linkable/features/OfferBlock.java:257
 msgid "Payment when no fatal bug: "
-msgstr "Paiment en l'absence de bug fatal&nbsp;: "
+msgstr "Paiement en l'absence de bug fatal&nbsp;: "
 
 #: com/bloatit/web/linkable/features/OfferBlock.java:261
 msgid "Payment when no minor bug: "
-msgstr "Paiment en l'absence de bug mineur&nbsp;: "
+msgstr "Paiement en l'absence de bug mineur&nbsp;: "
 
 #: com/bloatit/web/linkable/features/FeatureListPage.java:105
 msgctxt "Search (verb)"
@@ -4089,8 +4089,8 @@ msgid ""
 "where you will need it."
 msgstr ""
 "Pendant la beta, il n'y a pas d'argent réel. Cependant, vous pouvez simuler "
-"des paiments et des retraits, un numéro de carte banquaire de test ou un "
-"IBAN de test vous sera fourni aux endroits où cela est nécessaire "
+"des paiements et des retraits, un numéro de carte banquaire de test ou un "
+"IBAN de test vous sera fourni aux endroits où cela est nécessaire."
 
 #: com/bloatit/web/linkable/login/SignUpPage.java:134
 #: com/bloatit/web/linkable/login/SignUpPage.java:150
@@ -4364,7 +4364,7 @@ msgstr "Impossible de valider votre paiement. Raison&nbsp;: Token introuvable."
 #: com/bloatit/web/linkable/money/PaylineProcess.java:150
 #, java-format
 msgid "Payment of {0} accepted."
-msgstr "Paiment de {0} accepté."
+msgstr "Paiement de {0} accepté."
 
 #: com/bloatit/web/linkable/money/SideBarLoadAccountBlock.java:16
 msgid "Load account"
