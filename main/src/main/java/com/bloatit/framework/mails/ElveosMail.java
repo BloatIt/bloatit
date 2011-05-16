@@ -17,6 +17,9 @@
 package com.bloatit.framework.mails;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.bloatit.common.TemplateFile;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
@@ -24,8 +27,10 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
 public abstract class ElveosMail {
 
@@ -57,6 +62,20 @@ public abstract class ElveosMail {
     }
 
     /**
+     * Sends a mail to a given mail address
+     * 
+     * @param to the mail addresse of the receiver
+     * @param mailSenderID an ID that will be put at the end of each sent mail
+     */
+    public final void sendMail(final String to, final String mailSenderID) {
+        try {
+            MailServer.getInstance().send(new Mail(to, title, content.getContent(null), mailSenderID));
+        } catch (final IOException e) {
+            throw new BadProgrammerException(e);
+        }
+    }
+
+    /**
      * Fake tr to have gettext parse this string.
      * 
      * @param str the string to return
@@ -82,7 +101,7 @@ public abstract class ElveosMail {
             addNamedParameter("amount", amount);
         }
     }
-    
+
     public static class WithdrawalRequestedMail extends ElveosMail {
         public WithdrawalRequestedMail(final String reference, final String amount, final String iban) {
             super(new TemplateFile("withdrawal-requested.mail"), tr("elveos.org: Money withdrawal request"));
@@ -98,6 +117,20 @@ public abstract class ElveosMail {
             addNamedParameter("amount", amount);
             addNamedParameter("iban", iban);
             addNamedParameter("reference", reference);
+        }
+    }
+
+    public static class WithdrawalAdminMail extends ElveosMail {
+        private static DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+        public WithdrawalAdminMail(final String reference, final String amount, final String iban, final String memberName) {
+            super(new TemplateFile("withdrawal-admin.mail"), "[ELVEOS ADMINISTRATION] New money withdrawal request");
+            addNamedParameter("amount", amount);
+            addNamedParameter("iban", iban);
+            addNamedParameter("reference", reference);
+            addNamedParameter("member", memberName);
+            addNamedParameter("date", ISO8601Local.format(new Date()));
+            addNamedParameter("url", new MoneyWithdrawalAdminPageUrl().externalUrlString());
         }
     }
 }

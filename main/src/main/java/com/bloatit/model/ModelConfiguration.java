@@ -48,6 +48,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableMinInfluenceToUnkudos;
     private int kudosableMinInfluenceToKudos;
     private int recentActivityDays;
+    private String[] administratorMails;
 
     private ModelConfiguration() {
         super();
@@ -158,14 +159,18 @@ public class ModelConfiguration extends ReloadableConfiguration {
     }
 
     // Others
-    
+
     protected static int getRecentActivityDays() {
         return configuration.recentActivityDays;
     }
 
+    public static String[] getAdminstratorMails() {
+        return configuration.administratorMails;
+    }
+
     private void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
-        
+
         recentActivityDays = properties.getInt("recent.activity.days");
 
         // Kudosable configuration
@@ -197,6 +202,8 @@ public class ModelConfiguration extends ReloadableConfiguration {
 
         kudosableMinInfluenceToUnkudos = properties.getInt("kudosable.min_influence_unkudos", 1);
         kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
+
+        administratorMails = properties.getStringArray("administrator.emails");
     }
 
     @Override
