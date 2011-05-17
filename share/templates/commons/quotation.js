@@ -1,5 +1,3 @@
-
-
 function round2(value) {
   return parseFloat((value).toFixed(2));
 }
@@ -21,7 +19,6 @@ function QuotationTotalEntry(id) {
         return round2(value);
     }
 }
-
 
 function Quotation(id, total) {
     this.id = id
@@ -89,7 +86,6 @@ quotationEntries = new Array();
 
 ${entry_list}
 
-
 function update() {
     var newValue = parseFloat($( "#"+chargeField ).val());
     var baseValue = parseFloat($( "#input_money" ).html());
@@ -111,9 +107,6 @@ function update() {
     http.open('GET', callbackUrl+"?preload="+newValue, true);
     http.send(null);
 };
-
-
-
 
 //$( "#"+chargeField).keyup(update());
 //$( "#"+chargeField).change(update());
