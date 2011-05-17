@@ -19,7 +19,8 @@ DB_NAME=elveos
 DB_BACKUP_FILE="elveos.org-DB-$(date +%m-%d-%y-%R)"
 
 # .local/share/bloatit backup
-SHARE_FOLDER=/home/elveos/.local/share/bloatit/
+SHARE_FOLDER_ROOT=/home/elveos/
+SHARE_FOLDER=.local/share/bloatit/
 SHARE_BACKUP_FILE="elveos.org-SHARE-$(date +%m-%d-%y-%R)"
 
 # Encrypt with
@@ -48,6 +49,7 @@ su $POSTGRES_ROOT -c "pg_dump -Fc $DB_NAME -o" | \
     su $USER -c "gpg --output \"$DB_BACKUP_FILE\" --encrypt $recipients"
 
 echo "encrypting .local/share files"
+cd $SHARE_FOLDER_ROOT
 tar -cJ "$SHARE_FOLDER" | su $USER -c "gpg --output \"$SHARE_BACKUP_FILE\" --encrypt $recipients" 
 
 for i in ${SEND_HOSTS[@]} ;  do

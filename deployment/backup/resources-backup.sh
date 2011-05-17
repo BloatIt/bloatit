@@ -77,7 +77,14 @@ if [ "$OPERATION" = backup ] ; then
 fi
 
 if [ "$OPERATION" = restore ] ; then
-    gpg --decrypt $FILE_NAME | tar -xvJf - 
-    $RSYNC $FILE_NAME/* $USER@$HOST:$BACKUP_DIR
-    rm -rf $FILE_NAME
+    TMP_DIR=/tmp/restore
+    if [ ! -e $TMP_DIR ] ; then 
+        mkdir -p $TMP_DIR
+    fi
+
+    # WARNING recovery to the home dir !
+    gpg --decrypt $FILE_NAME | ( cd $TMP_DIR && tar -xvJf - )
+    $RSYNC $TMP_DIR/ $USER@$HOST:
+
+    rm -rf $TMP_DIR
 fi
