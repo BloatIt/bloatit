@@ -1,6 +1,6 @@
 Dear ${member},
 
-You requested a ${amount}€ money transfer from your elveos.org account to the bank account identified by the IBAN ${IBAN}.
+You requested a ${amount}€ money transfer from your elveos.org account to the bank account identified by the IBAN ${iban}.
 This request is now being handled by the elveos team.
 
 If you didn't ask this money transfer, you can cancel this transfer by using elveos.org/en/account or by sending us an email to contact@elveos.org.

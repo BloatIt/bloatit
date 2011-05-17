@@ -9,6 +9,7 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoMoneyWithdrawal.State;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.mails.ElveosMail.WithdrawalAdminMail;
 import com.bloatit.framework.mails.ElveosMail.WithdrawalCompleteMail;
 import com.bloatit.framework.mails.ElveosMail.WithdrawalRequestedMail;
 import com.bloatit.model.right.Action;
@@ -40,7 +41,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * Check the cache, if a corresponding MoneyWithdrawal exist return it,
      * otherwise create a MoneyWithdrawal using its dao representation. If the
      * dao == null return null;
-     *
+     * 
      * @param dao the dao
      * @return the bank transaction
      */
@@ -51,7 +52,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * Creates a new Money withdrawal request
-     *
+     * 
      * @param IBAN
      * @param reference
      * @param amountWithdrawn
@@ -61,12 +62,19 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         if (!checkIban(IBAN)) {
             throw new BadProgrammerException("Invalid IBAN format!");
         }
+        String reference = getReferenceUnprotected();
+        String amount = getAmountWithdrawnUnprotected().toPlainString();
+        String iban = getIBANUnprotected();
         if (getActorUnprotected() instanceof Member) {
             final Member to = (Member) getActorUnprotected();
-            new WithdrawalRequestedMail(getReferenceUnprotected(), getAmountWithdrawnUnprotected().toPlainString(), getIBANUnprotected()).sendMail(to,
-                                                                                                                                                   "withdrawal-request");
+            new WithdrawalRequestedMail(reference, amount, iban).sendMail(to, "withdrawal-request");
         } else {
             // TODO send a mail to some people in team ...
+        }
+
+        // Sending email to administrators
+        for (String email : ModelConfiguration.getAdminstratorMails()) {
+            new WithdrawalAdminMail(reference, amount, iban, getActorUnprotected().getDisplayName()).sendMail(email, "withdrawal-admin");
         }
     }
 
@@ -83,7 +91,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED
      * </p>
-     *
+     * 
      * @throws UnauthorizedOperationException
      */
     public void setCanceled() throws UnauthorizedOperationException {
@@ -105,7 +113,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED or TREATED
      * </p>
-     *
+     * 
      * @throws UnauthorizedOperationException
      */
     public void setRefused() throws UnauthorizedOperationException {
@@ -126,7 +134,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state REQUESTED
      * </p>
-     *
+     * 
      * @throws UnauthorizedOperationException
      */
     public void setTreated() throws UnauthorizedOperationException {
@@ -148,8 +156,8 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * <p>
      * Can only be used while in state TREATED
      * </p>
-     *
-     * @throws UnauthorizedOperationException 
+     * 
+     * @throws UnauthorizedOperationException
      */
     public void setComplete() throws UnauthorizedOperationException {
         tryAccess(new RgtMoneyWithdrawal.State(), Action.WRITE);
@@ -174,7 +182,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * Proxy to the various methods to change the state
-     *
+     * 
      * @param newState the new state of the withdrawal
      * @throws UnauthorizedPrivateAccessException
      * @throws BadProgrammerException whenever <code>newState</code> is not
@@ -225,9 +233,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
     /**
      * @return the actor of the request (either a member or a team)
-     * @throws UnauthorizedBankDataAccessException 
+     * @throws UnauthorizedBankDataAccessException
      */
-    public Actor<?> getActor() throws UnauthorizedBankDataAccessException  {
+    public Actor<?> getActor() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.Actor(), Action.READ);
         return getActorUnprotected();
     }
@@ -257,7 +265,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     /**
      * @return the {@link MoneyWithdrawal} transaction, or <i>null</i> if there
      *         is no transaction yet
-     * @throws UnauthorizedBankDataAccessException 
+     * @throws UnauthorizedBankDataAccessException
      */
     public Transaction getTransaction() throws UnauthorizedBankDataAccessException {
         tryAccess(new RgtMoneyWithdrawal.Transaction(), Action.READ);
@@ -303,7 +311,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * Last modification date is the last time the state of the money withdrawal
      * has been changed. If no change happened, this will be the same as
      * creation date.
-     *
+     * 
      * @return the last modification date of the money withdrawal
      * @throws UnauthorizedBankDataAccessException
      */

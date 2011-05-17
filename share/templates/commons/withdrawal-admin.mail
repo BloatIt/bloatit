@@ -1,0 +1,8 @@
+A new withdrawal request has been issued.
+ - Date : ${date}
+ - Member : ${member}
+ - Reference : ${reference}
+ - Amount : ${amount}
+ - IBAN : ${iban}
+
+Please connect to ${url} to handle it.
