@@ -32,19 +32,15 @@ import com.bloatit.framework.webprocessor.components.advanced.HtmlTable.HtmlTabl
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
-import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
-import com.sun.tools.internal.xjc.model.CClassInfoParent.Visitor;
 
 public class MembersTab extends HtmlTab {
     private final Team team;
-    private final Session session = Context.getSession();
     private final Member visitor;
 
     public MembersTab(final Team team, final String title, final String tabKey, Member member) {
