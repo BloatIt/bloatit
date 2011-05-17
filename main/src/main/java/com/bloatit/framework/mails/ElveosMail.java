@@ -42,7 +42,7 @@ public abstract class ElveosMail {
         this.title = title;
     }
 
-    public final void addNamedParameter(final String name, final String value) {
+    protected final void addNamedParameter(final String name, final String value) {
         content.addNamedParameter(name, value);
     }
 
