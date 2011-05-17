@@ -1,8 +1,8 @@
 API
 ===
 
-For now, there is only one extern API for elveos.org. This is a REST API and you can only read public things with it.
+A Rest API offering a reading access to public information is available right now.
 
-Soon, you will be able to authenticate and write new data with the REST API.
+We are still working on an authenticated access with the capacity to create/update information.
 
  * [API REST](/en/documentation/doc-api-rest)
