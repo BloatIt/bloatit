@@ -27,6 +27,8 @@ import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoImage;
 import com.bloatit.data.DaoInternalAccount;
+import com.bloatit.data.DaoInvoice;
+import com.bloatit.data.DaoInvoicingContact;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
@@ -255,5 +257,15 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     @Override
     public Identifiable<?> visit(final DaoMoneyWithdrawal dao) {
         return MoneyWithdrawal.create(dao);
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoInvoicingContact dao) {
+        return InvoicingContact.create(dao);
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoInvoice dao) {
+        return Invoice.create(dao);
     }
 }

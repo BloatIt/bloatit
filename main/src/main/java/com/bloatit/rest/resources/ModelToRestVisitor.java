@@ -31,6 +31,8 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
+import com.bloatit.model.Invoice;
+import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
@@ -148,6 +150,16 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
     @Override
     public RestElement<?> visit(MoneyWithdrawal moneyWithdrawal) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(Invoice invoice) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(InvoicingContact invoicingContact) {
         throw new NotImplementedException();
     }
 }

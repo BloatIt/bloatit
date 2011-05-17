@@ -71,6 +71,9 @@
 		<mapping class="com.bloatit.data.DaoKudosable" />
 		<mapping class="com.bloatit.data.DaoRelease" />
         <mapping class="com.bloatit.data.DaoMoneyWithdrawal" />
+        <mapping class="com.bloatit.data.DaoInvoice" />
+        <mapping class="com.bloatit.data.DaoContributionInvoice" />
+        <mapping class="com.bloatit.data.DaoInvoicingContact" />
 
 	</session-factory>
 </hibernate-configuration>

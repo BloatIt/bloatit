@@ -28,6 +28,8 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
+import com.bloatit.model.Invoice;
+import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
@@ -157,6 +159,16 @@ public class BreadcrumbTools {
 
             @Override
             public Breadcrumb visit(MoneyWithdrawal moneyWithdrawal) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(Invoice invoice) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(InvoicingContact invoicingContact) {
                 throw new NotImplementedException();
             }
         });
