@@ -31,6 +31,9 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
+/**
+ * A class used to ease the sending of emails
+ */
 public abstract class ElveosMail {
 
     private final TemplateFile content;
@@ -46,13 +49,18 @@ public abstract class ElveosMail {
         content.addNamedParameter(name, value);
     }
 
+    /**
+     * Sends an email to a given user
+     * 
+     * @param to the member that should receive the email
+     * @param mailSenderID an ID that will be put at the end of each file used
+     *            to store mails
+     */
     public final void sendMail(final Member to, final String mailSenderID) {
         try {
             content.addNamedParameter("member", to.getDisplayName());
-            MailServer.getInstance().send(new Mail(to.getEmail(),
-                                                   new Localizator(to.getLocale()).tr(title),
-                                                   content.getContent(to.getLocale()),
-                                                   mailSenderID));
+            Mail mail = new Mail(to.getEmail(), new Localizator(to.getLocale()).tr(title), content.getContent(to.getLocale()), mailSenderID);
+            MailServer.getInstance().send(mail);
         } catch (final IOException e) {
             throw new BadProgrammerException(e);
         } catch (final UnauthorizedOperationException e) {
@@ -64,7 +72,8 @@ public abstract class ElveosMail {
      * Sends a mail to a given mail address
      * 
      * @param to the mail addresse of the receiver
-     * @param mailSenderID an ID that will be put at the end of each sent mail
+     * @param mailSenderID an ID that will be put at the end of each file used
+     *            to store mails
      */
     public final void sendMail(final String to, final String mailSenderID) {
         try {
@@ -84,6 +93,9 @@ public abstract class ElveosMail {
         return str;
     }
 
+    /**
+     * Mail sent to a user when he successfuly charged his account
+     */
     public static class ChargingAccountSuccess extends ElveosMail {
         public ChargingAccountSuccess(final String reference, final String totalAmount, final String credited) {
             super(new TemplateFile("charging-success.mail"), tr("elveos.org: Payment accepted"));
@@ -93,6 +105,9 @@ public abstract class ElveosMail {
         }
     }
 
+    /**
+     * TODO: Use or delete
+     */
     public static class ContributionSuccess extends ElveosMail {
         public ContributionSuccess(final String featureName, final String amount) {
             super(new TemplateFile("contribution-success.mail"), tr("elveos.org: Contribution validated"));
@@ -101,6 +116,9 @@ public abstract class ElveosMail {
         }
     }
 
+    /**
+     * Mail sent to a user to confirm he requested a money withdrawal
+     */
     public static class WithdrawalRequestedMail extends ElveosMail {
         public WithdrawalRequestedMail(final String reference, final String amount, final String iban) {
             super(new TemplateFile("withdrawal-requested.mail"), tr("elveos.org: Money withdrawal request"));
@@ -110,6 +128,9 @@ public abstract class ElveosMail {
         }
     }
 
+    /**
+     * Mail sent to user when a money withdrawal has been completed
+     */
     public static class WithdrawalCompleteMail extends ElveosMail {
         public WithdrawalCompleteMail(final String reference, final String amount, final String iban) {
             super(new TemplateFile("withdrawal-complete.mail"), tr("elveos.org: Money withdrawal complete"));
@@ -119,6 +140,10 @@ public abstract class ElveosMail {
         }
     }
 
+    /**
+     * Mail sent to administrators when there is a Money withdrawal request to
+     * handle
+     */
     public static class WithdrawalAdminMail extends ElveosMail {
         private static DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 

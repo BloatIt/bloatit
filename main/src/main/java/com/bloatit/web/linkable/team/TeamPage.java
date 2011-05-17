@@ -150,9 +150,9 @@ public final class TeamPage extends ElveosPage {
 
         master.add(tabPane);
 
-        if (userToken.isAuthenticated()) {
+//        if (userToken.isAuthenticated()) {
             tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
-        }
+//        }
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }

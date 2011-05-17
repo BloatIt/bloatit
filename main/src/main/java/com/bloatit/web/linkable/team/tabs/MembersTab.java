@@ -33,22 +33,24 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
+import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.SendTeamInvitationPageUrl;
+import com.sun.tools.internal.xjc.model.CClassInfoParent.Visitor;
 
 public class MembersTab extends HtmlTab {
     private final Team team;
     private final Session session = Context.getSession();
-    private final Member vistor;
+    private final Member visitor;
 
     public MembersTab(final Team team, final String title, final String tabKey, Member member) {
         super(title, tabKey);
         this.team = team;
-        this.vistor = member;
+        this.visitor = member;
     }
 
     @Override
@@ -59,19 +61,21 @@ public class MembersTab extends HtmlTab {
         final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members ({0})", team.getMembers().size()), 2);
         master.add(memberTitle);
 
-        if (vistor.hasInviteTeamRight(team)) {
-            final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(team);
-            final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
-            memberTitle.add(new HtmlParagraph().add(inviteMember));
-        }
+        if (visitor != null) {
+            if (visitor.hasInviteTeamRight(team)) {
+                final SendTeamInvitationPageUrl sendInvitePage = new SendTeamInvitationPageUrl(team);
+                final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
+                memberTitle.add(new HtmlParagraph().add(inviteMember));
+            }
 
-        if (team.isPublic() && !vistor.isInTeam(team)) {
-            final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(team).urlString(), Context.tr("Join this team"));
-            memberTitle.add(joinLink);
+            if (team.isPublic() && !visitor.isInTeam(team)) {
+                final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(team).urlString(), Context.tr("Join this team"));
+                memberTitle.add(joinLink);
+            }
         }
 
         final PageIterable<Member> members = team.getMembers();
-        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members, vistor));
+        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members, visitor));
         membersTable.setCssClass("members_table");
         memberTitle.add(membersTable);
 
@@ -90,11 +94,9 @@ public class MembersTab extends HtmlTab {
         private static final int BANK = 5;
         private static final int PROMOTE = 6;
 
-        public MyTableModel(final PageIterable<Member> members, Member member2) {
+        public MyTableModel(final PageIterable<Member> members, Member visitor) {
             this.members = members;
-            if (session.getUserToken() != null) {
-                this.visitor = member2;
-            }
+            this.visitor = visitor;
             iterator = members.iterator();
         }
 
