@@ -1,3 +1,4 @@
+#!/bin/bash
 
 usage(){
     cat << EOF
@@ -70,13 +71,13 @@ RSYNC=" rsync -v4 -h -h \
 	--times  --links --delete --perms "
 
 if [ "$OPERATION" = backup ] ; then
-    $RSYNC $USER@$HOST:$BACKUP_DIR $FILE_NAME
-    tar -cJ $FILE_NAME | gpg --output $FILE_NAME.tar.xz.enc --encrypt --recipient $ENCRYPT_USER
+    $RSYNC $USER@$HOST:$BACKUP_DIR $FILE_NAME.tmp
+    tar -cJ $FILE_NAME.tmp | gpg --output $FILE_NAME --encrypt --recipient $ENCRYPT_USER
     rm -rf $FILE_NAME
 fi
 
 if [ "$OPERATION" = restore ] ; then
-    gpg --decrypt $FILE_NAME.tar.xz.enc | tar -xvJf - 
+    gpg --decrypt $FILE_NAME | tar -xvJf - 
     $RSYNC $FILE_NAME/* $USER@$HOST:$BACKUP_DIR
     rm -rf $FILE_NAME
 fi

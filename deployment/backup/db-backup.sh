@@ -1,3 +1,4 @@
+#!/bin/bash
 
 usage(){
     cat << EOF
@@ -96,7 +97,6 @@ if [ $OPERATION = backup ] ; then
         gpg --output $FILE_NAME --encrypt --recipient $ENCRYPT_USER
 
     untunnel
-
 fi
 
 if [ $OPERATION = restore ] ; then
