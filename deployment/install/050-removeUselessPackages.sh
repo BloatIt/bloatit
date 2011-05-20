@@ -6,11 +6,6 @@ cat << EOF
 $0: Remove useless packages :
 -----------------------------
 
-### Usage
-
-    $0 [ exec ]:
-            Utiliser exec pour lancer la tache.
-
 This script will remove:
 
 - python (Less interpretor the better)

@@ -6,11 +6,6 @@ cat << EOF
 $0: Ajoute une clef public dans la liste des clef ssh
 -------------------------------------------------
 
-### Usage
-
-    $0 [exec]
-            utiliser le parametre "exec" pour executer le script.
-    
 ### Explications
 
 On vient de configurer ssh pour n'accepter que les connections autorisées par une clef public. 

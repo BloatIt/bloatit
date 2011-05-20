@@ -8,8 +8,8 @@ $0: Configure the postgresql db
 
 ### Usage
 
-    $0 [ username ]
-            if a username is specified this script is executed.
+You must export the USER variable so that this script know which user to use.
+(export USER=...)
 
 Configure the postgresql db:
 - Only local person can connect on the db
@@ -24,8 +24,12 @@ TODO !!
 
 EOF
 
-else
-    USER=$1
+elif [ "$1" = exec ] ; then
+    if [ -z "$USER" ] ; then 
+        echo "You have to specify the user you want to use (export USER=...)"
+        echo "Found error. Abording."
+        exit
+    fi
     sudo sed -i -r '/all/ s/md5$/reject/g' /etc/postgresql/8.4/main/pg_hba.conf
 
     echo "You will have to configure the postgres server yourself ..."

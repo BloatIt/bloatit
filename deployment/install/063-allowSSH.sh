@@ -8,12 +8,17 @@ $0: Add a ssh key into the authorized key of a user.
 
 ### Usage 
 
-    $0 [username]: If *username* is specified then the script is launch for the user *username*
+You must export the USER variable so that this script know which user to use.
+(export USER=...)
 
 EOF
 
-else
-    USER="$1"
+elif [ "$1" = exec ] ; then
+    if [ -z "$USER" ] ; then 
+        echo "You have to specify the user you want to use (export USER=...)"
+        echo "Found error. Abording."
+        exit
+    fi
 
     read -p "Authorize the $USER user to use ssh. Past your public key: " key
     sudo su -c "

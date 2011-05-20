@@ -8,8 +8,7 @@ $0: Install and configure cron-apt.
 
 ### Usage 
 
-    $0 [ exec ]
-        Use exec to launch the task.
+    $0 [ exec ]: Use exec to launch the task.
 
 ### Description
 
@@ -35,7 +34,7 @@ Then configure the cron in /etc/cron.d/cron-apt
 
 EOF
 
-else if [ "$1" = "exec" ] ; then
+elif [ "$1" = "exec" ] ; then
     sudo apt-get install cron-apt
 
     read -p "You have to configure cron-apt (MAILTO and MAILON options) <hit return>"

@@ -24,6 +24,6 @@ Les scripts
 Ce guide d'installation est découper en multiple petits scripts. Chaque script fait une tache simple, et possède une partie documentations. Elle explique ce que fait le script, et propose des configurations ou ajoute d'autres informations pour customiser la tâche en cours.
 
  - Lancer le script sans paramêtre affiche la doc.
- - Lancer le script avec le paramêtre 'exec', ou un autre paramètre lorsque c'est spécifié, lance la tache.
+ - Lancer le script avec le paramêtre 'exec' lance la tache.
 
 EOF

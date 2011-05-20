@@ -8,8 +8,7 @@ $0: Configure the lighttpd server.
 
 ### Usage
 
-    $0 [ filedirectory ]
-        filedirectory must be the directory where to find the default conf files (rewrite and fastcgi)
+You must export the FILE_DIR variable so that this script know where to find the default conf files (rewrite and fastcgi)
 
  - add the server.document.root informations
  - set the 404 error to /en/dopagenotfound (server.error-handler-404)
@@ -20,17 +19,17 @@ $0: Configure the lighttpd server.
 
 ### Details:
 
-server.document.root = "/dir/..."
-server.error-handler-404 = "/en/dopagenotfound"
-
-# make an external redirect
-# from any www.host (with www.) to the host (without www.)
-$HTTP["host"] =~ "^www\.(.*)$" {
-  url.redirect = ( "^/(.*)" => "http://%1/$1" )
-  }
-
-# Access logs
-accesslog.filename   = "/var/log/lighttpd/access.log"
+    server.document.root = "/dir/..."
+    server.error-handler-404 = "/en/dopagenotfound"
+    
+    # make an external redirect
+    # from any www.host (with www.) to the host (without www.)
+    $HTTP["host"] =~ "^www\.(.*)$" {
+    url.redirect = ( "^/(.*)" => "http://%1/$1" )
+    }
+    
+    # Access logs
+    accesslog.filename   = "/var/log/lighttpd/access.log"
 
 EOF
 

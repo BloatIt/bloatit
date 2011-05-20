@@ -9,9 +9,6 @@ $0: Configuration du serveur openSSH.
 
 ### Usage
 
-    $0 [ exec ] 
-            utiliser le parametre "exec" pour executer le script.
-
 Par défaut ce script ajoute les configurations suivante: 
 
  * authentication by public key only
@@ -40,6 +37,7 @@ Autorise seulement certains utilisateurs à avoir accès via ssh à cette machin
 
  * AllowGroups wheel admin
 Autorise seulement certains membres de groupes à avoir accès via ssh à cette machine. AllowGroups et AllowUsers ont des directives équivalentes pour interdire l'accès à la machine. Sans surprise elles s'appellent « DenyUsers » et « DenyGroups ».
+
 EOF
 
 elif [ "$1" = exec ] ; then 
