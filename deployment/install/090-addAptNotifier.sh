@@ -3,7 +3,15 @@
 if [ -z "$1" ] ; then
 cat << EOF
 
-$0 [exec]: Install and configure cron-apt.
+$0: Install and configure cron-apt.
+-----------------------------
+
+### Usage 
+
+    $0 [ exec ]
+        Use exec to launch the task.
+
+### Description
 
 To have a secure system we have to make frequent update.
 So I choose to use the cron-apt package: 
@@ -15,7 +23,7 @@ It can optionally sends mail to the system administrator on errors, log to syslo
 Observe that this tool may be a security risk, so you should not set it to do more than necessary. Automatic upgrade of all packages is NOT recommended unless you are in full control of the package repository.
 
 
-You has to configure cron-apt in /etc/cron-apt 
+You have to configure cron-apt in /etc/cron-apt 
 
  - set the mail address MAILTO=”thomas@elveos.org”
  - set MAILON=”always” 

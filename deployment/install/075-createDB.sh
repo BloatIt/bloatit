@@ -3,12 +3,14 @@
 if [ -z "$1" ] ; then 
 
 cat << EOF
-$0 [ username password ] :
+$0: create a database user and a new db.
+-----------------------------
 
-Create a database user and a db with the same name.
+### Usage
 
-   username: the database user.
-   password: the database user's password. Make sur it is strong enougth (10 chars).
+    $0 [ username password ] :
+        username: the database user.
+        password: the database user's password. Make sur it is strong enougth (10 chars).
 
 EOF
 

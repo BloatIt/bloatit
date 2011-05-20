@@ -3,7 +3,13 @@
 if [ -z "$1" ] ; then 
 
 cat << EOF
-$0 [ username ] :
+$0: Configure the postgresql db
+-----------------------------
+
+### Usage
+
+    $0 [ username ]
+            if a username is specified this script is executed.
 
 Configure the postgresql db:
 - Only local person can connect on the db
@@ -12,7 +18,10 @@ Configure the postgresql db:
 - Every other user are refused.
 In fact everything must be done by hand. (It is very hard to make an automatic script...)
 
-if a username is specified this script is executed.
+### Optimizing postgres
+
+TODO !!
+
 EOF
 
 else

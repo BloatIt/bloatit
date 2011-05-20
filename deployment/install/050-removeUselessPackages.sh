@@ -4,10 +4,19 @@ if [ -z "$1" ] ; then
 
 cat << EOF
 $0: Remove useless packages :
+-----------------------------
+
+### Usage
+
+    $0 [ exec ]:
+            Utiliser exec pour lancer la tache.
+
+This script will remove:
 
 - python (Less interpretor the better)
 - netcat-traditional (Obvously it is a very good tool for hakers)
 - xserver-xorg (not needed)
+
 EOF
 
 elif [ "$1" = exec ] ; then 

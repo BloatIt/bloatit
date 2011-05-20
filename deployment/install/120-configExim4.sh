@@ -1,27 +1,36 @@
 #!/bin/bash
 
+if [ -z "$1" ] ; then
+
 cat << EOF
 
-$0 [exec]: Install and configure the exim4 mail server.
+$0: Install and configure the exim4 mail server.
+-----------------------------
 
+### Usage 
+
+    $0 [ exec ] 
+        Use the exec param to launch the script.
+
+### Details
 
 Exim will be configured to send all email he recieve using ou gmail account.
-It is automatically send mails, so we have to send them using the noreply account.
+It is automatically sent mails, so we have to send them using the noreply account.
 (email is noreply@linkeos.com)
 
 We have to have a local mail server (For the mail reporting system etc.)
 There are different possible choices, (procmail, qmail, sendmail, exim).
+
 - Sendmail is old and complex (and not very secure)
 - procmail is good but has a dependencie to python
 - qmail is not realy maintained
-- exim is the last one available...
-So I choose exim4.
+- exim is the last one available... So I choose exim4.
 
 TODO: A special transfer agent to automatically sign all mails.
 
 EOF
 
-if [ "$1" = "exec" ] ; then
+elif [ "$1" = "exec" ] ; then
     ADDR_MAIL=noreply@linkeos.com
 
     # Install

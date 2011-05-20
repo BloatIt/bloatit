@@ -4,10 +4,19 @@ if [ -z "$1" ] ; then
 
 cat << EOF
 $0: Install the needed packages.
+-------------------------------------
 
-Some basic packages like vim, less, bash-completion
-Working packages like postgresql lighttpd default-jre-headless 
-Utils packages like zip unzip git-core rsync 
+### Usage
+
+    $0 [ exec ]
+            exec permet d'executer la tache, et installer les paquet requis.
+
+This script install:
+
+ * Some basic packages like vim, less, bash-completion
+ * Working packages like postgresql lighttpd default-jre-headless 
+ * Utils packages like zip unzip git-core rsync 
+
 EOF
 
 elif [ "$1" = exec ] ; then 

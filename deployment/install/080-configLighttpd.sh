@@ -3,18 +3,22 @@
 if [ -z "$1" ] ; then 
 
 cat << EOF
-$0 [ filedirectory ] :
+$0: Configure the lighttpd server.
+-----------------------------
 
-Configure the lighttpd server. 
+### Usage
 
-- add the server.document.root informations
-- set the 404 error to /en/dopagenotfound (server.error-handler-404)
-- Add a redirect to redirect all wwww/ to ./
-- Activate the access logs (accesslog.filename)
-- copy the generic rewrite file
-- copy the generic fastcgi file
+    $0 [ filedirectory ]
+        filedirectory must be the directory where to find the default conf files (rewrite and fastcgi)
 
-Details:
+ - add the server.document.root informations
+ - set the 404 error to /en/dopagenotfound (server.error-handler-404)
+ - Add a redirect to redirect all wwww/ to ./
+ - Activate the access logs (accesslog.filename)
+ - copy the generic rewrite file
+ - copy the generic fastcgi file
+
+### Details:
 
 server.document.root = "/dir/..."
 server.error-handler-404 = "/en/dopagenotfound"
@@ -30,8 +34,8 @@ accesslog.filename   = "/var/log/lighttpd/access.log"
 
 EOF
 
-read -p "Skip this step ? (y/N) " reponse
-if [ -z "$reponse" ] || [ "$reponse" = "n" ] || [ "$reponse" = "N" ] ; then 
+elif [ "$1" = exec ] ; then
+
     read -e -p  "Where is the www directory ? " directory
     if [ -n "$directory" ] ; then 
         # Set the server document root.
@@ -68,4 +72,3 @@ EOF ' >> /etc/lighttpd/lighttpd.conf
 fi
 
 
-else
