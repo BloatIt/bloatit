@@ -228,19 +228,19 @@ public class ModelConfiguration extends ReloadableConfiguration {
         configuration.load();
     }
 
-    public String getLinkeosName() {
-        return linkeosName;
+    public static String getLinkeosName() {
+        return configuration.linkeosName;
     }
 
-    public BigDecimal getLinkeosTaxesRate() {
-        return linkeosTaxesRate;
+    public static BigDecimal getLinkeosTaxesRate() {
+        return configuration.linkeosTaxesRate;
     }
 
-    public String getLinkeosAddress() {
-        return linkeosAddress;
+    public static String getLinkeosAddress() {
+        return configuration.linkeosAddress;
     }
 
-    public String getLinkeosTaxIdentification() {
-        return linkeosTaxesIdentification;
+    public static String getLinkeosTaxIdentification() {
+        return configuration.linkeosTaxesIdentification;
     }
 }

@@ -76,7 +76,7 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
-    InvoicingContact(final String name,
+    public InvoicingContact(final String name,
                      final String address, final Actor<?> actor) {
         super(DaoInvoicingContact.createAndPersist(name, address, actor.getDao()));
         }
@@ -105,13 +105,13 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
     }
 
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        //TODO: access right
+        return getDao().getName();
     }
 
     public String getAddress() {
-        // TODO Auto-generated method stub
-        return null;
+        //TODO: access right
+        return getDao().getAddress();
     }
 
 }

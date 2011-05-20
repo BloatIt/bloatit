@@ -169,7 +169,6 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
                         description,
                         totalExcludingTaxes,
                         total,
-                        null,
                         "3994-EIDI-39203");
 
             return true;

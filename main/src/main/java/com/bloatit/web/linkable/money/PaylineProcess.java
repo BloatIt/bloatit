@@ -33,7 +33,6 @@ import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
@@ -55,11 +54,9 @@ public class PaylineProcess extends WebProcess {
     @RequestParam
     private Actor<?> actor;
 
-    private InvoicingContact invoicingContact;
-
     @SuppressWarnings("unused")
     @RequestParam
-    private PaymentProcess parentProcess;
+    private final PaymentProcess parentProcess;
 
     private boolean success = false;
 
@@ -72,6 +69,7 @@ public class PaylineProcess extends WebProcess {
         super(url);
         this.url = url;
         actor = url.getActor();
+        parentProcess = url.getParentProcess();
     }
 
     public synchronized boolean isSuccessful() {
@@ -111,7 +109,7 @@ public class PaylineProcess extends WebProcess {
 
         Reponse reponse;
         try {
-            reponse = payline.doPayment(actor, invoicingContact, getAmount(), cancelUrl, returnUrl, notificationUrl);
+            reponse = payline.doPayment(actor, parentProcess.getInvoicingContact(), getAmount(), cancelUrl, returnUrl, notificationUrl);
             SessionManager.storeTemporarySession(reponse.getToken(), session);
 
             // Normal case It is accepted !

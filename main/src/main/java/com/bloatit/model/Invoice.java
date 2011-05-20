@@ -87,9 +87,48 @@ public final class Invoice extends Identifiable<DaoInvoice> {
             final String deliveryName,
             final BigDecimal priceExcludingTax,
             final BigDecimal totalPrice,
-            final FileMetadata invoiceFile,
             final String invoiceId) {
-        super(DaoInvoice.createAndPersist(sellerName,
+        super(generateInvoice(sellerName,
+                                      sellerAddress,
+                                      sellerTaxIdentification,
+                                      recipientActor,
+                                      contributorName,
+                                      contributorAdress,
+                                      deliveryName,
+                                      priceExcludingTax,
+                                      totalPrice,
+                                      invoiceId));
+        }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static DaoInvoice generateInvoice(String sellerName,
+                                              String sellerAddress,
+                                              String sellerTaxIdentification,
+                                              Actor<?> recipientActor,
+                                              String contributorName,
+                                              String contributorAdress,
+                                              String deliveryName,
+                                              BigDecimal priceExcludingTax,
+                                              BigDecimal totalPrice,
+                                              String invoiceId) {
+
+        FileMetadata pdf = generateInvoicePdf(sellerName,
+                                              sellerAddress,
+                                              sellerTaxIdentification,
+                                              recipientActor,
+                                              contributorName,
+                                              contributorAdress,
+                                              deliveryName,
+                                              priceExcludingTax,
+                                              totalPrice,
+                                              invoiceId);
+
+
+
+        return DaoInvoice.createAndPersist(sellerName,
                                       sellerAddress,
                                       sellerTaxIdentification,
                                       recipientActor.getDao(),
@@ -98,13 +137,27 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                       deliveryName,
                                       priceExcludingTax,
                                       totalPrice,
-                                      invoiceFile.getDao(),
-                                      invoiceId));
-        }
+                                      pdf.getDao(),
+                                      invoiceId);
+    }
 
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Visitor
-    // /////////////////////////////////////////////////////////////////////////////////////////
+    private static FileMetadata generateInvoicePdf(String sellerName,
+                                                   String sellerAddress,
+                                                   String sellerTaxIdentification,
+                                                   Actor<?> recipientActor,
+                                                   String contributorName,
+                                                   String contributorAdress,
+                                                   String deliveryName,
+                                                   BigDecimal priceExcludingTax,
+                                                   BigDecimal totalPrice,
+                                                   String invoiceId) {
+
+
+
+
+
+        return null;
+    }
 
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
