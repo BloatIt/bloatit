@@ -41,7 +41,7 @@ Autorise seulement certains membres de groupes à avoir accès via ssh à cette 
 EOF
 
 elif [ "$1" = exec ] ; then 
-    local SSHD_CFG=/etc/ssh/sshd_config
+    SSHD_CFG=/etc/ssh/sshd_config
 
     sudo sed -i -r '/RSAAuthentication/ s/#?(.*) yes$/\1 no/g' $SSHD_CFG
     sudo sed -i -r '/PubkeyAuthentication/ s/#?(.*) no$/\1 yes/g' $SSHD_CFG

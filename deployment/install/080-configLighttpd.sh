@@ -47,23 +47,23 @@ elif [ "$1" = exec ] ; then
     sudo sed -i -r "/server.error-handler-404/ s#\\\"[a-zA-Z/]*\\\"#\\\"/en/dopagenotfound\\\"#g" /etc/lighttpd/lighttpd.conf
 
     echo "Set the redirect and the accesslog"
-    sudo bash -c 'cat << EOF
+    sudo bash -c 'cat << EOF >> /etc/lighttpd/lighttpd.conf
 # make an external redirect
 # from any www.host (with www.) to the host (without www.)
-$HTTP["host"] =~ "^www\.(.*)$" {
+\$HTTP["host"] =~ "^www\.(.*)$" {
   url.redirect = ( "^/(.*)" => "http://%1/$1" )
   }
 
 # Access logs
 accesslog.filename   = "/var/log/lighttpd/access.log"
-EOF ' >> /etc/lighttpd/lighttpd.conf
+EOF ' 
 
     echo "Adding the rewrite and fastcgi modules"
     sudo cp $FILE_DIR/rewrite.lighttpd.conf /etc/lighttpd/conf-enabled/
     sudo cp $FILE_DIR/fastcgi.conf /etc/lighttpd/conf-enabled/
 
 
-    read "You can now edit the lighttpd.conf file. <press enter>"
+    read -p "You can now edit the lighttpd.conf file. <press enter>"
     sudo vim /etc/lighttpd/lighttpd.conf
 
     sudo service lighttpd restart

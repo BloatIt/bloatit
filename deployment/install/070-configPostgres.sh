@@ -34,8 +34,8 @@ elif [ "$1" = exec ] ; then
 
     echo "You will have to configure the postgres server yourself ..."
     echo "Copy these lines: (don't forgot the rejected to add...)"
-    echo "local   $1         $1                          md5" 
-    echo "host    $1         $1   127.0.0.1/32           md5" 
+    echo "local   $USER         $USER                          md5" 
+    echo "host    $USER         $USER   127.0.0.1/32           md5" 
     read
     sudo vim /etc/postgresql/8.4/main/pg_hba.conf
     sudo service postgresql restart

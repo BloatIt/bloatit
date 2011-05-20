@@ -65,7 +65,12 @@ EOF
 
     sudo sh -c "echo \"gmail-smtp-msa.l.google.com:$ADDR_MAIL:$_password\" >> /etc/exim4/passwd.client"
 
+
+    sudo mount -o remount,exec /var
+
     sudo dpkg-reconfigure exim4-config
     sudo update-exim4.conf
     sudo service exim4 restart
+
+    sudo mount -o remount,noexec /var
 fi
