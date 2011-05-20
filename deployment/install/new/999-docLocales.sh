@@ -7,12 +7,6 @@ To do so we have to reconfigure them.
 Set the default to fr_FR.UTF8@euro
 (add also a en_US.UTF8)
 
+sudo dpkg-reconfigure locales
 EOF
 
-read -p "<type return>"
-
-configureLocales(){
-    sudo dpkg-reconfigure locales
-}
-
-configureLocales

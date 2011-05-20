@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [ -z "$1" ] ; then
+cat << EOF
+
+$0 [exec]: Install and configure cron-apt.
+
+To have a secure system we have to make frequent update.
+So I choose to use the cron-apt package: 
+
+cron-apt Contains a tool that is run by a cron job at regular intervals. By default it just updates the package list and download new packages without installing. You can instruct it to run anything that you can do with apt-get (or aptitude).
+
+It can optionally sends mail to the system administrator on errors, log to syslog or a separate log file.
+
+Observe that this tool may be a security risk, so you should not set it to do more than necessary. Automatic upgrade of all packages is NOT recommended unless you are in full control of the package repository.
+
+
+You has to configure cron-apt in /etc/cron-apt 
+
+ - set the mail address MAILTO=”thomas@elveos.org”
+ - set MAILON=”always” 
+
+
+Then configure the cron in /etc/cron.d/cron-apt
+
+ - Use the dayly cron.
+
+EOF
+
+else if [ "$1" = "exec" ] ; then
+    sudo apt-get install cron-apt
+
+    read -p "You have to configure cron-apt (MAILTO and MAILON options) <hit return>"
+    sudo vim /etc/cron-apt/config
+
+    read -p "You have to configure cron for cron-apt <hit return>"
+    sudo vim /etc/cron.d/cron-apt
+fi

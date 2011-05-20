@@ -28,15 +28,4 @@ else
     sudo service postgresql restart
 fi
 
-add_database(){
-PASSWORD=$1
-USER=$2
-sudo su -c " 
-cat << EOF | psql -f -
-CREATE USER $USER;
-CREATE DATABASE $USER OWNER $USER;
-ALTER USER $USER WITH ENCRYPTED PASSWORD '$PASSWORD' ;
-EOF
-" postgres
-}
 

@@ -2,6 +2,8 @@
 
 cat << EOF
 
+$0: This is a documentation only script.
+
 Dhcp is one of the deamon the NSA suggests to remove.
 But to do so we have to configure the connection in a static way.
 
