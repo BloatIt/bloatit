@@ -103,7 +103,8 @@ if [ $OPERATION = restore ] ; then
     tunnel
 
     gpg --decrypt $FILE_NAME | \
-        pg_restore -d $DB_NAME -h localhost -p $LOCAL_PORT -U $DB_USER 
+        pg_restore -d $DB_NAME -h localhost -p $LOCAL_PORT -U $DB_USER && echo success ! 
+
 
     untunnel
 fi

@@ -1,12 +1,17 @@
 #!/bin/bash
 
-if [ "$1" = message ] ; then 
+if [ -z "$1" ] ; then 
 
 cat << EOF
 $0: Remove useless packages :
+-----------------------------
+
+This script will remove:
+
 - python (Less interpretor the better)
 - netcat-traditional (Obvously it is a very good tool for hakers)
 - xserver-xorg (not needed)
+
 EOF
 
 elif [ "$1" = exec ] ; then 
