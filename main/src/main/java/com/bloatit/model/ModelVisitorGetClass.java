@@ -20,12 +20,15 @@ import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoContribution;
+import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoInternalAccount;
+import com.bloatit.data.DaoInvoice;
+import com.bloatit.data.DaoInvoicingContact;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
@@ -146,5 +149,20 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     @Override
     public Class<?> visit(final MoneyWithdrawal moneyWithdrawal) {
         return DaoMoneyWithdrawal.class;
+    }
+
+    @Override
+    public Class<?> visit(Invoice invoice) {
+        return DaoInvoice.class;
+    }
+
+    @Override
+    public Class<?> visit(InvoicingContact invoicingContact) {
+        return DaoInvoicingContact.class;
+    }
+
+    @Override
+    public Class<?> visit(ContributionInvoice invoice) {
+        return DaoContributionInvoice.class;
     }
 }

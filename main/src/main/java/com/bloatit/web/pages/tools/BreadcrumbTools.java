@@ -22,12 +22,15 @@ import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
+import com.bloatit.model.Invoice;
+import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
@@ -157,6 +160,21 @@ public class BreadcrumbTools {
 
             @Override
             public Breadcrumb visit(MoneyWithdrawal moneyWithdrawal) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(Invoice invoice) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(ContributionInvoice invoice) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(InvoicingContact invoicingContact) {
                 throw new NotImplementedException();
             }
         });

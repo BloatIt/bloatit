@@ -115,6 +115,13 @@ public final class StaticAccountChargingPage extends QuotationPage {
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
         summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url));
         summary.add(new HtmlClearer());
+
+        // Invoicing contact
+
+        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing name"), process.getInvoicingContact().getName()));
+        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing address"), process.getInvoicingContact().getAddress()));
+
+        // Pay bloc
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
                                      new PaylineProcessUrl(actor, process),
@@ -141,7 +148,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
     @Override
     protected String createPageTitle() {
-        return tr("Contribute to a feature - check");
+        return tr("Charge account - check");
     }
 
     @Override
@@ -151,7 +158,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
     @Override
     public String getRefusalReason() {
-        return tr("You must be logged to contribute");
+        return tr("You must be logged to charge your account");
     }
 
     @Override

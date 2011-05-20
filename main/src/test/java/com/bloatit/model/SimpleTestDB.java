@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFileMetadata;
@@ -72,6 +71,7 @@ public class SimpleTestDB {
         yo = new Member("Yoann", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
+        InvoicingContact yoInvoicingContact = new InvoicingContact("Yoann Plénet","Earth", Member.create(yo));
 
         final DaoMember admin = new Member("admin", "admin", "admin@gmail.com", Locale.FRANCE).getDao();
         admin.setFullname("Administrator");
@@ -79,6 +79,9 @@ public class SimpleTestDB {
         admin.setRole(Role.ADMIN);
 
         publicGroup = DaoTeam.createAndPersiste("publicGroup", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);
+        InvoicingContact publicGroupInvoicingContact = new InvoicingContact("publicGroup","Mars", Team.create(publicGroup));
+
+
         privateGroup = DaoTeam.createAndPersiste("privateGroup", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
 
         publicGroup.addMember(tom, true);
@@ -114,11 +117,11 @@ public class SimpleTestDB {
         privateGroup.addMember(loser, false);
 
         try {
-            yoBankTransaction = DaoBankTransaction.createAndPersist("test", "token1", yo, new BigDecimal("1000"), new BigDecimal("1100"), "order1");
+            yoBankTransaction = DaoBankTransaction.createAndPersist("test", "token1", yo, yoInvoicingContact.getDao(), new BigDecimal("1000"), new BigDecimal("1100"), "order1");
             getYoBankTransaction().setAuthorized();
             getYoBankTransaction().setValidated();
-            
-            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test", "token2", publicGroup, new BigDecimal("1000"), new BigDecimal("1100"), "order2");
+
+            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test", "token2", publicGroup, publicGroupInvoicingContact.getDao(), new BigDecimal("1000"), new BigDecimal("1100"), "order2");
             publicGroupBankTransaction.setAuthorized();
             publicGroupBankTransaction.setValidated();
 

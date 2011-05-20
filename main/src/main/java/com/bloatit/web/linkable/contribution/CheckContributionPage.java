@@ -300,7 +300,7 @@ public final class CheckContributionPage extends QuotationPage {
         return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
     }
 
-    private static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
+    public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
         final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
         breadcrumb.pushLink(checkContributionPageUrl.getHtmlLink(tr("Contribute - Check")));

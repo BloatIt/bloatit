@@ -56,7 +56,7 @@ public class PaylineProcess extends WebProcess {
 
     @SuppressWarnings("unused")
     @RequestParam
-    private PaymentProcess parentProcess;
+    private final PaymentProcess parentProcess;
 
     private boolean success = false;
 
@@ -69,6 +69,7 @@ public class PaylineProcess extends WebProcess {
         super(url);
         this.url = url;
         actor = url.getActor();
+        parentProcess = url.getParentProcess();
     }
 
     public synchronized boolean isSuccessful() {
@@ -108,7 +109,7 @@ public class PaylineProcess extends WebProcess {
 
         Reponse reponse;
         try {
-            reponse = payline.doPayment(actor, getAmount(), cancelUrl, returnUrl, notificationUrl);
+            reponse = payline.doPayment(actor, parentProcess.getInvoicingContact(), getAmount(), cancelUrl, returnUrl, notificationUrl);
             SessionManager.storeTemporarySession(reponse.getToken(), session);
 
             // Normal case It is accepted !
