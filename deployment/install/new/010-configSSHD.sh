@@ -14,7 +14,7 @@ Tips
 Here are some tips to configure the openSSH server : 
 
 -> ListenAddress 192.168.0.1
-Ne faîtes écouter ssh que sur une interface donnée, 
+Ne faites écouter ssh que sur une interface donnée, 
 
 -> PermitRootLogin no
 Essayez autant que possible de ne pas autoriser de connexion en tant que root.
