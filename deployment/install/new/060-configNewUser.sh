@@ -2,14 +2,9 @@
 
 USER=elveos
 
-# Add a elveos user with the following configurations
-# - Every folder are rxwr-x---
-# - Every files are  r--r-----
-# 
-# The install admin can connected by ssh using elveos account (~/.ssh/authorized_keys)
-# The home is versioned by git.
-
-
+if [ -n "$3" ] ; then
+    USER="$3"
+fi
 
 add_user(){
     sudo adduser $USER 
@@ -87,55 +82,44 @@ git commit -m "first commit"
 ' $USER
 }
 
-usage(){
-cat << EOF
-usage: $0 { -s | -c } [-u username] 
+if [ -z "$1" ] ; then
+    cat << EOF
+$0 [exec action [username]]: Create a new user and configure its home directory
+    exec: execute the script
+    action: 
+        create -> create the new user
+        addWWWGroup -> add the www-data user into the new user group (So that the www-data user can read the home of the new user)
+        createDirs -> create the 'standard' directories in the user home.
+        setRights -> set the rights of all the files in the user home.
+        allowSSH  -> Allow ssh the new user to connect by ssh.
+        homeGit   -> version the home with git.
+    username: default is elveos.
 
-Create a user and add the right folder
 
-OPTIONS:
-   -h      Show this message. 
-   -u      specify a username (default=elveos)
-   -c      Complet: for a complete deployment (rigorous right etc.)
-   -s      Simplified: for a simple deployment (no user creation. no git versionning. simple rights"
+- Every folder are rxwr-x---
+- Every files are  r--r-----
 EOF
 
-}
+elif [ "$1" = "exec" ] ; then 
 
-while getopts "u:sc" OPTION
-do
-    case $OPTION in
-        h)
-            usage
+    case "$2" in 
+        create)
+            add_user
             ;;
-        u)
-            USER=$OPTARG
+        addgroup)
+            addgroup
             ;;
-        c)
-            MODE=complet
+        createDirs)
+            create_directories
             ;;
-        s)
-            MODE=simple
+        setRights)
+            set_right_restrictive
             ;;
-        ?)
-            usage 1>&2
-            exit
+        allowSSH)
+            allow_ssh_connection
+            ;;
+        homeGit)
+            git_versionning_of_home
             ;;
     esac
-done
-
-if [ "$MODE" = "complet" ] ; then
-    add_user
-    allow_ssh_connection
-    www_in_user_group
-    create_directories
-    set_right_restrictive
-    git_versionning_of_home
-elif [ "$MODE" = "simple" ] ; then
-    www_in_user_group
-    create_directories
-    set_right_dangerous
-else 
-    usage
 fi
-

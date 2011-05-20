@@ -17,10 +17,13 @@ sudo sed -i -r '/var.*ext4/ s/(ext4 +)/\1noexec,/g' /etc/fstab
 
 
 
-if [ "$1" = message ] ; then 
+if [ -z "$1" ] ; then 
 
 cat << EOF
 $0: Make the /var and /tmp partitions noexec
+
+- modify the fstab
+- create a /etc/apt.conf.d/50remount file to remount with exec during apt execution.
 
 We have to do this because there is no way to do it durring the install process.
 Apt will remount with the exec option during its execution.
@@ -31,5 +34,5 @@ elif [ "$1" = exec ] ; then
 create_apt_conf && update_fstab
 
 else 
-    echo "Parameter must be 'message' or 'exec'"
+    echo "Parameter must be empty or 'exec'"
 fi

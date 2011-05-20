@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$1" = message ] ; then 
+if [ -z "$1" ] ; then 
 
 cat << EOF
 $0: Configure the openSSH server, and let you customize the conf file.
@@ -11,6 +11,7 @@ $0: Configure the openSSH server, and let you customize the conf file.
 
 Tips
 =========
+
 Here are some tips to configure the openSSH server : 
 
 -> ListenAddress 192.168.0.1
@@ -46,6 +47,6 @@ elif [ "$1" = exec ] ; then
     sudo service ssh restart
 
 else 
-    echo "Parameter must be 'message' or 'exec'"
+    echo "Parameter must be empty or 'exec'"
 fi
 

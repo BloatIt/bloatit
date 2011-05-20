@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$1" = message ] ; then 
+if [ -z "$1" ] ; then 
 
 cat << EOF
 $0: Install the needed packages.
@@ -17,6 +17,6 @@ elif [ "$1" = exec ] ; then
     # Utils
     sudo apt-get install zip unzip
 else 
-    echo "Parameter must be 'message' or 'exec'"
+    echo "Parameter must be empty or 'exec'"
 fi
 
