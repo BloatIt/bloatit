@@ -32,11 +32,8 @@ remote_launch() {
         cp -r . /tmp
         cd /tmp
         bash -- "$SCRIPT" $@
-        cd /tmp && rm -rf deployment file install commons
     else
-        scp -r . $HOST:/tmp/
-        ssh -t $HOST "cd /tmp && bash -- \"$SCRIPT\" $@ 
-             cd /tmp && rm -rf deployment file install commons
-        "
+        rsync --recursive --compress -L . $HOST:/tmp/
+        ssh -t $HOST "cd /tmp && bash -- \"$SCRIPT\" $@ "
     fi
 }
