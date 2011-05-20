@@ -18,13 +18,14 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 
+import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoInvoice;
+import com.bloatit.data.DaoContributionInvoice;
 
 /**
  * This is a invoice.
  */
-public final class Invoice extends Identifiable<DaoInvoice> {
+public final class ContributionInvoice extends Identifiable<DaoContributionInvoice> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
@@ -34,7 +35,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
      * This class implements the method pattern, implementing the doCreate
      * method. See the base class for more informations: {@link Creator}.
      */
-    private static final class MyCreator extends Creator<DaoInvoice, Invoice> {
+    private static final class MyCreator extends Creator<DaoContributionInvoice, ContributionInvoice> {
 
         /*
          * (non-Javadoc)
@@ -43,8 +44,8 @@ public final class Invoice extends Identifiable<DaoInvoice> {
          */
         @SuppressWarnings("synthetic-access")
         @Override
-        public Invoice doCreate(final DaoInvoice dao) {
-            return new Invoice(dao);
+        public ContributionInvoice doCreate(final DaoContributionInvoice dao) {
+            return new ContributionInvoice(dao);
         }
     }
 
@@ -55,7 +56,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
      * @return null if dao is null. Else return the new invoice.
      */
     @SuppressWarnings("synthetic-access")
-    public static Invoice create(final DaoInvoice dao) {
+    public static ContributionInvoice create(final DaoContributionInvoice dao) {
         return new MyCreator().create(dao);
     }
 
@@ -64,7 +65,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
      *
      * @param dao the dao
      */
-    private Invoice(final DaoInvoice dao) {
+    private ContributionInvoice(final DaoContributionInvoice dao) {
         super(dao);
     }
 
@@ -78,29 +79,35 @@ public final class Invoice extends Identifiable<DaoInvoice> {
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
-    Invoice(final String sellerName,
-            final String sellerAddress,
-            final String sellerTaxIdentification,
-            final Actor<?> recipientActor,
-            final String contributorName,
-            final String contributorAdress,
-            final String deliveryName,
-            final BigDecimal priceExcludingTax,
-            final BigDecimal totalPrice,
-            final FileMetadata invoiceFile,
-            final String invoiceId) {
-        super(DaoInvoice.createAndPersist(sellerName,
-                                      sellerAddress,
-                                      sellerTaxIdentification,
-                                      recipientActor.getDao(),
-                                      contributorName,
-                                      contributorAdress,
-                                      deliveryName,
-                                      priceExcludingTax,
-                                      totalPrice,
-                                      invoiceFile.getDao(),
-                                      invoiceId));
-        }
+    ContributionInvoice(final DaoActor emitterActor,
+                        final String sellerName,
+                        final String sellerAddress,
+                        final String sellerTaxIdentification,
+                        final Actor<?> recipientActor,
+                        final String contributorName,
+                        final String contributorAdress,
+                        final String deliveryName,
+                        final BigDecimal priceExcludingTax,
+                        final BigDecimal totalPrice,
+                        final FileMetadata invoiceFile,
+                        final String invoiceId,
+                        final Milestone milestone,
+                        final Contribution contribution) {
+        super(DaoContributionInvoice.createAndPersist(emitterActor,
+                                                      sellerName,
+                                                      sellerAddress,
+                                                      sellerTaxIdentification,
+                                                      recipientActor.getDao(),
+                                                      contributorName,
+                                                      contributorAdress,
+                                                      deliveryName,
+                                                      priceExcludingTax,
+                                                      totalPrice,
+                                                      invoiceFile.getDao(),
+                                                      invoiceId,
+                                                      milestone.getDao(),
+                                                      contribution.getDao()));
+    }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
@@ -111,8 +118,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         return visitor.visit(this);
     }
 
-
- // ///////////////////////////
+    // ///////////////////////////
     // Unprotected methods
 
     /**
@@ -126,5 +132,15 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         return (Actor<?>) getDao().getRecipientActor().accept(new DataVisitorConstructor());
     }
 
+    /**
+     * This method is used only in the authentication process. You should never
+     * used it anywhere else.
+     *
+     * @return the actor unprotected
+     * @see #getActor()
+     */
+    final Actor<?> getEmitterActorUnprotected() {
+        return (Actor<?>) getDao().getEmitterActor().accept(new DataVisitorConstructor());
+    }
 
 }

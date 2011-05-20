@@ -582,7 +582,7 @@ msgstr "elveos.org logo"
 
 #: com/bloatit/web/pages/master/ElveosPage.java:197
 msgid "the cooperative platform for free software funding"
-msgstr "la platforme de financement coopératif pour les logiciels libres"
+msgstr "la plateforme de financement coopératif pour les logiciels libres"
 
 #: com/bloatit/web/pages/master/Menu.java:39
 msgid "Feature requests"

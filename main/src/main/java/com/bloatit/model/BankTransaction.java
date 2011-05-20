@@ -30,7 +30,7 @@ import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
 
 /**
  * The Class BankTransaction.
- * 
+ *
  * @see DaoBankTransaction
  */
 @Entity
@@ -68,7 +68,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Check the cache, if a corresponding BankTransaction exist return it,
      * otherwise create a BankTransaction using its dao representation. If the
      * dao == null return null;
-     * 
+     *
      * @param dao the dao
      * @return the bank transaction
      */
@@ -79,7 +79,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets a bank transaction by token.
-     * 
+     *
      * @param token the token we are looking for
      * @return the <code>BankTransaction</code> with this <code>token</code>.
      *         Return null if not found.
@@ -90,7 +90,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Create a new BankTransaction.
-     * 
+     *
      * @param message is the message from the bank. May be a Ok message or an
      *            error message.
      * @param token is a token to authenticate this transaction. The online bank
@@ -105,15 +105,16 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     public BankTransaction(final String message,
                            final String token,
                            final Actor<?> author,
+                           final InvoicingContact invoicingContact,
                            final BigDecimal value,
                            final BigDecimal valuePayed,
                            final String orderReference) {
-        super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, valuePayed, orderReference));
+        super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), invoicingContact.getDao(), value, valuePayed, orderReference));
     }
 
     /**
      * Instantiates a new bank transaction.
-     * 
+     *
      * @param dao the dao
      */
     private BankTransaction(final DaoBankTransaction dao) {
@@ -126,7 +127,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Sets authorized.
-     * 
+     *
      * @see DaoBankTransaction#setAuthorized()
      */
     protected void setAuthorized() {
@@ -135,7 +136,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Sets refused.
-     * 
+     *
      * @see DaoBankTransaction#setRefused()
      */
     protected void setRefused() {
@@ -144,19 +145,43 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Sets the validated.
-     * 
+     *
      * @return true, if successful
      * @see DaoBankTransaction#setValidated()
      */
     protected boolean setValidated() {
-        return getDao().setValidated();
+        if (getDao().setValidated()) {
+            // Emit invoice
+
+            String description = "Linkeos Fees to charge an amount of " + this.getValueUnprotected().toPlainString() + "€";
+            BigDecimal taxes = ModelConfiguration.getConfiguration().getLinkeosTaxesRate();
+
+            BigDecimal total = getValuePaidUnprotected().subtract(getValueUnprotected());
+            BigDecimal totalExcludingTaxes = total.divide(BigDecimal.ONE.add(taxes), BigDecimal.ROUND_HALF_EVEN);
+
+            // TODO: add good invoice number
+            new Invoice(ModelConfiguration.getConfiguration().getLinkeosName(),
+                        ModelConfiguration.getConfiguration().getLinkeosAddress(),
+                        ModelConfiguration.getConfiguration().getLinkeosTaxIdentification(),
+                        this.getAuthorUnprotected(),
+                        this.getInvoicingContact().getName(),
+                        this.getInvoicingContact().getAddress(),
+                        description,
+                        totalExcludingTaxes,
+                        total,
+                        null,
+                        "3994-EIDI-39203");
+
+            return true;
+        }
+        return false;
     }
 
     /**
      * Sets the process informations. The process informations are every kind of
      * information you might have during the process of making a bank
      * transaction. For example you can put here specific error messages.
-     * 
+     *
      * @param processInformations the new process informations
      */
     protected void setProcessInformations(final String processInformations) {
@@ -167,7 +192,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Gets the process informations. The process informations are every kind of
      * information you might have during the process of making a bank
      * transaction. For example you can put here error messages.
-     * 
+     *
      * @return the process informations
      */
     protected String getProcessInformations() {
@@ -197,10 +222,29 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         return null;
     }
 
+
+    /**
+     * Gets the paid value.
+     *
+     * @return the value
+     */
+    public BigDecimal getValuePaidUnprotected() {
+        return getDao().getValuePaid();
+    }
+
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
+    public BigDecimal getValueUnprotected() {
+        return getDao().getValue();
+    }
+
     /**
      * Gets the message. The message is the error (or not) message sent by the
      * bank during a transaction.
-     * 
+     *
      * @return the message
      * @throws UnauthorizedReadOnlyBankDataAccessException
      */
@@ -211,7 +255,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the paid value.
-     * 
+     *
      * @return the value
      * @throws UnauthorizedReadOnlyBankDataAccessException
      */
@@ -222,7 +266,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the value.
-     * 
+     *
      * @return the value
      * @throws UnauthorizedReadOnlyBankDataAccessException
      */
@@ -233,7 +277,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the state.
-     * 
+     *
      * @return the state
      * @throws UnauthorizedReadOnlyBankDataAccessException
      */
@@ -244,7 +288,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the creation date.
-     * 
+     *
      * @return the creation date
      * @throws UnauthorizedOperationException
      */
@@ -255,7 +299,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the modification date.
-     * 
+     *
      * @return the modification date
      * @throws UnauthorizedOperationException
      */
@@ -266,7 +310,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the reference. This is the generated purchase reference.
-     * 
+     *
      * @return the reference
      * @throws UnauthorizedReadOnlyBankDataAccessException
      */
@@ -280,13 +324,17 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         return getAuthorUnprotected();
     }
 
+    private InvoicingContact getInvoicingContact() {
+        return InvoicingContact.create(getDao().getInvoicingContact());
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Can ...
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Tells if the authenticated user can get the Message property.
-     * 
+     *
      * @return true if you can get the Message property.
      */
     public final boolean canGetMessage() {
@@ -295,7 +343,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Tells if the authenticated user can get the ValuePaid property.
-     * 
+     *
      * @return true if you can get the ValuePaid property.
      */
     public final boolean canGetValuePaid() {
@@ -304,7 +352,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Tells if the authenticated user can get the Value property.
-     * 
+     *
      * @return true if you can get the <code>Value</code> property.
      */
     public final boolean canGetValue() {
@@ -313,7 +361,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Tells if the authenticated user can get the State property.
-     * 
+     *
      * @return true if you can get the State property.
      */
     public final boolean canGetState() {
@@ -322,7 +370,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Tells if the authenticated user can get the CreationDate property.
-     * 
+     *
      * @return true if you can get the CreationDate property.
      */
     public final boolean canGetCreationDate() {
@@ -331,7 +379,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Tells if the authenticated user can get the ModificationDate property.
-     * 
+     *
      * @return true if you can get the ModificationDate property.
      */
     public final boolean canGetModificationDate() {
@@ -340,7 +388,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Tells if the authenticated user can get the Reference property.
-     * 
+     *
      * @return true if you can get the Reference property.
      */
     public final boolean canGetReference() {
@@ -349,7 +397,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Tells if the authenticated user can get the Author property.
-     * 
+     *
      * @return true if you can get the Author property.
      */
     public final boolean canGetAuthor() {

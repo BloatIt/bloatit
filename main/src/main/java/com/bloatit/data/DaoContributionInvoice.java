@@ -36,6 +36,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoContributionInvoice extends DaoInvoice {
 
+
+    @ManyToOne(optional = false)
+    public DaoActor emitterActor;
+
+
+
     /**
      * Corresponding contribution. null if commission invoice
      */
@@ -48,7 +54,8 @@ public class DaoContributionInvoice extends DaoInvoice {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     public DaoMilestone milestone;
 
-    private DaoContributionInvoice(final String sellerName,
+    private DaoContributionInvoice(final DaoActor emitterActor,
+                                   final String sellerName,
                                    final String sellerAddress,
                                    final String sellerTaxIdentification,
                                    final DaoActor recipientActor,
@@ -73,9 +80,11 @@ public class DaoContributionInvoice extends DaoInvoice {
               invoiceFile,
               invoiceId);
 
-        checkOptionnal(milestone,
+        checkOptionnal(emitterActor,
+                       milestone,
                        contribution);
 
+        this.emitterActor = emitterActor;
         this.milestone = milestone;
         this.contribution = contribution;
     }
@@ -92,7 +101,8 @@ public class DaoContributionInvoice extends DaoInvoice {
      * @param level the level of the bug
      * @return the new dao bug
      */
-    public static DaoContributionInvoice createAndPersist(final String sellerName,
+    public static DaoContributionInvoice createAndPersist(final DaoActor emitterActor,
+                                                          final String sellerName,
                                                           final String sellerAddress,
                                                           final String sellerTaxIdentification,
                                                           final DaoActor recipientActor,
@@ -106,7 +116,8 @@ public class DaoContributionInvoice extends DaoInvoice {
                                                           final DaoMilestone milestone,
                                                           final DaoContribution contribution) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoContributionInvoice invoice = new DaoContributionInvoice(sellerName,
+        final DaoContributionInvoice invoice = new DaoContributionInvoice(emitterActor,
+                                                                          sellerName,
                                                                           sellerAddress,
                                                                           sellerTaxIdentification,
                                                                           recipientActor,
@@ -127,6 +138,10 @@ public class DaoContributionInvoice extends DaoInvoice {
             throw e;
         }
         return invoice;
+    }
+
+    public DaoActor getEmitterActor() {
+        return emitterActor;
     }
 
     // ======================================================================

@@ -16,6 +16,8 @@
 //
 package com.bloatit.model;
 
+import java.math.BigDecimal;
+
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
@@ -49,6 +51,11 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableMinInfluenceToKudos;
     private int recentActivityDays;
     private String[] administratorMails;
+    private BigDecimal linkeosTaxesRate;
+    private String linkeosName;
+    private String linkeosAddress;
+    private String linkeosTaxesIdentification;
+
 
     private ModelConfiguration() {
         super();
@@ -204,6 +211,11 @@ public class ModelConfiguration extends ReloadableConfiguration {
         kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
 
         administratorMails = properties.getStringArray("administrator.emails");
+
+        linkeosName = properties.getString("linkeos.name");
+        linkeosAddress = properties.getString("linkeos.address");
+        linkeosTaxesIdentification = properties.getString("linkeos.taxes_identification");
+        linkeosTaxesRate = properties.getBigDecimal("linkeos.taxes_rate");
     }
 
     @Override
@@ -214,5 +226,21 @@ public class ModelConfiguration extends ReloadableConfiguration {
     @Override
     protected void doReload() {
         configuration.load();
+    }
+
+    public String getLinkeosName() {
+        return linkeosName;
+    }
+
+    public BigDecimal getLinkeosTaxesRate() {
+        return linkeosTaxesRate;
+    }
+
+    public String getLinkeosAddress() {
+        return linkeosAddress;
+    }
+
+    public String getLinkeosTaxIdentification() {
+        return linkeosTaxesIdentification;
     }
 }

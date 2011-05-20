@@ -146,4 +146,14 @@
 			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 			referencedTableName="daoactor" referencesUniqueColumn="false" />
 	</changeSet>
+	<changeSet author="fred" id="201105201105-1">
+		<comment>Add the invoicingContact_id </comment>
+		<addColumn tableName="daobanktransaction">
+			<column name="invoicingcontact_id" type="int4"></column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="invoicingcontact_id"
+			baseTableName="daobanktransaction" constraintName="FKinvoicingcontact-daobanktransaction"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoinvoicingcontact" referencesUniqueColumn="false" />
+	</changeSet>
 </databaseChangeLog>

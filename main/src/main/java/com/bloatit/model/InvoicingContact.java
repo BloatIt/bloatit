@@ -77,8 +77,8 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
     InvoicingContact(final String name,
-                     final String address, final Member member) {
-        super(DaoInvoicingContact.createAndPersist(name, address, member.getDao()));
+                     final String address, final Actor<?> actor) {
+        super(DaoInvoicingContact.createAndPersist(name, address, actor.getDao()));
         }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -102,6 +102,16 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      */
     final Actor<?> getActorUnprotected() {
         return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
+    }
+
+    public String getName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public String getAddress() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

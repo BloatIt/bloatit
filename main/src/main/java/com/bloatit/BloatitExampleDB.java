@@ -39,6 +39,7 @@ import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
+import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.MoneyWithdrawal;
@@ -427,7 +428,7 @@ public class BloatitExampleDB { // NO_UCD
 
     /**
      * Work only if the money is available
-     * 
+     *
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {
@@ -443,7 +444,7 @@ public class BloatitExampleDB { // NO_UCD
     private void withdrawMoney(final Member m, final int amount, final State completion) {
         final MoneyWithdrawal mw = new MoneyWithdrawal(m, "GB87 BARC 2065 8244 9716 55", new BigDecimal(amount));
         mw.authenticate(new AuthenticatedUserToken(admin));
-        
+
         try {
             switch (completion) {
                 case REQUESTED:
@@ -467,10 +468,18 @@ public class BloatitExampleDB { // NO_UCD
         }
     }
 
-    public void giveMoney(final Member member, final int amount) {
+    public void giveMoney(final Member member, final int amount) throws UnauthorizedOperationException {
+
+        InvoicingContact invoicingContact = null;
+        for(InvoicingContact contact: member.getInvoicingContacts()) {
+            invoicingContact = contact;
+            break;
+        }
+
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),
                                                                     member,
+                                                                    invoicingContact,
                                                                     new BigDecimal(amount),
                                                                     new BigDecimal(amount),
                                                                     UUID.randomUUID().toString());

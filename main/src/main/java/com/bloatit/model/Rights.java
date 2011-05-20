@@ -240,6 +240,11 @@ public class Rights {
             return null;
         }
 
+        @Override
+        public Team visit(ContributionInvoice invoice) {
+            return null;
+        }
+
     }
 
     private class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -316,6 +321,11 @@ public class Rights {
         public Boolean visit(InvoicingContact invoicingContact) {
             return null;
         }
+
+        @Override
+        public Boolean visit(ContributionInvoice invoice) {
+            return null;
+        }
     }
 
     private class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -387,7 +397,13 @@ public class Rights {
 
         @Override
         public Boolean visit(Invoice model) {
+            return model.getRecipientActorUnprotected().equals(member);
+        }
+
+        @Override
+        public Boolean visit(ContributionInvoice model) {
             return model.getRecipientActorUnprotected().equals(member) || (model.getEmitterActorUnprotected() != null && model.getEmitterActorUnprotected().equals(member));
         }
+
     }
 }

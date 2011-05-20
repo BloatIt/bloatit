@@ -823,4 +823,5 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
+
 }

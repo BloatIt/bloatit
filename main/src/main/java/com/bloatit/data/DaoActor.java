@@ -282,4 +282,9 @@ public abstract class DaoActor extends DaoIdentifiable {
         }
         return true;
     }
+
+
+    public PageIterable<DaoInvoicingContact> getInvoicingContacts() {
+        return new MappedList<DaoInvoicingContact>(invoicingContacts);
+    }
 }

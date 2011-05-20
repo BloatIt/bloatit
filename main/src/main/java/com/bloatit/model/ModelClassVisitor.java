@@ -64,5 +64,7 @@ public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(Invoice invoice);
 
+    ReturnType visit(ContributionInvoice invoice);
+
     ReturnType visit(InvoicingContact invoicingContact);
 }

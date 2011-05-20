@@ -40,9 +40,6 @@ public class DaoInvoice extends DaoIdentifiable {
 
     // Seller
 
-    @ManyToOne(optional = true)
-    public DaoActor emitterActor;
-
     /**
      * Full name or company name
      */
@@ -217,9 +214,7 @@ public class DaoInvoice extends DaoIdentifiable {
     }
 
 
-    public DaoActor getEmitterActor() {
-        return emitterActor;
-    }
+
 
 
     // ======================================================================

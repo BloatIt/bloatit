@@ -25,6 +25,7 @@ import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Feature;
@@ -155,6 +156,11 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
     @Override
     public RestElement<?> visit(Invoice invoice) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(ContributionInvoice invoice) {
         throw new NotImplementedException();
     }
 

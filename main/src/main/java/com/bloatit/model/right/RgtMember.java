@@ -31,7 +31,7 @@ public class RgtMember extends RightManager {
     public static class Avatar extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
      * The Class Karma is a {@link RightManager.Public} accessor for the Karma
      * property.
@@ -49,13 +49,21 @@ public class RgtMember extends RightManager {
     }
 
     /**
+     * The Class InvoicingContact is a {@link RightManager.Private} accessor for the InvoicingContact
+     * property.
+     */
+    public static class InvoicingContacts extends Private {
+        // nothing this is just a rename.
+    }
+
+    /**
      * The Class Email is a {@link RightManager.Private} accessor for the Email
      * property.
      */
     public static class Email extends Private {
         // nothing this is just a rename.
     }
-    
+
     /**
      * The Class <code>Kudos</code> is a {@link RightManager.Private} accessor for the
      * <code>Kudos</code> property.
@@ -63,7 +71,7 @@ public class RgtMember extends RightManager {
     public static class Kudos extends Private {
         // nothing this is just a rename.
     }
-    
+
     /**
      * The Class <code>FullName</code> is a {@link RightManager.Public} accessor for the
      * <code>FullName</code> property.
@@ -71,7 +79,7 @@ public class RgtMember extends RightManager {
     public static class FullName extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
      * The Class <code>Locale</code> is a {@link RightManager.Public} accessor for the
      * <code>Locale</code> property.
