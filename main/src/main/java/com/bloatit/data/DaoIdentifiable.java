@@ -23,6 +23,8 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.search.annotations.DocumentId;
 
+import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
+
 /**
  * Base class to use with Hibernate. (A persistent class do not need to inherit
  * from DaoIdentifiable) When using DaoIdentifiable as a superClass, you ensure
@@ -48,7 +50,7 @@ public abstract class DaoIdentifiable {
 
     /**
      * The accept method for the visitor pattern
-     * 
+     *
      * @param visitor the visitor.
      * @param <ReturnType> the return type of the visitor
      * @return whatever the visitor return
@@ -73,4 +75,19 @@ public abstract class DaoIdentifiable {
     @Override
     public abstract boolean equals(Object obj);
 
+    // ======================================================================
+    // Tools
+    // ======================================================================
+
+    protected void checkOptionnal(Object... parameters) {
+
+        for (Object parameter : parameters) {
+            if (parameter == null) {
+                throw new NonOptionalParameterException();
+            }
+            if (parameter instanceof String && ((String) parameter).isEmpty()) {
+                throw new NonOptionalParameterException();
+            }
+        }
+    }
 }

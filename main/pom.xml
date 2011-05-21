@@ -165,6 +165,11 @@
         <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>itextpdf.com</id>
+      <name>Maven Repository for iText</name>
+      <url>http://maven.itextpdf.com/</url>
+    </repository>
   </repositories>
   <dependencies>
     <!-- tests -->
@@ -267,7 +272,14 @@
       <artifactId>commons-codec</artifactId>
       <version>1.5</version>
     </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>itextpdf</artifactId>
+      <version>5.0.4</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
+  
   <pluginRepositories>
     <pluginRepository>
       <id>gettext-commons-site</id>

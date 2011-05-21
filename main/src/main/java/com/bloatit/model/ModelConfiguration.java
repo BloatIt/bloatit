@@ -16,6 +16,8 @@
 //
 package com.bloatit.model;
 
+import java.math.BigDecimal;
+
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
@@ -48,6 +50,12 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private int kudosableMinInfluenceToUnkudos;
     private int kudosableMinInfluenceToKudos;
     private int recentActivityDays;
+    private String[] administratorMails;
+    private BigDecimal linkeosTaxesRate;
+    private String linkeosName;
+    private String linkeosAddress;
+    private String linkeosTaxesIdentification;
+
 
     private ModelConfiguration() {
         super();
@@ -158,14 +166,18 @@ public class ModelConfiguration extends ReloadableConfiguration {
     }
 
     // Others
-    
+
     protected static int getRecentActivityDays() {
         return configuration.recentActivityDays;
     }
 
+    public static String[] getAdminstratorMails() {
+        return configuration.administratorMails;
+    }
+
     private void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
-        
+
         recentActivityDays = properties.getInt("recent.activity.days");
 
         // Kudosable configuration
@@ -197,6 +209,13 @@ public class ModelConfiguration extends ReloadableConfiguration {
 
         kudosableMinInfluenceToUnkudos = properties.getInt("kudosable.min_influence_unkudos", 1);
         kudosableMinInfluenceToKudos = properties.getInt("kudosable.min_influence_kudos", 0);
+
+        administratorMails = properties.getStringArray("administrator.emails");
+
+        linkeosName = properties.getString("linkeos.name");
+        linkeosAddress = properties.getString("linkeos.address");
+        linkeosTaxesIdentification = properties.getString("linkeos.taxes_identification");
+        linkeosTaxesRate = properties.getBigDecimal("linkeos.taxes_rate");
     }
 
     @Override
@@ -207,5 +226,21 @@ public class ModelConfiguration extends ReloadableConfiguration {
     @Override
     protected void doReload() {
         configuration.load();
+    }
+
+    public static String getLinkeosName() {
+        return configuration.linkeosName;
+    }
+
+    public static BigDecimal getLinkeosTaxesRate() {
+        return configuration.linkeosTaxesRate;
+    }
+
+    public static String getLinkeosAddress() {
+        return configuration.linkeosAddress;
+    }
+
+    public static String getLinkeosTaxIdentification() {
+        return configuration.linkeosTaxesIdentification;
     }
 }

@@ -83,6 +83,8 @@ import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
+import com.bloatit.web.linkable.money.CreateInvoicingContactAction;
+import com.bloatit.web.linkable.money.InvoicingContactPage;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylineProcess;
@@ -142,6 +144,7 @@ import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
+import com.bloatit.web.url.CreateInvoicingContactActionUrl;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.DeclareHightlightedFeatureActionUrl;
@@ -154,6 +157,7 @@ import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.InvoicingContactPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
@@ -357,6 +361,9 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(MoneyWithdrawalAdminPageUrl.getPageName())) {
             return new MoneyWithdrawalAdminPage(new MoneyWithdrawalAdminPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(InvoicingContactPageUrl.getPageName())) {
+            return new InvoicingContactPage(new InvoicingContactPageUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -494,6 +501,10 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(CancelWithdrawMoneyActionUrl.getPageName())) {
             return new CancelWithdrawMoneyAction(new CancelWithdrawMoneyActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(CreateInvoicingContactActionUrl.getPageName())) {
+            return new CreateInvoicingContactAction(new CreateInvoicingContactActionUrl(params, session.getParameters()));
+        }
+
 
         // ////////
         // Process

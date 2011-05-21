@@ -90,11 +90,7 @@ public final class MemberPage extends ElveosPage {
         super(url);
         this.url = url;
         this.member = url.getMember();
-        if (getSession().getUserToken().isAuthenticated() && member != null &&  member.equals(getSession().getUserToken().getMember())) {
-            this.myPage = true;
-        } else {
-            this.myPage = false;
-        }
+
         this.displayName = url.getDisplayName();
         this.activeTabKey = url.getActiveTabKey();
     }
@@ -103,6 +99,12 @@ public final class MemberPage extends ElveosPage {
     protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
         layout.addLeft(generateMemberPageMain());
+
+        if (getSession().getUserToken().isAuthenticated() && member != null && member.equals(getSession().getUserToken().getMember())) {
+            this.myPage = true;
+        } else {
+            this.myPage = false;
+        }
 
         if (myPage) {
             layout.addLeft(generateTabPane());

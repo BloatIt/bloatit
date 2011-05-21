@@ -108,6 +108,8 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoActor author;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private DaoInvoicingContact invoicingContact;
     @Basic(optional = false)
     @Column(updatable = false)
     private Date creationDate;
@@ -133,7 +135,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets a bank transaction by token.
-     * 
+     *
      * @param token the token we are looking for
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>.
      *         Return null if not found.
@@ -148,7 +150,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Creates a bank transaction and persist it.
-     * 
+     *
      * @param message the message given by the bank during this transaction
      * @param token the token to identify this bank transaction
      * @param author the author of the transaction
@@ -160,10 +162,11 @@ public class DaoBankTransaction extends DaoIdentifiable {
     public static DaoBankTransaction createAndPersist(final String message,
                                                       final String token,
                                                       final DaoActor author,
+                                                      final DaoInvoicingContact invoicingContact,
                                                       final BigDecimal value,
                                                       final BigDecimal valuePayed,
                                                       final String orderReference) {
-        final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, valuePayed, orderReference);
+        final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, invoicingContact, value, valuePayed, orderReference);
         try {
             SessionManager.getSessionFactory().getCurrentSession().save(bankTransaction);
         } catch (final HibernateException e) {
@@ -180,19 +183,17 @@ public class DaoBankTransaction extends DaoIdentifiable {
     private DaoBankTransaction(final String message,
                                final String token,
                                final DaoActor author,
+                               final DaoInvoicingContact invoicingContact,
                                final BigDecimal value,
                                final BigDecimal valuePayed,
                                final String orderReference) {
         super();
-        if (message == null || token == null || author == null || value == null || valuePayed == null || orderReference == null) {
-            throw new NonOptionalParameterException();
-        }
-        if (message.isEmpty() || token.isEmpty() || orderReference.isEmpty()) {
-            throw new NonOptionalParameterException();
-        }
+        checkOptionnal(message, token, author, invoicingContact,  value, valuePayed, orderReference);
+
         this.message = message;
         this.token = token;
         this.author = author;
+        this.invoicingContact = invoicingContact;
         this.value = value;
         this.valuePaid = valuePayed;
         this.state = State.PENDING;
@@ -215,7 +216,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the
      * external to the internal account.
-     * 
+     *
      * @return true if performed, false otherwise.
      */
     public boolean setValidated() {
@@ -247,7 +248,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Sets the this field is a spare data field.
-     * 
+     *
      * @param processInformations the new this field is a spare data field
      */
     public void setProcessInformations(final String processInformations) {
@@ -262,7 +263,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
     /**
      * When doing automatic transaction with a bank, we can received a message
      * (mostly error messages).
-     * 
+     *
      * @return the when doing automatic transaction with a bank, we can received
      *         a message (mostly error messages)
      */
@@ -272,7 +273,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * A token is used to identify a BankTransaction.
-     * 
+     *
      * @return the a token is used to identify a BankTransaction
      */
     public String getToken() {
@@ -281,7 +282,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets the author.
-     * 
+     *
      * @return the author
      */
     public DaoActor getAuthor() {
@@ -289,8 +290,17 @@ public class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
+     * Gets the author.
+     *
+     * @return the author
+     */
+    public DaoInvoicingContact getInvoicingContact() {
+        return this.invoicingContact;
+    }
+
+    /**
      * Gets the value paid.
-     * 
+     *
      * @return the value paid
      */
     public BigDecimal getValuePaid() {
@@ -299,7 +309,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets the value.
-     * 
+     *
      * @return the value
      */
     public BigDecimal getValue() {
@@ -308,7 +318,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets the state.
-     * 
+     *
      * @return the state
      */
     public State getState() {
@@ -317,7 +327,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets the creation date.
-     * 
+     *
      * @return a clone of the creationDate
      */
     public Date getCreationDate() {
@@ -326,7 +336,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets the modification date.
-     * 
+     *
      * @return a clone of the creationDate
      */
     public Date getModificationDate() {
@@ -335,7 +345,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets the this is the order reference.
-     * 
+     *
      * @return the this is the order reference
      */
     public String getReference() {
@@ -344,7 +354,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Gets the this field is a spare data field.
-     * 
+     *
      * @return the this field is a spare data field
      */
     public String getProcessInformations() {

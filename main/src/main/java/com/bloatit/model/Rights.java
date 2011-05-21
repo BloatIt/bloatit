@@ -230,6 +230,21 @@ public class Rights {
             return visitAbstract(model.getActorUnprotected());
         }
 
+        @Override
+        public Team visit(Invoice invoice) {
+            return null;
+        }
+
+        @Override
+        public Team visit(InvoicingContact invoicingContact) {
+            return null;
+        }
+
+        @Override
+        public Team visit(ContributionInvoice invoice) {
+            return null;
+        }
+
     }
 
     private class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -296,6 +311,21 @@ public class Rights {
         public Boolean visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
         }
+
+        @Override
+        public Boolean visit(Invoice invoice) {
+            return null;
+        }
+
+        @Override
+        public Boolean visit(InvoicingContact invoicingContact) {
+            return null;
+        }
+
+        @Override
+        public Boolean visit(ContributionInvoice invoice) {
+            return null;
+        }
     }
 
     private class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -322,10 +352,7 @@ public class Rights {
 
         @Override
         public Boolean visitAbstract(final BankTransaction model) {
-            if (model.getAuthorUnprotected().equals(member)) {
-                return true;
-            }
-            return false;
+            return model.getAuthorUnprotected().equals(member);
         }
 
         @Override
@@ -362,5 +389,21 @@ public class Rights {
         public Boolean visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
         }
+
+        @Override
+        public Boolean visit(InvoicingContact model) {
+            return model.getActorUnprotected().equals(member);
+        }
+
+        @Override
+        public Boolean visit(Invoice model) {
+            return model.getRecipientActorUnprotected().equals(member);
+        }
+
+        @Override
+        public Boolean visit(ContributionInvoice model) {
+            return model.getRecipientActorUnprotected().equals(member) || (model.getEmitterActorUnprotected() != null && model.getEmitterActorUnprotected().equals(member));
+        }
+
     }
 }

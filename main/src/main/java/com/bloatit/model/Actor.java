@@ -21,9 +21,11 @@ import java.util.Date;
 import com.bloatit.data.DaoActor;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
+import com.bloatit.model.lists.InvoicingContactList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtActor;
+import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.UnauthorizedBankDataAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
@@ -31,7 +33,7 @@ import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
 /**
  * The Class Actor.
- * 
+ *
  * @param <T> the Dao version of this model layer object.
  * @see DaoActor
  */
@@ -39,7 +41,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Instantiates a new actor.
-     * 
+     *
      * @param id the id
      */
     protected Actor(final T id) {
@@ -48,7 +50,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     // /////////////////
     // Get / set ...
-    
+
     public final void setLogin(final String login) throws UnauthorizedPublicAccessException {
         tryAccess(new RgtActor.Login(), Action.WRITE);
         getDao().setLogin(login);
@@ -57,7 +59,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     /**
      * Gets the login. This method is not protected by the right manager because
      * we think it is not needed, and it make our code not readable.
-     * 
+     *
      * @return the login
      * @see DaoActor#getLogin()
      */
@@ -67,7 +69,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Gets the creation date of this {@link Actor}.
-     * 
+     *
      * @return the creation date
      * @see DaoActor#getDateCreation()
      */
@@ -80,7 +82,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * The internal account is the account we manage internally. Users can
      * add/get money to/from it, and can use this money to contribute on
      * softwares.
-     * 
+     *
      * @return the internal account
      * @throws UnauthorizedBankDataAccessException the unauthorized operation
      *             exception
@@ -94,7 +96,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Gets the external account.
-     * 
+     *
      * @return the external account
      * @throws UnauthorizedBankDataAccessException if you haven't the right to
      *             access the <code>ExtenralAccount</code> property.
@@ -106,7 +108,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Gets the bank transactions.
-     * 
+     *
      * @return all the bank transactions this actor has done.
      * @throws UnauthorizedBankDataAccessException if you haven't the right to
      *             access the <code>ExtenralAccount</code> property.
@@ -119,7 +121,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Returns the contributions done by this actor.
-     * 
+     *
      * @return the contributions done by this actor
      * @throws UnauthorizedOperationException
      */
@@ -128,11 +130,24 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         return doGetContributions();
     }
 
+
+
+    public PageIterable<InvoicingContact> getInvoicingContacts() throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.InvoicingContacts(), Action.READ);
+        return getInvoicingContactsUnprotected();
+    }
+
+
+    protected PageIterable<InvoicingContact> getInvoicingContactsUnprotected() {
+        return new InvoicingContactList(getDao().getInvoicingContacts());
+    }
+
+
     public abstract PageIterable<Contribution> doGetContributions() throws UnauthorizedOperationException;
 
     /**
      * Returns the money withdraw done by this actor.
-     * 
+     *
      * @return the witdraws done by this actor
      * @throws UnauthorizedOperationException
      */
@@ -158,7 +173,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can access date creation.
-     * 
+     *
      * @return true if you can access the DateCreation property.
      * @see Actor#getDateCreation()
      */
@@ -168,7 +183,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get internal account.
-     * 
+     *
      * @return true if you can access the <code>InternalAccount</code> property.
      * @see Actor#getInternalAccount()
      * @see Actor#authenticate(AuthenticatedUserToken)
@@ -179,7 +194,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get external account.
-     * 
+     *
      * @return true if you can access the <code>ExternalAccount</code> property.
      */
     public final boolean canGetExternalAccount() {
@@ -188,7 +203,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /**
      * Tells if the authenticated user can get the bank transaction.
-     * 
+     *
      * @return true if you can access the <code>BankTransaction</code> property
      *         (READ right).
      */

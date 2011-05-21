@@ -24,10 +24,12 @@ INSTALL_ADMIN=install/addAdminUser.sh
 
 if [ -z "$1" ] ; then
     error "You forgot to specify a host where to install the dependencies"
+    usage
     exit 1
 fi
 if [ -z "$2" ] ; then
     error "You forgot to specify the admin name"
+    usage
     exit 1
 fi
 

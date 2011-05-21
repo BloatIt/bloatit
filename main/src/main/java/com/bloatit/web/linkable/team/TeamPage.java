@@ -103,7 +103,7 @@ public final class TeamPage extends ElveosPage {
 
         layout.addLeft(generateTeamIDCard(userToken));
         layout.addLeft(generateMain(userToken));
-        
+
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
         if (userToken.isAuthenticated() && userToken.getMember().hasBankTeamRight(targetTeam)) {
@@ -150,9 +150,7 @@ public final class TeamPage extends ElveosPage {
 
         master.add(tabPane);
 
-        if (userToken.isAuthenticated()) {
-            tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
-        }
+        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
         if (targetTeam.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
         }

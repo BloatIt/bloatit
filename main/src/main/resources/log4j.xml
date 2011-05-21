@@ -11,7 +11,7 @@
 	</appender>
 
 	<appender name="error" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="${log4J.path}/error.log" />
+		<param name="file" value="${log4J.path}/errors.log" />
 		<param name="MaxFileSize" value="1000KB" />
 		<param name="MaxBackupIndex" value="10" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -24,7 +24,7 @@
 	</appender>
 
 	<appender name="info" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="${log4J.path}/info.log" />
+		<param name="file" value="${log4J.path}/infos.log" />
 		<param name="MaxFileSize" value="1000KB" />
 		<param name="MaxBackupIndex" value="4" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -34,6 +34,20 @@
 			<param name="LevelMin" value="info" />
 			<param name="LevelMax" value="info" />
 		</filter>
+	</appender>
+
+	<appender name="email" class="org.apache.log4j.net.SMTPAppender">
+		<param name="SMTPHost" value="localhost" />
+		<param name="SMTPUsername" value="elveos" />
+		<param name="Threshold" value="error" />
+		<param name="BufferSize" value="512" />
+		<param name="Subject" value="[log4j] Error on elveos.org" />
+		<param name="From" value="noreply@linkeos.com" />
+		<param name="To" value="thomas@linkeos.com" />
+		<param name="Cc" value="fred@linkeos.com, yoann@linkeos.com" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} [%t] %-5p - %c{1}%n%m%n" />
+		</layout>
 	</appender>
 
 	<!-- must be before the root element -->
@@ -65,8 +79,11 @@
 	<root>
 		<priority value="trace" />
 		<appender-ref ref="console" />
-		<!-- <appender-ref ref="info" />
-		<appender-ref ref="error" /> -->
+		<!-- 
+		<appender-ref ref="info" /> 
+		<appender-ref ref="error" /> 
+		<appender-ref ref="email" /> 
+		-->
 	</root>
 
 </log4j:configuration>

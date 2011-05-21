@@ -16,15 +16,19 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.Criteria;
@@ -33,7 +37,6 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.criterion.Projections;
@@ -83,13 +86,18 @@ public abstract class DaoActor extends DaoIdentifiable {
     private Date dateCreation;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = {org.hibernate.annotations.CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private DaoInternalAccount internalAccount;
 
     @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = {org.hibernate.annotations.CascadeType.ALL })
     private DaoExternalAccount externalAccount;
+
+    // this property is for hibernate mapping.
+    @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private final List<DaoInvoicingContact> invoicingContacts = new ArrayList<DaoInvoicingContact>(0);
 
     // ======================================================================
     // HQL static requests.
@@ -99,7 +107,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * This method use a HQL request. If you intend to use "getByLogin" or
      * "getByName", "exist" is useless. (In that case you'd better test if
      * getByLogin != null, to minimize the number of HQL request).
-     * 
+     *
      * @param login the login we are looking for.
      * @return true if found.
      */
@@ -116,6 +124,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * This method use a HQL request.
+     *
      * @param email the email we are looking for.
      * @return true if found
      */
@@ -131,7 +140,7 @@ public abstract class DaoActor extends DaoIdentifiable {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     * 
+     *
      * @param login is the login or name of this actor. It must be non null,
      *            unique, longer than 2 chars and do not contains space chars
      *            ("[^\\p{Space}]+").
@@ -150,13 +159,13 @@ public abstract class DaoActor extends DaoIdentifiable {
         if (!login.trim().equals(login)) {
             throw new MalformedArgumentException("The login cannot begin or end with spaces.");
         }
-        
+
         this.dateCreation = new Date();
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);
         this.externalAccount = new DaoExternalAccount(this);
     }
-    
+
     public void setLogin(final String login) {
         if (login.length() < 3) {
             throw new MalformedArgumentException("login length must be > 2");
@@ -173,7 +182,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * Set the external account for this actor.
-     * 
+     *
      * @param externalAccount the new external account for this actor
      * @throws BadProgrammerException if the externalAccount.getActor() != this
      */
@@ -272,5 +281,10 @@ public abstract class DaoActor extends DaoIdentifiable {
             return false;
         }
         return true;
+    }
+
+
+    public PageIterable<DaoInvoicingContact> getInvoicingContacts() {
+        return new MappedList<DaoInvoicingContact>(invoicingContacts);
     }
 }
