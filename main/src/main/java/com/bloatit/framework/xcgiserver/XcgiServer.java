@@ -22,6 +22,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public final class XcgiServer {
 
         private XcgiThread(final int port) throws IOException {
             super();
-            provider = new ServerSocket(port);
+            provider = new ServerSocket(port, 1, InetAddress.getByName(FrameworkConfiguration.getXcgiListenAddress()));
             timer = new Timer();
         }
 
