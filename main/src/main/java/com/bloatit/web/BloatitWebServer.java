@@ -84,6 +84,7 @@ import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
 import com.bloatit.web.linkable.money.CreateInvoicingContactAction;
+import com.bloatit.web.linkable.money.InvoiceResource;
 import com.bloatit.web.linkable.money.InvoicingContactPage;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
@@ -157,6 +158,7 @@ import com.bloatit.web.url.GiveRightActionUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.InvoiceResourceUrl;
 import com.bloatit.web.url.InvoicingContactPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.KudosableAdminPageUrl;
@@ -522,6 +524,9 @@ public class BloatitWebServer extends WebProcessor {
         // Resource page
         if (pageCode.equals(FileResourceUrl.getPageName())) {
             return new FileResource(new FileResourceUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(InvoiceResourceUrl.getPageName())) {
+            return new InvoiceResource(new InvoiceResourceUrl(params, session.getParameters()));
         }
 
         return new PageNotFound(new PageNotFoundUrl());

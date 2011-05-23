@@ -55,12 +55,20 @@ public class RgtBankTransaction extends RightManager {
     public static class ModificationDate extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
-    
+
     /**
      * The Class RgtBankTransaction is a {@link RightManager.PublicReadOnly} accessor for
      * the Transaction Reference.
      */
     public static class Reference extends ReadOnlyBankData {
+        // nothing this is just a rename.
+    }
+
+    /**
+     * The Class RgtBankTransaction is a {@link RightManager.PublicReadOnly} accessor for
+     * the Transaction Reference.
+     */
+    public static class Invoice extends ReadOnlyBankData {
         // nothing this is just a rename.
     }
 

@@ -9,53 +9,70 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web;
+package com.bloatit.web.linkable.money;
+
+import java.io.File;
 
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.masters.Resource;
+import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.FileMetadata;
-import com.bloatit.web.url.FileResourceUrl;
+import com.bloatit.model.Invoice;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
+import com.bloatit.web.url.InvoiceResourceUrl;
 
 /**
- * A file resource is a resource representing a file
+ * A invoice file
  *
  * @author fred
  */
-@ParamContainer("resource")
-public final class FileResource extends Resource {
+@ParamContainer("invoice")
+public final class InvoiceResource extends Resource {
 
     private static final String FILE_FIELD_NAME = "id";
 
     @ParamConstraint(optionalErrorMsg = @tr("The id of the resource is incorrect or missing"))
     @RequestParam(name = FILE_FIELD_NAME)
-    private final FileMetadata file;
+    private final Invoice invoice;
 
-    protected FileResource(final FileResourceUrl url) {
-        this.file = url.getFile();
+    private File file;
+    private String invoiceNumber;
 
-    }
+    public InvoiceResource(final InvoiceResourceUrl url) {
+        this.invoice = url.getInvoice();
 
-    @Override
-    public String getFileUrl() {
-        return file.getUrl();
-    }
-
-    @Override
-    public long getFileSize() {
-        return file.getSize();
-    }
-
-    @Override
-    public String getFileName() {
-        return file.getFileName();
     }
 
     @Override
     protected Url checkRightsAndEverything() {
+        try {
+            file = new File(invoice.getFile());
+            invoiceNumber = "invoice-" + invoice.getInvoiceNumber()+".pdf";
+        } catch (UnauthorizedPrivateAccessException e) {
+            return new PageForbiddenUrl();
+        }
+
         return NO_ERROR;
     }
+
+
+    @Override
+    public String getFileUrl() {
+        return file.getAbsolutePath();
+    }
+
+    @Override
+    public long getFileSize() {
+        return file.length();
+    }
+
+    @Override
+    public String getFileName() {
+            return invoiceNumber;
+    }
+
+
 }

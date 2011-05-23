@@ -64,7 +64,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                    final String deliveryName,
                                    final BigDecimal priceExcludingTax,
                                    final BigDecimal totalPrice,
-                                   final DaoFileMetadata invoiceFile,
+                                   final String invoiceFile,
                                    final String invoiceId,
                                    final DaoMilestone milestone,
                                    final DaoContribution contribution) {
@@ -111,7 +111,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                                           final String deliveryName,
                                                           final BigDecimal priceExcludingTax,
                                                           final BigDecimal totalPrice,
-                                                          final DaoFileMetadata invoiceFile,
+                                                          final String invoiceFile,
                                                           final String invoiceId,
                                                           final DaoMilestone milestone,
                                                           final DaoContribution contribution) {

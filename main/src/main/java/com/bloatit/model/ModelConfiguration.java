@@ -243,4 +243,10 @@ public class ModelConfiguration extends ReloadableConfiguration {
     public static String getLinkeosTaxIdentification() {
         return configuration.linkeosTaxesIdentification;
     }
+
+    public static String getInvoiceDirStorage() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

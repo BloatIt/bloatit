@@ -73,17 +73,17 @@
 				<constraints nullable="false" />
 			</column>
 			<column name="emitteractor_id" type="int4" />
-			<column name="invoicefile_id" type="int4">
+			<column name="invoicefile" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
 			<column name="recipientactor_id" type="int4">
 				<constraints nullable="false" />
 			</column>
 			<column name="contribution_id" type="int4">
-				<constraints nullable="false" />
+				<constraints nullable="true" />
 			</column>
 			<column name="milestone_id" type="int4">
-				<constraints nullable="false" />
+				<constraints nullable="true" />
 			</column>
 		</createTable>
 	</changeSet>
@@ -122,12 +122,7 @@
 			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 			referencedTableName="daoactor" referencesUniqueColumn="false" />
 	</changeSet>
-	<changeSet author="fred (generated)" id="13056499099741-71">
-		<addForeignKeyConstraint baseColumnNames="invoicefile_id"
-			baseTableName="daoinvoice" constraintName="FKF4216B5B2C199CE2"
-			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
-			referencedTableName="daofilemetadata" referencesUniqueColumn="false" />
-	</changeSet>
+
 	<changeSet author="fred (generated)" id="13056499099741-72">
 		<addForeignKeyConstraint baseColumnNames="milestone_id"
 			baseTableName="daoinvoice" constraintName="FKF4216B5B735AB454"
@@ -156,4 +151,15 @@
 			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 			referencedTableName="daoinvoicingcontact" referencesUniqueColumn="false" />
 	</changeSet>
+	<changeSet author="fred" id="201105231309-1">
+		<comment>Add the invoice_id</comment>
+		<addColumn tableName="daobanktransaction">
+			<column name="invoice_id" type="int4"></column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="invoice_id"
+			baseTableName="daobanktransaction" constraintName="FKinvoice-daobanktransaction"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoinvoice" referencesUniqueColumn="false" />
+	</changeSet>
+
 </databaseChangeLog>

@@ -50,6 +50,7 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Image;
+import com.bloatit.model.Invoice;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Team;
@@ -61,6 +62,7 @@ import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
+import com.bloatit.web.url.InvoiceResourceUrl;
 
 public class AccountComponent extends HtmlPageComponent {
     public AccountComponent(final Team team) throws UnauthorizedOperationException {
@@ -327,6 +329,13 @@ public class AccountComponent extends HtmlPageComponent {
             description.add(new HtmlDefineParagraph(tr("Total cost: "), Context.getLocalizator()
                                                                                .getCurrency(bankTransaction.getValuePaid())
                                                                                .getTwoDecimalEuroString()));
+
+            Invoice invoice =  bankTransaction.getInvoice();
+            if(invoice != null) {
+            description.add(new HtmlDefineParagraph(tr("Invoice: "), new InvoiceResourceUrl(invoice).getHtmlLink("invoice-" + invoice.getInvoiceNumber()+".pdf")));
+
+            }
+
             return description;
         }
 

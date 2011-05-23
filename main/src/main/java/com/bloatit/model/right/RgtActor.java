@@ -16,10 +16,10 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Actor;
+import com.bloatit.model.Invoice;
 
 /**
- * The Class ActorRight store the properties accessor for the {@link Actor}
+ * The Class ActorRight store the properties accessor for the {@link Invoice}
  * class.
  */
 public class RgtActor extends RightManager {
@@ -31,7 +31,7 @@ public class RgtActor extends RightManager {
     public static class Login extends Public {
         // nothing this is just a rename.
     }
-    
+
     /**
      * The Class ExternalAccount is a {@link RightManager.Private} accessor for
      * the ExternalAccount property.

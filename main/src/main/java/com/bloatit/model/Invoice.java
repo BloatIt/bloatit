@@ -20,6 +20,9 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoInvoice;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtInvoice;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 
 /**
  * This is a invoice.
@@ -89,16 +92,28 @@ public final class Invoice extends Identifiable<DaoInvoice> {
             final BigDecimal totalPrice,
             final String invoiceId) {
         super(generateInvoice(sellerName,
-                                      sellerAddress,
-                                      sellerTaxIdentification,
-                                      recipientActor,
-                                      contributorName,
-                                      contributorAdress,
-                                      deliveryName,
-                                      priceExcludingTax,
-                                      totalPrice,
-                                      invoiceId));
-        }
+                              sellerAddress,
+                              sellerTaxIdentification,
+                              recipientActor,
+                              contributorName,
+                              contributorAdress,
+                              deliveryName,
+                              priceExcludingTax,
+                              totalPrice,
+                              invoiceId));
+    }
+
+
+
+    public String getFile() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtInvoice.File(), Action.READ);
+        return getDao().getFile();
+    }
+
+    public String getInvoiceNumber() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtInvoice.InvoiceNumber(), Action.READ);
+        return getDao().getInvoiceNumber();
+    }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
@@ -115,57 +130,37 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                               BigDecimal totalPrice,
                                               String invoiceId) {
 
-        FileMetadata pdf = generateInvoicePdf(sellerName,
-                                              sellerAddress,
-                                              sellerTaxIdentification,
-                                              recipientActor,
-                                              contributorName,
-                                              contributorAdress,
-                                              deliveryName,
-                                              priceExcludingTax,
-                                              totalPrice,
-                                              invoiceId);
-
-
+        InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(sellerName,
+                                                                   sellerAddress,
+                                                                   sellerTaxIdentification,
+                                                                   recipientActor,
+                                                                   contributorName,
+                                                                   contributorAdress,
+                                                                   deliveryName,
+                                                                   priceExcludingTax,
+                                                                   totalPrice,
+                                                                   invoiceId);
 
         return DaoInvoice.createAndPersist(sellerName,
-                                      sellerAddress,
-                                      sellerTaxIdentification,
-                                      recipientActor.getDao(),
-                                      contributorName,
-                                      contributorAdress,
-                                      deliveryName,
-                                      priceExcludingTax,
-                                      totalPrice,
-                                      pdf.getDao(),
-                                      invoiceId);
+                                           sellerAddress,
+                                           sellerTaxIdentification,
+                                           recipientActor.getDao(),
+                                           contributorName,
+                                           contributorAdress,
+                                           deliveryName,
+                                           priceExcludingTax,
+                                           totalPrice,
+                                           pdfGenerator.getPdfUrl(),
+                                           invoiceId);
     }
 
-    private static FileMetadata generateInvoicePdf(String sellerName,
-                                                   String sellerAddress,
-                                                   String sellerTaxIdentification,
-                                                   Actor<?> recipientActor,
-                                                   String contributorName,
-                                                   String contributorAdress,
-                                                   String deliveryName,
-                                                   BigDecimal priceExcludingTax,
-                                                   BigDecimal totalPrice,
-                                                   String invoiceId) {
-
-
-
-
-
-        return null;
-    }
 
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
-
- // ///////////////////////////
+    // ///////////////////////////
     // Unprotected methods
 
     /**
@@ -178,6 +173,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
     final Actor<?> getRecipientActorUnprotected() {
         return (Actor<?>) getDao().getRecipientActor().accept(new DataVisitorConstructor());
     }
+
 
 
 }

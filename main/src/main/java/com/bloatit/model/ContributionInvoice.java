@@ -89,7 +89,6 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                         final String deliveryName,
                         final BigDecimal priceExcludingTax,
                         final BigDecimal totalPrice,
-                        final FileMetadata invoiceFile,
                         final String invoiceId,
                         final Milestone milestone,
                         final Contribution contribution) {
@@ -103,7 +102,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                                                       deliveryName,
                                                       priceExcludingTax,
                                                       totalPrice,
-                                                      invoiceFile.getDao(),
+                                                      "",
                                                       invoiceId,
                                                       milestone.getDao(),
                                                       contribution.getDao()));

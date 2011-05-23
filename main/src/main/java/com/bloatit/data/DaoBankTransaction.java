@@ -25,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.annotations.NamedQueries;
@@ -128,6 +129,10 @@ public class DaoBankTransaction extends DaoIdentifiable {
      */
     @Column(nullable = false, updatable = false, unique = true)
     private String reference;
+
+    @OneToOne(optional = true)
+    private DaoInvoice invoice;
+
 
     // ======================================================================
     // Static HQL queries.
@@ -256,6 +261,18 @@ public class DaoBankTransaction extends DaoIdentifiable {
         this.processInformations = processInformations;
     }
 
+    /**
+     * Sets the invoice.
+     *
+     * @param invoice
+     */
+    public void setInvoice(final DaoInvoice invoice) {
+        this.modificationDate = new Date();
+        this.invoice = invoice;
+    }
+
+
+
     // ======================================================================
     // Getters
     // ======================================================================
@@ -323,6 +340,16 @@ public class DaoBankTransaction extends DaoIdentifiable {
      */
     public State getState() {
         return this.state;
+    }
+
+
+    /**
+     * Gets the invoice.
+     *
+     * @return the state
+     */
+    public DaoInvoice getInvoice() {
+        return this.invoice;
     }
 
     /**

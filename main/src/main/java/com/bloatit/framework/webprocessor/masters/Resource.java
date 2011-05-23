@@ -24,14 +24,22 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
+import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 
 public abstract class Resource implements Linkable {
+
+    protected static final Url NO_ERROR = null;
 
     private final static String FILE_STORAGE_DIRECTORY = FrameworkConfiguration.getRessourcesDirStorage();
 
     @Override
     final public void writeToHttp(final HttpResponse response, final WebProcessor server) throws RedirectException, IOException {
+
+        final Url checkParameters = checkRightsAndEverything();
+        if (checkParameters != NO_ERROR) {
+            throw new RedirectException(checkParameters);
+        }
 
         final File file = new File(getFileUrl());
 
@@ -40,13 +48,37 @@ public abstract class Resource implements Linkable {
             throw new RedirectException(new PageNotFoundUrl());
         }
 
-        if (!file.getParent().equals(FILE_STORAGE_DIRECTORY)) {
+        if (!checkParent(file)) {
             Log.web().error("Invalid stored file directory: '" + file.getParent() + "' instead of '" + FILE_STORAGE_DIRECTORY + "' expected.");
             throw new RedirectException(new PageNotFoundUrl());
         }
 
         response.writeResource(file.getPath(), getFileSize(), getFileName());
     }
+
+    private boolean checkParent(File file) {
+        File currentFile = file;
+
+        while (currentFile != null) {
+            if (currentFile.getParent().equals(FILE_STORAGE_DIRECTORY)) {
+                return true;
+            }
+            currentFile = currentFile.getParentFile();
+        }
+
+        return false;
+    }
+
+    /**
+     * <p>
+     * The url system perform some checks on constraints. You may want to add
+     * more specific constraint checking by overriding this method.
+     * </p>
+     *
+     * @return null if there is no error, the url where you want to be
+     *         redirected otherwise.
+     */
+    protected abstract Url checkRightsAndEverything();
 
     public abstract String getFileUrl();
 

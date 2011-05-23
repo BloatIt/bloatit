@@ -23,7 +23,6 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -45,26 +44,26 @@ public class DaoInvoice extends DaoIdentifiable {
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
-    public String sellerName;
+    private String sellerName;
 
     /**
      * Invoicing adress
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
-    public String sellerAddress;
+    private String sellerAddress;
 
     /**
      * Tax identification, VAT ...
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = true)
-    public String sellerTaxIdentification;
+    private String sellerTaxIdentification;
 
     // Contributor
 
     @ManyToOne(optional = false)
-    public DaoActor recipientActor;
+    private DaoActor recipientActor;
 
 
     /**
@@ -72,21 +71,21 @@ public class DaoInvoice extends DaoIdentifiable {
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
-    public String contributorName;
+    private String contributorName;
 
     /**
      * Invoicing adress
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
-    public String contributorAdress;
+    private String contributorAdress;
 
     /**
      * Tax identification, VAT ...
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = true)
-    public String contributorTaxIdentification;
+    private String contributorTaxIdentification;
 
     // Commons
 
@@ -95,31 +94,31 @@ public class DaoInvoice extends DaoIdentifiable {
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
-    public String deliveryName;
+    private String deliveryName;
 
     /**
      * Name of the delivery
      */
     @Basic(optional = false)
-    public BigDecimal priceExcludingTax;
+    private BigDecimal priceExcludingTax;
 
     /**
      * Name of the delivery
      */
     @Basic(optional = false)
-    public BigDecimal totalPrice;
+    private BigDecimal totalPrice;
 
     /**
      * Pdf of the invoice
      */
-    @OneToOne(optional = false)
-    public DaoFileMetadata invoiceFile;
+    @Basic(optional = false)
+    private String invoiceFile;
 
     /**
      * The ID of the invoice
      */
     @Basic(optional = false)
-    public String invoiceId;
+    private String invoiceId;
 
     protected DaoInvoice(final String sellerName,
                        final String sellerAddress,
@@ -130,7 +129,7 @@ public class DaoInvoice extends DaoIdentifiable {
                        final String deliveryName,
                        final BigDecimal priceExcludingTax,
                        final BigDecimal totalPrice,
-                       final DaoFileMetadata invoiceFile,
+                       final String invoiceFile,
                        final String invoiceId) {
         super();
 
@@ -183,7 +182,7 @@ public class DaoInvoice extends DaoIdentifiable {
                                               final String deliveryName,
                                               final BigDecimal priceExcludingTax,
                                               final BigDecimal totalPrice,
-                                              final DaoFileMetadata invoiceFile,
+                                              final String invoiceFile,
                                               final String invoiceId) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoInvoice invoice = new DaoInvoice(sellerName,
@@ -214,8 +213,13 @@ public class DaoInvoice extends DaoIdentifiable {
     }
 
 
+    public String getFile() {
+        return invoiceFile;
+    }
 
-
+    public String getInvoiceNumber() {
+        return invoiceId;
+    }
 
     // ======================================================================
     // Visitor.

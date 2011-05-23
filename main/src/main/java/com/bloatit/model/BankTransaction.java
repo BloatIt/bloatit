@@ -160,7 +160,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
             BigDecimal totalExcludingTaxes = total.divide(BigDecimal.ONE.add(taxes), BigDecimal.ROUND_HALF_EVEN);
 
             // TODO: add good invoice number
-            new Invoice(ModelConfiguration.getConfiguration().getLinkeosName(),
+            Invoice invoice = new Invoice(ModelConfiguration.getConfiguration().getLinkeosName(),
                         ModelConfiguration.getConfiguration().getLinkeosAddress(),
                         ModelConfiguration.getConfiguration().getLinkeosTaxIdentification(),
                         this.getAuthorUnprotected(),
@@ -170,6 +170,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
                         totalExcludingTaxes,
                         total,
                         "3994-EIDI-39203");
+
+            getDao().setInvoice(invoice.getDao());
 
             return true;
         }
@@ -324,7 +326,14 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     private InvoicingContact getInvoicingContact() {
+        //TODO user right
         return InvoicingContact.create(getDao().getInvoicingContact());
+    }
+
+
+    public Invoice getInvoice() throws UnauthorizedReadOnlyBankDataAccessException {
+        tryAccess(new RgtBankTransaction.Invoice(), Action.READ);
+        return Invoice.create(getDao().getInvoice());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -411,4 +420,6 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
+
 }
