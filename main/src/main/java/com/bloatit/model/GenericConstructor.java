@@ -32,6 +32,7 @@ import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoInvoice;
+import com.bloatit.data.DaoInvoicingContact;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoKudosable;
@@ -132,6 +133,9 @@ public class GenericConstructor {
         }
         if (clazz.equals(Invoice.class)) {
             return DaoInvoice.class;
+        }
+        if (clazz.equals(InvoicingContact.class)) {
+            return DaoInvoicingContact.class;
         }
         if (clazz.equals(MoneyWithdrawal.class)) {
             return DaoMoneyWithdrawal.class;
