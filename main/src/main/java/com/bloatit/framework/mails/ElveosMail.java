@@ -35,9 +35,11 @@ import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
  * A class used to ease the sending of emails
  */
 public abstract class ElveosMail {
-
     private final TemplateFile content;
     private final String title;
+
+    private String attachment;
+    private String filename;
 
     private ElveosMail(final TemplateFile content, final String title) {
         super();
@@ -60,6 +62,9 @@ public abstract class ElveosMail {
         try {
             content.addNamedParameter("member", to.getDisplayName());
             Mail mail = new Mail(to.getEmail(), new Localizator(to.getLocale()).tr(title), content.getContent(to.getLocale()), mailSenderID);
+            if (attachment != null) {
+                mail.addAttachment(attachment, filename);
+            }
             MailServer.getInstance().send(mail);
         } catch (final IOException e) {
             throw new BadProgrammerException(e);
@@ -77,7 +82,11 @@ public abstract class ElveosMail {
      */
     public final void sendMail(final String to, final String mailSenderID) {
         try {
-            MailServer.getInstance().send(new Mail(to, title, content.getContent(null), mailSenderID));
+            Mail mail = new Mail(to, title, content.getContent(null), mailSenderID);
+            if (attachment != null) {
+                mail.addAttachment(attachment, filename);
+            }
+            MailServer.getInstance().send(mail);
         } catch (final IOException e) {
             throw new BadProgrammerException(e);
         }
@@ -91,6 +100,11 @@ public abstract class ElveosMail {
      */
     private static String tr(final String str) {
         return str;
+    }
+
+    protected final void addAttachment(String uri, String filename) {
+        this.attachment = uri;
+        this.filename = filename;
     }
 
     /**
