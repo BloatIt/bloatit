@@ -86,7 +86,12 @@ public class AccountComponent extends HtmlPageComponent {
         final HtmlDiv floatRight = new HtmlDiv("float_right");
         final HtmlDiv soldeBlock = new HtmlDiv("solde_block");
         final HtmlDiv soldeText = new HtmlDiv("solde_text");
-        soldeText.addText(tr("You currently have "));
+        if(loggedUser instanceof Team) {
+            soldeText.addText(tr("The team currently have "));
+        } else {
+            soldeText.addText(tr("You currently have "));
+        }
+
         final HtmlDiv soldeAmount = new HtmlDiv("solde_amount");
 
         try {
