@@ -3,7 +3,6 @@
 if [ -z "$1" ] ; then
 
 cat << EOF
-
 $0: Install and configure the AIDE (intrusion detection based on checksum)
 -----------------------------
 
@@ -37,10 +36,9 @@ Aide memoire :
 > sudo scp /var/lib/aide/aide.db.new elveos-backup@b219.org:aide.db.$(date +%m-%d-%y-%R)
 > sudo cp /var/lib/aide/aide.db{.new,}
 
-
 EOF
 
-elif
+elif [ "$1" = "exec" ] ; then
 
     # Install ...
     sudo apt-get install aide
