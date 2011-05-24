@@ -83,6 +83,7 @@ import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
+import com.bloatit.web.linkable.money.ChooseInvoicingContactAction;
 import com.bloatit.web.linkable.money.CreateInvoicingContactAction;
 import com.bloatit.web.linkable.money.InvoiceResource;
 import com.bloatit.web.linkable.money.InvoicingContactPage;
@@ -136,6 +137,7 @@ import com.bloatit.web.url.ChangeLanguageActionUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
+import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
@@ -505,6 +507,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(CreateInvoicingContactActionUrl.getPageName())) {
             return new CreateInvoicingContactAction(new CreateInvoicingContactActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ChooseInvoicingContactActionUrl.getPageName())) {
+            return new ChooseInvoicingContactAction(new ChooseInvoicingContactActionUrl(params, session.getParameters()));
         }
 
 

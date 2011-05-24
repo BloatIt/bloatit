@@ -98,13 +98,15 @@ public final class MemberPage extends ElveosPage {
     @Override
     protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
-        layout.addLeft(generateMemberPageMain());
 
         if (getSession().getUserToken().isAuthenticated() && member != null && member.equals(getSession().getUserToken().getMember())) {
             this.myPage = true;
         } else {
             this.myPage = false;
         }
+
+        layout.addLeft(generateMemberPageMain());
+
 
         if (myPage) {
             layout.addLeft(generateTabPane());

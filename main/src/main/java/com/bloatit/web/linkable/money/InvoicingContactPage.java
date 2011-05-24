@@ -21,8 +21,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
@@ -32,6 +32,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
@@ -42,6 +43,7 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
 import com.bloatit.web.url.CreateInvoicingContactActionUrl;
 import com.bloatit.web.url.InvoicingContactPageUrl;
 
@@ -90,7 +92,7 @@ public final class InvoicingContactPage extends LoggedPage {
 
         try {
             if (getActor(member).getInvoicingContacts().size() > 0) {
-                group.add(generateSelectInvoicingContactForm());
+                group.add(generateSelectInvoicingContactForm(member));
             }
         } catch (UnauthorizedOperationException e) {
             throw new ShallNotPassException("Fail to get invoicing contacts", e);
@@ -143,8 +145,30 @@ public final class InvoicingContactPage extends LoggedPage {
         return newContactForm;
     }
 
-    private HtmlElement generateSelectInvoicingContactForm() {
-        return new PlaceHolderElement();
+    private HtmlElement generateSelectInvoicingContactForm(final Member member) throws UnauthorizedOperationException {
+     // Create contact form
+        final ChooseInvoicingContactActionUrl chooseInvoicingContextActionUrl = new ChooseInvoicingContactActionUrl(process);
+        final HtmlForm chooseContactForm = new HtmlForm(chooseInvoicingContextActionUrl.urlString());
+
+        // Name
+
+
+        // Linked contacts
+        final FieldData contactData = chooseInvoicingContextActionUrl.getInvoicingContactParameter().pickFieldData();
+        final HtmlDropDown contactInput = new HtmlDropDown(contactData.getName(), Context.tr("Invoicing contact"));
+        for (final InvoicingContact contact: getActor(member).getInvoicingContacts()) {
+            contactInput.addDropDownElement(String.valueOf(contact.getId()), contact.getName() + " - "+ contact.getAddress());
+        }
+        chooseContactForm.add(contactInput);
+
+
+
+
+
+        final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Select"));
+        chooseContactForm.add(newContactButton);
+
+        return chooseContactForm;
     }
 
     private Actor<?> getActor(final Member member) {

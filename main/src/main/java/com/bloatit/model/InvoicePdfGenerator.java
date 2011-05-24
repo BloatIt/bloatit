@@ -46,7 +46,7 @@ public class InvoicePdfGenerator {
             // step 3
             document.open();
             // step 4
-            document.add(new Paragraph("Beautiful very empty invoice !"));
+            document.add(new Paragraph("Ugly almost empty invoice !"));
         } catch (DocumentException e) {
             throw new ExternalErrorException("Failed to generate pdf.", e);
         }
