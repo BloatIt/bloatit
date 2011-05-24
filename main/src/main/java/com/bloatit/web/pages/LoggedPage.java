@@ -27,8 +27,8 @@ import com.bloatit.web.url.LoginPageUrl;
  * </p>
  * <p>
  * Any page that require login should extend this class and implement the
- * <code>{@link #createRestrictedContent(Member)}</code> and
- * <code>{@link #getRefusalReason()}</code>
+ * <i>{@link #createRestrictedContent(Member)}</i> and
+ * <i>{@link #getRefusalReason()}</i>
  * </p>
  */
 public abstract class LoggedPage extends ElveosPage {
@@ -40,8 +40,8 @@ public abstract class LoggedPage extends ElveosPage {
     /**
      * Override the doCreate methods and makes sure the user is logged. If the
      * user is logged, createRestrictedContent is called, otherwise redirects to
-     * the <code>LoginPage</code> and use
-     * <code>{@link #createRestrictedContent(Member)}</code> to display a
+     * the <i>LoginPage</i> and use
+     * <i>{@link #createRestrictedContent(Member)}</i> to display a
      * warning to the user
      */
     @Override

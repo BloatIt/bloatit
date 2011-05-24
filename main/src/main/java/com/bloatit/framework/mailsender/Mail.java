@@ -25,6 +25,8 @@ public class Mail {
     private final String to;
     private final String subject;
     private final String mailSenderId;
+    private String uri;
+    private String filename;
 
     /**
      * <p>
@@ -78,5 +80,41 @@ public class Mail {
      */
     public String getMailSenderID() {
         return mailSenderId;
+    }
+
+    /**
+     * @return the uri of the attachment
+     */
+    public String getAttachment() {
+        return uri;
+    }
+
+    /**
+     * @return the name of the attachment
+     */
+    public String getAttachmentName() {
+        return filename;
+    }
+
+    /**
+     * Indicates whether the mail has an attachment or not
+     * 
+     * @return <i>true</i> if the mail has an attachment, <i>false</i>
+     *         otherwise.
+     */
+    public boolean hasAttachment() {
+        return (uri != null);
+    }
+
+    /**
+     * Adds an attachment to the mail
+     * 
+     * @param uri the uri of the resource to attach. Must be a local complete
+     *            uri.
+     * @param filename the displayed name of the file
+     */
+    public void addAttachment(String uri, String filename) {
+        this.uri = uri;
+        this.filename = filename;
     }
 }
