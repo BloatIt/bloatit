@@ -235,7 +235,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      *
      * @param invoicingContact the invoicing contact to attach on this actor
      */
-    public void addFile(final DaoInvoicingContact invoicingContact) {
+    public void addInvoicingContact(final DaoInvoicingContact invoicingContact) {
         this.invoicingContacts.add(invoicingContact);
     }
 

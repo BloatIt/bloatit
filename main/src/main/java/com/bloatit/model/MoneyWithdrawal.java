@@ -18,6 +18,7 @@ import com.bloatit.model.right.UnauthorizedBankDataAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.UnauthorizedReadOnlyBankDataAccessException;
+import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
 /**
  * Money withdrawals represent requests to withdraw money from the user internal
@@ -74,7 +75,11 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
 
         // Sending email to administrators
         for (String email : ModelConfiguration.getAdminstratorMails()) {
-            new WithdrawalAdminMail(reference, amount, iban, getActorUnprotected().getDisplayName()).sendMail(email, "withdrawal-admin");
+            new WithdrawalAdminMail(reference,
+                                    amount,
+                                    iban,
+                                    getActorUnprotected().getDisplayName(),
+                                    new MoneyWithdrawalAdminPageUrl().externalUrlString()).sendMail(email, "withdrawal-admin");
         }
     }
 

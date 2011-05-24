@@ -161,14 +161,14 @@ public abstract class ElveosMail {
     public static class WithdrawalAdminMail extends ElveosMail {
         private static DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-        public WithdrawalAdminMail(final String reference, final String amount, final String iban, final String memberName) {
+        public WithdrawalAdminMail(final String reference, final String amount, final String iban, final String memberName, String url) {
             super(new TemplateFile("withdrawal-admin.mail"), "[ELVEOS ADMINISTRATION] New money withdrawal request");
             addNamedParameter("amount", amount);
             addNamedParameter("iban", iban);
             addNamedParameter("reference", reference);
             addNamedParameter("member", memberName);
             addNamedParameter("date", ISO8601Local.format(new Date()));
-            addNamedParameter("url", new MoneyWithdrawalAdminPageUrl().externalUrlString());
+            addNamedParameter("url", url);
         }
     }
 }
