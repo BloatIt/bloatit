@@ -11,7 +11,7 @@
  */
 package com.bloatit.web.linkable.money;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -23,10 +23,9 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
-import com.bloatit.model.Team;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
-import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateInvoicingContactActionUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
@@ -35,52 +34,45 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/invoicingcontact/create")
-public final class CreateInvoicingContactAction extends UserContentAction {
+public final class CreateInvoicingContactAction extends LoggedAction {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     private final PaymentProcess process;
 
-
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You must add a name a invoicing information."),
-                     min = "1", minErrorMsg = @tr("You must add a name a invoicing information."))
+    @ParamConstraint(optionalErrorMsg = @tr("You must add a name a invoicing information."), min = "1", minErrorMsg = @tr("You must add a name a invoicing information."))
     private final String name;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You must add an address a invoicing information."),
-                     min = "1", minErrorMsg = @tr("You must add an address a invoicing information."))
+    @ParamConstraint(optionalErrorMsg = @tr("You must add an address a invoicing information."), min = "1", minErrorMsg = @tr("You must add an address a invoicing information."))
     private final String address;
-
 
     private final CreateInvoicingContactActionUrl url;
 
     public CreateInvoicingContactAction(final CreateInvoicingContactActionUrl url) {
-        super(url, UserTeamRight.TALK);
+        super(url);
         this.url = url;
         this.process = url.getProcess();
         this.name = url.getName();
         this.address = url.getAddress();
-
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-
+    public Url doProcessRestricted(final Member me) {
         InvoicingContact contact = new InvoicingContact(name, address, getActor(me));
-
         process.setInvoicingContact(contact);
 
-        if(process instanceof AccountChargingProcess) {
+
+
+        if (process instanceof AccountChargingProcess) {
             return new StaticAccountChargingPageUrl((AccountChargingProcess) process);
         }
-
-        if(process instanceof ContributionProcess) {
+        if (process instanceof ContributionProcess) {
             return new StaticCheckContributionPageUrl((ContributionProcess) process);
         }
 
-
-        return null;
+        throw new BadProgrammerException("The money process is neither a AccountChargingProcess nor a ContributionProcess");
     }
 
     private Actor<?> getActor(final Member member) {
@@ -106,13 +98,9 @@ public final class CreateInvoicingContactAction extends UserContentAction {
     }
 
     @Override
-    protected void doTransmitParameters() {
+    protected void transmitParameters() {
         session.addParameter(url.getNameParameter());
         session.addParameter(url.getAddressParameter());
     }
 
-    @Override
-    protected boolean verifyFile(final String filename) {
-        return true;
-    }
 }

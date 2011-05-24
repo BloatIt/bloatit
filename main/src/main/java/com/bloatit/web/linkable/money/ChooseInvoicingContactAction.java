@@ -11,7 +11,6 @@
  */
 package com.bloatit.web.linkable.money;
 
-import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -22,10 +21,9 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
-import com.bloatit.model.Team;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
-import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
@@ -34,7 +32,7 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/invoicingcontact/choose")
-public final class ChooseInvoicingContactAction extends UserContentAction {
+public final class ChooseInvoicingContactAction extends LoggedAction {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
@@ -48,7 +46,7 @@ public final class ChooseInvoicingContactAction extends UserContentAction {
     private final ChooseInvoicingContactActionUrl url;
 
     public ChooseInvoicingContactAction(final ChooseInvoicingContactActionUrl url) {
-        super(url, UserTeamRight.TALK);
+        super(url);
         this.url = url;
         this.process = url.getProcess();
         this.invoicingContact = url.getInvoicingContact();
@@ -56,7 +54,7 @@ public final class ChooseInvoicingContactAction extends UserContentAction {
     }
 
     @Override
-    public Url doDoProcessRestricted(final Member me, final Team asTeam) {
+    public Url doProcessRestricted(final Member me) {
 
 
         process.setInvoicingContact(invoicingContact);
@@ -89,12 +87,8 @@ public final class ChooseInvoicingContactAction extends UserContentAction {
     }
 
     @Override
-    protected void doTransmitParameters() {
+    protected void transmitParameters() {
         session.addParameter(url.getInvoicingContactParameter());
     }
 
-    @Override
-    protected boolean verifyFile(final String filename) {
-        return true;
-    }
 }

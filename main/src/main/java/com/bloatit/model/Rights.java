@@ -51,7 +51,9 @@ public class Rights {
                 } else {
                     currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
                 }
-                if (identifiable.accept(new IsTeamOwnerVisitor(token.getMember()))) {
+
+                Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(token.getMember()));
+                if (accept != null && accept) {
                     owningState = OwningState.TEAM_OWNER;
                 } else {
                     owningState = OwningState.AUTHENTICATED;
@@ -231,18 +233,18 @@ public class Rights {
         }
 
         @Override
-        public Team visit(Invoice invoice) {
-            return null;
+        public Team visit(Invoice model) {
+            return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Team visit(InvoicingContact invoicingContact) {
-            return null;
+        public Team visit(InvoicingContact model) {
+            return visitAbstract(model.getActorUnprotected());
         }
 
         @Override
-        public Team visit(ContributionInvoice invoice) {
-            return null;
+        public Team visit(ContributionInvoice model) {
+            return visitAbstract(model.getRecipientActorUnprotected());
         }
 
     }
@@ -313,18 +315,18 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(Invoice invoice) {
-            return null;
+        public Boolean visit(Invoice model) {
+            return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Boolean visit(InvoicingContact invoicingContact) {
-            return null;
+        public Boolean visit(InvoicingContact model) {
+            return visitAbstract(model.getActorUnprotected());
         }
 
         @Override
-        public Boolean visit(ContributionInvoice invoice) {
-            return null;
+        public Boolean visit(ContributionInvoice model) {
+            return visitAbstract(model.getRecipientActorUnprotected());
         }
     }
 

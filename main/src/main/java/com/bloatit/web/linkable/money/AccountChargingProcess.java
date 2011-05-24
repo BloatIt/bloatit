@@ -43,6 +43,7 @@ public class AccountChargingProcess extends PaymentProcess {
 
     @Override
     protected Url doProcess(final ElveosUserToken userToken) {
+        userToken.setAsTeam(getTeam());
         return new AccountChargingPageUrl(this);
     }
 
