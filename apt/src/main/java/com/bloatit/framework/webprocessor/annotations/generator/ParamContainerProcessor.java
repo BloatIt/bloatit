@@ -29,16 +29,17 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 
 @SupportedAnnotationTypes("com.bloatit.framework.webprocessor.annotations.ParamContainer")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class ParamContainerProcessor extends AbstractProcessor {
 
-    private Map<Element, ComponentDescription> components = new HashMap<Element, ComponentDescription>();
-    private Map<Element, UrlDescription> urls = new HashMap<Element, UrlDescription>();
+    private final Map<Element, ComponentDescription> components = new HashMap<Element, ComponentDescription>();
+    private final Map<Element, UrlDescription> urls = new HashMap<Element, UrlDescription>();
 
-    private Set<String> classAlreadyWritten = new HashSet<String>();
+    private final Set<String> classAlreadyWritten = new HashSet<String>();
 
     boolean hasBeenProcessesed = false;
 
@@ -130,8 +131,10 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
 
         for (final Element enclosed : element.getEnclosedElements()) {
-            parseARequestParam(component, enclosed);
-            parseEnclosedParamContainer(component, enclosed);
+                parseARequestParam(component, enclosed);
+            if(enclosed.getAnnotation(SubParamContainer.class) != null) {
+                parseEnclosedParamContainer(component, enclosed);
+            }
         }
 
     }

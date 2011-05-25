@@ -154,7 +154,23 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
                                     "FROM DaoJoinTeamInvitation as i " +
                                     "WHERE i.receiver = :member " +
                                     "AND i.state = :state"),
-                           }
+                        @NamedQuery(
+                                    name = "member.getMilestoneToInvoice",
+                                    query = "SELECT bs " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS EMPTY"),
+                        @NamedQuery(
+                                    name = "member.getMilestoneToInvoice.size",
+                                    query = "SELECT count(*) " +
+                                    "FROM com.bloatit.data.DaoOffer offer_ " +
+                                    "JOIN offer_.milestones as bs " +
+                                    "WHERE offer_.member = :this " +
+                                    "AND bs.milestoneState = :state " +
+                                    "AND bs.invoices IS EMPTY")
+                   }
 
              )
 // @formatter:on
@@ -202,7 +218,7 @@ public class DaoMember extends DaoActor {
     @Basic(optional = false)
     private Locale locale;
 
-    @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+    @ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoFileMetadata avatar;
 
@@ -778,6 +794,10 @@ public class DaoMember extends DaoActor {
      */
     protected List<DaoTeamMembership> getTeamMembership() {
         return this.teamMembership;
+    }
+
+    public PageIterable<DaoMilestone> getMilestoneToInvoice() {
+        return new QueryCollection<DaoMilestone>("member.getMilestoneToInvoice").setEntity("this", this).setParameter("state", DaoMilestone.MilestoneState.VALIDATED);
     }
 
     /**

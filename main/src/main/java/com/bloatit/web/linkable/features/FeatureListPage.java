@@ -21,6 +21,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
@@ -75,7 +76,9 @@ public final class FeatureListPage extends ElveosPage {
     @Optional("")
     private final String searchString;
 
+    @SubParamContainer
     private HtmlPagedList<Feature> pagedFeatureList;
+
     private final FeatureListPageUrl url;
 
     public FeatureListPage(final FeatureListPageUrl url) {

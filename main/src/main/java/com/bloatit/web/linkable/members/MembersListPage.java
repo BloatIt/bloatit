@@ -17,6 +17,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
@@ -43,6 +44,7 @@ import com.bloatit.web.url.MembersListPageUrl;
 @ParamContainer("member/list")
 public final class MembersListPage extends ElveosPage {
     // Keep me here ! I am needed for the Url generation !
+    @SubParamContainer
     private HtmlPagedList<Member> pagedMemberList;
     private final MembersListPageUrl url;
 

@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
@@ -74,6 +75,7 @@ public final class TeamPage extends ElveosPage {
 
     private final TeamPageUrl url;
 
+    @SubParamContainer
     private ActivityTab activity;
 
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
@@ -162,7 +164,7 @@ public final class TeamPage extends ElveosPage {
 
     /**
      * Generates the team block displaying it's ID
-     * 
+     *
      * @param me the connected member
      * @return the ID card
      */
