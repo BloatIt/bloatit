@@ -16,10 +16,11 @@
 //
 package com.bloatit.web.pages.master;
 
+import static com.bloatit.framework.webprocessor.context.Context.tr;
+
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
-import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
@@ -35,15 +36,15 @@ public class Menu extends HtmlDiv {
 
         final HtmlDiv mainMenu = new HtmlDiv("main_menu", "main_menu");
 
-        final HtmlLink featureList = new FeatureListPageUrl().getHtmlLink(Context.tr("Feature requests"));
+        final HtmlLink featureList = new FeatureListPageUrl().getHtmlLink(tr("Feature requests"));
 
-        new CreateFeaturePageUrl().getHtmlLink(Context.tr("New request"));
+        new CreateFeaturePageUrl().getHtmlLink(tr("New request"));
 
         final DocumentationPageUrl brainstormDocPage = new DocumentationPageUrl();
         brainstormDocPage.setDocTarget("brainstorm");
-        final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(Context.tr("Brainstorms"));
-        final HtmlLink teamList = new TeamsPageUrl().getHtmlLink(Context.tr("Teams"));
-        final HtmlLink memberList = new MembersListPageUrl().getHtmlLink(Context.tr("Members"));
+        final HtmlLink brainstormList = brainstormDocPage.getHtmlLink(tr("Brainstorms"));
+        final HtmlLink teamList = new TeamsPageUrl().getHtmlLink(tr("Teams"));
+        final HtmlLink memberList = new MembersListPageUrl().getHtmlLink(tr("Members"));
 
         final HtmlSpan separator = new HtmlSpan("separator");
 
@@ -61,7 +62,7 @@ public class Menu extends HtmlDiv {
         teamAndMemberMenu.add(memberList);
         mainMenu.add(teamAndMemberMenu);
 
-        mainMenu.add(new HtmlDiv("menu_item").add(new DocumentationPageUrl().getHtmlLink(Context.tr("About"))));
+        mainMenu.add(new HtmlDiv("menu_item").add(new DocumentationPageUrl().getHtmlLink(tr("Documentation"))));
 
         add(mainMenu);
     }
