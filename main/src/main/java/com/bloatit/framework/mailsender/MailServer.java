@@ -26,14 +26,21 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
@@ -160,7 +167,30 @@ public class MailServer extends Thread {
             message.setFrom(new InternetAddress(FrameworkConfiguration.getMailFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
             message.setSubject(mail.getSubject());
-            message.setText(mail.getContent());
+
+            if (mail.hasAttachment()) {
+                MimeBodyPart messageBodyPart = new MimeBodyPart();
+                messageBodyPart.setText(mail.getContent());
+                Multipart multipart = new MimeMultipart();
+                multipart.addBodyPart(messageBodyPart);
+
+                // Attachment
+                MimeBodyPart attachmentPart = new MimeBodyPart();
+                DataSource source = new FileDataSource(mail.getAttachment());
+                attachmentPart.setDataHandler(new DataHandler(source));
+                attachmentPart.setFileName(mail.getAttachmentName());
+
+                attachmentPart.setHeader("Content-Type", source.getContentType());
+                attachmentPart.setHeader("Content-ID", mail.getAttachmentName());
+                attachmentPart.setDisposition(Part.ATTACHMENT);
+
+                multipart.addBodyPart(attachmentPart);
+
+                // Put parts in message
+                message.setContent(multipart);
+            } else {
+                message.setText(mail.getContent());
+            }
 
             final UUID uuid = UUID.randomUUID();
             final String fileName = uuid.toString() + "-" + mail.getMailSenderID();
@@ -261,6 +291,7 @@ public class MailServer extends Thread {
                 }
                 Log.mail().error("Received an interruption without being asked to shutdown. Ignoring.", e);
             } catch (final MessagingException e) {
+                Log.mail().error("Error when sending mail " + mailFileName);
                 // Happens when trying to send the mail
                 final long waitTime = timeToRetry();
                 if (waitTime != -1) {

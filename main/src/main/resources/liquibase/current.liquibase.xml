@@ -105,11 +105,6 @@
 			</column>
 		</createTable>
 	</changeSet>
-	<changeSet author="fred (generated)" id="13056499099741-39">
-		<createIndex indexName="UKF4216B5B8CC6FAF1" tableName="daoinvoice">
-			<column name="invoicefile_id" />
-		</createIndex>
-	</changeSet>
 	<changeSet author="fred (generated)" id="13056499099741-69">
 		<addForeignKeyConstraint baseColumnNames="contribution_id"
 			baseTableName="daoinvoice" constraintName="FKF4216B5B6D7040E0"

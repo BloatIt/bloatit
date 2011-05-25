@@ -69,8 +69,8 @@ import com.bloatit.framework.utils.PageIterable;
                        @NamedQuery(
                            name = "actor.getBankTransactions.size",
                            query = "select count(*) from DaoBankTransaction where author = :author")
-                     }
-             )
+})
+
 // @formatter:on
 public abstract class DaoActor extends DaoIdentifiable {
 
@@ -230,6 +230,15 @@ public abstract class DaoActor extends DaoIdentifiable {
         return new QueryCollection<DaoBankTransaction>("actor.getBankTransactions").setEntity("author", this);
     }
 
+    /**
+     * Attach an invoicing contact on this actor.
+     *
+     * @param invoicingContact the invoicing contact to attach on this actor
+     */
+    public void addInvoicingContact(final DaoInvoicingContact invoicingContact) {
+        this.invoicingContacts.add(invoicingContact);
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -282,7 +291,6 @@ public abstract class DaoActor extends DaoIdentifiable {
         }
         return true;
     }
-
 
     public PageIterable<DaoInvoicingContact> getInvoicingContacts() {
         return new MappedList<DaoInvoicingContact>(invoicingContacts);

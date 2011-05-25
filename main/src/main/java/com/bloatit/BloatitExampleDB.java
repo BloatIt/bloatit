@@ -30,6 +30,7 @@ import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.BankTransaction;
@@ -69,6 +70,7 @@ public class BloatitExampleDB { // NO_UCD
 
     public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException {
         System.setProperty("log4J.path", ConfigurationManager.SHARE_DIR + "/log");
+        MailServer.getInstance().initialize();
 
         SessionManager.beginWorkUnit();
 
@@ -85,6 +87,18 @@ public class BloatitExampleDB { // NO_UCD
         celeste = createMember("celeste", "Céleste", Locale.CHINA);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
+        new InvoicingContact("Frederic Bertolus", "Le superbe appartement à gauche", fred);
+        new InvoicingContact("Thomas Guyard", "Le superbe appartement à gauche", thomas);
+        new InvoicingContact("Yoann Plénet", "Le superbe appartement à gauche", yoann);
+        new InvoicingContact("Administrateur", "Paradis", admin);
+        
+        new InvoicingContact("chogall", "Le monde des rêves", chogall);
+        new InvoicingContact("cerbere", "Le monde des rêves", cerbere);
+        new InvoicingContact("hydre", "Le monde des rêves", hydre);
+        new InvoicingContact("elephantman", "Le monde des rêves", elephantman);
+        new InvoicingContact("celeste", "Le monde des rêves", celeste);
+        new InvoicingContact("rataxes", "Le monde des rêves", rataxes);
+        
         // Add avatar
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
         cerbere.setAvatar(getImage(cerbere, "users/cerbere.png"));
@@ -428,7 +442,7 @@ public class BloatitExampleDB { // NO_UCD
 
     /**
      * Work only if the money is available
-     *
+     * 
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {
@@ -462,16 +476,14 @@ public class BloatitExampleDB { // NO_UCD
                     mw.setRefused();
                     break;
             }
-            mw.setTreated();
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Right error in creating money withdrawal", e);
         }
     }
 
     public void giveMoney(final Member member, final int amount) throws UnauthorizedOperationException {
-
         InvoicingContact invoicingContact = null;
-        for(InvoicingContact contact: member.getInvoicingContacts()) {
+        for (InvoicingContact contact : member.getInvoicingContacts()) {
             invoicingContact = contact;
             break;
         }
