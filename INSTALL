@@ -1,18 +1,13 @@
+***********************************
+* Install all needed dependancies *
+***********************************
+sudo apt-get install maven2 nodejs gettext postgresql-client postgresql openjdk-6-jdk openjdk-6-doc openjdk-6-source lighttpd qt4-dev-tools xsel rlwrap build-essential
+
 ************************************
 *  Install and configure lighttpd  *
 ************************************
 Install lighttpd:
 apt-get install lighttpd
-
-In '/etc/lighttpd/lighttpd.conf' modify the filed 'server.document-root' 
-to 'www' folder in bloatit.
-Example:
-server.document-root       = "/home/fred/projets/bloatit/www"
-
-## MODIFY lighttpd.conf :
-Uncomment 'mod_rewrite' in 'server.modules'
-
-Add line : server.error-handler-404  = "/en/dopagenotfound" 
 
 Create a symbolic link of '.../deployment/files/fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/
@@ -22,9 +17,39 @@ Create a symbolic link of '.../deployment/files/rewrite.lighttpd.conf' in '/etc/
 cd /etc/lighttpd/conf-enabled/
 ln -s /home/fred/bloatit/deployment/files/rewrite.lighttpd.conf
 
-**********************
-*  Restart lighttpd  *
-**********************
+========================
+= MODIFY lighttpd.conf =
+========================
+In '/etc/lighttpd/lighttpd.conf' :
+
+-> Modify the filed 'server.document-root' to 'www' folder in bloatit.
+-> Example:
+server.document-root       = "/home/fred/projets/bloatit/www"
+
+-> Uncomment or add '"mod_rewrite"' in 'server.modules'
+-> Uncomment or add '"mod-accesslog"' in 'server.modules'
+-> Uncomment or add '"mod_expire"' in 'server.modules'
+
+-> Add line : 
+server.error-handler-404  = "/en/dopagenotfound" 
+
+-> Add the following lines :
+
+# make an external redirect
+# from any www.host (with www.) to the host (without www.)
+$HTTP["host"] =~ "^www\.(.*)$" {
+  url.redirect = ( "^/(.*)" => "http://%1/$1" )
+}
+
+# Access logs
+accesslog.filename         = "/var/log/lighttpd/access.log"
+
+#30Mb in Kb
+server.max-request-size= 30000
+
+======================
+=  Restart lighttpd  =
+======================
 Restart lighttpd config:
 service lighttpd restart
 
