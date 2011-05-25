@@ -1,7 +1,7 @@
 ***********************************
 * Install all needed dependancies *
 ***********************************
-sudo apt-get install maven2 nodejs gettext postgresql-client postgresql openjdk-6-jdk openjdk-6-doc openjdk-6-source lighttpd qt4-dev-tools xsel rlwrap build-essential
+sudo apt-get install maven2 nodejs gettext postgresql-client postgresql openjdk-6-jdk openjdk-6-doc openjdk-6-source lighttpd qt4-dev-tools xsel rlwrap build-essential visitors
 
 ************************************
 *  Install and configure lighttpd  *
