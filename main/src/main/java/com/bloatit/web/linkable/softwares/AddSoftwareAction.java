@@ -37,33 +37,21 @@ import com.bloatit.web.url.SoftwarePageUrl;
  */
 @ParamContainer("software/doadd")
 public final class AddSoftwareAction extends LoggedAction {
-    private static final String SHORT_DESCRIPTION_CODE = "bloatit_software_short_description";
-    private static final String DESCRIPTION_CODE = "feature_software_description";
-    private static final String SOFTWARE_NAME_CODE = "feature_software";
     protected static final String IMAGE_CODE = "image";
     private static final String IMAGE_NAME_CODE = "image/filename";
     private static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";
     private static final String LANGUAGE_CODE = "feature_lang";
 
-    @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-        min = "10",
-        minErrorMsg = @tr("The short description must have at least 10 chars."),
-        optionalErrorMsg = @tr("You forgot to write a short description"))
-    private final String shortDescription;
-
-    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(
-        min = "10",
-        minErrorMsg = @tr("The description must have at least 10 chars."),
-        optionalErrorMsg = @tr("You forgot to write a description"))
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."),
+                     optionalErrorMsg = @tr("You forgot to write a description"))
     private final String description;
 
-    @RequestParam(name = SOFTWARE_NAME_CODE, role = Role.POST)
-    @ParamConstraint(max = "100", maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
-        min = "3",
-        minErrorMsg = @tr("The software name must have at least 3 chars."),
-        optionalErrorMsg = @tr("The software name is required."))
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(max = "100",
+                     maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
+                     min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."),
+                     optionalErrorMsg = @tr("The software name is required."))
     private final String softwareName;
 
     @Optional
@@ -87,7 +75,6 @@ public final class AddSoftwareAction extends LoggedAction {
         super(url);
         this.url = url;
 
-        this.shortDescription = url.getShortDescription();
         this.description = url.getDescription();
         this.softwareName = url.getSoftwareName();
         this.lang = url.getLang();
@@ -106,7 +93,7 @@ public final class AddSoftwareAction extends LoggedAction {
     public Url doProcessRestricted(final Member me) {
         final Locale langLocale = new Locale(lang);
 
-        final Software p = new Software(softwareName, me, langLocale, shortDescription, description);
+        final Software p = new Software(softwareName, me, langLocale, description);
 
         if (image != null) {
             final FileConstraintChecker fcc = new FileConstraintChecker(image);
@@ -138,7 +125,6 @@ public final class AddSoftwareAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(url.getShortDescriptionParameter());
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSoftwareNameParameter());
         session.addParameter(url.getLangParameter());
