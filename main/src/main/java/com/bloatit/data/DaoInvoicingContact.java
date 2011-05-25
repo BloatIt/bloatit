@@ -60,11 +60,8 @@ public class DaoInvoicingContact extends DaoIdentifiable {
     @Basic(optional = true)
     public String taxIdentification;
 
-
-
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoActor actor;
-
 
     private DaoInvoicingContact(final String name,
                    final String address, final DaoActor actor) {
@@ -88,6 +85,9 @@ public class DaoInvoicingContact extends DaoIdentifiable {
                                                        final String address, DaoActor actor) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoInvoicingContact invoicingContact = new DaoInvoicingContact(name, address, actor);
+        
+        actor.addInvoicingContact(invoicingContact);
+        
         try {
             session.save(invoicingContact);
         } catch (final HibernateException e) {

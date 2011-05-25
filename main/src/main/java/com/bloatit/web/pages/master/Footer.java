@@ -25,6 +25,7 @@ import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.MetaBugsListPageUrl;
 import com.bloatit.web.url.SiteMapPageUrl;
+import com.bloatit.web.url.SoftwareListPageUrl;
 
 public class Footer extends HtmlDiv {
 
@@ -38,12 +39,14 @@ public class Footer extends HtmlDiv {
         {
 
             linkBlock.add(new HtmlDiv("footer_link").add(new SiteMapPageUrl().getHtmlLink(Context.tr("Site map"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new ChangeLanguagePageUrl().getHtmlLink(Context.tr("Change language"))));
             addDocumentationFooterLink(linkBlock, "contribute", Context.tr("Contribute"));
             linkBlock.add(new HtmlDiv("footer_link").add(new MetaBugsListPageUrl().getHtmlLink(Context.tr("Report a bug"))));
             addDocumentationFooterLink(linkBlock, "api", Context.tr("APIs"));
             addDocumentationFooterLink(linkBlock, "contacts", Context.tr("Contacts"));
-            //addDocumentationFooterLink(linkBlock, "jobs", Context.tr("Jobs"));
+            // addDocumentationFooterLink(linkBlock, "jobs",
+            // Context.tr("Jobs"));
             linkBlock.add(new HtmlDiv("footer_link").add(new UrlString("http://blog.elveos.org").getHtmlLink(Context.tr("Blog & news"))));
 
         }

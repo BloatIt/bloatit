@@ -72,7 +72,7 @@ public abstract class Url implements Cloneable {
     }
 
     public String urlString() {
-        if(getProtocol() == Protocol.AUTO) {
+        if (getProtocol() == Protocol.AUTO) {
             return internalUrlString();
         }
         return externalUrlString();
@@ -99,19 +99,22 @@ public abstract class Url implements Cloneable {
     }
 
     public final String externalUrlString() {
-        final HttpHeader header = Context.getHeader().getHttpHeader();
+        if (Context.getHeader() != null) {
+            final HttpHeader header = Context.getHeader().getHttpHeader();
+            if (FrameworkConfiguration.isHttpsEnabled()
+                    && (getProtocol() == Protocol.HTTPS || (header.getServerProtocol().startsWith("HTTPS") && getProtocol() == Protocol.AUTO))) {
+                return "https://" + header.getHttpHost() + internalUrlString();
+            }
 
+            if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP
+                    || (header.getServerProtocol().startsWith("HTTP") && getProtocol() == Protocol.AUTO)) {
+                return "http://" + header.getHttpHost() + internalUrlString();
+            }
 
-        if (FrameworkConfiguration.isHttpsEnabled() && (getProtocol() == Protocol.HTTPS || (header.getServerProtocol().startsWith("HTTPS") && getProtocol() == Protocol.AUTO))) {
-            return "https://" + header.getHttpHost() + internalUrlString();
-        }
-
-        if (!FrameworkConfiguration.isHttpsEnabled() || getProtocol() == Protocol.HTTP || (header.getServerProtocol().startsWith("HTTP") && getProtocol() == Protocol.AUTO)) {
+            Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
             return "http://" + header.getHttpHost() + internalUrlString();
         }
-
-        Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
-        return "http://" + header.getHttpHost() + internalUrlString();
+        return "http://elveos.org/" + internalUrlString(); // FIXME : Replace http://elveos.org by configuration
     }
 
     public final HtmlLink getHtmlLink(final XmlNode data) {
@@ -125,7 +128,5 @@ public abstract class Url implements Cloneable {
     public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
-
-
 
 }
