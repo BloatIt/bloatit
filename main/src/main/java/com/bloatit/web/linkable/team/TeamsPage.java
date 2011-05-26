@@ -21,6 +21,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlRenderer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -51,6 +52,7 @@ import com.bloatit.web.url.TeamsPageUrl;
 @ParamContainer("team/list")
 public final class TeamsPage extends ElveosPage {
     // Keep me here ! I am needed for the Url generation !
+    @SubParamContainer
     private HtmlPagedList<Team> pagedTeamList;
     private final TeamsPageUrl url;
 

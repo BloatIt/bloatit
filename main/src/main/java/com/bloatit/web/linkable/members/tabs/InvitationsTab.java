@@ -20,17 +20,16 @@ import com.bloatit.data.DaoJoinTeamInvitation.State;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
-import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
-import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
-import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 
@@ -59,7 +58,7 @@ public class InvitationsTab extends HtmlTab {
                         + invitation.getSender().getDisplayName() + "'");
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
-            } 
+            }
             final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
             final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
 
@@ -67,6 +66,20 @@ public class InvitationsTab extends HtmlTab {
             p.add(acceptOrRefuse);
             teamInvites.add(p);
         }
+
+
+        final HtmlTitleBlock incoiving = new HtmlTitleBlock(Context.tr("Milestones to invoice"), 2);
+        master.add(incoiving);
+
+        PageIterable<Milestone> milestoneToInvoice = member.getMilestoneToInvoice();
+
+        for (final Milestone milestone : milestoneToInvoice) {
+            final HtmlParagraph p = new HtmlParagraph();
+            p.addText("Invoicing "+milestone.getOffer().getFeature().getTitle()+" - Milestone "+milestone.getPosition());
+
+            incoiving.add(p);
+        }
+
         return master;
     }
 

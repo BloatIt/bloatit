@@ -214,4 +214,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     public final boolean canGetContributions() {
         return canAccess(new RgtActor.Contribution(), Action.READ);
     }
+
+    public final boolean isTeam() {
+        return this instanceof Team;
+    }
 }

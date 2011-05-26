@@ -58,6 +58,12 @@ import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.invoice.ChooseInvoicingContactAction;
+import com.bloatit.web.linkable.invoice.ContributionInvoicingProcess;
+import com.bloatit.web.linkable.invoice.CreateInvoicingContactAction;
+import com.bloatit.web.linkable.invoice.InvoiceResource;
+import com.bloatit.web.linkable.invoice.InvoicingContactPage;
+import com.bloatit.web.linkable.invoice.InvoicingContactProcess;
 import com.bloatit.web.linkable.language.ChangeLanguageAction;
 import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
@@ -83,10 +89,6 @@ import com.bloatit.web.linkable.meta.bugreport.MetaReportBugAction;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.linkable.money.CancelWithdrawMoneyAction;
-import com.bloatit.web.linkable.money.ChooseInvoicingContactAction;
-import com.bloatit.web.linkable.money.CreateInvoicingContactAction;
-import com.bloatit.web.linkable.money.InvoiceResource;
-import com.bloatit.web.linkable.money.InvoicingContactPage;
 import com.bloatit.web.linkable.money.PaylineAction;
 import com.bloatit.web.linkable.money.PaylineNotifyAction;
 import com.bloatit.web.linkable.money.PaylineProcess;
@@ -143,6 +145,7 @@ import com.bloatit.web.url.ConfigurationAdminActionUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.ContributionInvoicingProcessUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -162,6 +165,7 @@ import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.InvoiceResourceUrl;
 import com.bloatit.web.url.InvoicingContactPageUrl;
+import com.bloatit.web.url.InvoicingContactProcessUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
@@ -524,6 +528,12 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(PaylineProcessUrl.getPageName())) {
             return new PaylineProcess(new PaylineProcessUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(InvoicingContactProcessUrl.getPageName())) {
+            return new InvoicingContactProcess(new InvoicingContactProcessUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ContributionInvoicingProcessUrl.getPageName())) {
+            return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(params, session.getParameters()));
         }
 
         // Resource page

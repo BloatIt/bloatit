@@ -41,6 +41,7 @@ import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.JoinTeamInvitationList;
 import com.bloatit.model.lists.KudosList;
+import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.lists.TeamList;
@@ -348,6 +349,12 @@ public final class Member extends Actor<DaoMember> implements User {
         tryAccess(new RgtMember.Karma(), Action.READ);
         return getDao().getKarma();
     }
+
+
+    public PageIterable<Milestone> getMilestoneToInvoice() {
+        return new MilestoneList(getDao().getMilestoneToInvoice());
+    }
+
 
     // TODO make right managements
     public PageIterable<UserContent<? extends DaoUserContent>> getActivity() {

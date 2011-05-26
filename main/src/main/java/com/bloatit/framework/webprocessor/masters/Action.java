@@ -54,6 +54,7 @@ public abstract class Action implements Linkable {
             }
 
         } else {
+            Log.framework().error("Null destination url, redirect to page not found");
             response.writeRedirect(new PageNotFoundUrl().urlString());
         }
     }
@@ -77,7 +78,7 @@ public abstract class Action implements Linkable {
      * The url system perform some checks on constraints. You may want to add
      * more specific constraint checking by overriding this method.
      * </p>
-     * 
+     *
      * @return null if there is no error, the url where you want to be
      *         redirected otherwise.
      */
@@ -94,7 +95,7 @@ public abstract class Action implements Linkable {
      * doProcess(), you may want to call the {@link #transmitParameters()}
      * method by yourself.
      * </p>
-     * 
+     *
      * @return the redirect url of this action.
      */
     protected abstract Url doProcess();
@@ -102,7 +103,7 @@ public abstract class Action implements Linkable {
     /**
      * Called when there is at least one error (See {@link Url#getMessages()}
      * and {@link #checkRightsAndEverything()}).
-     * 
+     *
      * @return the redirect url of this action.
      */
     protected abstract Url doProcessErrors();

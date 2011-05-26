@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.money;
+package com.bloatit.web.linkable.invoice;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
@@ -30,16 +30,17 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
-import com.bloatit.model.Actor;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.linkable.contribution.CheckContributionPage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.money.AccountChargingPage;
+import com.bloatit.web.linkable.money.AccountChargingProcess;
+import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -56,7 +57,7 @@ public final class InvoicingContactPage extends LoggedPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    private final PaymentProcess process;
+    private final InvoicingContactProcess process;
 
     private final InvoicingContactPageUrl url;
 
@@ -84,14 +85,14 @@ public final class InvoicingContactPage extends LoggedPage {
 
     private HtmlElement generateInvoicingContactForm(final Member member) {
         final HtmlTitleBlock group;
-        if (process.getTeam() != null) {
-            group = new HtmlTitleBlock(tr("Invoicing informations of {0}", process.getTeam().getDisplayName()), 1);
+        if (process.getActor().isTeam()) {
+            group = new HtmlTitleBlock(tr("Invoicing informations of {0}", process.getActor().getDisplayName()), 1);
         } else {
             group = new HtmlTitleBlock(tr("Your invoicing informations"), 1);
         }
 
         try {
-            if (getActor(member).getInvoicingContacts().size() > 0) {
+            if (process.getActor().getInvoicingContacts().size() > 0) {
                 group.add(generateSelectInvoicingContactForm(member));
             }
         } catch (UnauthorizedOperationException e) {
@@ -114,7 +115,7 @@ public final class InvoicingContactPage extends LoggedPage {
 
         String name = "";
 
-        if (process.getTeam() == null) {
+        if (process.getActor().isTeam()) {
             name = Context.tr("Name");
         } else {
             name = Context.tr("Organisation name");
@@ -123,7 +124,7 @@ public final class InvoicingContactPage extends LoggedPage {
         final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
         nameInput.setDefaultValue(nameData.getSuggestedValue());
         nameInput.addErrorMessages(nameData.getErrorMessages());
-        if (process.getTeam() == null) {
+        if (process.getActor().isTeam()) {
             nameInput.setComment(Context.tr("Your full name"));
         } else {
             nameInput.setComment(Context.tr("The name of your company or your association."));
@@ -156,7 +157,7 @@ public final class InvoicingContactPage extends LoggedPage {
         // Linked contacts
         final FieldData contactData = chooseInvoicingContextActionUrl.getInvoicingContactParameter().pickFieldData();
         final HtmlDropDown contactInput = new HtmlDropDown(contactData.getName(), Context.tr("Invoicing contact"));
-        for (final InvoicingContact contact: getActor(member).getInvoicingContacts()) {
+        for (final InvoicingContact contact: process.getActor().getInvoicingContacts()) {
             contactInput.addDropDownElement(String.valueOf(contact.getId()), contact.getName() + " - "+ contact.getAddress());
         }
         chooseContactForm.add(contactInput);
@@ -169,13 +170,6 @@ public final class InvoicingContactPage extends LoggedPage {
         chooseContactForm.add(newContactButton);
 
         return chooseContactForm;
-    }
-
-    private Actor<?> getActor(final Member member) {
-        if (process.getTeam() != null) {
-            return process.getTeam();
-        }
-        return member;
     }
 
     @Override
@@ -195,17 +189,19 @@ public final class InvoicingContactPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return generateBreadcrumb(member, process.getTeam(), process);
+        return generateBreadcrumb(member, (process.getActor().isTeam() ? (Team) process.getActor(): null) , process);
     }
 
-    protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final PaymentProcess process) {
+    protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final InvoicingContactProcess process) {
         final Breadcrumb breadcrumb;
 
-        if(process instanceof AccountChargingProcess) {
-            breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, (AccountChargingProcess) process);
-        } else {
-            ContributionProcess process2 = (ContributionProcess) process;
+        if(process.getFather() instanceof AccountChargingProcess) {
+            breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, (AccountChargingProcess) process.getFather());
+        } else if(process.getFather() instanceof ContributionProcess) {
+            ContributionProcess process2 = (ContributionProcess) process.getFather() ;
             breadcrumb = CheckContributionPage.generateBreadcrumb(process2.getFeature(), process2);
+        } else {
+            breadcrumb = IndexPage.generateBreadcrumb();
         }
 
         Url url = new InvoicingContactPageUrl(process);
