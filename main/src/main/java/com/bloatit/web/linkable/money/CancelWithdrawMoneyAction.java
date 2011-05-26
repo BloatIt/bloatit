@@ -91,6 +91,7 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
+        session.addParameter(url.getMoneyWithdrawalParameter());
     }
 
 }

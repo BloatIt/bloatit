@@ -41,7 +41,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Release;
 import com.bloatit.model.admin.MilestoneAdminListFactory;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.web.pages.IndexPage;
@@ -151,7 +150,7 @@ public final class MilestoneAdminPage extends IdentifiablesAdminPage<DaoMileston
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return MilestoneAdminPage.generateBreadcrumb();
     }
 

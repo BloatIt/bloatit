@@ -63,9 +63,9 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         if (!checkIban(IBAN)) {
             throw new BadProgrammerException("Invalid IBAN format!");
         }
-        String reference = getReferenceUnprotected();
-        String amount = getAmountWithdrawnUnprotected().toPlainString();
-        String iban = getIBANUnprotected();
+        final String reference = getReferenceUnprotected();
+        final String amount = getAmountWithdrawnUnprotected().toPlainString();
+        final String iban = getIBANUnprotected();
         if (getActorUnprotected() instanceof Member) {
             final Member to = (Member) getActorUnprotected();
             new WithdrawalRequestedMail(reference, amount, iban).sendMail(to, "withdrawal-request");
@@ -74,7 +74,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
         }
 
         // Sending email to administrators
-        for (String email : ModelConfiguration.getAdminstratorMails()) {
+        for (final String email : ModelConfiguration.getAdminstratorMails()) {
             new WithdrawalAdminMail(reference,
                                     amount,
                                     iban,
@@ -246,25 +246,7 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
     }
 
     protected Actor<?> getActorUnprotected() {
-        final Integer id = getDao().getActor().getId();
-        try {
-            Team team;
-            team = Team.class.cast(GenericConstructor.create(Team.class, id));
-            if (team != null) {
-                return team;
-            }
-        } catch (final ClassNotFoundException e) {
-        }
-
-        try {
-            Member member;
-            member = Member.class.cast(GenericConstructor.create(Member.class, id));
-            if (member != null) {
-                return member;
-            }
-        } catch (final ClassNotFoundException e) {
-        }
-        return null;
+        return Actor.getActorFromDao(getDao().getActor());
     }
 
     /**

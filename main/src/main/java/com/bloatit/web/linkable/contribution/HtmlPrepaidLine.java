@@ -38,7 +38,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
 
     private final Actor<?> actor;
 
-    protected HtmlPrepaidLine(final Actor<?> actor) throws UnauthorizedOperationException {
+    protected HtmlPrepaidLine(final Actor<?> actor) {
         this.actor = actor;
         setCssClass("quotation_detail_line");
 
@@ -74,7 +74,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
                 return new HtmlText(Context.getLocalizator()
                                     .getCurrency(actor.getInternalAccount().getAmount())
                                     .getSimpleEuroString());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Fail to get a account amount", e);
             }
         }
@@ -113,9 +113,9 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         @Override
         public XmlNode getBody() {
 
-            HtmlDiv prepaidAccount = new HtmlDiv("title");
+            final HtmlDiv prepaidAccount = new HtmlDiv("title");
             prepaidAccount.addText(tr("Prepaid from internal account"));
-            HtmlDiv prepaidAccountDetails = new HtmlDiv("details");
+            final HtmlDiv prepaidAccountDetails = new HtmlDiv("details");
             prepaidAccountDetails.addText(actor.getDisplayName());
 
             return new HtmlDiv("").add(prepaidAccount).add(prepaidAccountDetails);
@@ -144,7 +144,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
                                                                                               .getAmount()
                                                                                               .negate())
                                                                             .getTwoDecimalEuroString());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Fail to get a account amount", e);
             }
         }

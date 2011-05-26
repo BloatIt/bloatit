@@ -38,9 +38,6 @@ import com.bloatit.web.url.AddSoftwarePageUrl;
  */
 @ParamContainer("software/add")
 public final class AddSoftwarePage extends LoggedPage {
-    private static final int SHORT_DESCRIPTION_INPUT_NB_LINES = 3;
-    private static final int SHORT_DESCRIPTION_INPUT_NB_COLUMNS = 80;
-
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 

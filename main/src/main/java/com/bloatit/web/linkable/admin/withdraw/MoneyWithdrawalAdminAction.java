@@ -19,13 +19,13 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
     @SuppressWarnings("unused")
     private final MoneyWithdrawalAdminActionUrl url;
 
-    @RequestParam(name = "newState", role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final State newState;
 
-    @RequestParam(role = Role.GET)
+    @RequestParam
     private final String backTo;
 
-    @RequestParam(role = Role.GET)
+    @RequestParam
     private final MoneyWithdrawal target;
 
     public MoneyWithdrawalAdminAction(final MoneyWithdrawalAdminActionUrl url) {
@@ -42,7 +42,7 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
         old = target.getState();
 
         target.setState(newState);
-        session.notifyGood("Successfuly modified withdraw request from " + target.getActor().getDisplayName() + " of "
+        session.notifyGood("Successfully modified withdraw request from " + target.getActor().getDisplayName() + " of "
                 + target.getAmountWithdrawn().toPlainString() + "€ from State " + old + " to state " + newState + ".");
         final MoneyWithdrawalAdminPageUrl back = new MoneyWithdrawalAdminPageUrl();
         back.setFilter(backTo);
@@ -64,5 +64,6 @@ public class MoneyWithdrawalAdminAction extends AdminAction {
 
     @Override
     protected void transmitParameters() {
+        // osef
     }
 }

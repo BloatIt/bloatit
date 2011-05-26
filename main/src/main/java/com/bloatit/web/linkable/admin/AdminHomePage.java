@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -74,7 +73,7 @@ public class AdminHomePage extends AdminPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new PageNotFoundUrl().getHtmlLink("Admin"));
 

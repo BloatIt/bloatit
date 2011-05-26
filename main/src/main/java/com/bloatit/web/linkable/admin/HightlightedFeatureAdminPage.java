@@ -79,24 +79,24 @@ public class HightlightedFeatureAdminPage extends AdminPage {
     }
 
     private HtmlElement generateConfAdmin() {
-        final HtmlTitleBlock master = new HtmlTitleBlock("Administrate hightlighted features", 1);
+        final HtmlTitleBlock master = new HtmlTitleBlock("Administrate highlighted features", 1);
 
-        PageIterable<HighlightFeature> hightlightedFeatures = HighlightFeatureManager.getAll();
-         List<HighlightFeature> activeHightlightedFeatures = HighlightFeatureManager.getPositionArray(6);
+        final PageIterable<HighlightFeature> hightlightedFeatures = HighlightFeatureManager.getAll();
+         final List<HighlightFeature> activeHightlightedFeatures = HighlightFeatureManager.getPositionArray(6);
 
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
 
-        for (HighlightFeature feature : hightlightedFeatures) {
+        for (final HighlightFeature feature : hightlightedFeatures) {
             model.addLine(new FeatureLine(feature, activeHightlightedFeatures));
         }
 
         master.add(new HtmlTable(model));
 
-        DeclareHightlightedFeatureActionUrl actionUrl = new DeclareHightlightedFeatureActionUrl();
+        final DeclareHightlightedFeatureActionUrl actionUrl = new DeclareHightlightedFeatureActionUrl();
 
-        HtmlForm newHightlightedFeatureForm = new HtmlForm(actionUrl.urlString(), Method.POST);
+        final HtmlForm newHightlightedFeatureForm = new HtmlForm(actionUrl.urlString(), Method.POST);
 
-        HtmlTitle newHightlightedFeatureTitle = new HtmlTitle(2);
+        final HtmlTitle newHightlightedFeatureTitle = new HtmlTitle(2);
         newHightlightedFeatureTitle.addText("Define new highlighted feature");
         newHightlightedFeatureForm.add(newHightlightedFeatureTitle);
 
@@ -112,8 +112,8 @@ public class HightlightedFeatureAdminPage extends AdminPage {
         //Feature
         final FieldData featureFieldData = actionUrl.getFeatureParameter().pickFieldData();
         final HtmlDropDown featureInput = new HtmlDropDown(featureFieldData.getName(), "Feature");
-        PageIterable<Feature> features = FeatureManager.getFeatures();
-        for(Feature feature: features) {
+        final PageIterable<Feature> features = FeatureManager.getFeatures();
+        for(final Feature feature: features) {
             featureInput.addDropDownElement(String.valueOf(feature.getId()), feature.getTitle());
         }
         featureInput.setDefaultValue(featureFieldData.getSuggestedValue());
@@ -122,8 +122,8 @@ public class HightlightedFeatureAdminPage extends AdminPage {
         //Reason
         final FieldData reasonFieldData = actionUrl.getTitleParameter().pickFieldData();
         final HtmlDropDown reasonInput = new HtmlDropDown(reasonFieldData.getName(), "Reason");
-        Map<String, String> reasonsMap = HightlightedFeaturesTools.getReasonsMap();
-        for(Entry<String,String> reason : reasonsMap.entrySet()) {
+        final Map<String, String> reasonsMap = HightlightedFeaturesTools.getReasonsMap();
+        for(final Entry<String,String> reason : reasonsMap.entrySet()) {
             reasonInput.addDropDownElement(reason.getKey(), reason.getValue());
         }
         reasonInput.setDefaultValue(reasonFieldData.getSuggestedValue());
@@ -153,14 +153,14 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
     @Override
     protected String createPageTitle() {
-        return "Administrate hightlighted features";
+        return "Administrate highlighted features";
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = new Breadcrumb();
         breadcrumb.pushLink(new AdminHomePageUrl().getHtmlLink("Admin"));
-        breadcrumb.pushLink(url.getHtmlLink("Hightlighted features"));
+        breadcrumb.pushLink(url.getHtmlLink("Highlighted features"));
         return breadcrumb;
     }
 

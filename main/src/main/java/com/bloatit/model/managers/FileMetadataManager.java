@@ -28,13 +28,11 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.lists.FileMetadataList;
-import com.bloatit.model.right.UnauthorizedPublicAccessException;
 
 /**
  * The Class FileMetadataManager is an utility class containing static methods
