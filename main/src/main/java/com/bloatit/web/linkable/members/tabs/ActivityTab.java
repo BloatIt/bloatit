@@ -21,6 +21,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -62,6 +63,7 @@ public class ActivityTab extends HtmlTab {
     private final MemberPageUrl url;
 
     @SuppressWarnings("unused")
+    @SubParamContainer
     private HtmlPagedList<UserContent<? extends DaoUserContent>> pagedActivity;
 
     public ActivityTab(final Member member, final String title, final String tabKey, final MemberPageUrl url) {
@@ -96,8 +98,7 @@ public class ActivityTab extends HtmlTab {
 
         final MemberPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
-        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl()
-                                                                                                                              .getPagedActivityUrl());
+        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl().getPagedActivityUrl());
         recentActivity.add(feed);
 
         return recentActivity;

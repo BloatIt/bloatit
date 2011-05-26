@@ -29,7 +29,6 @@ import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
 /**
  * A class used to ease the sending of emails
@@ -61,7 +60,7 @@ public abstract class ElveosMail {
     public final void sendMail(final Member to, final String mailSenderID) {
         try {
             content.addNamedParameter("member", to.getDisplayName());
-            Mail mail = new Mail(to.getEmail(), new Localizator(to.getLocale()).tr(title), content.getContent(to.getLocale()), mailSenderID);
+            final Mail mail = new Mail(to.getEmail(), new Localizator(to.getLocale()).tr(title), content.getContent(to.getLocale()), mailSenderID);
             if (attachment != null) {
                 mail.addAttachment(attachment, filename);
             }
@@ -82,7 +81,7 @@ public abstract class ElveosMail {
      */
     public final void sendMail(final String to, final String mailSenderID) {
         try {
-            Mail mail = new Mail(to, title, content.getContent(null), mailSenderID);
+            final Mail mail = new Mail(to, title, content.getContent(null), mailSenderID);
             if (attachment != null) {
                 mail.addAttachment(attachment, filename);
             }
@@ -102,7 +101,7 @@ public abstract class ElveosMail {
         return str;
     }
 
-    protected final void addAttachment(String uri, String filename) {
+    protected final void addAttachment(final String uri, final String filename) {
         this.attachment = uri;
         this.filename = filename;
     }
@@ -161,7 +160,7 @@ public abstract class ElveosMail {
     public static class WithdrawalAdminMail extends ElveosMail {
         private static DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-        public WithdrawalAdminMail(final String reference, final String amount, final String iban, final String memberName, String url) {
+        public WithdrawalAdminMail(final String reference, final String amount, final String iban, final String memberName, final String url) {
             super(new TemplateFile("withdrawal-admin.mail"), "[ELVEOS ADMINISTRATION] New money withdrawal request");
             addNamedParameter("amount", amount);
             addNamedParameter("iban", iban);

@@ -16,12 +16,16 @@ WORKDIR=/tmp/backup
 # DB backup
 POSTGRES_ROOT=postgres
 DB_NAME=elveos
-DB_BACKUP_FILE="elveos.org-DB-$(date +%m-%d-%y-%R)"
+DB_BACKUP_FILE="elveos.org-DB-$(date +%y-%m-%d-%R)"
 
 # .local/share/bloatit backup
 SHARE_FOLDER_ROOT=/home/elveos/
 SHARE_FOLDER=.local/share/bloatit/
-SHARE_BACKUP_FILE="elveos.org-SHARE-$(date +%m-%d-%y-%R)"
+SHARE_BACKUP_FILE="elveos.org-SHARE-$(date +%y-%m-%d-%R)"
+
+# /var/lib/aide/aide.db.new backup
+AIDE_DB=/var/lib/aide/aide.db.new
+AIDE_DB_BACKUP_FILE="elveos.org-AIDE-$(date +%y-%m-%d-%R)"
 
 # Encrypt with
 ENCRYPT_USERS=( "thomas@elveos.org" "fred.bertolus@gmail.com" "yoann@linkeos.com" )
@@ -50,10 +54,19 @@ su $POSTGRES_ROOT -c "pg_dump -Fc $DB_NAME -o" | \
 
 echo "encrypting .local/share files"
 cd $SHARE_FOLDER_ROOT
-tar -cJ "$SHARE_FOLDER" | su $USER -c "gpg --output \"$SHARE_BACKUP_FILE\" --encrypt $recipients" 
+tar -cJ "$SHARE_FOLDER" | su $USER -c "gpg --output \"$WORKDIR/$SHARE_BACKUP_FILE\" --encrypt $recipients" 
 
 for i in ${SEND_HOSTS[@]} ;  do
-    su $USER -c "scp \"$WORKDIR/$DB_BACKUP_FILE\" \"$WORKDIR/$SHARE_BACKUP_FILE\" \"$i\""
+    su $USER -c "
+	scp \"$WORKDIR/$DB_BACKUP_FILE\"             \
+            \"$WORKDIR/$SHARE_BACKUP_FILE\"          \
+            \"$i\"
+     "
+
+    su $USER -c "
+	scp \"$AIDE_DB\"             \
+            \"$i$AIDE_DB_BACKUP_FILE\"
+     "
 done
 
 # deleting tmp files

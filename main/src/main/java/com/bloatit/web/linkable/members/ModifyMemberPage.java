@@ -37,7 +37,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -51,27 +50,27 @@ import com.bloatit.web.url.ModifyMemberPageUrl;
 public class ModifyMemberPage extends LoggedPage {
     private ModifyMemberPageUrl url;
 
-    public ModifyMemberPage(ModifyMemberPageUrl url) {
+    public ModifyMemberPage(final ModifyMemberPageUrl url) {
         super(url);
         this.url = url;
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl();
+        final ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl();
 
-        HtmlTitle title = new HtmlTitle(1);
+        final HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Change account settings"));
         layout.addLeft(title);
 
-        HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         layout.addLeft(form);
         form.enableFileUpload();
 
         try {
-            HtmlFormBlock nameBlock = new HtmlFormBlock(Context.tr("User name"));
+            final HtmlFormBlock nameBlock = new HtmlFormBlock(Context.tr("User name"));
             form.add(nameBlock);
             // ///////
             // Full name
@@ -96,7 +95,7 @@ public class ModifyMemberPage extends LoggedPage {
             deleteFN.setComment(Context.tr("Checking this box will delete your full name, hence your login will be used again."));
             nameBlock.add(deleteFN);
 
-            HtmlFormBlock passwordBlock = new HtmlFormBlock(Context.tr("User password"));
+            final HtmlFormBlock passwordBlock = new HtmlFormBlock(Context.tr("User password"));
             form.add(passwordBlock);
             // ///////
             // Current password
@@ -170,7 +169,7 @@ public class ModifyMemberPage extends LoggedPage {
 
             final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
             form.add(submit);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Couldn't access logged member information", e);
         }
 
@@ -195,7 +194,7 @@ public class ModifyMemberPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return generateBreadcrumb(member);
     }
 

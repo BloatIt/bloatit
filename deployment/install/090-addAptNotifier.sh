@@ -24,7 +24,7 @@ Observe that this tool may be a security risk, so you should not set it to do mo
 
 You have to configure cron-apt in /etc/cron-apt 
 
- - set the mail address MAILTO=”thomas@elveos.org”
+ - set the mail address MAILTO="sysadmin@linkeos.com"
  - set MAILON=”always” 
 
 
@@ -37,6 +37,7 @@ EOF
 elif [ "$1" = "exec" ] ; then
     sudo apt-get install cron-apt
 
+    echo "uses sysadmin@linkeos.com"
     read -p "You have to configure cron-apt (MAILTO and MAILON options) <hit return>"
     sudo vim /etc/cron-apt/config
 

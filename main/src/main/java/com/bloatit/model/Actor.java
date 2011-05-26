@@ -19,6 +19,7 @@ package com.bloatit.model;
 import java.util.Date;
 
 import com.bloatit.data.DaoActor;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
 import com.bloatit.model.lists.InvoicingContactList;
@@ -39,6 +40,31 @@ import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
  */
 public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
+    public static Actor<?> getActorFromDao(final DaoActor dao){
+        final Integer id = dao.getId();
+        try {
+            Team team;
+            team = Team.class.cast(GenericConstructor.create(Team.class, id));
+            if (team != null) {
+                return team;
+            }
+        } catch (final ClassNotFoundException e) {
+            // This is not a  team
+        }
+
+        try {
+            Member member;
+            member = Member.class.cast(GenericConstructor.create(Member.class, id));
+            if (member != null) {
+                return member;
+            }
+        } catch (final ClassNotFoundException e) {
+            // not a member nether a team ! 
+            throw new BadProgrammerException(e);
+        }
+        return null;
+    }
+    
     /**
      * Instantiates a new actor.
      *
@@ -213,5 +239,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     public final boolean canGetContributions() {
         return canAccess(new RgtActor.Contribution(), Action.READ);
+    }
+
+    public final boolean isTeam() {
+        return this instanceof Team;
     }
 }

@@ -165,8 +165,8 @@ public class DaoGroupMemberTest {
 
     @Test
     public void testAddRight() {
-        final DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
-        final DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
+        final DaoMember fred = DaoMember.getByLogin(DaoGroupMemberTest.fred.getLogin());
+        final DaoTeam b219 = DaoTeam.getByName(DaoGroupMemberTest.b219.getLogin());
         fred.addToTeam(b219);
         fred.addTeamRight(b219, UserTeamRight.CONSULT);
         fred.addTeamRight(b219, UserTeamRight.TALK);
@@ -177,8 +177,8 @@ public class DaoGroupMemberTest {
 
     @Test
     public void testRemoveRight() {
-        final DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
-        final DaoTeam b219 = DaoTeam.getByName(this.b219.getLogin());
+        final DaoMember fred = DaoMember.getByLogin(DaoGroupMemberTest.fred.getLogin());
+        final DaoTeam b219 = DaoTeam.getByName(DaoGroupMemberTest.b219.getLogin());
 
         fred.addToTeam(b219);
         fred.addTeamRight(b219, UserTeamRight.CONSULT);

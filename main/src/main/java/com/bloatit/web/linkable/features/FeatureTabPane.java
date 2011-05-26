@@ -26,7 +26,6 @@ import com.bloatit.framework.webprocessor.components.renderer.HtmlCachedMarkdown
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
-import com.bloatit.model.Member;
 import com.bloatit.model.Translation;
 import com.bloatit.web.components.UserContentAuthorBlock;
 import com.bloatit.web.pages.master.HtmlPageComponent;

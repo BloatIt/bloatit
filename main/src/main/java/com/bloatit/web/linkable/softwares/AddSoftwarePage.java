@@ -21,12 +21,10 @@ import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlFileInput;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedPage;
@@ -40,9 +38,6 @@ import com.bloatit.web.url.AddSoftwarePageUrl;
  */
 @ParamContainer("software/add")
 public final class AddSoftwarePage extends LoggedPage {
-    private static final int SHORT_DESCRIPTION_INPUT_NB_LINES = 3;
-    private static final int SHORT_DESCRIPTION_INPUT_NB_COLUMNS = 80;
-
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
@@ -90,17 +85,6 @@ public final class AddSoftwarePage extends LoggedPage {
         softwareNameInput.setComment(Context.tr("The name of the existing software."));
         addSoftwareForm.add(softwareNameInput);
 
-        // Create the fields that will describe the descriptions of the software
-        final FieldData shortDescriptionData = doCreateUrl.getShortDescriptionParameter().pickFieldData();
-        final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionData.getName(),
-                                                                    Context.tr("Describe briefly the software"),
-                                                                    SHORT_DESCRIPTION_INPUT_NB_LINES,
-                                                                    SHORT_DESCRIPTION_INPUT_NB_COLUMNS);
-        shortDescriptionInput.setDefaultValue(shortDescriptionData.getSuggestedValue());
-        shortDescriptionInput.addErrorMessages(shortDescriptionData.getErrorMessages());
-        shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
-        addSoftwareForm.add(shortDescriptionInput);
-
         // Description
         final FieldData descriptionData = doCreateUrl.getDescriptionParameter().pickFieldData();
         final MarkdownEditor descriptionInput = new MarkdownEditor(descriptionData.getName(),
@@ -109,7 +93,7 @@ public final class AddSoftwarePage extends LoggedPage {
                                                                    DESCRIPTION_INPUT_NB_COLUMNS);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the projet : list all features, add siteweb links, etc."));
+        descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."));
         addSoftwareForm.add(descriptionInput);
 
         // Language
@@ -121,7 +105,7 @@ public final class AddSoftwarePage extends LoggedPage {
         addSoftwareForm.add(languageInput);
 
         final HtmlFileInput softwareImageInput = new HtmlFileInput(AddSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
-        softwareImageInput.setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be inferior to 64px x 64px.");
+        softwareImageInput.setComment("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px.");
         addSoftwareForm.add(softwareImageInput);
 
         addSoftwareForm.add(new HtmlSubmit(Context.tr("submit")));
@@ -137,7 +121,7 @@ public final class AddSoftwarePage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return AddSoftwarePage.generateBreadcrumb();
     }
 

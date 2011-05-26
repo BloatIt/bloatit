@@ -40,7 +40,7 @@ public class WithdrawMoneyAction extends LoggedAction {
     max = "34", maxErrorMsg = @tr("IBAN must be between 14 and 34 characters."))
     private final String IBAN;
 
-    public WithdrawMoneyAction(WithdrawMoneyActionUrl url) {
+    public WithdrawMoneyAction(final WithdrawMoneyActionUrl url) {
         super(url);
         this.url = url;
         this.amount = url.getAmount();
@@ -49,20 +49,19 @@ public class WithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessRestricted(Member me) {
+    protected Url doProcessRestricted(final Member me) {
         new MoneyWithdrawal(actor, IBAN, amount);
-        String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
+        final String amountStr = Context.getLocalizator().getCurrency(amount).getSimpleEuroString();
         if (actor instanceof Member) {
             session.notifyGood(Context.tr("Requested to withdraw {0} from your account.", amountStr));
             return MemberPage.MyAccountUrl(me);
-        } else {
-            session.notifyGood(Context.tr("Requested to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
-            return TeamPage.AccountUrl(((Team) actor));
         }
+        session.notifyGood(Context.tr("Requested to withdraw {0} from team {1} account.", amountStr, ((Team) actor).getDisplayName()));
+        return TeamPage.AccountUrl(((Team) actor));
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         if (actor instanceof Member) {
             if (!me.equals(actor)) {
                 session.notifyBad(Context.tr("You cannot withdraw money on someone else account."));
@@ -73,11 +72,11 @@ public class WithdrawMoneyAction extends LoggedAction {
                     session.notifyBad(Context.tr("You cannot withdraw more money than you currently have on your account."));
                     return new WithdrawMoneyPageUrl(actor);
                 }
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Logged user cannot access his own internal account.");
             }
         } else {
-            Team t = (Team) actor;
+            final Team t = (Team) actor;
             if (!me.hasBankTeamRight(t)) {
                 session.notifyBad(Context.tr("You cannot withdraw money on team {0} account.", t.getDisplayName()));
                 return new WithdrawMoneyPageUrl(actor);
@@ -87,7 +86,7 @@ public class WithdrawMoneyAction extends LoggedAction {
                     session.notifyBad(Context.tr("You cannot withdraw more money than the team currently have on her account."));
                     return new WithdrawMoneyPageUrl(actor);
                 }
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("User cannot access team internal account balance while he has bank rights.");
             }
         }
@@ -101,12 +100,11 @@ public class WithdrawMoneyAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if (actor != null) {
             return new WithdrawMoneyPageUrl(actor);
-        } else {
-            return new PageNotFoundUrl();
         }
+        return new PageNotFoundUrl();
     }
 
     @Override

@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.money;
+package com.bloatit.web.linkable.invoice;
 
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -22,53 +22,42 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.actions.PaymentProcess;
-import com.bloatit.web.linkable.contribution.ContributionProcess;
-import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
-import com.bloatit.web.url.StaticAccountChargingPageUrl;
-import com.bloatit.web.url.StaticCheckContributionPageUrl;
+import com.bloatit.web.url.CreateInvoicingContactActionUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
  */
-@ParamContainer("action/invoicingcontact/choose")
-public final class ChooseInvoicingContactAction extends LoggedAction {
+@ParamContainer("action/invoicingcontact/create")
+public final class CreateInvoicingContactAction extends LoggedAction {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    private final PaymentProcess process;
-
+    private final InvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You select an invoicing information."))
-    private final InvoicingContact invoicingContact;
+    @ParamConstraint(optionalErrorMsg = @tr("You must add a name a invoicing information."), min = "1", minErrorMsg = @tr("You must add a name a invoicing information."))
+    private final String name;
 
-    private final ChooseInvoicingContactActionUrl url;
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(optionalErrorMsg = @tr("You must add an address a invoicing information."), min = "1", minErrorMsg = @tr("You must add an address a invoicing information."))
+    private final String address;
 
-    public ChooseInvoicingContactAction(final ChooseInvoicingContactActionUrl url) {
+    private final CreateInvoicingContactActionUrl url;
+
+    public CreateInvoicingContactAction(final CreateInvoicingContactActionUrl url) {
         super(url);
         this.url = url;
         this.process = url.getProcess();
-        this.invoicingContact = url.getInvoicingContact();
-
+        this.name = url.getName();
+        this.address = url.getAddress();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) {
+        InvoicingContact contact = new InvoicingContact(name, address, process.getActor());
+        process.setInvoicingContact(contact);
 
-
-        process.setInvoicingContact(invoicingContact);
-
-        if(process instanceof AccountChargingProcess) {
-            return new StaticAccountChargingPageUrl((AccountChargingProcess) process);
-        }
-
-        if(process instanceof ContributionProcess) {
-            return new StaticCheckContributionPageUrl((ContributionProcess) process);
-        }
-
-
-        return null;
+        return process.close();
     }
 
     @Override
@@ -88,7 +77,8 @@ public final class ChooseInvoicingContactAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(url.getInvoicingContactParameter());
+        session.addParameter(url.getNameParameter());
+        session.addParameter(url.getAddressParameter());
     }
 
 }

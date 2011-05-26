@@ -25,6 +25,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -114,11 +115,16 @@ public final class MakeOfferPage extends CreateUserContentPage {
         offerForm.add(priceInput);
 
         // asTeam
-        addAsTeamField(offerForm,
-                       me,
-                       UserTeamRight.TALK,
-                       Context.tr("In the name of "),
-                       Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
+        if (offer == null) {
+            addAsTeamField(offerForm,
+                           me,
+                           UserTeamRight.TALK,
+                           Context.tr("In the name of "),
+                           Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
+        }
+        if (offer != null && offer.getAsTeam() != null) {
+            offerForm.add(new HtmlHidden(offerActionUrl.getTeamParameter().getName(), offer.getAsTeam().getId().toString()));
+        }
 
         // Date field
         final FieldData dateData = offerActionUrl.getExpiryDateParameter().pickFieldData();
@@ -138,10 +144,10 @@ public final class MakeOfferPage extends CreateUserContentPage {
 
         // locale
         addLanguageField(offerForm, //
-                         Context.tr("description langue"), //
+                         Context.tr("description language"), //
                          Context.tr("The language in which you have maid the description."));
 
-        HtmlDiv validationDetails = new HtmlDiv();
+        final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
         showHideLink.setCssClass("fake_link");
 
@@ -149,7 +155,6 @@ public final class MakeOfferPage extends CreateUserContentPage {
         showHideValidationDetails.setHasFallback(false);
         showHideValidationDetails.addActuator(showHideLink);
         showHideValidationDetails.addListener(validationDetails);
-
 
         offerForm.add(showHideLink);
         offerForm.add(validationDetails);
@@ -161,7 +166,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         nbDaysInput.setDefaultValue(nbDaysData.getSuggestedValue());
         nbDaysInput.addErrorMessages(nbDaysData.getErrorMessages());
         nbDaysInput.setComment(Context.tr("The number of days to wait before this offer is can be validated. "
-                + "During this time users can add bugs un the bug tracker. Fatal bugs have to be colsed before the validation."));
+                + "During this time users can add bugs un the bug tracker. Fatal bugs have to be closed before the validation."));
         validationDetails.add(nbDaysInput);
 
         // percent Fatal
@@ -169,7 +174,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlTextField percentFatalInput = new HtmlTextField(percentFatalData.getName(), Context.tr("Percent gained when no FATAL bugs"));
         percentFatalInput.setDefaultValue(percentFatalData.getSuggestedValue());
         percentFatalInput.addErrorMessages(percentFatalData.getErrorMessages());
-        percentFatalInput.setComment(Context.tr("If you want to add some warenty to the contributor you can say that you want to gain less than 100% "
+        percentFatalInput.setComment(Context.tr("If you want to add some warranty to the contributor you can say that you want to gain less than 100% "
                 + "of the amount on this feature request when all the FATAL bugs are closed. "
                 + "The money left will be transfered when all the MAJOR bugs are closed. If you specify this field, you have to specify the next one on MAJOR bug percent. "
                 + "By default, all the money on this feature request is transfered when all the FATAL bugs are closed."));
@@ -202,7 +207,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return MakeOfferPage.generateBreadcrumb(feature);
     }
 

@@ -30,7 +30,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -86,7 +85,7 @@ public final class ModifyBugPage extends LoggedPage {
         final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("New Level"));
         levelInput.addErrorMessages(levelFieldData.getErrorMessages());
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
-        String suggestedLevel = levelFieldData.getSuggestedValue();
+        final String suggestedLevel = levelFieldData.getSuggestedValue();
         if (suggestedLevel != null) {
             levelInput.setDefaultValue(suggestedLevel);
         } else {
@@ -101,7 +100,7 @@ public final class ModifyBugPage extends LoggedPage {
         final HtmlDropDown stateInput = new HtmlDropDown(stateFieldData.getName(), Context.tr("New state"));
         stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
         stateInput.addErrorMessages(stateFieldData.getErrorMessages());
-        String suggestedState = stateFieldData.getSuggestedValue();
+        final String suggestedState = stateFieldData.getSuggestedValue();
         if (suggestedState != null) {
             stateInput.setDefaultValue(suggestedState);
         } else {
@@ -136,7 +135,7 @@ public final class ModifyBugPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return ModifyBugPage.generateBreadcrumb(bug);
     }
 

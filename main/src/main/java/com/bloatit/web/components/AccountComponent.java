@@ -218,33 +218,6 @@ public class AccountComponent extends HtmlPageComponent {
             addCell(new MoneyCell(contribution.getAmount().negate()));
         }
 
-        private HtmlDiv generateContributionDescription() {
-            final HtmlDiv description = new HtmlDiv("description");
-            final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
-            final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
-
-            String statusString = "";
-            switch (contribution.getFeature().getFeatureState()) {
-                case DEVELOPPING:
-                    statusString = tr("In development");
-                    break;
-                case FINISHED:
-                    statusString = tr("Success");
-                    break;
-                case DISCARDED:
-                    statusString = tr("Failed");
-                    break;
-                case PENDING:
-                case PREPARING:
-                    statusString = tr("Funding");
-                    break;
-            }
-
-            description.add(new HtmlDefineParagraph(tr("Description: "), descriptionString));
-            description.add(new HtmlDefineParagraph(tr("Status: "), statusString));
-            return description;
-        }
-
         private HtmlDiv generateContributionTitle() {
             final HtmlDiv title = new HtmlDiv("title");
             final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature());
@@ -335,7 +308,7 @@ public class AccountComponent extends HtmlPageComponent {
                                                                                .getCurrency(bankTransaction.getValuePaid())
                                                                                .getTwoDecimalEuroString()));
 
-            Invoice invoice =  bankTransaction.getInvoice();
+            final Invoice invoice =  bankTransaction.getInvoice();
             if(invoice != null) {
             description.add(new HtmlDefineParagraph(tr("Invoice: "), new InvoiceResourceUrl(invoice).getHtmlLink("invoice-" + invoice.getInvoiceNumber()+".pdf")));
 

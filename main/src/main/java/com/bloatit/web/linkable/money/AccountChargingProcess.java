@@ -24,11 +24,13 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.linkable.invoice.InvoicingContactProcess;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.StaticAccountChargingPageUrl;
 
 @ParamContainer(value = "account/charging/process", protocol = Protocol.HTTPS)
 public class AccountChargingProcess extends PaymentProcess {
@@ -49,7 +51,7 @@ public class AccountChargingProcess extends PaymentProcess {
 
     @Override
     public synchronized Url notifyChildClosed(final WebProcess subProcess) {
-        if (subProcess.getClass().equals(PaylineProcess.class)) {
+        if (subProcess instanceof PaylineProcess) {
             final PaylineProcess subPro = (PaylineProcess) subProcess;
             if (subPro.isSuccessful()) {
                 // Redirects to the contribution action which will perform the
@@ -65,6 +67,9 @@ public class AccountChargingProcess extends PaymentProcess {
             }
             unlock();
             return new AccountChargingPageUrl(this);
+        } else if (subProcess instanceof InvoicingContactProcess) {
+            setInvoicingContact(((InvoicingContactProcess) subProcess).getInvoicingContact());
+            return new StaticAccountChargingPageUrl(this);
         }
         return null;
     }

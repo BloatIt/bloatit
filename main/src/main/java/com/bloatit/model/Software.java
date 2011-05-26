@@ -53,8 +53,8 @@ public final class Software extends Identifiable<DaoSoftware> {
      * have to use the {@link FeatureManager#canCreate(AuthenticatedUserToken)} to make sure
      * you can create a new feature.
      */
-    public Software(final String name, final Member author, final Locale locale, final String title, final String description) {
-        this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, locale, title, description)));
+    public Software(final String name, final Member author, final Locale locale, final String description) {
+        this(DaoSoftware.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), null, locale, " ", description)));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

@@ -44,7 +44,7 @@ public final class CreateTeamAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(
-                     min = "4",
+                     min = "2",
                      minErrorMsg = @tr("The team unique name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
                      max = "50",
                      maxErrorMsg = @tr("The team unique name size has to be inferior to %constraint% your text is %valueLength% characters long."),//

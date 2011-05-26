@@ -67,7 +67,7 @@ public final class CreateTeamPage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return Context.tr("You cannot create a team without being loogged in.");
+        return Context.tr("You cannot create a team without being logged in.");
     }
 
     private HtmlElement generateMain() {
@@ -83,7 +83,7 @@ public final class CreateTeamPage extends LoggedPage {
         final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), Context.tr("Team unique name "));
         nameInput.setDefaultValue(nameData.getSuggestedValue());
         nameInput.addErrorMessages(nameData.getErrorMessages());
-        nameInput.setComment(Context.tr("The name of the team. It must be unique. Between 5 and 50 characters."));
+        nameInput.setComment(Context.tr("The name of the team. It must be unique. Between 3 and 50 characters."));
         form.add(nameInput);
 
         // Contact
@@ -118,10 +118,10 @@ public final class CreateTeamPage extends LoggedPage {
         // PUBLIC / PRIVATE
         final FieldData rightData = target.getRightParameter().pickFieldData();
         final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Type of the team : "));
-        rightInput.setDefaultValue(rightData.getSuggestedValue());
         rightInput.addErrorMessages(rightData.getErrorMessages());
         rightInput.addDropDownElement(DaoTeam.Right.PUBLIC.toString(), Context.tr("Public"));
         rightInput.addDropDownElement(DaoTeam.Right.PROTECTED.toString(), Context.tr("Protected"));
+        rightInput.setDefaultValue(rightData.getSuggestedValue());
         rightInput.setComment(Context.tr("Public teams can be joined by anybody without an invitation."));
         form.add(rightInput);
 
@@ -141,7 +141,7 @@ public final class CreateTeamPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return CreateTeamPage.generateBreadcrumb();
     }
 

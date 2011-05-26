@@ -19,6 +19,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -44,6 +45,7 @@ public final class FeaturePage extends ElveosPage {
 
     // Sub component.
     @SuppressWarnings("unused")
+    @SubParamContainer
     private FeatureTabPane featureTabPane;
 
     @SuppressWarnings("unused")

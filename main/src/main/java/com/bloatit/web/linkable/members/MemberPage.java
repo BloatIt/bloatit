@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlList;
@@ -69,6 +70,7 @@ public final class MemberPage extends ElveosPage {
     public final static String ACTIVITY_TAB = "activity";
     public final static String ACCOUNT_TAB = "account";
 
+    @SubParamContainer
     private ActivityTab activity;
 
     @RequestParam(name = MEMBER_TAB_PANE)

@@ -59,7 +59,7 @@ public final class SoftwarePage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         HtmlTitle softwareName;
@@ -73,11 +73,7 @@ public final class SoftwarePage extends ElveosPage {
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
-
-        final HtmlParagraph shortDescription = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle()));
-        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
-
-        layout.addLeft(shortDescription);
+        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle() + "\n" + translatedDescription.getText()));
         layout.addLeft(description);
 
         return layout;
@@ -94,7 +90,7 @@ public final class SoftwarePage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return SoftwarePage.generateBreadcrumb(software);
     }
 
