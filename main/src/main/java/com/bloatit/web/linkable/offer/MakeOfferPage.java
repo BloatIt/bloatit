@@ -25,6 +25,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
+import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
 import com.bloatit.framework.webprocessor.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
@@ -41,7 +42,6 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.OfferBlock;
-import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -115,13 +115,15 @@ public final class MakeOfferPage extends CreateUserContentPage {
         offerForm.add(priceInput);
 
         // asTeam
-        final AsTeamField teamField = addAsTeamField(offerForm,
-                                                     me,
-                                                     UserTeamRight.TALK,
-                                                     Context.tr("In the name of "),
-                                                     Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
+        if (offer == null) {
+            addAsTeamField(offerForm,
+                           me,
+                           UserTeamRight.TALK,
+                           Context.tr("In the name of "),
+                           Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
+        }
         if (offer != null && offer.getAsTeam() != null) {
-            teamField.getTeamInput().setDefaultValue(offer.getAsTeam().getId().toString());
+            offerForm.add(new HtmlHidden(offerActionUrl.getTeamParameter().getName(), offer.getAsTeam().getId().toString()));
         }
 
         // Date field
