@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoInvoice;
+import com.bloatit.model.invoicePdf.InvoicePdfGenerator;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtInvoice;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
@@ -141,7 +142,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                                                    totalPrice,
                                                                    invoiceId);
 
-        return DaoInvoice.createAndPersist(sellerName,
+        return DaoInvoice.createAndPersist(sellerName, 
                                            sellerAddress,
                                            sellerTaxIdentification,
                                            recipientActor.getDao(),

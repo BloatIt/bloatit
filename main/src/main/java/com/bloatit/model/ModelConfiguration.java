@@ -16,11 +16,13 @@
 //
 package com.bloatit.model;
 
+import java.awt.Frame;
 import java.math.BigDecimal;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
+import com.bloatit.framework.FrameworkConfiguration;
 
 public class ModelConfiguration extends ReloadableConfiguration {
     private static ModelConfiguration configuration = new ModelConfiguration();
@@ -55,7 +57,7 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private String linkeosName;
     private String linkeosAddress;
     private String linkeosTaxesIdentification;
-
+    private String invoiceLinkeosLogo;
 
     private ModelConfiguration() {
         super();
@@ -175,6 +177,10 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.administratorMails;
     }
 
+    public static String getInvoiceLinkeosLogo() {
+        return ConfigurationManager.SHARE_DIR + "/resources/" + configuration.invoiceLinkeosLogo;
+    }
+
     private void load() {
         properties = ConfigurationManager.loadProperties("model.properties");
 
@@ -216,6 +222,8 @@ public class ModelConfiguration extends ReloadableConfiguration {
         linkeosAddress = properties.getString("linkeos.address");
         linkeosTaxesIdentification = properties.getString("linkeos.taxes_identification");
         linkeosTaxesRate = properties.getBigDecimal("linkeos.taxes_rate");
+
+        invoiceLinkeosLogo = properties.getString("invoice.linkeos.logo");
     }
 
     @Override
