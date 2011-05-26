@@ -44,7 +44,7 @@ public class HtmlPagedList<T> extends HtmlDiv {
     @Optional("1")
     private final Integer currentPage;
     @RequestParam(name = PAGE_SIZE_FIELD_NAME)
-    @Optional("10")
+    @Optional("30")
     private final Integer pageSize;
 
     // Explain contract for URL and PageListUrl
@@ -56,7 +56,7 @@ public class HtmlPagedList<T> extends HtmlDiv {
     }
 
 
-    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Url url2, final HtmlPagedListUrlComponent url, XmlNode preListElement, XmlNode postListElement) {
+    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Url url2, final HtmlPagedListUrlComponent url, final XmlNode preListElement, final XmlNode postListElement) {
 
         super("paged_list");
         this.currentPage = url.getCurrentPage();
@@ -105,11 +105,11 @@ public class HtmlPagedList<T> extends HtmlDiv {
             //  - the current page is near to the last    1  2  3 ...  27 28 29 -30- 31 32 33 34
             //  - the current page is isolated            1  2  3 ...  9 10 -11- 12 ... 32 33 34
 
-            int slotForCenter = NB_PAGES_TOTAL - NB_PAGES_RIGHT - NB_PAGES_LEFT;
+            final int slotForCenter = NB_PAGES_TOTAL - NB_PAGES_RIGHT - NB_PAGES_LEFT;
 
 
-            int maxSlotForLeft =  currentPage - 1 - NB_PAGES_LEFT;
-            int maxSlotForRight =  pageCount - currentPage - NB_PAGES_RIGHT;
+            final int maxSlotForLeft =  currentPage - 1 - NB_PAGES_LEFT;
+            final int maxSlotForRight =  pageCount - currentPage - NB_PAGES_RIGHT;
 
             int slotForLeft =  maxSlotForLeft;
             int slotForRight =  maxSlotForRight;
@@ -177,12 +177,12 @@ public class HtmlPagedList<T> extends HtmlDiv {
         return span;
     }
 
-    private XmlNode generateLink(final int i, boolean longBlock) {
+    private XmlNode generateLink(final int i, final boolean longBlock) {
         final String iString = Integer.valueOf(i).toString();
         return generateLink(i, iString, longBlock);
     }
 
-    private XmlNode generateLink(final int page, final String text, boolean longBlock) {
+    private XmlNode generateLink(final int page, final String text, final boolean longBlock) {
         final String iString = Integer.valueOf(page).toString();
         final String css = (longBlock ? "long_block" : "short_block");
         if (page != currentPage) {
@@ -201,7 +201,7 @@ public class HtmlPagedList<T> extends HtmlDiv {
         return new HtmlSpan("long_block");
     }
 
-    private XmlNode generateShortBlock(String text) {
+    private XmlNode generateShortBlock(final String text) {
         return new HtmlSpan("short_block").addText(text);
     }
 }
