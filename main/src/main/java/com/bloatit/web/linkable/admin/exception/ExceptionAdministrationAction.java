@@ -18,14 +18,12 @@ import com.bloatit.web.url.ExceptionAdministrationPageUrl;
 
 @ParamContainer("admin/doexception")
 public class ExceptionAdministrationAction extends AdminAction {
-    private ExceptionAdministrationActionUrl url;
 
     @RequestParam(role = Role.GET)
     private final ErrorType level;
 
     public ExceptionAdministrationAction(ExceptionAdministrationActionUrl url) {
         super(url);
-        this.url = url;
         this.level = url.getLevel();
     }
 

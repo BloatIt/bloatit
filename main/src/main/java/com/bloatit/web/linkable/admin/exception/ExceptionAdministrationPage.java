@@ -13,6 +13,10 @@ import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.ExceptionAdministrationActionUrl;
 import com.bloatit.web.url.ExceptionAdministrationPageUrl;
 
+/**
+ * Simple admin page that can be used to throw some high level bloatit
+ * exceptions
+ */
 @ParamContainer("admin/exception")
 public class ExceptionAdministrationPage extends AdminPage {
 
