@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
