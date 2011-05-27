@@ -38,6 +38,8 @@ import com.bloatit.web.linkable.admin.HightlightedFeatureAdminPage;
 import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.linkable.admin.MilestoneAdminPage;
 import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
+import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationAction;
+import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationPage;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminAction;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminPage;
 import com.bloatit.web.linkable.bugs.BugPage;
@@ -122,103 +124,7 @@ import com.bloatit.web.pages.DocumentationPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.SiteMapPage;
 import com.bloatit.web.pages.TestPage;
-import com.bloatit.web.url.AccountChargingPageUrl;
-import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AddAttachementActionUrl;
-import com.bloatit.web.url.AddAttachementPageUrl;
-import com.bloatit.web.url.AddReleaseActionUrl;
-import com.bloatit.web.url.AddReleasePageUrl;
-import com.bloatit.web.url.AddSoftwareActionUrl;
-import com.bloatit.web.url.AddSoftwarePageUrl;
-import com.bloatit.web.url.AdminHomePageUrl;
-import com.bloatit.web.url.AdministrationActionUrl;
-import com.bloatit.web.url.BugPageUrl;
-import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
-import com.bloatit.web.url.ChangeAvatarActionUrl;
-import com.bloatit.web.url.ChangeLanguageActionUrl;
-import com.bloatit.web.url.ChangeLanguagePageUrl;
-import com.bloatit.web.url.CheckContributionActionUrl;
-import com.bloatit.web.url.CheckContributionPageUrl;
-import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
-import com.bloatit.web.url.CommentReplyPageUrl;
-import com.bloatit.web.url.ConfigurationAdminActionUrl;
-import com.bloatit.web.url.ConfigurationAdminPageUrl;
-import com.bloatit.web.url.ContributePageUrl;
-import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.ContributionInvoicingProcessUrl;
-import com.bloatit.web.url.ContributionProcessUrl;
-import com.bloatit.web.url.CreateCommentActionUrl;
-import com.bloatit.web.url.CreateFeatureActionUrl;
-import com.bloatit.web.url.CreateFeaturePageUrl;
-import com.bloatit.web.url.CreateInvoicingContactActionUrl;
-import com.bloatit.web.url.CreateTeamActionUrl;
-import com.bloatit.web.url.CreateTeamPageUrl;
-import com.bloatit.web.url.DeclareHightlightedFeatureActionUrl;
-import com.bloatit.web.url.DocumentationPageUrl;
-import com.bloatit.web.url.FeatureAdminPageUrl;
-import com.bloatit.web.url.FeatureListPageUrl;
-import com.bloatit.web.url.FeaturePageUrl;
-import com.bloatit.web.url.FileResourceUrl;
-import com.bloatit.web.url.GiveRightActionUrl;
-import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
-import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
-import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.InvoiceResourceUrl;
-import com.bloatit.web.url.InvoicingContactPageUrl;
-import com.bloatit.web.url.InvoicingContactProcessUrl;
-import com.bloatit.web.url.JoinTeamActionUrl;
-import com.bloatit.web.url.KudosableAdminPageUrl;
-import com.bloatit.web.url.LoginActionUrl;
-import com.bloatit.web.url.LoginPageUrl;
-import com.bloatit.web.url.LogoutActionUrl;
-import com.bloatit.web.url.LostPasswordActionUrl;
-import com.bloatit.web.url.LostPasswordPageUrl;
-import com.bloatit.web.url.MakeOfferPageUrl;
-import com.bloatit.web.url.MemberActivationActionUrl;
-import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MetaBugDeleteActionUrl;
-import com.bloatit.web.url.MetaBugEditPageUrl;
-import com.bloatit.web.url.MetaBugsListPageUrl;
-import com.bloatit.web.url.MetaEditBugActionUrl;
-import com.bloatit.web.url.MetaReportBugActionUrl;
-import com.bloatit.web.url.MilestoneAdminPageUrl;
-import com.bloatit.web.url.ModifyBugActionUrl;
-import com.bloatit.web.url.ModifyBugPageUrl;
-import com.bloatit.web.url.ModifyMemberActionUrl;
-import com.bloatit.web.url.ModifyMemberPageUrl;
-import com.bloatit.web.url.ModifyTeamActionUrl;
-import com.bloatit.web.url.ModifyTeamPageUrl;
-import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
-import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
-import com.bloatit.web.url.OfferActionUrl;
-import com.bloatit.web.url.PaylineActionUrl;
-import com.bloatit.web.url.PaylineNotifyActionUrl;
-import com.bloatit.web.url.PaylineProcessUrl;
-import com.bloatit.web.url.PaylineReturnActionUrl;
-import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.RecoverPasswordActionUrl;
-import com.bloatit.web.url.RecoverPasswordPageUrl;
-import com.bloatit.web.url.ReleasePageUrl;
-import com.bloatit.web.url.ReportBugActionUrl;
-import com.bloatit.web.url.ReportBugPageUrl;
-import com.bloatit.web.url.SendTeamInvitationActionUrl;
-import com.bloatit.web.url.SendTeamInvitationPageUrl;
-import com.bloatit.web.url.SignUpActionUrl;
-import com.bloatit.web.url.SignUpPageUrl;
-import com.bloatit.web.url.SiteMapPageUrl;
-import com.bloatit.web.url.SoftwareListPageUrl;
-import com.bloatit.web.url.SoftwarePageUrl;
-import com.bloatit.web.url.StaticAccountChargingPageUrl;
-import com.bloatit.web.url.StaticCheckContributionPageUrl;
-import com.bloatit.web.url.TeamPageUrl;
-import com.bloatit.web.url.TeamsPageUrl;
-import com.bloatit.web.url.TestPageUrl;
-import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
-import com.bloatit.web.url.UnlockContributionProcessActionUrl;
-import com.bloatit.web.url.UserContentAdminPageUrl;
-import com.bloatit.web.url.WithdrawMoneyActionUrl;
-import com.bloatit.web.url.WithdrawMoneyPageUrl;
+import com.bloatit.web.url.*;
 
 public class BloatitWebServer extends WebProcessor {
 
@@ -372,6 +278,9 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(InvoicingContactPageUrl.getPageName())) {
             return new InvoicingContactPage(new InvoicingContactPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ExceptionAdministrationPageUrl.getPageName())) {
+            return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -514,6 +423,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(ChooseInvoicingContactActionUrl.getPageName())) {
             return new ChooseInvoicingContactAction(new ChooseInvoicingContactActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ExceptionAdministrationActionUrl.getPageName())) {
+            return new ExceptionAdministrationAction(new ExceptionAdministrationActionUrl(params, session.getParameters()));
         }
 
 
