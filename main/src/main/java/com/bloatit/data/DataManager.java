@@ -23,7 +23,7 @@ import org.hibernate.FlushMode;
 import org.hibernate.Query;
 import org.hibernate.classic.Session;
 
-import com.bloatit.framework.utils.SecuredHash;
+import com.bloatit.framework.utils.Hash;
 
 /**
  * A data manager is a class containing some static methods launch at the begin
@@ -52,7 +52,7 @@ public class DataManager {
         @SuppressWarnings("unchecked") final List<DaoMember> members = query.list();
         for (final DaoMember member : members) {
             final String salt = RandomStringUtils.randomAscii(50);
-            final String password = SecuredHash.calculateHash(member.getPassword(), salt);
+            final String password = Hash.calculateHash(member.getPassword(), salt);
             member.setPassword(password);
             member.setSalt(salt);
         }

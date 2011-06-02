@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -58,16 +57,16 @@ public class InvoicePdfGenerator {
     private final float topMargin = 60;
     private final float bottomMargin = 30;
 
-    public InvoicePdfGenerator(String sellerName,
-                               String sellerAddress,
-                               String sellerTaxIdentification,
-                               Actor<?> recipientActor,
-                               String contributorName,
-                               String contributorAdress,
-                               String deliveryName,
-                               BigDecimal priceExcludingTax,
-                               BigDecimal totalPrice,
-                               String invoiceId) {
+    public InvoicePdfGenerator(final String sellerName,
+                               final String sellerAddress,
+                               final String sellerTaxIdentification,
+                               final Actor<?> recipientActor,
+                               final String contributorName,
+                               final String contributorAdress,
+                               final String deliveryName,
+                               final BigDecimal priceExcludingTax,
+                               final BigDecimal totalPrice,
+                               final String invoiceId) {
         this.pageSize = PageSize.A4;
         this.document = new Document();
         this.filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + UUID.randomUUID().toString();
@@ -76,13 +75,13 @@ public class InvoicePdfGenerator {
         try {
             try {
                 writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
-            } catch (FileNotFoundException e) {
+            } catch (final FileNotFoundException e) {
                 throw new ExternalErrorException("Failed to write a pdf in '" + filename + "'.", e);
             }
 
             document.open();
             document.add(new Paragraph("Ugly almost empty invoice !"));
-        } catch (DocumentException e) {
+        } catch (final DocumentException e) {
             throw new ExternalErrorException("Failed to generate pdf.", e);
         }
         document.close();
@@ -172,18 +171,18 @@ public class InvoicePdfGenerator {
             addDetailTable(deliveryName, priceExcludingTax);
             addTaxesTable(priceExcludingTax, taxRate, taxAmount, totalPrice);
             addFooter(sellerName, sellerLegalId, sellerTaxId);
-        } catch (DocumentException e) {
+        } catch (final DocumentException e) {
             throw new ExternalErrorException("Failed to generate pdf.", e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ExternalErrorException("Failed load logo to generate invoice.", e);
-        } catch (InvalidPositionException e) {
+        } catch (final InvalidPositionException e) {
             throw new BadProgrammerException("Added content out of the invoice bounds", e);
         }
         document.close();
     }
 
     /**
-     * Exists for testig purpose TODO: Delete when done with this.
+     * Exists for testing purpose TODO: Delete when done with this.
      */
     private InvoicePdfGenerator() {
         this.pageSize = PageSize.A4;
@@ -201,11 +200,11 @@ public class InvoicePdfGenerator {
             addDetailTable("Payment on elveos.org", new BigDecimal("5.35"));
             addTaxesTable(new BigDecimal("5.35"), new BigDecimal("19.6"), new BigDecimal("1.35"), new BigDecimal("6.40"));
             addFooter("Elveos", "SAS au capital de 10 500€. RCS Paris 321 654 987", "FR 000 444 333 22");
-        } catch (DocumentException e) {
+        } catch (final DocumentException e) {
             throw new ExternalErrorException("Failed to generate pdf.", e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ExternalErrorException("Failed load logo to generate invoice.", e);
-        } catch (InvalidPositionException e) {
+        } catch (final InvalidPositionException e) {
             throw new BadProgrammerException("Added content out of the invoice bounds", e);
         }
         document.close();
@@ -215,7 +214,7 @@ public class InvoicePdfGenerator {
         return filename;
     }
 
-    public static void main(String... args) throws MalformedURLException, IOException, InvalidPositionException {
+    public static void main(final String... args) {
         new InvoicePdfGenerator();
     }
 
@@ -236,7 +235,7 @@ public class InvoicePdfGenerator {
      * @param author The author of the invoice. Should elveos.org if its and
      *            elveos invoice
      */
-    private void addMetaData(String invoiceType, String invoiceId, String author) {
+    private void addMetaData(final String invoiceType, final String invoiceId, final String author) {
         document.addTitle(invoiceType + " " + invoiceId);
         document.addSubject(invoiceType);
         document.addAuthor(author);
@@ -254,7 +253,7 @@ public class InvoicePdfGenerator {
      * @throws IOException if the image file cannot be read
      */
     private void addLinkeosImg() throws DocumentException, InvalidPositionException, IOException {
-        Image img = Image.getInstance(ModelConfiguration.getInvoiceLinkeosLogo());
+        final Image img = Image.getInstance(ModelConfiguration.getInvoiceLinkeosLogo());
         img.setAbsolutePosition(leftMargin, pageSize.getHeight() - topMargin - bottomMargin + 15);
         img.scalePercent(20);
         img.setCompressionLevel(8);
@@ -275,9 +274,9 @@ public class InvoicePdfGenerator {
      * @throws InvalidPositionException when some of the coordinates used are
      *             incorrect
      */
-    private void addEmitter(String sellerName, String sellerStreet, String sellerExtras, String sellerZIP, String sellerCountry)
+    private void addEmitter(final String sellerName, final String sellerStreet, final String sellerExtras, final String sellerZIP, final String sellerCountry)
             throws DocumentException, InvalidPositionException {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(sellerName).append('\n');
         sb.append(sellerStreet).append('\n');
         if (sellerExtras != null) {
@@ -285,7 +284,7 @@ public class InvoicePdfGenerator {
         }
         sb.append(sellerZIP).append('\n');
         sb.append(sellerCountry).append('\n');
-        Paragraph p = new Paragraph(sb.toString());
+        final Paragraph p = new Paragraph(sb.toString());
         setLeft(730, p);
     }
 
@@ -303,9 +302,9 @@ public class InvoicePdfGenerator {
      * @throws InvalidPositionException when some of the coordinates used are
      *             incorrect
      */
-    private void addReceiver(String receiverName, String receiverStreet, String receiverExtras, String receiverZIP, String receiverCountry)
+    private void addReceiver(final String receiverName, final String receiverStreet, final String receiverExtras, final String receiverZIP, final String receiverCountry)
             throws DocumentException, InvalidPositionException {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(receiverName).append('\n');
         sb.append(receiverStreet).append('\n');
         if (receiverExtras != null) {
@@ -313,7 +312,7 @@ public class InvoicePdfGenerator {
         }
         sb.append(receiverZIP).append('\n');
         sb.append(receiverCountry).append('\n');
-        Paragraph p = new Paragraph(sb.toString());
+        final Paragraph p = new Paragraph(sb.toString());
 
         setAt(RIGHT_COLUMN, 670, p);
     }
@@ -326,20 +325,20 @@ public class InvoicePdfGenerator {
      *             document
      * @throws InvalidPositionException when the programmer suck
      */
-    private void addDate(Date creationDate) throws DocumentException, InvalidPositionException {
-        Paragraph p = new Paragraph(new SimpleDateFormat("EEEE MMMM d, yyyy", Locale.US).format(creationDate) + ",");
+    private void addDate(final Date creationDate) throws DocumentException, InvalidPositionException {
+        final Paragraph p = new Paragraph(new SimpleDateFormat("EEEE MMMM d, yyyy", Locale.US).format(creationDate) + ",");
         setAt(RIGHT_COLUMN, 550, p);
     }
 
-    private void addFactureNumber(String invoiceId) throws DocumentException, InvalidPositionException {
-        Paragraph p = new Paragraph("Invoice No: " + invoiceId);
+    private void addFactureNumber(final String invoiceId) throws DocumentException, InvalidPositionException {
+        final Paragraph p = new Paragraph("Invoice No: " + invoiceId);
         p.getFont().setSize(FACTURE_NUMBER_FONT_SIZE);
         p.getFont().setStyle(Font.BOLD);
         setLeft(480, p);
     }
 
-    private void addDetailTable(String deliveryName, BigDecimal price) throws DocumentException, InvalidPositionException {
-        PdfPTable table = new PdfPTable(4);
+    private void addDetailTable(final String deliveryName, final BigDecimal price) throws DocumentException, InvalidPositionException {
+        final PdfPTable table = new PdfPTable(4);
         table.addCell(createTableHeaderCell("Description of service"));
         table.addCell(createTableHeaderCell("Qty"));
         table.addCell(createTableHeaderCell("Unit price"));
@@ -351,15 +350,15 @@ public class InvoicePdfGenerator {
         table.addCell(createTableBodyCell(price));
 
         table.setWidthPercentage(100);
-        float[] widths = { 300f, 66f, 120f, 85f };
+        final float[] widths = { 300f, 66f, 120f, 85f };
         table.setWidths(widths);
 
         setLeft(430, table);
     }
 
-    private void addTaxesTable(BigDecimal amountNoTaxes, BigDecimal taxRate, BigDecimal taxAmount, BigDecimal amountTaxesIncluded)
+    private void addTaxesTable(final BigDecimal amountNoTaxes, final BigDecimal taxRate, final BigDecimal taxAmount, final BigDecimal amountTaxesIncluded)
             throws DocumentException, InvalidPositionException {
-        PdfPTable table = new PdfPTable(2);
+        final PdfPTable table = new PdfPTable(2);
         table.addCell(createTableBodyCell("Sub Total"));
         table.addCell(createTableBodyCell(amountNoTaxes));
         table.addCell(createTableBodyCell("Taxes (" + taxRate.setScale(TAX_RATE_SCALE).toPlainString() + " %)"));
@@ -368,7 +367,7 @@ public class InvoicePdfGenerator {
         table.addCell(createTableBodyCell(amountTaxesIncluded));
 
         table.setWidthPercentage(100);
-        float[] widths = { 186f, 85f };
+        final float[] widths = { 186f, 85f };
         table.setWidths(widths);
 
         setAt(TAXES_TABLE_LEFT, 375, table);
@@ -385,8 +384,8 @@ public class InvoicePdfGenerator {
      * @throws InvalidPositionException when the content is added in a place
      *             where it shouldn't
      */
-    private void addFooter(String sellerName, String sellerId, String sellerTaxIdentification) throws DocumentException, InvalidPositionException {
-        PdfContentByte cb = writer.getDirectContent();
+    private void addFooter(final String sellerName, final String sellerId, final String sellerTaxIdentification) throws DocumentException, InvalidPositionException {
+        final PdfContentByte cb = writer.getDirectContent();
 
         cb.setLineWidth(1.7f);
         cb.setGrayStroke(0.80f);
@@ -394,20 +393,20 @@ public class InvoicePdfGenerator {
         cb.lineTo(pageSize.getWidth() - rightMargin, 60 + bottomMargin);
         cb.stroke();
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(sellerName).append('\n');
         sb.append(sellerId).append('\n');
         sb.append("Tax id: ").append(sellerTaxIdentification).append('\n');
 
-        Paragraph p = new Paragraph(sb.toString());
-        p.setAlignment(Paragraph.ALIGN_CENTER);
+        final Paragraph p = new Paragraph(sb.toString());
+        p.setAlignment(Element.ALIGN_CENTER);
         p.getFont().setStyle(Font.ITALIC);
         p.getFont().setColor(70, 70, 70);
         p.getFont().setSize(FOOTER_FONT_SIZE);
         setAt(0, 60, p);
     }
 
-    private void setLeft(float y, Element element) throws DocumentException, InvalidPositionException {
+    private void setLeft(final float y, final Element element) throws DocumentException, InvalidPositionException {
         setAt(0, y, element);
     }
 
@@ -422,11 +421,11 @@ public class InvoicePdfGenerator {
      * @throws DocumentException
      * @throws InvalidPositionException
      */
-    private void setAt(float x, float y, Element element) throws DocumentException, InvalidPositionException {
+    private void setAt(final float x, final float y, final Element element) throws DocumentException, InvalidPositionException {
         if ((pageSize.getWidth() - (leftMargin + rightMargin)) < x || (pageSize.getHeight() - (topMargin + bottomMargin)) < y) {
             throw new InvalidPositionException();
         }
-        ColumnText ct = new ColumnText(writer.getDirectContent());
+        final ColumnText ct = new ColumnText(writer.getDirectContent());
         ct.setSimpleColumn(x + leftMargin, y + bottomMargin, pageSize.getWidth() - rightMargin, 0);
         ct.addElement(element);
         ct.go();
@@ -438,11 +437,11 @@ public class InvoicePdfGenerator {
      * @param text the text to add into the cell
      * @return the cell
      */
-    private static PdfPCell createTableHeaderCell(String text) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
+    private static PdfPCell createTableHeaderCell(final String text) {
+        final PdfPCell cell = new PdfPCell(new Phrase(text));
         cell.setBackgroundColor(new BaseColor(71, 162, 190));
-        cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setPaddingLeft(PADDING_LEFT_HEADER_CELL);
         cell.setPaddingBottom(PADDING_BOTTOM_HEADER_CELL);
         return cell;
@@ -454,10 +453,10 @@ public class InvoicePdfGenerator {
      * @param text the text to add into the cell
      * @return the cell
      */
-    private static PdfPCell createTableBodyCell(String text) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+    private static PdfPCell createTableBodyCell(final String text) {
+        final PdfPCell cell = new PdfPCell(new Phrase(text));
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setPaddingBottom(PADDING_BOTTOM_BODY_CELL);
         cell.setPaddingTop(PADDING_TOP_BODY_CELL);
         cell.setPaddingLeft(PADDING_LEFT_BODY_CELL);
@@ -465,15 +464,15 @@ public class InvoicePdfGenerator {
     }
 
     /**
-     * Create a table celle to use as a header
+     * Create a table cell to use as a header
      * 
      * @param text the euro amount to add into the cell
      * @return the cell
      */
-    private static PdfPCell createTableBodyCell(BigDecimal amount) {
-        PdfPCell cell = new PdfPCell(new Phrase(amount.toEngineeringString() + " €"));
-        cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+    private static PdfPCell createTableBodyCell(final BigDecimal amount) {
+        final PdfPCell cell = new PdfPCell(new Phrase(amount.toEngineeringString() + " €"));
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         cell.setPaddingRight(PADDING_RIGHT_BODY_CELL);
         return cell;
     }
@@ -482,7 +481,7 @@ public class InvoicePdfGenerator {
      * Make sure there is a directory to store the files.
      */
     private static final void createDirectory() {
-        String dir = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/";
+        final String dir = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/";
 
         final File storeDir = new File(dir);
         if (!storeDir.exists()) {

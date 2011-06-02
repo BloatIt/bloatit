@@ -52,7 +52,7 @@ public final class SessionManager {
 
     public static synchronized void destroySession(final Session session) {
         if (activeSessions.containsKey(session.getKey())) {
-            Log.framework().info("destroy session " + session.getKey());
+            Log.framework().trace("destroy session " + session.getKey());
             cleanTemporarySession(session);
             activeSessions.remove(session.getKey());
         }

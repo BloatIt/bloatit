@@ -16,7 +16,6 @@
 //
 package com.bloatit.model;
 
-import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoInvoicingContact;
 
 /**
@@ -68,13 +67,6 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
 
     /**
      * Create a new invoicing contact.
-     *
-     * @param member is the author of the bug.
-     * @param milestone is the milestone on which this bug has been set.
-     * @param title is the title of the bug.
-     * @param description is a complete description of the bug.
-     * @param locale is the language in which this description has been written.
-     * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
     public InvoicingContact(final String name,
                      final String address, final Actor<?> actor) {

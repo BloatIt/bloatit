@@ -18,6 +18,7 @@ import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.model.ModelAccessor;
+import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
@@ -46,6 +47,14 @@ public abstract class WebProcessor implements XcgiProcessor {
 
             ModelAccessor.open();
             Context.reInitializeContext(header, session);
+
+            // Access log
+            final String memberId = session.getUserToken().isAuthenticated() ? session.getUserToken().getMember().getId().toString() : "-1";
+            final String sessionKey = Hash.shortHash(session.getKey().toString());
+            Log.framework().info("Access:Context: " + //
+                    "USER_ID=\"" + memberId + //
+                    "\"; KEY=\"" + sessionKey + //
+                    "\"; LANG=\"" + Context.getLocalizator().getLocale() + "\"");
 
             final String pageCode = header.getPageName();
 

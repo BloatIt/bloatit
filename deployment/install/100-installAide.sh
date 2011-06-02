@@ -53,9 +53,9 @@ elif [ "$1" = "exec" ] ; then
     # cp the db
     FILENAME=/var/lib/aide/aide.db.new
     sudo cp $FILENAME /var/lib/aide/aide.db
-echo you should : 
-echo    sudo scp $FILENAME elveos-backup@f2.b219.org:aide.db.$(date +%m-%d-%y-%R)
-echo    sudo scp $FILENAME elveos-backup@b219.org:aide.db.$(date +%m-%d-%y-%R)
+    echo you should : 
+    echo    sudo scp $FILENAME elveos-backup@f2.b219.org:aide.db.$(date +%m-%d-%y-%R)
+    echo    sudo scp $FILENAME elveos-backup@b219.org:aide.db.$(date +%m-%d-%y-%R)
     
 
     echo creating a helper script in ~/aide.sh
@@ -76,5 +76,6 @@ fi
 EOF
 
     read -p "Make sure the backup script is up to date ! <return>"
+    read -p "Make sure to cron the cp /var/lib/aide/aide.db{.new,}"
 
 fi

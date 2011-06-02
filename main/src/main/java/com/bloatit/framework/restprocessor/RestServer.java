@@ -16,8 +16,9 @@
 //
 package com.bloatit.framework.restprocessor;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
+
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -31,8 +32,8 @@ import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
 import com.bloatit.framework.xcgiserver.HttpResponse;
-import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 /**
  * <p>
@@ -76,6 +77,13 @@ public abstract class RestServer implements XcgiProcessor {
      */
     @Override
     public final boolean process(final HttpHeader httpHeader, final HttpPost post, final HttpResponse response) throws IOException {
+
+        // TODO when the authentication will be supported do not forget to log
+        // it with this syntax:
+        // Log.framework().info("Access:Context: KEY=\"" + sessionKey +
+        // "\"; USER_ID=\"" + memberId + "\"; LANG=\""
+        // + Context.getLocalizator().getLocale() + "\"");
+
         String scriptName = "";
         if (httpHeader.getScriptName().startsWith("/") && httpHeader.getScriptName().length() > 1) {
             scriptName = URLDecoder.decode(httpHeader.getScriptName().substring(1), UTF_8);
@@ -228,8 +236,8 @@ public abstract class RestServer implements XcgiProcessor {
 
                 if (result == null) {
                     // ERROR Case
-                    StringBuilder request = new StringBuilder();
-                    StringBuilder ignored = new StringBuilder();
+                    final StringBuilder request = new StringBuilder();
+                    final StringBuilder ignored = new StringBuilder();
                     int j = 0;
                     for (final String s : pathInfo) {
                         if (j <= i) {
@@ -350,8 +358,8 @@ public abstract class RestServer implements XcgiProcessor {
                 + "] does not exist");
     }
 
-    private Object invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params)
-            throws RestException {
+    private Object
+            invokeMethod(final RequestMethod requestMethod, final Object result, final String path, final Parameters params) throws RestException {
         return invoke(requestMethod, result.getClass(), result, path, params);
     }
 
@@ -363,8 +371,9 @@ public abstract class RestServer implements XcgiProcessor {
      * @see #invokeStatic(RequestMethod, String, Parameters)
      * @see #invokeMethod(RequestMethod, Object, String, Parameters)
      */
-    private Object invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
-            throws RestException {
+    private Object
+            invoke(final RequestMethod requestMethod, final Class<?> clazz, final Object lookup, final String path, final Parameters params)
+                                                                                                                                            throws RestException {
         for (final Method m : clazz.getMethods()) {
             if (m.isAnnotationPresent(REST.class)) {
                 final REST annotation = m.getAnnotation(REST.class);
