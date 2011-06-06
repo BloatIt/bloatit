@@ -16,6 +16,8 @@
 //
 package com.bloatit.model;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
@@ -37,9 +39,11 @@ import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
+import com.bloatit.data.DaoStringVersion;
 import com.bloatit.data.DaoTeam;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
+import com.bloatit.data.DaoVersionedString;
 import com.bloatit.data.DataClassVisitor;
 
 /**
@@ -267,5 +271,15 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     @Override
     public Identifiable<?> visit(DaoInvoice dao) {
         return Invoice.create(dao);
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoStringVersion dao) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoVersionedString dao) {
+        throw new NotImplementedException();
     }
 }

@@ -314,8 +314,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the new {@link DaoContribution}
      * @throws NotEnoughMoneyException the not enough money exception
      */
-    public DaoContribution
-            addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution addContribution(final DaoMember member, final DaoTeam team, final BigDecimal amount, final String comment)
+            throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }
@@ -424,6 +424,15 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     public void setFeatureState(final FeatureState featureState) {
         this.featureState = featureState;
     }
+
+    // @Override
+    // public void setIsDeleted(final Boolean isDeleted) {
+    // if (isDeleted) {
+    // for (DaoOffer offer : offers) {
+    // offer.setIsDeleted(true);
+    // }
+    // }
+    // }
 
     // ======================================================================
     // Getters.

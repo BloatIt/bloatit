@@ -265,6 +265,12 @@ public class DaoContribution extends DaoUserContent {
     public DaoFeature getFeature() {
         return this.feature;
     }
+    
+    @Override
+    public void setIsDeleted(final Boolean isDeleted) {
+        throw new IllegalStateException("You cannot delete a contribution. Use Cancel instead.");
+    }
+
 
     // ======================================================================
     // Visitor.
