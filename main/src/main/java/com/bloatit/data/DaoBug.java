@@ -274,7 +274,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     public DaoComment getLastComment() {
         return CommentManager.getLastComment(this.comments);
     }
-
+    
     // ======================================================================
     // Visitor.
     // ======================================================================

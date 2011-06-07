@@ -116,7 +116,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * 
      * @return the member that created this {@link UserContent}.
      */
-    public DaoMember getMember() {
+    public final DaoMember getMember() {
         return this.member;
     }
 
@@ -147,14 +147,14 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     /**
      * @return all the files associated with this DaoUserContent.
      */
-    public PageIterable<DaoFileMetadata> getFiles() {
+    public final PageIterable<DaoFileMetadata> getFiles() {
         return new MappedList<DaoFileMetadata>(this.files);
     }
 
     /**
      * @return true if the content should be considered as delete.
      */
-    public boolean isDeleted() {
+    public final boolean isDeleted() {
         return this.isDeleted;
     }
 
@@ -171,7 +171,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * 
      * @param daoFileMetadata the file to attach on this content
      */
-    public void addFile(final DaoFileMetadata daoFileMetadata) {
+    public final void addFile(final DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
         daoFileMetadata.setRelatedContent(this);
     }
