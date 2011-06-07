@@ -104,11 +104,13 @@ public final class SignUpAction extends ElveosAction {
             url.getLoginParameter().addErrorMessage(Context.tr("Login already used."));
             return doProcessErrors();
         }
+        
         if (MemberManager.emailExists(email)) {
             session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
             url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
             return doProcessErrors();
         }
+        
         if (!MailUtils.isValidEmail(email)) {
             session.notifyError(Context.tr("Invalid email address: {0}.", email));
             url.getEmailParameter().addErrorMessage(Context.tr("Invalid email."));

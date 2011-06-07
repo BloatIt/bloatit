@@ -18,9 +18,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.UserToken;
+import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
+import com.bloatit.model.Member;
 import com.bloatit.model.managers.LoginManager;
+import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -28,7 +31,7 @@ import com.bloatit.web.url.LoginPageUrl;
 /**
  * A response to a form used to log into the website
  */
-@ParamContainer(value="action/login", protocol=Protocol.HTTPS)
+@ParamContainer(value = "action/login", protocol = Protocol.HTTPS)
 public final class LoginAction extends ElveosAction {
 
     private static final String LOGIN_CODE = "bloatit_login";
@@ -62,8 +65,15 @@ public final class LoginAction extends ElveosAction {
             return session.pickPreferredPage();
         }
 
+        // We check if member is non existant or not validated
+        Member m = MemberManager.getMemberByLogin(login);
+        if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
+            session.notifyBad(Context.tr("Your account has not been validated yet. Please check your emails."));
+            transmitParameters();
+            return new LoginPageUrl();
+        }
+
         session.setAnonymousUserToken();
-        session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
         url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
         url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
@@ -85,7 +95,7 @@ public final class LoginAction extends ElveosAction {
     protected void transmitParameters() {
         session.addParameter(url.getLoginParameter());
 
-        if(url.getPasswordParameter().getValue() != null) {
+        if (url.getPasswordParameter().getValue() != null) {
             url.getPasswordParameter().setValue("");
         }
 

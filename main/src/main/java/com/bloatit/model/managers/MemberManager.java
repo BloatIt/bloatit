@@ -98,22 +98,6 @@ public final class MemberManager {
     }
 
     /**
-     * Gets a member using its login/password.
-     *
-     * @param login the login
-     * @param password the password
-     * @return the member or null if the login/password does not match any user.
-     */
-    public static Member getByLoginAndPassword(final String login, final String password) {
-        final DaoMember daoMember = DaoMember.getByLoginAndPassword(login, password);
-        if (daoMember == null) {
-            return null;
-        }
-
-        return Member.create(daoMember);
-    }
-
-    /**
      * Gets the number of members.
      *
      * @return the members count
