@@ -52,7 +52,6 @@ public class DaoInvoicingContact extends DaoIdentifiable {
     @Basic(optional = false)
     public String address;
 
-
     /**
      * Tax identification, VAT ...
      */
@@ -63,8 +62,7 @@ public class DaoInvoicingContact extends DaoIdentifiable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoActor actor;
 
-    private DaoInvoicingContact(final String name,
-                   final String address, final DaoActor actor) {
+    private DaoInvoicingContact(final String name, final String address, final DaoActor actor) {
         if (name == null || address == null || name.isEmpty() || address.isEmpty() || actor == null) {
             throw new NonOptionalParameterException();
         }
@@ -73,21 +71,19 @@ public class DaoInvoicingContact extends DaoIdentifiable {
         this.actor = actor;
     }
 
-
     /**
      * Creates the invoice contact and persist it.
-     *
+     * 
      * @param name the full name or company name
      * @param address the invoicing address.
      * @return the new dao invoicing contact
      */
-    public static DaoInvoicingContact createAndPersist(final String name,
-                                                       final String address, DaoActor actor) {
+    public static DaoInvoicingContact createAndPersist(final String name, final String address, final DaoActor actor) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoInvoicingContact invoicingContact = new DaoInvoicingContact(name, address, actor);
-        
+
         actor.addInvoicingContact(invoicingContact);
-        
+
         try {
             session.save(invoicingContact);
         } catch (final HibernateException e) {
@@ -98,22 +94,18 @@ public class DaoInvoicingContact extends DaoIdentifiable {
         return invoicingContact;
     }
 
-
-
     /**
      * Sets the tax identification.
-     *
+     * 
      * @param taxIdentification tax identification
      */
     public void setTaxIdentification(final String taxIdentification) {
         this.taxIdentification = taxIdentification;
     }
 
-
-
     /**
      * Gets the name.
-     *
+     * 
      * @return the name
      */
     public String getName() {
@@ -122,7 +114,7 @@ public class DaoInvoicingContact extends DaoIdentifiable {
 
     /**
      * Gets the address.
-     *
+     * 
      * @return the address
      */
     public String getAddress() {
@@ -131,7 +123,7 @@ public class DaoInvoicingContact extends DaoIdentifiable {
 
     /**
      * Gets the tax identification.
-     *
+     * 
      * @return the tax identification
      */
     public String getTaxIdentification() {
@@ -140,14 +132,12 @@ public class DaoInvoicingContact extends DaoIdentifiable {
 
     /**
      * Gets the actor.
-     *
+     * 
      * @return the actor
      */
     public DaoActor getActor() {
         return this.actor;
     }
-
-
 
     // ======================================================================
     // Visitor.
@@ -190,34 +180,39 @@ public class DaoInvoicingContact extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoInvoicingContact other = (DaoInvoicingContact) obj;
+        }
+        final DaoInvoicingContact other = (DaoInvoicingContact) obj;
         if (address == null) {
-            if (other.address != null)
+            if (other.address != null) {
                 return false;
-        } else if (!address.equals(other.address))
+            }
+        } else if (!address.equals(other.address)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (taxIdentification == null) {
-            if (other.taxIdentification != null)
+            if (other.taxIdentification != null) {
                 return false;
-        } else if (!taxIdentification.equals(other.taxIdentification))
+            }
+        } else if (!taxIdentification.equals(other.taxIdentification)) {
             return false;
+        }
         return true;
     }
-
-
-
-
 
 }

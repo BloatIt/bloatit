@@ -37,6 +37,7 @@ public interface DaoCommentable {
      * 
      * @return the last comment
      */
+    // TODO isDeleted
     DaoComment getLastComment();
 
     /**

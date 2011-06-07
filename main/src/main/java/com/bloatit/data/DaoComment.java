@@ -242,12 +242,12 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      *         is no child.
      */
     public PageIterable<DaoComment> getChildren() {
-        return new MappedList<DaoComment>(children);
+        return new MappedUserContentList<DaoComment>(children);
     }
 
     @Override
     public PageIterable<DaoComment> getComments() {
-        return new MappedList<DaoComment>(this.children);
+        return new MappedUserContentList<DaoComment>(this.children);
     }
 
     @Override

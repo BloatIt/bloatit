@@ -38,6 +38,8 @@ public class FeatureSearch extends Search<DaoFeature> {
                                                   "offers.description.translations.title",
                                                   "offers.description.translations.text",
                                                   "featureState" }, searchText);
+        // Remove deleted content from search.
+        addFilterTerm("isDeleted", "TRUE");
     }
 
     /**

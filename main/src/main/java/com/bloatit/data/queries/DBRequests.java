@@ -16,9 +16,7 @@
 //
 package com.bloatit.data.queries;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.data.DaoFeature;
@@ -47,15 +45,9 @@ public class DBRequests {
         // disactivated
     }
 
-    public static PageIterable<DaoUserContent> getUserContents() {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Criteria criteria = session.createCriteria(DaoUserContent.class);
-        return new CriteriaCollection<DaoUserContent>(criteria);
-    }
-
     /**
      * Make sure you test if the return is != null:
-     *
+     * 
      * <pre>
      * public static Team create() {
      *     DaoTeam dao = DBRequests.getById(DaoTeam.class, 12);
@@ -65,7 +57,7 @@ public class DBRequests {
      *     return new Team(dao);
      * }
      * </pre>
-     *
+     * 
      * @param <T>
      * @param persistant
      * @param id
@@ -77,7 +69,14 @@ public class DBRequests {
         if (id == null) {
             return null;
         }
-        return (T) SessionManager.getSessionFactory().getCurrentSession().get(persistant, id);
+        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        final T identifiable = (T) currentSession.get(persistant, id);
+        if (DaoUserContent.class.isAssignableFrom(persistant)) {
+            if (((DaoUserContent) identifiable).isDeleted()) {
+                return null;
+            }
+        }
+        return identifiable;
     }
 
     public static <T extends DaoIdentifiable> PageIterable<T> getAll(final Class<T> persistent) {

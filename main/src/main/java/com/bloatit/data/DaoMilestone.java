@@ -442,7 +442,7 @@ public class DaoMilestone extends DaoIdentifiable {
      * @return the releases
      */
     public PageIterable<DaoRelease> getReleases() {
-        return new MappedList<DaoRelease>(this.releases);
+        return new MappedUserContentList<DaoRelease>(this.releases);
     }
 
     /**

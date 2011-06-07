@@ -90,8 +90,7 @@ public class DataManager {
      */
     public static void open() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-
-        session.beginTransaction();
+        SessionManager.beginWorkUnit();
         session.setDefaultReadOnly(false);
         session.setFlushMode(FlushMode.AUTO);
     }

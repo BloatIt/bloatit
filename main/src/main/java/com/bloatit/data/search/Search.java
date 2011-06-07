@@ -98,7 +98,7 @@ public abstract class Search<T> {
 
     protected abstract void prepareSearch();
 
-    protected void addFilterTerm(final String term, final String value) {
+    protected final void addFilterTerm(final String term, final String value) {
         filteredTerms.add(new Pair<String, String>(term, value));
     }
 
