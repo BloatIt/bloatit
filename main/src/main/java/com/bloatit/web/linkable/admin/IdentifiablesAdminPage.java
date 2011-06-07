@@ -40,6 +40,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.model.IdentifiableInterface;
 import com.bloatit.model.admin.IdentifiableAdminListFactory;
+import com.bloatit.web.linkable.admin.master.AdminPage;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.IdentifiablesAdminPageUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;

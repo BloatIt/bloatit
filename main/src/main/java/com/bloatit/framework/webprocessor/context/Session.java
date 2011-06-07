@@ -239,6 +239,10 @@ public final class Session {
     }
 
     public final synchronized Deque<ErrorMessage> getNotifications() {
+        String gn = Context.getGlobalNotification();
+        if (gn != null) {
+            notifyError(gn);
+        }
         return notificationList;
     }
 

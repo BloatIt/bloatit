@@ -51,6 +51,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.linkable.admin.master.AdminPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.HightlightedFeaturesTools;

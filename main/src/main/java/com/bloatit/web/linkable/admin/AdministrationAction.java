@@ -35,6 +35,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.linkable.admin.master.AdminAction;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 

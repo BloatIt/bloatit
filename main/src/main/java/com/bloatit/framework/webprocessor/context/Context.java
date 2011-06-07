@@ -30,6 +30,8 @@ import com.bloatit.framework.utils.i18n.Localizator;
 public class Context {
     private static final int MILLISECOND_DIV = 1000;
 
+    private static String globalNotification;
+
     static class ContextData {
         private Session session = null;
         private Localizator localizator = null;
@@ -53,7 +55,7 @@ public class Context {
     private static AtomicLong requestTime = new AtomicLong(getCurrentTime());
 
     private Context() {
-        // desactivate CTOR.
+        // disable CTOR.
     }
 
     public static Session getSession() {
@@ -135,5 +137,13 @@ public class Context {
 
     private static void setSession(final Session session) {
         UniqueThreadContext.getContext().session = session;
+    }
+
+    public static synchronized void setGlobalNotification(String globalNotification) {
+        Context.globalNotification = globalNotification;
+    }
+
+    public static synchronized String getGlobalNotification() {
+        return Context.globalNotification;
     }
 }
