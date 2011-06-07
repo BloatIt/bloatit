@@ -18,10 +18,11 @@ package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 public final class HtmlNotification extends HtmlDiv {
 
-    public HtmlNotification(final Level level, final String message) {
+    public HtmlNotification(final Level level, final XmlNode message) {
         super();
         switch (level) {
             case INFO:
@@ -37,7 +38,7 @@ public final class HtmlNotification extends HtmlDiv {
                 // Do nothing
                 break;
         }
-        addText(message);
+        add(message);
     }
 
 }

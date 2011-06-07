@@ -16,6 +16,8 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlLink;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
@@ -27,6 +29,7 @@ import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.web.url.LostPasswordPageUrl;
 
 /**
  * A response to a form used to log into the website
@@ -74,7 +77,10 @@ public final class LoginAction extends ElveosAction {
         }
 
         session.setAnonymousUserToken();
-        session.notifyBad(Context.tr("Login failed. Wrong login or password."));
+        HtmlLink link = new LostPasswordPageUrl().getHtmlLink();
+        HtmlMixedText mixed = new HtmlMixedText(Context.tr("Login failed. Wrong login or password. Password lost ? <0::Recover it>."), link);
+        session.notifyBad(mixed);
+
         url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
         url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));
         transmitParameters();
