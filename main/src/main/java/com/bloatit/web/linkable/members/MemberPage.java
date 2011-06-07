@@ -37,6 +37,7 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.Action;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
@@ -86,8 +87,6 @@ public final class MemberPage extends ElveosPage {
     @Optional("john-do")
     private final String displayName;
 
-    private boolean myPage;
-
     public MemberPage(final MemberPageUrl url) {
         super(url);
         this.url = url;
@@ -101,23 +100,16 @@ public final class MemberPage extends ElveosPage {
     protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        if (getSession().getUserToken().isAuthenticated() && member != null && member.equals(getSession().getUserToken().getMember())) {
-            this.myPage = true;
-        } else {
-            this.myPage = false;
-        }
-
         layout.addLeft(generateMemberPageMain());
 
-
-        if (myPage) {
+        if (member.canGetInternalAccount()) {
             layout.addLeft(generateTabPane());
         }
 
         // Adding list of teams
         final TitleSideBarElementLayout teamBlock = new TitleSideBarElementLayout();
         try {
-            if (myPage) {
+            if (member.canGetTeams()) {
                 teamBlock.setTitle(Context.tr("My teams"));
             } else {
                 teamBlock.setTitle(Context.tr("{0}''s teams", member.getDisplayName()));
@@ -152,11 +144,18 @@ public final class MemberPage extends ElveosPage {
     private HtmlElement generateMemberPageMain() {
         final HtmlDiv master = new HtmlDiv("member_page");
 
-        if (myPage) {
+        if (member.canAccessUserInformations(Action.WRITE)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
             modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change account settings")));
+        }
+
+        boolean myPage;
+        if (getSession().getUserToken().isAuthenticated() && member != null && member.equals(getSession().getUserToken().getMember())) {
+            myPage = true;
+        } else {
+            myPage = false;
         }
 
         // Title
@@ -180,7 +179,7 @@ public final class MemberPage extends ElveosPage {
             final HtmlList memberIdList = new HtmlList();
             memberId.add(memberIdList);
 
-            if (myPage) {
+            if (member.canAccessUserInformations(Action.READ)) {
                 // Login
                 final HtmlSpan login = new HtmlSpan("id_category");
                 login.addText(Context.trc("login (noun)", "Login: "));
@@ -226,7 +225,7 @@ public final class MemberPage extends ElveosPage {
             throw new ShallNotPassException("Error while gathering user information", e);
         }
 
-        if (!myPage) {
+        if (!member.canGetInternalAccount()) {
             // Displaying list of user recent activity
             final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 2);
             main.add(recent);

@@ -103,7 +103,7 @@ public final class MembersListPage extends ElveosPage {
                 HtmlLink htmlLink;
                 htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
                 final HtmlSpan karma = new HtmlSpan("karma");
-                karma.addAttribute("title", Context.tr("{0} karma's", member.getDisplayName()));
+                karma.addAttribute("title", Context.tr("{0} karma's ", member.getDisplayName()));
                 karma.addText(HtmlTools.compressKarma(member.getKarma()));
 
                 textBox.add(htmlLink);
