@@ -71,7 +71,7 @@ public class SimpleTestDB {
         yo = new Member("Yoann", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
-        InvoicingContact yoInvoicingContact = new InvoicingContact("Yoann Plénet","Earth", Member.create(yo));
+        final InvoicingContact yoInvoicingContact = new InvoicingContact("Yoann Plénet","Earth", Member.create(yo));
 
         final DaoMember admin = new Member("admin", "admin", "admin@gmail.com", Locale.FRANCE).getDao();
         admin.setFullname("Administrator");
@@ -79,7 +79,7 @@ public class SimpleTestDB {
         admin.setRole(Role.ADMIN);
 
         publicGroup = DaoTeam.createAndPersiste("publicGroup", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);
-        InvoicingContact publicGroupInvoicingContact = new InvoicingContact("publicGroup","Mars", Team.create(publicGroup));
+        final InvoicingContact publicGroupInvoicingContact = new InvoicingContact("publicGroup","Mars", Team.create(publicGroup));
 
 
         privateGroup = DaoTeam.createAndPersiste("privateGroup", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
@@ -166,6 +166,7 @@ public class SimpleTestDB {
                                           feature,
                                           new BigDecimal("200"),
                                           DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Mon Offre", "Voici la description"),
+                                          "GNU GPL",
                                           DateUtils.tomorrow(),
                                           0));
 

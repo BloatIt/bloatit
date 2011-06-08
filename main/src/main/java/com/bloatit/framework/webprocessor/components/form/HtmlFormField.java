@@ -19,6 +19,8 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.url.Messages;
 
 /**
@@ -215,9 +217,13 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * 
      * @param comment The text describing the goal of the form field
      */
-    public void setComment(final String comment) {
+    public final void setComment(final String comment) {
+       setComment(new HtmlText(comment));
+    }
+    
+    public void setComment(final XmlNode comment) {
         final HtmlDiv commentBlock = new HtmlDiv("comment");
-        commentBlock.addText(comment);
+        commentBlock.add(comment);
         this.commentPh.add(commentBlock);
     }
 

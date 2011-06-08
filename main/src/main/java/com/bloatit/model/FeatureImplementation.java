@@ -161,6 +161,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     @Override
     public Offer addOffer(final BigDecimal amount,
                           final String description,
+                          final String license,
                           final Locale local,
                           final Date dateExpire,
                           final int secondsBeforeValidation) throws UnauthorizedOperationException {
@@ -170,6 +171,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                                       this,
                                       amount,
                                       description,
+                                      license,
                                       local,
                                       dateExpire,
                                       secondsBeforeValidation);

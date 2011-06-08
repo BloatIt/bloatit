@@ -104,6 +104,9 @@ public class DaoOffer extends DaoKudosable {
     @Basic(optional = false)
     private boolean isDraft;
 
+    @Basic(optional = false)
+    private String license;
+
     // ======================================================================
     // Construction
     // ======================================================================
@@ -115,7 +118,7 @@ public class DaoOffer extends DaoKudosable {
      * @param team the asTeam property. can be null.
      * @param feature is the feature on which this offer is made. Must be non
      *            null.
-     * @param amount the omount need for this offer to go in dev.
+     * @param amount the amount need for this offer to go in dev.
      * @param description the description of the offer
      * @param dateExpire the scheduled release date
      * @param secondsBeforeValidation The time to wait before validating this
@@ -129,15 +132,17 @@ public class DaoOffer extends DaoKudosable {
                     final DaoFeature feature,
                     final BigDecimal amount,
                     final DaoDescription description,
+                    final String license,
                     final Date dateExpire,
                     final int secondsBeforeValidation) {
         super(member, team);
-        if (feature == null) {
+        if (feature == null || license == null || license.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.feature = feature;
         this.amount = BigDecimal.ZERO; // Will be updated by addMilestone
         this.expirationDate = new Date();// Will be updated by addMilestone
+        this.license = license;
         this.currentMilestone = 0;
         this.setDraft(true);
         addMilestone(new DaoMilestone(dateExpire, amount, description, this, secondsBeforeValidation));
@@ -157,7 +162,7 @@ public class DaoOffer extends DaoKudosable {
     /**
      * Add an other milestone. You have to be in the draft mode.
      * 
-     * @param milestone th milestone to add.
+     * @param milestone the milestone to add.
      * @see #setDraft(boolean)
      */
     public void addMilestone(final DaoMilestone milestone) {
@@ -222,6 +227,10 @@ public class DaoOffer extends DaoKudosable {
      */
     public boolean isDraft() {
         return this.isDraft;
+    }
+
+    public final String getLicense() {
+        return license;
     }
 
     /**

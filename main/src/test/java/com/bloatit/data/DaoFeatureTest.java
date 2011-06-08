@@ -182,6 +182,7 @@ public class DaoFeatureTest extends DataTestUnit {
                             feature,
                             new BigDecimal("200"),
                             DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
+                            "GNU GPL",
                             DateUtils.tomorrow(),
                             0);
     }

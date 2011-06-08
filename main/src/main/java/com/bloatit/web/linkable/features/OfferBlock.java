@@ -112,6 +112,14 @@ public final class OfferBlock extends HtmlDiv {
 
                 }
                 offerRightTopColumn.add(progressPara);
+
+                final HtmlDiv licensePara = new HtmlDiv("offer_block_para");
+                {
+                    licensePara.add(new HtmlSpan("offer_block_label").addText(tr("License: ")));
+                    licensePara.addText(offer.getlicense());
+                }
+                offerRightTopColumn.add(licensePara);
+
             }
             offerTopBlock.add(offerRightTopColumn);
         }

@@ -95,8 +95,8 @@ public interface Feature extends KudosableInterface, Commentable {
      * @see #authenticate(AuthenticatedUserToken)
      */
     Offer
-            addOffer(BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
-                                                                                                                        throws UnauthorizedOperationException;
+            addOffer(BigDecimal amount, String description, String license, Locale locale, Date expireDate, int secondsBeforeValidation)
+                                                                                                                                        throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.
