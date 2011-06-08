@@ -40,4 +40,12 @@ public class RgtContribution extends RightManager {
         // nothing this is just a rename.
     }
 
+    /**
+     * The Class Contact is a {@link RightManager.PublicReadOnly} accessor for the Contact
+     * property.
+     */
+    public static class Contact extends PublicReadOnly {
+        // nothing this is just a rename.
+    }
+
 }

@@ -60,7 +60,7 @@ public class RgtMember extends RightManager {
      * The Class InvoicingContact is a {@link RightManager.Private} accessor for
      * the InvoicingContact property.
      */
-    public static class InvoicingContacts extends Private {
+    public static class Contact extends Private {
         // nothing this is just a rename.
     }
 

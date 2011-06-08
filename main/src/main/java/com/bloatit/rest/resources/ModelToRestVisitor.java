@@ -33,11 +33,11 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
+import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
@@ -150,22 +150,22 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
     }
 
     @Override
-    public RestElement<?> visit(MoneyWithdrawal moneyWithdrawal) {
+    public RestElement<?> visit(MoneyWithdrawal model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(Invoice invoice) {
+    public RestElement<?> visit(Invoice model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(ContributionInvoice invoice) {
+    public RestElement<?> visit(ContributionInvoice model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public RestElement<?> visit(InvoicingContact invoicingContact) {
+    public RestElement<?> visit(MilestoneContributionAmount model) {
         throw new NotImplementedException();
     }
 }

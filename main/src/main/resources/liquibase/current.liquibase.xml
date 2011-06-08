@@ -156,5 +156,53 @@
 			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 			referencedTableName="daoinvoice" referencesUniqueColumn="false" />
 	</changeSet>
+	<changeSet author="fred" id="201106081147-1">
+		<comment>delete daoinvoicingcontact</comment>
+		<dropColumn tableName="daobanktransaction" columnName="invoicingcontact_id" />
+		<dropTable tableName="daoinvoicingcontact" />
+	</changeSet>
+	<changeSet author="fred" id="201106081147-2">
+		<addColumn tableName="daoactor">
+			<column name="address" type="TEXT">
+				<constraints nullable="true" />
+			</column>
+			<column name="name" type="TEXT">
+				<constraints nullable="true" />
+			</column>
+			<column name="taxidentification" type="TEXT" >
+				<constraints nullable="true" />
+			</column>
+
+		</addColumn>
+	</changeSet>
+	<changeSet author="fred" id="201106081147-3">
+	<createTable tableName="daomilestonecontributionamount">
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="daomilestonecontributionamountpk" />
+			</column>
+			<column name="amount" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="contribution_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="milestone_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseColumnNames="contribution_id"
+			baseTableName="daomilestonecontributionamount" constraintName="FKcontribution-daomilestonecontributionamount"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daocontribution" referencesUniqueColumn="false" />
+			<addForeignKeyConstraint baseColumnNames="milestone_id"
+			baseTableName="daomilestonecontributionamount" constraintName="FKmilestone-daomilestonecontributionamount"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daomilestone" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred" id="201106081147-4">
+		<renameColumn tableName="daoteam" oldColumnName="contact" newColumnName="publiccontact"/>
+	</changeSet>
+
 
 </databaseChangeLog>

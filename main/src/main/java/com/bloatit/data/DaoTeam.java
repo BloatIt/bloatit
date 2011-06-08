@@ -136,7 +136,7 @@ public class DaoTeam extends DaoActor {
 
     @Basic(optional = false)
     @Column(unique = false)
-    private String contact;
+    private String publicContact;
 
     @Embedded
     private DaoString description;
@@ -206,7 +206,7 @@ public class DaoTeam extends DaoActor {
             throw new NonOptionalParameterException();
         }
         this.right = right;
-        this.contact = contact;
+        this.publicContact = contact;
         this.description = new DaoString(description, null);
     }
 
@@ -225,7 +225,7 @@ public class DaoTeam extends DaoActor {
      * @param contact the new contact information.
      */
     public void setContact(final String contact) {
-        this.contact = contact;
+        this.publicContact = contact;
     }
 
     /**
@@ -351,8 +351,8 @@ public class DaoTeam extends DaoActor {
     /**
      * @return the contact informations of this team
      */
-    public String getContact() {
-        return this.contact;
+    public String getPublicContact() {
+        return this.publicContact;
     }
 
     /**

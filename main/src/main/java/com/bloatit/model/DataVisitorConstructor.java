@@ -21,6 +21,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
+import com.bloatit.data.DaoContact;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
@@ -30,11 +31,11 @@ import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoImage;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoInvoice;
-import com.bloatit.data.DaoInvoicingContact;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMilestone;
+import com.bloatit.data.DaoMilestoneContributionAmount;
 import com.bloatit.data.DaoMoneyWithdrawal;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
@@ -264,11 +265,6 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     }
 
     @Override
-    public Identifiable<?> visit(DaoInvoicingContact dao) {
-        return InvoicingContact.create(dao);
-    }
-
-    @Override
     public Identifiable<?> visit(DaoInvoice dao) {
         return Invoice.create(dao);
     }
@@ -280,6 +276,16 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     @Override
     public Identifiable<?> visit(DaoVersionedString dao) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoMilestoneContributionAmount daoMilestoneContributionAmount) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Identifiable<?> visit(DaoContact dao) {
         throw new NotImplementedException();
     }
 }

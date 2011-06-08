@@ -177,6 +177,13 @@ public class DaoMilestone extends DaoIdentifiable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoRelease> releases = new ArrayList<DaoRelease>();
 
+    /** The contribution amount. */
+    @OneToMany(mappedBy = "milestone")
+    @Cascade(value = { CascadeType.ALL })
+    @OrderBy(clause = "id DESC")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private final List<DaoMilestoneContributionAmount> contribtutionAmounts = new ArrayList<DaoMilestoneContributionAmount>();
+
     /** The offer. */
     @ManyToOne(optional = false)
     private DaoOffer offer;
@@ -632,6 +639,10 @@ public class DaoMilestone extends DaoIdentifiable {
             return false;
         }
         return true;
+    }
+
+    public PageIterable<DaoMilestoneContributionAmount> getContributionAmounts() {
+        return new MappedList<DaoMilestoneContributionAmount>(contribtutionAmounts);
     }
 
 }

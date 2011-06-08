@@ -105,7 +105,7 @@ public class DaoFeatureTest extends DataTestUnit {
         assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("75")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("18")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("82")));
-        
+
         // Reset the db:
         super.closeDB();
         super.createDB();
@@ -166,8 +166,9 @@ public class DaoFeatureTest extends DataTestUnit {
         feature.addContribution(fred, null, new BigDecimal("25.00"), "I'm so generous too");
         feature.addContribution(yo, null, new BigDecimal("18.00"), "I'm so generous too");
 
+
         for (final DaoContribution Contribution : feature.getContributions()) {
-            Contribution.validate(offer, 100);
+            Contribution.validate(offer.getCurrentMilestone(), 100);
         }
 
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
@@ -175,7 +176,7 @@ public class DaoFeatureTest extends DataTestUnit {
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("32")));
     }
-    
+
     private DaoOffer createOffer(final DaoFeature feature) {
         return new DaoOffer(fred,
                             null,

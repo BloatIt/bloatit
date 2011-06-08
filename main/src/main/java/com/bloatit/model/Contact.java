@@ -16,34 +16,20 @@
 //
 package com.bloatit.model;
 
-import com.bloatit.data.DaoInvoicingContact;
+import com.bloatit.data.DaoContact;
 
 /**
  * This is a invoicing contact.
  */
-public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
+public final class Contact {
+
+    private final DaoContact dao;
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * This class implements the method pattern, implementing the doCreate
-     * method. See the base class for more informations: {@link Creator}.
-     */
-    private static final class MyCreator extends Creator<DaoInvoicingContact, InvoicingContact> {
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
-         */
-        @SuppressWarnings("synthetic-access")
-        @Override
-        public InvoicingContact doCreate(final DaoInvoicingContact dao) {
-            return new InvoicingContact(dao);
-        }
-    }
 
     /**
      * Find a bug in the cache or create an new one.
@@ -52,8 +38,11 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      * @return null if dao is null. Else return the new invoicing contact.
      */
     @SuppressWarnings("synthetic-access")
-    public static InvoicingContact create(final DaoInvoicingContact dao) {
-        return new MyCreator().create(dao);
+    public static Contact create(final DaoContact dao) {
+        if(dao == null) {
+            return null;
+        }
+        return new Contact(dao);
     }
 
     /**
@@ -61,26 +50,19 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      *
      * @param dao the dao
      */
-    private InvoicingContact(final DaoInvoicingContact dao) {
-        super(dao);
+    private Contact(final DaoContact dao) {
+        this.dao = dao;
     }
 
-    /**
-     * Create a new invoicing contact.
-     */
-    public InvoicingContact(final String name,
-                     final String address, final Actor<?> actor) {
-        super(DaoInvoicingContact.createAndPersist(name, address, actor.getDao()));
-        }
 
-    // /////////////////////////////////////////////////////////////////////////////////////////
-    // Visitor
-    // /////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
-        return visitor.visit(this);
+    public void setName(String name) {
+        getDao().setName(name);
     }
+
+    public void setAddress(String address) {
+        getDao().setAddress(address);
+    }
+
 
     // ///////////////////////////
     // Unprotected methods
@@ -92,8 +74,12 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      * @return the actor unprotected
      * @see #getActor()
      */
-    final Actor<?> getActorUnprotected() {
-        return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
+//    final Actor<?> getActorUnprotected() {
+//        return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
+//    }
+
+    private DaoContact getDao() {
+        return dao;
     }
 
     public String getName() {
@@ -105,5 +91,7 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
         //TODO: access right
         return getDao().getAddress();
     }
+
+
 
 }

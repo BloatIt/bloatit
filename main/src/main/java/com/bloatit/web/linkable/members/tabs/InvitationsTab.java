@@ -31,6 +31,7 @@ import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.url.ContributionInvoicingProcessUrl;
 import com.bloatit.web.url.HandleJoinTeamInvitationActionUrl;
 
 public class InvitationsTab extends HtmlTab {
@@ -76,7 +77,7 @@ public class InvitationsTab extends HtmlTab {
         for (final Milestone milestone : milestoneToInvoice) {
             final HtmlParagraph p = new HtmlParagraph();
             p.addText("Invoicing "+milestone.getOffer().getFeature().getTitle()+" - Milestone "+milestone.getPosition());
-
+            p.add(new ContributionInvoicingProcessUrl(milestone.getOffer().getAuthor(), milestone).getHtmlLink("Generate invoices"));
             incoiving.add(p);
         }
 

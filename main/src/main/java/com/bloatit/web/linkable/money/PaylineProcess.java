@@ -108,7 +108,7 @@ public class PaylineProcess extends WebProcess {
 
         Reponse reponse;
         try {
-            reponse = payline.doPayment(actor, parentProcess.getInvoicingContact(), getAmount(), cancelUrl, returnUrl, notificationUrl);
+            reponse = payline.doPayment(actor, getAmount(), cancelUrl, returnUrl, notificationUrl);
             SessionManager.storeTemporarySession(reponse.getToken(), session);
 
             // Normal case It is accepted !

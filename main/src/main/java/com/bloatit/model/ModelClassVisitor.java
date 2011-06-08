@@ -60,11 +60,11 @@ public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(Release model);
 
-    ReturnType visit(MoneyWithdrawal moneyWithdrawal);
+    ReturnType visit(MoneyWithdrawal model);
 
-    ReturnType visit(Invoice invoice);
+    ReturnType visit(Invoice model);
 
-    ReturnType visit(ContributionInvoice invoice);
+    ReturnType visit(ContributionInvoice model);
 
-    ReturnType visit(InvoicingContact invoicingContact);
+    ReturnType visit(MilestoneContributionAmount model);
 }

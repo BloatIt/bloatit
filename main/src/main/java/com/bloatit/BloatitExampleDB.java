@@ -40,7 +40,6 @@ import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.FeatureImplementation;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.MoneyWithdrawal;
@@ -87,18 +86,31 @@ public class BloatitExampleDB { // NO_UCD
         celeste = createMember("celeste", "Céleste", Locale.CHINA);
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
-        new InvoicingContact("Frederic Bertolus", "Le superbe appartement à gauche", fred);
-        new InvoicingContact("Thomas Guyard", "Le superbe appartement à gauche", thomas);
-        new InvoicingContact("Yoann Plénet", "Le superbe appartement à gauche", yoann);
-        new InvoicingContact("Administrateur", "Paradis", admin);
-        
-        new InvoicingContact("chogall", "Le monde des rêves", chogall);
-        new InvoicingContact("cerbere", "Le monde des rêves", cerbere);
-        new InvoicingContact("hydre", "Le monde des rêves", hydre);
-        new InvoicingContact("elephantman", "Le monde des rêves", elephantman);
-        new InvoicingContact("celeste", "Le monde des rêves", celeste);
-        new InvoicingContact("rataxes", "Le monde des rêves", rataxes);
-        
+        fred.getContact().setName("Frederic Bertolus");
+        fred.getContact().setAddress("Le superbe appartement à gauche");
+        fred.getContact().setName("Thomas Guyard");
+        fred.getContact().setAddress("Le superbe appartement à gauche");
+        fred.getContact().setName("Yoann Plénet");
+        fred.getContact().setAddress("Le superbe appartement à gauche");
+
+        fred.getContact().setName("Administrateur");
+        fred.getContact().setAddress("Le monde des rêves");
+        fred.getContact().setName("Paradis");
+        fred.getContact().setAddress("Le monde des rêves");
+        fred.getContact().setName("chogall");
+        fred.getContact().setAddress("Le monde des rêves");
+        fred.getContact().setName("cerbere");
+        fred.getContact().setAddress("Le monde des rêves");
+        fred.getContact().setName("hydre");
+        fred.getContact().setAddress("Le monde des rêves");
+        fred.getContact().setName("elephantman");
+        fred.getContact().setAddress("Le monde des rêves");
+        fred.getContact().setName("celeste");
+        fred.getContact().setAddress("Le monde des rêves");
+        fred.getContact().setName("rataxes");
+        fred.getContact().setAddress("Le monde des rêves");
+
+
         // Add avatar
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
         cerbere.setAvatar(getImage(cerbere, "users/cerbere.png"));
@@ -444,7 +456,7 @@ public class BloatitExampleDB { // NO_UCD
 
     /**
      * Work only if the money is available
-     * 
+     *
      * @param feature
      */
     private void setFeatureInDevelopmentState(final Feature feature) {
@@ -484,16 +496,11 @@ public class BloatitExampleDB { // NO_UCD
     }
 
     public void giveMoney(final Member member, final int amount) throws UnauthorizedOperationException {
-        InvoicingContact invoicingContact = null;
-        for (final InvoicingContact contact : member.getInvoicingContacts()) {
-            invoicingContact = contact;
-            break;
-        }
+
 
         final BankTransaction bankTransaction = new BankTransaction("money !!!",
                                                                     UUID.randomUUID().toString(),
                                                                     member,
-                                                                    invoicingContact,
                                                                     new BigDecimal(amount),
                                                                     new BigDecimal(amount),
                                                                     UUID.randomUUID().toString());

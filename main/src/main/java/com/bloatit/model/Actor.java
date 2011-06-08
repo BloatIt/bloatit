@@ -22,13 +22,13 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BankTransactionList;
-import com.bloatit.model.lists.InvoicingContactList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtActor;
 import com.bloatit.model.right.RgtMember;
 import com.bloatit.model.right.UnauthorizedBankDataAccessException;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
 import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
@@ -59,12 +59,12 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
                 return member;
             }
         } catch (final ClassNotFoundException e) {
-            // not a member nether a team ! 
+            // not a member nether a team !
             throw new BadProgrammerException(e);
         }
         return null;
     }
-    
+
     /**
      * Instantiates a new actor.
      *
@@ -156,16 +156,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         return doGetContributions();
     }
 
-
-
-    public PageIterable<InvoicingContact> getInvoicingContacts() throws UnauthorizedOperationException {
-        tryAccess(new RgtMember.InvoicingContacts(), Action.READ);
-        return getInvoicingContactsUnprotected();
-    }
-
-
-    protected PageIterable<InvoicingContact> getInvoicingContactsUnprotected() {
-        return new InvoicingContactList(getDao().getInvoicingContacts());
+    public Contact getContact() throws UnauthorizedPrivateAccessException {
+        tryAccess(new RgtMember.Contact(), Action.READ);
+        return Contact.create(getDao().getContact());
     }
 
 
@@ -243,5 +236,17 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     public final boolean isTeam() {
         return this instanceof Team;
+    }
+
+    public boolean hasInvoicingContact() throws UnauthorizedPrivateAccessException {
+        Contact contact = getContact();
+        if(contact.getName() == null) {
+            return false;
+        }
+        if(contact.getAddress() == null) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import javax.mail.IllegalWriteException;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -26,13 +27,17 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Actor;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
+import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 /**
  * A response to a form used to create a contribution to a feature
@@ -40,6 +45,7 @@ import com.bloatit.web.url.ContributePageUrl;
 @ParamContainer("action/contribute/check")
 public final class CheckContributionAction extends UserContentAction {
 
+    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
 
@@ -66,7 +72,6 @@ public final class CheckContributionAction extends UserContentAction {
 
     @Override
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
-        final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
 
         try {
             if (!process.getAmount().equals(amount)) {
@@ -82,7 +87,12 @@ public final class CheckContributionAction extends UserContentAction {
             session.notifyBad(tr("The contribution's amount is locked during the payment process."));
         }
 
-        return checkContributionPageUrl;
+        Actor<?> actor = me;
+        if(process.getTeam() != null) {
+            actor = process.getTeam();
+        }
+
+        return new CheckContributionPageUrl(process);
     }
 
     @Override
@@ -98,6 +108,9 @@ public final class CheckContributionAction extends UserContentAction {
 
     @Override
     protected Url doProcessErrors(ElveosUserToken userToken) {
+        if(process == null) {
+            return new IndexPageUrl();
+        }
         return new ContributePageUrl(process);
     }
 

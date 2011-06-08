@@ -146,7 +146,6 @@ public final class Payline {
     }
 
     public Reponse doPayment(final Actor<?> targetActor,
-                             final InvoicingContact invoicingContact,
                              final BigDecimal amount,
                              final String cancelUrl,
                              final String returnUrl,
@@ -191,12 +190,11 @@ public final class Payline {
         final DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
 
         final Reponse reponse = new Reponse(apiReponse);
-        createBankTransaction(targetActor, invoicingContact, amount, amountToPay, orderReference, reponse);
+        createBankTransaction(targetActor, amount, amountToPay, orderReference, reponse);
         return reponse;
     }
 
     private void createBankTransaction(final Actor<?> targetActor,
-                                       final InvoicingContact invoicingContact,
                                        final BigDecimal amount,
                                        final BigDecimal amountToPay,
                                        final String orderReference,
@@ -205,7 +203,6 @@ public final class Payline {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
                                                                         reponse.getToken(),//
                                                                         targetActor,//
-                                                                        invoicingContact,
                                                                         amount, //
                                                                         amountToPay, //
                                                                         orderReference);

@@ -11,6 +11,7 @@
  */
 package com.bloatit.web.linkable.invoice;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -19,46 +20,50 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
+import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/invoicingcontact/choose")
-public final class ChooseInvoicingContactAction extends LoggedAction {
+public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    private final InvoicingContactProcess process;
-
+    private final ModifyInvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You select an invoicing information."))
-    private final InvoicingContact invoicingContact;
+        @ParamConstraint(optionalErrorMsg = @tr("You must add a name a invoicing information."), min = "1", minErrorMsg = @tr("You must add a name a invoicing information."))
+        private final String name;
+    
+        @RequestParam(role = Role.POST)
+        @ParamConstraint(optionalErrorMsg = @tr("You must add an address a invoicing information."), min = "1", minErrorMsg = @tr("You must add an address a invoicing information."))
+        private final String address;
+    
+    private final ModifyInvoicingContactActionUrl url;
 
-    private final ChooseInvoicingContactActionUrl url;
-
-    public ChooseInvoicingContactAction(final ChooseInvoicingContactActionUrl url) {
+    public ModifyInvoicingContactAction(final ModifyInvoicingContactActionUrl url) {
         super(url);
         this.url = url;
         this.process = url.getProcess();
-        this.invoicingContact = url.getInvoicingContact();
-
+        this.name = url.getName();
+        this.address = url.getAddress();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) {
 
-
-        process.setInvoicingContact(invoicingContact);
-
+        try {
+            process.getActor().getContact().setName(name);
+            process.getActor().getContact().setAddress(address);
+        } catch (UnauthorizedPrivateAccessException e) {
+            throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
+        }
 
         return process.close();
-
-
     }
 
     @Override
@@ -78,7 +83,7 @@ public final class ChooseInvoicingContactAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(url.getInvoicingContactParameter());
+        //session.addParameter(url.getInvoicingContactParameter());
     }
 
 }

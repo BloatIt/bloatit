@@ -24,49 +24,42 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Team;
-import com.bloatit.model.managers.InvoicingContactManager;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.managers.MilestoneManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.actions.WebProcess;
+import com.bloatit.web.url.ContributionInvoicingInformationsPageUrl;
 import com.bloatit.web.url.ContributionInvoicingProcessUrl;
-import com.bloatit.web.url.InvoicingContactProcessUrl;
+import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
+import com.bloatit.web.url.TeamPageUrl;
 
 @ParamContainer(value = "contribution_invoicing/process", protocol = Protocol.HTTPS)
-public class ContributionInvoicingProcess extends WebProcess  {
+public class ContributionInvoicingProcess extends WebProcess {
 
     @RequestParam
     private Actor<?> actor;
 
     @RequestParam(conversionErrorMsg = @tr("The milestone to invoice is ."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    private final Milestone milestone;
-
-    private InvoicingContact invoicingContact = null;
+    private Milestone milestone;
 
     private final ContributionInvoicingProcessUrl url;
-
-
-    private InvoicingContactProcess invoicingContactProcess = null;
+    private ModifyInvoicingContactProcess invoicingContactProcess = null;
 
     public ContributionInvoicingProcess(final ContributionInvoicingProcessUrl url) {
         super(url);
         this.url = url;
         this.actor = url.getActor();
         this.milestone = url.getMilestone();
-
-    }
-
-    public InvoicingContact getInvoicingContact() {
-        return invoicingContact;
     }
 
     @Override
     protected synchronized Url doProcess(final ElveosUserToken userToken) {
-        return new InvoicingContactProcessUrl(actor, this);
+        return new ModifyInvoicingContactProcessUrl(actor, this);
     }
 
     @Override
@@ -76,14 +69,13 @@ public class ContributionInvoicingProcess extends WebProcess  {
 
     @Override
     public synchronized void doLoad() {
-
         if (getActor() instanceof Member) {
             setActor(MemberManager.getById(getActor().getId()));
         } else if (getActor() instanceof Team) {
             setActor(TeamManager.getById(getActor().getId()));
         }
-        if(invoicingContact != null) {
-            invoicingContact = InvoicingContactManager.getById(invoicingContact.getId());
+        if (milestone != null) {
+            milestone = MilestoneManager.getById(milestone.getId());
         }
     }
 
@@ -95,18 +87,39 @@ public class ContributionInvoicingProcess extends WebProcess  {
         this.actor = actor;
     }
 
-    public void setInvoicingContact(InvoicingContact invoicingContact) {
-        this.invoicingContact = invoicingContact;
-    }
-
     @Override
     public synchronized void addChildProcess(WebProcess child) {
-        invoicingContactProcess = (InvoicingContactProcess) child;
+        super.addChildProcess(child);
+        invoicingContactProcess = (ModifyInvoicingContactProcess) child;
     }
 
     public Milestone getMilestone() {
         return milestone;
     }
+
+    @Override
+    protected synchronized Url notifyChildClosed(WebProcess subProcess) {
+        if (subProcess instanceof ModifyInvoicingContactProcess) {
+            return new ContributionInvoicingInformationsPageUrl(this);
+        }
+        return super.notifyChildClosed(subProcess);
+    }
+
+    @Override
+    public synchronized Url close() {
+        super.close();
+
+        if(actor.isTeam()) {
+            return new TeamPageUrl((Team)actor);
+        } else {
+            return new MemberPageUrl((Member)actor);
+        }
+
+
+    }
+
+
+
 
 
 

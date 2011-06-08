@@ -238,13 +238,13 @@ public class Rights {
         }
 
         @Override
-        public Team visit(InvoicingContact model) {
-            return visitAbstract(model.getActorUnprotected());
+        public Team visit(ContributionInvoice model) {
+            return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Team visit(ContributionInvoice model) {
-            return visitAbstract(model.getRecipientActorUnprotected());
+        public Team visit(MilestoneContributionAmount model) {
+            return null;
         }
 
     }
@@ -320,13 +320,13 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(InvoicingContact model) {
-            return visitAbstract(model.getActorUnprotected());
+        public Boolean visit(ContributionInvoice model) {
+            return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Boolean visit(ContributionInvoice model) {
-            return visitAbstract(model.getRecipientActorUnprotected());
+        public Boolean visit(MilestoneContributionAmount model) {
+            return null;
         }
     }
 
@@ -393,11 +393,6 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(InvoicingContact model) {
-            return model.getActorUnprotected().equals(member);
-        }
-
-        @Override
         public Boolean visit(Invoice model) {
             return model.getRecipientActorUnprotected().equals(member);
         }
@@ -405,6 +400,11 @@ public class Rights {
         @Override
         public Boolean visit(ContributionInvoice model) {
             return model.getRecipientActorUnprotected().equals(member) || (model.getEmitterActorUnprotected() != null && model.getEmitterActorUnprotected().equals(member));
+        }
+
+        @Override
+        public Boolean visit(MilestoneContributionAmount model) {
+            return null;
         }
 
     }

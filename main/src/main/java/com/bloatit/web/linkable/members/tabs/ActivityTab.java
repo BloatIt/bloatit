@@ -80,9 +80,7 @@ public class ActivityTab extends HtmlTab {
         final HtmlTitleBlock recent = new HtmlTitleBlock(Context.tr("Recent activity"), 1);
         master.add(recent);
 
-
         recent.add(generateActivities(member, url));
-
 
         return master;
     }
@@ -92,13 +90,14 @@ public class ActivityTab extends HtmlTab {
 
         final PageIterable<UserContent<? extends DaoUserContent>> activity = member.getActivity();
 
-        if(activity.size() == 0) {
+        if (activity.size() == 0) {
             recentActivity.add(new HtmlParagraph(Context.tr("No recent activity")));
         }
 
         final MemberPageUrl clonedUrl = url.clone();
         HtmlPagedList<UserContent<? extends DaoUserContent>> feed;
-        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl().getPagedActivityUrl());
+        feed = new HtmlPagedList<UserContent<? extends DaoUserContent>>(new ActivityRenderer(), activity, clonedUrl, clonedUrl.getActivityUrl()
+                                                                                                                              .getPagedActivityUrl());
         recentActivity.add(feed);
 
         return recentActivity;
@@ -268,7 +267,5 @@ public class ActivityTab extends HtmlTab {
             return master;
         }
     }
-
-
 
 }

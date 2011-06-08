@@ -26,7 +26,7 @@ import com.bloatit.model.right.UnauthorizedOperationException;
 
 /**
  * This is a financial contribution.
- * 
+ *
  * @see DaoContribution
  */
 public final class Contribution extends UserContent<DaoContribution> {
@@ -55,7 +55,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * Create a <code>Contribution</code> or return null (if dao is null).
-     * 
+     *
      * @param dao the dao
      * @return the contribution
      */
@@ -66,7 +66,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * Instantiates a new contribution.
-     * 
+     *
      * @param dao the dao
      */
     private Contribution(final DaoContribution dao) {
@@ -84,7 +84,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * return true if you can access the <code>Amount</code> property.
-     * 
+     *
      * @return true, if successful
      * @see #getAmount()
      * @see Contribution#authenticate(AuthenticatedUserToken)
@@ -95,7 +95,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * return true if you can access the <code>Comment</code> property.
-     * 
+     *
      * @return true, if successful
      * @see #getComment()
      * @see Contribution#authenticate(AuthenticatedUserToken)
@@ -106,7 +106,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * Gets the amount.
-     * 
+     *
      * @return the amount.
      * @throws UnauthorizedOperationException if you do not have the right to
      *             access the <code>Amount</code> property.
@@ -116,7 +116,7 @@ public final class Contribution extends UserContent<DaoContribution> {
         tryAccess(new RgtContribution.Amount(), Action.READ);
         return getDao().getAmount();
     }
-    
+
     // no right management: this is public data
     public Feature getFeature() {
         return FeatureImplementation.create(getDao().getFeature());
@@ -124,7 +124,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * Gets the comment.
-     * 
+     *
      * @return the comment.
      * @throws UnauthorizedOperationException if you do not have the right to
      *             access the <code>Comment</code> property.
@@ -142,4 +142,6 @@ public final class Contribution extends UserContent<DaoContribution> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
+
 }

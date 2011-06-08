@@ -24,7 +24,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.actions.WebProcess;
-import com.bloatit.web.linkable.invoice.InvoicingContactProcess;
+import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -67,9 +67,8 @@ public class AccountChargingProcess extends PaymentProcess {
             }
             unlock();
             return new AccountChargingPageUrl(this);
-        } else if (subProcess instanceof InvoicingContactProcess) {
-            setInvoicingContact(((InvoicingContactProcess) subProcess).getInvoicingContact());
-            return new StaticAccountChargingPageUrl(this);
+        } else if (subProcess instanceof ModifyInvoicingContactProcess) {
+            return new AccountChargingPageUrl(this);
         }
         return null;
     }

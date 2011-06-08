@@ -18,7 +18,6 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 
-import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoContributionInvoice;
 
@@ -79,7 +78,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
-    ContributionInvoice(final DaoActor emitterActor,
+    public ContributionInvoice(final Actor<?> emitterActor,
                         final String sellerName,
                         final String sellerAddress,
                         final String sellerTaxIdentification,
@@ -92,7 +91,7 @@ public final class ContributionInvoice extends Identifiable<DaoContributionInvoi
                         final String invoiceId,
                         final Milestone milestone,
                         final Contribution contribution) {
-        super(DaoContributionInvoice.createAndPersist(emitterActor,
+        super(DaoContributionInvoice.createAndPersist(emitterActor.getDao(),
                                                       sellerName,
                                                       sellerAddress,
                                                       sellerTaxIdentification,

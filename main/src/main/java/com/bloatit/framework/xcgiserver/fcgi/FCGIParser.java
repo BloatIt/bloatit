@@ -162,12 +162,14 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Fetch one post record if possible
+     *
      * @throws IOException
      */
     protected void fetchPostRecord() throws IOException {
 
         while (postStreamOpen && parseRecord() != FCGI_STDIN) {
-            // If the post stream is not closed, parse some record until finding a new post record.
+            // If the post stream is not closed, parse some record until finding
+            // a new post record.
         }
     }
 
@@ -177,14 +179,24 @@ public class FCGIParser implements XcgiParser {
         }
     }
 
+    public byte[] readRecordHeader() throws IOException {
+
+        byte[] header = new byte[8];
+        dataInput.read(header);
+
+        return header;
+    }
+
     private byte parseRecord() throws IOException {
-        final byte version = dataInput.readByte();
-        final byte type = dataInput.readByte();
-        final int requestId = dataInput.readUnsignedShort();
-        final int contentLength = dataInput.readUnsignedShort();
-        final int paddingLength = dataInput.readUnsignedByte();
-        // Reserved byte
-        dataInput.skip(1);
+
+        byte[] header = readRecordHeader();
+
+        final byte version = header[0];
+        final byte type = header[1];
+        final int requestId = readUnsignedShort(header[2], header[3]);
+        final int contentLength = readUnsignedShort(header[4], header[5]);
+        final int paddingLength = readUnsignedByte(header[6]);
+        // 1 Reserved byte is not read
 
         if (version != FCGI_VERSION_1) {
             throw new FCGIException("Bad FCGI version code. Found '" + version + "' but '" + FCGI_VERSION_1 + "' excepted.");
@@ -356,5 +368,15 @@ public class FCGIParser implements XcgiParser {
 
     public boolean isPostStreamOpen() {
         return postStreamOpen;
+    }
+
+    public static int readUnsignedByte(byte b) {
+        return b & 0xFF;
+    }
+
+    public static int readUnsignedShort(byte b1, byte b2) {
+        int firstByte = 0x000000FF & b1;
+        int secondByte = 0x000000FF & b2;
+        return (firstByte << 8 | secondByte);
     }
 }

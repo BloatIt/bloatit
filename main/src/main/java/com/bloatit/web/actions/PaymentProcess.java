@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Team;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.linkable.money.PaylineProcess;
@@ -41,8 +40,6 @@ public abstract class PaymentProcess extends WebProcess {
     private BigDecimal amountToPay = new BigDecimal("0");
     private BigDecimal amountToCharge = new BigDecimal("0");
     private boolean locked = false;
-
-    private InvoicingContact invoicingContact;
 
     public PaymentProcess(final PaymentProcessUrl url) {
         super(url);
@@ -115,13 +112,5 @@ public abstract class PaymentProcess extends WebProcess {
     }
 
     public abstract void doDoLoad();
-
-    public void setInvoicingContact(InvoicingContact invoicingContact) {
-        this.invoicingContact = invoicingContact;
-    }
-
-    public InvoicingContact getInvoicingContact() {
-        return invoicingContact;
-    }
 
 }

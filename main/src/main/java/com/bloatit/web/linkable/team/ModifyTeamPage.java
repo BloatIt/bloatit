@@ -90,7 +90,7 @@ public class ModifyTeamPage extends LoggedPage {
         if (contactFieldData.getSuggestedValue() != null && !contactFieldData.getSuggestedValue().isEmpty()) {
             contactInput.setDefaultValue(contactFieldData.getSuggestedValue());
         } else {
-            contactInput.setDefaultValue(team.getContact());
+            contactInput.setDefaultValue(team.getPublicContact());
         }
         contactInput.addErrorMessages(contactFieldData.getErrorMessages());
         form.add(contactInput);

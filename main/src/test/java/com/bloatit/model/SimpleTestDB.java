@@ -71,7 +71,8 @@ public class SimpleTestDB {
         yo = new Member("Yoann", "plop", "yo@gmail.com", Locale.FRANCE).getDao();
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
-        final InvoicingContact yoInvoicingContact = new InvoicingContact("Yoann Plénet","Earth", Member.create(yo));
+        yo.getContact().setName("Yoann Plénet");
+        yo.getContact().setAddress("Earth");
 
         final DaoMember admin = new Member("admin", "admin", "admin@gmail.com", Locale.FRANCE).getDao();
         admin.setFullname("Administrator");
@@ -79,7 +80,8 @@ public class SimpleTestDB {
         admin.setRole(Role.ADMIN);
 
         publicGroup = DaoTeam.createAndPersiste("publicGroup", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);
-        final InvoicingContact publicGroupInvoicingContact = new InvoicingContact("publicGroup","Mars", Team.create(publicGroup));
+        publicGroup.getContact().setName("publicGroup");
+        publicGroup.getContact().setAddress("Mars");
 
 
         privateGroup = DaoTeam.createAndPersiste("privateGroup", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);
@@ -117,11 +119,11 @@ public class SimpleTestDB {
         privateGroup.addMember(loser, false);
 
         try {
-            yoBankTransaction = DaoBankTransaction.createAndPersist("test", "token1", yo, yoInvoicingContact.getDao(), new BigDecimal("1000"), new BigDecimal("1100"), "order1");
+            yoBankTransaction = DaoBankTransaction.createAndPersist("test", "token1", yo, new BigDecimal("1000"), new BigDecimal("1100"), "order1");
             getYoBankTransaction().setAuthorized();
             getYoBankTransaction().setValidated();
 
-            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test", "token2", publicGroup, publicGroupInvoicingContact.getDao(), new BigDecimal("1000"), new BigDecimal("1100"), "order2");
+            publicGroupBankTransaction = DaoBankTransaction.createAndPersist("test", "token2", publicGroup, new BigDecimal("1000"), new BigDecimal("1100"), "order2");
             publicGroupBankTransaction.setAuthorized();
             publicGroupBankTransaction.setValidated();
 

@@ -45,6 +45,7 @@ public abstract class Action implements Linkable {
         final Url url = process();
         if (url != null) {
             if (url.isAction()) {
+                Log.framework().info("Execute chained action: "+url.urlString());
                 final Parameters parameters = url.getStringParameters();
 
                 final Linkable linkable = server.constructLinkable(url.getCode(), parameters, session);

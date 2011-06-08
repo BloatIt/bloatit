@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 import javax.mail.IllegalWriteException;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -40,6 +41,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
@@ -51,7 +53,8 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.InvoicingContactProcessUrl;
+import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
+import com.bloatit.web.url.StaticCheckContributionPageUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
@@ -243,7 +246,19 @@ public final class CheckContributionPage extends QuotationPage {
         // Pay block
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
-            final HtmlLink invoicingContactLink = new InvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Validate"));
+            final HtmlLink invoicingContactLink;
+            
+            try {
+                if(!actor.hasInvoicingContact()) {
+                    invoicingContactLink = new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Fill invoicing contact"));
+                } else {
+                    invoicingContactLink = new StaticCheckContributionPageUrl(process).getHtmlLink(tr("Validate"));
+                }
+            } catch (UnauthorizedPrivateAccessException e) {
+                throw new BadProgrammerException("fail ton check the existence of invoicing contact", e);
+            }
+            
+            
             invoicingContactLink.setCssClass("button");
             if (process.getTeam() != null) {
                 payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));

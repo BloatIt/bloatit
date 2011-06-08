@@ -121,22 +121,22 @@ public class AbstractModelClassVisitor<T> implements ModelClassVisitor<T> {
     }
 
     @Override
-    public T visit(MoneyWithdrawal moneyWithdrawal) {
+    public T visit(MoneyWithdrawal model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public T visit(Invoice invoice) {
+    public T visit(Invoice model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public T visit(ContributionInvoice invoice) {
+    public T visit(ContributionInvoice model) {
         throw new NotImplementedException();
     }
 
     @Override
-    public T visit(InvoicingContact invoicingContact) {
+    public T visit(MilestoneContributionAmount model) {
         throw new NotImplementedException();
     }
 }
