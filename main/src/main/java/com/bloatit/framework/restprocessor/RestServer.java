@@ -17,6 +17,7 @@
 package com.bloatit.framework.restprocessor;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Map.Entry;
@@ -31,8 +32,8 @@ import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
 import com.bloatit.framework.xcgiserver.HttpResponse;
-import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
+import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 /**
  * <p>
@@ -306,6 +307,13 @@ public abstract class RestServer implements XcgiProcessor {
                     try {
                         Log.rest().trace("Invoking " + m);
                         return m.invoke(null, id);
+                    } catch (InvocationTargetException e) {
+                        if (e.getCause() != null && e.getCause() instanceof RestException) {
+                            throw (RestException) e.getCause();
+                        } else {
+                            Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
+                            throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
+                        }
                     } catch (final Exception e) {
                         Log.rest().fatal("Encountered an error when invoking [" + path + "/" + id + "]", e);
                         throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/" + id + "]", e);
@@ -339,6 +347,13 @@ public abstract class RestServer implements XcgiProcessor {
                     try {
                         Log.rest().trace("Invoking " + m);
                         return m.invoke(lookup, (Object[]) null);
+                    } catch (InvocationTargetException e) {
+                        if (e.getCause() != null && e.getCause() instanceof RestException) {
+                            throw (RestException) e.getCause();
+                        } else {
+                            Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
+                            throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
+                        }
                     } catch (final Exception e) {
                         Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
                         throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
@@ -384,6 +399,13 @@ public abstract class RestServer implements XcgiProcessor {
                         try {
                             Log.rest().trace("Invoking " + m);
                             return (m.invoke(lookup, (Object[]) paramsInOrder));
+                        } catch (InvocationTargetException e) {
+                            if (e.getCause() != null && e.getCause() instanceof RestException) {
+                                throw (RestException) e.getCause();
+                            } else {
+                                Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
+                                throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);
+                            }
                         } catch (final Exception e) {
                             Log.rest().fatal("Encountered an error when invoking [" + path + "/]", e);
                             throw new RestException(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error when invoking [" + path + "/]", e);

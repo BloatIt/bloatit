@@ -30,9 +30,28 @@ import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface REST {
+    /**
+     * The name of the REST method.
+     * <p>
+     * If you want a method to be invoked via .../features call it features
+     * </p>
+     */
     String name();
 
+    /**
+     * The http request method that will be used to call this function.
+     * <p>
+     * Can be :
+     * <li>RequestMethod.GET</li>
+     * <li>RequestMethod.POST</li>
+     * <li>RequestMethod.PUT</li>
+     * <li>RequestMethod.DELETE</li>
+     * </p>
+     */
     RequestMethod method();
 
+    /**
+     * The list of parameters that are expected to call this function.
+     */
     public String[] params() default {};
 }

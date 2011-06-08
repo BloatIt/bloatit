@@ -18,6 +18,8 @@
  */
 package com.bloatit.rest.resources;
 
+import java.util.Locale;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -96,7 +98,7 @@ public class RestMember extends RestElement<Member> {
     }
 
     // ---------------------------------------------------------------------------------------
-    // -- Static methods
+    // -- Static generic methods
     // ---------------------------------------------------------------------------------------
 
     /**
@@ -119,6 +121,45 @@ public class RestMember extends RestElement<Member> {
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMemberList getAll() {
         return new RestMemberList(MemberManager.getAll());
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Static Custom GETTERS
+    // ---------------------------------------------------------------------------------------
+
+    @REST(name = "members", method = RequestMethod.GET, params = { "login" })
+    public static RestMember getByLogin(final String login) {
+        final RestMember restMember = new RestMember(MemberManager.getMemberByLogin(login));
+        if (restMember.isNull()) {
+            return null;
+        }
+        return restMember;
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Static Custom PUTTERS
+    // ---------------------------------------------------------------------------------------
+
+    /**
+     * @statusCode 400 if invalid country and/or language code
+     * @statusCode 406 if there is already a member with the given login / email
+     * @statusCode 406 if the password does not match requirements
+     */
+    @REST(name = "members", method = RequestMethod.PUT, params = { "login", "password", "email", "language", "country" })
+    public static RestMember createMember(String login, String password, String email, String language, String country) throws RestException {
+        if (language.length() != 2 || country.length() != 2) {
+            throw new RestException(StatusCode.ERROR_400_BAD_REQUEST, "Country and language must represent a valid country/language code.");
+        }
+        if (MemberManager.loginExists(login) || MemberManager.emailExists(email)) {
+            throw new RestException(StatusCode.ERROR_406_NOT_ACCEPTABLE, "Login or email already in use.");
+        }
+        // TODO check password (do this on the Model level)
+
+        final RestMember restMember = new RestMember(new Member(login, password, email, new Locale(language, country)));
+        if (restMember.isNull()) {
+            return null;
+        }
+        return restMember;
     }
 
     // ---------------------------------------------------------------------------------------

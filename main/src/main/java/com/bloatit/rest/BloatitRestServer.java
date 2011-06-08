@@ -68,10 +68,12 @@ import com.bloatit.rest.resources.RestTranslation;
 
 public class BloatitRestServer extends RestServer {
 
+    /**
+     * A map containing for a given entity name, the class mapping the Rest to
+     * the entity
+     */
     private final Map<String, Class<?>> locations = new HashMap<String, Class<?>>() {
-
         private static final long serialVersionUID = -5012179845511358309L;
-
         {
             put("authenticate", RestAuthenticate.class);
             put("members", RestMember.class);
@@ -88,7 +90,7 @@ public class BloatitRestServer extends RestServer {
             put("highlightfeatures", RestHighlightFeature.class);
             put("internalaccounts", RestInternalAccount.class);
             put("jointeaminvitations", RestJoinTeamInvitation.class);
-            put("kudos", RestKudos.class); // Note : kudos not kudosS
+            put("kudos", RestKudos.class);
             put("offers", RestOffer.class);
             put("softwares", RestSoftware.class);
             put("releases", RestRelease.class);
@@ -96,48 +98,58 @@ public class BloatitRestServer extends RestServer {
             put("translations", RestTranslation.class);
         }
     };
-    private final Class<?>[] classes = new Class<?>[]{ RestAuthenticate.class,
-                                                      RestMember.class,
-                                                      RestBankTransaction.class,
-                                                      RestMilestone.class,
-                                                      RestBug.class,
-                                                      RestComment.class,
-                                                      RestContribution.class,
-                                                      RestFeature.class,
-                                                      RestDescription.class,
-                                                      RestExternalAccount.class,
-                                                      RestFileMetadata.class,
-                                                      RestTeam.class,
-                                                      RestHighlightFeature.class,
-                                                      RestInternalAccount.class,
-                                                      RestJoinTeamInvitation.class,
-                                                      RestKudos.class,
-                                                      RestOffer.class,
-                                                      RestSoftware.class,
-                                                      RestRelease.class,
-                                                      RestTransaction.class,
-                                                      RestTranslation.class,
-                                                      RestMemberList.class,
-                                                      RestMemberList.class,
-                                                      RestBankTransactionList.class,
-                                                      RestMilestoneList.class,
-                                                      RestBugList.class,
-                                                      RestCommentList.class,
-                                                      RestContributionList.class,
-                                                      RestFeatureList.class,
-                                                      RestDescriptionList.class,
-                                                      RestExternalAccountList.class,
-                                                      RestFileMetadataList.class,
-                                                      RestTeamList.class,
-                                                      RestHighlightFeatureList.class,
-                                                      RestInternalAccountList.class,
-                                                      RestJoinTeamInvitationList.class,
-                                                      RestKudosList.class,
-                                                      RestOfferList.class,
-                                                      RestSoftwareList.class,
-                                                      RestReleaseList.class,
-                                                      RestTransactionList.class,
-                                                      RestTranslationList.class,};
+    
+    /**
+     * All the classes that have to be marshalled by JAX
+     */
+    private final Class<?>[] classes = new Class<?>[] {
+                                                       // TOOLS
+                                                       RestAuthenticate.class,
+
+                                                       // ENTITIES
+                                                       RestMember.class,
+                                                       RestBankTransaction.class,
+                                                       RestMilestone.class,
+                                                       RestBug.class,
+                                                       RestComment.class,
+                                                       RestContribution.class,
+                                                       RestFeature.class,
+                                                       RestDescription.class,
+                                                       RestExternalAccount.class,
+                                                       RestFileMetadata.class,
+                                                       RestTeam.class,
+                                                       RestHighlightFeature.class,
+                                                       RestInternalAccount.class,
+                                                       RestJoinTeamInvitation.class,
+                                                       RestKudos.class,
+                                                       RestOffer.class,
+                                                       RestSoftware.class,
+                                                       RestRelease.class,
+                                                       RestTransaction.class,
+                                                       RestTranslation.class,
+
+                                                       // LISTS
+                                                       RestMemberList.class,
+                                                       RestMemberList.class,
+                                                       RestBankTransactionList.class,
+                                                       RestMilestoneList.class,
+                                                       RestBugList.class,
+                                                       RestCommentList.class,
+                                                       RestContributionList.class,
+                                                       RestFeatureList.class,
+                                                       RestDescriptionList.class,
+                                                       RestExternalAccountList.class,
+                                                       RestFileMetadataList.class,
+                                                       RestTeamList.class,
+                                                       RestHighlightFeatureList.class,
+                                                       RestInternalAccountList.class,
+                                                       RestJoinTeamInvitationList.class,
+                                                       RestKudosList.class,
+                                                       RestOfferList.class,
+                                                       RestSoftwareList.class,
+                                                       RestReleaseList.class,
+                                                       RestTransactionList.class,
+                                                       RestTranslationList.class, };
 
     @Override
     protected Set<String> getResourcesDirectories() {
