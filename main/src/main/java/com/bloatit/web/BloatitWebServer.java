@@ -41,6 +41,8 @@ import com.bloatit.web.linkable.admin.MilestoneAdminPage;
 import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationAction;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationPage;
+import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationAction;
+import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationPage;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminAction;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminPage;
 import com.bloatit.web.linkable.bugs.BugPage;
@@ -285,6 +287,8 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(ContributionInvoicingInformationsPageUrl.getPageName())) {
             return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(params, session.getParameters()));
+        if (pageCode.equals(AdminGlobalNotificationPageUrl.getPageName())) {
+            return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(params, session.getParameters()));
         }
 
         // ////////
@@ -428,6 +432,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(ExceptionAdministrationActionUrl.getPageName())) {
             return new ExceptionAdministrationAction(new ExceptionAdministrationActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AdminGlobalNotificationActionUrl.getPageName())) {
+            return new AdminGlobalNotificationAction(new AdminGlobalNotificationActionUrl(params, session.getParameters()));
         }
 
 

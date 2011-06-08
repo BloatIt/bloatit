@@ -11,8 +11,8 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.linkable.admin.AdminAction;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationPage.ErrorType;
+import com.bloatit.web.linkable.admin.master.AdminAction;
 import com.bloatit.web.url.ExceptionAdministrationActionUrl;
 import com.bloatit.web.url.ExceptionAdministrationPageUrl;
 

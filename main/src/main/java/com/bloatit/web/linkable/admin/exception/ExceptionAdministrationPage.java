@@ -7,7 +7,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.linkable.admin.AdminPage;
+import com.bloatit.web.linkable.admin.master.AdminPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.ExceptionAdministrationActionUrl;

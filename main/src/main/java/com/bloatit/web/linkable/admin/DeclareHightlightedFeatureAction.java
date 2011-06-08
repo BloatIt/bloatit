@@ -22,6 +22,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.Member;
+import com.bloatit.web.linkable.admin.master.AdminAction;
 import com.bloatit.web.url.DeclareHightlightedFeatureActionUrl;
 import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 

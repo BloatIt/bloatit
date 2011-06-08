@@ -10,7 +10,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.linkable.admin.AdminAction;
+import com.bloatit.web.linkable.admin.master.AdminAction;
 import com.bloatit.web.url.MoneyWithdrawalAdminActionUrl;
 import com.bloatit.web.url.MoneyWithdrawalAdminPageUrl;
 
