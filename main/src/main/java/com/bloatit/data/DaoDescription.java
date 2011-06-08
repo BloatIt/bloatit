@@ -147,7 +147,7 @@ public class DaoDescription extends DaoIdentifiable {
      * @return All the translation of this description.
      */
     public PageIterable<DaoTranslation> getTranslations() {
-        return new MappedList<DaoTranslation>(this.translations);
+        return new MappedUserContentList<DaoTranslation>(this.translations);
     }
 
     /**

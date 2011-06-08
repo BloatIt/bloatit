@@ -75,6 +75,8 @@
         <mapping class="com.bloatit.data.DaoContributionInvoice" />
         <mapping class="com.bloatit.data.DaoContact" />
         <mapping class="com.bloatit.data.DaoMilestoneContributionAmount" />
+        <mapping class="com.bloatit.data.DaoVersionedString" />
+        <mapping class="com.bloatit.data.DaoStringVersion" />
 
 	</session-factory>
 </hibernate-configuration>

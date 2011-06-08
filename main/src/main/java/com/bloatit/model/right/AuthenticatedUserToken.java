@@ -23,7 +23,7 @@ import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember;
-import com.bloatit.framework.utils.SecuredHash;
+import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
 import com.bloatit.model.ElveosUserToken;
@@ -51,13 +51,13 @@ public final class AuthenticatedUserToken implements ElveosUserToken {
         final DaoMember tmp = DaoMember.getByLogin(login);
         if (tmp == null) {
             // Spend some time here.
-            SecuredHash.calculateHash(password, "012345678901234567890");
+            Hash.calculateHash(password, "012345678901234567890");
             Log.model().info("Identification error with login " + login);
             throw new NotFoundException("Identification failed");
         }
 
         // Spend some time here. (Normal computation).
-        final String digestedPassword = SecuredHash.calculateHash(password, tmp.getSalt());
+        final String digestedPassword = Hash.calculateHash(password, tmp.getSalt());
         if (!tmp.passwordEquals(digestedPassword)) {
             Log.model().info("Authentication error with login " + login);
             throw new NotFoundException("Authentication failed");

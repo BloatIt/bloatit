@@ -34,7 +34,7 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.SecuredHash;
+import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.lists.CommentList;
@@ -97,7 +97,7 @@ public final class Member extends Actor<DaoMember> implements User {
      */
     private static DaoMember createDaoMember(final String login, final String password, final String email, final Locale locale) {
         final String salt = RandomStringUtils.randomAscii(PASSWORD_SALT_LENGTH);
-        final String passwd = SecuredHash.calculateHash(password, salt);
+        final String passwd = Hash.calculateHash(password, salt);
         return DaoMember.createAndPersist(login, passwd, salt, email, locale);
     }
 
@@ -227,7 +227,7 @@ public final class Member extends Actor<DaoMember> implements User {
      */
     public void setPassword(final String password) throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtMember.Password(), Action.WRITE);
-        getDao().setPassword(SecuredHash.calculateHash(password, getDao().getSalt()));
+        getDao().setPassword(Hash.calculateHash(password, getDao().getSalt()));
     }
 
     /**
@@ -238,7 +238,7 @@ public final class Member extends Actor<DaoMember> implements User {
      *         database, <i>false</i> otherwise
      */
     public boolean checkPassword(final String password) {
-        final String digestedPassword = SecuredHash.calculateHash(password, getDao().getSalt());
+        final String digestedPassword = Hash.calculateHash(password, getDao().getSalt());
         return getDao().passwordEquals(digestedPassword);
     }
 

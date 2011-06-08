@@ -14,6 +14,7 @@ package com.bloatit.framework.utils.i18n;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.Date;
@@ -117,7 +118,7 @@ public final class CurrencyLocale {
      * @return the localized string
      */
     public String getLocaleString() {
-        return getConvertedAmount().setScale(DISPLAY_PRECISION, ROUNDING_MODE) + getLocaleSymbol();
+        return NumberFormat.getInstance(targetLocale).format(getConvertedAmount().setScale(DISPLAY_PRECISION, ROUNDING_MODE)) + getLocaleSymbol();
     }
 
     /**
@@ -128,7 +129,7 @@ public final class CurrencyLocale {
      *         application default currency
      */
     public String getSimpleEuroString() {
-        return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
+        return NumberFormat.getInstance(targetLocale).format(this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE)) + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
@@ -138,7 +139,7 @@ public final class CurrencyLocale {
      * @return the localized string
      */
     public String getDecimalLocaleString() {
-        return getConvertedAmount().setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE) + getLocaleSymbol();
+        return NumberFormat.getInstance(targetLocale).format(getConvertedAmount().setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE)) + getLocaleSymbol();
     }
 
     /**
@@ -149,7 +150,7 @@ public final class CurrencyLocale {
      *         application default currency
      */
     public String getTwoDecimalEuroString() {
-        return this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
+        return NumberFormat.getInstance(targetLocale).format(this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE)) + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**

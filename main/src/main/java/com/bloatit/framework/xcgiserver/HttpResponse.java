@@ -50,10 +50,12 @@ public final class HttpResponse {
         OK_200("200", "OK"), //
         ERROR_301_MOVED_PERMANENTLY("301", "Moved Permanently"), //
         ERROR_302_FOUND("302", "Found"), //
+        ERROR_400_BAD_REQUEST("400", "Bad Request"), //
         ERROR_401_UNAUTHORIZED("401", "Unauthorized"), //
         ERROR_403_FORBIDDEN("403", "Forbidden"), //
         ERROR_404_NOT_FOUND("404", "Not Found"), //
         ERROR_405_METHOD_NOT_ALLOWED("405", "Method not allowed"), //
+        ERROR_406_NOT_ACCEPTABLE("406", "Not acceptable"), //
         ERROR_500_INTERNAL_SERVER_ERROR("500", "Internal Server Error"), //
         ERROR_501_NOT_IMPLEMENTED("501", "Not Implemented"), //
         ERROR_503_SERVICE_UNAVAILABLE("503", "Service Unavailable");//

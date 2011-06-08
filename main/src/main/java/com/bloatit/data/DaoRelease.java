@@ -150,7 +150,7 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return new MappedList<DaoComment>(this.comments);
+        return new MappedUserContentList<DaoComment>(this.comments);
     }
 
     /**

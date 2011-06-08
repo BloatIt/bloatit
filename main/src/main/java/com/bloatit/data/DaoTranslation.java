@@ -21,6 +21,7 @@ import java.util.Locale;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -28,9 +29,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
@@ -47,15 +46,12 @@ public class DaoTranslation extends DaoKudosable {
     @Basic(optional = false)
     private Locale locale;
 
-    @Basic(optional = false)
-    @Column(columnDefinition = "TEXT")
-    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
-    @Basic(optional = false)
-    @Field(index = Index.TOKENIZED, store = Store.NO)
-    private String text;
+    @Embedded
+    @IndexedEmbedded
+    private DaoString text;
 
     @ManyToOne(optional = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
@@ -88,15 +84,8 @@ public class DaoTranslation extends DaoKudosable {
         }
         this.locale = locale;
         this.title = title;
-        this.text = text;
+        this.text = new DaoString(text, member);
         this.description = description;
-    }
-
-    /**
-     * @return the title of this translation.
-     */
-    public String getTitle() {
-        return this.title;
     }
 
     /**
@@ -107,10 +96,25 @@ public class DaoTranslation extends DaoKudosable {
     }
 
     /**
+     * @return the title of this translation.
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    /**
      * @return the text of this translation.
      */
     public String getText() {
-        return this.text;
+        return this.text.getContent();
+    }
+
+    public void setText(final String content, final DaoMember author) {
+        this.text.setContent(content, author);
     }
 
     // ======================================================================

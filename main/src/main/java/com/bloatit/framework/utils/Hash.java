@@ -19,7 +19,7 @@ package com.bloatit.framework.utils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class SecuredHash {
+public class Hash {
     // Be ware that it may broke the db if the value is changed.
     private final static int ITERATION_NUMBER = 1000;
 
@@ -36,5 +36,9 @@ public class SecuredHash {
             value = DigestUtils.sha512(value);
         }
         return Base64.encodeBase64String(value);
+    }
+    
+    public static String shortHash(final String value) {
+        return DigestUtils.sha512Hex(value).substring(10, 20);
     }
 }

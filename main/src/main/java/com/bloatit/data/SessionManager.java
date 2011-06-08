@@ -52,13 +52,13 @@ public class SessionManager {
     private static SessionFactory buildSessionFactory() {
         try {
             final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "validate");
-            final SessionFactory buildSessionFactory = configuration.buildSessionFactory();
+            final SessionFactory sessionFactory = configuration.buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
-                Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoFeature.class).startAndWait();
+                Search.getFullTextSession(sessionFactory.getCurrentSession()).createIndexer(DaoFeature.class).startAndWait();
             }
 
-            return buildSessionFactory;
+            return sessionFactory;
         } catch (final Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             Log.data().fatal("Initial SessionFactory creation failed.", ex);
@@ -139,6 +139,7 @@ public class SessionManager {
      */
     public static void beginWorkUnit() {
         sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().enableFilter("usercontent.nonDeleted");
     }
 
     /**
@@ -187,7 +188,8 @@ public class SessionManager {
             final Configuration configuration = createConfiguration().setProperty("hibernate.hbm2ddl.auto", "create-drop")
                                                                      .setProperty("hibernate.cache.use_second_level_cache", "false")
                                                                      .setProperty("hibernate.cache.use_query_cache", "false")
-                                                                     .setProperty("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider")
+                                                                     .setProperty("hibernate.cache.provider_class",
+                                                                                  "org.hibernate.cache.NoCacheProvider")
                                                                      .setProperty(Environment.SHOW_SQL, "false")
                                                                      // .setProperty(Environment.DRIVER,
                                                                      // "org.hsqldb.jdbcDriver")

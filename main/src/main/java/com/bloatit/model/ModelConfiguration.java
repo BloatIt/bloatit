@@ -16,13 +16,11 @@
 //
 package com.bloatit.model;
 
-import java.awt.Frame;
 import java.math.BigDecimal;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
-import com.bloatit.framework.FrameworkConfiguration;
 
 public class ModelConfiguration extends ReloadableConfiguration {
     private static ModelConfiguration configuration = new ModelConfiguration();

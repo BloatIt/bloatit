@@ -70,7 +70,6 @@ public final class MilestoneContributionAmount extends Identifiable<DaoMilestone
         super(dao);
     }
 
-
     public Contribution getContribution() {
         return Contribution.create(getDao().getContribution());
     }

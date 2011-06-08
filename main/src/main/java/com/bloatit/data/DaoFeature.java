@@ -124,7 +124,8 @@ import com.bloatit.framework.utils.PageIterable;
                                     "JOIN offer_.milestones as bs " +
                                     "JOIN bs.bugs as bugs_ " +
                                     "WHERE offer_ = :offer " +
-                                    "AND bugs_.state = :state "),
+                                    "AND bugs_.state = :state ",
+                            readOnly = true),
                         @NamedQuery(
                             name = "feature.getComments.size",
                             query = "SELECT count(*) "+
@@ -132,7 +133,8 @@ import com.bloatit.framework.utils.PageIterable;
                                     "WHERE feature = :this "+
                                     "OR father.id in ( "+
                                         "FROM com.bloatit.data.DaoComment  "+
-                                        "WHERE feature = :this )"),
+                                        "WHERE feature = :this )",
+                            readOnly = true),
                         @NamedQuery(
                             name = "feature.getContributionOf",
                             query = "SELECT sum(amount) "+
@@ -494,7 +496,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the offers
      */
     public PageIterable<DaoOffer> getOffers() {
-        return new MappedList<DaoOffer>(this.offers);
+        return new MappedUserContentList<DaoOffer>(this.offers);
     }
 
     /**
@@ -512,7 +514,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * @return the contributions
      */
     public PageIterable<DaoContribution> getContributions() {
-        return new MappedList<DaoContribution>(this.contributions);
+        return new MappedUserContentList<DaoContribution>(this.contributions);
     }
 
     /**
@@ -530,7 +532,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return new MappedList<DaoComment>(this.comments);
+        return new MappedUserContentList<DaoComment>(comments);
     }
 
     /*

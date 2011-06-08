@@ -32,6 +32,9 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.Filters;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
@@ -46,6 +49,10 @@ import com.bloatit.model.UserContent;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@FilterDef(name="usercontent.nonDeleted" )
+@Filters( {
+    @Filter(name="usercontent.nonDeleted", condition="isDeleted = 'false'"),
+} )
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public abstract class DaoUserContent extends DaoIdentifiable {
@@ -74,6 +81,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * isDeleted boolean to true.
      */
     @Basic(optional = false)
+    @Field(store = Store.YES)
     private boolean isDeleted;
 
     /**
@@ -100,7 +108,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         this.member = member;
         this.asTeam = team;
         this.creationDate = new Date();
-        setIsDeleted(false);
+        this.isDeleted = false;
     }
 
     /**

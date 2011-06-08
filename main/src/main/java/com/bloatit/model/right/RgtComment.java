@@ -34,4 +34,12 @@ public class RgtComment extends RightManager {
             return canRead(action) || authentifiedCanWrite(object, action);
         }
     }
+
+    /**
+     * The Class <code>Text</code> is a {@link RightManager.Public} accessor for
+     * the <code>Text</code> property.
+     */
+    public static class Text extends Public {
+        // nothing this is just a rename.
+    }
 }

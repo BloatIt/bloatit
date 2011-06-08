@@ -42,6 +42,7 @@ echo "Going to workdir"
 if [ ! -e $WORKDIR ] ; then 
     mkdir -p $WORKDIR
 fi
+    chmod 777 $WORKDIR
 cd $WORKDIR
 
 for i in ${ENCRYPT_USERS[@]} ; do 
@@ -56,19 +57,25 @@ echo "encrypting .local/share files"
 cd $SHARE_FOLDER_ROOT
 tar -cJ "$SHARE_FOLDER" | su $USER -c "gpg --output \"$WORKDIR/$SHARE_BACKUP_FILE\" --encrypt $recipients" 
 
+cp "$AIDE_DB" "/tmp/$AIDE_DB_BACKUP_FILE"
+chmod +r "/tmp/$AIDE_DB_BACKUP_FILE"
+
 for i in ${SEND_HOSTS[@]} ;  do
     su $USER -c "
-	scp \"$WORKDIR/$DB_BACKUP_FILE\"             \
+    scp \"$WORKDIR/$DB_BACKUP_FILE\"             \
             \"$WORKDIR/$SHARE_BACKUP_FILE\"          \
             \"$i\"
      "
 
     su $USER -c "
-	scp \"$AIDE_DB\"             \
+    scp \"/tmp/$AIDE_DB_BACKUP_FILE\"             \
             \"$i$AIDE_DB_BACKUP_FILE\"
      "
 done
 
+rm /tmp/$AIDE_DB_BACKUP_FILE
+
 # deleting tmp files
 rm -rf $WORKDIR/*
+
 

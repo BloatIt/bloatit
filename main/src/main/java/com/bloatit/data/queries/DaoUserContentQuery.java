@@ -122,7 +122,7 @@ public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiab
     /**
      * show Non deleted content only.
      */
-    public void nonDeletedOnly() {
+    public final void nonDeletedOnly() {
         add(Restrictions.eq(IS_DELETED, false));
     }
 

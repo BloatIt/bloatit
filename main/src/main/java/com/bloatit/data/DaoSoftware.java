@@ -169,7 +169,7 @@ public class DaoSoftware extends DaoIdentifiable {
      * @return the feature created on this software.
      */
     public PageIterable<DaoFeature> getFeatures() {
-        return new MappedList<DaoFeature>(this.features);
+        return new MappedUserContentList<DaoFeature>(this.features);
     }
 
     /**

@@ -242,4 +242,11 @@ public abstract class RightManager {
             return false;
         }
     }
+    
+    public static class Authenticated extends Accessor {
+        @Override
+        protected boolean can(final Rights object, final Action action) {
+            return object.isAuthenticated();
+        }
+    }
 }

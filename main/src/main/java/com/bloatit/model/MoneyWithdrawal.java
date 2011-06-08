@@ -55,7 +55,6 @@ public class MoneyWithdrawal extends Identifiable<DaoMoneyWithdrawal> {
      * Creates a new Money withdrawal request
      * 
      * @param IBAN
-     * @param reference
      * @param amountWithdrawn
      */
     public MoneyWithdrawal(final Actor<? extends DaoActor> actor, final String IBAN, final BigDecimal amountWithdrawn) {

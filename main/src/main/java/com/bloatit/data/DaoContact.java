@@ -46,7 +46,6 @@ public class DaoContact {
     @Basic(optional = true)
     public String address;
 
-
     /**
      * Tax identification, VAT ...
      */
@@ -54,54 +53,18 @@ public class DaoContact {
     @Basic(optional = true)
     public String taxIdentification;
 
-    //@OneToOne()
-    //private DaoActor actor;
-
-//    private DaoContact(final DaoActor actor) {
-//        if (actor == null) {
-//            throw new NonOptionalParameterException();
-//        }
-//        this.actor = actor;
-//    }
-
-
-//    /**
-//     * Creates the invoice contact and persist it.
-//     *
-//     * @param name the full name or company name
-//     * @param address the invoicing address.
-//     * @return the new dao invoicing contact
-//     */
-//    public static DaoContact createAndPersist( DaoActor actor) {
-//        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-//        final DaoContact invoicingContact = new DaoContact(actor);
-//
-//        try {
-//            session.save(invoicingContact);
-//        } catch (final HibernateException e) {
-//            session.getTransaction().rollback();
-//            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-//            throw e;
-//        }
-//        return invoicingContact;
-//    }
-
-
-
     /**
      * Sets the tax identification.
-     *
+     * 
      * @param taxIdentification tax identification
      */
     public void setTaxIdentification(final String taxIdentification) {
         this.taxIdentification = taxIdentification;
     }
 
-
-
     /**
      * Gets the name.
-     *
+     * 
      * @return the name
      */
     public String getName() {
@@ -110,7 +73,7 @@ public class DaoContact {
 
     /**
      * Gets the address.
-     *
+     * 
      * @return the address
      */
     public String getAddress() {
@@ -119,21 +82,22 @@ public class DaoContact {
 
     /**
      * Gets the tax identification.
-     *
+     * 
      * @return the tax identification
      */
     public String getTaxIdentification() {
         return this.taxIdentification;
     }
 
-//    /**
-//     * Gets the actor.
-//     *
-//     * @return the actor
-//     */
-//    public DaoActor getActor() {
-//        return this.actor;
-//    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
 
     // ======================================================================
     // Hibernate mapping
@@ -161,40 +125,41 @@ public class DaoContact {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         DaoContact other = (DaoContact) obj;
         if (address == null) {
-            if (other.address != null)
+            if (other.address != null) {
                 return false;
-        } else if (!address.equals(other.address))
+            }
+        } else if (!address.equals(other.address)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (taxIdentification == null) {
-            if (other.taxIdentification != null)
+            if (other.taxIdentification != null) {
                 return false;
-        } else if (!taxIdentification.equals(other.taxIdentification))
+            }
+        } else if (!taxIdentification.equals(other.taxIdentification)) {
             return false;
+        }
         return true;
     }
 
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
 
 

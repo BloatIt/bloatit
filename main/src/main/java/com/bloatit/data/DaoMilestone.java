@@ -449,7 +449,7 @@ public class DaoMilestone extends DaoIdentifiable {
      * @return the releases
      */
     public PageIterable<DaoRelease> getReleases() {
-        return new MappedList<DaoRelease>(this.releases);
+        return new MappedUserContentList<DaoRelease>(this.releases);
     }
 
     /**
@@ -482,9 +482,9 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
-     * Gets the remember a description is a title with some content.
+     * Remember a description is a title with some content.
      *
-     * @return the remember a description is a title with some content
+     * @return the description
      */
     public DaoDescription getDescription() {
         return this.description;

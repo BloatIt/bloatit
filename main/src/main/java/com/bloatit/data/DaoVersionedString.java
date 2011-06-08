@@ -6,9 +6,10 @@ import java.util.List;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
@@ -24,49 +25,52 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public final class DaoVersionedString extends DaoIdentifiable {
 
-    @ManyToOne(optional = false)
+    @OneToOne
     private DaoStringVersion currentVersion;
 
     @OneToMany(mappedBy = "versionedString", cascade = { CascadeType.ALL })
-    @OrderBy(clause = "id")
+    @OrderBy(clause = "creationDate")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<DaoStringVersion> versions = new ArrayList<DaoStringVersion>();
 
-    private DaoVersionedString(String content) {
-        super();
-        if (content == null) {
-            throw new NonOptionalParameterException();
-        }
-        currentVersion = DaoStringVersion.createAndPersist(content, this);
-        this.versions.add(currentVersion);
-    }
-
-    public static DaoVersionedString createAndPersist(String content) {
+    public static DaoVersionedString createAndPersist(final String content, final DaoMember author) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoVersionedString version = new DaoVersionedString(content);
+        final DaoVersionedString bug = new DaoVersionedString(content, author);
         try {
-            session.save(version);
+            session.save(bug);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return version;
+        return bug;
     }
 
-    public void addVersion(String content) {
-        this.currentVersion = DaoStringVersion.createAndPersist(content, this);
+    private DaoVersionedString(final String content, final DaoMember author) {
+        super();
+        if (content == null) {
+            throw new NonOptionalParameterException();
+        }
+        currentVersion = new DaoStringVersion(content, this, author);
+        this.versions.add(currentVersion);
+    }
+
+    public void addVersion(final String content, final DaoMember author) {
+        this.currentVersion = new DaoStringVersion(content, this, author);
         versions.add(currentVersion);
     }
 
-    public void changeCurrentVersion(DaoStringVersion version) {
+    public void useVersion(final DaoStringVersion version) {
         if (!version.getVersionedString().equals(this)) {
             throw new BadProgrammerException("VersionedString mismatch");
+        }
+        if (version.isCompacted()) {
+            throw new NotImplementedException();
         }
         this.currentVersion = version;
     }
 
-    public String getCurrentContent() {
+    public String getContent() {
         return currentVersion.getContent();
     }
 
@@ -74,12 +78,34 @@ public final class DaoVersionedString extends DaoIdentifiable {
         return new MappedList<DaoStringVersion>(versions);
     }
 
+    public DaoStringVersion getCurrentVersion() {
+        return currentVersion;
+    }
+
+    public void compact() {
+        String previousContent = null;
+        for (final DaoStringVersion version : versions) {
+            if (!version.isCompacted()) {
+                final String savedContent = version.getContent();
+                if (previousContent != null) {
+                    version.compact(previousContent);
+                }
+                previousContent = savedContent;
+            } else {
+                if (previousContent == null) {
+                    throw new BadProgrammerException("First string version should never be compacted !");
+                }
+                previousContent = version.getContentUncompacted(previousContent);
+            }
+        }
+    }
+
     // ======================================================================
     // Visitor.
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -92,18 +118,6 @@ public final class DaoVersionedString extends DaoIdentifiable {
      */
     protected DaoVersionedString() {
         super();
-    }
-
-    public DaoStringVersion getCurrentVersion() {
-        return currentVersion;
-    }
-
-    public void setCurrentVersion(DaoStringVersion currentVersion) {
-        this.currentVersion = currentVersion;
-    }
-
-    public void setVersions(List<DaoStringVersion> versions) {
-        this.versions = versions;
     }
 
     @Override
@@ -120,24 +134,31 @@ public final class DaoVersionedString extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoVersionedString other = (DaoVersionedString) obj;
+        }
+        final DaoVersionedString other = (DaoVersionedString) obj;
         if (currentVersion == null) {
-            if (other.currentVersion != null)
+            if (other.currentVersion != null) {
                 return false;
-        } else if (!currentVersion.equals(other.currentVersion))
+            }
+        } else if (!currentVersion.equals(other.currentVersion)) {
             return false;
+        }
         if (versions == null) {
-            if (other.versions != null)
+            if (other.versions != null) {
                 return false;
-        } else if (!versions.equals(other.versions))
+            }
+        } else if (!versions.equals(other.versions)) {
             return false;
+        }
         return true;
     }
 

@@ -93,9 +93,9 @@ public final class Team extends Actor<DaoTeam> {
         getDao().setContact(contact);
     }
 
-    public void setDescription(final String description) throws UnauthorizedPublicAccessException {
+    public void setDescription(final String description, final Member author) throws UnauthorizedPublicAccessException {
         tryAccess(new RgtTeam.Description(), Action.WRITE);
-        getDao().setDescription(description);
+        getDao().setDescription(description, author.getDao());
     }
 
     public void setAvatar(final FileMetadata fileImage) throws UnauthorizedPublicAccessException {

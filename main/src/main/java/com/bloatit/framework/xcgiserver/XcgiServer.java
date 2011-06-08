@@ -110,7 +110,7 @@ public final class XcgiServer {
                     if (nbError > NB_MAX_SOCKET_ERROR) {
                         throw new BadProgrammerException("Too much errors on this socket.", e);
                     }
-                    Log.framework().fatal("soket error on port: " + provider.getLocalPort(), e);
+                    Log.framework().fatal("Socket error on port: " + provider.getLocalPort(), e);
                 }
             }
         }
@@ -146,23 +146,24 @@ public final class XcgiServer {
 
             // LOGGING REQUESTS
             final StringBuilder request = new StringBuilder();
-            request.append(header.getRequestMethod());
-            request.append(' ');
+            request.append("Access:Request: ");
+            request.append("REQUEST_URI=\"");
             request.append(header.getRequestUri());
-            request.append("  ");
-            request.append('[');
-            request.append("REMOTE_ADDR=");
-            request.append(header.getRemoteAddr());
-            request.append(", ");
-            request.append("USER_AGENT=");
+            request.append("\"; REQUEST_METHOD=\"");
+            request.append(header.getRequestMethod());
+            request.append("\"; USER_AGENT=\"");
             request.append(header.getHttpUserAgent());
-            request.append(", ");
-            request.append("ACCEPT_LANGUAGES=");
+            request.append("\"; ACCEPT_LANGUAGES=\"");
             request.append(header.getHttpAcceptLanguage());
-            request.append(", ");
-            request.append("PATH_TRANSLATED=");
-            request.append(header.getPathTranslated());
-            request.append(']');
+            request.append("\"; HTTP_REFERER=\"");
+            request.append(header.getHttpReferer());
+            request.append("\"; REMOTE_ADDR=\"");
+            request.append(header.getRemoteAddr());
+            request.append("\"; SERVER_PROTOCOL=\"");
+            request.append(header.getServerProtocol());
+            request.append("\"; SERVER_ADDR=\"");
+            request.append(header.getServerAddr());
+            request.append('"');
             Log.framework().info(request.toString());
 
             SessionManager.clearExpiredSessions();
