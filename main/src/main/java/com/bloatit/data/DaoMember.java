@@ -628,8 +628,6 @@ public class DaoMember extends DaoActor {
     /**
      * Gets the moneywithdrawals.
      *
-     * @param asMemberOnly the result must contains only result that are not
-     *            done as name of a team.
      * @return All the contributions created by this member.
      */
     public PageIterable<DaoMoneyWithdrawal> getMoneyWithdrawals() {

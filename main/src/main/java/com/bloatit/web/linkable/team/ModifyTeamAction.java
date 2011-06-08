@@ -121,7 +121,7 @@ public class ModifyTeamAction extends LoggedAction {
             // Description
             if (!isEmpty(description.trim()) && !description.equals(team.getDescription())) {
                 session.notifyGood(Context.tr("Team's description changed."));
-                team.setDescription(description);
+                team.setDescription(description, me);
             }
 
             // AVATAR

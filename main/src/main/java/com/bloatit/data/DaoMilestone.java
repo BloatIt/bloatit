@@ -475,9 +475,9 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
-     * Gets the remember a description is a title with some content.
+     * Remember a description is a title with some content.
      *
-     * @return the remember a description is a title with some content
+     * @return the description
      */
     public DaoDescription getDescription() {
         return this.description;

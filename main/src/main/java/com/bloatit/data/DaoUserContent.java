@@ -108,7 +108,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         this.member = member;
         this.asTeam = team;
         this.creationDate = new Date();
-        setIsDeleted(false);
+        this.isDeleted = false;
     }
 
     /**

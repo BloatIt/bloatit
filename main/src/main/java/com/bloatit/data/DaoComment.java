@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Cacheable;
-import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -33,10 +33,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Store;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
@@ -50,10 +47,9 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoComment extends DaoKudosable implements DaoCommentable {
 
-    // WARNING "TEXT" is not a standard SQL type.
-    @Column(columnDefinition = "TEXT", nullable = false)
-    @Field(index = Index.TOKENIZED, store = Store.NO)
-    private String text;
+    @Embedded
+    @IndexedEmbedded
+    private DaoString text;
 
     @ManyToOne
     private DaoComment father;
@@ -189,7 +185,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         if (text == null || text.isEmpty()) {
             throw new NonOptionalParameterException();
         }
-        this.text = text;
+        this.text = new DaoString(text, member);
     }
 
     private DaoComment(final DaoBug father, final DaoTeam team, final DaoMember member, final String text) {
@@ -231,7 +227,11 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      * @return the text of this comment
      */
     public String getText() {
-        return this.text;
+        return this.text.getContent();
+    }
+
+    public void setText(final String content, final DaoMember author) {
+        this.text.setContent(content, author);
     }
 
     /**

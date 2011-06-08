@@ -23,6 +23,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -137,9 +138,8 @@ public class DaoTeam extends DaoActor {
     @Column(unique = false)
     private String contact;
 
-    @Basic(optional = false)
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @Embedded
+    private DaoString description;
 
     @ManyToOne(optional = true, cascade = { javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REFRESH }, fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -176,7 +176,7 @@ public class DaoTeam extends DaoActor {
      *
      * @param login it the unique and non updatable name of the team.
      * @param contact some contact information for that team.
-     * @param description the desctiption of the team.
+     * @param description the description of the team.
      * @param right is the type of team we are creating (Public or Private).
      * @return the newly created team.
      * @throws HibernateException
@@ -207,7 +207,7 @@ public class DaoTeam extends DaoActor {
         }
         this.right = right;
         this.contact = contact;
-        this.description = description;
+        this.description = new DaoString(description, null);
     }
 
     /**
@@ -268,8 +268,8 @@ public class DaoTeam extends DaoActor {
     /**
      * @param description the new description of the team.
      */
-    public void setDescription(final String description) {
-        this.description = description;
+    public void setDescription(final String description, final DaoMember author) {
+        this.description.setContent(description, author);
     }
 
     // ======================================================================
@@ -345,7 +345,7 @@ public class DaoTeam extends DaoActor {
      * @return the description of this team.
      */
     public String getDescription() {
-        return this.description;
+        return this.description.getContent();
     }
 
     /**
