@@ -42,7 +42,7 @@ public class SessionManager {
 
     // SHOULD BE FINAL see generateTestSessionFactory
     /** The session factory. */
-    private static SessionFactory sessionFactory = null;//buildSessionFactory();
+    private static SessionFactory sessionFactory = buildSessionFactory();
 
     /**
      * Builds the session factory; Update the lucene index.
