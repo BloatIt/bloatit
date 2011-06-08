@@ -133,7 +133,7 @@ public class RestFeature extends RestElement<Feature> {
     public static RestFeatureList getAll() {
         return new RestFeatureList(FeatureManager.getFeatures());
     }
-
+    
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------

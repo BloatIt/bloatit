@@ -16,21 +16,23 @@
 //
 package com.bloatit.framework.webprocessor;
 
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+
 public class ErrorMessage {
     public enum Level {
         INFO, WARNING, FATAL
     }
 
     private final Level level;
-    private final String message;
+    private final XmlNode message;
 
-    public ErrorMessage(final Level level, final String message) {
+    public ErrorMessage(final Level level, final XmlNode message) {
         super();
         this.level = level;
         this.message = message;
     }
 
-    public String getMessage() {
+    public XmlNode getMessage() {
         return message;
     }
 

@@ -26,8 +26,10 @@ import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.linkable.admin.master.AdminPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
+import com.bloatit.web.url.AdminGlobalNotificationPageUrl;
 import com.bloatit.web.url.AdminHomePageUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 import com.bloatit.web.url.ExceptionAdministrationPageUrl;
@@ -66,6 +68,7 @@ public class AdminHomePage extends AdminPage {
         list.add(new HightlightedFeatureAdminPageUrl().getHtmlLink("Hightlighted Features"));
         list.add(new MoneyWithdrawalAdminPageUrl().getHtmlLink("Manage money withdrawals"));
         list.add(new ExceptionAdministrationPageUrl().getHtmlLink("Manage exceptions"));
+        list.add(new AdminGlobalNotificationPageUrl().getHtmlLink("Notify all users"));
         return master;
     }
 

@@ -25,8 +25,8 @@ import com.bloatit.model.Member;
 public class RgtMember extends RightManager {
 
     /**
-     * The Class <code>Avatar</code> is a {@link RightManager.Public} accessor for the
-     * <code>Avatar</code> property.
+     * The Class <code>Avatar</code> is a {@link RightManager.Public} accessor
+     * for the <code>Avatar</code> property.
      */
     public static class Avatar extends Public {
         // nothing this is just a rename.
@@ -41,6 +41,14 @@ public class RgtMember extends RightManager {
     }
 
     /**
+     * The Class Teams is a {@link RightManager.Public} accessor for the Teams
+     * property.
+     */
+    public static class Teams extends Public {
+        // nothing this is just a rename.
+    }
+
+    /**
      * The Class Password is a {@link RightManager.Private} accessor for the
      * Password property.
      */
@@ -49,8 +57,8 @@ public class RgtMember extends RightManager {
     }
 
     /**
-     * The Class InvoicingContact is a {@link RightManager.Private} accessor for the InvoicingContact
-     * property.
+     * The Class InvoicingContact is a {@link RightManager.Private} accessor for
+     * the InvoicingContact property.
      */
     public static class InvoicingContacts extends Private {
         // nothing this is just a rename.
@@ -65,24 +73,32 @@ public class RgtMember extends RightManager {
     }
 
     /**
-     * The Class <code>Kudos</code> is a {@link RightManager.Private} accessor for the
-     * <code>Kudos</code> property.
+     * The Class UserInformations is a {@link RightManager.Private} accessor for
+     * the UserInformations property.
+     */
+    public static class UserInformations extends Private {
+        // nothing this is just a rename.
+    }
+
+    /**
+     * The Class <code>Kudos</code> is a {@link RightManager.Private} accessor
+     * for the <code>Kudos</code> property.
      */
     public static class Kudos extends Private {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class <code>FullName</code> is a {@link RightManager.Public} accessor for the
-     * <code>FullName</code> property.
+     * The Class <code>FullName</code> is a {@link RightManager.Public} accessor
+     * for the <code>FullName</code> property.
      */
     public static class FullName extends Public {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class <code>Locale</code> is a {@link RightManager.Public} accessor for the
-     * <code>Locale</code> property.
+     * The Class <code>Locale</code> is a {@link RightManager.Public} accessor
+     * for the <code>Locale</code> property.
      */
     public static class Locale extends Public {
         // nothing this is just a rename.
