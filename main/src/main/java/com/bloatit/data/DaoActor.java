@@ -280,6 +280,9 @@ public abstract class DaoActor extends DaoIdentifiable {
     }
 
     public DaoContact getContact() {
+        if(contact == null) {
+            contact = new DaoContact();
+        }
         return contact;
     }
 }

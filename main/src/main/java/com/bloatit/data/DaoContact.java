@@ -20,15 +20,9 @@ import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
  * Represent a invoicing contact for an actor.
@@ -60,37 +54,37 @@ public class DaoContact {
     @Basic(optional = true)
     public String taxIdentification;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private DaoActor actor;
+    //@OneToOne()
+    //private DaoActor actor;
 
-    private DaoContact(final DaoActor actor) {
-        if (actor == null) {
-            throw new NonOptionalParameterException();
-        }
-        this.actor = actor;
-    }
+//    private DaoContact(final DaoActor actor) {
+//        if (actor == null) {
+//            throw new NonOptionalParameterException();
+//        }
+//        this.actor = actor;
+//    }
 
 
-    /**
-     * Creates the invoice contact and persist it.
-     *
-     * @param name the full name or company name
-     * @param address the invoicing address.
-     * @return the new dao invoicing contact
-     */
-    public static DaoContact createAndPersist( DaoActor actor) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoContact invoicingContact = new DaoContact(actor);
-
-        try {
-            session.save(invoicingContact);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        return invoicingContact;
-    }
+//    /**
+//     * Creates the invoice contact and persist it.
+//     *
+//     * @param name the full name or company name
+//     * @param address the invoicing address.
+//     * @return the new dao invoicing contact
+//     */
+//    public static DaoContact createAndPersist( DaoActor actor) {
+//        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+//        final DaoContact invoicingContact = new DaoContact(actor);
+//
+//        try {
+//            session.save(invoicingContact);
+//        } catch (final HibernateException e) {
+//            session.getTransaction().rollback();
+//            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+//            throw e;
+//        }
+//        return invoicingContact;
+//    }
 
 
 
@@ -132,14 +126,14 @@ public class DaoContact {
         return this.taxIdentification;
     }
 
-    /**
-     * Gets the actor.
-     *
-     * @return the actor
-     */
-    public DaoActor getActor() {
-        return this.actor;
-    }
+//    /**
+//     * Gets the actor.
+//     *
+//     * @return the actor
+//     */
+//    public DaoActor getActor() {
+//        return this.actor;
+//    }
 
     // ======================================================================
     // Hibernate mapping

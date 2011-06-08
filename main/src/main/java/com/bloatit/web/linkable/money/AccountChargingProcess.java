@@ -68,7 +68,7 @@ public class AccountChargingProcess extends PaymentProcess {
             unlock();
             return new AccountChargingPageUrl(this);
         } else if (subProcess instanceof ModifyInvoicingContactProcess) {
-            return new StaticAccountChargingPageUrl(this);
+            return new AccountChargingPageUrl(this);
         }
         return null;
     }

@@ -169,8 +169,7 @@
 			<column name="name" type="TEXT">
 				<constraints nullable="true" />
 			</column>
-			<column name="taxidentification" type="TEXT" />
-			<column name="actor_id" type="int4">
+			<column name="taxidentification" type="TEXT" >
 				<constraints nullable="true" />
 			</column>
 

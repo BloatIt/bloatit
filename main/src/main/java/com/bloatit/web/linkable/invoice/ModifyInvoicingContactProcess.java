@@ -27,7 +27,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.actions.WebProcess;
-import com.bloatit.web.url.InvoicingContactPageUrl;
+import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 @ParamContainer(value = "invoicing/process", protocol = Protocol.HTTPS)
@@ -52,7 +52,7 @@ public class ModifyInvoicingContactProcess extends WebProcess {
     @Override
     protected synchronized Url doProcess(final ElveosUserToken userToken) {
         url.getParentProcess().addChildProcess(this);
-        return new InvoicingContactPageUrl(this);
+        return new ModifyContactPageUrl(this);
     }
 
     @Override

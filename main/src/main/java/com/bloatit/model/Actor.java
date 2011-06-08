@@ -237,4 +237,16 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     public final boolean isTeam() {
         return this instanceof Team;
     }
+
+    public boolean hasInvoicingContact() throws UnauthorizedPrivateAccessException {
+        Contact contact = getContact();
+        if(contact.getName() == null) {
+            return false;
+        }
+        if(contact.getAddress() == null) {
+            return false;
+        }
+
+        return true;
+    }
 }

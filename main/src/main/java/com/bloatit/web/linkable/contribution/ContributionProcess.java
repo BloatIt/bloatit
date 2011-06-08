@@ -98,7 +98,7 @@ public class ContributionProcess extends PaymentProcess {
             unlock();
             return new CheckContributionPageUrl(this);
         } else if (subProcess instanceof ModifyInvoicingContactProcess) {
-            return new StaticCheckContributionPageUrl(this);
+            return new CheckContributionPageUrl(this);
         }
         return null;
     }

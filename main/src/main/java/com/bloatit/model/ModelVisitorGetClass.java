@@ -19,7 +19,6 @@ package com.bloatit.model;
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoContact;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
@@ -154,11 +153,6 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     @Override
     public Class<?> visit(Invoice model) {
         return DaoInvoice.class;
-    }
-
-    @Override
-    public Class<?> visit(Contact model) {
-        return DaoContact.class;
     }
 
     @Override

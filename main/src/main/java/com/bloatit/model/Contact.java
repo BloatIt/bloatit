@@ -74,9 +74,9 @@ public final class Contact {
      * @return the actor unprotected
      * @see #getActor()
      */
-    final Actor<?> getActorUnprotected() {
-        return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
-    }
+//    final Actor<?> getActorUnprotected() {
+//        return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
+//    }
 
     private DaoContact getDao() {
         return dao;

@@ -66,7 +66,7 @@ import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingProcess;
 import com.bloatit.web.linkable.invoice.InvoiceResource;
-import com.bloatit.web.linkable.invoice.InvoicingContactPage;
+import com.bloatit.web.linkable.invoice.ModifyContactPage;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactAction;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
 import com.bloatit.web.linkable.language.ChangeLanguageAction;
@@ -278,8 +278,8 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(MoneyWithdrawalAdminPageUrl.getPageName())) {
             return new MoneyWithdrawalAdminPage(new MoneyWithdrawalAdminPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(InvoicingContactPageUrl.getPageName())) {
-            return new InvoicingContactPage(new InvoicingContactPageUrl(params, session.getParameters()));
+        if (pageCode.equals(ModifyContactPageUrl.getPageName())) {
+            return new ModifyContactPage(new ModifyContactPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ExceptionAdministrationPageUrl.getPageName())) {
             return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(params, session.getParameters()));

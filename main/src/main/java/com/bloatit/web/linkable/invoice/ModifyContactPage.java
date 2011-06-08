@@ -23,6 +23,7 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
+import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -39,7 +40,7 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.InvoicingContactPageUrl;
+import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 
 /**
@@ -47,15 +48,15 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
  * invoice.
  */
 @ParamContainer(value = "account/charging/invoicing_contact", protocol = Protocol.HTTPS)
-public final class InvoicingContactPage extends LoggedPage {
+public final class ModifyContactPage extends LoggedPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     private final ModifyInvoicingContactProcess process;
 
-    private final InvoicingContactPageUrl url;
+    private final ModifyContactPageUrl url;
 
-    public InvoicingContactPage(final InvoicingContactPageUrl url) {
+    public ModifyContactPage(final ModifyContactPageUrl url) {
         super(url);
         this.url = url;
         process = url.getProcess();
@@ -97,35 +98,35 @@ public final class InvoicingContactPage extends LoggedPage {
         final HtmlForm newContactForm = new HtmlForm(modifyInvoicingContextActionUrl.urlString());
 
         // Name
-//        final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
-//
-//        String name = "";
-//
-//        if (process.getActor().isTeam()) {
-//            name = Context.tr("Name");
-//        } else {
-//            name = Context.tr("Organisation name");
-//        }
-//
-//        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
-//        nameInput.setDefaultValue(nameData.getSuggestedValue());
-//        nameInput.addErrorMessages(nameData.getErrorMessages());
-//        if (process.getActor().isTeam()) {
-//            nameInput.setComment(Context.tr("Your full name"));
-//        } else {
-//            nameInput.setComment(Context.tr("The name of your company or your association."));
-//        }
-//        newContactForm.add(nameInput);
+        final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
 
-//        final FieldData addressData = modifyInvoicingContextActionUrl.getAddressParameter().pickFieldData();
-//
-//        final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Address"), 10, 80);
-//        addressInput.setDefaultValue(addressData.getSuggestedValue());
-//        addressInput.addErrorMessages(addressData.getErrorMessages());
-//        addressInput.setComment(Context.tr("The full address, including the city and the country."));
-//        newContactForm.add(addressInput);
+        String name = "";
 
-        final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("New invoicing contact"));
+        if (process.getActor().isTeam()) {
+            name = Context.tr("Name");
+        } else {
+            name = Context.tr("Organisation name");
+        }
+
+        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
+        nameInput.setDefaultValue(nameData.getSuggestedValue());
+        nameInput.addErrorMessages(nameData.getErrorMessages());
+        if (process.getActor().isTeam()) {
+            nameInput.setComment(Context.tr("Your full name"));
+        } else {
+            nameInput.setComment(Context.tr("The name of your company or your association."));
+        }
+        newContactForm.add(nameInput);
+
+        final FieldData addressData = modifyInvoicingContextActionUrl.getAddressParameter().pickFieldData();
+
+        final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Address"), 10, 80);
+        addressInput.setDefaultValue(addressData.getSuggestedValue());
+        addressInput.addErrorMessages(addressData.getErrorMessages());
+        addressInput.setComment(Context.tr("The full address, including the city and the country."));
+        newContactForm.add(addressInput);
+
+        final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
         newContactForm.add(newContactButton);
 
 
@@ -166,7 +167,7 @@ public final class InvoicingContactPage extends LoggedPage {
             breadcrumb = IndexPage.generateBreadcrumb();
         }
 
-        Url url = new InvoicingContactPageUrl(process);
+        Url url = new ModifyContactPageUrl(process);
 
         breadcrumb.pushLink(url.getHtmlLink(tr("Invoicing contact")));
         return breadcrumb;

@@ -238,11 +238,6 @@ public class Rights {
         }
 
         @Override
-        public Team visit(Contact model) {
-            return visitAbstract(model.getActorUnprotected());
-        }
-
-        @Override
         public Team visit(ContributionInvoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
@@ -325,11 +320,6 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(Contact model) {
-            return visitAbstract(model.getActorUnprotected());
-        }
-
-        @Override
         public Boolean visit(ContributionInvoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
@@ -400,11 +390,6 @@ public class Rights {
         @Override
         public Boolean visitAbstract(final MoneyWithdrawal model) {
             return visitAbstract(model.getActorUnprotected());
-        }
-
-        @Override
-        public Boolean visit(Contact model) {
-            return model.getActorUnprotected().equals(member);
         }
 
         @Override
