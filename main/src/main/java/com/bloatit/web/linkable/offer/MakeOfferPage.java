@@ -148,11 +148,12 @@ public final class MakeOfferPage extends CreateUserContentPage {
         // license
         final FieldData licenseData = offerActionUrl.getLicenseParameter().pickFieldData();
         final HtmlDropDown licenseInput = new HtmlDropDown(licenseData.getName(), Context.tr("License"));
+        licenseInput.addDropDownElement("", Context.tr("Select a license…")).setDisabled().setSelected();
         licenseInput.addDropDownElement("Apache License 2.0", "Apache License 2.0");
         licenseInput.addDropDownElement("Artistic License/GPL", "Artistic License/GPL");
-        licenseInput.addDropDownElement("GNU General Public License 3.0", "GNU General Public License 3.0");
-        licenseInput.addDropDownElement("GNU General Public License 2.0", "GNU General Public License 2.0");
-        licenseInput.addDropDownElement("GNU Lesser General Public License", "GNU Lesser General Public License");
+        licenseInput.addDropDownElement("GNU GPL v3", "GNU GPL v3");
+        licenseInput.addDropDownElement("GNU GPL v2", "GNU GPL v2");
+        licenseInput.addDropDownElement("GNU Lesser GPL", "GNU Lesser GPL");
         licenseInput.addDropDownElement("MIT License", "MIT License");
         licenseInput.addDropDownElement("New BSD License", "New BSD License");
         licenseInput.addDropDownElement("Mozilla Public License 1.1", "Mozilla Public License 1.1");

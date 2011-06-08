@@ -201,6 +201,7 @@ public final class OfferAction extends UserContentAction {
         session.addParameter(url.getPercentFatalParameter());
         session.addParameter(url.getPercentMajorParameter());
         session.addParameter(url.getIsFinishedParameter());
+        session.addParameter(url.getLicenseParameter());
     }
 
     @Override

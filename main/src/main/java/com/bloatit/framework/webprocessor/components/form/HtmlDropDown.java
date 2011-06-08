@@ -23,7 +23,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
  */
 public class HtmlDropDown extends HtmlStringFormField {
 
-    private final Map<String, HtmlGenericElement> elements = new HashMap<String, HtmlGenericElement>();
+    private final Map<String, HtmlDropDownElement> elements = new HashMap<String, HtmlDropDownElement>();
 
     public HtmlDropDown(final String name) {
         super(InputBlock.create(new HtmlGenericElement("select")), name);
@@ -33,14 +33,15 @@ public class HtmlDropDown extends HtmlStringFormField {
         super(InputBlock.create(new HtmlGenericElement("select")), name, label);
     }
 
-    public void addDropDownElement(final String value, final String displayName) {
-        final HtmlGenericElement opt = new HtmlGenericElement("option");
+    public HtmlDropDownElement addDropDownElement(final String value, final String displayName) {
+        final HtmlDropDownElement opt = new HtmlDropDownElement();
         opt.addText(displayName);
         opt.addAttribute("value", value);
         ((HtmlBranch) inputBlock.getInputElement()).add(opt);
         elements.put(value, opt);
+        return opt;
     }
-
+    
     /**
      * Adds elements based on an enum
      * 
@@ -65,7 +66,7 @@ public class HtmlDropDown extends HtmlStringFormField {
      */
     @Override
     protected void doSetDefaultValue(final String value) {
-        final HtmlGenericElement checkedElement = elements.get(value);
+        final HtmlDropDownElement checkedElement = elements.get(value);
         if (checkedElement != null) {
             checkedElement.addAttribute("selected", "selected");
         }
