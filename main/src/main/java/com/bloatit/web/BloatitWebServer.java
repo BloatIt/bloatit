@@ -129,7 +129,6 @@ import com.bloatit.web.pages.SiteMapPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.*;
 
-
 public class BloatitWebServer extends WebProcessor {
 
     public BloatitWebServer() {
@@ -287,6 +286,7 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (pageCode.equals(ContributionInvoicingInformationsPageUrl.getPageName())) {
             return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(params, session.getParameters()));
+        }
         if (pageCode.equals(AdminGlobalNotificationPageUrl.getPageName())) {
             return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(params, session.getParameters()));
         }
@@ -437,7 +437,6 @@ public class BloatitWebServer extends WebProcessor {
             return new AdminGlobalNotificationAction(new AdminGlobalNotificationActionUrl(params, session.getParameters()));
         }
 
-
         // ////////
         // Process
         // ////////
@@ -464,7 +463,7 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(InvoiceResourceUrl.getPageName())) {
             return new InvoiceResource(new InvoiceResourceUrl(params, session.getParameters()));
         }
-        Log.web().warn("Failed to find the page code '"+pageCode+"' in the linkable list. Maybe you forgot to declare it in BloatitWebServer ?");
+        Log.web().warn("Failed to find the page code '" + pageCode + "' in the linkable list. Maybe you forgot to declare it in BloatitWebServer ?");
         return new PageNotFound(new PageNotFoundUrl());
     }
 
@@ -473,4 +472,5 @@ public class BloatitWebServer extends WebProcessor {
         WebConfiguration.load();
         return true;
     }
+
 }
