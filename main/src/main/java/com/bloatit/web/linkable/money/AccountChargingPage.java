@@ -48,7 +48,7 @@ import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
-import com.bloatit.web.url.InvoicingContactProcessUrl;
+import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 /**
  * A page used to put money onto the internal bloatit account
@@ -148,7 +148,7 @@ public final class AccountChargingPage extends QuotationPage {
         // Pay block
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
-            final HtmlLink invoicingContactLink = new InvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Validate"));
+            final HtmlLink invoicingContactLink = new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Validate"));
             invoicingContactLink.setCssClass("button");
             if (process.getTeam() != null) {
                 payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));

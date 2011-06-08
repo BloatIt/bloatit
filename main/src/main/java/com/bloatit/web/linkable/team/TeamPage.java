@@ -130,7 +130,7 @@ public final class TeamPage extends ElveosPage {
         contacts.setTitle(Context.tr("How to contact \"{0}\"?", targetTeam.getDisplayName()));
 
         if (targetTeam.canAccessContact(Action.READ)) {
-            contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getContact()));
+            contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getPublicContact()));
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
         }

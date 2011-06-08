@@ -21,6 +21,7 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
+import com.bloatit.model.Contact;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
@@ -30,11 +31,11 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Invoice;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.JoinTeamInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
 import com.bloatit.model.Milestone;
+import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.MoneyWithdrawal;
 import com.bloatit.model.Offer;
@@ -159,22 +160,27 @@ public class BreadcrumbTools {
             }
 
             @Override
-            public Breadcrumb visit(MoneyWithdrawal moneyWithdrawal) {
+            public Breadcrumb visit(MoneyWithdrawal model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Invoice invoice) {
+            public Breadcrumb visit(Invoice model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(ContributionInvoice invoice) {
+            public Breadcrumb visit(ContributionInvoice model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(InvoicingContact invoicingContact) {
+            public Breadcrumb visit(Contact model) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(MilestoneContributionAmount model) {
                 throw new NotImplementedException();
             }
         });

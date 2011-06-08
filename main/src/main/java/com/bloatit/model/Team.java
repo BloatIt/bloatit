@@ -146,8 +146,8 @@ public final class Team extends Actor<DaoTeam> {
     }
 
     // no right management: this is public data
-    public String getContact() {
-        return getDao().getContact();
+    public String getPublicContact() {
+        return getDao().getPublicContact();
     }
 
     // no right management: this is public data

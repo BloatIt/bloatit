@@ -22,39 +22,31 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Actor;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.managers.InvoicingContactManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.TeamManager;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.InvoicingContactPageUrl;
-import com.bloatit.web.url.InvoicingContactProcessUrl;
+import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 @ParamContainer(value = "invoicing/process", protocol = Protocol.HTTPS)
-public class InvoicingContactProcess extends WebProcess {
+public class ModifyInvoicingContactProcess extends WebProcess {
 
     @RequestParam
     private Actor<?> actor;
 
-    private InvoicingContact invoicingContact;
-
-    private final InvoicingContactProcessUrl url;
+    private final ModifyInvoicingContactProcessUrl url;
 
     @SuppressWarnings("unused")
     @RequestParam
     private final WebProcess parentProcess;
 
-    public InvoicingContactProcess(final InvoicingContactProcessUrl url) {
+    public ModifyInvoicingContactProcess(final ModifyInvoicingContactProcessUrl url) {
         super(url);
         this.url = url;
         setActor(url.getActor());
         parentProcess = url.getParentProcess();
-    }
-
-    public InvoicingContact getInvoicingContact() {
-        return invoicingContact;
     }
 
     @Override
@@ -75,9 +67,6 @@ public class InvoicingContactProcess extends WebProcess {
         } else if (getActor() instanceof Team) {
             setActor(TeamManager.getById(getActor().getId()));
         }
-        if(invoicingContact != null) {
-            invoicingContact = InvoicingContactManager.getById(invoicingContact.getId());
-        }
     }
 
     public Actor<?> getActor() {
@@ -86,10 +75,6 @@ public class InvoicingContactProcess extends WebProcess {
 
     public void setActor(Actor<?> actor) {
         this.actor = actor;
-    }
-
-    public void setInvoicingContact(InvoicingContact invoicingContact) {
-        this.invoicingContact = invoicingContact;
     }
 
 }

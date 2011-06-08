@@ -19,6 +19,7 @@ package com.bloatit.model;
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
+import com.bloatit.data.DaoContact;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoContributionInvoice;
 import com.bloatit.data.DaoDescription;
@@ -28,7 +29,6 @@ import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoInvoice;
-import com.bloatit.data.DaoInvoicingContact;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
@@ -147,22 +147,27 @@ public class ModelVisitorGetClass implements ModelClassVisitor<Class<?>> {
     }
 
     @Override
-    public Class<?> visit(final MoneyWithdrawal moneyWithdrawal) {
+    public Class<?> visit(final MoneyWithdrawal model) {
         return DaoMoneyWithdrawal.class;
     }
 
     @Override
-    public Class<?> visit(Invoice invoice) {
+    public Class<?> visit(Invoice model) {
         return DaoInvoice.class;
     }
 
     @Override
-    public Class<?> visit(InvoicingContact invoicingContact) {
-        return DaoInvoicingContact.class;
+    public Class<?> visit(Contact model) {
+        return DaoContact.class;
     }
 
     @Override
-    public Class<?> visit(ContributionInvoice invoice) {
+    public Class<?> visit(ContributionInvoice model) {
         return DaoContributionInvoice.class;
+    }
+
+    @Override
+    public Class<?> visit(MilestoneContributionAmount model) {
+        return MilestoneContributionAmount.class;
     }
 }

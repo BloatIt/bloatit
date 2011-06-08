@@ -73,7 +73,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /**
      * Create a new FeatureImplementation. This method is not protected by any
      * right management.
-     * 
+     *
      * @param dao the dao
      * @return null if the <code>dao</code> is null.
      */
@@ -86,7 +86,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
      * Create a new feature. The right management for creating a feature is
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link FeatureManager}.
-     * 
+     *
      * @param author the author
      * @param locale the locale in which this feature is written
      * @param title the title of the feature
@@ -109,7 +109,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Use the {@link #create(DaoFeature)} method.
-     * 
+     *
      * @param dao the dao
      */
     private FeatureImplementation(final DaoFeature dao) {
@@ -214,7 +214,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Used by Offer class. You should never have to use it
-     * 
+     *
      * @param offer the offer to unselect. Nothing is done if the offer is not
      *            selected.
      */
@@ -396,7 +396,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Sets the selected offer. Called internally and in featureState.
-     * 
+     *
      * @param offer the new selected offer
      */
     private void setSelectedOffer(final Offer offer) {
@@ -413,7 +413,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     /**
      * Method called by Offer when the offer is kudosed. Update the
      * selectedOffer using it popularity.
-     * 
+     *
      * @param offer the offer that has been kudosed.
      * @param positif true means kudos up, false kudos down.
      */
@@ -425,7 +425,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Update the selected offer using the popularity.
-     * 
+     *
      * @param offer The offer that has been kudosed
      * @param positif true if this is a kudos, false if it is a unkudos.
      */
@@ -518,7 +518,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the contributions unprotected.
-     * 
+     *
      * @return the contributions unprotected
      * @see #getContribution()
      */
@@ -566,7 +566,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public BigDecimal getContributionMin()  {
         return getDao().getContributionMin();
     }
-    
+
     @Override
     public BigDecimal getContributionOf(final Member member)  {
         return getDao().getContributionOf(member.getDao());
@@ -589,7 +589,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the offers unprotected.
-     * 
+     *
      * @return the offers unprotected
      */
     private PageIterable<Offer> getOffersUnprotected() {
@@ -621,7 +621,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Sets the state object.
-     * 
+     *
      * @param stateObject the new state object
      */
     private void setStateObject(final AbstractFeatureState stateObject) {
@@ -630,7 +630,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Gets the state object.
-     * 
+     *
      * @return the state object
      */
     private AbstractFeatureState getStateObject() {
@@ -674,7 +674,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn pending.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnPending()
      */
@@ -685,7 +685,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn valid.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnValid()
      */
@@ -696,7 +696,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn rejected.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnRejected()
      */
@@ -707,7 +707,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     /**
      * Turn hidden.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnHidden()
      */

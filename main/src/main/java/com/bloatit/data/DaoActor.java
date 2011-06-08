@@ -16,19 +16,16 @@
 //
 package com.bloatit.data;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.Criteria;
@@ -94,10 +91,8 @@ public abstract class DaoActor extends DaoIdentifiable {
     @Cascade(value = {org.hibernate.annotations.CascadeType.ALL })
     private DaoExternalAccount externalAccount;
 
-    // this property is for hibernate mapping.
-    @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private final List<DaoInvoicingContact> invoicingContacts = new ArrayList<DaoInvoicingContact>(0);
+    @Embedded
+    private DaoContact contact;
 
     // ======================================================================
     // HQL static requests.
@@ -164,6 +159,7 @@ public abstract class DaoActor extends DaoIdentifiable {
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);
         this.externalAccount = new DaoExternalAccount(this);
+        this.contact = new DaoContact();
     }
 
     public void setLogin(final String login) {
@@ -230,15 +226,6 @@ public abstract class DaoActor extends DaoIdentifiable {
         return new QueryCollection<DaoBankTransaction>("actor.getBankTransactions").setEntity("author", this);
     }
 
-    /**
-     * Attach an invoicing contact on this actor.
-     *
-     * @param invoicingContact the invoicing contact to attach on this actor
-     */
-    public void addInvoicingContact(final DaoInvoicingContact invoicingContact) {
-        this.invoicingContacts.add(invoicingContact);
-    }
-
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -292,7 +279,7 @@ public abstract class DaoActor extends DaoIdentifiable {
         return true;
     }
 
-    public PageIterable<DaoInvoicingContact> getInvoicingContacts() {
-        return new MappedList<DaoInvoicingContact>(invoicingContacts);
+    public DaoContact getContact() {
+        return contact;
     }
 }

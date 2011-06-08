@@ -19,7 +19,7 @@ package com.bloatit.data;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
@@ -33,23 +33,23 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 /**
  * Represent a invoicing contact for an actor.
  */
-@Entity
+@Embeddable
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class DaoInvoicingContact extends DaoIdentifiable {
+public class DaoContact {
 
     /**
      * Full name or company name
      */
     @Column(columnDefinition = "TEXT")
-    @Basic(optional = false)
+    @Basic(optional = true)
     public String name;
 
     /**
      * Invoicing address
      */
     @Column(columnDefinition = "TEXT")
-    @Basic(optional = false)
+    @Basic(optional = true)
     public String address;
 
 
@@ -63,13 +63,10 @@ public class DaoInvoicingContact extends DaoIdentifiable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoActor actor;
 
-    private DaoInvoicingContact(final String name,
-                   final String address, final DaoActor actor) {
-        if (name == null || address == null || name.isEmpty() || address.isEmpty() || actor == null) {
+    private DaoContact(final DaoActor actor) {
+        if (actor == null) {
             throw new NonOptionalParameterException();
         }
-        this.name = name;
-        this.address = address;
         this.actor = actor;
     }
 
@@ -81,13 +78,10 @@ public class DaoInvoicingContact extends DaoIdentifiable {
      * @param address the invoicing address.
      * @return the new dao invoicing contact
      */
-    public static DaoInvoicingContact createAndPersist(final String name,
-                                                       final String address, DaoActor actor) {
+    public static DaoContact createAndPersist( DaoActor actor) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoInvoicingContact invoicingContact = new DaoInvoicingContact(name, address, actor);
-        
-        actor.addInvoicingContact(invoicingContact);
-        
+        final DaoContact invoicingContact = new DaoContact(actor);
+
         try {
             session.save(invoicingContact);
         } catch (final HibernateException e) {
@@ -147,23 +141,6 @@ public class DaoInvoicingContact extends DaoIdentifiable {
         return this.actor;
     }
 
-
-
-    // ======================================================================
-    // Visitor.
-    // ======================================================================
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.data.DaoIdentifiable#accept(com.bloatit.data.DataClassVisitor
-     * )
-     */
-    @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
-        return visitor.visit(this);
-    }
-
     // ======================================================================
     // Hibernate mapping
     // ======================================================================
@@ -171,7 +148,7 @@ public class DaoInvoicingContact extends DaoIdentifiable {
     /**
      * Instantiates a new dao bug.
      */
-    protected DaoInvoicingContact() {
+    protected DaoContact() {
         super();
     }
 
@@ -197,7 +174,7 @@ public class DaoInvoicingContact extends DaoIdentifiable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        DaoInvoicingContact other = (DaoInvoicingContact) obj;
+        DaoContact other = (DaoContact) obj;
         if (address == null) {
             if (other.address != null)
                 return false;
@@ -217,6 +194,13 @@ public class DaoInvoicingContact extends DaoIdentifiable {
     }
 
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
 
 

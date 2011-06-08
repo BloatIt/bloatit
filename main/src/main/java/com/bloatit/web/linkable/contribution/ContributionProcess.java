@@ -28,7 +28,7 @@ import com.bloatit.model.Feature;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.actions.WebProcess;
-import com.bloatit.web.linkable.invoice.InvoicingContactProcess;
+import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -97,8 +97,7 @@ public class ContributionProcess extends PaymentProcess {
             }
             unlock();
             return new CheckContributionPageUrl(this);
-        } else if (subProcess instanceof InvoicingContactProcess) {
-            setInvoicingContact(((InvoicingContactProcess) subProcess).getInvoicingContact());
+        } else if (subProcess instanceof ModifyInvoicingContactProcess) {
             return new StaticCheckContributionPageUrl(this);
         }
         return null;

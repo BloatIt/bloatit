@@ -16,16 +16,15 @@
 //
 package com.bloatit.model.lists;
 
-import com.bloatit.data.DaoInvoicingContact;
+import com.bloatit.data.DaoMilestoneContributionAmount;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.InvoicingContact;
+import com.bloatit.model.MilestoneContributionAmount;
 
 /**
- * The Class BankTransactionList transforms PageIterable<DaoBankTransaction> to
- * PageIterable<BankTransaction>.
+ * The Class OfferList transforms PageIterable<DaoOffer> to PageIterable<Offer>.
  */
-public final class InvoicingContactList extends ListBinder<InvoicingContact, DaoInvoicingContact> {
-    public InvoicingContactList(final PageIterable<DaoInvoicingContact> daoCollection) {
+public final class MilestoneContributionAmountList extends ListBinder<MilestoneContributionAmount, DaoMilestoneContributionAmount> {
+    public MilestoneContributionAmountList(final PageIterable<DaoMilestoneContributionAmount> daoCollection) {
         super(daoCollection);
     }
 }

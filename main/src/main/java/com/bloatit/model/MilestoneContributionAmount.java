@@ -16,13 +16,17 @@
 //
 package com.bloatit.model;
 
-import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoInvoicingContact;
+import java.math.BigDecimal;
+
+import com.bloatit.data.DaoMilestoneContributionAmount;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtContribution;
+import com.bloatit.model.right.UnauthorizedPublicReadOnlyAccessException;
 
 /**
- * This is a invoicing contact.
+ * This is a invoice.
  */
-public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
+public final class MilestoneContributionAmount extends Identifiable<DaoMilestoneContributionAmount> {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
@@ -32,7 +36,7 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      * This class implements the method pattern, implementing the doCreate
      * method. See the base class for more informations: {@link Creator}.
      */
-    private static final class MyCreator extends Creator<DaoInvoicingContact, InvoicingContact> {
+    private static final class MyCreator extends Creator<DaoMilestoneContributionAmount, MilestoneContributionAmount> {
 
         /*
          * (non-Javadoc)
@@ -41,8 +45,8 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
          */
         @SuppressWarnings("synthetic-access")
         @Override
-        public InvoicingContact doCreate(final DaoInvoicingContact dao) {
-            return new InvoicingContact(dao);
+        public MilestoneContributionAmount doCreate(final DaoMilestoneContributionAmount dao) {
+            return new MilestoneContributionAmount(dao);
         }
     }
 
@@ -50,36 +54,35 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
      * Find a bug in the cache or create an new one.
      *
      * @param dao the dao
-     * @return null if dao is null. Else return the new invoicing contact.
+     * @return null if dao is null. Else return the new invoice.
      */
     @SuppressWarnings("synthetic-access")
-    public static InvoicingContact create(final DaoInvoicingContact dao) {
+    public static MilestoneContributionAmount create(final DaoMilestoneContributionAmount dao) {
         return new MyCreator().create(dao);
     }
 
     /**
-     * Instantiates a new invoicing contact.
+     * Instantiates a new invoice.
      *
      * @param dao the dao
      */
-    private InvoicingContact(final DaoInvoicingContact dao) {
+    private MilestoneContributionAmount(final DaoMilestoneContributionAmount dao) {
         super(dao);
     }
 
-    /**
-     * Create a new invoicing contact.
-     *
-     * @param member is the author of the bug.
-     * @param milestone is the milestone on which this bug has been set.
-     * @param title is the title of the bug.
-     * @param description is a complete description of the bug.
-     * @param locale is the language in which this description has been written.
-     * @param errorLevel is the estimated level of the bug. see {@link Level}.
-     */
-    public InvoicingContact(final String name,
-                     final String address, final Actor<?> actor) {
-        super(DaoInvoicingContact.createAndPersist(name, address, actor.getDao()));
-        }
+
+    public Contribution getContribution() {
+        return Contribution.create(getDao().getContribution());
+    }
+
+    public Milestone getMilestone() {
+        return Milestone.create(getDao().getMilestone());
+    }
+
+    public BigDecimal getAmount() throws UnauthorizedPublicReadOnlyAccessException {
+        tryAccess(new RgtContribution.Amount(), Action.READ);
+        return getDao().getAmount();
+    }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
@@ -88,30 +91,6 @@ public final class InvoicingContact extends Identifiable<DaoInvoicingContact> {
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
-    }
-
-    // ///////////////////////////
-    // Unprotected methods
-
-    /**
-     * This method is used only in the authentication process. You should never
-     * used it anywhere else.
-     *
-     * @return the actor unprotected
-     * @see #getActor()
-     */
-    final Actor<?> getActorUnprotected() {
-        return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
-    }
-
-    public String getName() {
-        //TODO: access right
-        return getDao().getName();
-    }
-
-    public String getAddress() {
-        //TODO: access right
-        return getDao().getAddress();
     }
 
 }

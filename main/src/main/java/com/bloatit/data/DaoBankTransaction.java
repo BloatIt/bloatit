@@ -109,8 +109,6 @@ public class DaoBankTransaction extends DaoIdentifiable {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private DaoActor author;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private DaoInvoicingContact invoicingContact;
     @Basic(optional = false)
     @Column(updatable = false)
     private Date creationDate;
@@ -167,11 +165,10 @@ public class DaoBankTransaction extends DaoIdentifiable {
     public static DaoBankTransaction createAndPersist(final String message,
                                                       final String token,
                                                       final DaoActor author,
-                                                      final DaoInvoicingContact invoicingContact,
                                                       final BigDecimal value,
                                                       final BigDecimal valuePayed,
                                                       final String orderReference) {
-        final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, invoicingContact, value, valuePayed, orderReference);
+        final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, valuePayed, orderReference);
         try {
             SessionManager.getSessionFactory().getCurrentSession().save(bankTransaction);
         } catch (final HibernateException e) {
@@ -188,17 +185,15 @@ public class DaoBankTransaction extends DaoIdentifiable {
     private DaoBankTransaction(final String message,
                                final String token,
                                final DaoActor author,
-                               final DaoInvoicingContact invoicingContact,
                                final BigDecimal value,
                                final BigDecimal valuePayed,
                                final String orderReference) {
         super();
-        checkOptionnal(message, token, author, invoicingContact,  value, valuePayed, orderReference);
+        checkOptionnal(message, token, author, value, valuePayed, orderReference);
 
         this.message = message;
         this.token = token;
         this.author = author;
-        this.invoicingContact = invoicingContact;
         this.value = value;
         this.valuePaid = valuePayed;
         this.state = State.PENDING;
@@ -304,15 +299,6 @@ public class DaoBankTransaction extends DaoIdentifiable {
      */
     public DaoActor getAuthor() {
         return this.author;
-    }
-
-    /**
-     * Gets the author.
-     *
-     * @return the author
-     */
-    public DaoInvoicingContact getInvoicingContact() {
-        return this.invoicingContact;
     }
 
     /**

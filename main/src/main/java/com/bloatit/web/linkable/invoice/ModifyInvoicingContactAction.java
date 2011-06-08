@@ -18,30 +18,30 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Contact;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
+import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/invoicingcontact/choose")
-public final class ChooseInvoicingContactAction extends LoggedAction {
+public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    private final InvoicingContactProcess process;
+    private final ModifyInvoicingContactProcess process;
 
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("You select an invoicing information."))
-    private final InvoicingContact invoicingContact;
+    private final Contact invoicingContact;
 
-    private final ChooseInvoicingContactActionUrl url;
+    private final ModifyInvoicingContactActionUrl url;
 
-    public ChooseInvoicingContactAction(final ChooseInvoicingContactActionUrl url) {
+    public ModifyInvoicingContactAction(final ModifyInvoicingContactActionUrl url) {
         super(url);
         this.url = url;
         this.process = url.getProcess();
@@ -53,7 +53,6 @@ public final class ChooseInvoicingContactAction extends LoggedAction {
     public Url doProcessRestricted(final Member me) {
 
 
-        process.setInvoicingContact(invoicingContact);
 
 
         return process.close();

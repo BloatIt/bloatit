@@ -51,7 +51,7 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.InvoicingContactProcessUrl;
+import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
@@ -243,7 +243,7 @@ public final class CheckContributionPage extends QuotationPage {
         // Pay block
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
-            final HtmlLink invoicingContactLink = new InvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Validate"));
+            final HtmlLink invoicingContactLink = new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Validate"));
             invoicingContactLink.setCssClass("button");
             if (process.getTeam() != null) {
                 payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));

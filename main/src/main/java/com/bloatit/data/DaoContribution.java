@@ -40,7 +40,6 @@ import org.hibernate.annotations.NamedQuery;
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
 /**
  * A contribution is a financial participation on a feature. Each contribution
@@ -107,10 +106,10 @@ public class DaoContribution extends DaoUserContent {
 
     @Basic(optional = false)
     private BigDecimal alreadyGivenMoney;
-    
+
     /**
      * Gets the money raised.
-     * 
+     *
      * @return the money raised
      */
     public static BigDecimal getMoneyRaised() {
@@ -122,7 +121,7 @@ public class DaoContribution extends DaoUserContent {
     /**
      * Create a new contribution. Update the internal account of the author
      * (block the value that is reserved to this contribution)
-     * 
+     *
      * @param member the person making the contribution. (Use
      *            DaoUserContent#setAsTeam() to make a contribution in the name
      *            of team)
@@ -135,9 +134,8 @@ public class DaoContribution extends DaoUserContent {
      */
     protected DaoContribution(final DaoMember member, final DaoTeam team, final DaoFeature feature, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         super(member, team);
-        if (feature == null) {
-            throw new NonOptionalParameterException();
-        }
+        checkOptionnal(feature);
+
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().error("The amount of a contribution cannot be <= 0.");
             throw new BadProgrammerException("The amount of a contribution cannot be <= 0.", null);
@@ -156,7 +154,7 @@ public class DaoContribution extends DaoUserContent {
      * not enough money then throw and set the state to canceled. After that if
      * all the money is transfered, the state of this contribution is become
      * VALIDATED.
-     * 
+     *
      * @param offer the offer that is accepted.
      * @param percent integer ]0,100]. It is the percent of the total amount and
      *            not a percent of what is remaining. It is the percent of the
@@ -166,8 +164,9 @@ public class DaoContribution extends DaoUserContent {
      *            transfered. 60% then 60% will throw an exception.
      * @throws NotEnoughMoneyException if there is not enough money to create
      *             the transaction.
+     * @return the amount of the payment for the milestone
      */
-    void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
+    BigDecimal validate(final DaoMilestone milestone, final int percent) throws NotEnoughMoneyException {
         if (this.state != State.PENDING) {
             throw new BadProgrammerException("Cannot validate a contribution if its state isn't PENDING");
         }
@@ -176,7 +175,7 @@ public class DaoContribution extends DaoUserContent {
         }
         final BigDecimal moneyToGive = calculateHowMuchToTransfer(percent);
         final DaoInternalAccount fromAccount = getAuthor().getInternalAccount();
-        final DaoInternalAccount toAccount = offer.getAuthor().getInternalAccount();
+        final DaoInternalAccount toAccount = milestone.getOffer().getAuthor().getInternalAccount();
         try {
             // First we try to unblock. It can throw a notEnouthMoneyException.
             fromAccount.unBlock(moneyToGive);
@@ -201,6 +200,7 @@ public class DaoContribution extends DaoUserContent {
             this.state = State.CANCELED;
             throw e;
         }
+        return moneyToGive;
     }
 
     private BigDecimal calculateHowMuchToTransfer(final int percent) {
@@ -232,7 +232,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the amount is the quantity of money put in this contribution.
-     * 
+     *
      * @return the amount is the quantity of money put in this contribution
      */
     public BigDecimal getAmount() {
@@ -241,7 +241,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the state.
-     * 
+     *
      * @return the state
      */
     public State getState() {
@@ -250,7 +250,7 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the comment.
-     * 
+     *
      * @return the comment
      */
     public String getComment() {
@@ -259,13 +259,13 @@ public class DaoContribution extends DaoUserContent {
 
     /**
      * Gets the feature.
-     * 
+     *
      * @return the feature
      */
     public DaoFeature getFeature() {
         return this.feature;
     }
-    
+
     @Override
     public void setIsDeleted(final Boolean isDeleted) {
         throw new IllegalStateException("You cannot delete a contribution. Use Cancel instead.");
@@ -355,5 +355,7 @@ public class DaoContribution extends DaoUserContent {
         }
         return true;
     }
+
+
 
 }

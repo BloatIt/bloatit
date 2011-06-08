@@ -73,7 +73,8 @@
         <mapping class="com.bloatit.data.DaoMoneyWithdrawal" />
         <mapping class="com.bloatit.data.DaoInvoice" />
         <mapping class="com.bloatit.data.DaoContributionInvoice" />
-        <mapping class="com.bloatit.data.DaoInvoicingContact" />
+        <mapping class="com.bloatit.data.DaoContact" />
+        <mapping class="com.bloatit.data.DaoMilestoneContributionAmount" />
 
 	</session-factory>
 </hibernate-configuration>

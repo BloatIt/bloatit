@@ -16,6 +16,7 @@
 //
 package com.bloatit.web;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -60,12 +61,12 @@ import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
-import com.bloatit.web.linkable.invoice.ChooseInvoicingContactAction;
+import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingProcess;
-import com.bloatit.web.linkable.invoice.CreateInvoicingContactAction;
 import com.bloatit.web.linkable.invoice.InvoiceResource;
 import com.bloatit.web.linkable.invoice.InvoicingContactPage;
-import com.bloatit.web.linkable.invoice.InvoicingContactProcess;
+import com.bloatit.web.linkable.invoice.ModifyInvoicingContactAction;
+import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
 import com.bloatit.web.linkable.language.ChangeLanguageAction;
 import com.bloatit.web.linkable.language.ChangeLanguagePage;
 import com.bloatit.web.linkable.login.LoginAction;
@@ -125,6 +126,7 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.SiteMapPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.url.*;
+
 
 public class BloatitWebServer extends WebProcessor {
 
@@ -281,6 +283,9 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(ExceptionAdministrationPageUrl.getPageName())) {
             return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ContributionInvoicingInformationsPageUrl.getPageName())) {
+            return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -418,11 +423,8 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(CancelWithdrawMoneyActionUrl.getPageName())) {
             return new CancelWithdrawMoneyAction(new CancelWithdrawMoneyActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(CreateInvoicingContactActionUrl.getPageName())) {
-            return new CreateInvoicingContactAction(new CreateInvoicingContactActionUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(ChooseInvoicingContactActionUrl.getPageName())) {
-            return new ChooseInvoicingContactAction(new ChooseInvoicingContactActionUrl(params, session.getParameters()));
+        if (pageCode.equals(ModifyInvoicingContactActionUrl.getPageName())) {
+            return new ModifyInvoicingContactAction(new ModifyInvoicingContactActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ExceptionAdministrationActionUrl.getPageName())) {
             return new ExceptionAdministrationAction(new ExceptionAdministrationActionUrl(params, session.getParameters()));
@@ -441,8 +443,8 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(PaylineProcessUrl.getPageName())) {
             return new PaylineProcess(new PaylineProcessUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(InvoicingContactProcessUrl.getPageName())) {
-            return new InvoicingContactProcess(new InvoicingContactProcessUrl(params, session.getParameters()));
+        if (pageCode.equals(ModifyInvoicingContactProcessUrl.getPageName())) {
+            return new ModifyInvoicingContactProcess(new ModifyInvoicingContactProcessUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ContributionInvoicingProcessUrl.getPageName())) {
             return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(params, session.getParameters()));
@@ -455,7 +457,7 @@ public class BloatitWebServer extends WebProcessor {
         if (pageCode.equals(InvoiceResourceUrl.getPageName())) {
             return new InvoiceResource(new InvoiceResourceUrl(params, session.getParameters()));
         }
-
+        Log.web().warn("Failed to find the page code '"+pageCode+"' in the linkable list. Maybe you forgot to declare it in BloatitWebServer ?");
         return new PageNotFound(new PageNotFoundUrl());
     }
 

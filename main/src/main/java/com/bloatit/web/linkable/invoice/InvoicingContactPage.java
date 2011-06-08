@@ -13,7 +13,6 @@ package com.bloatit.web.linkable.invoice;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -22,19 +21,15 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
-import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
-import com.bloatit.model.InvoicingContact;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.contribution.CheckContributionPage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -44,9 +39,8 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.ChooseInvoicingContactActionUrl;
-import com.bloatit.web.url.CreateInvoicingContactActionUrl;
 import com.bloatit.web.url.InvoicingContactPageUrl;
+import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 
 /**
  * A page used choose or create the invoicing contact to use for the comission
@@ -57,7 +51,7 @@ public final class InvoicingContactPage extends LoggedPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
     @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    private final InvoicingContactProcess process;
+    private final ModifyInvoicingContactProcess process;
 
     private final InvoicingContactPageUrl url;
 
@@ -91,14 +85,6 @@ public final class InvoicingContactPage extends LoggedPage {
             group = new HtmlTitleBlock(tr("Your invoicing informations"), 1);
         }
 
-        try {
-            if (process.getActor().getInvoicingContacts().size() > 0) {
-                group.add(generateSelectInvoicingContactForm(member));
-            }
-        } catch (UnauthorizedOperationException e) {
-            throw new ShallNotPassException("Fail to get invoicing contacts", e);
-        }
-
         group.add(generateNewInvoicingContactForm(member));
 
         return group;
@@ -107,37 +93,37 @@ public final class InvoicingContactPage extends LoggedPage {
     private HtmlElement generateNewInvoicingContactForm(final Member member) {
 
         // Create contact form
-        final CreateInvoicingContactActionUrl createInvoicingContextActionUrl = new CreateInvoicingContactActionUrl(process);
-        final HtmlForm newContactForm = new HtmlForm(createInvoicingContextActionUrl.urlString());
+        final ModifyInvoicingContactActionUrl modifyInvoicingContextActionUrl = new ModifyInvoicingContactActionUrl(process);
+        final HtmlForm newContactForm = new HtmlForm(modifyInvoicingContextActionUrl.urlString());
 
         // Name
-        final FieldData nameData = createInvoicingContextActionUrl.getNameParameter().pickFieldData();
+//        final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
+//
+//        String name = "";
+//
+//        if (process.getActor().isTeam()) {
+//            name = Context.tr("Name");
+//        } else {
+//            name = Context.tr("Organisation name");
+//        }
+//
+//        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
+//        nameInput.setDefaultValue(nameData.getSuggestedValue());
+//        nameInput.addErrorMessages(nameData.getErrorMessages());
+//        if (process.getActor().isTeam()) {
+//            nameInput.setComment(Context.tr("Your full name"));
+//        } else {
+//            nameInput.setComment(Context.tr("The name of your company or your association."));
+//        }
+//        newContactForm.add(nameInput);
 
-        String name = "";
-
-        if (process.getActor().isTeam()) {
-            name = Context.tr("Name");
-        } else {
-            name = Context.tr("Organisation name");
-        }
-
-        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
-        nameInput.setDefaultValue(nameData.getSuggestedValue());
-        nameInput.addErrorMessages(nameData.getErrorMessages());
-        if (process.getActor().isTeam()) {
-            nameInput.setComment(Context.tr("Your full name"));
-        } else {
-            nameInput.setComment(Context.tr("The name of your company or your association."));
-        }
-        newContactForm.add(nameInput);
-
-        final FieldData addressData = createInvoicingContextActionUrl.getAddressParameter().pickFieldData();
-
-        final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Address"), 10, 80);
-        addressInput.setDefaultValue(addressData.getSuggestedValue());
-        addressInput.addErrorMessages(addressData.getErrorMessages());
-        addressInput.setComment(Context.tr("The full address, including the city and the country."));
-        newContactForm.add(addressInput);
+//        final FieldData addressData = modifyInvoicingContextActionUrl.getAddressParameter().pickFieldData();
+//
+//        final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Address"), 10, 80);
+//        addressInput.setDefaultValue(addressData.getSuggestedValue());
+//        addressInput.addErrorMessages(addressData.getErrorMessages());
+//        addressInput.setComment(Context.tr("The full address, including the city and the country."));
+//        newContactForm.add(addressInput);
 
         final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("New invoicing contact"));
         newContactForm.add(newContactButton);
@@ -146,31 +132,7 @@ public final class InvoicingContactPage extends LoggedPage {
         return newContactForm;
     }
 
-    private HtmlElement generateSelectInvoicingContactForm(final Member member) throws UnauthorizedOperationException {
-     // Create contact form
-        final ChooseInvoicingContactActionUrl chooseInvoicingContextActionUrl = new ChooseInvoicingContactActionUrl(process);
-        final HtmlForm chooseContactForm = new HtmlForm(chooseInvoicingContextActionUrl.urlString());
 
-        // Name
-
-
-        // Linked contacts
-        final FieldData contactData = chooseInvoicingContextActionUrl.getInvoicingContactParameter().pickFieldData();
-        final HtmlDropDown contactInput = new HtmlDropDown(contactData.getName(), Context.tr("Invoicing contact"));
-        for (final InvoicingContact contact: process.getActor().getInvoicingContacts()) {
-            contactInput.addDropDownElement(String.valueOf(contact.getId()), contact.getName() + " - "+ contact.getAddress());
-        }
-        chooseContactForm.add(contactInput);
-
-
-
-
-
-        final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Select"));
-        chooseContactForm.add(newContactButton);
-
-        return chooseContactForm;
-    }
 
     @Override
     protected String createPageTitle() {
@@ -192,7 +154,7 @@ public final class InvoicingContactPage extends LoggedPage {
         return generateBreadcrumb(member, (process.getActor().isTeam() ? (Team) process.getActor(): null) , process);
     }
 
-    protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final InvoicingContactProcess process) {
+    protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final ModifyInvoicingContactProcess process) {
         final Breadcrumb breadcrumb;
 
         if(process.getFather() instanceof AccountChargingProcess) {

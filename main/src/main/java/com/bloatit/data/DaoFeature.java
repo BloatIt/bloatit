@@ -204,7 +204,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @IndexedEmbedded
-    private List<DaoComment> comments = new ArrayList<DaoComment>();
+    private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
     /**
      * The selected offer is the offer that is most likely to be validated and
@@ -232,7 +232,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Creates the and persist.
-     * 
+     *
      * @param member the author of the feature
      * @param team the as team property. Can be null.
      * @param description the description of the feature
@@ -256,7 +256,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Create a DaoFeature and set its state to the state PENDING.
-     * 
+     *
      * @param member is the author of the feature
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -306,7 +306,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Add a contribution to a feature.
-     * 
+     *
      * @param member the author of the contribution
      * @param team add this contribution in the name of team.
      * @param amount the > 0 amount of euros on this contribution
@@ -339,7 +339,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /**
      * Add a new offer for this feature. If there is no selected offer, select
      * this one.
-     * 
+     *
      * @param offer the offer to add
      */
     public void addOffer(final DaoOffer offer) {
@@ -348,7 +348,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * delete offer from this feature AND FROM DB !.
-     * 
+     *
      * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -368,7 +368,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Override the selected offer.
-     * 
+     *
      * @param selectedOffer the offer to set selected
      */
     public void setSelectedOffer(final DaoOffer selectedOffer) {
@@ -377,7 +377,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Set the validation date.
-     * 
+     *
      * @param validationDate the new validation date.
      */
     public void setValidationDate(final Date validationDate) {
@@ -386,7 +386,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Validate contributions.
-     * 
+     *
      * @param percent the percent
      */
     void validateContributions(final int percent) {
@@ -399,7 +399,9 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         for (final DaoContribution contribution : getContributions()) {
             try {
                 if (contribution.getState() == DaoContribution.State.PENDING) {
-                    contribution.validate(this.selectedOffer, percent);
+                    DaoMilestone milestone = this.selectedOffer.getCurrentMilestone();
+                    BigDecimal amount = contribution.validate(milestone, percent);
+                    DaoMilestoneContributionAmount.updateOrCreate(milestone,contribution, amount);
                 }
             } catch (final NotEnoughMoneyException e) {
                 Log.data().fatal("Cannot validate contribution, not enought money.", e);
@@ -409,7 +411,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Called by contribution when canceled.
-     * 
+     *
      * @param amount the amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -418,7 +420,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * set the feature state.
-     * 
+     *
      * @param featureState the new state
      */
     public void setFeatureState(final FeatureState featureState) {
@@ -461,7 +463,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the a description is a translatable text with an title.
-     * 
+     *
      * @return the a description is a translatable text with an title
      */
     public DaoDescription getDescription() {
@@ -471,7 +473,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     * 
+     *
      * @return the current offer for this feature, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -488,7 +490,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the offers.
-     * 
+     *
      * @return the offers
      */
     public PageIterable<DaoOffer> getOffers() {
@@ -497,7 +499,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the feature state.
-     * 
+     *
      * @return the feature state
      */
     public FeatureState getFeatureState() {
@@ -506,7 +508,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the contributions.
-     * 
+     *
      * @return the contributions
      */
     public PageIterable<DaoContribution> getContributions() {
@@ -515,7 +517,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the comments count.
-     * 
+     *
      * @return the comments count
      */
     public Long getCommentsCount() {
@@ -543,7 +545,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /**
      * The selected offer is the offer that is most likely to be validated and
      * used.
-     * 
+     *
      * @return the selected offer is the offer that is most likely to be
      *         validated and used
      */
@@ -554,7 +556,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /**
      * This is a calculated value with the sum of the value of all
      * contributions.
-     * 
+     *
      * @return the this is a calculated value with the sum of the value of all
      *         contributions
      */
@@ -564,7 +566,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the contribution min.
-     * 
+     *
      * @return the minimum value of the contributions on this feature.
      */
     public BigDecimal getContributionMin() {
@@ -573,7 +575,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the contribution max.
-     * 
+     *
      * @return the maximum value of the contributions on this feature.
      */
     public BigDecimal getContributionMax() {
@@ -582,7 +584,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the contribution avg.
-     * 
+     *
      * @return the average value of the contributions on this feature.
      */
     public BigDecimal getContributionAvg() {
@@ -599,7 +601,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the validation date.
-     * 
+     *
      * @return the validation date
      */
     public Date getValidationDate() {
@@ -608,7 +610,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the software.
-     * 
+     *
      * @return the software
      */
     public DaoSoftware getSoftware() {
@@ -617,7 +619,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Count open bugs.
-     * 
+     *
      * @return the int
      */
     public int countOpenBugs() {
@@ -629,7 +631,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the open bugs.
-     * 
+     *
      * @return the open bugs
      */
     public PageIterable<DaoBug> getOpenBugs() {
@@ -642,7 +644,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
 
     /**
      * Gets the closed bugs.
-     * 
+     *
      * @return the closed bugs
      */
     public PageIterable<DaoBug> getClosedBugs() {

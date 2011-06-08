@@ -101,7 +101,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         return member;
     }
 
-    private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) {
+    private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) throws UnauthorizedOperationException {
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToCharge());
 
@@ -118,8 +118,8 @@ public final class StaticAccountChargingPage extends QuotationPage {
 
         // Invoicing contact
 
-        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing name"), process.getInvoicingContact().getName()));
-        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing address"), process.getInvoicingContact().getAddress()));
+        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing name"), actor.getContact().getName()));
+        summary.add(new HtmlDefineParagraph(Context.tr("Invoicing address"), actor.getContact().getAddress()));
 
         // Pay bloc
         summary.add(new HtmlPayBlock(quotation,
