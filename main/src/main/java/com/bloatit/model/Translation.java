@@ -20,6 +20,9 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RgtTranslation;
+import com.bloatit.model.right.UnauthorizedOperationException;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 
@@ -54,6 +57,16 @@ public final class Translation extends Kudosable<DaoTranslation> {
 
     public String getText() {
         return getDao().getText();
+    }
+
+    public void setTitle(final String title) throws UnauthorizedOperationException {
+        tryAccess(new RgtTranslation.Text(), Action.READ);
+        getDao().setTitle(title);
+    }
+
+    public void setText(final String text, final Member author) throws UnauthorizedOperationException {
+        tryAccess(new RgtTranslation.Text(), Action.READ);
+        getDao().setText(text, author.getDao());
     }
 
     /**

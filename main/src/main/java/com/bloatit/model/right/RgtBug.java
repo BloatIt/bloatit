@@ -33,16 +33,16 @@ public class RgtBug extends RightManager {
     }
 
     /**
-     * The Class <code>Status</code> is a {@link RightManager.Public}
-     * accessor for the <code>Status</code> property.
+     * The Class <code>Status</code> is a {@link RightManager.Public} accessor
+     * for the <code>Status</code> property.
      */
     public static class Status extends Public {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class <code>Comment</code> is a {@link RightManager.Accessor} accessor for the
-     * <code>Comment</code> property.
+     * The Class <code>Comment</code> is a {@link RightManager.Accessor}
+     * accessor for the <code>Comment</code> property.
      */
     public static class Comment extends Accessor {
 
@@ -50,5 +50,13 @@ public class RgtBug extends RightManager {
         protected boolean can(final Rights object, final Action action) {
             return canRead(action) || authentifiedCanWrite(object, action);
         }
+    }
+
+    /**
+     * The Class <code>Description</code> is a {@link RightManager.Public}
+     * accessor for the <code>Description</code> property.
+     */
+    public static class Description extends Public {
+        // nothing this is just a rename.
     }
 }

@@ -92,6 +92,11 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         return getDao().getText();
     }
 
+    public void setText(final String text, final Member author) throws UnauthorizedOperationException {
+        tryAccess(new RgtComment.Text(), Action.WRITE);
+        getDao().setText(text, author.getDao());
+    }
+
     /**
      * Adds the comment.
      * 
