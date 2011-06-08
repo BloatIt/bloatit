@@ -45,6 +45,7 @@ import com.bloatit.web.linkable.contribution.HtmlTotalSummary;
 import com.bloatit.web.linkable.contribution.QuotationPage;
 import com.bloatit.web.linkable.contribution.StandardQuotation;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.invoice.ContactBox;
 import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -138,6 +139,8 @@ public final class AccountChargingPage extends QuotationPage {
             getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
         }
 
+        group.add(ContactBox.generate(actor, process));
+        
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToPay());
 

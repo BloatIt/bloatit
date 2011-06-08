@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.invoice;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -31,6 +32,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
+import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.linkable.contribution.CheckContributionPage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -103,25 +105,42 @@ public final class ModifyContactPage extends LoggedPage {
         String name = "";
 
         if (process.getActor().isTeam()) {
-            name = Context.tr("Name");
-        } else {
             name = Context.tr("Organisation name");
+        } else {
+            name = Context.tr("Name");
         }
 
         final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
-        nameInput.setDefaultValue(nameData.getSuggestedValue());
+        if(nameData.getSuggestedValue() == null) {
+            try {
+                nameInput.setDefaultValue(process.getActor().getContact().getName());
+            } catch (UnauthorizedPrivateAccessException e) {
+                throw new ShallNotPassException("The user is not allowed to access to his contact informations");
+            }
+        } else {
+            nameInput.setDefaultValue(nameData.getSuggestedValue());    
+        }
         nameInput.addErrorMessages(nameData.getErrorMessages());
         if (process.getActor().isTeam()) {
-            nameInput.setComment(Context.tr("Your full name"));
-        } else {
             nameInput.setComment(Context.tr("The name of your company or your association."));
+        } else {
+            nameInput.setComment(Context.tr("Your full name"));
         }
         newContactForm.add(nameInput);
 
         final FieldData addressData = modifyInvoicingContextActionUrl.getAddressParameter().pickFieldData();
 
         final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Address"), 10, 80);
-        addressInput.setDefaultValue(addressData.getSuggestedValue());
+        
+        if(addressData.getSuggestedValue() == null) {
+            try {
+                addressInput.setDefaultValue(process.getActor().getContact().getAddress());
+            } catch (UnauthorizedPrivateAccessException e) {
+                throw new ShallNotPassException("The user is not allowed to access to his contact informations");
+            }
+        } else {
+            addressInput.setDefaultValue(addressData.getSuggestedValue());    
+        }
         addressInput.addErrorMessages(addressData.getErrorMessages());
         addressInput.setComment(Context.tr("The full address, including the city and the country."));
         newContactForm.add(addressInput);

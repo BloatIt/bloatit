@@ -45,6 +45,7 @@ import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeaturesTools;
+import com.bloatit.web.linkable.invoice.ContactBox;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -69,8 +70,8 @@ public final class CheckContributionPage extends QuotationPage {
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
     @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
-                     max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
+    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final CheckContributionPageUrl url;
@@ -160,6 +161,12 @@ public final class CheckContributionPage extends QuotationPage {
                 } else {
                     authorContributionSummary.add(new HtmlDefineParagraph(tr("Comment: "), tr("No comment")));
                 }
+                
+                try {
+                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Invoice at {0}: ", actor.getContact().getAddress()),new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("modify invoicing contact"))));
+                } catch (UnauthorizedPrivateAccessException e) {
+                    throw new ShallNotPassException("User cannot access user contact information", e);
+                }
 
             }
             contributionSummaryDiv.add(authorContributionSummary);
@@ -200,6 +207,9 @@ public final class CheckContributionPage extends QuotationPage {
     }
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor, final BigDecimal account) {
+
+        group.add(ContactBox.generate(actor, process));
+
         if (process.isLocked()) {
             getSession().notifyBad(tr("You have a payment in progress. The contribution is locked."));
         }
@@ -247,9 +257,9 @@ public final class CheckContributionPage extends QuotationPage {
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
             final HtmlLink invoicingContactLink;
-            
+
             try {
-                if(!actor.hasInvoicingContact()) {
+                if (!actor.hasInvoicingContact()) {
                     invoicingContactLink = new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Fill invoicing contact"));
                 } else {
                     invoicingContactLink = new StaticCheckContributionPageUrl(process).getHtmlLink(tr("Validate"));
@@ -257,8 +267,7 @@ public final class CheckContributionPage extends QuotationPage {
             } catch (UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("fail ton check the existence of invoicing contact", e);
             }
-            
-            
+
             invoicingContactLink.setCssClass("button");
             if (process.getTeam() != null) {
                 payBlock.add(new HtmlParagraph(Context.tr("You are using the account of ''{0}'' team.", process.getTeam().getLogin()), "use_account"));
@@ -271,7 +280,7 @@ public final class CheckContributionPage extends QuotationPage {
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account) , line.getMoneyField()));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, process.getAmount().subtract(account), line.getMoneyField()));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);

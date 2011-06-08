@@ -36,22 +36,19 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoContributionInvoice extends DaoInvoice {
 
-
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     public DaoActor emitterActor;
-
-
 
     /**
      * Corresponding contribution. null if commission invoice
      */
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     public DaoContribution contribution;
 
     /**
      * Corresponding contribution. null if commission invoice
      */
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     public DaoMilestone milestone;
 
     private DaoContributionInvoice(final DaoActor emitterActor,
@@ -61,6 +58,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                    final DaoActor recipientActor,
                                    final String contributorName,
                                    final String contributorAdress,
+                                   final String contributorTaxIdentification,
                                    final String deliveryName,
                                    final BigDecimal priceExcludingTax,
                                    final BigDecimal totalPrice,
@@ -74,15 +72,14 @@ public class DaoContributionInvoice extends DaoInvoice {
               recipientActor,
               contributorName,
               contributorAdress,
+              contributorTaxIdentification,
               deliveryName,
               priceExcludingTax,
               totalPrice,
               invoiceFile,
               invoiceId);
 
-        checkOptionnal(emitterActor,
-                       milestone,
-                       contribution);
+        checkOptionnal(emitterActor, milestone, contribution);
 
         this.emitterActor = emitterActor;
         this.milestone = milestone;
@@ -91,7 +88,7 @@ public class DaoContributionInvoice extends DaoInvoice {
 
     /**
      * Creates the bug and persist it.
-     *
+     * 
      * @param member the author
      * @param team the as Team property. can be null.
      * @param milestone the milestone on which there is a bug.
@@ -108,6 +105,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                                           final DaoActor recipientActor,
                                                           final String contributorName,
                                                           final String contributorAdress,
+                                                          final String contributorTaxIdentification,
                                                           final String deliveryName,
                                                           final BigDecimal priceExcludingTax,
                                                           final BigDecimal totalPrice,
@@ -123,6 +121,7 @@ public class DaoContributionInvoice extends DaoInvoice {
                                                                           recipientActor,
                                                                           contributorName,
                                                                           contributorAdress,
+                                                                          contributorTaxIdentification,
                                                                           deliveryName,
                                                                           priceExcludingTax,
                                                                           totalPrice,
@@ -170,8 +169,6 @@ public class DaoContributionInvoice extends DaoInvoice {
         super();
     }
 
-
-
     // ======================================================================
     // equals hashcode.
     // ======================================================================
@@ -206,7 +203,5 @@ public class DaoContributionInvoice extends DaoInvoice {
             return false;
         return true;
     }
-
-
 
 }

@@ -148,6 +148,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                            recipientActor.getDao(),
                                            contributorName,
                                            contributorAdress,
+                                           "TODO contribution tax identification",
                                            deliveryName,
                                            priceExcludingTax,
                                            totalPrice,

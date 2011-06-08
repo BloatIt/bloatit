@@ -88,28 +88,10 @@ public class BloatitExampleDB { // NO_UCD
 
         fred.getContact().setName("Frederic Bertolus");
         fred.getContact().setAddress("Le superbe appartement à gauche");
-        fred.getContact().setName("Thomas Guyard");
-        fred.getContact().setAddress("Le superbe appartement à gauche");
-        fred.getContact().setName("Yoann Plénet");
-        fred.getContact().setAddress("Le superbe appartement à gauche");
-
-        fred.getContact().setName("Administrateur");
-        fred.getContact().setAddress("Le monde des rêves");
-        fred.getContact().setName("Paradis");
-        fred.getContact().setAddress("Le monde des rêves");
-        fred.getContact().setName("chogall");
-        fred.getContact().setAddress("Le monde des rêves");
-        fred.getContact().setName("cerbere");
-        fred.getContact().setAddress("Le monde des rêves");
-        fred.getContact().setName("hydre");
-        fred.getContact().setAddress("Le monde des rêves");
-        fred.getContact().setName("elephantman");
-        fred.getContact().setAddress("Le monde des rêves");
-        fred.getContact().setName("celeste");
-        fred.getContact().setAddress("Le monde des rêves");
-        fred.getContact().setName("rataxes");
-        fred.getContact().setAddress("Le monde des rêves");
-
+        thomas.getContact().setName("Thomas Guyard");
+        thomas.getContact().setAddress("Le superbe appartement à gauche");
+        yoann.getContact().setName("Yoann Plénet");
+        yoann.getContact().setAddress("Le superbe appartement à gauche");
 
         // Add avatar
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));

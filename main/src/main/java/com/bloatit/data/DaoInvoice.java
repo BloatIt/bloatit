@@ -126,6 +126,7 @@ public class DaoInvoice extends DaoIdentifiable {
                        final DaoActor recipientActor,
                        final String contributorName,
                        final String contributorAdress,
+                       final String contributorTaxIdentification,
                        final String deliveryName,
                        final BigDecimal priceExcludingTax,
                        final BigDecimal totalPrice,
@@ -138,6 +139,7 @@ public class DaoInvoice extends DaoIdentifiable {
                        sellerTaxIdentification,
                        contributorName,
                        contributorAdress,
+                       contributorTaxIdentification,
                        recipientActor,
                        deliveryName,
                        priceExcludingTax,
@@ -151,6 +153,7 @@ public class DaoInvoice extends DaoIdentifiable {
         this.recipientActor = recipientActor;
         this.contributorName = contributorName;
         this.contributorAdress = contributorAdress;
+        this.contributorTaxIdentification = contributorTaxIdentification;
         this.deliveryName = deliveryName;
         this.priceExcludingTax = priceExcludingTax;
         this.totalPrice = totalPrice;
@@ -179,6 +182,7 @@ public class DaoInvoice extends DaoIdentifiable {
                                               final DaoActor recipientActor,
                                               final String contributorName,
                                               final String contributorAdress,
+                                              final String contributorTaxIdentification,
                                               final String deliveryName,
                                               final BigDecimal priceExcludingTax,
                                               final BigDecimal totalPrice,
@@ -191,6 +195,7 @@ public class DaoInvoice extends DaoIdentifiable {
                                               recipientActor,
                                               contributorName,
                                               contributorAdress,
+                                              contributorTaxIdentification,
                                               deliveryName,
                                               priceExcludingTax,
                                               totalPrice,

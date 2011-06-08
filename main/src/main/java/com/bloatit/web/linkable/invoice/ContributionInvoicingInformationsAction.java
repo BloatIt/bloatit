@@ -60,6 +60,7 @@ public final class ContributionInvoicingInformationsAction extends LoggedAction 
                                         contributionAmount.getContribution().getAuthor(),
                                         contributionAmount.getContribution().getAuthor().getContact().getName(),
                                         contributionAmount.getContribution().getAuthor().getContact().getAddress(),
+                                        "TODO : tax identaification",
                                         "Contribution",
                                         contributionAmount.getAmount(),
                                         contributionAmount.getAmount(),
