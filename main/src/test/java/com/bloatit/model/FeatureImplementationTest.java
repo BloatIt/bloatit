@@ -45,10 +45,6 @@ import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.model.ModelAccessor;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
-import com.bloatit.model.Feature;
-import com.bloatit.model.FeatureImplementation;
-import com.bloatit.model.Offer;
-import com.bloatit.model.Software;
 import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.feature.TaskUpdateDevelopingState;
 import com.bloatit.model.right.Action;
@@ -281,7 +277,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         try {
             feature.authenticate(fredAuthToken);
-            feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+            feature.addOffer(new BigDecimal("120"), "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
@@ -309,7 +305,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertEquals(FeatureState.PENDING, feature.getFeatureState());
 
         feature.authenticate(tomAuthToken);
-        feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description", "GNU GPL V3",Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
         feature.authenticate(yoAuthToken);
@@ -335,7 +331,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         feature.authenticate(tomAuthToken);
 
-        feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
         assertNotNull(feature.getSelectedOffer());
@@ -401,7 +397,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         feature.authenticate(tomAuthToken);
 
-        feature.addOffer(new BigDecimal("120"), "description", Locale.FRENCH, DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal("120"), "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), 0);
 
         assertEquals(FeatureState.PREPARING, feature.getFeatureState());
 
@@ -420,7 +416,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         Feature feature = createFeatureByThomas();
 
         feature.authenticate(tomAuthToken);
-        final Offer offer = feature.addOffer(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        final Offer offer = feature.addOffer(BigDecimal.TEN, "description","GNU GPL V3", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
 
         offer.authenticate(tomAuthToken);
         offer.addMilestone(BigDecimal.TEN, "description", Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);

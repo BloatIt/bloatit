@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import javax.mail.IllegalWriteException;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -31,13 +30,11 @@ import com.bloatit.model.Actor;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
-import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CheckContributionActionUrl;
 import com.bloatit.web.url.CheckContributionPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 
 /**
  * A response to a form used to create a contribution to a feature
@@ -90,6 +87,7 @@ public final class CheckContributionAction extends UserContentAction {
         Actor<?> actor = me;
         if(process.getTeam() != null) {
             actor = process.getTeam();
+            // TODO correct me !
         }
 
         return new CheckContributionPageUrl(process);
@@ -107,7 +105,7 @@ public final class CheckContributionAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         if(process == null) {
             return new IndexPageUrl();
         }

@@ -168,6 +168,7 @@ public class SimpleTestDB {
                                           feature,
                                           new BigDecimal("200"),
                                           DaoDescription.createAndPersist(fred, null, new Locale("fr"), "Mon Offre", "Voici la description"),
+                                          "GNU GPL",
                                           DateUtils.tomorrow(),
                                           0));
 

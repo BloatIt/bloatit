@@ -126,6 +126,7 @@ public class BigDB {
                                               feature,
                                               new BigDecimal((pick(50) + 10) * 10),
                                               DaoDescription.createAndPersist(member, null, new Locale("fr"), "Offre", fortune(254)),
+                                              "GNU GPL",
                                               new Date(System.currentTimeMillis() + 200),
                                               0));
                 if (pick(2) == 0) {

@@ -112,28 +112,17 @@ public final class CreateFeaturePage extends CreateUserContentPage {
                                                                      SPECIF_INPUT_NB_LINES,
                                                                      SPECIF_INPUT_NB_COLUMNS);
         //@formatter:off
-        final String suggestedValue = tr("What is the expected work ?\n" +
-                                         "\n" +
-                                         "What is the requested date ?\n" +
-                                         "\n" +
-                                         "What is the expected compatibility ?\n" +
-                                         "\n" +
-                                         "  * Linux 2.6.x\n" +
-                                         "  * Windows 7\n" +
-                                         "  * Mac Os X\n" +
-                                         "  * ...\n" +
-                                         "\n" +
-                                         "What is the expected output ?\n" +
-                                         "\n" +
-                                         " * Source tarball\n" +
-                                         " * Diff patch\n" +
-                                         " * Public repository\n" +
-                                         " * Push in the project's official  repository\n" +
-                                         " * Windows install\n" +
-                                         " * Install shell script\n" +
-                                         " * Deb package\n" +
-                                         " * Rpm package\n" +
-                                         " * ...");
+        final String suggestedValue = tr(
+                "Be precise, don't forget to specify :\n" + 
+        		" - The expected result\n" + 
+        		" - On which system it has to work (Windows/Mac/Linux ...)\n" +
+        		" - When do you want to have the result\n" + 
+        		" - In which free license the result must be.\n" +
+        		"\n" + 
+        		"You can also join a diagram, or a design/mockup of the expected user interface.\n" +
+        		"\n" + 
+        		"Do not forget to specify if you want the result to be integrated upstream (in the official version of the software)"
+        		);
         //@formatter:on
 
         if (specificationFieldData.getSuggestedValue() == null || specificationFieldData.getSuggestedValue().isEmpty()) {

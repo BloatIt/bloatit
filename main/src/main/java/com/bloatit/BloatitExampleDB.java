@@ -254,6 +254,7 @@ public class BloatitExampleDB { // NO_UCD
         twoSubtitlesInVlcFeature.authenticate(new AuthenticatedUserToken(rataxes));
         final Offer rataxesOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
                                                                      rataxesOfferDescription,
+                                                                     "GNU GPL V3",
                                                                      rataxes.getLocale(),
                                                                      DateUtils.tomorrow(),
                                                                      0);
@@ -268,6 +269,7 @@ public class BloatitExampleDB { // NO_UCD
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
         final Offer celesteOffer = twoSubtitlesInVlcFeature.addOffer(new BigDecimal("123"),
                                                                      celesteMilestone1Description,
+                                                                     "GNU GPL V3",
                                                                      celeste.getLocale(),
                                                                      DateUtils.nowPlusSomeDays(2),
                                                                      0);
@@ -316,7 +318,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
         addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(hydre));
-        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200), hydrePerroquetOfferDescription, hydre.getLocale(), DateUtils.tomorrow(), 0);
+        addPerroquetInMageiaFeature.addOffer(new BigDecimal(200), hydrePerroquetOfferDescription,"GNU GPL V3", hydre.getLocale(), DateUtils.tomorrow(), 0);
         // Contributions
         addPerroquetInMageiaFeature.authenticate(new AuthenticatedUserToken(hydre));
         addPerroquetInMageiaFeature.addContribution(new BigDecimal("10"), "");
@@ -375,7 +377,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         feature.authenticate(new AuthenticatedUserToken(celeste));
-        feature.addOffer(new BigDecimal(1000), offerDescription, celeste.getLocale(), DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal(1000), offerDescription,"GNU GPL V3", celeste.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());
@@ -399,7 +401,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String offerDescription = "Je suis graphiste et j'ai justement commencé à travailler là dessus. Je propose de faire 10 templates variés";
         feature.authenticate(new AuthenticatedUserToken(fred));
-        feature.addOffer(new BigDecimal(750), offerDescription, fred.getLocale(), DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal(750), offerDescription,"GNU GPL V3", fred.getLocale(), DateUtils.tomorrow(), 0);
 
         // Contributions
         feature.authenticate(new AuthenticatedUserToken(yoann));
@@ -420,7 +422,7 @@ public class BloatitExampleDB { // NO_UCD
 
         final String offerDescription = "Oui, vive vim !";
         feature.authenticate(new AuthenticatedUserToken(cerbere));
-        feature.addOffer(new BigDecimal(300), offerDescription, cerbere.getLocale(), DateUtils.tomorrow(), 0);
+        feature.addOffer(new BigDecimal(300), offerDescription,"GNU GPL V3", cerbere.getLocale(), DateUtils.tomorrow(), 0);
 
         final FeatureImplementation featureImpl = (FeatureImplementation) feature;
         featureImpl.getDao().setValidationDate(DateUtils.now());

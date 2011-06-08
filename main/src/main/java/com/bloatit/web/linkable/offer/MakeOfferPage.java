@@ -24,6 +24,7 @@ import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlDateField;
+import com.bloatit.framework.webprocessor.components.form.HtmlDropDown;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlHidden;
 import com.bloatit.framework.webprocessor.components.form.HtmlMoneyField;
@@ -33,7 +34,9 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.UrlString;
 import com.bloatit.model.Feature;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
@@ -139,8 +142,30 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionData.getName(), Context.tr("Description"), 10, 80);
         descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
-        descriptionInput.setComment(Context.tr("Describe your offer. This description must be accurate because it will be used to validate the conformity at the end of the developement."));
+        descriptionInput.setComment(Context.tr("Describe your offer. This description must be accurate because it will be used to validate the conformity at the end of the development."));
         offerForm.add(descriptionInput);
+
+        // license
+        final FieldData licenseData = offerActionUrl.getLicenseParameter().pickFieldData();
+        final HtmlDropDown licenseInput = new HtmlDropDown(licenseData.getName(), Context.tr("License"));
+        licenseInput.addDropDownElement("", Context.tr("Select a license…")).setDisabled().setSelected();
+        licenseInput.addDropDownElement("Apache License 2.0", "Apache License 2.0");
+        licenseInput.addDropDownElement("Artistic License/GPL", "Artistic License/GPL");
+        licenseInput.addDropDownElement("GNU GPL v3", "GNU GPL v3");
+        licenseInput.addDropDownElement("GNU GPL v2", "GNU GPL v2");
+        licenseInput.addDropDownElement("GNU Lesser GPL", "GNU Lesser GPL");
+        licenseInput.addDropDownElement("MIT License", "MIT License");
+        licenseInput.addDropDownElement("New BSD License", "New BSD License");
+        licenseInput.addDropDownElement("Mozilla Public License 1.1", "Mozilla Public License 1.1");
+        licenseInput.addDropDownElement("Eclipse Public License", "Eclipse Public License");
+        licenseInput.addDropDownElement("Other Open Source", Context.tr("Other Open Source"));
+        licenseInput.setDefaultValue(licenseData.getSuggestedValue());
+        licenseInput.addErrorMessages(licenseData.getErrorMessages());
+        licenseInput.setComment(new HtmlMixedText(Context.tr("Licenses must be <0::OSI-approved>. You should use one of the listed licenses to avoid <1::license proliferation>."),
+                                                  new UrlString("http://opensource.org/licenses").getHtmlLink(),
+                                                  new UrlString(Context.tr("http://en.wikipedia.org/wiki/License_proliferation")).getHtmlLink()));
+
+        offerForm.add(licenseInput);
 
         // locale
         addLanguageField(offerForm, //

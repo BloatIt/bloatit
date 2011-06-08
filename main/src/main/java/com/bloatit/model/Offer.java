@@ -57,6 +57,7 @@ public final class Offer extends Kudosable<DaoOffer> {
                  final Feature feature,
                  final BigDecimal amount,
                  final String description,
+                 final String license,
                  final Locale local,
                  final Date dateExpire,
                  final int secondsBeforeValidation) {
@@ -65,6 +66,7 @@ public final class Offer extends Kudosable<DaoOffer> {
                            ((FeatureImplementation) feature).getDao(),
                            amount,
                            DaoDescription.createAndPersist(member.getDao(), DaoGetter.get(team), local, "RFU", description),
+                           license,
                            dateExpire,
                            secondsBeforeValidation));
     }
@@ -230,7 +232,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     public Milestone getCurrentMilestone() {
         return Milestone.create(getDao().getCurrentMilestone());
     }
-    
+
     // Public data, no right management.
     public Milestone getLastMilestone() {
         return Milestone.create(getDao().getLastMilestone());
@@ -244,6 +246,11 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Public data, no right management.
     public Release getLastRelease() {
         return Release.create(getDao().getLastRelease());
+    }
+    
+    // Public data, no right management.
+    public String getlicense() {
+        return getDao().getLicense();
     }
 
     // ////////////////////////////////////////////////////////////////////////

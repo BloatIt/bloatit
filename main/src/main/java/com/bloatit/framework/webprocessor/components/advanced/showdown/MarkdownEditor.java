@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.HtmlStringFormField;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 /**
  * A text area built to input markdown
@@ -77,7 +78,7 @@ public class MarkdownEditor extends HtmlStringFormField {
     }
 
     @Override
-    public void setComment(final String comment) {
+    public void setComment(final XmlNode comment) {
         ((HtmlTextArea) inputBlock.getInputElement()).setComment(comment);
     }
 

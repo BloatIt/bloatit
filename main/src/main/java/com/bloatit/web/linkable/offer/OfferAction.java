@@ -52,32 +52,35 @@ public final class OfferAction extends UserContentAction {
     private final Offer draftOffer;
 
     @RequestParam(role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
-    @ParamConstraint(optionalErrorMsg = @tr("You must set a price to your offer."),
-                     min = "1", minErrorMsg = @tr("The price must be greater to 0."))
+    @ParamConstraint(optionalErrorMsg = @tr("You must set a price to your offer."), min = "1", minErrorMsg = @tr("The price must be greater to 0."))
     private final BigDecimal price;
 
     @RequestParam(role = Role.POST)
     @ParamConstraint(optionalErrorMsg = @tr("You must set an expiration date."))
     private final DateLocale expiryDate;
 
-
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You must add a description to your offer."),
-                     min = "1", minErrorMsg = @tr("You must add a description to your offer."))
+    @ParamConstraint(optionalErrorMsg = @tr("You must add a description to your offer."), min = "1",
+                     minErrorMsg = @tr("You must add a description to your offer."))
     private final String description;
 
-    @RequestParam(role = Role.POST, suggestedValue="7")
-    @ParamConstraint(optionalErrorMsg = @tr("You must set a days count for validation."),
-                     min = "1", minErrorMsg = @tr("The validation time must be greater to 0."))
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(optionalErrorMsg = @tr("You must add a license to your offer."), min = "1",
+                     minErrorMsg = @tr("You must add a license to your offer."))
+    private final String license;
+
+    @RequestParam(role = Role.POST, suggestedValue = "7")
+    @ParamConstraint(optionalErrorMsg = @tr("You must set a days count for validation."), min = "1",
+                     minErrorMsg = @tr("The validation time must be greater to 0."))
     private final Integer daysBeforeValidation;
 
-    @RequestParam(role = Role.POST, suggestedValue="100")
+    @RequestParam(role = Role.POST, suggestedValue = "100")
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
                      max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentFatal;
 
-    @RequestParam(role = Role.POST, suggestedValue="0")
+    @RequestParam(role = Role.POST, suggestedValue = "0")
     @Optional
     @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
                      max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
@@ -92,6 +95,7 @@ public final class OfferAction extends UserContentAction {
         super(url, UserTeamRight.TALK);
         this.url = url;
         this.description = url.getDescription();
+        this.license = url.getLicense();
         this.expiryDate = url.getExpiryDate();
         this.price = url.getPrice();
         this.feature = url.getFeature();
@@ -109,7 +113,7 @@ public final class OfferAction extends UserContentAction {
         try {
             Milestone constructingMilestone;
             if (draftOffer == null) {
-                constructingOffer = feature.addOffer(price, description, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
+                constructingOffer = feature.addOffer(price, description, license, getLocale(), expiryDate.getJavaDate(), daysBeforeValidation
                         * DateUtils.SECOND_PER_DAY);
                 constructingMilestone = constructingOffer.getMilestones().iterator().next();
             } else {
@@ -159,13 +163,13 @@ public final class OfferAction extends UserContentAction {
             session.notifyBad(Context.tr("The specified offer is not modifiable. You cannot add a lot in it."));
             everythingIsRight = false;
         }
-        if(!expiryDate.isFuture()){
+        if (!expiryDate.isFuture()) {
             session.notifyBad(Context.tr("The date must be in the future."));
             url.getExpiryDateParameter().addErrorMessage(Context.tr("The date must be in the future."));
             everythingIsRight = false;
         }
 
-        if(! everythingIsRight) {
+        if (!everythingIsRight) {
             return new MakeOfferPageUrl(feature);
         }
 
@@ -197,6 +201,7 @@ public final class OfferAction extends UserContentAction {
         session.addParameter(url.getPercentFatalParameter());
         session.addParameter(url.getPercentMajorParameter());
         session.addParameter(url.getIsFinishedParameter());
+        session.addParameter(url.getLicenseParameter());
     }
 
     @Override
