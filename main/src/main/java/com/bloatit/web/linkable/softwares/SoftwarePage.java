@@ -41,7 +41,7 @@ import com.bloatit.web.url.SoftwarePageUrl;
 public final class SoftwarePage extends ElveosPage {
 
     @NonOptional(@tr("You have to specify a software number."))
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the software number: ''%value%''."))
+    @RequestParam(name = "id", message = @tr("I cannot find the software number: ''%value%''."))
     private final Software software;
 
     @SuppressWarnings("unused")

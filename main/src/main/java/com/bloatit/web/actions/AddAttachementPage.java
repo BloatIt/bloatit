@@ -38,7 +38,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
 
     public static final int FILE_MAX_SIZE_MIO = 2;
 
-    @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value%''."))
+    @RequestParam(name = "user_content", message = @tr("I cannot find the content number: ''%value%''."))
     @NonOptional(@tr("You have to specify a content on which join the file."))
     private final UserContentInterface userContent;
 

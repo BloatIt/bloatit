@@ -40,11 +40,11 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team/doacceptinvitation")
 public final class HandleJoinTeamInvitationAction extends LoggedAction {
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the invitation number: ''%value%''."))
+    @RequestParam(message = @tr("I cannot find the invitation number: ''%value%''."))
     @NonOptional(@tr("You have to specify an invitation."))
     private final JoinTeamInvitation invite;
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot understand if you have accepted the invitation. You wrote: ''%value%''."))
+    @RequestParam(message = @tr("I cannot understand if you have accepted the invitation. You wrote: ''%value%''."))
     @NonOptional(@tr("Does your invitation is accepted or refused?"))
     private final Boolean accept;
 

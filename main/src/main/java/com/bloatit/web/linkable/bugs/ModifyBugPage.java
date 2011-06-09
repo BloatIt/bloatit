@@ -44,7 +44,7 @@ public final class ModifyBugPage extends LoggedPage {
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_LINES = 5;
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
+    @RequestParam(name = "id", message = @tr("I cannot find the bug number: ''%value%''."))
     @NonOptional(@tr("You have to specify a bug number."))
     private final Bug bug;
     private final ModifyBugPageUrl url;

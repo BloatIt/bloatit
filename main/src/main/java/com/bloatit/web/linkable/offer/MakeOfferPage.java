@@ -54,7 +54,7 @@ import com.bloatit.web.url.OfferActionUrl;
 @ParamContainer("offer/create")
 public final class MakeOfferPage extends CreateUserContentPage {
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the feature number: ''%value%''."))
+    @RequestParam(message = @tr("I cannot find the feature number: ''%value%''."))
     @NonOptional(@tr("The feature id is not optional !"))
     private final Feature feature;
 

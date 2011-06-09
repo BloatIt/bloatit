@@ -57,7 +57,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 @ParamContainer(value = "account/charging/check", protocol = Protocol.HTTPS)
 public final class StaticAccountChargingPage extends QuotationPage {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
     private final StaticAccountChargingPageUrl url;

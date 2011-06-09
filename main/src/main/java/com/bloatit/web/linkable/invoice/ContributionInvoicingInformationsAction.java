@@ -33,7 +33,7 @@ import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
 @ParamContainer("action/invoicing/contribution_invoicing_informations")
 public final class ContributionInvoicingInformationsAction extends LoggedAction {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionInvoicingProcess process;
 

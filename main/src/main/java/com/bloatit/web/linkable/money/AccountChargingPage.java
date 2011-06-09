@@ -63,12 +63,12 @@ import com.bloatit.web.url.StaticAccountChargingPageUrl;
 @ParamContainer(value = "account/charging", protocol = Protocol.HTTPS)
 public final class AccountChargingPage extends QuotationPage {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
 
     @Optional
-    @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
+    @RequestParam(message = @tr("The amount to load on your account must be a positive integer."))
     @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
     @MinConstraint(min = 1, message = @tr("You must specify a positive value."))
     @NonOptional(@tr("The amount is needed."))

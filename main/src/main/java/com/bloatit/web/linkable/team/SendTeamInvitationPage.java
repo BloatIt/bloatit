@@ -48,7 +48,7 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
 public class SendTeamInvitationPage extends LoggedPage {
     private final SendTeamInvitationPageUrl url;
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
+    @RequestParam(message = @tr("I cannot find the team number: ''%value%''."))
     @NonOptional(@tr("You have to specify a team number."))
     private final Team team;
 

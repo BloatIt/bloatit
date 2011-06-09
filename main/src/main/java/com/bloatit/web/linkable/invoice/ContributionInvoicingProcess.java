@@ -43,7 +43,7 @@ public class ContributionInvoicingProcess extends WebProcess {
     @RequestParam
     private Actor<?> actor;
 
-    @RequestParam(conversionErrorMsg = @tr("The milestone to invoice is ."))
+    @RequestParam(message = @tr("The milestone to invoice is ."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private Milestone milestone;
 

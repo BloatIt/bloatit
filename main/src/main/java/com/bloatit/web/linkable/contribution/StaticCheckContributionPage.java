@@ -52,7 +52,7 @@ import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 @ParamContainer("contribute/staticcheck")
 public final class StaticCheckContributionPage extends QuotationPage {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 

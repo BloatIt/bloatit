@@ -52,7 +52,7 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 @ParamContainer(value = "account/charging/invoicing_contact", protocol = Protocol.HTTPS)
 public final class ModifyContactPage extends LoggedPage {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ModifyInvoicingContactProcess process;
 

@@ -39,7 +39,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("feature")
 public final class FeaturePage extends ElveosPage {
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the feature number: ''%value%''."))
+    @RequestParam(name = "id", message = @tr("I cannot find the feature number: ''%value%''."))
     @NonOptional(@tr("You have to specify a feature number."))
     private final Feature feature;
 

@@ -50,7 +50,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
     private final CommentReplyPageUrl url;
 
-    @RequestParam(name = "target", conversionErrorMsg = @tr("I cannot find the comment number: ''%value%''."))
+    @RequestParam(name = "target", message = @tr("I cannot find the comment number: ''%value%''."))
     @NonOptional(@tr("You have to specify a comment number."))
     private final Comment targetComment;
 

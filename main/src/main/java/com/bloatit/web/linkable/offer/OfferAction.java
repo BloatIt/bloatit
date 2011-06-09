@@ -46,14 +46,14 @@ import com.bloatit.web.url.OfferActionUrl;
 @ParamContainer("action/offer")
 public final class OfferAction extends UserContentAction {
 
-    @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target feature is mandatory to make an offer."))
+    @RequestParam(role = Role.GET, message = @tr("The target feature is mandatory to make an offer."))
     private final Feature feature;
 
     @RequestParam(role = Role.GET)
     @Optional
     private final Offer draftOffer;
 
-    @RequestParam(role = Role.POST, conversionErrorMsg = @tr("Invalid value for price field."))
+    @RequestParam(role = Role.POST, message = @tr("Invalid value for price field."))
     @NonOptional(@tr("You must set a price to your offer."))
     @MinConstraint(min = 1, message = @tr("The price must be greater to 0."))
     private final BigDecimal price;

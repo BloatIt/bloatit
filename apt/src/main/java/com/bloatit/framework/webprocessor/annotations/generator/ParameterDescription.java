@@ -54,7 +54,7 @@ class ParameterDescription extends Description {
         typeWithoutTemplateSimple = getTypeWithoutTemplateSimple(element);
         role = container.role();
         suggestedValue = container.suggestedValue().equals(RequestParam.DEFAULT_SUGGESTED_VALUE) ? null : container.suggestedValue();
-        conversionErrorMsg = container.conversionErrorMsg().value();
+        conversionErrorMsg = container.message().value();
         if (!container.generatedFrom().isEmpty()) {
             generateFrom = container.generatedFrom();
         } else {

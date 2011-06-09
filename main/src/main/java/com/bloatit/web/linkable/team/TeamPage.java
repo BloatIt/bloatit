@@ -78,7 +78,7 @@ public final class TeamPage extends ElveosPage {
     @SubParamContainer
     private ActivityTab activity;
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
+    @RequestParam(name = "id", message = @tr("I cannot find the team number: ''%value%''."))
     @NonOptional(@tr("You have to specify a team number."))
     private final Team targetTeam;
 

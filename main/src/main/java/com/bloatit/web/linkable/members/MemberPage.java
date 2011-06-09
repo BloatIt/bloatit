@@ -79,7 +79,7 @@ public final class MemberPage extends ElveosPage {
     private final String activeTabKey;
 
     @NonOptional(@tr("You have to specify a member number."))
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value%''."))
+    @RequestParam(name = "id", message = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
 
     @SuppressWarnings("unused")

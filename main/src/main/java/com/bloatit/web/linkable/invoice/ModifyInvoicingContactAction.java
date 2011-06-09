@@ -31,7 +31,7 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 @ParamContainer("action/invoicingcontact/choose")
 public final class ModifyInvoicingContactAction extends LoggedAction {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ModifyInvoicingContactProcess process;
 

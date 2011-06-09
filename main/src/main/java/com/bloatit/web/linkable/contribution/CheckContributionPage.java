@@ -66,12 +66,12 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
 @ParamContainer("contribute/check")
 public final class CheckContributionPage extends QuotationPage {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 
     @Optional
-    @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
+    @RequestParam(message = @tr("The amount to load on your account must be a positive integer."))
     @MinConstraint(min = 0, message = @tr("You must specify a positive value."))
     @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
     @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
