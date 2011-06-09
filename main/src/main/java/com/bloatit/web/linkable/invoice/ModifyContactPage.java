@@ -128,13 +128,13 @@ public final class ModifyContactPage extends LoggedPage {
         }
         newContactForm.add(nameInput);
 
-        final FieldData addressData = modifyInvoicingContextActionUrl.getAddressParameter().pickFieldData();
+        final FieldData addressData = modifyInvoicingContextActionUrl.getStreetParameter().pickFieldData();
 
-        final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Address"), 10, 80);
+        final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Street"), 10, 80);
         
         if(addressData.getSuggestedValue() == null) {
             try {
-                addressInput.setDefaultValue(process.getActor().getContact().getAddress());
+                addressInput.setDefaultValue(process.getActor().getContact().getCity());
             } catch (UnauthorizedPrivateAccessException e) {
                 throw new ShallNotPassException("The user is not allowed to access to his contact informations");
             }
@@ -142,7 +142,6 @@ public final class ModifyContactPage extends LoggedPage {
             addressInput.setDefaultValue(addressData.getSuggestedValue());    
         }
         addressInput.addErrorMessages(addressData.getErrorMessages());
-        addressInput.setComment(Context.tr("The full address, including the city and the country."));
         newContactForm.add(addressInput);
 
         final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));

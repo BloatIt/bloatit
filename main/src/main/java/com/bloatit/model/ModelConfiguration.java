@@ -250,7 +250,32 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.linkeosTaxesIdentification;
     }
 
-    public static String getInvoiceDirStorage() {
+    public static Object getLinkeosInvoiceTemplate() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getLinkeosStreet() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getLinkeosExtras() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getLinkeosCity() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getLinkeosCountry() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public static String getLinkeosLegalIdentification() {
         // TODO Auto-generated method stub
         return null;
     }

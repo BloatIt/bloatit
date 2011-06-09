@@ -72,7 +72,7 @@ public class SimpleTestDB {
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
         yo.getContact().setName("Yoann Plénet");
-        yo.getContact().setAddress("Earth");
+        yo.getContact().setCountry("Earth");
 
         final DaoMember admin = new Member("admin", "admin", "admin@gmail.com", Locale.FRANCE).getDao();
         admin.setFullname("Administrator");
@@ -81,7 +81,7 @@ public class SimpleTestDB {
 
         publicGroup = DaoTeam.createAndPersiste("publicGroup", "plop@plop.com", "A group description", DaoTeam.Right.PUBLIC);
         publicGroup.getContact().setName("publicGroup");
-        publicGroup.getContact().setAddress("Mars");
+        publicGroup.getContact().setCountry("Mars");
 
 
         privateGroup = DaoTeam.createAndPersiste("privateGroup", "plop2@plop.com", "A group description", DaoTeam.Right.PROTECTED);

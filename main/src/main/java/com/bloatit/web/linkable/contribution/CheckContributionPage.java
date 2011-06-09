@@ -163,7 +163,7 @@ public final class CheckContributionPage extends QuotationPage {
                 }
                 
                 try {
-                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Invoice at {0}: ", actor.getContact().getAddress()),new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("modify invoicing contact"))));
+                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Invoice at {0}: ", actor.getContact().getCity()),new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("modify invoicing contact"))));
                 } catch (UnauthorizedPrivateAccessException e) {
                     throw new ShallNotPassException("User cannot access user contact information", e);
                 }

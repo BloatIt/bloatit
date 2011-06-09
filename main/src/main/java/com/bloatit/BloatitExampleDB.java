@@ -87,11 +87,11 @@ public class BloatitExampleDB { // NO_UCD
         rataxes = createMember("rataxes", "Rataxès", Locale.FRANCE);
 
         fred.getContact().setName("Frederic Bertolus");
-        fred.getContact().setAddress("Le superbe appartement à gauche");
+        fred.getContact().setStreet("Le superbe appartement à gauche");
         thomas.getContact().setName("Thomas Guyard");
-        thomas.getContact().setAddress("Le superbe appartement à gauche");
+        thomas.getContact().setStreet("Le superbe appartement à gauche");
         yoann.getContact().setName("Yoann Plénet");
-        yoann.getContact().setAddress("Le superbe appartement à gauche");
+        yoann.getContact().setStreet("Le superbe appartement à gauche");
 
         // Add avatar
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));

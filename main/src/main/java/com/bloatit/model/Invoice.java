@@ -17,9 +17,11 @@
 package com.bloatit.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoInvoice;
+import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.model.invoicePdf.InvoicePdfGenerator;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtInvoice;
@@ -54,7 +56,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
 
     /**
      * Find a bug in the cache or create an new one.
-     *
+     * 
      * @param dao the dao
      * @return null if dao is null. Else return the new invoice.
      */
@@ -65,7 +67,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
 
     /**
      * Instantiates a new invoice.
-     *
+     * 
      * @param dao the dao
      */
     private Invoice(final DaoInvoice dao) {
@@ -74,37 +76,18 @@ public final class Invoice extends Identifiable<DaoInvoice> {
 
     /**
      * Create a new Invoice.
-     *
+     * 
      * @param member is the author of the bug.
      * @param milestone is the milestone on which this bug has been set.
      * @param title is the title of the bug.
      * @param description is a complete description of the bug.
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
+     * @throws UnauthorizedPrivateAccessException 
      */
-    Invoice(final String sellerName,
-            final String sellerAddress,
-            final String sellerTaxIdentification,
-            final Actor<?> recipientActor,
-            final String contributorName,
-            final String contributorAdress,
-            final String deliveryName,
-            final BigDecimal priceExcludingTax,
-            final BigDecimal totalPrice,
-            final String invoiceId) {
-        super(generateInvoice(sellerName,
-                              sellerAddress,
-                              sellerTaxIdentification,
-                              recipientActor,
-                              contributorName,
-                              contributorAdress,
-                              deliveryName,
-                              priceExcludingTax,
-                              totalPrice,
-                              invoiceId));
+    Invoice(final Actor<?> recipientActor, final BigDecimal totalPrice, final String deliveryName) throws UnauthorizedPrivateAccessException {
+        super(generateInvoice(recipientActor, totalPrice, deliveryName));
     }
-
-
 
     public String getFile() throws UnauthorizedPrivateAccessException {
         tryAccess(new RgtInvoice.File(), Action.READ);
@@ -120,42 +103,90 @@ public final class Invoice extends Identifiable<DaoInvoice> {
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static DaoInvoice generateInvoice(String sellerName,
-                                              String sellerAddress,
-                                              String sellerTaxIdentification,
-                                              Actor<?> recipientActor,
-                                              String contributorName,
-                                              String contributorAdress,
-                                              String deliveryName,
-                                              BigDecimal priceExcludingTax,
-                                              BigDecimal totalPrice,
-                                              String invoiceId) {
+    private static DaoInvoice generateInvoice(final Actor<?> recipientActor, final BigDecimal totalPrice, final String deliveryName) throws UnauthorizedPrivateAccessException {
 
-        InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(sellerName,
-                                                                   sellerAddress,
-                                                                   sellerTaxIdentification,
-                                                                   recipientActor,
-                                                                   contributorName,
-                                                                   contributorAdress,
+        String invoiceType = "Elveos's fee invoice";
+        
+        BigDecimal internalInvoiceNumber = BigDecimal.ZERO;
+        
+        BigDecimal lastInternalInvoiceNumber = DaoInvoice.getLastInvoiceNumber();
+        if( lastInternalInvoiceNumber != null) {
+            internalInvoiceNumber = lastInternalInvoiceNumber.add(BigDecimal.ONE);
+        }
+        
+        String invoiceId = generateInvoiceId(ModelConfiguration.getLinkeosInvoiceTemplate(), internalInvoiceNumber);
+        
+
+        String sellerName = ModelConfiguration.getLinkeosName();
+        String sellerStreet = ModelConfiguration.getLinkeosStreet();
+        String sellerExtras = ModelConfiguration.getLinkeosExtras();
+        String sellerCity = ModelConfiguration.getLinkeosCity();
+        String sellerCountry = ModelConfiguration.getLinkeosCountry();
+        String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
+        String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
+        
+        final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
+        final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
+        BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
+        
+        String receiverName = recipientActor.getContact().getName();
+        String receiverStreet = recipientActor.getContact().getStreet();
+        String receiverExtras = recipientActor.getContact().getExtras();
+        String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
+        String receiverCountry = recipientActor.getContact().getCountry();
+        Date invoiceDate = DateUtils.now();
+        
+
+        InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
+                                                                   invoiceId,
+                                                                   sellerName,
+                                                                   sellerStreet,
+                                                                   sellerExtras,
+                                                                   sellerCity,
+                                                                   sellerCountry,
+                                                                   receiverName,
+                                                                   receiverStreet,
+                                                                   receiverExtras,
+                                                                   receiverCity,
+                                                                   receiverCountry,
+                                                                   invoiceDate,
                                                                    deliveryName,
                                                                    priceExcludingTax,
+                                                                   taxRate,
+                                                                   taxAmount,
                                                                    totalPrice,
-                                                                   invoiceId);
+                                                                   sellerLegalId,
+                                                                   sellerTaxId);
 
-        return DaoInvoice.createAndPersist(sellerName, 
-                                           sellerAddress,
-                                           sellerTaxIdentification,
-                                           recipientActor.getDao(),
-                                           contributorName,
-                                           contributorAdress,
-                                           "TODO contribution tax identification",
+        return DaoInvoice.createAndPersist(recipientActor.getDao(),
+                                           pdfGenerator.getPdfUrl(),
+                                           invoiceType,
+                                           invoiceId,
+                                           sellerName,
+                                           sellerStreet,
+                                           sellerExtras,
+                                           sellerCity,
+                                           sellerCountry,
+                                           receiverName,
+                                           receiverStreet,
+                                           receiverExtras,
+                                           receiverCity,
+                                           receiverCountry,
+                                           invoiceDate,
                                            deliveryName,
                                            priceExcludingTax,
+                                           taxRate,
+                                           taxAmount,
                                            totalPrice,
-                                           pdfGenerator.getPdfUrl(),
-                                           invoiceId);
+                                           internalInvoiceNumber,
+                                           sellerLegalId,
+                                           sellerTaxId);
     }
 
+    private static String generateInvoiceId(Object linkeosInvoiceTemplate, BigDecimal internalInvoiceNumber) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
@@ -168,14 +199,12 @@ public final class Invoice extends Identifiable<DaoInvoice> {
     /**
      * This method is used only in the authentication process. You should never
      * used it anywhere else.
-     *
+     * 
      * @return the actor unprotected
      * @see #getActor()
      */
     final Actor<?> getRecipientActorUnprotected() {
         return (Actor<?>) getDao().getRecipientActor().accept(new DataVisitorConstructor());
     }
-
-
 
 }

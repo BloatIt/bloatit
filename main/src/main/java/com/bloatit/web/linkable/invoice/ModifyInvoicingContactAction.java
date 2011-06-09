@@ -40,8 +40,8 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
         private final String name;
     
         @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add an address a invoicing information."), min = "1", minErrorMsg = @tr("You must add an address a invoicing information."))
-        private final String address;
+        @ParamConstraint(optionalErrorMsg = @tr("You must add a street."), min = "1", minErrorMsg = @tr("You must add an address a invoicing information."))
+        private final String street;
     
     private final ModifyInvoicingContactActionUrl url;
 
@@ -50,7 +50,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
         this.url = url;
         this.process = url.getProcess();
         this.name = url.getName();
-        this.address = url.getAddress();
+        this.street = url.getStreet();
     }
 
     @Override
@@ -58,7 +58,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
         try {
             process.getActor().getContact().setName(name);
-            process.getActor().getContact().setAddress(address);
+            process.getActor().getContact().setStreet(street);
         } catch (UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
         }

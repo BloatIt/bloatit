@@ -11,6 +11,9 @@
  */
 package com.bloatit.web.linkable.invoice;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
@@ -19,9 +22,12 @@ import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.model.Actor;
+import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
+import com.bloatit.model.Milestone;
 import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
@@ -53,18 +59,14 @@ public final class ContributionInvoicingInformationsAction extends LoggedAction 
 
         for(MilestoneContributionAmount contributionAmount: contributionAmounts) {
             try {
+                
+                
+                
                 new ContributionInvoice(process.getActor(),
-                                        process.getActor().getContact().getName(),
-                                        process.getActor().getContact().getAddress(),
-                                        "TODO : tax identification",
                                         contributionAmount.getContribution().getAuthor(),
-                                        contributionAmount.getContribution().getAuthor().getContact().getName(),
-                                        contributionAmount.getContribution().getAuthor().getContact().getAddress(),
-                                        "TODO : tax identaification",
+                                        "Contribution",
                                         "Contribution",
                                         contributionAmount.getAmount(),
-                                        contributionAmount.getAmount(),
-                                        "TODO: invoicing id",
                                         contributionAmount.getMilestone(),
                                         contributionAmount.getContribution());
             } catch (UnauthorizedOperationException e) {

@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
@@ -28,6 +29,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.bloatit.model.Actor;
 
 /**
  * Represent a invoicing.
@@ -63,7 +66,7 @@ public class DaoInvoice extends DaoIdentifiable {
     // Contributor
 
     @ManyToOne(optional = false)
-    private DaoActor recipientActor;
+    private DaoActor receivertActor;
 
 
     /**
@@ -71,7 +74,7 @@ public class DaoInvoice extends DaoIdentifiable {
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
-    private String contributorName;
+    private String receiverName;
 
     /**
      * Invoicing adress
@@ -120,50 +123,125 @@ public class DaoInvoice extends DaoIdentifiable {
     @Basic(optional = false)
     private String invoiceId;
 
-    protected DaoInvoice(final String sellerName,
-                       final String sellerAddress,
-                       final String sellerTaxIdentification,
-                       final DaoActor recipientActor,
-                       final String contributorName,
-                       final String contributorAdress,
-                       final String contributorTaxIdentification,
-                       final String deliveryName,
-                       final BigDecimal priceExcludingTax,
-                       final BigDecimal totalPrice,
-                       final String invoiceFile,
-                       final String invoiceId) {
+    @Basic(optional = false)
+    private String invoiceType;
+
+    @Basic(optional = false)
+    private String sellerStreet;
+
+    @Basic(optional = false)
+    private String sellerExtras;
+
+    @Basic(optional = false)
+    private String sellerCity;
+
+    @Basic(optional = false)
+    private String sellerCountry;
+
+    @Basic(optional = false)
+    private String receiverStreet;
+
+    @Basic(optional = false)
+    private String receiverExtras;
+
+    @Basic(optional = false)
+    private String receiverCity;
+
+    @Basic(optional = false)
+    private String receiverCountry;
+
+    @Basic(optional = false)
+    private Date invoiceDate;
+
+    @Basic(optional = false)
+    private BigDecimal taxRate;
+
+    @Basic(optional = false)
+    private BigDecimal taxAmount;
+
+    @Basic(optional = false)
+    private String sellerLegalId;
+
+    @Basic(optional = true)
+    private BigDecimal internalInvoiceNumber;
+
+
+    protected DaoInvoice(final DaoActor recipientActor,
+                         final String invoiceFile,
+                         final String invoiceType,
+                         final String invoiceId,
+                         final String sellerName,
+                         final String sellerStreet,
+                         final String sellerExtras,
+                         final String sellerCity,
+                         final String sellerCountry,
+                         final String receiverName,
+                         final String receiverStreet,
+                         final String receiverExtras,
+                         final String receiverCity,
+                         final String receiverCountry,
+                         final Date invoiceDate,
+                         final String deliveryName,
+                         final BigDecimal priceExcludingTax,
+                         final BigDecimal taxRate,
+                         final BigDecimal taxAmount,
+                         final BigDecimal totalPrice,
+                         final BigDecimal internalInvoiceNumber,
+                         final String sellerLegalId,
+                         final String sellerTaxIdentification) {
         super();
-
-        checkOptionnal(sellerName,
-                       sellerAddress,
-                       sellerTaxIdentification,
-                       contributorName,
-                       contributorAdress,
-                       contributorTaxIdentification,
-                       recipientActor,
-                       deliveryName,
-                       priceExcludingTax,
-                       totalPrice,
-                       invoiceFile,
-                       invoiceId);
-
+        this.invoiceFile = invoiceFile;
+        this.invoiceType = invoiceType;
+        this.invoiceId = invoiceId;
         this.sellerName = sellerName;
-        this.sellerAddress = sellerAddress;
-        this.sellerTaxIdentification = sellerTaxIdentification;
-        this.recipientActor = recipientActor;
-        this.contributorName = contributorName;
-        this.contributorAdress = contributorAdress;
-        this.contributorTaxIdentification = contributorTaxIdentification;
+        this.sellerStreet = sellerStreet;
+        this.sellerExtras = sellerExtras;
+        this.sellerCity = sellerCity;
+        this.sellerCountry = sellerCountry;
+        this.receiverName = receiverName;
+        this.receiverStreet = receiverStreet;
+        this.receivertActor = recipientActor;
+        this.receiverExtras = receiverExtras;
+        this.receiverCity = receiverCity;
+        this.receiverCountry = receiverCountry;
+        this.invoiceDate = invoiceDate;
         this.deliveryName = deliveryName;
         this.priceExcludingTax = priceExcludingTax;
+        this.taxRate = taxRate;
+        this.taxAmount = taxAmount;
         this.totalPrice = totalPrice;
-        this.invoiceFile = invoiceFile;
-        this.invoiceId = invoiceId;
+        this.internalInvoiceNumber = internalInvoiceNumber;
+        this.sellerLegalId = sellerLegalId;
+        this.sellerTaxIdentification = sellerTaxIdentification;
+
+        checkOptionnal(recipientActor,
+                       invoiceFile,
+                       invoiceType,
+                       invoiceId,
+                       sellerName,
+                       sellerStreet,
+                       sellerExtras,
+                       sellerCity,
+                       sellerCountry,
+                       receiverName,
+                       receiverStreet,
+                       receiverExtras,
+                       receiverCity,
+                       receiverCountry,
+                       invoiceDate,
+                       deliveryName,
+                       priceExcludingTax,
+                       taxRate,
+                       taxAmount,
+                       totalPrice,
+                       sellerLegalId,
+                       sellerTaxIdentification);
+
+        
     }
 
 
-
-
+    
     /**
      * Creates the bug and persist it.
      *
@@ -176,31 +254,53 @@ public class DaoInvoice extends DaoIdentifiable {
      * @param level the level of the bug
      * @return the new dao bug
      */
-    public static DaoInvoice createAndPersist(final String sellerName,
-                                              final String sellerAddress,
-                                              final String sellerTaxIdentification,
-                                              final DaoActor recipientActor,
-                                              final String contributorName,
-                                              final String contributorAdress,
-                                              final String contributorTaxIdentification,
+    public static DaoInvoice createAndPersist(final DaoActor recipientActor,
+                                              final String invoiceFile,
+                                              final String invoiceType,
+                                              final String invoiceId,
+                                              final String sellerName,
+                                              final String sellerStreet,
+                                              final String sellerExtras,
+                                              final String sellerCity,
+                                              final String sellerCountry,
+                                              final String receiverName,
+                                              final String receiverStreet,
+                                              final String receiverExtras,
+                                              final String receiverCity,
+                                              final String receiverCountry,
+                                              final Date invoiceDate,
                                               final String deliveryName,
                                               final BigDecimal priceExcludingTax,
+                                              final BigDecimal taxRate,
+                                              final BigDecimal taxAmount,
                                               final BigDecimal totalPrice,
-                                              final String invoiceFile,
-                                              final String invoiceId) {
+                                              final BigDecimal internalInvoiceNumber,
+                                              final String sellerLegalId,
+                                              final String sellerTaxId) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoInvoice invoice = new DaoInvoice(sellerName,
-                                              sellerAddress,
-                                              sellerTaxIdentification,
-                                              recipientActor,
-                                              contributorName,
-                                              contributorAdress,
-                                              contributorTaxIdentification,
-                                              deliveryName,
-                                              priceExcludingTax,
-                                              totalPrice,
-                                              invoiceFile,
-                                              invoiceId);
+        final DaoInvoice invoice = new DaoInvoice(recipientActor,
+                                                  invoiceFile,
+                                                  invoiceType,
+                                                  invoiceId,
+                                                  sellerName,
+                                                  sellerStreet,
+                                                  sellerExtras,
+                                                  sellerCity,
+                                                  sellerCountry,
+                                                  receiverName,
+                                                  receiverStreet,
+                                                  receiverExtras,
+                                                  receiverCity,
+                                                  receiverCountry,
+                                                  invoiceDate,
+                                                  deliveryName,
+                                                  priceExcludingTax,
+                                                  taxRate,
+                                                  taxAmount,
+                                                  totalPrice,
+                                                  internalInvoiceNumber,
+                                                  sellerLegalId,
+                                                  sellerTaxId);
         try {
             session.save(invoice);
         } catch (final HibernateException e) {
@@ -214,7 +314,7 @@ public class DaoInvoice extends DaoIdentifiable {
 
 
     public DaoActor getRecipientActor() {
-        return recipientActor;
+        return receivertActor;
     }
 
 
@@ -263,7 +363,7 @@ public class DaoInvoice extends DaoIdentifiable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((contributorAdress == null) ? 0 : contributorAdress.hashCode());
-        result = prime * result + ((contributorName == null) ? 0 : contributorName.hashCode());
+        result = prime * result + ((receiverName == null) ? 0 : receiverName.hashCode());
         result = prime * result + ((contributorTaxIdentification == null) ? 0 : contributorTaxIdentification.hashCode());
         result = prime * result + ((deliveryName == null) ? 0 : deliveryName.hashCode());
         result = prime * result + ((invoiceFile == null) ? 0 : invoiceFile.hashCode());
@@ -293,10 +393,10 @@ public class DaoInvoice extends DaoIdentifiable {
                 return false;
         } else if (!contributorAdress.equals(other.contributorAdress))
             return false;
-        if (contributorName == null) {
-            if (other.contributorName != null)
+        if (receiverName == null) {
+            if (other.receiverName != null)
                 return false;
-        } else if (!contributorName.equals(other.contributorName))
+        } else if (!receiverName.equals(other.receiverName))
             return false;
         if (contributorTaxIdentification == null) {
             if (other.contributorTaxIdentification != null)
@@ -345,6 +445,18 @@ public class DaoInvoice extends DaoIdentifiable {
             return false;
         return true;
     }
+
+
+
+    public static BigDecimal getLastInvoiceNumber() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+
+
+   
 
 
 
