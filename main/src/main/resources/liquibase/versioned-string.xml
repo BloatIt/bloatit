@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+ 	<changeSet author="Thomas Guyard" id="Creation of versioned string">
+		<comment>Creating the table used to store versioned string</comment>
+        <createTable tableName="daoversionedstring">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoversionedstringpk"/>
+            </column>
+            <column name="currentversion_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+	</changeSet>
+	
+ 	<changeSet author="Thomas Guyard" id="Creation of string version">
+		<comment>Creating the table used to store string versions</comment>
+        <createTable tableName="daostringversion">
+            <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daostringversionpk"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="creationdate" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="iscompacted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="versionedstring_id" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+	</changeSet>
+	
+	<changeSet author="Thomas Guyard" id="Creation of string version and versioned string FK">
+        <addForeignKeyConstraint baseColumnNames="versionedstring_id" baseTableName="daoversionedstring" constraintName="FKCSTRINGVERSIONVERSIONEDSTRING" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+        <addForeignKeyConstraint baseColumnNames="currentversion_id" baseTableName="daostringversion" constraintName="FKCVERSIONEDSTRINGSTRINGVERSION" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+	</changeSet>
+	
+</databaseChangeLog>
