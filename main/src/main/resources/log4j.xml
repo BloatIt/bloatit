@@ -46,7 +46,7 @@
 		<param name="To" value="thomas@linkeos.com" />
 		<param name="Cc" value="fred@linkeos.com, yoann@linkeos.com" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%%d{yyyy-mm-dd-HH:mm:ss} [%t] %p\t%m%n" />
+			<param name="ConversionPattern" value="%d{yyyy-mm-dd-HH:mm:ss} [%t] %p\t%m%n" />
 		</layout>
 	</appender>
 
