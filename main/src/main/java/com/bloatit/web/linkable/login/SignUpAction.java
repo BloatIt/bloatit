@@ -8,7 +8,9 @@ import java.util.Locale;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -28,30 +30,30 @@ import com.bloatit.web.url.SignUpPageUrl;
 /**
  * A response to a form used sign into the website (creation of a new user)
  */
-@ParamContainer(value="member/dosignup", protocol=Protocol.HTTPS)
+@ParamContainer(value = "member/dosignup", protocol = Protocol.HTTPS)
 public final class SignUpAction extends ElveosAction {
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank."),//
-                     min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 3."),//
-                     max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 16."))
+    @NonOptional(@tr("Login cannot be blank."))
+    @MinConstraint(min = 4, message = @tr("Number of characters for login has to be superior to 3."))
+    @MaxConstraint(max = 15, message = @tr("Number of characters for login has to be inferior to 16."))
     private final String login;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
-                     min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 3."),//
-                     max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 16."))
+    @NonOptional(@tr("Password cannot be blank."))
+    @MinConstraint(min = 4, message = @tr("Number of characters for password has to be superior to 3."))
+    @MaxConstraint(max = 15, message = @tr("Number of characters for password has to be inferior to 16."))
     private final String password;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."),//
-                     min = "4", minErrorMsg = @tr("Number of characters for password check has to be superior to 3."),//
-                     max = "15", maxErrorMsg = @tr("Number of characters for password check has to be inferior to 16."))
+    @NonOptional(@tr("Password check cannot be blank."))
+    @MinConstraint(min = 4, message = @tr("Number of characters for password check has to be superior to 3."))
+    @MaxConstraint(max = 15, message = @tr("Number of characters for password check has to be inferior to 16."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Email cannot be blank."),//
-                     min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 3."),//
-                     max = "254", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 255."))
+    @NonOptional(@tr("Email cannot be blank."))
+    @MinConstraint(min = 4, message = @tr("Number of characters for email has to be superior to 3."))
+    @MaxConstraint(max = 254, message = @tr("Number of characters for email address has to be inferior to 255."))
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
@@ -104,13 +106,13 @@ public final class SignUpAction extends ElveosAction {
             url.getLoginParameter().addErrorMessage(Context.tr("Login already used."));
             return doProcessErrors();
         }
-        
+
         if (MemberManager.emailExists(email)) {
             session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
             url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
             return doProcessErrors();
         }
-        
+
         if (!MailUtils.isValidEmail(email)) {
             session.notifyError(Context.tr("Invalid email address: {0}.", email));
             url.getEmailParameter().addErrorMessage(Context.tr("Invalid email."));

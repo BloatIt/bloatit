@@ -15,7 +15,9 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -40,23 +42,22 @@ import com.bloatit.web.url.ReportBugPageUrl;
 @ParamContainer("feature/bug/doreport")
 public final class ReportBugAction extends UserContentAction {
 
-    @ParamConstraint(optionalErrorMsg = @tr("A new bug must be linked to a milestone"))
+    @NonOptional(@tr("A new bug must be linked to a milestone"))
     @RequestParam(role = Role.GET)
     private final Milestone milestone;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(max = "120",
-                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
-                     optionalErrorMsg = @tr("You forgot to write a short description"))
+    @MaxConstraint(max = 120, message = @tr("The short description must be %constraint% chars length max."))
+    @MinConstraint(min = 10, message = @tr("The short description must have at least %constraint% chars."))
+    @NonOptional(@tr("You forgot to write a short description"))
     private final String title;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"), min = "10",
-                     minErrorMsg = @tr("The description must have at least 10 chars."))
+    @NonOptional(@tr("You must indicate a bug description"))
+    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     @RequestParam(role = Role.POST)
     private final String description;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
+    @NonOptional(@tr("You must indicate a bug level"))
     @RequestParam(suggestedValue = "MINOR", role = Role.POST)
     private final BindedLevel level;
 

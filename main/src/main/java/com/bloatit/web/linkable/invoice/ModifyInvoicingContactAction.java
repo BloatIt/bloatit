@@ -12,8 +12,8 @@
 package com.bloatit.web.linkable.invoice;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -32,34 +32,34 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 @ParamContainer("action/invoicingcontact/choose")
 public final class ModifyInvoicingContactAction extends LoggedAction {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ModifyInvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add a name a invoicing information."), min = "1", minErrorMsg = @tr("You must add a name a invoicing information."))
-        private final String name;
+    @NonOptional(@tr("You must add a name ."))
+    private final String name;
+
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add a street ."))
+    private final String street;
     
-        @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add a street."), min = "1", minErrorMsg = @tr("You must add a street."))
-        private final String street;
-        
-        @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add a postal code."), min = "1", minErrorMsg = @tr("You must add a postal code."))
-        private final String postalCode;
-        
-        @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add a city."), min = "1", minErrorMsg = @tr("You must add a city."))
-        private final String city;
-        
-        @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add a country."), min = "1", minErrorMsg = @tr("You must add a country."))
-        private final String country;
-        
-        @RequestParam(role = Role.POST)
-        @Optional
-        private final String extras;
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add a postal code."))
+    private final String postalCode;
     
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add a city ."))
+    private final String city;
+    
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add a country ."))
+    private final String country;
+    
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final String extras;
+   
     private final ModifyInvoicingContactActionUrl url;
 
     public ModifyInvoicingContactAction(final ModifyInvoicingContactActionUrl url) {
@@ -108,7 +108,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        //session.addParameter(url.getInvoicingContactParameter());
+        // session.addParameter(url.getInvoicingContactParameter());
     }
 
 }

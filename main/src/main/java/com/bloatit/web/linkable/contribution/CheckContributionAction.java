@@ -18,9 +18,12 @@ import java.math.BigDecimal;
 import javax.mail.IllegalWriteException;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -42,19 +45,19 @@ import com.bloatit.web.url.IndexPageUrl;
 @ParamContainer("action/contribute/check")
 public final class CheckContributionAction extends UserContentAction {
 
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
+    @MaxConstraint(max = 140, message = @tr("Your comment is too long. It must be less than %constraint% char long."))
     @Optional
     private final String comment;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
-                     max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use Cents."), optionalErrorMsg = @tr("You must indicate an amount."))
+    @MaxConstraint(max = 1000000, message = @tr("We cannot accept such a generous offer!"))
+    @MinConstraint(min = 0, isExclusive = true, message = @tr("Amount must be superior to 0."))
+    @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
     private final BigDecimal amount;
 
     private final CheckContributionActionUrl url;
@@ -85,7 +88,7 @@ public final class CheckContributionAction extends UserContentAction {
         }
 
         Actor<?> actor = me;
-        if(process.getTeam() != null) {
+        if (process.getTeam() != null) {
             actor = process.getTeam();
             // TODO correct me !
         }
@@ -106,7 +109,7 @@ public final class CheckContributionAction extends UserContentAction {
 
     @Override
     protected Url doProcessErrors(final ElveosUserToken userToken) {
-        if(process == null) {
+        if (process == null) {
             return new IndexPageUrl();
         }
         return new ContributePageUrl(process);

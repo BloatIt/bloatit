@@ -11,7 +11,7 @@
  */
 package com.bloatit.web;
 
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -22,7 +22,7 @@ import com.bloatit.web.url.FileResourceUrl;
 
 /**
  * A file resource is a resource representing a file
- *
+ * 
  * @author fred
  */
 @ParamContainer("resource")
@@ -30,7 +30,7 @@ public final class FileResource extends Resource {
 
     private static final String FILE_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg = @tr("The id of the resource is incorrect or missing"))
+    @NonOptional(@tr("The id of the resource is incorrect or missing"))
     @RequestParam(name = FILE_FIELD_NAME)
     private final FileMetadata file;
 

@@ -20,9 +20,12 @@ import javax.mail.IllegalWriteException;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -63,15 +66,15 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
 @ParamContainer("contribute/check")
 public final class CheckContributionPage extends QuotationPage {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 
     @Optional
-    @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
-    @ParamConstraint(min = "0", minErrorMsg = @tr("You must specify a positive value."), //
-    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+    @RequestParam(message = @tr("The amount to load on your account must be a positive integer."))
+    @MinConstraint(min = 0, message = @tr("You must specify a positive value."))
+    @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
+    @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final CheckContributionPageUrl url;
@@ -161,7 +164,7 @@ public final class CheckContributionPage extends QuotationPage {
                 } else {
                     authorContributionSummary.add(new HtmlDefineParagraph(tr("Comment: "), tr("No comment")));
                 }
-                
+
                 try {
                     authorContributionSummary.add(new HtmlDefineParagraph(tr("Invoice at {0}: ", actor.getContact().getCity()),new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("modify invoicing contact"))));
                 } catch (UnauthorizedPrivateAccessException e) {
@@ -264,7 +267,7 @@ public final class CheckContributionPage extends QuotationPage {
                 } else {
                     invoicingContactLink = new StaticCheckContributionPageUrl(process).getHtmlLink(tr("Validate"));
                 }
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("fail ton check the existence of invoicing contact", e);
             }
 

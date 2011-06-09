@@ -14,8 +14,8 @@ package com.bloatit.web.linkable.features;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -39,8 +39,8 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("feature")
 public final class FeaturePage extends ElveosPage {
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the feature number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a feature number."))
+    @RequestParam(name = "id", message = @tr("I cannot find the feature number: ''%value%''."))
+    @NonOptional(@tr("You have to specify a feature number."))
     private final Feature feature;
 
     // Sub component.
@@ -85,7 +85,6 @@ public final class FeaturePage extends ElveosPage {
         // - The summary
         // - The tab panel
         // - The comments
-        
 
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 

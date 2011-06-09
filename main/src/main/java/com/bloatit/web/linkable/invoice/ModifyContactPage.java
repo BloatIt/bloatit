@@ -15,7 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -24,7 +24,6 @@ import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
-import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -53,8 +52,8 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 @ParamContainer(value = "account/charging/invoicing_contact", protocol = Protocol.HTTPS)
 public final class ModifyContactPage extends LoggedPage {
 
-    @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ModifyInvoicingContactProcess process;
 
     private final ModifyContactPageUrl url;
@@ -135,9 +134,9 @@ public final class ModifyContactPage extends LoggedPage {
             // Extras
             newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getExtrasParameter(),//
                                                  Context.tr("Extras"),//
-                                                 process.getActor().getContact().getExtras(), Context.tr("Optional.")));
+                                                 process.getActor().getContact().getExtras(),
+                                                 Context.tr("Optional.")));
 
-            
             // City
             newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCityParameter(),//
                                                  Context.tr("City"),//
@@ -165,7 +164,7 @@ public final class ModifyContactPage extends LoggedPage {
     private HtmlTextField generateTextField(UrlParameter<String, String> parameter, String name, String defaultValue) {
         return generateTextField(parameter, name, defaultValue, null);
     }
-    
+
     private HtmlTextField generateTextField(UrlParameter<String, String> parameter, String name, String defaultValue, String comment) {
         final FieldData fieldData = parameter.pickFieldData();
         final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
@@ -174,7 +173,7 @@ public final class ModifyContactPage extends LoggedPage {
         } else {
             input.setDefaultValue(fieldData.getSuggestedValue());
         }
-        if(comment != null) {
+        if (comment != null) {
             input.setComment(comment);
         }
         input.addErrorMessages(fieldData.getErrorMessages());
@@ -207,13 +206,13 @@ public final class ModifyContactPage extends LoggedPage {
         if (process.getFather() instanceof AccountChargingProcess) {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, (AccountChargingProcess) process.getFather());
         } else if (process.getFather() instanceof ContributionProcess) {
-            ContributionProcess process2 = (ContributionProcess) process.getFather();
+            final ContributionProcess process2 = (ContributionProcess) process.getFather();
             breadcrumb = CheckContributionPage.generateBreadcrumb(process2.getFeature(), process2);
         } else {
             breadcrumb = IndexPage.generateBreadcrumb();
         }
 
-        Url url = new ModifyContactPageUrl(process);
+        final Url url = new ModifyContactPageUrl(process);
 
         breadcrumb.pushLink(url.getHtmlLink(tr("Invoicing contact")));
         return breadcrumb;

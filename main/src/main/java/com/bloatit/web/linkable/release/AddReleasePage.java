@@ -13,7 +13,7 @@ package com.bloatit.web.linkable.release;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -45,8 +45,8 @@ public final class AddReleasePage extends CreateUserContentPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the milestone number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a milestone number."))
+    @RequestParam(message = @tr("I cannot find the milestone number: ''%value%''."))
+    @NonOptional(@tr("You have to specify a milestone number."))
     private final Milestone milestone;
     private final AddReleasePageUrl url;
 
@@ -118,7 +118,7 @@ public final class AddReleasePage extends CreateUserContentPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return AddReleasePage.generateBreadcrumb(milestone);
     }
 

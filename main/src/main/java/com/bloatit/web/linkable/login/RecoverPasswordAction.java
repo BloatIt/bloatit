@@ -18,7 +18,9 @@ package com.bloatit.web.linkable.login;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.StringUtils;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -42,28 +44,28 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link RecoverPasswordPage}
  * </p>
  */
-@ParamContainer(value="password/dorecover", protocol=Protocol.HTTPS)
+@ParamContainer(value = "password/dorecover", protocol = Protocol.HTTPS)
 public class RecoverPasswordAction extends ElveosAction {
     private final RecoverPasswordActionUrl url;
 
     private Member member;
 
     @RequestParam(role = Role.GET)
-    @ParamConstraint(optionalErrorMsg = @tr("Key cannot be blank. Please make sure you didn't make a mistake while copying and pasting."))
+    @NonOptional(@tr("Key cannot be blank. Please make sure you didn't make a mistake while copying and pasting."))
     private final String resetKey;
 
     @RequestParam(role = Role.GET)
-    @ParamConstraint(optionalErrorMsg = @tr("Login cannot be blank. Please make sure you didn't make a mistake while copying and pasting."))
+    @NonOptional(@tr("Login cannot be blank. Please make sure you didn't make a mistake while copying and pasting."))
     private final String login;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password cannot be blank."),//
-    min = "7", minErrorMsg = @tr("Minimal length for new password is %constraint%."),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to %constraint%."))
+    @NonOptional(@tr("Password cannot be blank."))
+    @MinConstraint(min = 7, message = @tr("Minimal length for new password is %constraint%."))
+    @MaxConstraint(max = 15, message = @tr("Number of characters for password has to be inferior to %constraint%."))
     private final String newPassword;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("Password check cannot be blank."))
+    @NonOptional(@tr("Password check cannot be blank."))
     private final String checkNewPassword;
 
     public RecoverPasswordAction(final RecoverPasswordActionUrl url) {

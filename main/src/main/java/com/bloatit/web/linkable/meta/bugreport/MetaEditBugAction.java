@@ -14,7 +14,9 @@ package com.bloatit.web.linkable.meta.bugreport;
 import java.io.IOException;
 
 import com.bloatit.framework.meta.MetaBugManager;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -36,10 +38,9 @@ public final class MetaEditBugAction extends LoggedAction {
     private static final String BUG_DESCRIPTION = "bug_description";
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
-    @ParamConstraint(max = "800",
-                     maxErrorMsg = @tr("The title must be 800 chars length max."), //
-                     min = "1", minErrorMsg = @tr("The title must have at least 10 chars."),
-                     optionalErrorMsg = @tr("Error you forgot to write a title"))
+    @MaxConstraint(max = 800, message = @tr("The title must be %constraint% chars length max."))
+    @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
+    @NonOptional(@tr("Error you forgot to write a title"))
     private final String description;
 
     @RequestParam

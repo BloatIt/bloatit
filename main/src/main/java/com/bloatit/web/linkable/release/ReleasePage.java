@@ -15,7 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -39,8 +39,8 @@ import com.bloatit.web.url.ReleasePageUrl;
 @ParamContainer("release")
 public final class ReleasePage extends ElveosPage {
 
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a release number."))
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the release number: ''%value%''."))
+    @NonOptional(@tr("You have to specify a release number."))
+    @RequestParam(name = "id", message = @tr("I cannot find the release number: ''%value%''."))
     private final Release release;
 
     private final ReleasePageUrl url;

@@ -15,7 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -44,8 +44,8 @@ public final class ModifyBugPage extends LoggedPage {
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_LINES = 5;
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
+    @RequestParam(name = "id", message = @tr("I cannot find the bug number: ''%value%''."))
+    @NonOptional(@tr("You have to specify a bug number."))
     private final Bug bug;
     private final ModifyBugPageUrl url;
 
@@ -75,11 +75,11 @@ public final class ModifyBugPage extends LoggedPage {
     private HtmlElement generateModifyBugForm() {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Modify a bug"), 1);
         final ModifyBugActionUrl doModifyUrl = new ModifyBugActionUrl(bug);
-        
+
         // Create the form stub
         final HtmlForm modifyBugForm = new HtmlForm(doModifyUrl.urlString());
         formTitle.add(modifyBugForm);
-        
+
         // Level
         final FieldData levelFieldData = doModifyUrl.getLevelParameter().pickFieldData();
         final HtmlDropDown levelInput = new HtmlDropDown(levelFieldData.getName(), Context.tr("New Level"));

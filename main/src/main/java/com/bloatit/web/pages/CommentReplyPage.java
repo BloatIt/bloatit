@@ -14,7 +14,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -50,8 +50,8 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
     private final CommentReplyPageUrl url;
 
-    @RequestParam(name = "target", conversionErrorMsg = @tr("I cannot find the comment number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a comment number."))
+    @RequestParam(name = "target", message = @tr("I cannot find the comment number: ''%value%''."))
+    @NonOptional(@tr("You have to specify a comment number."))
     private final Comment targetComment;
 
     public CommentReplyPage(final CommentReplyPageUrl url) {

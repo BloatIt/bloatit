@@ -12,7 +12,8 @@
 package com.bloatit.web.linkable.admin;
 
 import com.bloatit.framework.utils.i18n.DateLocale;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -32,10 +33,9 @@ import com.bloatit.web.url.HightlightedFeatureAdminPageUrl;
 @ParamContainer("admin/dodeclarehightlightedfeature")
 public final class DeclareHightlightedFeatureAction extends AdminAction {
     @RequestParam(role = Role.POST)
-    @ParamConstraint(max = "80", maxErrorMsg = @tr("The title must be 80 chars length max."), //
-                     optionalErrorMsg = @tr("You forgot to write a title"))
+    @MaxConstraint(max = 80, message = @tr("The title must be 80 chars length max."))
+    @NonOptional(@tr("You forgot to write a title"))
     private final String title;
-
 
     @RequestParam(role = Role.POST)
     private final Integer position;
@@ -63,16 +63,14 @@ public final class DeclareHightlightedFeatureAction extends AdminAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new HightlightedFeatureAdminPageUrl();
     }
 
-
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
-
 
     @Override
     protected Url doProcessAdmin() {
@@ -89,7 +87,5 @@ public final class DeclareHightlightedFeatureAction extends AdminAction {
         session.addParameter(url.getTitleParameter());
 
     }
-
-
 
 }

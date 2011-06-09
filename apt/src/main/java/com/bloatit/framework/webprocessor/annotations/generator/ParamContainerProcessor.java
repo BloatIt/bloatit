@@ -25,9 +25,13 @@ import javax.lang.model.util.TypeKindVisitor6;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
+import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.SubParamContainer;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
@@ -131,8 +135,8 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
 
         for (final Element enclosed : element.getEnclosedElements()) {
-                parseARequestParam(component, enclosed);
-            if(enclosed.getAnnotation(SubParamContainer.class) != null) {
+            parseARequestParam(component, enclosed);
+            if (enclosed.getAnnotation(SubParamContainer.class) != null) {
                 parseEnclosedParamContainer(component, enclosed);
             }
         }
@@ -193,9 +197,26 @@ public class ParamContainerProcessor extends AbstractProcessor {
     private void parseARequestParam(final ComponentDescription component, final Element attribute) {
         final RequestParam requestParam = attribute.getAnnotation(RequestParam.class);
         final Optional optional = attribute.getAnnotation(Optional.class);
+        final NonOptional nonOptional = attribute.getAnnotation(NonOptional.class);
+        final MinConstraint minConstraint = attribute.getAnnotation(MinConstraint.class);
+        final MaxConstraint maxConstraint = attribute.getAnnotation(MaxConstraint.class);
+        final LengthConstraint lengthConstraint = attribute.getAnnotation(LengthConstraint.class);
+        final PrecisionConstraint precisionConstraint = attribute.getAnnotation(PrecisionConstraint.class);
+
+        // if (optional != null && nonOptional != null) {
+        // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
+        // "Optional and non optional annotations on the same parameter.");
+        // }
 
         if (requestParam != null) {
-            component.addParameter(new ParameterDescription(attribute, requestParam, attribute.getAnnotation(ParamConstraint.class), optional));
+            component.addParameter(new ParameterDescription(attribute,
+                                                            requestParam,
+                                                            optional,
+                                                            nonOptional,
+                                                            lengthConstraint,
+                                                            maxConstraint,
+                                                            minConstraint,
+                                                            precisionConstraint));
         }
     }
 

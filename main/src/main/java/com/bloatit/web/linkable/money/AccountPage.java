@@ -42,7 +42,7 @@ import com.bloatit.web.url.AccountPageUrl;
 @ParamContainer(value = "account", protocol = Protocol.HTTPS)
 public final class AccountPage extends LoggedPage {
 
-    @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
+    @RequestParam(message = @tr("I cannot find the team number: ''%value%''."))
     @Optional
     private final Team team;
 

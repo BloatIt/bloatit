@@ -18,7 +18,7 @@ public @interface RequestParam {
 
     String name() default "";
 
-    tr conversionErrorMsg() default @tr(DEFAULT_ERROR_MSG);
+    tr message() default @tr(DEFAULT_ERROR_MSG);
 
     String suggestedValue() default DEFAULT_SUGGESTED_VALUE;
 

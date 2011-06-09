@@ -16,7 +16,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -35,7 +35,7 @@ import com.bloatit.web.url.ChangeAvatarActionUrl;
  */
 @ParamContainer("member/changeavatar")
 public final class ChangeAvatarAction extends UserContentAction {
-    @ParamConstraint(optionalErrorMsg = @tr("An avatar must be linked to a member"))
+    @NonOptional(@tr("An avatar must be linked to a member"))
     @RequestParam
     private final Member member;
 

@@ -15,8 +15,9 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoBug.Level;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -35,28 +36,27 @@ import com.bloatit.web.url.ModifyBugPageUrl;
  * A response to a form used to create a new feature
  */
 @ParamContainer("feature/bug/domodify")
-public final class ModifyBugAction extends ElveosAction{
+public final class ModifyBugAction extends ElveosAction {
 
     private static final String BUG_STATE = "bug_state";
     private static final String BUG_REASON = "reason";
     private static final String BUG_LEVEL = "bug_level";
     private static final String BUG = "bug";
 
-    @RequestParam(name = BUG_REASON, role = Role.POST)
     @Optional
-    @ParamConstraint(max = "120", maxErrorMsg = @tr("The reason must be 120 chars length max."), //
-                     min = "0")
+    @RequestParam(name = BUG_REASON, role = Role.POST)
+    @MaxConstraint(max = 120, message = @tr("The reason must be %constraint% chars length max."))
     private final String reason;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
+    @NonOptional(@tr("You must indicate a bug level"))
     @RequestParam(name = BUG_LEVEL, role = Role.POST)
     private final BindedLevel level;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug state"))
+    @NonOptional(@tr("You must indicate a bug state"))
     @RequestParam(name = BUG_STATE, role = Role.POST)
     private final BindedState state;
 
-    @ParamConstraint(optionalErrorMsg = @tr("A bug change must be linked to a bug"))
+    @NonOptional(@tr("A bug change must be linked to a bug"))
     @RequestParam(name = BUG, role = Role.GET)
     private final Bug bug;
 
@@ -74,7 +74,7 @@ public final class ModifyBugAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken userToken) {
+    protected Url doProcess(final ElveosUserToken userToken) {
         final Level currentLevel = bug.getErrorLevel();
         final BugState currentState = bug.getState();
 
@@ -118,12 +118,12 @@ public final class ModifyBugAction extends ElveosAction{
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return Context.getSession().getLastVisitedPage();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         if (session.getUserToken() == null) {
             session.notifyError(Context.tr("You must be logged in to modify a bug report."));
             return new ModifyBugPageUrl(bug);

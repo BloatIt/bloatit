@@ -13,7 +13,7 @@ package com.bloatit.web.linkable.invoice;
 
 import java.io.File;
 
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -26,7 +26,7 @@ import com.bloatit.web.url.InvoiceResourceUrl;
 
 /**
  * A invoice file
- *
+ * 
  * @author fred
  */
 @ParamContainer("invoice")
@@ -34,7 +34,7 @@ public final class InvoiceResource extends Resource {
 
     private static final String FILE_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg = @tr("The id of the resource is incorrect or missing"))
+    @NonOptional(@tr("The id of the resource is incorrect or missing"))
     @RequestParam(name = FILE_FIELD_NAME)
     private final Invoice invoice;
 
@@ -50,14 +50,13 @@ public final class InvoiceResource extends Resource {
     protected Url checkRightsAndEverything() {
         try {
             file = new File(invoice.getFile());
-            invoiceNumber = "invoice-" + invoice.getInvoiceNumber()+".pdf";
-        } catch (UnauthorizedPrivateAccessException e) {
+            invoiceNumber = "invoice-" + invoice.getInvoiceNumber() + ".pdf";
+        } catch (final UnauthorizedPrivateAccessException e) {
             return new PageForbiddenUrl();
         }
 
         return NO_ERROR;
     }
-
 
     @Override
     public String getFileUrl() {
@@ -71,8 +70,7 @@ public final class InvoiceResource extends Resource {
 
     @Override
     public String getFileName() {
-            return invoiceNumber;
+        return invoiceNumber;
     }
-
 
 }

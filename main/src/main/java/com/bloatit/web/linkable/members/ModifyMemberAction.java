@@ -24,8 +24,9 @@ import java.util.Locale;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -48,11 +49,12 @@ import com.bloatit.web.url.ModifyMemberPageUrl;
 public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(
-                     min = "4",
-                     minErrorMsg = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "15",
-                     maxErrorMsg = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(
+                   min = 4,
+                   message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+                   max = 15,
+                   message = @tr("Number of characters for password has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String password;
 
     @RequestParam(role = Role.POST)
@@ -61,29 +63,30 @@ public class ModifyMemberAction extends LoggedAction {
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(
-                     min = "4",
-                     minErrorMsg = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "15",
-                     maxErrorMsg = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(
+                   min = 4,
+                   message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+                   max = 15,
+                   message = @tr("Number of characters for password check has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(
-                     min = "4",
-                     minErrorMsg = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "30",
-                     maxErrorMsg = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(min = 4,
+                   message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 30,
+                   message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String email;
 
     @RequestParam(role = Role.POST)
     @Optional
-    @ParamConstraint(
-                     min = "1",
-                     minErrorMsg = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."),//
-                     max = "30",
-                     maxErrorMsg = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @MinConstraint(
+                   min = 1,
+                   message = @tr("Number of characters for Fullname has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+                   max = 30,
+                   message = @tr("Number of characters for Fullname has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String fullname;
 
     @RequestParam(role = Role.POST)

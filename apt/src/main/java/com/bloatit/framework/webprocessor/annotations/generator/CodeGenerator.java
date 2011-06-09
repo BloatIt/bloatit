@@ -1,9 +1,15 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
+import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Attribute;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Method;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.MethodCall;
+import com.bloatit.framework.webprocessor.annotations.generator.Generator.Modifier;
 
 public class CodeGenerator {
 
@@ -142,21 +148,70 @@ public class CodeGenerator {
 
         clazz.addImport("com.bloatit.framework.webprocessor.annotations.RequestParam.Role");
         clazz.addImport("com.bloatit.framework.webprocessor.annotations.RequestParam");
-        clazz.addImport("com.bloatit.framework.webprocessor.annotations.ParamConstraint");
         clazz.addImport("com.bloatit.framework.webprocessor.annotations.ConversionErrorException");
         clazz.addImport("com.bloatit.common.Log");
         clazz.addImport("com.bloatit.framework.exceptions.lowlevel.RedirectException");
         clazz.addImport("com.bloatit.framework.utils.*");
         clazz.addImport("com.bloatit.framework.utils.parameters.*");
         clazz.addImport("com.bloatit.framework.webprocessor.url.*");
+        clazz.addImport("com.bloatit.framework.webprocessor.url.constraints.*");
         clazz.addImport("com.bloatit.framework.webprocessor.url.Loaders.*");
         clazz.addImport("java.util.ArrayList");
 
         final Method constructor = clazz.addConstructor();
+        constructor.addLine("this();");
         constructor.addParameter("Parameters", "params");
         constructor.addParameter("SessionParameters", "session");
 
         final Method generatedConstructor = clazz.addConstructor();
+        Method defaultConstructor = null;
+        if (!desc.getUrlParameters().isEmpty()) {
+            generatedConstructor.addLine("this();");
+            defaultConstructor = clazz.addConstructor();
+            defaultConstructor.setModifier(Modifier.PRIVATE);
+        } else {
+            defaultConstructor = generatedConstructor;
+        }
+        for (final ParameterDescription param : desc.getParameters()) {
+
+            final NonOptional nonOptional = param.getNonOptional();
+            if (nonOptional != null) {
+                final MethodCall call = new MethodCall("OptionalConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(nonOptional.value().value()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+
+            final LengthConstraint lengthConstraint = param.getLengthConstraint();
+            if (lengthConstraint != null) {
+                final MethodCall call = new MethodCall("LengthConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(lengthConstraint.message().value()));
+                call.addParameter(String.valueOf(lengthConstraint.length()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+            final MaxConstraint maxConstraint = param.getMaxConstraint();
+            if (maxConstraint != null) {
+                final MethodCall call = new MethodCall("MaxConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(maxConstraint.message().value()));
+                call.addParameter(String.valueOf(maxConstraint.max()));
+                call.addParameter(String.valueOf(maxConstraint.isExclusive()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+            final MinConstraint minConstraint = param.getMinConstraint();
+            if (minConstraint != null) {
+                final MethodCall call = new MethodCall("MinConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(minConstraint.message().value()));
+                call.addParameter(String.valueOf(minConstraint.min()));
+                call.addParameter(String.valueOf(minConstraint.isExclusive()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+            final PrecisionConstraint precisionConstraint = param.getPrecisionConstraint();
+            if (precisionConstraint != null) {
+                final MethodCall call = new MethodCall("PrecisionConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(precisionConstraint.message().value()));
+                call.addParameter(String.valueOf(precisionConstraint.precision()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+        }
         for (final ParameterDescription param : desc.getUrlParameters()) {
             generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
             generatedConstructor.addLine("this.set" + Utils.firstCharUpper(param.getAttributeName()) + "(" + param.getAttributeName() + ");");
@@ -188,19 +243,6 @@ public class CodeGenerator {
             newParamDescription.addParameter(param.getSuggestedValueStr());
             newParamDescription.addParameter(param.getConversionErrorMsgStr());
             newParamDescription.addParameter(param.isOptional() ? "true" : "false");
-            final MethodCall newParamConstraints = new Generator.MethodCall("UrlParameterConstraints<" + param.getTypeOrTemplateType() + ">");
-            newParamConstraints.addParameter(param.getConstraints().min);
-            newParamConstraints.addParameter(param.getConstraints().minIsExclusive ? "true" : "false");
-            newParamConstraints.addParameter(param.getConstraints().max);
-            newParamConstraints.addParameter(param.getConstraints().maxIsExclusive ? "true" : "false");
-            newParamConstraints.addParameter(param.isOptional() ? "true" : "false");
-            newParamConstraints.addParameter(String.valueOf(param.getConstraints().precision));
-            newParamConstraints.addParameter(String.valueOf(param.getConstraints().length));
-            newParamConstraints.addParameter(param.getConstraints().minErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().maxErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().optionalErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().precisionErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().LengthErrorMsg);
             final MethodCall newParam = new Generator.MethodCall("UrlParameter" + template);
             if (param.getTypeOrTemplateType().equals(param.getTypeWithoutTemplate())) {
                 newParam.addParameter("null");
@@ -208,7 +250,6 @@ public class CodeGenerator {
                 newParam.addParameter("new ArrayList()");
             }
             newParam.addParameter("new " + newParamDescription);
-            newParam.addParameter("new " + newParamConstraints);
             attribute.setStaticEquals("new " + newParam);
 
             // Value getter
