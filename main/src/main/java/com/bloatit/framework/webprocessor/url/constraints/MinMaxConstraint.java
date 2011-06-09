@@ -25,12 +25,15 @@ public abstract class MinMaxConstraint<V extends Comparable<V>> extends Constrai
         if (value == null) {
             return true;
         }
+        
+        // Weird hack :
+        final Object hacked = value;
 
-        if (value instanceof BigDecimal) {
-            return cmp(isExclusive, (new BigDecimal(minMax).compareTo((BigDecimal) value)));
+        if (hacked instanceof BigDecimal) {
+            return cmp(isExclusive, (new BigDecimal(minMax).compareTo((BigDecimal) hacked)));
         }
-        if (value instanceof String) {
-            return cmp(isExclusive, (minMax.compareTo(((String) value).length())));
+        if (hacked instanceof String) {
+            return cmp(isExclusive, (minMax.compareTo(((String) hacked).length())));
         }
         try {
             @SuppressWarnings("unchecked") final Comparable<V> theMin = value.getClass().cast(minMax);

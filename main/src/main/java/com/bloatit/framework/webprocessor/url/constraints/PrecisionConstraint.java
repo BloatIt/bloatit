@@ -18,8 +18,12 @@ public class PrecisionConstraint<V extends Comparable<V>> extends Constraint<V> 
         if (value == null) {
             return true;
         }
-        if (value instanceof BigDecimal) {
-            return ((BigDecimal) value).stripTrailingZeros().scale() <= precision;
+
+        // Weird hack :
+        final Object hacked = value;
+
+        if (hacked instanceof BigDecimal) {
+            return ((BigDecimal) hacked).stripTrailingZeros().scale() <= precision;
         }
         throw new BadProgrammerException("Precision is not supported for this class.");
     }
