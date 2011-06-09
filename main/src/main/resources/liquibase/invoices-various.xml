@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+
+	<changeSet author="Thomas Guyard" id="Add Display name in team">
+		<comment>Add the displayname column in the daoTeam table</comment>
+		<addColumn tableName="daoteam">
+			<column name="displayname" type="varchar(255)">
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Frédéric Bertolus"
+		id="Change bug description type from varchar 255 to TEXT">
+		<modifyDataType tableName="daobug" columnName="description"
+			newDataType="text" />
+	</changeSet> 	
+	<changeSet author="Thomas Guyard" id="Remove display name in team">
+		<comment>Remove the displayname column in the daoTeam table</comment>
+		<dropColumn tableName="daoteam" columnName="displayname" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="13056499099741-16">
+		<createTable tableName="daoinvoice">
+			<column name="DTYPE" type="varchar(31)">
+				<constraints nullable="false" />
+			</column>
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="daoinvoicepk" />
+			</column>
+			<!-- Invoice description -->
+			<column name="deliveryname" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="invoiceid" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="invoicetype" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="invoicedate" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="internalinvoicenumber" type="numeric(19,2)">
+				<constraints nullable="true" />
+			</column>
+			<column name="invoicefile" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			
+			<!--  Amounts -->
+			<column name="priceexcludingtax" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="totalprice" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="taxrate" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="taxamount" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			
+			<!-- Seller -->
+			<column name="sellername" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="sellerstreet" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="sellerextras" type="TEXT">
+				<constraints nullable="true" />
+			</column>
+			<column name="sellercity" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="sellercountry" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="sellertaxidentification" type="TEXT">
+				<constraints nullable="true" /> 
+			</column>
+			<column name="sellerlegalid" type="TEXT">
+				<constraints nullable="false" /> 
+			</column>
+			
+			
+			<column name="selleractor_id" type="int4" >
+				<constraints nullable="true" />
+			</column>
+			
+			
+			
+			<!-- Receiver -->
+			<column name="receiveractor_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="receivername" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="receiverstreet" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="receiverextras" type="TEXT">
+				<constraints nullable="true" />
+			</column>
+			<column name="receivercity" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="receivercountry" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="receivertaxidentification" type="TEXT" >
+			<constraints nullable="true" />
+			</column>
+			<!-- Contribution invoices specific fields -->
+			<column name="contribution_id" type="int4">
+				<constraints nullable="true" />
+			</column>
+			<column name="milestone_id" type="int4">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="fred (generated)" id="13056499099741-17">
+		<createTable tableName="daoinvoicingcontact">
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="daoinvoicingcpk" />
+			</column>
+			<column name="address" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="taxidentification" type="TEXT" />
+			<column name="actor_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="fred (generated)" id="13056499099741-69">
+		<addForeignKeyConstraint baseColumnNames="contribution_id"
+			baseTableName="daoinvoice" constraintName="FKF4216B5B6D7040E0"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daocontribution" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="13056499099741-70">
+		<addForeignKeyConstraint baseColumnNames="receiveractor_id"
+			baseTableName="daoinvoice" constraintName="FKF4216B5B49F5F4A2"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoactor" referencesUniqueColumn="false" />
+	</changeSet>
+
+	<changeSet author="fred (generated)" id="13056499099741-72">
+		<addForeignKeyConstraint baseColumnNames="milestone_id"
+			baseTableName="daoinvoice" constraintName="FKF4216B5B735AB454"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daomilestone" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="13056499099741-73">
+		<addForeignKeyConstraint baseColumnNames="receiveractor_id"
+			baseTableName="daoinvoice" constraintName="FKF4216B5B2FA3D04D"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoactor" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred (generated)" id="13056499099741-74">
+		<addForeignKeyConstraint baseColumnNames="actor_id"
+			baseTableName="daoinvoicingcontact" constraintName="FK97786BA87BA58734"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoactor" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred" id="201105201105-1">
+		<comment>Add the invoicingContact_id </comment>
+		<addColumn tableName="daobanktransaction">
+			<column name="invoicingcontact_id" type="int4"></column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="invoicingcontact_id"
+			baseTableName="daobanktransaction" constraintName="FKinvoicingcontact-daobanktransaction"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoinvoicingcontact" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred" id="201105231309-1">
+		<comment>Add the invoice_id</comment>
+		<addColumn tableName="daobanktransaction">
+			<column name="invoice_id" type="int4"></column>
+		</addColumn>
+		<addForeignKeyConstraint baseColumnNames="invoice_id"
+			baseTableName="daobanktransaction" constraintName="FKinvoice-daobanktransaction"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoinvoice" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred" id="201106081147-1">
+		<comment>delete daoinvoicingcontact</comment>
+		<dropColumn tableName="daobanktransaction" columnName="invoicingcontact_id" />
+		<dropTable tableName="daoinvoicingcontact" />
+	</changeSet>
+	<changeSet author="fred" id="201106081147-2">
+		<addColumn tableName="daoactor">
+			<column name="address" type="TEXT">
+				<constraints nullable="true" />
+			</column>
+			<column name="name" type="TEXT">
+				<constraints nullable="true" />
+			</column>
+			<column name="taxidentification" type="TEXT" >
+				<constraints nullable="true" />
+			</column>
+
+		</addColumn>
+	</changeSet>
+	<changeSet author="fred" id="201106081147-3">
+	<createTable tableName="daomilestonecontributionamount">
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="daomilestonecontributionamountpk" />
+			</column>
+			<column name="amount" type="numeric(19,2)">
+				<constraints nullable="false" />
+			</column>
+			<column name="contribution_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="milestone_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addForeignKeyConstraint baseColumnNames="contribution_id"
+			baseTableName="daomilestonecontributionamount" constraintName="FKcontribution-daomilestonecontributionamount"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daocontribution" referencesUniqueColumn="false" />
+			<addForeignKeyConstraint baseColumnNames="milestone_id"
+			baseTableName="daomilestonecontributionamount" constraintName="FKmilestone-daomilestonecontributionamount"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daomilestone" referencesUniqueColumn="false" />
+	</changeSet>
+	<changeSet author="fred" id="201106081147-4">
+		<renameColumn tableName="daoteam" oldColumnName="contact" newColumnName="publiccontact"/>
+	</changeSet>
+	<changeSet author="fred" id="201106091936-1">
+	<addColumn tableName="daoactor">
+		<column name="city" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="street" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="extras" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="postalcode" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="country" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="legalid" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="taxrate" type="numeric(19,2)">
+				<constraints nullable="true" />
+		</column>
+		<column name="invoiceidtemplate" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		
+		<column name="invoiceidnumber" type="numeric(19,2)">
+				<constraints nullable="true" />
+		</column>
+		
+		</addColumn>
+		<dropColumn tableName="daoactor" columnName="address"/>
+	</changeSet>
+</databaseChangeLog>

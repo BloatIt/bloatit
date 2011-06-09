@@ -727,4 +727,12 @@
     <changeSet author="Thomas Guyard" id="1300878547256-91">
         <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="daousercontent" constraintName="FK3EB8775C476C9120" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomember" referencesUniqueColumn="false"/>
     </changeSet>
+    <changeSet author="Frédéric Bertolus" id="1300878547256-92">
+		<comment>Add valuePaid column in DaoBankTransaction</comment>
+		<addColumn tableName="daobanktransaction">
+			<column name="valuepaid" type="numeric(19,2)" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

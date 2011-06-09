@@ -60,24 +60,13 @@ public class DaoInvoice extends DaoIdentifiable {
     @Basic(optional = true)
     private String sellerTaxIdentification;
 
-    // Contributor
-
-    @ManyToOne(optional = false)
-    private DaoActor receivertActor;
-
-    /**
-     * Full name or company name
-     */
-    @Column(columnDefinition = "TEXT")
-    @Basic(optional = false)
-    private String receiverName;
 
     /**
      * Tax identification, VAT ...
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = true)
-    private String contributorTaxIdentification;
+    private String receiverTaxIdentification;
 
     // Commons
 
@@ -127,6 +116,19 @@ public class DaoInvoice extends DaoIdentifiable {
     @Basic(optional = false)
     private String sellerCountry;
 
+
+    //Receiver
+    @ManyToOne(optional = false)
+    private DaoActor receiverActor;
+
+    /**
+     * Full name or company name
+     */
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = false)
+    private String receiverName;
+
+    
     @Basic(optional = false)
     private String receiverStreet;
 
@@ -211,7 +213,7 @@ public class DaoInvoice extends DaoIdentifiable {
         this.sellerCountry = sellerCountry;
         this.receiverName = receiverName;
         this.receiverStreet = receiverStreet;
-        this.receivertActor = recipientActor;
+        this.receiverActor = recipientActor;
         this.receiverExtras = receiverExtras;
         this.receiverCity = receiverCity;
         this.receiverCountry = receiverCountry;
@@ -299,7 +301,7 @@ public class DaoInvoice extends DaoIdentifiable {
     }
 
     public DaoActor getRecipientActor() {
-        return receivertActor;
+        return receiverActor;
     }
 
     public String getFile() {
@@ -345,7 +347,7 @@ public class DaoInvoice extends DaoIdentifiable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((receiverName == null) ? 0 : receiverName.hashCode());
-        result = prime * result + ((contributorTaxIdentification == null) ? 0 : contributorTaxIdentification.hashCode());
+        result = prime * result + ((receiverTaxIdentification == null) ? 0 : receiverTaxIdentification.hashCode());
         result = prime * result + ((deliveryName == null) ? 0 : deliveryName.hashCode());
         result = prime * result + ((invoiceFile == null) ? 0 : invoiceFile.hashCode());
         result = prime * result + ((invoiceId == null) ? 0 : invoiceId.hashCode());
@@ -371,10 +373,10 @@ public class DaoInvoice extends DaoIdentifiable {
                 return false;
         } else if (!receiverName.equals(other.receiverName))
             return false;
-        if (contributorTaxIdentification == null) {
-            if (other.contributorTaxIdentification != null)
+        if (receiverTaxIdentification == null) {
+            if (other.receiverTaxIdentification != null)
                 return false;
-        } else if (!contributorTaxIdentification.equals(other.contributorTaxIdentification))
+        } else if (!receiverTaxIdentification.equals(other.receiverTaxIdentification))
             return false;
         if (deliveryName == null) {
             if (other.deliveryName != null)

@@ -4,44 +4,173 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
- 	<changeSet author="Thomas Guyard" id="Creation of versioned string">
+	<changeSet author="Thomas Guyard" id="Creation of versioned string">
 		<comment>Creating the table used to store versioned string</comment>
-        <createTable tableName="daoversionedstring">
-            <column name="id" type="int4">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="daoversionedstringpk"/>
-            </column>
-            <column name="currentversion_id" type="int4">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+		<createTable tableName="daoversionedstring">
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="daoversionedstringpk" />
+			</column>
+			<column name="currentversion_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
 	</changeSet>
-	
- 	<changeSet author="Thomas Guyard" id="Creation of string version">
+
+	<changeSet author="Thomas Guyard" id="Creation of string version">
 		<comment>Creating the table used to store string versions</comment>
-        <createTable tableName="daostringversion">
-            <column name="id" type="int4">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="daostringversionpk"/>
-            </column>
-            <column name="content" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            
-            <column name="creationdate" type="datetime">
-                <constraints nullable="false"/>
-            </column>
-            <column name="iscompacted" type="boolean">
-                <constraints nullable="false"/>
-            </column>
-            
-            <column name="versionedstring_id" type="int4">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+		<createTable tableName="daostringversion">
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="daostringversionpk" />
+			</column>
+			<column name="content" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="creationdate" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="iscompacted" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="author_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+			<column name="versionedstring_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
 	</changeSet>
 	
-	<changeSet author="Thomas Guyard" id="Creation of string version and versioned string FK">
-        <addForeignKeyConstraint baseColumnNames="versionedstring_id" baseTableName="daoversionedstring" constraintName="FKCSTRINGVERSIONVERSIONEDSTRING" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
-        <addForeignKeyConstraint baseColumnNames="currentversion_id" baseTableName="daostringversion" constraintName="FKCVERSIONEDSTRINGSTRINGVERSION" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daoactor" referencesUniqueColumn="false"/>
+	<changeSet author="Thomas Guyard" id="use versionned strings in team, translation, bug, comment">
+		<renameColumn tableName="daoteam" oldColumnName="description" newColumnName="content"/>
+		<renameColumn tableName="daobug" oldColumnName="description" newColumnName="content"/>
+		<renameColumn tableName="daocomment" oldColumnName="text" newColumnName="content"/>
+		<renameColumn tableName="daotranslation" oldColumnName="text" newColumnName="content"/>
+		
+		<addColumn tableName="daoteam">
+			<column name="versions_id" type="int4">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+		<addColumn tableName="daobug">
+			<column name="versions_id" type="int4">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+		<addColumn tableName="daocomment">
+			<column name="versions_id" type="int4">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+		<addColumn tableName="daotranslation">
+			<column name="versions_id" type="int4">
+				<constraints nullable="true" />
+			</column>
+		</addColumn>
+		
+		
 	</changeSet>
 	
+	<changeSet author='Yoann Plénet' id="create pgplsql">
+		<sql splitStatements="false">
+			CREATE LANGUAGE plpgsql;
+		</sql>	
+	</changeSet>
+
+	<changeSet author='Yoann Plénet' id="migrate datas">
+		<sql splitStatements="false">
+			CREATE OR REPLACE FUNCTION migrate() RETURNS void AS $$
+		    DECLARE  
+		        uc	RECORD;
+		        seq	INTEGER;
+		        seq2 INTEGER;
+		        mid INTEGER;
+		    BEGIN SET CONSTRAINTS ALL DEFERRED;
+		        -- BUGS
+		        RAISE NOTICE 'Now handling : BUGS';
+		        FOR uc IN SELECT * FROM daobug, daousercontent WHERE daobug.id = daousercontent.id LOOP
+			        SELECT nextval('hibernate_sequence') INTO seq;
+			        SELECT nextval('hibernate_sequence') INTO seq2;
+			        INSERT INTO daostringversion VALUES (seq, uc.content, uc.creationdate, FALSE, uc.member_id, seq2);
+			        INSERT INTO daoversionedstring VALUES (seq2, seq);
+			        UPDATE daobug SET versions_id = seq2 WHERE id = uc.id;
+		        END LOOP;
+		
+		        -- COMMENT
+		        RAISE NOTICE 'Now handling : COMMENTS';
+		        FOR uc IN SELECT * FROM daocomment, daousercontent WHERE daocomment.id = daousercontent.id LOOP
+			        SELECT nextval('hibernate_sequence') INTO seq;
+			        SELECT nextval('hibernate_sequence') INTO seq2;
+			        INSERT INTO daostringversion VALUES (seq, uc.content, uc.creationdate, FALSE, uc.member_id, seq2);
+			        INSERT INTO daoversionedstring VALUES (seq2, seq);
+			        UPDATE daocomment SET versions_id = seq2 WHERE id = uc.id;
+		        END LOOP;
+		
+		        SELECT MIN(id) INTO mid FROM daomember;
+		        -- TEAM
+		        RAISE NOTICE 'Now handling : TEAMS';
+		        FOR uc IN SELECT * FROM daoteam LOOP
+			        SELECT nextval('hibernate_sequence') INTO seq;
+			        SELECT nextval('hibernate_sequence') INTO seq2;
+			        INSERT INTO daostringversion VALUES (seq, uc.content, timeofday()::timestamp, FALSE, mid, seq2);
+			        INSERT INTO daoversionedstring VALUES (seq2, seq);
+			        UPDATE daoteam SET versions_id = seq2 WHERE id = uc.id;
+		        END LOOP;
+		
+		        -- TRANSLATION
+		        RAISE NOTICE 'Now handling : TRANSLATIONS';
+		        FOR uc IN SELECT * FROM daotranslation, daousercontent WHERE daotranslation.id = daousercontent.id LOOP
+			        SELECT nextval('hibernate_sequence') INTO seq;
+			        SELECT nextval('hibernate_sequence') INTO seq2;
+			        INSERT INTO daostringversion VALUES (seq, uc.content, uc.creationdate, FALSE, uc.member_id, seq2);
+			        INSERT INTO daoversionedstring VALUES (seq2, seq);
+			        UPDATE daotranslation SET versions_id = seq2 WHERE id = uc.id;
+		        END LOOP;
+		    END;
+		    $$ LANGUAGE plpgsql;
+		    SELECT * FROM migrate();
+		    DROP FUNCTION migrate();
+		</sql>
+	</changeSet>
+
+	<changeSet author="Thomas Guyard"
+		id="Creation of string version and versioned string FK">
+		<addForeignKeyConstraint baseColumnNames="currentversion_id"
+			baseTableName="daoversionedstring" constraintName="FKCSTRINGVERSIONVERSIONEDSTRING"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daostringversion" referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="versionedstring_id"
+			baseTableName="daostringversion" constraintName="FKCVERSIONEDSTRINGSTRINGVERSION"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoversionedstring" referencesUniqueColumn="false" />
+		<addForeignKeyConstraint baseColumnNames="author_id"
+			baseTableName="daostringversion" constraintName="FKCSTRINGVERSIONACTOR"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daomember" referencesUniqueColumn="false" />
+		
+		
+		<addForeignKeyConstraint baseColumnNames="versions_id"
+			baseTableName="daoteam" constraintName="FKCVERSIONEDSTRINGDAOTEAM"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoversionedstring" referencesUniqueColumn="false" />
+			
+		<addForeignKeyConstraint baseColumnNames="versions_id"
+			baseTableName="daobug" constraintName="FKCVERSIONEDSTRINGDAOBUG"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoversionedstring" referencesUniqueColumn="false" />
+		
+		<addForeignKeyConstraint baseColumnNames="versions_id"
+			baseTableName="daocomment" constraintName="FKCVERSIONEDSTRINGDAOCOMMENT"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoversionedstring" referencesUniqueColumn="false" />
+		
+		<addForeignKeyConstraint baseColumnNames="versions_id"
+			baseTableName="daotranslation" constraintName="FKCVERSIONEDSTRINGDAOTRANSLATION"
+			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
+			referencedTableName="daoversionedstring" referencesUniqueColumn="false" />
+		
+	</changeSet>
+
 </databaseChangeLog>
