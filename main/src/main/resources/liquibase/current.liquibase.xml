@@ -203,6 +203,36 @@
 	<changeSet author="fred" id="201106081147-4">
 		<renameColumn tableName="daoteam" oldColumnName="contact" newColumnName="publiccontact"/>
 	</changeSet>
-
-
+	<changeSet author="fred" id="201106091936-1">
+	<addColumn tableName="daoactor">
+		<column name="city" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="street" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="extras" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="postalcode" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="country" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="legalid" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="taxrate" type="numeric(19,2)">
+				<constraints nullable="true" />
+		</column>
+		<column name="invoiceidtemplate" type="TEXT">
+				<constraints nullable="true" />
+		</column>
+		<column name="invoiceidnumber" type="numeric(19,2)">
+				<constraints nullable="true" />
+		</column>
+		</addColumn>
+		<dropColumn tableName="daoactor" columnName="address"/>
+	</changeSet>
 </databaseChangeLog>
