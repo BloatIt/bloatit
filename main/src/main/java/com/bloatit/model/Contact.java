@@ -16,6 +16,8 @@
 //
 package com.bloatit.model;
 
+import java.math.BigDecimal;
+
 import com.bloatit.data.DaoContact;
 
 /**
@@ -59,11 +61,178 @@ public final class Contact {
         getDao().setName(name);
     }
 
-    public void setAddress(String address) {
-        getDao().setAddress(address);
+    public String getName() {
+        return getDao().getName();
     }
 
+    
+    
+    
+    /**
+     * @param taxIdentification
+     * @see com.bloatit.data.DaoContact#setTaxIdentification(java.lang.String)
+     */
+    public void setTaxIdentification(String taxIdentification) {
+        dao.setTaxIdentification(taxIdentification);
+    }
 
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getTaxIdentification()
+     */
+    public String getTaxIdentification() {
+        return dao.getTaxIdentification();
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getStreet()
+     */
+    public String getStreet() {
+        return dao.getStreet();
+    }
+
+    /**
+     * @param street
+     * @see com.bloatit.data.DaoContact#setStreet(java.lang.String)
+     */
+    public void setStreet(String street) {
+        dao.setStreet(street);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getExtras()
+     */
+    public String getExtras() {
+        return dao.getExtras();
+    }
+
+    /**
+     * @param extras
+     * @see com.bloatit.data.DaoContact#setExtras(java.lang.String)
+     */
+    public void setExtras(String extras) {
+        dao.setExtras(extras);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getPostalCode()
+     */
+    public String getPostalCode() {
+        return dao.getPostalCode();
+    }
+
+    /**
+     * @param postalCode
+     * @see com.bloatit.data.DaoContact#setPostalCode(java.lang.String)
+     */
+    public void setPostalCode(String postalCode) {
+        dao.setPostalCode(postalCode);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getCity()
+     */
+    public String getCity() {
+        return dao.getCity();
+    }
+
+    /**
+     * @param city
+     * @see com.bloatit.data.DaoContact#setCity(java.lang.String)
+     */
+    public void setCity(String city) {
+        dao.setCity(city);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getCountry()
+     */
+    public String getCountry() {
+        return dao.getCountry();
+    }
+
+    /**
+     * @param country
+     * @see com.bloatit.data.DaoContact#setCountry(java.lang.String)
+     */
+    public void setCountry(String country) {
+        dao.setCountry(country);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getLegalId()
+     */
+    public String getLegalId() {
+        return dao.getLegalId();
+    }
+
+    /**
+     * @param legalId
+     * @see com.bloatit.data.DaoContact#setLegalId(java.lang.String)
+     */
+    public void setLegalId(String legalId) {
+        dao.setLegalId(legalId);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getTaxRate()
+     */
+    public BigDecimal getTaxRate() {
+        return dao.getTaxRate();
+    }
+
+    /**
+     * @param taxRate
+     * @see com.bloatit.data.DaoContact#setTaxRate(java.math.BigDecimal)
+     */
+    public void setTaxRate(BigDecimal taxRate) {
+        dao.setTaxRate(taxRate);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getInvoiceIdTemplate()
+     */
+    public String getInvoiceIdTemplate() {
+        return dao.getInvoiceIdTemplate();
+    }
+
+    /**
+     * @param invoiceIdTemplate
+     * @see com.bloatit.data.DaoContact#setInvoiceIdTemplate(java.lang.String)
+     */
+    public void setInvoiceIdTemplate(String invoiceIdTemplate) {
+        dao.setInvoiceIdTemplate(invoiceIdTemplate);
+    }
+
+    /**
+     * @return
+     * @see com.bloatit.data.DaoContact#getInvoiceIdNumber()
+     */
+    public BigDecimal getInvoiceIdNumber() {
+        return dao.getInvoiceIdNumber();
+    }
+
+    /**
+     * @param invoiceIdNumber
+     * @see com.bloatit.data.DaoContact#setInvoiceIdNumber(java.math.BigDecimal)
+     */
+    public void setInvoiceIdNumber(BigDecimal invoiceIdNumber) {
+        dao.setInvoiceIdNumber(invoiceIdNumber);
+    }
+
+    public String pickNextInvoiceId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
     // ///////////////////////////
     // Unprotected methods
 
@@ -82,16 +251,9 @@ public final class Contact {
         return dao;
     }
 
-    public String getName() {
-        //TODO: access right
-        return getDao().getName();
-    }
+    
 
-    public String getAddress() {
-        //TODO: access right
-        return getDao().getAddress();
-    }
-
+    
 
 
 }

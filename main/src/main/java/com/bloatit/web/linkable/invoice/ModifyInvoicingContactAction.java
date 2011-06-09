@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.invoice;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -36,13 +37,29 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
     private final ModifyInvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add a name a invoicing information."))
+    @NonOptional(@tr("You must add a name ."))
     private final String name;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You must add an address a invoicing information."))
-    private final String address;
-
+    @NonOptional(@tr("You must add a street ."))
+    private final String street;
+    
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add a postal code."))
+    private final String postalCode;
+    
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add a city ."))
+    private final String city;
+    
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add a country ."))
+    private final String country;
+    
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final String extras;
+   
     private final ModifyInvoicingContactActionUrl url;
 
     public ModifyInvoicingContactAction(final ModifyInvoicingContactActionUrl url) {
@@ -50,7 +67,11 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
         this.url = url;
         this.process = url.getProcess();
         this.name = url.getName();
-        this.address = url.getAddress();
+        this.street = url.getStreet();
+        this.postalCode = url.getPostalCode();
+        this.city = url.getCity();
+        this.country = url.getCountry();
+        this.extras = url.getExtras();
     }
 
     @Override
@@ -58,8 +79,12 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
         try {
             process.getActor().getContact().setName(name);
-            process.getActor().getContact().setAddress(address);
-        } catch (final UnauthorizedPrivateAccessException e) {
+            process.getActor().getContact().setStreet(street);
+            process.getActor().getContact().setExtras(extras);
+            process.getActor().getContact().setPostalCode(postalCode);
+            process.getActor().getContact().setCity(city);
+            process.getActor().getContact().setCountry(country);
+        } catch (UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
         }
 

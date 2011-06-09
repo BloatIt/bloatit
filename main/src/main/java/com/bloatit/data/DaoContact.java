@@ -16,6 +16,8 @@
 //
 package com.bloatit.data;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -40,18 +42,46 @@ public class DaoContact {
     public String name;
 
     /**
-     * Invoicing address
-     */
-    @Column(columnDefinition = "TEXT")
-    @Basic(optional = true)
-    public String address;
-
-    /**
      * Tax identification, VAT ...
      */
+
     @Column(columnDefinition = "TEXT")
     @Basic(optional = true)
     public String taxIdentification;
+
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = true)
+    public String street;
+
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = true)
+    public String extras;
+
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = true)
+    public String postalCode;
+
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = true)
+    public String city;
+
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = true)
+    public String country;
+
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = true)
+    public String legalId;
+
+    @Basic(optional = true)
+    public BigDecimal taxRate;
+
+    @Column(columnDefinition = "TEXT")
+    @Basic(optional = true)
+    public String invoiceIdTemplate;
+
+    @Basic(optional = true)
+    public BigDecimal invoiceIdNumber;
 
     /**
      * Sets the tax identification.
@@ -72,15 +102,6 @@ public class DaoContact {
     }
 
     /**
-     * Gets the address.
-     * 
-     * @return the address
-     */
-    public String getAddress() {
-        return this.address;
-    }
-
-    /**
      * Gets the tax identification.
      * 
      * @return the tax identification
@@ -93,11 +114,77 @@ public class DaoContact {
         this.name = name;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public String getStreet() {
+        return street;
     }
 
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
+    public String getExtras() {
+        return extras;
+    }
+
+    public void setExtras(String extras) {
+        this.extras = extras;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getLegalId() {
+        return legalId;
+    }
+
+    public void setLegalId(String legalId) {
+        this.legalId = legalId;
+    }
+
+    public BigDecimal getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public String getInvoiceIdTemplate() {
+        return invoiceIdTemplate;
+    }
+
+    public void setInvoiceIdTemplate(String invoiceIdTemplate) {
+        this.invoiceIdTemplate = invoiceIdTemplate;
+    }
+
+    public BigDecimal getInvoiceIdNumber() {
+        return invoiceIdNumber;
+    }
+
+    public void setInvoiceIdNumber(BigDecimal invoiceIdNumber) {
+        this.invoiceIdNumber = invoiceIdNumber;
+    }
 
     // ======================================================================
     // Hibernate mapping
@@ -118,49 +205,85 @@ public class DaoContact {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((address == null) ? 0 : address.hashCode());
+        result = prime * result + ((city == null) ? 0 : city.hashCode());
+        result = prime * result + ((country == null) ? 0 : country.hashCode());
+        result = prime * result + ((extras == null) ? 0 : extras.hashCode());
+        result = prime * result + ((invoiceIdNumber == null) ? 0 : invoiceIdNumber.hashCode());
+        result = prime * result + ((invoiceIdTemplate == null) ? 0 : invoiceIdTemplate.hashCode());
+        result = prime * result + ((legalId == null) ? 0 : legalId.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((postalCode == null) ? 0 : postalCode.hashCode());
+        result = prime * result + ((street == null) ? 0 : street.hashCode());
         result = prime * result + ((taxIdentification == null) ? 0 : taxIdentification.hashCode());
+        result = prime * result + ((taxRate == null) ? 0 : taxRate.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
         DaoContact other = (DaoContact) obj;
-        if (address == null) {
-            if (other.address != null) {
+        if (city == null) {
+            if (other.city != null)
                 return false;
-            }
-        } else if (!address.equals(other.address)) {
+        } else if (!city.equals(other.city))
             return false;
-        }
+        if (country == null) {
+            if (other.country != null)
+                return false;
+        } else if (!country.equals(other.country))
+            return false;
+        if (extras == null) {
+            if (other.extras != null)
+                return false;
+        } else if (!extras.equals(other.extras))
+            return false;
+        if (invoiceIdNumber == null) {
+            if (other.invoiceIdNumber != null)
+                return false;
+        } else if (!invoiceIdNumber.equals(other.invoiceIdNumber))
+            return false;
+        if (invoiceIdTemplate == null) {
+            if (other.invoiceIdTemplate != null)
+                return false;
+        } else if (!invoiceIdTemplate.equals(other.invoiceIdTemplate))
+            return false;
+        if (legalId == null) {
+            if (other.legalId != null)
+                return false;
+        } else if (!legalId.equals(other.legalId))
+            return false;
         if (name == null) {
-            if (other.name != null) {
+            if (other.name != null)
                 return false;
-            }
-        } else if (!name.equals(other.name)) {
+        } else if (!name.equals(other.name))
             return false;
-        }
+        if (postalCode == null) {
+            if (other.postalCode != null)
+                return false;
+        } else if (!postalCode.equals(other.postalCode))
+            return false;
+        if (street == null) {
+            if (other.street != null)
+                return false;
+        } else if (!street.equals(other.street))
+            return false;
         if (taxIdentification == null) {
-            if (other.taxIdentification != null) {
+            if (other.taxIdentification != null)
                 return false;
-            }
-        } else if (!taxIdentification.equals(other.taxIdentification)) {
+        } else if (!taxIdentification.equals(other.taxIdentification))
             return false;
-        }
+        if (taxRate == null) {
+            if (other.taxRate != null)
+                return false;
+        } else if (!taxRate.equals(other.taxRate))
+            return false;
         return true;
     }
-
-
-
 
 }

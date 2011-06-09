@@ -243,10 +243,16 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         if(contact.getName() == null) {
             return false;
         }
-        if(contact.getAddress() == null) {
+        if(contact.getCountry() == null) {
             return false;
         }
-
+        if(contact.getPostalCode() == null) {
+            return false;
+        }
+        if(contact.getStreet() == null) {
+            return false;
+        }
+        
         return true;
     }
 }
