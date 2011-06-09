@@ -10,6 +10,8 @@
 	<include file="liquibase/password-sha.liquibase.xml" />
 
 	<include file="liquibase/money-withdraw.xml" />
+	
+	<include file="liquibase/versioned-string.xml" />
 
 	<changeSet author="Frédéric Bertolus" id="1300878547256-92">
 		<comment>Add valuePaid column in DaoBankTransaction</comment>
