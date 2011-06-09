@@ -194,7 +194,10 @@ public class UrlParameter<T, U> extends UrlNode {
             messages.add(message);
         } else {
             for (final Constraint<U> constraint : constraints) {
-                messages.add(constraint.getMessage((U) getValue(), new MessageFormater(getName(), getStringValue())));
+                final Message message = constraint.getMessage((U) getValue(), new MessageFormater(getName(), getStringValue()));
+                if (message != null) {
+                    messages.add(message);
+                }
             }
         }
         return messages;

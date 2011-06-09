@@ -1,9 +1,15 @@
 package com.bloatit.framework.webprocessor.annotations.generator;
 
+import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
+import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Attribute;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Clazz;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.Method;
 import com.bloatit.framework.webprocessor.annotations.generator.Generator.MethodCall;
+import com.bloatit.framework.webprocessor.annotations.generator.Generator.Modifier;
 
 public class CodeGenerator {
 
@@ -153,10 +159,59 @@ public class CodeGenerator {
         clazz.addImport("java.util.ArrayList");
 
         final Method constructor = clazz.addConstructor();
+        constructor.addLine("this();");
         constructor.addParameter("Parameters", "params");
         constructor.addParameter("SessionParameters", "session");
 
         final Method generatedConstructor = clazz.addConstructor();
+        Method defaultConstructor = null;
+        if (!desc.getUrlParameters().isEmpty()) {
+            generatedConstructor.addLine("this();");
+            defaultConstructor = clazz.addConstructor();
+            defaultConstructor.setModifier(Modifier.PRIVATE);
+        } else {
+            defaultConstructor = generatedConstructor;
+        }
+        for (final ParameterDescription param : desc.getParameters()) {
+
+            final NonOptional nonOptional = param.getNonOptional();
+            if (nonOptional != null) {
+                final MethodCall call = new MethodCall("Constraint.OptionalConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(nonOptional.value().value()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+
+            final LengthConstraint lengthConstraint = param.getLengthConstraint();
+            if (lengthConstraint != null) {
+                final MethodCall call = new MethodCall("Constraint.LengthConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(lengthConstraint.message().value()));
+                call.addParameter(String.valueOf(lengthConstraint.length()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+            final MaxConstraint maxConstraint = param.getMaxConstraint();
+            if (maxConstraint != null) {
+                final MethodCall call = new MethodCall("Constraint.MaxConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(maxConstraint.message().value()));
+                call.addParameter(String.valueOf(maxConstraint.max()));
+                call.addParameter(String.valueOf(maxConstraint.isExclusive()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+            final MinConstraint minConstraint = param.getMinConstraint();
+            if (minConstraint != null) {
+                final MethodCall call = new MethodCall("Constraint.MinConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(minConstraint.message().value()));
+                call.addParameter(String.valueOf(minConstraint.min()));
+                call.addParameter(String.valueOf(minConstraint.isExclusive()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+            final PrecisionConstraint precisionConstraint = param.getPrecisionConstraint();
+            if (precisionConstraint != null) {
+                final MethodCall call = new MethodCall("Constraint.PrecisionConstraint<" + param.getTypeWithoutTemplate() + ">");
+                call.addParameter(Utils.getStr(precisionConstraint.message().value()));
+                call.addParameter(String.valueOf(precisionConstraint.precision()));
+                defaultConstructor.addLine(param.getAttributeName() + ".addConstraint(new " + call.toString() + ");");
+            }
+        }
         for (final ParameterDescription param : desc.getUrlParameters()) {
             generatedConstructor.addParameter(param.getTypeWithoutTemplate(), param.getAttributeName());
             generatedConstructor.addLine("this.set" + Utils.firstCharUpper(param.getAttributeName()) + "(" + param.getAttributeName() + ");");

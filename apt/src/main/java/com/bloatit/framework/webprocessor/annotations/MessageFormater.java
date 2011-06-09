@@ -10,7 +10,7 @@ public class MessageFormater {
     private Map<String, String> params = new HashMap<String, String>();
 
     public MessageFormater(final String name, final String value) {
-        params.put(name, value);
+        params.put("%" + name + "%", value);
     }
 
     public void addParameter(final String name, final String value) {

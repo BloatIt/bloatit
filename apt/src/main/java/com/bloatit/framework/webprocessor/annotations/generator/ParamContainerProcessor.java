@@ -202,6 +202,10 @@ public class ParamContainerProcessor extends AbstractProcessor {
         final MaxConstraint maxConstraint = attribute.getAnnotation(MaxConstraint.class);
         final LengthConstraint lengthConstraint = attribute.getAnnotation(LengthConstraint.class);
         final PrecisionConstraint precisionConstraint = attribute.getAnnotation(PrecisionConstraint.class);
+        
+        if (optional != null && nonOptional != null) {
+            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Optional and non optional annotations on the same parameter.");
+        }
 
         if (requestParam != null) {
             component.addParameter(new ParameterDescription(attribute,

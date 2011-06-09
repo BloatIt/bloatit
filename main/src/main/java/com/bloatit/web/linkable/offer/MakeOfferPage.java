@@ -14,8 +14,8 @@ package com.bloatit.web.linkable.offer;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -55,7 +55,7 @@ import com.bloatit.web.url.OfferActionUrl;
 public final class MakeOfferPage extends CreateUserContentPage {
 
     @RequestParam(conversionErrorMsg = @tr("I cannot find the feature number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("The feature id is not optional !"))
+    @NonOptional(@tr("The feature id is not optional !"))
     private final Feature feature;
 
     @RequestParam

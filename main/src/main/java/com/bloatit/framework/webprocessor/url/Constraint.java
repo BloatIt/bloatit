@@ -15,7 +15,7 @@ public abstract class Constraint<T> {
     }
 
     public Message getMessage(final T value, final MessageFormater formater) {
-        if (!verify(value)) {
+        if (verify(value)) {
             return null;
         }
         updateFormater(formater);
@@ -42,14 +42,14 @@ public abstract class Constraint<T> {
         throw new BadProgrammerException("I cannot be !");
     }
 
-    public static class OptionalConstraint<T> extends Constraint<T> {
+    public static class OptionalConstraint<V> extends Constraint<V> {
 
         public OptionalConstraint(final String message) {
             super(message);
         }
 
         @Override
-        public boolean verify(final T value) {
+        public boolean verify(final V value) {
             if (value instanceof String) {
                 return !((String) value).isEmpty();
             }
@@ -62,7 +62,7 @@ public abstract class Constraint<T> {
         }
     }
 
-    public static class PrecisionConstraint<T extends Comparable<T>> extends Constraint<T> {
+    public static class PrecisionConstraint<V extends Comparable<V>> extends Constraint<V> {
         private final int precision;
 
         public PrecisionConstraint(final String message, final int precision) {
@@ -71,7 +71,7 @@ public abstract class Constraint<T> {
         }
 
         @Override
-        public boolean verify(final T value) {
+        public boolean verify(final V value) {
             if (value instanceof BigDecimal) {
                 return ((BigDecimal) value).stripTrailingZeros().scale() < precision;
             }
@@ -84,7 +84,7 @@ public abstract class Constraint<T> {
         }
     }
 
-    public static abstract class MinMaxConstraint<T extends Comparable<T>> extends Constraint<T> {
+    public static abstract class MinMaxConstraint<V extends Comparable<V>> extends Constraint<V> {
         protected final boolean isExclusive;
         protected final Integer minMax;
 
@@ -100,19 +100,19 @@ public abstract class Constraint<T> {
         }
 
         @Override
-        public boolean verify(final T value) {
+        public boolean verify(final V value) {
             if (value == null) {
                 return true;
             }
 
             if (value instanceof BigDecimal) {
-                return cmp(isExclusive, ((BigDecimal) value).compareTo(new BigDecimal(minMax)));
+                return cmp(isExclusive, (new BigDecimal(minMax).compareTo((BigDecimal) value)));
             }
             if (value instanceof String) {
-                return cmp(isExclusive, ((String) value).length());
+                return cmp(isExclusive, (minMax.compareTo(((String) value).length())));
             }
             try {
-                @SuppressWarnings("unchecked") final Comparable<T> theMin = value.getClass().cast(minMax);
+                @SuppressWarnings("unchecked") final Comparable<V> theMin = value.getClass().cast(minMax);
                 return cmp(isExclusive, theMin.compareTo(value));
             } catch (final ClassCastException e) {
                 throw new BadProgrammerException("Constraint not allowed on this Class.", e);
@@ -122,7 +122,7 @@ public abstract class Constraint<T> {
         public abstract boolean cmp(boolean exclusive, int value);
     }
 
-    public static class MinConstraint<T extends Comparable<T>> extends MinMaxConstraint<T> {
+    public static class MinConstraint<V extends Comparable<V>> extends MinMaxConstraint<V> {
         public MinConstraint(final String message, final int min, final boolean isExclusive) {
             super(message, min, isExclusive);
         }
@@ -133,7 +133,7 @@ public abstract class Constraint<T> {
         }
     }
 
-    public static class MaxConstraint<T extends Comparable<T>> extends MinMaxConstraint<T> {
+    public static class MaxConstraint<V extends Comparable<V>> extends MinMaxConstraint<V> {
         public MaxConstraint(final String message, final int max, final boolean isExclusive) {
             super(message, max, isExclusive);
         }
@@ -144,7 +144,7 @@ public abstract class Constraint<T> {
         }
     }
 
-    public static class LengthConstraint<T extends Comparable<T>> extends MinMaxConstraint<T> {
+    public static class LengthConstraint<V extends Comparable<V>> extends MinMaxConstraint<V> {
         public LengthConstraint(final String message, final int length) {
             super(message, length, true);
         }

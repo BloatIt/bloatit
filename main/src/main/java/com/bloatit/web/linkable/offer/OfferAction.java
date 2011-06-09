@@ -17,6 +17,8 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -51,8 +53,9 @@ public final class OfferAction extends UserContentAction {
     @Optional
     private final Offer draftOffer;
 
-    @RequestParam(role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
-    @ParamConstraint(optionalErrorMsg = @tr("You must set a price to your offer."), min = "1", minErrorMsg = @tr("The price must be greater to 0."))
+    @RequestParam(role = Role.POST, conversionErrorMsg = @tr("Invalid value for price field."))
+    @NonOptional(@tr("You must set a price to your offer."))
+    @MinConstraint(min = 1, message = @tr("The price must be greater to 0."))
     private final BigDecimal price;
 
     @RequestParam(role = Role.POST)
