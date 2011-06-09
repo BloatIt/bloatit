@@ -14,7 +14,7 @@ package com.bloatit.web.actions;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.webprocessor.PageNotFoundException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -39,7 +39,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
     public static final int FILE_MAX_SIZE_MIO = 2;
 
     @RequestParam(name = "user_content", conversionErrorMsg = @tr("I cannot find the content number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a content on which join the file."))
+    @NonOptional(@tr("You have to specify a content on which join the file."))
     private final UserContentInterface userContent;
 
     private final AddAttachementPageUrl url;

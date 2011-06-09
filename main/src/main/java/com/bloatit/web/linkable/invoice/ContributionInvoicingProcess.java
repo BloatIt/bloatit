@@ -16,7 +16,7 @@
 //
 package com.bloatit.web.linkable.invoice;
 
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -44,7 +44,7 @@ public class ContributionInvoicingProcess extends WebProcess {
     private Actor<?> actor;
 
     @RequestParam(conversionErrorMsg = @tr("The milestone to invoice is ."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private Milestone milestone;
 
     private final ContributionInvoicingProcessUrl url;
@@ -83,12 +83,12 @@ public class ContributionInvoicingProcess extends WebProcess {
         return actor;
     }
 
-    public void setActor(Actor<?> actor) {
+    public void setActor(final Actor<?> actor) {
         this.actor = actor;
     }
 
     @Override
-    public synchronized void addChildProcess(WebProcess child) {
+    public synchronized void addChildProcess(final WebProcess child) {
         super.addChildProcess(child);
         invoicingContactProcess = (ModifyInvoicingContactProcess) child;
     }
@@ -98,7 +98,7 @@ public class ContributionInvoicingProcess extends WebProcess {
     }
 
     @Override
-    protected synchronized Url notifyChildClosed(WebProcess subProcess) {
+    protected synchronized Url notifyChildClosed(final WebProcess subProcess) {
         if (subProcess instanceof ModifyInvoicingContactProcess) {
             return new ContributionInvoicingInformationsPageUrl(this);
         }
@@ -109,18 +109,12 @@ public class ContributionInvoicingProcess extends WebProcess {
     public synchronized Url close() {
         super.close();
 
-        if(actor.isTeam()) {
-            return new TeamPageUrl((Team)actor);
+        if (actor.isTeam()) {
+            return new TeamPageUrl((Team) actor);
         } else {
-            return new MemberPageUrl((Member)actor);
+            return new MemberPageUrl((Member) actor);
         }
 
-
     }
-
-
-
-
-
 
 }

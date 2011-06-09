@@ -35,6 +35,7 @@ import com.bloatit.framework.webprocessor.annotations.MessageFormater;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.url.constraints.Constraint;
 
 public class UrlParameter<T, U> extends UrlNode {
     private final UrlParameterDescription<U> description;

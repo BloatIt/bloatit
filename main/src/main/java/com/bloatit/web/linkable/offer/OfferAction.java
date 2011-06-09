@@ -17,10 +17,10 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -59,34 +59,32 @@ public final class OfferAction extends UserContentAction {
     private final BigDecimal price;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You must set an expiration date."))
+    @NonOptional(@tr("You must set an expiration date."))
     private final DateLocale expiryDate;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You must add a description to your offer."), min = "1",
-                     minErrorMsg = @tr("You must add a description to your offer."))
+    @NonOptional(@tr("You must add a description to your offer."))
     private final String description;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(optionalErrorMsg = @tr("You must add a license to your offer."), min = "1",
-                     minErrorMsg = @tr("You must add a license to your offer."))
+    @NonOptional(@tr("You must add a license to your offer."))
     private final String license;
 
     @RequestParam(role = Role.POST, suggestedValue = "7")
-    @ParamConstraint(optionalErrorMsg = @tr("You must set a days count for validation."), min = "1",
-                     minErrorMsg = @tr("The validation time must be greater to 0."))
+    @NonOptional(@tr("You must set a days count for validation."))
+    @MinConstraint(min = 1, message = @tr("The validation time must be greater to 0."))
     private final Integer daysBeforeValidation;
 
-    @RequestParam(role = Role.POST, suggestedValue = "100")
     @Optional
-    @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
-                     max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
+    @RequestParam(role = Role.POST, suggestedValue = "100")
+    @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."))
+    @MaxConstraint(max = 0, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST, suggestedValue = "0")
     @Optional
-    @ParamConstraint(min = "0", minErrorMsg = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."), //
-                     max = "100", maxErrorMsg = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
+    @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."))
+    @MaxConstraint(max = 0, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentMajor;
 
     @RequestParam(role = Role.POST, suggestedValue = "true")

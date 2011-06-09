@@ -14,7 +14,7 @@ package com.bloatit.web.actions;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -33,8 +33,8 @@ import com.bloatit.web.url.AddAttachementActionUrl;
 @ParamContainer("usercontent/doattachfile")
 public final class AddAttachementAction extends UserContentAction {
 
-    @ParamConstraint(optionalErrorMsg = @tr("An attachment must be linked to a content"))
     @RequestParam
+    @NonOptional(@tr("An attachment must be linked to a content"))
     private final UserContentInterface userContent;
 
     private final AddAttachementActionUrl url;

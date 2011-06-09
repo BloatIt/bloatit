@@ -15,8 +15,8 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import java.util.Locale;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -40,10 +40,10 @@ import com.bloatit.web.url.SoftwarePageUrl;
 @ParamContainer("software")
 public final class SoftwarePage extends ElveosPage {
 
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a software number."))
+    @NonOptional(@tr("You have to specify a software number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the software number: ''%value%''."))
     private final Software software;
-    
+
     @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, generatedFrom = "software")
     @Optional("john-do")
@@ -73,7 +73,8 @@ public final class SoftwarePage extends ElveosPage {
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = software.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle() + "\n" + translatedDescription.getText()));
+        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle() + "\n"
+                + translatedDescription.getText()));
         layout.addLeft(description);
 
         return layout;

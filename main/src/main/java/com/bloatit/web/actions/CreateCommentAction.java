@@ -15,7 +15,8 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -38,13 +39,13 @@ import com.bloatit.web.url.CreateCommentActionUrl;
 @ParamContainer("comment/docomment")
 public final class CreateCommentAction extends UserContentAction {
 
-    @ParamConstraint(optionalErrorMsg = @tr("The comment must be post on a commentable thing"))
+    @NonOptional(@tr("The comment must be post on a commentable thing"))
     @RequestParam(name = "target")
     private final Commentable commentable;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must type a comment"),//
-                     min = "2", minErrorMsg = @tr("The comment must be at least 2 characters long."))
     @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must type a comment"))
+    @MinConstraint(min = 2, message = @tr("The comment must be at least 2 characters long."))
     private final String comment;
 
     private final CreateCommentActionUrl url;

@@ -14,8 +14,10 @@ package com.bloatit.web.linkable.softwares;
 import java.util.Locale;
 
 import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -43,15 +45,14 @@ public final class AddSoftwareAction extends LoggedAction {
     private static final String LANGUAGE_CODE = "feature_lang";
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."),
-                     optionalErrorMsg = @tr("You forgot to write a description"))
+    @NonOptional(@tr("You forgot to write a description"))
+    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     private final String description;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(max = "100",
-                     maxErrorMsg = @tr("The software name must be 1OO chars length max."), //
-                     min = "3", minErrorMsg = @tr("The software name must have at least 3 chars."),
-                     optionalErrorMsg = @tr("The software name is required."))
+    @NonOptional(@tr("The software name is required."))
+    @MinConstraint(min = 3, message = @tr("The software name must have at least %constraint% chars."))
+    @MaxConstraint(max = 64, message = @tr("The software name must be %constraint% chars length max."))
     private final String softwareName;
 
     @Optional

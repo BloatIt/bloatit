@@ -15,7 +15,8 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -38,13 +39,13 @@ import com.bloatit.web.url.AddReleaseActionUrl;
 public final class AddReleaseAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."), //
-                     optionalErrorMsg = @tr("You forgot to write a description"))
+    @NonOptional(@tr("You forgot to write a description"))
+    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
     private final String description;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "1", minErrorMsg = @tr("The version should be something like ''1.2.3''."), //
-                     optionalErrorMsg = @tr("You forgot to write a version."))
+    @NonOptional(@tr("You forgot to write a version."))
+    @MinConstraint(min = 1, message = @tr("The version should be something like ''1.2.3''."))
     private final String version;
 
     @RequestParam

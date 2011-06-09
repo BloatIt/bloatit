@@ -19,10 +19,13 @@ import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
+import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
@@ -53,7 +56,6 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 import com.bloatit.web.url.StaticAccountChargingPageUrl;
-import com.bloatit.web.url.StaticCheckContributionPageUrl;
 
 /**
  * A page used to put money onto the internal bloatit account
@@ -62,14 +64,15 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
 public final class AccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
 
     @Optional
     @RequestParam(conversionErrorMsg = @tr("The amount to load on your account must be a positive integer."))
-    @ParamConstraint(min = "1", minErrorMsg = @tr("You must specify a positive value."), //
-    max = "100000", maxErrorMsg = @tr("We cannot accept such a generous offer."),//
-    precision = 0, precisionErrorMsg = @tr("Please do not use cents."))
+    @MaxConstraint(max = 100000, message = @tr("We cannot accept such a generous offer."))
+    @MinConstraint(min = 1, message = @tr("You must specify a positive value."))
+    @NonOptional(@tr("The amount is needed."))
+    @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
     private BigDecimal preload;
 
     private final AccountChargingPageUrl url;
@@ -140,7 +143,7 @@ public final class AccountChargingPage extends QuotationPage {
         }
 
         group.add(ContactBox.generate(actor, process));
-        
+
         // Total
         final StandardQuotation quotation = new StandardQuotation(process.getAmountToPay());
 
@@ -148,7 +151,7 @@ public final class AccountChargingPage extends QuotationPage {
 
         final AccountChargingPageUrl recalculateUrl = url.clone();
         recalculateUrl.setPreload(null);
-        HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, recalculateUrl);
+        final HtmlChargeAccountLine line = new HtmlChargeAccountLine(false, process.getAmountToCharge(), actor, recalculateUrl);
 
         model.addLine(line);
 
@@ -156,15 +159,14 @@ public final class AccountChargingPage extends QuotationPage {
         final HtmlDiv payBlock = new HtmlDiv("pay_actions");
         {
             final HtmlLink invoicingContactLink;
-            
-            
+
             try {
-                if(!actor.hasInvoicingContact()) {
+                if (!actor.hasInvoicingContact()) {
                     invoicingContactLink = new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(tr("Fill invoicing contact"));
                 } else {
                     invoicingContactLink = new StaticAccountChargingPageUrl(process).getHtmlLink(tr("Validate"));
                 }
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 throw new BadProgrammerException("fail ton check the existence of invoicing contact", e);
             }
             invoicingContactLink.setCssClass("button");

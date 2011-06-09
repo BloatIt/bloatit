@@ -14,8 +14,10 @@ package com.bloatit.web.linkable.features;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.utils.FileConstraintChecker.SizeUnit;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -39,14 +41,14 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("feature/docreate")
 public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
-    @ParamConstraint(max = "80", maxErrorMsg = @tr("The title must be 80 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The title must have at least 10 chars."), //
-                     optionalErrorMsg = @tr("You forgot to write a title"))
+    @NonOptional(@tr("You forgot to write a title"))
+    @MinConstraint(min = 10, message = @tr("The title must have at least %constraint% chars."))
+    @MaxConstraint(max = 80, message = @tr("The title must be %constraint% chars length max."))
     private final String description;
 
-    @ParamConstraint(max = "800000", maxErrorMsg = @tr("The specification must be 800000 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The specification must have at least 10 chars."), //
-                     optionalErrorMsg = @tr("You forgot to write a specification"))
+    @NonOptional(@tr("You forgot to write a specification"))
+    @MinConstraint(min = 10, message = @tr("The specification must have at least %constraint% chars."))
+    @MaxConstraint(max = 800000, message = @tr("The specification must be %constraint% chars length max."))
     @RequestParam(role = Role.POST)
     private final String specification;
 

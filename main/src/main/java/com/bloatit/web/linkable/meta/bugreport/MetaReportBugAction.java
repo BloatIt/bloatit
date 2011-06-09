@@ -15,7 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.bloatit.framework.meta.MetaBugManager;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -35,9 +37,9 @@ public final class MetaReportBugAction extends ElveosAction {
     protected static final String BUG_URL = "bug_url";
 
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
-    @ParamConstraint(max = "80000", maxErrorMsg = @tr("The title must be 800 chars length max."), //
-                     min = "1", minErrorMsg = @tr("The title must have at least 10 chars."), //
-                     optionalErrorMsg = @tr("Error you forgot to write a title"))
+    @MaxConstraint(max = 80000, message = @tr("The description must be %constraint% chars length max."))
+    @MinConstraint(min = 10, message = @tr("The description must have at least %constraint% chars."))
+    @NonOptional(@tr("Error you forgot to write a description"))
     private final String description;
 
     @RequestParam(name = BUG_URL, role = Role.POST)

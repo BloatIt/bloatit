@@ -3,7 +3,9 @@ package com.bloatit.web.linkable.money;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -31,13 +33,15 @@ public class WithdrawMoneyAction extends LoggedAction {
     private final Actor<?> actor;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "1", minErrorMsg = @tr("Amount to withdraw must be greater or equal to %constraint%."), //
-    max = "100000", maxErrorMsg = @tr("Amount to withdraw and must be lesser or equal than %constraint%."))
+    @MaxConstraint(max = 100000, message = @tr("Amount to withdraw must be greater or equal to %constraint%."))
+    @MinConstraint(min = 1, message = @tr("Amount to withdraw must be greater or equal to %constraint%."))
+    @NonOptional(@tr("The amount is needed."))
     private final BigDecimal amount;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "14", minErrorMsg = @tr("IBAN must be between 14 and 34 characters."), //
-    max = "34", maxErrorMsg = @tr("IBAN must be between 14 and 34 characters."))
+    @MinConstraint(min = 14, message = @tr("IBAN must be between 14 and 34 characters."))
+    @MaxConstraint(max = 34, message = @tr("IBAN must be between 14 and 34 characters."))
+    @NonOptional(@tr("Please specify your IBAN."))
     private final String IBAN;
 
     public WithdrawMoneyAction(final WithdrawMoneyActionUrl url) {

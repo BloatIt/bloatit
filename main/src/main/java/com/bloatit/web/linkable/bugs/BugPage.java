@@ -21,8 +21,8 @@ import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -63,7 +63,7 @@ public final class BugPage extends ElveosPage {
 
     private static final int FILE_MAX_SIZE_MIO = 2;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a bug number."))
+    @NonOptional(@tr("You have to specify a bug number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the bug number: ''%value%''."))
     private final Bug bug;
 

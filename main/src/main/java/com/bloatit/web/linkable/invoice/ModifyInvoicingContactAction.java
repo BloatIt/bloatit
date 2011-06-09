@@ -12,7 +12,7 @@
 package com.bloatit.web.linkable.invoice;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -32,17 +32,17 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ModifyInvoicingContactProcess process;
 
     @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add a name a invoicing information."), min = "1", minErrorMsg = @tr("You must add a name a invoicing information."))
-        private final String name;
-    
-        @RequestParam(role = Role.POST)
-        @ParamConstraint(optionalErrorMsg = @tr("You must add an address a invoicing information."), min = "1", minErrorMsg = @tr("You must add an address a invoicing information."))
-        private final String address;
-    
+    @NonOptional(@tr("You must add a name a invoicing information."))
+    private final String name;
+
+    @RequestParam(role = Role.POST)
+    @NonOptional(@tr("You must add an address a invoicing information."))
+    private final String address;
+
     private final ModifyInvoicingContactActionUrl url;
 
     public ModifyInvoicingContactAction(final ModifyInvoicingContactActionUrl url) {
@@ -59,7 +59,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
         try {
             process.getActor().getContact().setName(name);
             process.getActor().getContact().setAddress(address);
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new BadProgrammerException("Fail to update a invoicing contact of a member", e);
         }
 
@@ -83,7 +83,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        //session.addParameter(url.getInvoicingContactParameter());
+        // session.addParameter(url.getInvoicingContactParameter());
     }
 
 }

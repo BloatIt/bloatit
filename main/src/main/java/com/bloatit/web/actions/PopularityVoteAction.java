@@ -14,7 +14,7 @@ package com.bloatit.web.actions;
 import java.util.EnumSet;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -37,7 +37,7 @@ public final class PopularityVoteAction extends LoggedAction {
     private static final String TARGET_KUDOSABLE = "targetKudosable";
     private static final String VOTE_UP = "voteUp";
 
-    @ParamConstraint(optionalErrorMsg = @tr("Nothing to vote on."))
+    @NonOptional(@tr("Nothing to vote on."))
     @RequestParam(name = TARGET_KUDOSABLE)
     private final KudosableInterface targetKudosable;
 
@@ -107,7 +107,7 @@ public final class PopularityVoteAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return session.pickPreferredPage();
     }
 

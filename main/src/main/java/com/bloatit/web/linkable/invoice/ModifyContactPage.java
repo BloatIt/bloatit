@@ -15,7 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -53,7 +53,7 @@ import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 public final class ModifyContactPage extends LoggedPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ModifyInvoicingContactProcess process;
 
     private final ModifyContactPageUrl url;
@@ -111,14 +111,14 @@ public final class ModifyContactPage extends LoggedPage {
         }
 
         final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
-        if(nameData.getSuggestedValue() == null) {
+        if (nameData.getSuggestedValue() == null) {
             try {
                 nameInput.setDefaultValue(process.getActor().getContact().getName());
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 throw new ShallNotPassException("The user is not allowed to access to his contact informations");
             }
         } else {
-            nameInput.setDefaultValue(nameData.getSuggestedValue());    
+            nameInput.setDefaultValue(nameData.getSuggestedValue());
         }
         nameInput.addErrorMessages(nameData.getErrorMessages());
         if (process.getActor().isTeam()) {
@@ -131,15 +131,15 @@ public final class ModifyContactPage extends LoggedPage {
         final FieldData addressData = modifyInvoicingContextActionUrl.getAddressParameter().pickFieldData();
 
         final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Address"), 10, 80);
-        
-        if(addressData.getSuggestedValue() == null) {
+
+        if (addressData.getSuggestedValue() == null) {
             try {
                 addressInput.setDefaultValue(process.getActor().getContact().getAddress());
-            } catch (UnauthorizedPrivateAccessException e) {
+            } catch (final UnauthorizedPrivateAccessException e) {
                 throw new ShallNotPassException("The user is not allowed to access to his contact informations");
             }
         } else {
-            addressInput.setDefaultValue(addressData.getSuggestedValue());    
+            addressInput.setDefaultValue(addressData.getSuggestedValue());
         }
         addressInput.addErrorMessages(addressData.getErrorMessages());
         addressInput.setComment(Context.tr("The full address, including the city and the country."));
@@ -148,11 +148,8 @@ public final class ModifyContactPage extends LoggedPage {
         final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
         newContactForm.add(newContactButton);
 
-
         return newContactForm;
     }
-
-
 
     @Override
     protected String createPageTitle() {
@@ -171,22 +168,22 @@ public final class ModifyContactPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return generateBreadcrumb(member, (process.getActor().isTeam() ? (Team) process.getActor(): null) , process);
+        return generateBreadcrumb(member, (process.getActor().isTeam() ? (Team) process.getActor() : null), process);
     }
 
     protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final ModifyInvoicingContactProcess process) {
         final Breadcrumb breadcrumb;
 
-        if(process.getFather() instanceof AccountChargingProcess) {
+        if (process.getFather() instanceof AccountChargingProcess) {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, (AccountChargingProcess) process.getFather());
-        } else if(process.getFather() instanceof ContributionProcess) {
-            ContributionProcess process2 = (ContributionProcess) process.getFather() ;
+        } else if (process.getFather() instanceof ContributionProcess) {
+            final ContributionProcess process2 = (ContributionProcess) process.getFather();
             breadcrumb = CheckContributionPage.generateBreadcrumb(process2.getFeature(), process2);
         } else {
             breadcrumb = IndexPage.generateBreadcrumb();
         }
 
-        Url url = new ModifyContactPageUrl(process);
+        final Url url = new ModifyContactPageUrl(process);
 
         breadcrumb.pushLink(url.getHtmlLink(tr("Invoicing contact")));
         return breadcrumb;

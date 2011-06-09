@@ -13,7 +13,7 @@ package com.bloatit.web.linkable.contribution;
 
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -36,7 +36,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 @ParamContainer("action/contribute")
 public final class ContributionAction extends UserContentAction {
 
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     @RequestParam
     private final ContributionProcess process;
 
@@ -86,7 +86,7 @@ public final class ContributionAction extends UserContentAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new CheckContributionPageUrl(process);
     }
 

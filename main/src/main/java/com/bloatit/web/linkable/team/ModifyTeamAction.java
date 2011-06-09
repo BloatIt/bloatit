@@ -23,8 +23,10 @@ import java.util.List;
 import com.bloatit.data.DaoTeam.Right;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.utils.FileConstraintChecker;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -49,21 +51,27 @@ public class ModifyTeamAction extends LoggedAction {
     private final Team team;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "50", maxErrorMsg = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."),//
-    optionalErrorMsg = @tr("You forgot to write a team name"))
+    @MinConstraint(min = 4,
+                   message = @tr("The team display name size has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 50,
+                   message = @tr("The team display name size has to be inferior to %constraint% your text is %valueLength% characters long."))
+    @NonOptional(@tr("You forgot to write a team name"))
     private final String displayName;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "300", maxErrorMsg = @tr("The contact size has to be inferior to %constraint%."),//
-    optionalErrorMsg = @tr("You forgot to write a specification"))
+    @MinConstraint(min = 4, message = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(max = 300, message = @tr("The contact size has to be inferior to %constraint%."))
+    @NonOptional(@tr("You forgot to write a specification"))
     private final String contact;
 
     @RequestParam(role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."),//
-    max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."),//
-    optionalErrorMsg = @tr("You forgot to write a description"))
+    @MinConstraint(
+                   min = 4,
+                   message = @tr("Number of characters for description has to be superior to %constraint% but your text is %valueLength% characters long."))
+    @MaxConstraint(
+                   max = 5000,
+                   message = @tr("Number of characters for description has to be inferior to %constraint% but your text is %valueLength% characters long."))
+    @NonOptional(@tr("You forgot to write a description"))
     private final String description;
 
     @RequestParam(role = Role.POST)

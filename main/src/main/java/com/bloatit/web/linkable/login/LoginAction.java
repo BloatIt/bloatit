@@ -11,7 +11,7 @@
  */
 package com.bloatit.web.linkable.login;
 
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -19,8 +19,8 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.context.User.ActivationState;
+import com.bloatit.framework.webprocessor.context.UserToken;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
@@ -40,11 +40,11 @@ public final class LoginAction extends ElveosAction {
     private static final String LOGIN_CODE = "bloatit_login";
     protected static final String PASSWORD_CODE = "bloatit_password";
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must enter a login."))
+    @NonOptional(@tr("You must enter a login."))
     @RequestParam(name = LOGIN_CODE, role = RequestParam.Role.POST)
     private final String login;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You must enter a password."))
+    @NonOptional(@tr("You must enter a password."))
     @RequestParam(name = PASSWORD_CODE, role = RequestParam.Role.POST)
     private final String password;
     private final LoginActionUrl url;
@@ -69,7 +69,7 @@ public final class LoginAction extends ElveosAction {
         }
 
         // We check if member is non existant or not validated
-        Member m = MemberManager.getMemberByLogin(login);
+        final Member m = MemberManager.getMemberByLogin(login);
         if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
             session.notifyBad(Context.tr("Your account has not been validated yet. Please check your emails."));
             transmitParameters();
@@ -77,8 +77,8 @@ public final class LoginAction extends ElveosAction {
         }
 
         session.setAnonymousUserToken();
-        HtmlLink link = new LostPasswordPageUrl().getHtmlLink();
-        HtmlMixedText mixed = new HtmlMixedText(Context.tr("Login failed. Wrong login or password. Password lost ? <0::Recover it>."), link);
+        final HtmlLink link = new LostPasswordPageUrl().getHtmlLink();
+        final HtmlMixedText mixed = new HtmlMixedText(Context.tr("Login failed. Wrong login or password. Password lost ? <0::Recover it>."), link);
         session.notifyBad(mixed);
 
         url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));

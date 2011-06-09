@@ -13,7 +13,7 @@ package com.bloatit.web.linkable.invoice;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -34,9 +34,8 @@ import com.bloatit.web.url.ContributionInvoicingInformationsActionUrl;
 public final class ContributionInvoicingInformationsAction extends LoggedAction {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionInvoicingProcess process;
-
 
     private final ContributionInvoicingInformationsActionUrl url;
 
@@ -48,10 +47,10 @@ public final class ContributionInvoicingInformationsAction extends LoggedAction 
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        //TODO: do the job
-        PageIterable<MilestoneContributionAmount> contributionAmounts = process.getMilestone().getContributionAmounts();
+        // TODO: do the job
+        final PageIterable<MilestoneContributionAmount> contributionAmounts = process.getMilestone().getContributionAmounts();
 
-        for(MilestoneContributionAmount contributionAmount: contributionAmounts) {
+        for (final MilestoneContributionAmount contributionAmount : contributionAmounts) {
             try {
                 new ContributionInvoice(process.getActor(),
                                         process.getActor().getContact().getName(),
@@ -67,14 +66,12 @@ public final class ContributionInvoicingInformationsAction extends LoggedAction 
                                         "TODO: invoicing id",
                                         contributionAmount.getMilestone(),
                                         contributionAmount.getContribution());
-            } catch (UnauthorizedOperationException e) {
-                throw new BadProgrammerException("Fail create a ContributionInvoice",e);
+            } catch (final UnauthorizedOperationException e) {
+                throw new BadProgrammerException("Fail create a ContributionInvoice", e);
             }
 
-
-            //TODO taxes
+            // TODO taxes
         }
-
 
         return process.close();
     }

@@ -18,8 +18,8 @@ import java.util.Locale;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -78,7 +78,7 @@ public final class MemberPage extends ElveosPage {
     @Optional(ACTIVITY_TAB)
     private final String activeTabKey;
 
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a member number."))
+    @NonOptional(@tr("You have to specify a member number."))
     @RequestParam(name = "id", conversionErrorMsg = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
 

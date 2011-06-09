@@ -22,7 +22,6 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.framework.webprocessor.annotations.ConversionErrorException;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
@@ -52,12 +51,10 @@ public class AdministrationAction extends AdminAction {
     private final AdminActionManager.Action action;
 
     @RequestParam(name = POPULARITY_STATE_CODE, role = Role.POST)
-    @ParamConstraint
     @Optional
     private final DisplayableState stateToSet;
     
     @RequestParam(name = FEATURE_STATE_CODE, role = Role.POST)
-    @ParamConstraint
     @Optional
     private final DisplayableFeatureState featureStateToSet;
 

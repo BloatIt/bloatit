@@ -17,7 +17,7 @@
 package com.bloatit.web.linkable.team;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -41,11 +41,11 @@ import com.bloatit.web.url.TeamPageUrl;
 @ParamContainer("team/doacceptinvitation")
 public final class HandleJoinTeamInvitationAction extends LoggedAction {
     @RequestParam(conversionErrorMsg = @tr("I cannot find the invitation number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify an invitation."))
+    @NonOptional(@tr("You have to specify an invitation."))
     private final JoinTeamInvitation invite;
 
     @RequestParam(conversionErrorMsg = @tr("I cannot understand if you have accepted the invitation. You wrote: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("Does your invitation is accepted or refused?"))
+    @NonOptional(@tr("Does your invitation is accepted or refused?"))
     private final Boolean accept;
 
     // Keep it for consistency

@@ -15,7 +15,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -58,7 +58,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final AccountChargingProcess process;
     private final StaticAccountChargingPageUrl url;
 

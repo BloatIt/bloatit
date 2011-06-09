@@ -19,7 +19,7 @@ import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -53,7 +53,7 @@ import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 public final class StaticCheckContributionPage extends QuotationPage {
 
     @RequestParam(conversionErrorMsg = @tr("The process is closed, expired, missing or invalid."))
-    @ParamConstraint(optionalErrorMsg = @tr("The process is closed, expired, missing or invalid."))
+    @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 
     private final StaticCheckContributionPageUrl url;
@@ -113,7 +113,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         } catch (final IllegalWriteException e) {
             getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
         }
-        HtmlLineTableModel model = new HtmlLineTableModel();
+        final HtmlLineTableModel model = new HtmlLineTableModel();
         try {
             model.addLine(new HtmlContributionLine(process.getFeature(), process.getAmount(), null));
             if (actor.getInternalAccount().getAmount().compareTo(BigDecimal.ZERO) > 0) {
@@ -159,7 +159,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(process.getFeature());
         final CheckContributionActionUrl returnUrl = new CheckContributionActionUrl(process);
         returnUrl.setAmount(process.getAmount());

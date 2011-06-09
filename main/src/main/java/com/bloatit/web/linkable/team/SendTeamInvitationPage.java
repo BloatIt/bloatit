@@ -19,7 +19,7 @@ package com.bloatit.web.linkable.team;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.tr;
@@ -49,7 +49,7 @@ public class SendTeamInvitationPage extends LoggedPage {
     private final SendTeamInvitationPageUrl url;
 
     @RequestParam(conversionErrorMsg = @tr("I cannot find the team number: ''%value%''."))
-    @ParamConstraint(optionalErrorMsg = @tr("You have to specify a team number."))
+    @NonOptional(@tr("You have to specify a team number."))
     private final Team team;
 
     public SendTeamInvitationPage(final SendTeamInvitationPageUrl url) {
@@ -76,7 +76,7 @@ public class SendTeamInvitationPage extends LoggedPage {
             }
         }
         form.add(new HtmlSubmit(Context.tr("Submit")));
-        return layout ;
+        return layout;
     }
 
     @Override
