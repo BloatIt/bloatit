@@ -188,19 +188,6 @@ public class CodeGenerator {
             newParamDescription.addParameter(param.getSuggestedValueStr());
             newParamDescription.addParameter(param.getConversionErrorMsgStr());
             newParamDescription.addParameter(param.isOptional() ? "true" : "false");
-            final MethodCall newParamConstraints = new Generator.MethodCall("UrlParameterConstraints<" + param.getTypeOrTemplateType() + ">");
-            newParamConstraints.addParameter(param.getConstraints().min);
-            newParamConstraints.addParameter(param.getConstraints().minIsExclusive ? "true" : "false");
-            newParamConstraints.addParameter(param.getConstraints().max);
-            newParamConstraints.addParameter(param.getConstraints().maxIsExclusive ? "true" : "false");
-            newParamConstraints.addParameter(param.isOptional() ? "true" : "false");
-            newParamConstraints.addParameter(String.valueOf(param.getConstraints().precision));
-            newParamConstraints.addParameter(String.valueOf(param.getConstraints().length));
-            newParamConstraints.addParameter(param.getConstraints().minErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().maxErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().optionalErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().precisionErrorMsg);
-            newParamConstraints.addParameter(param.getConstraints().LengthErrorMsg);
             final MethodCall newParam = new Generator.MethodCall("UrlParameter" + template);
             if (param.getTypeOrTemplateType().equals(param.getTypeWithoutTemplate())) {
                 newParam.addParameter("null");
@@ -208,7 +195,6 @@ public class CodeGenerator {
                 newParam.addParameter("new ArrayList()");
             }
             newParam.addParameter("new " + newParamDescription);
-            newParam.addParameter("new " + newParamConstraints);
             attribute.setStaticEquals("new " + newParam);
 
             // Value getter

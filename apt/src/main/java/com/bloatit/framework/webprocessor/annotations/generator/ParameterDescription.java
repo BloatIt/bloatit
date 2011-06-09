@@ -2,8 +2,12 @@ package com.bloatit.framework.webprocessor.annotations.generator;
 
 import javax.lang.model.element.Element;
 
+import com.bloatit.framework.webprocessor.annotations.LengthConstraint;
+import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
+import com.bloatit.framework.webprocessor.annotations.MinConstraint;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
-import com.bloatit.framework.webprocessor.annotations.ParamConstraint;
+import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
@@ -23,9 +27,25 @@ class ParameterDescription extends Description {
     private final String conversionErrorMsg;
     private final String generateFrom;
     private final boolean isOptional;
-    private final ParamConstraint constraints;
+    private final NonOptional nonOptional;
+    private final LengthConstraint lengthConstraint;
+    private final MaxConstraint maxConstraint;
+    private final MinConstraint minConstraint;
+    private final PrecisionConstraint precisionConstraint;
 
-    public ParameterDescription(final Element element, final RequestParam container, final ParamConstraint constraints, final Optional optional) {
+    public ParameterDescription(final Element element,
+                                final RequestParam container,
+                                final Optional optional,
+                                final NonOptional nonOptional,
+                                final LengthConstraint lengthConstraint,
+                                final MaxConstraint maxConstraint,
+                                final MinConstraint minConstraint,
+                                final PrecisionConstraint precisionConstraint) {
+        this.nonOptional = nonOptional;
+        this.lengthConstraint = lengthConstraint;
+        this.maxConstraint = maxConstraint;
+        this.minConstraint = minConstraint;
+        this.precisionConstraint = precisionConstraint;
         attributeName = element.getSimpleName().toString();
 
         name = computeName(container.name(), element.getSimpleName().toString(), container.role(), Utils.getDeclaredName(element));
@@ -47,7 +67,6 @@ class ParameterDescription extends Description {
             isOptional = false;
             defaultValue = null;
         }
-        this.constraints = constraints;
     }
 
     private String computeName(final String annotationName, final String javaName, final Role role, final String className) {
@@ -130,51 +149,23 @@ class ParameterDescription extends Description {
         return generateFrom;
     }
 
-    public final ParamConstraintBinder getConstraints() {
-        return new ParamConstraintBinder(constraints);
+    public NonOptional getNonOptional() {
+        return nonOptional;
     }
 
-    public static final class ParamConstraintBinder {
-        public final boolean minIsExclusive;
-        public final String min;
-        public final String minErrorMsg;
-        public final boolean maxIsExclusive;
-        public final String max;
-        public final String maxErrorMsg;
-        public final String optionalErrorMsg;
-        public final int precision;
-        public final String precisionErrorMsg;
-        public final int length;
-        public final String LengthErrorMsg;
-
-        public ParamConstraintBinder(final ParamConstraint constraint) {
-            if (constraint != null) {
-                minIsExclusive = constraint.minIsExclusive();
-                min = constraint.min();
-                minErrorMsg = Utils.getStr(constraint.minErrorMsg().value());
-                maxIsExclusive = constraint.maxIsExclusive();
-                max = constraint.max();
-                maxErrorMsg = Utils.getStr(constraint.maxErrorMsg().value());
-                optionalErrorMsg = Utils.getStr(constraint.optionalErrorMsg().value());
-                precision = constraint.precision();
-                precisionErrorMsg = Utils.getStr(constraint.precisionErrorMsg().value());
-                length = constraint.length();
-                LengthErrorMsg = Utils.getStr(constraint.LengthErrorMsg().value());
-            } else {
-                minIsExclusive = false;
-                min = ParamConstraint.DEFAULT_MIN_STR;
-                minErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
-                maxIsExclusive = false;
-                max = ParamConstraint.DEFAULT_MAX_STR;
-                maxErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
-                optionalErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
-                precision = ParamConstraint.DEFAULT_PRECISION;
-                precisionErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
-                length = ParamConstraint.DEFAULT_LENGTH;
-                LengthErrorMsg = "ParamConstraint.DEFAULT_ERROR_MSG";
-            }
-        }
-
+    public LengthConstraint getLengthConstraint() {
+        return lengthConstraint;
     }
 
+    public MaxConstraint getMaxConstraint() {
+        return maxConstraint;
+    }
+
+    public MinConstraint getMinConstraint() {
+        return minConstraint;
+    }
+
+    public PrecisionConstraint getPrecisionConstraint() {
+        return precisionConstraint;
+    }
 }
