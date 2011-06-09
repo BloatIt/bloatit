@@ -53,10 +53,15 @@ public class ModelConfiguration extends ReloadableConfiguration {
     private String[] administratorMails;
     private BigDecimal linkeosTaxesRate;
     private String linkeosName;
-    private String linkeosAddress;
     private String linkeosTaxesIdentification;
     private String invoiceLinkeosLogo;
-
+    private String linkeosInvoiceTemplate;
+    private String linkeosStreet;
+    private String linkeosExtras;
+    private String linkeosCity;
+    private String linkeosCountry;
+    private String linkeosLegalIdentification;
+    
     private ModelConfiguration() {
         super();
         load();
@@ -217,10 +222,19 @@ public class ModelConfiguration extends ReloadableConfiguration {
         administratorMails = properties.getStringArray("administrator.emails");
 
         linkeosName = properties.getString("linkeos.name");
-        linkeosAddress = properties.getString("linkeos.address");
+        linkeosInvoiceTemplate = properties.getString("linkeos.invoice_template");
+        linkeosStreet = properties.getString("linkeos.street");
+        linkeosExtras = properties.getString("linkeos.extras");
+        linkeosCity = properties.getString("linkeos.city");
+        linkeosCountry = properties.getString("linkeos.country");
+        linkeosLegalIdentification = properties.getString("linkeos.legal_identification");
+       
         linkeosTaxesIdentification = properties.getString("linkeos.taxes_identification");
         linkeosTaxesRate = properties.getBigDecimal("linkeos.taxes_rate");
 
+        
+        
+        
         invoiceLinkeosLogo = properties.getString("invoice.linkeos.logo");
     }
 
@@ -242,42 +256,33 @@ public class ModelConfiguration extends ReloadableConfiguration {
         return configuration.linkeosTaxesRate;
     }
 
-    public static String getLinkeosAddress() {
-        return configuration.linkeosAddress;
-    }
 
     public static String getLinkeosTaxIdentification() {
         return configuration.linkeosTaxesIdentification;
     }
 
-    public static Object getLinkeosInvoiceTemplate() {
-        // TODO Auto-generated method stub
-        return null;
+    public static String getLinkeosInvoiceTemplate() {
+        return configuration.linkeosInvoiceTemplate;
     }
 
     public static String getLinkeosStreet() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.linkeosStreet;
     }
 
     public static String getLinkeosExtras() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.linkeosExtras;
     }
 
     public static String getLinkeosCity() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.linkeosCity;
     }
 
     public static String getLinkeosCountry() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.linkeosCountry;
     }
 
     public static String getLinkeosLegalIdentification() {
-        // TODO Auto-generated method stub
-        return null;
+        return configuration.linkeosLegalIdentification;
     }
 
 }

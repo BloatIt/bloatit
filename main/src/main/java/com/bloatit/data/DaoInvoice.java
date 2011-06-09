@@ -26,9 +26,12 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.Actor;
 
@@ -38,6 +41,7 @@ import com.bloatit.model.Actor;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@NamedQueries(value = {@NamedQuery(cacheable = true, name = "invoice.max_invoice_number", query = "SELECT MAX(internalInvoiceNumber) FROM DaoInvoice") })
 public class DaoInvoice extends DaoIdentifiable {
 
     // Seller
@@ -48,13 +52,6 @@ public class DaoInvoice extends DaoIdentifiable {
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
     private String sellerName;
-
-    /**
-     * Invoicing adress
-     */
-    @Column(columnDefinition = "TEXT")
-    @Basic(optional = false)
-    private String sellerAddress;
 
     /**
      * Tax identification, VAT ...
@@ -68,20 +65,12 @@ public class DaoInvoice extends DaoIdentifiable {
     @ManyToOne(optional = false)
     private DaoActor receivertActor;
 
-
     /**
      * Full name or company name
      */
     @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
     private String receiverName;
-
-    /**
-     * Invoicing adress
-     */
-    @Column(columnDefinition = "TEXT")
-    @Basic(optional = false)
-    private String contributorAdress;
 
     /**
      * Tax identification, VAT ...
@@ -129,7 +118,7 @@ public class DaoInvoice extends DaoIdentifiable {
     @Basic(optional = false)
     private String sellerStreet;
 
-    @Basic(optional = false)
+    @Basic(optional = true)
     private String sellerExtras;
 
     @Basic(optional = false)
@@ -141,7 +130,7 @@ public class DaoInvoice extends DaoIdentifiable {
     @Basic(optional = false)
     private String receiverStreet;
 
-    @Basic(optional = false)
+    @Basic(optional = true)
     private String receiverExtras;
 
     @Basic(optional = false)
@@ -164,7 +153,6 @@ public class DaoInvoice extends DaoIdentifiable {
 
     @Basic(optional = true)
     private BigDecimal internalInvoiceNumber;
-
 
     protected DaoInvoice(final DaoActor recipientActor,
                          final String invoiceFile,
@@ -190,6 +178,29 @@ public class DaoInvoice extends DaoIdentifiable {
                          final String sellerLegalId,
                          final String sellerTaxIdentification) {
         super();
+        
+        checkOptionnal(recipientActor,
+                       invoiceFile,
+                       invoiceType,
+                       invoiceId,
+                       sellerName,
+                       sellerStreet,
+                       sellerCity,
+                       sellerCountry,
+                       receiverName,
+                       receiverStreet,
+                       receiverCity,
+                       receiverCountry,
+                       invoiceDate,
+                       deliveryName,
+                       priceExcludingTax,
+                       taxRate,
+                       taxAmount,
+                       totalPrice,
+                       sellerLegalId,
+                       sellerTaxIdentification);
+        
+        
         this.invoiceFile = invoiceFile;
         this.invoiceType = invoiceType;
         this.invoiceId = invoiceId;
@@ -214,37 +225,13 @@ public class DaoInvoice extends DaoIdentifiable {
         this.sellerLegalId = sellerLegalId;
         this.sellerTaxIdentification = sellerTaxIdentification;
 
-        checkOptionnal(recipientActor,
-                       invoiceFile,
-                       invoiceType,
-                       invoiceId,
-                       sellerName,
-                       sellerStreet,
-                       sellerExtras,
-                       sellerCity,
-                       sellerCountry,
-                       receiverName,
-                       receiverStreet,
-                       receiverExtras,
-                       receiverCity,
-                       receiverCountry,
-                       invoiceDate,
-                       deliveryName,
-                       priceExcludingTax,
-                       taxRate,
-                       taxAmount,
-                       totalPrice,
-                       sellerLegalId,
-                       sellerTaxIdentification);
-
         
+
     }
 
-
-    
     /**
      * Creates the bug and persist it.
-     *
+     * 
      * @param member the author
      * @param team the as Team property. can be null.
      * @param milestone the milestone on which there is a bug.
@@ -311,12 +298,9 @@ public class DaoInvoice extends DaoIdentifiable {
         return invoice;
     }
 
-
-
     public DaoActor getRecipientActor() {
         return receivertActor;
     }
-
 
     public String getFile() {
         return invoiceFile;
@@ -356,27 +340,21 @@ public class DaoInvoice extends DaoIdentifiable {
     // equals hashcode.
     // ======================================================================
 
-
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((contributorAdress == null) ? 0 : contributorAdress.hashCode());
         result = prime * result + ((receiverName == null) ? 0 : receiverName.hashCode());
         result = prime * result + ((contributorTaxIdentification == null) ? 0 : contributorTaxIdentification.hashCode());
         result = prime * result + ((deliveryName == null) ? 0 : deliveryName.hashCode());
         result = prime * result + ((invoiceFile == null) ? 0 : invoiceFile.hashCode());
         result = prime * result + ((invoiceId == null) ? 0 : invoiceId.hashCode());
         result = prime * result + ((priceExcludingTax == null) ? 0 : priceExcludingTax.hashCode());
-        result = prime * result + ((sellerAddress == null) ? 0 : sellerAddress.hashCode());
         result = prime * result + ((sellerName == null) ? 0 : sellerName.hashCode());
         result = prime * result + ((sellerTaxIdentification == null) ? 0 : sellerTaxIdentification.hashCode());
         result = prime * result + ((totalPrice == null) ? 0 : totalPrice.hashCode());
         return result;
     }
-
-
 
     @Override
     public boolean equals(Object obj) {
@@ -388,11 +366,6 @@ public class DaoInvoice extends DaoIdentifiable {
             return false;
         DaoInvoice other = (DaoInvoice) obj;
 
-        if (contributorAdress == null) {
-            if (other.contributorAdress != null)
-                return false;
-        } else if (!contributorAdress.equals(other.contributorAdress))
-            return false;
         if (receiverName == null) {
             if (other.receiverName != null)
                 return false;
@@ -423,11 +396,6 @@ public class DaoInvoice extends DaoIdentifiable {
                 return false;
         } else if (!priceExcludingTax.equals(other.priceExcludingTax))
             return false;
-        if (sellerAddress == null) {
-            if (other.sellerAddress != null)
-                return false;
-        } else if (!sellerAddress.equals(other.sellerAddress))
-            return false;
         if (sellerName == null) {
             if (other.sellerName != null)
                 return false;
@@ -446,23 +414,9 @@ public class DaoInvoice extends DaoIdentifiable {
         return true;
     }
 
-
-
-    public static BigDecimal getLastInvoiceNumber() {
-        // TODO Auto-generated method stub
-        return null;
+    public static BigDecimal getMaxInvoiceNumber() {
+        final Query q = SessionManager.getNamedQuery("invoice.max_invoice_number");
+        return (BigDecimal) q.uniqueResult();
     }
-
-
-
-
-   
-
-
-
-
-
-
-
 
 }

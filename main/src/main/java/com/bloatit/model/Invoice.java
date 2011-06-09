@@ -17,7 +17,11 @@
 package com.bloatit.model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoInvoice;
@@ -83,7 +87,7 @@ public final class Invoice extends Identifiable<DaoInvoice> {
      * @param description is a complete description of the bug.
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
-     * @throws UnauthorizedPrivateAccessException 
+     * @throws UnauthorizedPrivateAccessException
      */
     Invoice(final Actor<?> recipientActor, final BigDecimal totalPrice, final String deliveryName) throws UnauthorizedPrivateAccessException {
         super(generateInvoice(recipientActor, totalPrice, deliveryName));
@@ -103,19 +107,19 @@ public final class Invoice extends Identifiable<DaoInvoice> {
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private static DaoInvoice generateInvoice(final Actor<?> recipientActor, final BigDecimal totalPrice, final String deliveryName) throws UnauthorizedPrivateAccessException {
+    private static DaoInvoice generateInvoice(final Actor<?> recipientActor, final BigDecimal totalPrice, final String deliveryName)
+            throws UnauthorizedPrivateAccessException {
 
         String invoiceType = "Elveos's fee invoice";
-        
+
         BigDecimal internalInvoiceNumber = BigDecimal.ZERO;
-        
-        BigDecimal lastInternalInvoiceNumber = DaoInvoice.getLastInvoiceNumber();
-        if( lastInternalInvoiceNumber != null) {
+
+        BigDecimal lastInternalInvoiceNumber = DaoInvoice.getMaxInvoiceNumber();
+        if (lastInternalInvoiceNumber != null) {
             internalInvoiceNumber = lastInternalInvoiceNumber.add(BigDecimal.ONE);
         }
-        
+
         String invoiceId = generateInvoiceId(ModelConfiguration.getLinkeosInvoiceTemplate(), internalInvoiceNumber);
-        
 
         String sellerName = ModelConfiguration.getLinkeosName();
         String sellerStreet = ModelConfiguration.getLinkeosStreet();
@@ -124,18 +128,17 @@ public final class Invoice extends Identifiable<DaoInvoice> {
         String sellerCountry = ModelConfiguration.getLinkeosCountry();
         String sellerTaxId = ModelConfiguration.getLinkeosTaxIdentification();
         String sellerLegalId = ModelConfiguration.getLinkeosLegalIdentification();
-        
+
         final BigDecimal taxRate = ModelConfiguration.getLinkeosTaxesRate();
         final BigDecimal priceExcludingTax = totalPrice.divide(BigDecimal.ONE.add(taxRate), BigDecimal.ROUND_HALF_EVEN);
         BigDecimal taxAmount = totalPrice.subtract(priceExcludingTax);
-        
+
         String receiverName = recipientActor.getContact().getName();
         String receiverStreet = recipientActor.getContact().getStreet();
         String receiverExtras = recipientActor.getContact().getExtras();
         String receiverCity = recipientActor.getContact().getPostalCode() + " " + recipientActor.getContact().getCity();
         String receiverCountry = recipientActor.getContact().getCountry();
         Date invoiceDate = DateUtils.now();
-        
 
         InvoicePdfGenerator pdfGenerator = new InvoicePdfGenerator(invoiceType,
                                                                    invoiceId,
@@ -183,11 +186,28 @@ public final class Invoice extends Identifiable<DaoInvoice> {
                                            sellerTaxId);
     }
 
-    private static String generateInvoiceId(Object linkeosInvoiceTemplate, BigDecimal internalInvoiceNumber) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    private static String generateInvoiceId(String linkeosInvoiceTemplate, BigDecimal internalInvoiceNumber) {
+        Pattern p = Pattern.compile("^(.*)\\{invoice_number\\|length=([0-9]+)}(.*)$");
+        Matcher m = p.matcher(linkeosInvoiceTemplate);
+        
+        if (m.matches()) {
+            
+            int size = Integer.valueOf(m.group(2));
+            int intValue = internalInvoiceNumber.intValue();
 
+            String format = "";
+            for (int i = 0; i < size; i++) {
+                format += "0";
+            }
+            
+            NumberFormat nf = new DecimalFormat(format);
+
+            return m.group(1) + nf.format(intValue) + m.group(3);
+        }
+
+        return linkeosInvoiceTemplate;
+    }
+    
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

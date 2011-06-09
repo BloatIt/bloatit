@@ -152,7 +152,7 @@ public class InvoicePdfGenerator {
 
         this.pageSize = PageSize.A4;
         this.document = new Document();
-        this.filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId;
+        this.filename = FrameworkConfiguration.getRessourcesDirStorage() + "/invoices/" + invoiceId + ".pdf";
 
         if (new File(filename).exists()) {
             throw new BadProgrammerException("Already existing invoice with that number");
@@ -162,6 +162,7 @@ public class InvoicePdfGenerator {
 
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
+            document.open();
             addMetaData(invoiceType, invoiceId, sellerName);
             addLinkeosImg();
             addEmitter(sellerName, sellerStreet, sellerExtras, sellerCity, sellerCountry);
@@ -274,8 +275,11 @@ public class InvoicePdfGenerator {
      * @throws InvalidPositionException when some of the coordinates used are
      *             incorrect
      */
-    private void addEmitter(final String sellerName, final String sellerStreet, final String sellerExtras, final String sellerZIP, final String sellerCountry)
-            throws DocumentException, InvalidPositionException {
+    private void addEmitter(final String sellerName,
+                            final String sellerStreet,
+                            final String sellerExtras,
+                            final String sellerZIP,
+                            final String sellerCountry) throws DocumentException, InvalidPositionException {
         final StringBuilder sb = new StringBuilder();
         sb.append(sellerName).append('\n');
         sb.append(sellerStreet).append('\n');
@@ -302,8 +306,11 @@ public class InvoicePdfGenerator {
      * @throws InvalidPositionException when some of the coordinates used are
      *             incorrect
      */
-    private void addReceiver(final String receiverName, final String receiverStreet, final String receiverExtras, final String receiverZIP, final String receiverCountry)
-            throws DocumentException, InvalidPositionException {
+    private void addReceiver(final String receiverName,
+                             final String receiverStreet,
+                             final String receiverExtras,
+                             final String receiverZIP,
+                             final String receiverCountry) throws DocumentException, InvalidPositionException {
         final StringBuilder sb = new StringBuilder();
         sb.append(receiverName).append('\n');
         sb.append(receiverStreet).append('\n');
@@ -350,24 +357,26 @@ public class InvoicePdfGenerator {
         table.addCell(createTableBodyCell(price));
 
         table.setWidthPercentage(100);
-        final float[] widths = { 300f, 66f, 120f, 85f };
+        final float[] widths = {300f, 66f, 120f, 85f };
         table.setWidths(widths);
 
         setLeft(430, table);
     }
 
-    private void addTaxesTable(final BigDecimal amountNoTaxes, final BigDecimal taxRate, final BigDecimal taxAmount, final BigDecimal amountTaxesIncluded)
-            throws DocumentException, InvalidPositionException {
+    private void addTaxesTable(final BigDecimal amountNoTaxes,
+                               final BigDecimal taxRate,
+                               final BigDecimal taxAmount,
+                               final BigDecimal amountTaxesIncluded) throws DocumentException, InvalidPositionException {
         final PdfPTable table = new PdfPTable(2);
         table.addCell(createTableBodyCell("Sub Total"));
         table.addCell(createTableBodyCell(amountNoTaxes));
-        table.addCell(createTableBodyCell("Taxes (" + taxRate.setScale(TAX_RATE_SCALE).toPlainString() + " %)"));
+        table.addCell(createTableBodyCell("Taxes (" + taxRate.setScale(TAX_RATE_SCALE, BigDecimal.ROUND_HALF_EVEN).toPlainString() + " %)"));
         table.addCell(createTableBodyCell(taxAmount));
         table.addCell(createTableBodyCell("Total (taxes included)"));
         table.addCell(createTableBodyCell(amountTaxesIncluded));
 
         table.setWidthPercentage(100);
-        final float[] widths = { 186f, 85f };
+        final float[] widths = {186f, 85f };
         table.setWidths(widths);
 
         setAt(TAXES_TABLE_LEFT, 375, table);
@@ -384,7 +393,8 @@ public class InvoicePdfGenerator {
      * @throws InvalidPositionException when the content is added in a place
      *             where it shouldn't
      */
-    private void addFooter(final String sellerName, final String sellerId, final String sellerTaxIdentification) throws DocumentException, InvalidPositionException {
+    private void addFooter(final String sellerName, final String sellerId, final String sellerTaxIdentification)
+            throws DocumentException, InvalidPositionException {
         final PdfContentByte cb = writer.getDirectContent();
 
         cb.setLineWidth(1.7f);

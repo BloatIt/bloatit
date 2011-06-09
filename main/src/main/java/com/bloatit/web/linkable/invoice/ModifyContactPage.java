@@ -29,6 +29,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
+import com.bloatit.framework.webprocessor.url.UrlParameter;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
@@ -99,59 +100,86 @@ public final class ModifyContactPage extends LoggedPage {
         final ModifyInvoicingContactActionUrl modifyInvoicingContextActionUrl = new ModifyInvoicingContactActionUrl(process);
         final HtmlForm newContactForm = new HtmlForm(modifyInvoicingContextActionUrl.urlString());
 
-        // Name
-        final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
+        try {
 
-        String name = "";
+            // Name
+            final FieldData nameData = modifyInvoicingContextActionUrl.getNameParameter().pickFieldData();
 
-        if (process.getActor().isTeam()) {
-            name = Context.tr("Organisation name");
-        } else {
-            name = Context.tr("Name");
-        }
+            String name = "";
 
-        final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
-        if(nameData.getSuggestedValue() == null) {
-            try {
+            if (process.getActor().isTeam()) {
+                name = Context.tr("Organisation name");
+            } else {
+                name = Context.tr("Name");
+            }
+
+            final HtmlTextField nameInput = new HtmlTextField(nameData.getName(), name);
+            if (nameData.getSuggestedValue() == null) {
                 nameInput.setDefaultValue(process.getActor().getContact().getName());
-            } catch (UnauthorizedPrivateAccessException e) {
-                throw new ShallNotPassException("The user is not allowed to access to his contact informations");
+            } else {
+                nameInput.setDefaultValue(nameData.getSuggestedValue());
             }
-        } else {
-            nameInput.setDefaultValue(nameData.getSuggestedValue());    
-        }
-        nameInput.addErrorMessages(nameData.getErrorMessages());
-        if (process.getActor().isTeam()) {
-            nameInput.setComment(Context.tr("The name of your company or your association."));
-        } else {
-            nameInput.setComment(Context.tr("Your full name"));
-        }
-        newContactForm.add(nameInput);
-
-        final FieldData addressData = modifyInvoicingContextActionUrl.getStreetParameter().pickFieldData();
-
-        final HtmlTextArea addressInput = new HtmlTextArea(addressData.getName(), Context.tr("Street"), 10, 80);
-        
-        if(addressData.getSuggestedValue() == null) {
-            try {
-                addressInput.setDefaultValue(process.getActor().getContact().getCity());
-            } catch (UnauthorizedPrivateAccessException e) {
-                throw new ShallNotPassException("The user is not allowed to access to his contact informations");
+            nameInput.addErrorMessages(nameData.getErrorMessages());
+            if (process.getActor().isTeam()) {
+                nameInput.setComment(Context.tr("The name of your company or your association."));
+            } else {
+                nameInput.setComment(Context.tr("Your full name"));
             }
-        } else {
-            addressInput.setDefaultValue(addressData.getSuggestedValue());    
+            newContactForm.add(nameInput);
+
+            // Street
+            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getStreetParameter(),//
+                                                 Context.tr("Street"),//
+                                                 process.getActor().getContact().getStreet()));
+
+            // Extras
+            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getExtrasParameter(),//
+                                                 Context.tr("Extras"),//
+                                                 process.getActor().getContact().getExtras(), Context.tr("Optional.")));
+
+            
+            // City
+            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCityParameter(),//
+                                                 Context.tr("City"),//
+                                                 process.getActor().getContact().getCity()));
+
+            // Postal code
+            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getPostalCodeParameter(),//
+                                                 Context.tr("Postal code"),//
+                                                 process.getActor().getContact().getPostalCode()));
+
+            // Country
+            newContactForm.add(generateTextField(modifyInvoicingContextActionUrl.getCountryParameter(),//
+                                                 Context.tr("Country"),//
+                                                 process.getActor().getContact().getCountry()));
+
+            final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
+            newContactForm.add(newContactButton);
+        } catch (UnauthorizedPrivateAccessException e) {
+            throw new ShallNotPassException("The user is not allowed to access to his contact informations");
         }
-        addressInput.addErrorMessages(addressData.getErrorMessages());
-        newContactForm.add(addressInput);
-
-        final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
-        newContactForm.add(newContactButton);
-
 
         return newContactForm;
     }
 
-
+    private HtmlTextField generateTextField(UrlParameter<String, String> parameter, String name, String defaultValue) {
+        return generateTextField(parameter, name, defaultValue, null);
+    }
+    
+    private HtmlTextField generateTextField(UrlParameter<String, String> parameter, String name, String defaultValue, String comment) {
+        final FieldData fieldData = parameter.pickFieldData();
+        final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
+        if (fieldData.getSuggestedValue() == null) {
+            input.setDefaultValue(defaultValue);
+        } else {
+            input.setDefaultValue(fieldData.getSuggestedValue());
+        }
+        if(comment != null) {
+            input.setComment(comment);
+        }
+        input.addErrorMessages(fieldData.getErrorMessages());
+        return input;
+    }
 
     @Override
     protected String createPageTitle() {
@@ -170,16 +198,16 @@ public final class ModifyContactPage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return generateBreadcrumb(member, (process.getActor().isTeam() ? (Team) process.getActor(): null) , process);
+        return generateBreadcrumb(member, (process.getActor().isTeam() ? (Team) process.getActor() : null), process);
     }
 
     protected static Breadcrumb generateBreadcrumb(final Member member, final Team asTeam, final ModifyInvoicingContactProcess process) {
         final Breadcrumb breadcrumb;
 
-        if(process.getFather() instanceof AccountChargingProcess) {
+        if (process.getFather() instanceof AccountChargingProcess) {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, (AccountChargingProcess) process.getFather());
-        } else if(process.getFather() instanceof ContributionProcess) {
-            ContributionProcess process2 = (ContributionProcess) process.getFather() ;
+        } else if (process.getFather() instanceof ContributionProcess) {
+            ContributionProcess process2 = (ContributionProcess) process.getFather();
             breadcrumb = CheckContributionPage.generateBreadcrumb(process2.getFeature(), process2);
         } else {
             breadcrumb = IndexPage.generateBreadcrumb();
