@@ -166,7 +166,6 @@ public class DaoFeatureTest extends DataTestUnit {
         feature.addContribution(fred, null, new BigDecimal("25.00"), "I'm so generous too");
         feature.addContribution(yo, null, new BigDecimal("18.00"), "I'm so generous too");
 
-
         for (final DaoContribution Contribution : feature.getContributions()) {
             Contribution.validate(offer.getCurrentMilestone(), 100);
         }
@@ -243,21 +242,11 @@ public class DaoFeatureTest extends DataTestUnit {
 
     @Test
     public void testSearchFeature() {
-        final DaoFeature feature = DaoFeature.createAndPersist(yo,
-                                                               null,
-                                                               DaoDescription.createAndPersist(yo,
-                                                                                               null,
-                                                                                               new Locale("fr"),
-                                                                                               "Ma super demande !",
-                                                                                               "Ceci est la descption de ma demande :) "),
-                                                               project);
-        feature.addOffer(createOffer(feature));
-
-        // This is needed to index the new Feature.
+        // This is needed to index the new Features.
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
 
-        final FeatureSearch search = new FeatureSearch("super");
+        final FeatureSearch search = new FeatureSearch("");
 
         assertTrue(search.doSearch().size() > 0);
     }
