@@ -35,8 +35,10 @@ import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
+import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -60,7 +62,7 @@ public final class ReportBugPage extends CreateUserContentPage {
     private final ReportBugPageUrl url;
 
     public ReportBugPage(final ReportBugPageUrl url) {
-        super(url, (computeActionUrl(computeMilestone(url))));
+        super(url);
         this.url = url;
         milestone = computeMilestone(url);
         offer = url.getOffer();
@@ -74,13 +76,6 @@ public final class ReportBugPage extends CreateUserContentPage {
             return url.getOffer().getLastMilestone();
         }
         return url.getOffer().getCurrentMilestone();
-    }
-
-    private static ReportBugActionUrl computeActionUrl(final Milestone milestone) {
-        if (milestone == null) {
-            return null;
-        }
-        return new ReportBugActionUrl(milestone);
     }
 
     @Override
@@ -119,11 +114,11 @@ public final class ReportBugPage extends CreateUserContentPage {
         reportBugForm.add(bugTitleInput);
 
         // As team
-        addAsTeamField(reportBugForm,
-                       loggedUser,
-                       UserTeamRight.TALK,
-                       Context.tr("In the name of "),
-                       Context.tr("Write this bug report in the name of this group."));
+        reportBugForm.add(new AsTeamField(doReportUrl,
+                                          loggedUser,
+                                          UserTeamRight.TALK,
+                                          Context.tr("In the name of "),
+                                          Context.tr("Write this bug report in the name of this group.")));
 
         // descriptions of the bug
         final FieldData descriptionFieldData = doReportUrl.getDescriptionParameter().pickFieldData();
@@ -137,7 +132,7 @@ public final class ReportBugPage extends CreateUserContentPage {
         reportBugForm.add(descriptionInput);
 
         // Language
-        addLanguageField(reportBugForm, Context.tr("Language"), Context.tr("Language of the description."));
+        reportBugForm.add(new LanguageField(doReportUrl, Context.tr("Language"), Context.tr("Language of the description.")));
 
         // Level
         final FieldData levelFieldData = doReportUrl.getLevelParameter().pickFieldData();

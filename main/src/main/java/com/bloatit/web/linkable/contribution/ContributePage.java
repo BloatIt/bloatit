@@ -53,7 +53,7 @@ public final class ContributePage extends CreateUserContentPage {
     private final ContributePageUrl url;
 
     public ContributePage(final ContributePageUrl url) {
-        super(url, new CheckContributionActionUrl(url.getProcess()));
+        super(url);
         this.url = url;
         process = url.getProcess();
     }
@@ -85,11 +85,12 @@ public final class ContributePage extends CreateUserContentPage {
         contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents."));
 
         // Input field : As team
-        final AsTeamField teamField = addAsTeamField(contribForm,
-                                                     me,
-                                                     UserTeamRight.BANK,
-                                                     tr("In the name of"),
-                                                     tr("Talk in the name of this team and use its money to make a contribution."));
+        AsTeamField teamField = new AsTeamField(formActionUrl,
+                                                me,
+                                                UserTeamRight.BANK,
+                                                tr("In the name of"),
+                                                tr("Talk in the name of this team and use its money to make a contribution."));
+        contribForm.add(teamField);
         if (process.getTeam() != null) {
             teamField.getTeamInput().setDefaultValue(process.getTeam().getId().toString());
         }

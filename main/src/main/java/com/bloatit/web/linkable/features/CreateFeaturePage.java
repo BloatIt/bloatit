@@ -29,7 +29,10 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.SoftwareManager;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.usercontent.AsTeamField;
+import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
+import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeatureActionUrl;
@@ -47,7 +50,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
     private final CreateFeaturePageUrl url;
 
     public CreateFeaturePage(final CreateFeaturePageUrl url) {
-        super(url, new CreateFeatureActionUrl());
+        super(url);
         this.url = url;
     }
 
@@ -97,11 +100,11 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         createFeatureForm.add(softwareInput);
 
         // As team input
-        addAsTeamField(createFeatureForm,
-                       loggedUser,
-                       UserTeamRight.TALK,
-                       tr("In the name of"),
-                       tr("You can create this feature in the name of a team."));
+        createFeatureForm.add(new AsTeamField(doCreateUrl,
+                                              loggedUser,
+                                              UserTeamRight.TALK,
+                                              tr("In the name of"),
+                                              tr("You can create this feature in the name of a team.")));
 
         // Description of the feature
         final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().pickFieldData();
@@ -136,10 +139,10 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         createFeatureForm.add(specificationInput);
 
         // Language
-        addLanguageField(createFeatureForm, tr("Description language"), tr("The language of the description you just wrote."));
+        createFeatureForm.add(new LanguageField(doCreateUrl, tr("Description language"), tr("The language of the description you just wrote.")));
 
         // Attachment
-        addAddAttachmentField(createFeatureForm, FILE_MAX_SIZE_MIO + " Mio");
+        createFeatureForm.add(new AttachmentField(doCreateUrl, FILE_MAX_SIZE_MIO + " Mio"));
 
         // Submit button
         createFeatureForm.add(new HtmlSubmit(tr("submit")));

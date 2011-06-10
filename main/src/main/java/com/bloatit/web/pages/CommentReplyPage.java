@@ -32,6 +32,8 @@ import com.bloatit.web.linkable.bugs.BugPage;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.release.ReleasePage;
+import com.bloatit.web.linkable.usercontent.AsTeamField;
+import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -55,7 +57,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
     private final Comment targetComment;
 
     public CommentReplyPage(final CommentReplyPageUrl url) {
-        super(url, new CreateCommentActionUrl(url.getTargetComment()));
+        super(url);
         this.url = url;
         this.targetComment = url.getTargetComment();
     }
@@ -78,11 +80,11 @@ public final class CommentReplyPage extends CreateUserContentPage {
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
         // as team
-        addAsTeamField(form,
-                       loggedUser,
-                       UserTeamRight.TALK,
-                       Context.tr("In the name of"),
-                       Context.tr("Write this comment in the name of this group."));
+        form.add(new AsTeamField(commentCommentActionUrl,
+                                 loggedUser,
+                                 UserTeamRight.TALK,
+                                 Context.tr("In the name of"),
+                                 Context.tr("Write this comment in the name of this group.")));
 
         // Comment text
         final FieldData commentData = commentCommentActionUrl.getCommentParameter().pickFieldData();
@@ -92,7 +94,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         form.add(commentInput);
 
         // as team
-        addAddAttachmentField(form, CommentForm.FILE_MAX_SIZE_MIO + " Mio");
+        form.add(new AttachmentField(commentCommentActionUrl, CommentForm.FILE_MAX_SIZE_MIO + " Mio"));
 
         // submit
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
