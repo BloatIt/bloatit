@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
@@ -304,7 +305,11 @@ public final class Loaders {
             try {
                 @SuppressWarnings("rawtypes") final DaoIdentifiableQuery<?> daoIdentifiableQuery = new DaoIdentifiableQuery();
                 daoIdentifiableQuery.idEquals(Integer.valueOf(data));
-                return daoIdentifiableQuery.uniqueResult().accept(new DataVisitorConstructor());
+                Object uniqueResult = daoIdentifiableQuery.uniqueResult();
+                if (uniqueResult == null) {
+                    throw new ConversionErrorException("No identifiable matching the id");
+                }
+                return ((DaoIdentifiable) uniqueResult).accept(new DataVisitorConstructor());
             } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
