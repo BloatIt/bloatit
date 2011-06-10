@@ -4,50 +4,50 @@ Présentation d'Elveos
 Qu'est ce qu'elveos ?
 ---------------------
 
-Elveos est un site où les utilisateurs et les développeurs de logiciel libre sont mis en relations afin d'améliorer ou de créer des logiciels libres.
+Elveos est un site où les utilisateurs et les développeurs de logiciel libre sont mis en relation afin d'améliorer ou de créer des logiciels libres.
 
-Le site fonctionne par un système similaire à de l'achat groupé.
+Le site fonctionne par un système d'achat groupé.
 
-Si vous êtes un utilisateur de logiciel libre, vous pouvez trouver ici des personnes partageant les mêmes besoins que vous, et avec qui partager le cout des développement.
+Si vous êtes un utilisateur de logiciels libres, vous pouvez trouver ici des personnes partageant les mêmes besoins que vous, et avec qui partager le coût des développements.
 Si vous êtes un développeur, vous pouvez être payé pour réaliser les demandes des utilisateurs.
 
 Voici une description rapide du fonctionnement d'Elveos:
 
  1. Un utilisateur, une organisation, ou un développeur ajoute sur le site une *demande* qui décrit le besoin.
- 2. Toutes personnes ou organisations qui sont intéréssées par la réalisation de cette demande peut participer financièrement du montant de son choix.
- 3. En parralèle des développeurs peuvent faire des offres de développement pour cette demande. Les développeurs indiquent plusieurs informations comme le prix, la date de sortie, les détails de la réalisation.
- 4. Les contributeurs choisissent une seule des offres par vote, en fonction du prix, des délais ou même de la confiance qu'ils ont au développeur.
+ 2. Toute personne ou organisation qui est intéréssé par la réalisation de cette demande peut participer financièrement à hauteur du montant de son choix.
+ 3. En parallèle des développeurs peuvent faire des offres de développement pour cette demande. Les développeurs indiquent plusieurs informations comme le prix, la date de sortie, les détails de la réalisation ...
+ 4. Les contributeurs peuvent alors voter pour les offres qu'ils préfèrent, en fonction du prix, des délais ou même de la confiance qu'ils accordent au développeur.
  5. Dès que l'argent est disponible, le développeur peut commencer à développer.
- 6. Une fois la demande réalisée, les contributeurs déterminent la qualité du développement. En fonction du résultat le développeur est payé ou doit corriger les bugs signalés.
+ 6. Une fois la demande réalisée, les contributeurs déterminent la qualité du développement. En fonction du résultat, le développeur est payé ou doit corriger les bugs signalés.
  
-Ceci est une description rapide du process. Beaucoup plus de détails sur chaque étape sont présentes dans la documentation du fonctionnement détaillé d'Elveos.
+Ceci est une description rapide du processus. Beaucoup plus de détails sur chaque étape sont présents dans la documentation du fonctionnement détaillé d'Elveos.
 
-Ce schéma montre en version encore plus simplifiée du process :
+Ce schéma montre en version encore plus simplifiée du processus :
 
 ![présentation elveos](/resources/fr/img/presentation_800px.png)
 
 
-Origines de demandes
+Origines des demandes
 --------------------
 
-Les demandes peuvent être ajouté par n'importe qui :
+N'importe qui peut créer une demande :
 
  * Un particulier, utilisateur de logiciel libre qui aimerait voir une nouvelle fonctionnalité dans un logiciel, ou simplement soutenir un projet open source.
- * Un développeur qui n'a pas le temps ou le budjet pour implémenter certains point de sa roadmap, qui ajoute ces points à Elveos afin de se financer.
- * Une entreprise qui a besoin d'une fonctionnalité ou d'une correction de bug dans un logiciel qu'elle utilise mais ne souhaitant pas assumer seule le coût de l'évolution.
- 
+ * Un développeur qui n'a pas le budget pour implémenter certains points de sa roadmap, qui ajoute ces points à Elveos pour se financer.
+ * Une entreprise qui a besoin d'une fonctionnalité ou d'une correction de bug dans un logiciel qu'elle utilise mais ne souhaite pas assumer seule le coût de l'évolution.
+
 
 Type de demandes
 ----------------
 
-La description des demandes faite jusqu'ici laissait penser que les demandes sont exclusivement du développement. En réalité, n'importe quelle tâche peut être demandé à partir du moment ou le résultat sera disponible sous une licence libre :
+La description des demandes faites jusqu'ici laissait penser que les demandes sont exclusivement du développement. En réalité, n'importe quelle tâche peut être demandé tant que le résultat est disponible sous une licence libre :
 
-- Ajout de fonctionnalité dans un logiciel existant
+- Ajout de fonctionnalités dans un logiciel existant
 - Correction de bugs
 - Création d'un petit logiciel
 - Création d'un plugin, d'une extention ou d'un add-on
 - Création de jeux de tests
-- Rédaction de documentation, RFC, tutoriaux, etc
+- Rédaction de documentation, spécifications, tutoriaux, etc
 - Création de ressources graphiques, sonores, etc
 - Traduction d'un logiciel ou d'un document
 - Ajout d'un paquet dans une distribution
@@ -56,11 +56,9 @@ La description des demandes faite jusqu'ici laissait penser que les demandes son
 Équipes
 -------
 
-Sur le site Elveos, de nombreuse actions peuvent être faites, non pas pour son propre compte, mais au nom d'une équipe (équipe, association, entreprise, etc):
+Sur le site Elveos de nombreuses actions peuvent être faites, non pas pour son propre compte, mais au nom d'une équipe (association, entreprise, groupement de développeurs, ...). Par exemple :
 
 * Un développeur peut faire une offre au nom d'une association dont il faut partie. Dans ce cas, ce n'est pas le développeur qui touche l'argent, mais l'association.
-
 * Un utilisateur peut écrire un commentaire au nom de son entreprise, se placant ainsi en porte parole de son entreprise.
 
-De nombres autres action sont réalisable au nom d'une équipe. Il est clairement indiqué, partout sur le site, qui est l'auteur, membre ou équipe qui à fait l'action.
-
+De nombres autres actions sont réalisables au nom d'une équipe. Il est clairement indiqué, partout sur le site, qui est l'auteur, membre ou équipe qui à fait l'action.

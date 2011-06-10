@@ -39,7 +39,7 @@ import com.bloatit.web.url.CreateCommentActionUrl;
 @ParamContainer("comment/docomment")
 public final class CreateCommentAction extends UserContentAction {
 
-    @NonOptional(@tr("The comment must be post on a commentable thing"))
+    @NonOptional(@tr("The comment must be posted on a commentable thing"))
     @RequestParam(name = "target")
     private final Commentable commentable;
 

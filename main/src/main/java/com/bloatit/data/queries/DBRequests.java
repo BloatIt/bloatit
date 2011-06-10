@@ -71,6 +71,9 @@ public class DBRequests {
         }
         final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
         final T identifiable = (T) currentSession.get(persistant, id);
+        if (identifiable == null) {
+            return null;
+        }
         if (DaoUserContent.class.isAssignableFrom(persistant)) {
             if (((DaoUserContent) identifiable).isDeleted()) {
                 return null;
