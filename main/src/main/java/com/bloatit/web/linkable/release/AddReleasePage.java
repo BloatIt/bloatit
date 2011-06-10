@@ -30,7 +30,9 @@ import com.bloatit.model.Milestone;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
+import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AddReleaseActionUrl;
@@ -51,7 +53,7 @@ public final class AddReleasePage extends CreateUserContentPage {
     private final AddReleasePageUrl url;
 
     public AddReleasePage(final AddReleasePageUrl url) {
-        super(url, new AddReleaseActionUrl(url.getMilestone()));
+        super(url);
         this.url = url;
         milestone = url.getMilestone();
     }
@@ -105,10 +107,10 @@ public final class AddReleasePage extends CreateUserContentPage {
         form.add(descriptionInput);
 
         // Language
-        addLanguageField(form, tr("Language"), tr("Language of the descriptions."));
+        form.add(new LanguageField(doCreateUrl, tr("Language"), tr("Language of the descriptions.")));
 
         // attachment
-        addAddAttachmentField(form, "1 Gio");
+        form.add(new AttachmentField(doCreateUrl, "1 Gio"));
 
         form.add(new HtmlSubmit(tr("submit")));
 

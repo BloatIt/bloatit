@@ -45,7 +45,9 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.OfferBlock;
+import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
+import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MakeOfferPageUrl;
@@ -65,7 +67,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
     private final MakeOfferPageUrl url;
 
     public MakeOfferPage(final MakeOfferPageUrl url) {
-        super(url, new OfferActionUrl(url.getFeature()));
+        super(url);
         this.url = url;
         this.feature = url.getFeature();
         this.offer = url.getOffer();
@@ -105,7 +107,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         }
 
         // Create offer form
-        final OfferActionUrl offerActionUrl = (OfferActionUrl) getTargetUrl();
+        final OfferActionUrl offerActionUrl = new OfferActionUrl(url.getFeature());
         offerActionUrl.setDraftOffer(offer);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 
@@ -119,11 +121,11 @@ public final class MakeOfferPage extends CreateUserContentPage {
 
         // asTeam
         if (offer == null) {
-            addAsTeamField(offerForm,
-                           me,
-                           UserTeamRight.TALK,
-                           Context.tr("In the name of "),
-                           Context.tr("Write this offer in the name of a team, and offer the contributions to this team."));
+            offerForm.add(new AsTeamField(offerActionUrl,
+                                          me,
+                                          UserTeamRight.TALK,
+                                          Context.tr("In the name of "),
+                                          Context.tr("Write this offer in the name of a team, and offer the contributions to this team.")));
         }
         if (offer != null && offer.getAsTeam() != null) {
             offerForm.add(new HtmlHidden(offerActionUrl.getTeamParameter().getName(), offer.getAsTeam().getId().toString()));
@@ -168,9 +170,9 @@ public final class MakeOfferPage extends CreateUserContentPage {
         offerForm.add(licenseInput);
 
         // locale
-        addLanguageField(offerForm, //
+        offerForm.add(new LanguageField(offerActionUrl,  //
                          Context.tr("description language"), //
-                         Context.tr("The language in which you have maid the description."));
+                         Context.tr("The language in which you have maid the description.")));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));

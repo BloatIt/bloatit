@@ -26,6 +26,7 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.components.SideBarUserContentBlock;
+import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
@@ -45,7 +46,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
     private final AddAttachementPageUrl url;
 
     public AddAttachementPage(final AddAttachementPageUrl url) {
-        super(url, new AddAttachementActionUrl(url.getUserContent()));
+        super(url);
         this.url = url;
         userContent = url.getUserContent();
     }
@@ -77,7 +78,8 @@ public final class AddAttachementPage extends CreateUserContentPage {
         final HtmlForm form = new HtmlForm(formUrl.urlString());
 
         form.enableFileUpload();
-        addAddAttachmentField(form, FILE_MAX_SIZE_MIO + " Mio", false);
+
+        form.add(new AttachmentField(formUrl, FILE_MAX_SIZE_MIO + " Mio", false));
         form.add(new HtmlSubmit(tr("Submit")));
 
         group.add(title);

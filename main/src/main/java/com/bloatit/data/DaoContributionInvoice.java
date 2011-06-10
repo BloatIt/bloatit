@@ -38,7 +38,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class DaoContributionInvoice extends DaoInvoice {
 
     @ManyToOne(optional = true)
-    public DaoActor emitterActor;
+    public DaoActor sellerActor;
 
     /**
      * Corresponding contribution. null if commission invoice
@@ -103,7 +103,7 @@ public class DaoContributionInvoice extends DaoInvoice {
 
         checkOptionnal(emitterActor, milestone, contribution);
 
-        this.emitterActor = emitterActor;
+        this.sellerActor = emitterActor;
         this.milestone = milestone;
         this.contribution = contribution;
     }
@@ -182,7 +182,7 @@ public class DaoContributionInvoice extends DaoInvoice {
     }
 
     public DaoActor getEmitterActor() {
-        return emitterActor;
+        return sellerActor;
     }
 
     // ======================================================================
