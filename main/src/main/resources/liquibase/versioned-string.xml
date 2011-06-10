@@ -75,7 +75,7 @@
 	
 	<changeSet author='Yoann Plénet' id="create pgplsql">
 		<sql splitStatements="false">
-			CREATE LANGUAGE plpgsql;
+			CREATE OR REPLACE LANGUAGE plpgsql;
 		</sql>	
 	</changeSet>
 
