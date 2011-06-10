@@ -170,7 +170,15 @@
 			baseTableName="daotranslation" constraintName="FKCVERSIONEDSTRINGDAOTRANSLATION"
 			deferrable="false" initiallyDeferred="false" referencedColumnNames="id"
 			referencedTableName="daoversionedstring" referencesUniqueColumn="false" />
-		
+	</changeSet>
+	
+	<changeSet id="Fix non-null on currentversion_id" author="Thomas Guyard">
+		<dropNotNullConstraint tableName="daoversionedstring"
+		columnName="currentversion_id" />
+	</changeSet>
+	<changeSet id="Fix non-null on author_id" author="Thomas Guyard">
+		<dropNotNullConstraint tableName="daostringversion"
+			columnName="author_id" />
 	</changeSet>
 
 </databaseChangeLog>
