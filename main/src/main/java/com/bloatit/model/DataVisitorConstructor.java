@@ -271,21 +271,26 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
 
     @Override
     public Identifiable<?> visit(DaoStringVersion dao) {
-        throw new NotImplementedException();
+        // FIXME (If we throw a not implemented exception, when we try to
+        // getById and pass it to visitor, it crashes)
+        return null;
     }
 
     @Override
     public Identifiable<?> visit(DaoVersionedString dao) {
-        throw new NotImplementedException();
+        // FIXME
+        return null;
     }
 
     @Override
     public Identifiable<?> visit(DaoMilestoneContributionAmount daoMilestoneContributionAmount) {
-        throw new NotImplementedException();
+        // FIXME
+        return null;
     }
 
     @Override
     public Identifiable<?> visit(DaoContact dao) {
-        throw new NotImplementedException();
+        // FIXME
+        return null;
     }
 }
