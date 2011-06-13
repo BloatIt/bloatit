@@ -75,7 +75,8 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
         BufferedWriter out = null;
         try {
-            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + clazz.getQualifiedName());
+            // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
+            // "writing " + clazz.getQualifiedName());
             final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(clazz.getQualifiedName());
             out = new BufferedWriter(classFile.openWriter());
             out.write(clazz.toString());
@@ -203,10 +204,11 @@ public class ParamContainerProcessor extends AbstractProcessor {
         final LengthConstraint lengthConstraint = attribute.getAnnotation(LengthConstraint.class);
         final PrecisionConstraint precisionConstraint = attribute.getAnnotation(PrecisionConstraint.class);
 
-        // if (optional != null && nonOptional != null) {
-        // this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
-        // "Optional and non optional annotations on the same parameter.");
-        // }
+        if (optional != null && nonOptional != null) {
+            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
+                                                          "Optional and non optional annotations on the same parameter.",
+                                                          attribute);
+        }
 
         if (requestParam != null) {
             component.addParameter(new ParameterDescription(attribute,

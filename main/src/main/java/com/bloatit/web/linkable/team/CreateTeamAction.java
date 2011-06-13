@@ -53,7 +53,6 @@ public final class CreateTeamAction extends LoggedAction {
     private final String login;
 
     @RequestParam(role = Role.POST)
-    @NonOptional(@tr("You forgot to write a specification"))
     @MinConstraint(min = 4, message = @tr("The contact size has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(max = 300, message = @tr("The contact size has to be inferior to %constraint%."))
     @Optional
