@@ -4,59 +4,59 @@ Elveos's presentation
 What's Elveos ?
 ---------------
 
-Elveos is a website where open source's users and developers are related to improve or create open source softwares.
+Elveos is a website where open source users and developers are related to improve or create open source softwares.
 
-This site use a similar system to group buy.
+This website is based on a system of group purchasing.
 
-If you are an open source software user, you can find here people that share your needs and with whom share the costs of developments.
-If you are an open source software developer, you can be paid to develop features requested from others users.
+If you are a free software user, you can find here people that share your needs and with whom you can share the costs of developments.
+If you are a free software developer, you can be paid to develop features requested by others users.
 
-Next, a short description of how Elveos is working:
+a short description of how Elveos is working:
 
- 1. A user, an organisation or a developer add a *feature request* that describe his needs on the website.
- 2. Every person or organisation interested in the realisation of this feature can financially contribute with an amount of his choice.
- 3. In the same time, developers can make development offers for this feature request. The developers indicate various informations, as the price he ask for the development of the feature, the estimated release date and the specifications.
- 4. The contributors vote for their preferred offer.
- 5. As soon as the requested amount is gathered, the developer can begin to work.
- 6. Once the feature is done, the contributors determine the quality of the work. The developer is paid as soon as all major bugs are fixed.
+ 1. A user, an organisation or a developer adds a *feature request* that describe his needs on the website.
+ 2. Every person or organisation interested in the realisation of this feature can contribute by giving an amount of his choice.
+ 3. In the same time, developers can make development offers for this feature request. The developer indicates various informations, such as the price he asks for the development of the feature, the estimated release date the specifications...
+ 4. The contributors are invited to vote for their favorite offer ...
+ 5. ... And as soon as an offer is selected, and the requested amount is gathered, the developer can begin to work.
+ 6. Once the feature is created, the contributors can test the work. The developer is paid as soon as all major bugs are fixed.
 
-This is a simplified description of the process. More details are available in the [Feature life cycle page](http://localhost/en/documentation/doc-feature-lifecycle)
+This is a simplified description of the process. More details are available on the [Feature life cycle page](http://localhost/en/documentation/doc-feature-lifecycle)
 
-The following diagram show an more simplified view of the process
+The following diagram shows a more simplified view of the process
 
 ![elveos's presentation](/resources/en/img/presentation_800px.png)
 
 Feature request sources
 -----------------------
 
-The feature requests can be add to the website by:
+The feature requests can be added to the website by:
 
- * An individual, user for open source software, who would like to see a new feature in a software he uses, or just support a project he likes.
- * A developer who doesn't have the time or the money to realise some item of his roadmap. He can add this item to Elveos to be financed or get more developers.
- * A company who need a new feature or a bug fix in a software it uses and wants to share the costs of the developments.
+ * An individual : a user of open source software, who would like to see a new feature in a software he uses, or just support a project he likes.
+ * A developer who doesn't have the time or the money to realise some item of his roadmap. He can ask for financial help through elveos, or try propose to finance some developers to implement the said item.
+ * A company needing a new feature or a bug fix in a software it uses and wants to share the development costs. 
 
 Kind of feature requests
 ------------------------
 
-The description of the feature requests made until now can let think that they are only development features. In fact, any task can be add on Elveos, the result has to be available in an open source licence:
+The description of the feature requests made in this document may lead to think that they are only development features. In fact, any task can be asked on Elveos, as long as the result is available in a free licence:
 
 - Add a feature in an existing software
 - Bug fixes
 - Create a small software
 - Create a plug-in, extension or an add-on
 - Create a test suite
-- Write a documentation, a RFC, a tutorial, ...
-- Create resources as graphics or sounds, subtitles
-- Translate a software or document
-- Add a package for a distribution
+- Write a documentation, a RFC, a tutorial ...
+- Create resources such as graphics or sounds, subtitles ...
+- Translate a software or a document
+- Add a package to distribution repository
 
 Teams
 -----
 
 On Elveos, many actions can be made on the behalf of a team (project team, association, company, ...). 
 
-* A developer can make an offer on the behalf of an organisation to which he belongs. In this case, it's not him who gets the money but his organisation. 
-* A user can write a comment on the behalf of his company, as spokesman.
+ * A developer can make an offer on the behalf of an organisation to which he belongs. In this case, he won't be the recipient of the money but his organisation will.
+ * A user can write a comment on the behalf of his company, as spokesman.
 
-Various other actions can be made on the behalf of a team. On the web site, the author, member or team, is always indicated.
+Various other actions can be made on the behalf of a team. When browsing the website, the author, member or team, is always clearly indicated.
 
