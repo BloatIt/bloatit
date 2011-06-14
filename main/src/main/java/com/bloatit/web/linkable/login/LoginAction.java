@@ -102,7 +102,7 @@ public final class LoginAction extends ElveosAction {
         session.addParameter(url.getLoginParameter());
 
         if (url.getPasswordParameter().getValue() != null) {
-            url.getPasswordParameter().setValue("");
+            url.getPasswordParameter().setValue("xxxxxxxx");
         }
 
         session.addParameter(url.getPasswordParameter());
