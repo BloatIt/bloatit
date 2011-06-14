@@ -50,7 +50,7 @@ public abstract class WebProcessor implements XcgiProcessor {
 
             // Access log
             final String memberId = session.getUserToken().isAuthenticated() ? session.getUserToken().getMember().getId().toString() : "-1";
-            final String sessionKey = Hash.shortHash(session.getKey().toString());
+            final String sessionKey = Hash.shortHash(session.getShortKey());
             Log.framework().info("Access:Context: " + //
                     "USER_ID=\"" + memberId + //
                     "\"; KEY=\"" + sessionKey + //
@@ -115,7 +115,7 @@ public abstract class WebProcessor implements XcgiProcessor {
     private Session findSession(final HttpHeader header) {
         final String key = header.getHttpCookie().get("session_key");
         Session sessionByKey = null;
-        if (key != null && (sessionByKey = SessionManager.getByKey(key)) != null) {
+        if (key != null && (sessionByKey = SessionManager.getByKey(key, header.getRemoteAddr())) != null) {
             if (sessionByKey.isExpired()) {
                 SessionManager.destroySession(sessionByKey);
                 // A new session will be create
@@ -124,7 +124,7 @@ public abstract class WebProcessor implements XcgiProcessor {
                 return sessionByKey;
             }
         }
-        return SessionManager.createSession();
+        return SessionManager.createSession(header.getRemoteAddr());
     }
 
 }

@@ -62,13 +62,13 @@ public final class LoginAction extends ElveosAction {
         token = LoginManager.loginByPassword(login.trim(), password);
 
         if (token != null && token.isAuthenticated()) {
-            session.setAuthToken(token);
+            session.authenticate(token);
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
         }
 
-        // We check if member is non existant or not validated
+        // We check if member is non existing or not validated
         final Member m = MemberManager.getMemberByLogin(login);
         if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
             session.notifyBad(Context.tr("Your account has not been validated yet. Please check your emails."));

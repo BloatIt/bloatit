@@ -13,6 +13,7 @@
 package com.bloatit.framework.webprocessor.context;
 
 import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.Hash;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage;
@@ -34,6 +36,7 @@ import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
+import com.bloatit.framework.xcgiserver.SessionKey;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.url.IndexPageUrl;
 
@@ -59,7 +62,7 @@ public final class Session {
     private static final UserToken ANONYMOUS_USER_TOKEN = createAnonymousUserToken();
 
     private long expirationTime;
-    private final UUID key;
+    private final SessionKey key;
 
     private final Deque<ErrorMessage> notificationList;
     private final SessionParameters parameters = new SessionParameters();
@@ -71,13 +74,6 @@ public final class Session {
 
     @SuppressWarnings("unchecked")
     private final Map<String, WebProcess> processes = Collections.synchronizedMap(new HashMap<String, WebProcess>());
-
-    /**
-     * Construct a new session
-     */
-    protected Session() {
-        this(UUID.randomUUID());
-    }
 
     private static UserToken createAnonymousUserToken() {
         final String classString = FrameworkConfiguration.getAnonymousUserTokenClass();
@@ -112,15 +108,19 @@ public final class Session {
      * 
      * @param id the id of the session
      */
-    protected Session(final UUID id) {
+    protected Session(final SessionKey id) {
         this.key = id;
         this.userToken = ANONYMOUS_USER_TOKEN;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
 
-    public synchronized UUID getKey() {
+    public synchronized SessionKey getKey() {
         return key;
+    }
+
+    public synchronized String getShortKey() {
+        return Hash.shortHash(key.getId());
     }
 
     public synchronized void resetExpirationTime() {
@@ -136,12 +136,13 @@ public final class Session {
         resetExpirationTime();
     }
 
-    public synchronized void setAuthToken(final UserToken token) {
+    public synchronized void authenticate(final UserToken token) {
         if (token == null) {
             throw new BadProgrammerException("Token must be non null.");
         }
         userToken = token;
         resetExpirationTime();
+        SessionManager.resetSession(key);
     }
 
     public synchronized UserToken getUserToken() {
@@ -255,7 +256,7 @@ public final class Session {
     }
 
     public final synchronized Deque<ErrorMessage> getNotifications() {
-        String gn = Context.getGlobalNotification();
+        final String gn = Context.getGlobalNotification();
         if (gn != null) {
             notifyError(gn);
         }

@@ -22,20 +22,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.xcgiserver.SessionKey;
 import com.bloatit.model.right.AuthenticatedUserToken;
 
 /**
  * This class is thread safe (synchronized).
  */
 public final class SessionManager {
-    private static Map<UUID, Session> activeSessions = new HashMap<UUID, Session>();
+    private static Map<SessionKey, Session> activeSessions = new HashMap<SessionKey, Session>();
     private static Map<String, Session> temporarySessions = new HashMap<String, Session>();
     /** Time to next cleaning up in seconds **/
     private static long nextCleanExpiredSession = 0;
@@ -44,26 +44,36 @@ public final class SessionManager {
         // desactivate CTOR
     }
 
-    public static synchronized Session createSession() {
-        final Session session = new Session();
-        activeSessions.put(session.getKey(), session);
+    public static synchronized Session getByKey(final String id, final String ipAddress) {
+        try {
+            final Session session = activeSessions.get(new SessionKey(id, ipAddress));
+            return session;
+        } catch (final IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public static synchronized Session createSession(final String ipAddress) {
+        final SessionKey key = new SessionKey(ipAddress);
+        final Session session = new Session(key);
+        activeSessions.put(key, session);
         return session;
+    }
+
+    public static synchronized void resetSession(final SessionKey key) {
+        final Session session = activeSessions.get(key);
+        if (session != null) {
+            activeSessions.remove(key);
+            key.resetId();
+            activeSessions.put(key, session);
+        }
     }
 
     public static synchronized void destroySession(final Session session) {
         if (activeSessions.containsKey(session.getKey())) {
-            Log.framework().trace("destroy session " + session.getKey());
+            Log.framework().trace("destroy session " + session.getKey().getId());
             cleanTemporarySession(session);
             activeSessions.remove(session.getKey());
-        }
-    }
-
-    public static synchronized Session getByKey(final String key) {
-        try {
-            final Session session = activeSessions.get(UUID.fromString(key));
-            return session;
-        } catch (final IllegalArgumentException e) {
-            return null;
         }
     }
 
@@ -81,12 +91,14 @@ public final class SessionManager {
         try {
             fileOutputStream = new FileOutputStream(new File(dump));
 
-            for (final Entry<UUID, Session> session : activeSessions.entrySet()) {
+            for (final Entry<SessionKey, Session> session : activeSessions.entrySet()) {
 
                 if (session.getValue().getUserToken().isAuthenticated()) {
                     final StringBuilder sessionDump = new StringBuilder();
 
-                    sessionDump.append(session.getValue().getKey().toString());
+                    sessionDump.append(session.getKey().getId());
+                    sessionDump.append(' ');
+                    sessionDump.append(session.getKey().getIpAddress());
                     sessionDump.append(' ');
                     sessionDump.append(session.getValue().getUserToken().getMember().getId());
                     sessionDump.append('\n');
@@ -134,8 +146,8 @@ public final class SessionManager {
                 // Print the content on the console
                 final String[] split = strLine.split(" ");
 
-                if (split.length == 2) {
-                    restoreSession(split[0], Integer.valueOf(split[1]));
+                if (split.length == 3) {
+                    restoreSession(split[0], split[1], Integer.valueOf(split[2]));
                 }
 
             }
@@ -166,16 +178,16 @@ public final class SessionManager {
         }
     }
 
-    private static synchronized void restoreSession(final String key, final int memberId) {
-        final UUID uuidKey = UUID.fromString(key);
-        final Session session = new Session(uuidKey);
+    private static synchronized void restoreSession(final String id, final String ipAddress, final int memberId) {
+        final SessionKey key = new SessionKey(id, ipAddress.equals("null") ? null : ipAddress);
+        final Session session = new Session(key);
         try {
             // TODO remove back reference to AuthenticatedUserToken
-            session.setAuthToken(new AuthenticatedUserToken(memberId));
+            session.authenticate(new AuthenticatedUserToken(memberId));
         } catch (final NotFoundException e) {
             Log.framework().error("Session not found", e);
         }
-        activeSessions.put(uuidKey, session);
+        activeSessions.put(key, session);
     }
 
     public static synchronized void clearExpiredSessions() {
@@ -221,4 +233,5 @@ public final class SessionManager {
             }
         }
     }
+
 }
