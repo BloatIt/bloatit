@@ -9,6 +9,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
+/**
+ * The class {@link SessionKey} represent a unique identifier for a session.
+ */
 public class SessionKey {
 
     private static final int SHA515_HEX_LENGTH = 128;
@@ -18,6 +21,14 @@ public class SessionKey {
     private String id;
     private final String ipAddress;
 
+    /**
+     * Create a key using already existing id and ip address.
+     * 
+     * @param id the id of this session. It must be non null, and
+     *            {@value SessionKey#SHA515_HEX_LENGTH} char long.
+     * @param ipAddress can be null. If it is less than 7 chars long it is
+     *            considered has null (because invalid).
+     */
     public SessionKey(final String id, final String ipAddress) {
         super();
         if (ipAddress != null && ipAddress.length() < 7) {
@@ -34,6 +45,13 @@ public class SessionKey {
         this.id = id;
     }
 
+    /**
+     * Create a new SessionKey, with a random id, for a user at
+     * <i>ipAddress</i>.
+     * 
+     * @param ipAdress the ip address of the user identified by this
+     *            {@link SessionKey}.
+     */
     public SessionKey(final String ipAdress) {
         this(generateRandomId(), ipAdress);
     }
@@ -49,14 +67,23 @@ public class SessionKey {
         }
     }
 
+    /**
+     * Randomly generate a new id.
+     */
     public void resetId() {
         this.id = generateRandomId();
     }
 
+    /**
+     * @return the ip address. Can be null.
+     */
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * @return the 128 char long random id of this key.
+     */
     public String getId() {
         return id;
     }

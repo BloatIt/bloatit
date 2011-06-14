@@ -44,6 +44,13 @@ public final class SessionManager {
         // desactivate CTOR
     }
 
+    /**
+     * Find a session using its id and its ip address.
+     * 
+     * @param id the id of the session (the one store in the cookie)
+     * @param ipAddress the ip address of the user trying to get his session.
+     * @return the session or null if not found.
+     */
     public static synchronized Session getByKey(final String id, final String ipAddress) {
         try {
             final Session session = activeSessions.get(new SessionKey(id, ipAddress));
