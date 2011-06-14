@@ -22,9 +22,9 @@ public class MessageFormater {
         String errorMsg = message;
         for (final Entry<String, String> formatter : params.entrySet()) {
             if (!formatter.getValue().isEmpty()) {
-                errorMsg = message.replaceAll(formatter.getKey(), Matcher.quoteReplacement(formatter.getValue()));
+                errorMsg = errorMsg.replaceAll(formatter.getKey(), Matcher.quoteReplacement(formatter.getValue()));
             } else {
-                errorMsg = message.replaceAll(formatter.getKey(), "null");
+                errorMsg = errorMsg.replaceAll(formatter.getKey(), "null");
             }
         }
         return errorMsg;
