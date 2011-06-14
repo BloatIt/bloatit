@@ -133,7 +133,7 @@ public class RestFeature extends RestElement<Feature> {
     public static RestFeatureList getAll() {
         return new RestFeatureList(FeatureManager.getFeatures());
     }
-    
+
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
@@ -199,7 +199,10 @@ public class RestFeature extends RestElement<Feature> {
     @XmlAttribute
     @XmlIDREF
     public RestSoftware getSoftware() {
-        return new RestSoftware(model.getSoftware());
+        if (model.getSoftware() != null) {
+            return new RestSoftware(model.getSoftware());
+        }
+        return null;
     }
 
     @XmlElement
