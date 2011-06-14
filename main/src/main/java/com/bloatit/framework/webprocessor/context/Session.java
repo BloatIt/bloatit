@@ -178,9 +178,9 @@ public final class Session {
             return tempStr;
         } else if (lastStablePage != null) {
             return lastStablePage;
-        } else {
-            return new IndexPageUrl();
         }
+        return new IndexPageUrl();
+
     }
 
     /**
@@ -195,7 +195,10 @@ public final class Session {
      * @return the last page the user visited
      */
     public synchronized Url getLastVisitedPage() {
-        return lastVisitedPage;
+        if (lastVisitedPage != null) {
+            return lastVisitedPage;
+        }
+        return new IndexPageUrl();
     }
 
     public synchronized void setLastVisitedPage(final Url lastVisitedPage) {
