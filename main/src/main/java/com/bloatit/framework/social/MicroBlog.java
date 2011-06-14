@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
@@ -65,10 +64,5 @@ public class MicroBlog {
         } finally {
             post.releaseConnection();
         }
-    }
-
-    public static void main(String... args) throws HttpException, IOException {
-        MicroBlog identica = new MicroBlog("http://identi.ca/api/statuses/update.xml", "elveos", "EH9iygELxdwrz", "identi.ca");
-        identica.post("This is a new message. It's fantastic !");
     }
 }
