@@ -61,6 +61,8 @@ public class AdminNewsPage extends AdminPage {
                 + "This entry will be displayed on elveos home page, and also be pushed to the following micro-blogging social services :");
         HtmlList microBlogList = new HtmlList();
         doc.add(microBlogList);
+        doc.addText("Once the message is posted, it can be deleted. However deletion will only erase the message on the website, and not remove"
+                + "it from the various micro blogs. It is then advised to think carefully before creating a message.");
         for (String mb : MicroBlogManager.getMicroBlogNames()) {
             microBlogList.add(mb);
         }
