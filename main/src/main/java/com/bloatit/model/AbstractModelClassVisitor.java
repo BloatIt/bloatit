@@ -139,4 +139,9 @@ public class AbstractModelClassVisitor<T> implements ModelClassVisitor<T> {
     public T visit(MilestoneContributionAmount model) {
         throw new NotImplementedException();
     }
+
+    @Override
+    public T visit(NewsFeed newsFeed) {
+        throw new NotImplementedException();
+    }
 }

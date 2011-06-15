@@ -6,19 +6,11 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
 	<!-- NEVER PUT A CHANGESET DIRECTLY IN THIS FILE !!!-->
-
 	<include file="liquibase/common.liquibase.xml" />
-
 	<include file="liquibase/password-sha.liquibase.xml" />
-
 	<include file="liquibase/money-withdraw.xml" />
-	
 	<include file="liquibase/invoices-various.xml" />
-	
 	<include file="liquibase/versioned-string.xml" />
-	
 	<include file="liquibase/offer-licence.xml" />
-
-	
-	
+    <include file="liquibase/news-feed.xml" />
 </databaseChangeLog>
