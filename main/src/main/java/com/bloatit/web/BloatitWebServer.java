@@ -296,8 +296,8 @@ public class BloatitWebServer extends WebProcessor {
         if (AdminGlobalNotificationPageUrl.matches(pageCode)) {
             return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsPageUrl.getPageName())) {
-            return new AdminNewsPage(new AdminNewsPageUrl(params, session.getParameters()));
+        if (AdminNewsPageUrl.matches(pageCode)) {
+            return new AdminNewsPage(new AdminNewsPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
@@ -447,14 +447,14 @@ public class BloatitWebServer extends WebProcessor {
         if (AdminGlobalNotificationActionUrl.matches(pageCode)) {
             return new AdminGlobalNotificationAction(new AdminGlobalNotificationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsActionUrl.getPageName())) {
-            return new AdminNewsAction(new AdminNewsActionUrl(params, session.getParameters()));
+        if (AdminNewsActionUrl.matches(pageCode)) {
+            return new AdminNewsAction(new AdminNewsActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsDeleteActionUrl.getPageName())) {
-            return new AdminNewsDeleteAction(new AdminNewsDeleteActionUrl(params, session.getParameters()));
+        if (AdminNewsDeleteActionUrl.matches(pageCode)) {
+            return new AdminNewsDeleteAction(new AdminNewsDeleteActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsRestoreActionUrl.getPageName())) {
-            return new AdminNewsRestoreAction(new AdminNewsRestoreActionUrl(params, session.getParameters()));
+        if (AdminNewsRestoreActionUrl.matches(pageCode)) {
+            return new AdminNewsRestoreAction(new AdminNewsRestoreActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
@@ -475,7 +475,6 @@ public class BloatitWebServer extends WebProcessor {
         if (ContributionInvoicingProcessUrl.matches(pageCode)) {
             return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        
 
         // Resource page
         if (FileResourceUrl.matches(pageCode)) {

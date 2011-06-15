@@ -44,10 +44,10 @@ public abstract class UrlComponent extends UrlNode {
             final int length = sb.length();
             node.constructUrl(sb);
             if (sb.length() > length) {
-                sb.append("&");
+                sb.append('&');
             }
         }
-        if (sb.length() > 0) {
+        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '&') {
             sb.deleteCharAt(sb.length() - 1);
         }
     }
