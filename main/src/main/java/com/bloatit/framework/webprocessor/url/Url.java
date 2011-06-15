@@ -16,8 +16,12 @@
 //
 package com.bloatit.framework.webprocessor.url;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.exceptions.highlevel.ExternalErrorException;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -33,6 +37,21 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 public abstract class Url implements Cloneable {
 
     private String anchor = null;
+    private static final String UTF_8 = "UTF-8";
+
+    protected static void parseGetParameters(final Parameters params, final String getParameters) {
+        // Extract get params
+        for (final String param : getParameters.split("&")) {
+            final String[] pair = param.split("=");
+            if (pair.length >= 2) {
+                try {
+                    params.add(URLDecoder.decode(pair[0], UTF_8), URLDecoder.decode(pair[1], UTF_8));
+                } catch (final UnsupportedEncodingException e) {
+                    new ExternalErrorException(e);
+                }
+            }
+        }
+    }
 
     protected Url() {
         super();
@@ -84,7 +103,13 @@ public abstract class Url implements Cloneable {
             sb.append('/').append(Context.getLocalizator().getCode());
         }
         sb.append('/').append(getCode());
-        doConstructUrl(sb);
+
+        final StringBuilder params = new StringBuilder();
+        doConstructUrl(params);
+        if (params.length() > 0) {
+            sb.append("?");
+            sb.append(params);
+        }
         if (anchor != null) {
             sb.append('#').append(anchor);
         }
@@ -114,7 +139,9 @@ public abstract class Url implements Cloneable {
             Log.framework().error("Cannot parse the server protocol: " + header.getServerProtocol());
             return "http://" + header.getHttpHost() + internalUrlString();
         }
-        return "http://elveos.org/" + internalUrlString(); // FIXME : Replace http://elveos.org by configuration
+        return "http://elveos.org/" + internalUrlString(); // FIXME : Replace
+                                                           // http://elveos.org
+                                                           // by configuration
     }
 
     public final HtmlLink getHtmlLink(final XmlNode data) {

@@ -18,6 +18,7 @@ public class CodeGenerator {
         clazz.addImport("com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol");
         clazz.addImport("com.bloatit.framework.utils.parameters.*");
         clazz.addImport("com.bloatit.framework.webprocessor.url.*");
+        clazz.addImport("com.bloatit.framework.exceptions.highlevel.BadProgrammerException;");
 
         clazz.addImplements("Cloneable");
         if (desc.getFather() == null) {
@@ -36,13 +37,39 @@ public class CodeGenerator {
         staticGetName.addParameter("String", "pageCode");
         staticGetName.addLine("return pageCode.matches(PAGE_CODE.replaceAll(\"\\\\%[a-zA-Z0-9_]+\\\\%\", \"[a-zA-Z0-9_%]+\"));");
 
-        final Method constructor = clazz.addConstructor();
-        constructor.addParameter("Parameters", "params");
-        constructor.addParameter("SessionParameters", "session");
+        final Method protectedConstructor = clazz.addConstructor();
+        protectedConstructor.setModifier(Modifier.PROTECTED);
+        protectedConstructor.addParameter("Parameters", "params");
+        protectedConstructor.addParameter("SessionParameters", "session");
         if (desc.getFather() != null) {
-            constructor.addLine("super(params, session);");
+            protectedConstructor.addLine("super(params, session);");
         }
-        constructor.addLine("this.component = new " + desc.getComponent().getClassName() + "(params, session);");
+        protectedConstructor.addLine("this.component = new " + desc.getComponent().getClassName() + "(params, session);");
+
+        final Method constructor = clazz.addConstructor();
+        constructor.addParameter("String", "pagename");
+        constructor.addParameter("Parameters", "postGetParameters");
+        constructor.addParameter("SessionParameters", "session");
+        constructor.addLine("this(parseParameters(pagename, postGetParameters), session);");
+        constructor.addLine("if (!matches(pagename)) {");
+        constructor.addLine("    throw new BadProgrammerException(\"The pagename is not corresponding to this url.\");");
+        constructor.addLine("}");
+
+        final Method staticParser = clazz.addMethod("Parameters", "parseParameters");
+        staticParser.setStaticFinal("static ");
+        staticParser.addParameter("String", "pagename");
+        staticParser.addParameter("Parameters", "postGetParameters");
+        staticParser.addLine("// Add the parameters from the pagename");
+        staticParser.addLine("final String[] split = pagename.split(\"/\");");
+        final String codeName = desc.getComponent().getCodeName();
+        final String[] splited = codeName.split("%");
+        for (int i = 0; i < splited.length; i++) {
+            final int start = codeName.startsWith("%") ? 0 : 1;
+            if ((i + start) % 2 == 0) {
+                staticParser.addLine("postGetParameters.add(\"" + splited[i] + "\", split[" + i + "]);");
+            }
+        }
+        staticParser.addLine("return postGetParameters;");
 
         final Method copyConstructor = clazz.addConstructor();
         copyConstructor.addParameter(clazz.getName(), "other");
@@ -77,8 +104,8 @@ public class CodeGenerator {
         getCode.setOverride();
         getCode.addLine("StringBuilder sb = new StringBuilder();");
 
-        final String codeName = desc.getComponent().getCodeName();
-        final String[] splited = codeName.split("%");
+        // final String codeName = desc.getComponent().getCodeName();
+        // final String[] splited = codeName.split("%");
         for (int i = 0; i < splited.length; i++) {
             final int start = codeName.startsWith("%") ? 0 : 1;
             if ((i + start) % 2 == 0) {

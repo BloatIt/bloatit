@@ -27,7 +27,7 @@ import com.bloatit.framework.utils.parameters.SessionParameters;
 public abstract class UrlComponent extends UrlNode {
     private boolean isRegistered = false;
     private final List<UrlNode> nodes = new ArrayList<UrlNode>();
-    
+
     protected abstract void doRegister();
 
     @Override
@@ -41,7 +41,14 @@ public abstract class UrlComponent extends UrlNode {
     public final void constructUrl(final StringBuilder sb) {
         registerIfNotAlreadyDone();
         for (final UrlNode node : this) {
+            final int length = sb.length();
             node.constructUrl(sb);
+            if (sb.length() > length) {
+                sb.append("&");
+            }
+        }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
         }
     }
 
@@ -59,7 +66,7 @@ public abstract class UrlComponent extends UrlNode {
         }
         nodes.add(node);
     }
-    
+
     private final void registerIfNotAlreadyDone() {
         if (!isRegistered) {
             doRegister();
