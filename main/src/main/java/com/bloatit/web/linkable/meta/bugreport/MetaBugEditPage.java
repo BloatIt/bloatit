@@ -14,6 +14,7 @@ package com.bloatit.web.linkable.meta.bugreport;
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.meta.MetaBug;
 import com.bloatit.framework.meta.MetaBugManager;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -23,6 +24,8 @@ import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
+import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -30,6 +33,7 @@ import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MetaBugEditPageUrl;
+import com.bloatit.web.url.MetaBugsListPageUrl;
 import com.bloatit.web.url.MetaEditBugActionUrl;
 
 @ParamContainer("meta/bug/edit")
@@ -62,7 +66,12 @@ public final class MetaBugEditPage extends ElveosPage {
         if (suggestedValue != null) {
             bugDescription.setDefaultValue(suggestedValue);
         } else {
-            bugDescription.setDefaultValue(MetaBugManager.getById(bugId).getDescription());
+            MetaBug byId = MetaBugManager.getById(bugId);
+            if(byId == null){
+                Context.getSession().notifyBad("The bug you selected doesn't exist");
+                throw new RedirectException(new MetaBugsListPageUrl());
+            }
+            bugDescription.setDefaultValue(byId.getDescription());
         }
 
         bugDescription.setComment(tr("You can use markdown syntax in this field."));
