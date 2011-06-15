@@ -41,7 +41,7 @@ public final class LogoutAction extends LoggedAction {
     public Url doProcessRestricted(final Member me) {
         final Url prefUrl = session.pickPreferredPage();
         SessionManager.destroySession(session);
-        final Session newSess = SessionManager.createSession();
+        final Session newSess = SessionManager.createSession(Context.getHeader().getHttpHeader().getRemoteAddr());
         Context.reInitializeContext(Context.getHeader(), newSess);
         newSess.notifyGood(Context.tr("Logout success."));
         return prefUrl;
@@ -53,7 +53,7 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessErrors(ElveosUserToken userToken) {
+    public Url doProcessErrors(final ElveosUserToken userToken) {
         return new IndexPageUrl();
     }
 

@@ -79,7 +79,7 @@ public class RecoverPasswordAction extends ElveosAction {
 
     @Override
     protected Url doProcess(final ElveosUserToken token) {
-        session.setAuthToken(new AuthenticatedUserToken(member));
+        session.authenticate(new AuthenticatedUserToken(member));
         try {
             member.setPassword(newPassword);
         } catch (final UnauthorizedOperationException e) {
