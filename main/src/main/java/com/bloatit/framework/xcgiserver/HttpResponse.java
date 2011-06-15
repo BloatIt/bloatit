@@ -299,6 +299,6 @@ public final class HttpResponse {
     }
 
     private void writeCookies() throws IOException {
-        writeLine("Set-Cookie: session_key=" + Context.getSession().getKey() + "; path=/; Max-Age=1296000; Version=1 ");
+        writeLine("Set-Cookie: session_key=" + Context.getSession().getKey().getId() + "; path=/; Max-Age=1296000; Version=1 ");
     }
 }

@@ -217,7 +217,7 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     private String makeStringPretty(final String theValue) {
-        String tmp = theValue.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+#]", "-");
+        String tmp = theValue.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+#/]", "-");
         tmp = tmp.replaceAll("--+", "-");
         tmp = tmp.subSequence(0, Math.min(tmp.length(), 80)).toString();
         tmp = tmp.replaceAll("-+$", "");

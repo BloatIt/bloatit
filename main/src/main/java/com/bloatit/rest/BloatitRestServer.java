@@ -44,7 +44,6 @@ import com.bloatit.rest.list.RestSoftwareList;
 import com.bloatit.rest.list.RestTeamList;
 import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.rest.list.RestTranslationList;
-import com.bloatit.rest.resources.RestAuthenticate;
 import com.bloatit.rest.resources.RestBankTransaction;
 import com.bloatit.rest.resources.RestBug;
 import com.bloatit.rest.resources.RestComment;
@@ -75,7 +74,6 @@ public class BloatitRestServer extends RestServer {
     private final Map<String, Class<?>> locations = new HashMap<String, Class<?>>() {
         private static final long serialVersionUID = -5012179845511358309L;
         {
-            put("authenticate", RestAuthenticate.class);
             put("members", RestMember.class);
             put("banktransactions", RestBankTransaction.class);
             put("milestones", RestMilestone.class);
@@ -103,9 +101,6 @@ public class BloatitRestServer extends RestServer {
      * All the classes that have to be marshalled by JAX
      */
     private final Class<?>[] classes = new Class<?>[] {
-                                                       // TOOLS
-                                                       RestAuthenticate.class,
-
                                                        // ENTITIES
                                                        RestMember.class,
                                                        RestBankTransaction.class,

@@ -66,7 +66,7 @@ public final class MemberActivationAction extends ElveosAction {
                     member.activate(key);
 
                     // Auto login after activation
-                    session.setAuthToken(new AuthenticatedUserToken(member));
+                    session.authenticate(new AuthenticatedUserToken(member));
                     session.notifyGood(Context.tr("Activation sucess, you are now logged."));
 
                 } else {
