@@ -16,6 +16,7 @@
 //
 package com.bloatit.common;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
 // TRACE
@@ -51,11 +52,11 @@ public final class Log {
         void trace(final Object message);
 
         void trace(final Object message, final Throwable e);
-        
+
         boolean isInfoEnabled();
-        
+
         boolean isDebugEnabled();
-        
+
         boolean isTraceEnabled();
     }
 
@@ -84,9 +85,24 @@ public final class Log {
             return sb.toString();
         }
 
+        private String generateId(Throwable e) {
+            return generateId(e.getStackTrace(), e.toString());
+        }
+
+        private String generateId(StackTraceElement[] stack, String append) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(append);
+            for (StackTraceElement elem : stack) {
+                sb.append(elem.getClassName());
+                sb.append(elem.getMethodName());
+            }
+            String hash = new String(DigestUtils.md5Hex(sb.toString()));
+            return hash.substring(0, 5);
+        }
+
         @Override
         public void fatal(final Object message, final Throwable e) {
-            log.fatal(message, e);
+            log.fatal(message + " [" + generateId(e) + "]", e);
         }
 
         @Override
@@ -106,7 +122,7 @@ public final class Log {
 
         @Override
         public void warn(final Object message, final Throwable e) {
-            log.warn(message, e);
+            log.warn(message + " [" + generateId(e) + "]", e);
         }
 
         @Override
@@ -116,7 +132,7 @@ public final class Log {
 
         @Override
         public void info(final Object message, final Throwable e) {
-            log.info(message, e);
+            log.info(message + " [" + generateId(e) + "]", e);
         }
 
         @Override
@@ -126,7 +142,7 @@ public final class Log {
 
         @Override
         public void debug(final Object message, final Throwable e) {
-            log.debug(message, e);
+            log.debug(message + " [" + generateId(e) + "]", e);
         }
 
         @Override
@@ -136,7 +152,7 @@ public final class Log {
 
         @Override
         public void trace(final Object message, final Throwable e) {
-            log.trace(message, e);
+            log.trace(message + " [" + generateId(e) + "]", e);
         }
 
         @Override
