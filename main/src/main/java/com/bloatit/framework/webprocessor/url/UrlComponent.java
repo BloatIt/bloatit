@@ -27,7 +27,7 @@ import com.bloatit.framework.utils.parameters.SessionParameters;
 public abstract class UrlComponent extends UrlNode {
     private boolean isRegistered = false;
     private final List<UrlNode> nodes = new ArrayList<UrlNode>();
-
+    
     protected abstract void doRegister();
 
     @Override

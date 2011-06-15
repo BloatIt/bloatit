@@ -48,6 +48,10 @@ public class ComponentDescription extends ClassDescription {
         return Utils.getStr(codeName);
     }
 
+    public final String getCodeName() {
+        return codeName;
+    }
+
     public final List<ParameterDescription> getParameters() {
         return parameters;
     }

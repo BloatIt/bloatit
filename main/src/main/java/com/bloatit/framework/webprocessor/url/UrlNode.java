@@ -15,12 +15,6 @@ public abstract class UrlNode implements Iterable<UrlNode>, Cloneable {
     @Override
     public abstract UrlNode clone() throws CloneNotSupportedException;
 
-    // public final String urlString() {
-    // final StringBuilder sb = new StringBuilder();
-    // constructUrl(sb);
-    // return sb.toString();
-    // }
-
     public abstract Messages getMessages();
 
     protected abstract void parseSessionParameters(final SessionParameters params);

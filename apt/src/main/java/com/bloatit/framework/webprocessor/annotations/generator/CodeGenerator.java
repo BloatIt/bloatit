@@ -26,11 +26,15 @@ public class CodeGenerator {
             clazz.setExtends(desc.getFather().getClassName());
         }
 
+        final Attribute pageCodeStatic = clazz.addAttribute("String", "PAGE_CODE");
+        pageCodeStatic.setStatic(true);
+        pageCodeStatic.setStaticEquals(desc.getComponent().getCodeNameStr());
         clazz.addAttribute(desc.getComponent().getClassName(), "component");
 
-        final Method staticGetName = clazz.addMethod("String", "getPageName");
+        final Method staticGetName = clazz.addMethod("boolean", "matches");
         staticGetName.setStaticFinal("static");
-        staticGetName.addLine("return " + desc.getComponent().getCodeNameStr() + ";");
+        staticGetName.addParameter("String", "pageCode");
+        staticGetName.addLine("return pageCode.matches(PAGE_CODE.replaceAll(\"\\\\%[a-zA-Z0-9_]+\\\\%\", \"[a-zA-Z0-9_%]+\"));");
 
         final Method constructor = clazz.addConstructor();
         constructor.addParameter("Parameters", "params");
@@ -71,7 +75,20 @@ public class CodeGenerator {
 
         final Method getCode = clazz.addMethod("String", "getCode");
         getCode.setOverride();
-        getCode.addLine("return getPageName();");
+        getCode.addLine("StringBuilder sb = new StringBuilder();");
+
+        final String codeName = desc.getComponent().getCodeName();
+        final String[] splited = codeName.split("%");
+        for (int i = 0; i < splited.length; i++) {
+            final int start = codeName.startsWith("%") ? 0 : 1;
+            if ((i + start) % 2 == 0) {
+                getCode.addLine("sb.append(get" + Utils.firstCharUpper(splited[i]) + "Parameter().getStringValue());");
+            } else {
+                getCode.addLine("sb.append(" + Utils.getStr(splited[i]) + ");");
+            }
+        }
+
+        getCode.addLine("return sb.toString();");
 
         final Method doConstructUrl = clazz.addMethod("void", "doConstructUrl");
         doConstructUrl.setOverride();

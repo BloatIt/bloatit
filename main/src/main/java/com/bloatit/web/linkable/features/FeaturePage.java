@@ -36,7 +36,7 @@ import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
-@ParamContainer("feature")
+@ParamContainer("features/%feature%")
 public final class FeaturePage extends ElveosPage {
 
     @RequestParam(name = "id", message = @tr("I cannot find the feature number: ''%value%''."))
