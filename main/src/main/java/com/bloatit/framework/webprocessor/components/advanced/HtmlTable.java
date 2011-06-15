@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 /**
@@ -43,27 +44,27 @@ public class HtmlTable extends HtmlGenericElement {
     }
 
     private void generateBody() {
-        while (model.next()) {
+        while (getModel().next()) {
             final HtmlGenericElement tr = new HtmlGenericElement("tr");
-            columnCount = model.getColumnCount();
+            columnCount = getModel().getColumnCount();
 
-            if (model.getLineCss() != null) {
-                tr.setCssClass(model.getLineCss());
+            if (getModel().getLineCss() != null) {
+                tr.setCssClass(getModel().getLineCss());
             }
 
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement td = new HtmlGenericElement("td");
-                td.add(model.getBody(i));
-                if (model.getColumnCss(i) != null) {
-                    td.setCssClass(model.getColumnCss(i));
+                td.add(getModel().getBody(i));
+                if (getModel().getColumnCss(i) != null) {
+                    td.setCssClass(getModel().getColumnCss(i));
                 }
 
-                if (model.getId(i) != null) {
-                    td.setId(model.getId(i));
+                if (getModel().getId(i) != null) {
+                    td.setId(getModel().getId(i));
                 }
 
-                if (model.getColspan(i) != 1) {
-                    td.addAttribute("colspan", String.valueOf(model.getColspan(i)));
+                if (getModel().getColspan(i) != 1) {
+                    td.addAttribute("colspan", String.valueOf(getModel().getColspan(i)));
                 }
                 tr.add(td);
             }
@@ -72,16 +73,20 @@ public class HtmlTable extends HtmlGenericElement {
     }
 
     private void generateHeader() {
-        if (model.hasHeader()) {
+        if (getModel().hasHeader()) {
             final HtmlGenericElement tr = new HtmlGenericElement("tr");
-            columnCount = model.getColumnCount();
+            columnCount = getModel().getColumnCount();
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement th = new HtmlGenericElement("th");
-                th.add(model.getHeader(i));
+                th.add(getModel().getHeader(i));
                 tr.add(th);
             }
             add(tr);
         }
+    }
+
+    protected HtmlTableModel getModel() {
+        return model;
     }
 
     public static abstract class HtmlTableModel {
@@ -208,12 +213,13 @@ public class HtmlTable extends HtmlGenericElement {
             }
         }
 
-        public static abstract class HtmlTableCell {
+        public static abstract class HtmlTableCell extends HtmlElement {
 
             private final String css;
             private String id = null;
 
             public HtmlTableCell(final String css) {
+                super("td");
                 this.css = css;
             }
 
@@ -227,14 +233,19 @@ public class HtmlTable extends HtmlGenericElement {
                 return 1;
             }
 
-            public void setId(String id) {
+            public HtmlElement setId(String id) {
                 this.id = id;
+                return this;
             }
 
             public String getId() {
                 return id;
             }
-
+            
+            @Override
+            public boolean selfClosable() {
+                return false;
+            }
         }
 
         public static class EmptyCell extends HtmlTableCell {
@@ -247,6 +258,8 @@ public class HtmlTable extends HtmlGenericElement {
             public XmlNode getBody() {
                 return new PlaceHolderElement();
             }
+
+            
         }
 
     }
