@@ -7,11 +7,10 @@
 		<!-- Encrypting the db password -->
 		<property name="connection.provider_class">
 			org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
-    </property>
+    	</property>
 		<property name="connection.encryptor_registered_name">
 			strongHibernateStringEncryptor
-    </property>
-
+    	</property>
 
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost/bloatit</property>
@@ -34,9 +33,6 @@
 		<property name="hibernate.cache.use_second_level_cache">true</property>
 		<property name="hibernate.cache.use_query_cache">false</property>
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
-
-
-
 		<property name="hibernate.id.new_generator_mappings">true</property>
 
 		<!-- Hibernate search -->
@@ -70,13 +66,14 @@
 		<mapping class="com.bloatit.data.DaoUserContent" />
 		<mapping class="com.bloatit.data.DaoKudosable" />
 		<mapping class="com.bloatit.data.DaoRelease" />
-        <mapping class="com.bloatit.data.DaoMoneyWithdrawal" />
-        <mapping class="com.bloatit.data.DaoInvoice" />
-        <mapping class="com.bloatit.data.DaoContributionInvoice" />
-        <mapping class="com.bloatit.data.DaoContact" />
-        <mapping class="com.bloatit.data.DaoMilestoneContributionAmount" />
-        <mapping class="com.bloatit.data.DaoVersionedString" />
-        <mapping class="com.bloatit.data.DaoStringVersion" />
+		<mapping class="com.bloatit.data.DaoMoneyWithdrawal" />
+		<mapping class="com.bloatit.data.DaoInvoice" />
+		<mapping class="com.bloatit.data.DaoContributionInvoice" />
+		<mapping class="com.bloatit.data.DaoContact" />
+		<mapping class="com.bloatit.data.DaoMilestoneContributionAmount" />
+		<mapping class="com.bloatit.data.DaoVersionedString" />
+		<mapping class="com.bloatit.data.DaoStringVersion" />
+		<mapping class="com.bloatit.data.DaoNewsFeed" />
 
 	</session-factory>
 </hibernate-configuration>

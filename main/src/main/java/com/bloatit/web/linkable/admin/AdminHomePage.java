@@ -31,6 +31,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AdminGlobalNotificationPageUrl;
 import com.bloatit.web.url.AdminHomePageUrl;
+import com.bloatit.web.url.AdminNewsPageUrl;
 import com.bloatit.web.url.ConfigurationAdminPageUrl;
 import com.bloatit.web.url.ExceptionAdministrationPageUrl;
 import com.bloatit.web.url.FeatureAdminPageUrl;
@@ -69,6 +70,7 @@ public class AdminHomePage extends AdminPage {
         list.add(new MoneyWithdrawalAdminPageUrl().getHtmlLink("Manage money withdrawals"));
         list.add(new ExceptionAdministrationPageUrl().getHtmlLink("Manage exceptions"));
         list.add(new AdminGlobalNotificationPageUrl().getHtmlLink("Notify all users"));
+        list.add(new AdminNewsPageUrl().getHtmlLink("Manage elveos news feed"));
         return master;
     }
 

@@ -23,6 +23,7 @@ import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
+import com.bloatit.data.DaoContact;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
@@ -32,13 +33,13 @@ import com.bloatit.data.DaoHighlightFeature;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoInvoice;
-import com.bloatit.data.DaoContact;
 import com.bloatit.data.DaoJoinTeamInvitation;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoMoneyWithdrawal;
+import com.bloatit.data.DaoNewsFeed;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
@@ -145,6 +146,9 @@ public class GenericConstructor {
         }
         if (clazz.equals(UserContent.class) || clazz.equals(UserContentInterface.class)) {
             return DaoUserContent.class;
+        }
+        if (clazz.equals(NewsFeed.class)) {
+            return DaoNewsFeed.class;
         }
 
         Log.model().error("Dao class not found for class: " + clazz.getCanonicalName());

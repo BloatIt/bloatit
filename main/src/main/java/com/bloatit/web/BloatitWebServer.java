@@ -41,6 +41,10 @@ import com.bloatit.web.linkable.admin.MilestoneAdminPage;
 import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationAction;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationPage;
+import com.bloatit.web.linkable.admin.news.AdminNewsAction;
+import com.bloatit.web.linkable.admin.news.AdminNewsDeleteAction;
+import com.bloatit.web.linkable.admin.news.AdminNewsPage;
+import com.bloatit.web.linkable.admin.news.AdminNewsRestoreAction;
 import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationAction;
 import com.bloatit.web.linkable.admin.notify.AdminGlobalNotificationPage;
 import com.bloatit.web.linkable.admin.withdraw.MoneyWithdrawalAdminAction;
@@ -292,6 +296,9 @@ public class BloatitWebServer extends WebProcessor {
         if (AdminGlobalNotificationPageUrl.matches(pageCode)) {
             return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (pageCode.equals(AdminNewsPageUrl.getPageName())) {
+            return new AdminNewsPage(new AdminNewsPageUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -440,6 +447,15 @@ public class BloatitWebServer extends WebProcessor {
         if (AdminGlobalNotificationActionUrl.matches(pageCode)) {
             return new AdminGlobalNotificationAction(new AdminGlobalNotificationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (pageCode.equals(AdminNewsActionUrl.getPageName())) {
+            return new AdminNewsAction(new AdminNewsActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AdminNewsDeleteActionUrl.getPageName())) {
+            return new AdminNewsDeleteAction(new AdminNewsDeleteActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AdminNewsRestoreActionUrl.getPageName())) {
+            return new AdminNewsRestoreAction(new AdminNewsRestoreActionUrl(params, session.getParameters()));
+        }
 
         // ////////
         // Process
@@ -459,6 +475,7 @@ public class BloatitWebServer extends WebProcessor {
         if (ContributionInvoicingProcessUrl.matches(pageCode)) {
             return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        
 
         // Resource page
         if (FileResourceUrl.matches(pageCode)) {

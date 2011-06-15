@@ -40,6 +40,7 @@ import com.bloatit.model.Milestone;
 import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.NewsFeed;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.Software;
@@ -166,6 +167,11 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
     @Override
     public RestElement<?> visit(MilestoneContributionAmount model) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public RestElement<?> visit(NewsFeed newsFeed) {
         throw new NotImplementedException();
     }
 }

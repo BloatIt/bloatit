@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet author="Yoann Plénet" id="Creation of news feed">
+		<comment>Creating the table used to store news feed</comment>
+		<createTable tableName="daonewsfeed">
+			<column name="id" type="int4">
+				<constraints nullable="false" primaryKey="true"
+					primaryKeyName="daonewsfeedpk" />
+			</column>
+			<column name="message" type="varchar(140)">
+				<constraints nullable="false" unique="false" />
+			</column>
+			<column name="creationdate" type="datetime">
+				<constraints nullable="false" />
+			</column>
+
+		</createTable>
+	</changeSet>
+
+	<changeSet author="Yoann Plénet" id="Addition of isDeleted column">
+		<comment>Adding the isDeleted column to the news feed</comment>
+		<addColumn tableName="daonewsfeed">
+			<column name="isdeleted" type="bool" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
+</databaseChangeLog>
