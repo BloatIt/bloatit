@@ -37,6 +37,7 @@ import com.bloatit.model.Milestone;
 import com.bloatit.model.MilestoneContributionAmount;
 import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.MoneyWithdrawal;
+import com.bloatit.model.NewsFeed;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.Software;
@@ -175,6 +176,11 @@ public class BreadcrumbTools {
 
             @Override
             public Breadcrumb visit(MilestoneContributionAmount model) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(NewsFeed newsFeed) {
                 throw new NotImplementedException();
             }
         });

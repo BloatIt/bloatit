@@ -22,13 +22,14 @@ import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.mailsender.RetryPolicy;
+import com.bloatit.framework.social.MicroBlogManager;
 
 import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- *
+ * 
  * @author thomas
  */
 public class FrameworkConfiguration extends ReloadableConfiguration {
@@ -80,7 +81,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private String jsDatePicker;
     private String jsShowdown;
     private String jsShowdownUi;
-    
+
     private String bloatitLibravatarURI;
 
     // OTHERS
@@ -89,6 +90,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     private int memoryCacheMaxSize;
     private String imgFavicon;
     private String anonymousUserTokenClass;
+    private MicroBlogManager microBlogs;
 
     private FrameworkConfiguration() {
         super();
@@ -182,7 +184,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static int getXcgiListenport() {
         return configuration.xcgiListenport;
     }
-    
+
     public static String getXcgiListenAddress() {
         return configuration.xcgiListenAddress;
     }
@@ -308,11 +310,14 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
     public static String getAnonymousUserTokenClass() {
         return configuration.anonymousUserTokenClass;
     }
-    
+
     public static String getCommonsDir() {
         return configuration.resourcesDir + "/commons";
     }
-    
+
+    public static MicroBlogManager getMicroBlogs() {
+        return configuration.microBlogs;
+    }
 
     private void loadConfiguration() {
         properties = ConfigurationManager.loadProperties("framework.properties");
@@ -358,7 +363,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         jsDatePicker = properties.getString("bloatit.js.datepicker");
         jsShowdown = properties.getString("bloatit.js.showdown");
         jsShowdownUi = properties.getString("bloatit.js.showdown.ui");
-        
+
         bloatitLibravatarURI = properties.getString("bloatit.libravatar.uri");
 
         // DIRECTORIES
@@ -372,6 +377,7 @@ public class FrameworkConfiguration extends ReloadableConfiguration {
         memoryCacheMaxSize = properties.getInt("bloatit.memory.cache.max.size");
         imgFavicon = properties.getString("bloatit.img.favicon");
         anonymousUserTokenClass = properties.getString("bloatit.anonymousUserToken.class");
+        microBlogs = new MicroBlogManager(properties.getStringArray("micro.blogs"), properties.getString("micro.blogs.password"));
     }
 
     protected static void load() {

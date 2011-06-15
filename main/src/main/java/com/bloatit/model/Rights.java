@@ -247,6 +247,11 @@ public class Rights {
             return null;
         }
 
+        @Override
+        public Team visit(NewsFeed newsFeed) {
+            return null;
+        }
+
     }
 
     private class IsTeamOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -328,6 +333,11 @@ public class Rights {
         public Boolean visit(MilestoneContributionAmount model) {
             return null;
         }
+
+        @Override
+        public Boolean visit(NewsFeed newsFeed) {
+            return null;
+        }
     }
 
     private class IsOwnerVisitor extends HighLevelModelVisitor<Boolean> {
@@ -399,11 +409,17 @@ public class Rights {
 
         @Override
         public Boolean visit(ContributionInvoice model) {
-            return model.getRecipientActorUnprotected().equals(member) || (model.getEmitterActorUnprotected() != null && model.getEmitterActorUnprotected().equals(member));
+            return model.getRecipientActorUnprotected().equals(member)
+                    || (model.getEmitterActorUnprotected() != null && model.getEmitterActorUnprotected().equals(member));
         }
 
         @Override
         public Boolean visit(MilestoneContributionAmount model) {
+            return null;
+        }
+
+        @Override
+        public Boolean visit(NewsFeed newsFeed) {
             return null;
         }
 

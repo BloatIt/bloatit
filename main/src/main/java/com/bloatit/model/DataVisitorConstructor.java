@@ -16,12 +16,9 @@
 //
 package com.bloatit.model;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoContact;
 import com.bloatit.data.DaoContribution;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
@@ -37,6 +34,7 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMilestone;
 import com.bloatit.data.DaoMilestoneContributionAmount;
 import com.bloatit.data.DaoMoneyWithdrawal;
+import com.bloatit.data.DaoNewsFeed;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoSoftware;
@@ -289,8 +287,7 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     }
 
     @Override
-    public Identifiable<?> visit(DaoContact dao) {
-        // FIXME
-        return null;
+    public Identifiable<?> visit(DaoNewsFeed daoNewsFeed) {
+        return NewsFeed.create(daoNewsFeed);
     }
 }
