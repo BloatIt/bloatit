@@ -180,7 +180,7 @@ public final class AccountChargingPage extends QuotationPage {
         group.add(lines);
 
         final HtmlDiv summary = new HtmlDiv("quotation_totals_lines_block");
-        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, BigDecimal.ZERO, line.getMoneyField()));
+        summary.add(new HtmlTotalSummary(quotation, hasToShowFeeDetails(), url, BigDecimal.ZERO, line.getMoneyField(), summary));
         summary.add(new HtmlClearer());
         summary.add(payBlock);
         group.add(summary);

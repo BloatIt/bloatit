@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
@@ -51,6 +52,11 @@ public class HtmlTable extends HtmlGenericElement {
             if (getModel().getLineCss() != null) {
                 tr.setCssClass(getModel().getLineCss());
             }
+            
+            if (getModel().getLineId() != null) {
+                tr.setId(getModel().getLineId());
+            }
+            
 
             for (int i = 0; i < columnCount; i++) {
                 final HtmlGenericElement td = new HtmlGenericElement("td");
@@ -92,6 +98,8 @@ public class HtmlTable extends HtmlGenericElement {
     public static abstract class HtmlTableModel {
         public abstract int getColumnCount();
 
+        
+
         public abstract XmlNode getHeader(int column);
 
         public abstract XmlNode getBody(int column);
@@ -115,6 +123,10 @@ public class HtmlTable extends HtmlGenericElement {
         }
 
         public String getLineCss() {
+            return null;
+        }
+        
+        public String getLineId() {
             return null;
         }
 
@@ -191,17 +203,27 @@ public class HtmlTable extends HtmlGenericElement {
         public String getLineCss() {
             return lines.get(currentLine).getCssClass();
         }
+        
+        public String getLineId() {
+            return lines.get(currentLine).getId();
+        }
 
-        public static class HtmlTableLine {
+        public static class HtmlTableLine extends HtmlElement {
             private final List<HtmlTableCell> cells = new ArrayList<HtmlTableCell>();
             private String css = null;
 
-            final public void setCssClass(final String css) {
-                this.css = css;
+            public HtmlTableLine() {
+                super("tr");
             }
-
+            
+            
             final public String getCssClass() {
                 return css;
+            }
+            
+            final public HtmlElement setCssClass(String css) {
+                this.css = css;
+                return this;
             }
 
             final public void addCell(final HtmlTableCell cell) {
@@ -210,6 +232,11 @@ public class HtmlTable extends HtmlGenericElement {
 
             final public List<HtmlTableCell> getCells() {
                 return cells;
+            }
+
+            @Override
+            public boolean selfClosable() {
+                return false;
             }
         }
 

@@ -253,35 +253,50 @@
 
 .quotation_totals_lines_block {
     float: right;
-    padding-right: 40px;
+    padding-right: 18px;
 }
 
 .quotation_totals_lines {
-    .display-box;
-    .box-orient(vertical);
-    .box-pack(center);
-    .box-align(stretch);
-    margin-top:  50px;
+    //.display-box;
+    //.box-orient(vertical);
+    //.box-pack(center);
+    //.box-align(stretch);
+    margin:  0px;
+    margin-top:  40px;
+    border: none;
+    width: auto;
+    
+    tr:nth-child(1), tr:nth-child(2n+1), tr:nth-child(2n) {
+        background-color: transparent;
+    }
+    
+    td:first-child {
+        border-left: none;
+    }
+    
+    td {
+        border-top: none;
+        padding: 0;
+        border-left: none;
+    }
     
     
     .quotation_total_line, .quotation_total_line_ht, .quotation_total_line_total, .quotation_total_line_details  {
-        .display-box;
-        .box-orient(horizontal);
-        .box-align(center);
-        .box-flex;
-        margin-top:  4px;
-        margin-bottom:  4px;
+        //.display-box;
+        //.box-orient(horizontal);
+        //.box-align(center);
+        //.box-flex;
         
         .money {
             //.box-flex;
-            width: 100px;
+            //width: 100px;
             text-align: right;
             font-size: 1.4em;
 
             color: @dark_text_color;
             
             
-            //min-width: 100px;
+            min-width: 150px;
             
         }
         
@@ -293,7 +308,7 @@
         .label {
             //.box-flex;
             font-size: 1.1em;
-            width: 300px;
+            //width: 300px;
             
          
         }        
@@ -301,8 +316,25 @@
     
     .quotation_total_line {
         border-bottom: 1px solid @border_color;
-        margin-bottom:  6px;
+        
+        .label {
+            padding-top:  12px;
+        }
     }
+    
+    
+    .quotation_total_line_ht {
+        .label {
+            padding-top:  12px;
+        }     
+    }
+    
+    .quotation_total_line_total {
+       .label {
+            padding-top:  18px;
+        }     
+    }
+    
     
     
     .quotation_total_line_total {
@@ -324,27 +356,26 @@
    
     
     .quotation_total_line_details_block {
-        margin-top:  10px;
-        margin-bottom:  10px;
-        margin-left: 10px;
-        padding-left: 10px;
+        
         font-size: 0.7em;
-        border-left: 1px solid @border_color;
+        
+        .label {
+            margin-top:  10px;
+            margin-bottom:  10px;
+            margin-left: 10px;
+            padding-left: 10px;
 
-        .display-box;
-        .box-orient(vertical);
+
+            border-left: 1px solid @border_color;
+        
+        }
+
+        //.display-box;
+        //.box-orient(vertical);
        
         .quotation_total_line_details {
-         
-             .money {
-                width: 100px;
-                
-            }
-             
-            .label {
-               width: 279px;
-               
-            }
+
+            width: 100%;
         }
     }
 }
@@ -354,7 +385,7 @@
     margin-bottom: 100px;
     text-align: right;
     float: right;
-    max-width: 300px;
+    max-width: 400px;
     
     a {
         font-size: 0.8em;
