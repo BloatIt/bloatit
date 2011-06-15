@@ -139,7 +139,11 @@ public final class CurrencyLocale {
      * @return the localized string
      */
     public String getDecimalLocaleString() {
-        return NumberFormat.getInstance(targetLocale).format(getConvertedAmount().setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE)) + getLocaleSymbol();
+        NumberFormat numberFormat = NumberFormat.getInstance(targetLocale);
+        numberFormat.setMinimumFractionDigits(DISPLAY_PRECISION_DECIMAL);
+        numberFormat.setMaximumFractionDigits(DISPLAY_PRECISION_DECIMAL);
+        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
+        return numberFormat.getInstance(targetLocale).format(getConvertedAmount().setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE)) + getLocaleSymbol();
     }
 
     /**
@@ -150,7 +154,11 @@ public final class CurrencyLocale {
      *         application default currency
      */
     public String getTwoDecimalEuroString() {
-        return NumberFormat.getInstance(targetLocale).format(this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE)) + " " + DEFAULT_CURRENCY_SYMBOL;
+        NumberFormat numberFormat = NumberFormat.getInstance(targetLocale);
+        numberFormat.setMinimumFractionDigits(DISPLAY_PRECISION_DECIMAL);
+        numberFormat.setMaximumFractionDigits(DISPLAY_PRECISION_DECIMAL);
+        numberFormat.setRoundingMode(RoundingMode.HALF_EVEN);
+        return numberFormat.format(this.euroAmount.setScale(DISPLAY_PRECISION_DECIMAL, ROUNDING_MODE)) + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
