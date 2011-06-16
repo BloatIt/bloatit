@@ -18,6 +18,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -38,15 +39,15 @@ import com.bloatit.web.linkable.usercontent.AsTeamField;
 import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CheckContributionActionUrl;
+import com.bloatit.web.url.CheckContributeActionUrl;
 import com.bloatit.web.url.ContributePageUrl;
 
 /**
  * A page that hosts the form used to contribute on a Feature
  */
-@ParamContainer("contribute")
+@ParamContainer("contribute/%process%")
 public final class ContributePage extends CreateUserContentPage {
-    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 
@@ -69,7 +70,7 @@ public final class ContributePage extends CreateUserContentPage {
     }
 
     private HtmlElement generateContributeForm(final Member me) {
-        final CheckContributionActionUrl formActionUrl = new CheckContributionActionUrl(process);
+        final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(process);
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : choose amount
@@ -85,11 +86,11 @@ public final class ContributePage extends CreateUserContentPage {
         contribInput.setComment(Context.tr("The minimum is 1€. Don't use cents."));
 
         // Input field : As team
-        AsTeamField teamField = new AsTeamField(formActionUrl,
-                                                me,
-                                                UserTeamRight.BANK,
-                                                tr("In the name of"),
-                                                tr("Talk in the name of this team and use its money to make a contribution."));
+        final AsTeamField teamField = new AsTeamField(formActionUrl,
+                                                      me,
+                                                      UserTeamRight.BANK,
+                                                      tr("In the name of"),
+                                                      tr("Talk in the name of this team and use its money to make a contribution."));
         contribForm.add(teamField);
         if (process.getTeam() != null) {
             teamField.getTeamInput().setDefaultValue(process.getTeam().getId().toString());

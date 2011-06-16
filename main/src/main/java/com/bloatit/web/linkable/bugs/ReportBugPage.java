@@ -18,6 +18,7 @@ import java.util.EnumSet;
 import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -47,14 +48,13 @@ import com.bloatit.web.url.ReportBugPageUrl;
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("feature/bug/report")
+@ParamContainer("offers/%offer%/reportbug")
 public final class ReportBugPage extends CreateUserContentPage {
     public static final int FILE_MAX_SIZE_MIO = 2;
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    @SuppressWarnings("unused")
-    @RequestParam
+    @RequestParam(role = Role.PAGENAME)
     private final Offer offer;
 
     private final Milestone milestone;
@@ -64,18 +64,18 @@ public final class ReportBugPage extends CreateUserContentPage {
     public ReportBugPage(final ReportBugPageUrl url) {
         super(url);
         this.url = url;
-        milestone = computeMilestone(url);
         offer = url.getOffer();
+        milestone = computeMilestone(offer);
     }
 
-    private static Milestone computeMilestone(final ReportBugPageUrl url) {
-        if (url.getOffer() == null) {
+    private Milestone computeMilestone(final Offer offer) {
+        if (offer == null) {
             return null;
         }
-        if (url.getOffer().isFinished()) {
-            return url.getOffer().getLastMilestone();
+        if (offer.isFinished()) {
+            return offer.getLastMilestone();
         }
-        return url.getOffer().getCurrentMilestone();
+        return offer.getCurrentMilestone();
     }
 
     @Override

@@ -48,6 +48,10 @@ public class ComponentDescription extends ClassDescription {
         return Utils.getStr(codeName);
     }
 
+    public final String getCodeName() {
+        return codeName;
+    }
+
     public final List<ParameterDescription> getParameters() {
         return parameters;
     }
@@ -59,7 +63,7 @@ public class ComponentDescription extends ClassDescription {
     public final List<ParameterDescription> getUrlParameters() {
         final List<ParameterDescription> urlParameters = new ArrayList<ParameterDescription>();
         for (final ParameterDescription param : parameters) {
-            if (param.getRealRole() == Role.GET && !param.isOptional()) {
+            if ((param.getRealRole() == Role.GET || param.getRealRole() == Role.PAGENAME) && !param.isOptional()) {
                 urlParameters.add(param);
             }
         }

@@ -30,9 +30,9 @@ import com.bloatit.web.actions.PaymentProcess;
 import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
 import com.bloatit.web.linkable.money.PaylineProcess;
-import com.bloatit.web.url.CheckContributionPageUrl;
+import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributePageUrl;
-import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.ContributeActionUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 
@@ -93,12 +93,12 @@ public class ContributionProcess extends PaymentProcess {
             if (subPro.isSuccessful()) {
                 // Redirects to the contribution action which will perform the
                 // actual contribution
-                return new ContributionActionUrl(this);
+                return new ContributeActionUrl(this);
             }
             unlock();
-            return new CheckContributionPageUrl(this);
+            return new CheckContributePageUrl(this);
         } else if (subProcess instanceof ModifyInvoicingContactProcess) {
-            return new CheckContributionPageUrl(this);
+            return new CheckContributePageUrl(this);
         }
         return null;
     }

@@ -30,7 +30,7 @@ import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
-import com.bloatit.web.url.AddReleasePageUrl;
+import com.bloatit.web.url.CreateReleasePageUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
@@ -278,7 +278,7 @@ public final class OfferBlock extends HtmlDiv {
 
     private void generateAddReleaseLink(final Milestone lot, final HtmlDiv lotBlock, final ElveosUserToken userToken) {
         if (isDeveloper(userToken) && (lot.getMilestoneState() == MilestoneState.DEVELOPING || lot.getMilestoneState() == MilestoneState.UAT)) {
-            final HtmlLink link = new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("Add a release"));
+            final HtmlLink link = new HtmlLink(new CreateReleasePageUrl(lot).urlString(), tr("Add a release"));
             link.setCssClass("button");
             lotBlock.add(link);
         }

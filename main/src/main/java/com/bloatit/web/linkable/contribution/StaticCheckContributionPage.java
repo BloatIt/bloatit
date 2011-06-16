@@ -40,8 +40,8 @@ import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CheckContributionActionUrl;
-import com.bloatit.web.url.CheckContributionPageUrl;
+import com.bloatit.web.url.CheckContributeActionUrl;
+import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.PaylineProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
@@ -81,7 +81,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         try {
             account = getAccount(member).getAmount();
             if (process.getAmount().compareTo(account) <= 0) {
-                throw new RedirectException(new CheckContributionPageUrl(process));
+                throw new RedirectException(new CheckContributePageUrl(process));
             }
             generateNoMoneyContent(group, getActor(member), account);
         } catch (final UnauthorizedOperationException e) {
@@ -161,10 +161,10 @@ public final class StaticCheckContributionPage extends QuotationPage {
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(process.getFeature());
-        final CheckContributionActionUrl returnUrl = new CheckContributionActionUrl(process);
+        final CheckContributeActionUrl returnUrl = new CheckContributeActionUrl(process);
         returnUrl.setAmount(process.getAmount());
         breadcrumb.pushLink(createUnlockedReturnUrl().getHtmlLink(tr("Contribute - Check")));
-        breadcrumb.pushLink(new CheckContributionPageUrl(process).getHtmlLink(tr("Final check")));
+        breadcrumb.pushLink(new CheckContributePageUrl(process).getHtmlLink(tr("Final check")));
         return breadcrumb;
     }
 

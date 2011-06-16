@@ -34,22 +34,22 @@ import com.bloatit.web.url.WithdrawMoneyPageUrl;
  * Page used by teams and or members to withdraw money from their internal
  * account back to their physical bank account
  */
-@ParamContainer("money/withdraw")
+@ParamContainer("account/withdraw/create")
 public class WithdrawMoneyPage extends LoggedPage {
     private final WithdrawMoneyPageUrl url;
 
     @RequestParam(role = Role.GET)
     private final Actor<?> actor;
 
-    public WithdrawMoneyPage(WithdrawMoneyPageUrl url) {
+    public WithdrawMoneyPage(final WithdrawMoneyPageUrl url) {
         super(url);
         this.url = url;
         this.actor = url.getActor();
     }
 
     @Override
-    public HtmlElement createRestrictedContent(Member loggedUser) throws RedirectException {
-        TwoColumnLayout master = new TwoColumnLayout(true, url);
+    public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
+        final TwoColumnLayout master = new TwoColumnLayout(true, url);
         master.addLeft(generateCore());
 
         return master;
@@ -59,32 +59,32 @@ public class WithdrawMoneyPage extends LoggedPage {
      * Creates the form used to input the amount to withdraw
      */
     private HtmlElement generateCore() {
-        HtmlDiv master = new HtmlDiv();
+        final HtmlDiv master = new HtmlDiv();
         master.add(new HtmlTitle(1).addText(tr("Withdraw money")));
 
-        WithdrawMoneyActionUrl targetUrl = new WithdrawMoneyActionUrl(actor);
-        HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final WithdrawMoneyActionUrl targetUrl = new WithdrawMoneyActionUrl(actor);
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
 
         // Amount
-        FieldData moneyData = targetUrl.getAmountParameter().pickFieldData();
-        HtmlMoneyField moneyInput = new HtmlMoneyField(moneyData.getName(), tr("Amount to withdraw: "));
+        final FieldData moneyData = targetUrl.getAmountParameter().pickFieldData();
+        final HtmlMoneyField moneyInput = new HtmlMoneyField(moneyData.getName(), tr("Amount to withdraw: "));
         if (moneyData.getSuggestedValue() != null && !moneyData.getSuggestedValue().isEmpty()) {
             moneyInput.setDefaultValue(moneyData.getSuggestedValue());
         } else {
             try {
-                BigDecimal available = actor.getInternalAccount().getAmount();
+                final BigDecimal available = actor.getInternalAccount().getAmount();
                 available.setScale(0);
                 moneyInput.setDefaultValue("" + available.intValue());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Cannot account amount.");
             }
         }
         form.add(moneyInput);
 
         // IBAN
-        FieldData IBANData = targetUrl.getIBANParameter().pickFieldData();
-        HtmlTextField ibanInput = new HtmlTextField(IBANData.getName(), tr("IBAN: "));
+        final FieldData IBANData = targetUrl.getIBANParameter().pickFieldData();
+        final HtmlTextField ibanInput = new HtmlTextField(IBANData.getName(), tr("IBAN: "));
         ibanInput.setDefaultStringValue(IBANData.getSuggestedValue());
         ibanInput.turnOffAutoComplete();
         form.add(ibanInput);
@@ -92,7 +92,7 @@ public class WithdrawMoneyPage extends LoggedPage {
         form.add(new HtmlSubmit(tr("Submit")));
 
         // Plop
-        HtmlDiv testIban = new HtmlDiv();
+        final HtmlDiv testIban = new HtmlDiv();
         testIban.addText(Context.tr("You can test the page with the following IBAN: GB87 BARC 2065 8244 9716 55"));
         master.add(testIban);
 
@@ -114,7 +114,7 @@ public class WithdrawMoneyPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         if (isTeamAccount()) {
             return generateBreadcrumb((Team) actor);
         }

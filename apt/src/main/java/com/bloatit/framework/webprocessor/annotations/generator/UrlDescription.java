@@ -7,7 +7,7 @@ import javax.lang.model.element.Element;
 
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 
-public class UrlDescription extends ClassDescription{
+public class UrlDescription extends ClassDescription {
     private UrlDescription father;
     private final String className;
     private final boolean isAction;
@@ -39,10 +39,9 @@ public class UrlDescription extends ClassDescription{
         return isAction;
     }
 
-
     public List<ParameterDescription> getFathersConstructorParameters() {
         final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
-        if (father!=null) {
+        if (father != null) {
             parameters.addAll(father.getFathersConstructorParameters());
             parameters.addAll(father.getConstructorParameters());
         }
@@ -52,7 +51,7 @@ public class UrlDescription extends ClassDescription{
     public List<ParameterDescription> getConstructorParameters() {
         final List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
         for (final ParameterDescription params : component.getParameters()) {
-            if (!params.isOptional() && params.getRealRole() == Role.GET) {
+            if (!params.isOptional() && (params.getRealRole() == Role.GET || params.getRealRole() == Role.PAGENAME)) {
                 parameters.add(params);
             }
         }

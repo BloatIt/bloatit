@@ -26,7 +26,7 @@ import com.bloatit.web.url.LogoutActionUrl;
 /**
  * A response to a form used to log out of the website
  */
-@ParamContainer("action/logout")
+@ParamContainer("members/dologout")
 public final class LogoutAction extends LoggedAction {
     // Keep it for consistency
     @SuppressWarnings("unused")

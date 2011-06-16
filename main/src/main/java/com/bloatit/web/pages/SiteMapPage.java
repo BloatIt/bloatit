@@ -27,7 +27,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
@@ -76,7 +76,7 @@ public final class SiteMapPage extends ElveosPage {
         contentLinkList.add(new SoftwareListPageUrl().getHtmlLink(Context.tr("Softwares list")));
         contentLinkList.add(new CreateFeaturePageUrl().getHtmlLink(Context.tr("Request a new feature")));
         contentLinkList.add(new CreateTeamPageUrl().getHtmlLink(Context.tr("Create a team")));
-        contentLinkList.add(new AddSoftwarePageUrl().getHtmlLink(Context.tr("Add a software")));
+        contentLinkList.add(new CreateSoftwarePageUrl().getHtmlLink(Context.tr("Add a software")));
 
         final HtmlTitle titleUseful = new HtmlTitle(Context.tr("Useful pages"), 2);
         layout.addLeft(titleUseful);

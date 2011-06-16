@@ -29,16 +29,13 @@ import com.bloatit.web.url.MemberActivationActionUrl;
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer(value="member/activate", protocol=Protocol.HTTPS)
+@ParamContainer(value="members/%login%/doactivate", protocol=Protocol.HTTPS)
 public final class MemberActivationAction extends ElveosAction {
 
-    private static final String MEMBER_CODE = "member";
-    private static final String KEY_CODE = "key";
-
-    @RequestParam(name = MEMBER_CODE, role = Role.GET)
+    @RequestParam(role = Role.PAGENAME)
     private final String login;
 
-    @RequestParam(name = KEY_CODE, role = Role.GET)
+    @RequestParam(role = Role.GET)
     private final String key;
 
     // Keep it for consistency
@@ -51,11 +48,10 @@ public final class MemberActivationAction extends ElveosAction {
 
         this.login = url.getLogin();
         this.key = url.getKey();
-
     }
 
     @Override
-    protected Url doProcess(ElveosUserToken userToken) {
+    protected Url doProcess(final ElveosUserToken userToken) {
         final Member member = MemberManager.getMemberByLogin(login);
 
         final Url to = new IndexPageUrl();
@@ -83,12 +79,12 @@ public final class MemberActivationAction extends ElveosAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new IndexPageUrl();
     }
 
     @Override
-    protected Url checkRightsAndEverything(ElveosUserToken userToken) {
+    protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         return NO_ERROR; // Nothing else to check
     }
 

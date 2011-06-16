@@ -54,6 +54,7 @@ public class PaylineProcess extends WebProcess {
     @RequestParam
     private Actor<?> actor;
 
+    @SuppressWarnings("unused")
     @RequestParam
     private final PaymentProcess parentProcess;
 

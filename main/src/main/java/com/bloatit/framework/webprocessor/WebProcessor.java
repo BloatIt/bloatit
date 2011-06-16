@@ -103,7 +103,7 @@ public abstract class WebProcessor implements XcgiProcessor {
         return true;
     }
 
-    public abstract Linkable constructLinkable(final String pageCode, final Parameters params, final Session session);
+    public abstract Linkable constructLinkable(final String pageCode, final Parameters postGetParameters, final Session session);
 
     /**
      * Return the session for the user. Either an existing session or a new

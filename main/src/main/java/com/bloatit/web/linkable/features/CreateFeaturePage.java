@@ -41,7 +41,7 @@ import com.bloatit.web.url.CreateFeaturePageUrl;
 /**
  * Page that hosts the form to create a new Feature
  */
-@ParamContainer("feature/create")
+@ParamContainer("features/create")
 public final class CreateFeaturePage extends CreateUserContentPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 20;

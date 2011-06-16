@@ -35,29 +35,24 @@ import com.bloatit.web.url.ModifyBugPageUrl;
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("feature/bug/domodify")
+@ParamContainer("bugs/%bug%/domodify")
 public final class ModifyBugAction extends ElveosAction {
 
-    private static final String BUG_STATE = "bug_state";
-    private static final String BUG_REASON = "reason";
-    private static final String BUG_LEVEL = "bug_level";
-    private static final String BUG = "bug";
-
     @Optional
-    @RequestParam(name = BUG_REASON, role = Role.POST)
+    @RequestParam(role = Role.POST)
     @MaxConstraint(max = 120, message = @tr("The reason must be %constraint% chars length max."))
     private final String reason;
 
     @NonOptional(@tr("You must indicate a bug level"))
-    @RequestParam(name = BUG_LEVEL, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final BindedLevel level;
 
     @NonOptional(@tr("You must indicate a bug state"))
-    @RequestParam(name = BUG_STATE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final BindedState state;
 
     @NonOptional(@tr("A bug change must be linked to a bug"))
-    @RequestParam(name = BUG, role = Role.GET)
+    @RequestParam(role = Role.PAGENAME)
     private final Bug bug;
 
     private final ModifyBugActionUrl url;

@@ -23,6 +23,7 @@ import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.exceptions.lowlevel.MemberNotInTeamException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -37,14 +38,14 @@ import com.bloatit.web.url.TeamPageUrl;
 /**
  * Action used to give a user a new right in a team
  */
-@ParamContainer("team/dogiveright")
+@ParamContainer("teams/%team%/dogiveright")
 public final class GiveRightAction extends LoggedAction {
     @SuppressWarnings("unused")
     // Kept for consistency
     private final GiveRightActionUrl url;
 
-    @RequestParam
-    private final Team targetTeam;
+    @RequestParam(role = Role.PAGENAME)
+    private final Team team;
 
     @RequestParam
     private final Member targetMember;
@@ -58,7 +59,7 @@ public final class GiveRightAction extends LoggedAction {
     public GiveRightAction(final GiveRightActionUrl url) {
         super(url);
         this.url = url;
-        this.targetTeam = url.getTargetTeam();
+        this.team = url.getTeam();
         this.targetMember = url.getTargetMember();
         this.right = url.getRight();
         this.give = url.getGive();
@@ -67,14 +68,14 @@ public final class GiveRightAction extends LoggedAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         if (right == UserTeamRight.CONSULT && !give) {
-            if (!targetMember.canBeKickFromTeam(targetTeam, me)) {
+            if (!targetMember.canBeKickFromTeam(team, me)) {
                 session.notifyBad(Context.tr("You are not allowed to remove people in the team"));
                 throw new ShallNotPassException("Cannot display a team name");
             }
         } else {
-            if (!targetTeam.canChangeRight(me, targetMember, right, give)) {
-                session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", targetTeam.getDisplayName()));
-                return new TeamPageUrl(targetTeam);
+            if (!team.canChangeRight(me, targetMember, right, give)) {
+                session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", team.getDisplayName()));
+                return new TeamPageUrl(team);
             }
         }
         return NO_ERROR;
@@ -86,14 +87,14 @@ public final class GiveRightAction extends LoggedAction {
         if (right == UserTeamRight.CONSULT && !give) {
             // Remove member from team
             try {
-                targetMember.kickFromTeam(targetTeam, me);
+                targetMember.kickFromTeam(team, me);
             } catch (final UnauthorizedOperationException e) {
                 session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
                 throw new ShallNotPassException("Cannot remove a member from a team", e);
             }
         } else {
             try {
-                targetTeam.changeRight(me, targetMember, right, give);
+                team.changeRight(me, targetMember, right, give);
             } catch (final UnauthorizedOperationException e) {
                 waitingForJava7(e);
             } catch (final MemberNotInTeamException e) {
@@ -101,7 +102,7 @@ public final class GiveRightAction extends LoggedAction {
             }
         }
 
-        return new TeamPageUrl(targetTeam);
+        return new TeamPageUrl(team);
     }
 
     private void waitingForJava7(final Exception e) {
@@ -110,7 +111,7 @@ public final class GiveRightAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new PageNotFoundUrl();
     }
 

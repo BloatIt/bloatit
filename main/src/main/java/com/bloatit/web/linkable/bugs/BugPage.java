@@ -58,13 +58,13 @@ import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ModifyBugPageUrl;
 
-@ParamContainer("feature/bug")
+@ParamContainer("bugs/%bug%")
 public final class BugPage extends ElveosPage {
 
     private static final int FILE_MAX_SIZE_MIO = 2;
 
     @NonOptional(@tr("You have to specify a bug number."))
-    @RequestParam(name = "id", message = @tr("I cannot find the bug number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the bug number: ''%value%''."))
     private final Bug bug;
 
     @SuppressWarnings("unused")

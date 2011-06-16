@@ -38,7 +38,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * Action used to accept or refuse team invitations
  * </p>
  */
-@ParamContainer("team/doacceptinvitation")
+@ParamContainer("team/invitation/doacceptinvitation")
 public final class HandleJoinTeamInvitationAction extends LoggedAction {
     @RequestParam(message = @tr("I cannot find the invitation number: ''%value%''."))
     @NonOptional(@tr("You have to specify an invitation."))

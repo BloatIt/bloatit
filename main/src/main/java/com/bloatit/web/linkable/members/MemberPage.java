@@ -62,7 +62,7 @@ import com.bloatit.web.url.TeamPageUrl;
  * propose to edit account parameters
  * </p>
  */
-@ParamContainer("member")
+@ParamContainer("members/%member%")
 public final class MemberPage extends ElveosPage {
     private final MemberPageUrl url;
 
@@ -79,20 +79,13 @@ public final class MemberPage extends ElveosPage {
     private final String activeTabKey;
 
     @NonOptional(@tr("You have to specify a member number."))
-    @RequestParam(name = "id", message = @tr("I cannot find the member number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the member number: ''%value%''."))
     private final Member member;
-
-    @SuppressWarnings("unused")
-    @RequestParam(name = "name", role = Role.PRETTY, generatedFrom = "member")
-    @Optional("john-do")
-    private final String displayName;
 
     public MemberPage(final MemberPageUrl url) {
         super(url);
         this.url = url;
         this.member = url.getMember();
-
-        this.displayName = url.getDisplayName();
         this.activeTabKey = url.getActiveTabKey();
     }
 

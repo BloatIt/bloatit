@@ -13,7 +13,7 @@ import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.PaylineActionUrl;
 
-@ParamContainer(value="paylinedopayment", protocol=Protocol.HTTPS)
+@ParamContainer(value="payline/dopayment", protocol=Protocol.HTTPS)
 public final class PaylineAction extends LoggedAction {
 
     @RequestParam
@@ -35,7 +35,7 @@ public final class PaylineAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return Context.getSession().pickPreferredPage();
     }
 
