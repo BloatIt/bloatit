@@ -178,6 +178,16 @@ public abstract class ElveosPage extends Page {
         notifications.add(note);
     }
 
+    /**
+     * Indicates the various parameters that will be included in the robot tag.
+     * <p>
+     * The default set (returned by this implementation) is an empty set. Any
+     * class feeling the need to have special robot mechanism should overload
+     * this function and return a set with various robots parameters.
+     * </p>
+     * 
+     * @see Robot
+     */
     @Override
     protected Set<Robot> getRobots() {
         return new HashSet<Header.Robot>();

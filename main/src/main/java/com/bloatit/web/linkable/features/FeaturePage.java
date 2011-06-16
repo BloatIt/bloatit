@@ -13,6 +13,10 @@ package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import java.util.Set;
+
+import org.springframework.web.util.HtmlUtils;
+
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.Optional;
@@ -25,6 +29,7 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -179,5 +184,18 @@ public final class FeaturePage extends ElveosPage {
         }
 
         return FeaturePage.generateBreadcrumb(feature);
+    }
+
+    @Override
+    protected String getPageDescription() {
+        String title = feature.getTitle();
+        if (title.endsWith(".") || title.endsWith(":") || title.endsWith("!") || title.endsWith("?")) {
+            title = title.substring(0, title.length() - 1);
+        }
+        String str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0} in {1}",
+                                title,
+                                feature.getSoftware().getName());
+
+        return HtmlUtils.htmlEscape(str);
     }
 }

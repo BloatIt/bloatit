@@ -32,7 +32,7 @@ public final class Header extends HtmlElement {
      * Indicates the various possible elements for robot
      */
     public enum Robot {
-        //  @formatter:off
+        // @formatter:off
         NO_INDEX("noindex"), NO_FOLLOW("nofollow"), INDEX("index"), FOLLOW("follow"), ALL("all"),
         NONE("none"), NO_SNIPPET("nosnippet"), NO_ARCHIVE("noarchive"), NO_ODP("noodp");
         // @formatter:on
