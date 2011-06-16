@@ -24,7 +24,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.linkable.features.FeatureTabPane;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
@@ -59,8 +59,7 @@ public final class ContributeAction extends UserContentAction {
                                                                                                   .getCurrency(process.getAmount())
                                                                                                   .getSimpleEuroString()));
 
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature());
-            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(process.getFeature(), TabKey.contributions);
             process.close();
             return featurePageUrl;
         } catch (final NotEnoughMoneyException e) {

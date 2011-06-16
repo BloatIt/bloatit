@@ -44,6 +44,7 @@ import com.bloatit.model.Translation;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.HtmlProgressBar;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.url.FeaturePageUrl;
 
@@ -106,7 +107,7 @@ public class FeaturesTools {
         if (isTitle) {
             master.addText(getTitle(feature));
         } else {
-            master.add(new FeaturePageUrl(feature).getHtmlLink(getTitle(feature)));
+            master.add(new FeaturePageUrl(feature, TabKey.description).getHtmlLink(getTitle(feature)));
         }
         final HtmlSpan softwareLink = new SoftwaresTools.Link(feature.getSoftware());
         final HtmlMixedText mixed = new HtmlMixedText(Context.tr(" (<0:software:>)"), softwareLink);
@@ -240,19 +241,17 @@ public class FeaturesTools {
 
             final int contributionsCount = feature.getContributions().size();
 
-            final FeaturePageUrl commentsFeatureUrl = new FeaturePageUrl(feature);
+            final FeaturePageUrl commentsFeatureUrl = new FeaturePageUrl(feature, TabKey.description);
             commentsFeatureUrl.setAnchor("comments_block");
 
-            final FeaturePageUrl contributionsFeatureUrl = new FeaturePageUrl(feature);
-            contributionsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+            final FeaturePageUrl contributionsFeatureUrl = new FeaturePageUrl(feature, TabKey.contributions);
             contributionsFeatureUrl.setAnchor("feature_tab_pane");
 
             final String trn = Context.trn("{0} comment", "{0} comments", commentsCount, Long.valueOf((commentsCount)));
             featureSummaryDetails.add(commentsFeatureUrl.getHtmlLink(trn));
             if (feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
                 // PENDING or PREPARING we add the number of offers
-                final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature);
-                offersFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+                final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature, TabKey.offers);
                 offersFeatureUrl.setAnchor("feature_tab_pane");
 
                 final int offersCount = feature.getOffers().size();
@@ -261,16 +260,14 @@ public class FeaturesTools {
 
             } else if (feature.getFeatureState() == FeatureState.DEVELOPPING) {
                 // DEVELOPPING we add bug count and release count
-                final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature);
-                bugsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+                final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature, TabKey.bugs);
                 bugsFeatureUrl.setAnchor("feature_tab_pane");
 
                 final int bugCount = feature.getOpenBugs().size();
                 featureSummaryDetails.addText(" – ");
                 featureSummaryDetails.add(bugsFeatureUrl.getHtmlLink(Context.trn("{0} open bug", "{0} open bugs", bugCount, bugCount)));
 
-                final FeaturePageUrl releasesFeatureUrl = new FeaturePageUrl(feature);
-                releasesFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+                final FeaturePageUrl releasesFeatureUrl = new FeaturePageUrl(feature, TabKey.offers);
                 releasesFeatureUrl.setAnchor("feature_tab_pane");
 
                 int releaseCount = 0;
@@ -288,8 +285,7 @@ public class FeaturesTools {
                 final int bugCount = feature.getOpenBugs().size();
                 if (bugCount > 0) {
 
-                    final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature);
-                    bugsFeatureUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+                    final FeaturePageUrl bugsFeatureUrl = new FeaturePageUrl(feature, TabKey.bugs);
                     bugsFeatureUrl.setAnchor("feature_tab_pane");
 
                     featureSummaryDetails.addText(" – ");

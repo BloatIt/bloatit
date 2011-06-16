@@ -30,6 +30,7 @@ import com.bloatit.model.FeatureFactory;
 import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.Team;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.CreateFeatureActionUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
@@ -80,7 +81,7 @@ public final class CreateFeatureAction extends UserContentAction {
     public Url doDoProcessRestricted(final Member me, final Team asTeam) {
         final Feature feature = FeatureFactory.createFeature(me, asTeam, getLocale(), description, specification, software);
         propagateAttachedFileIfPossible(feature);
-        return new FeaturePageUrl(feature);
+        return new FeaturePageUrl(feature, TabKey.description);
     }
 
     @Override

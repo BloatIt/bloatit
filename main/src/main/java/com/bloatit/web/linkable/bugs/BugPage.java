@@ -44,6 +44,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.web.components.SideBarFeatureBlock;
 import com.bloatit.web.linkable.features.FeaturePage;
 import com.bloatit.web.linkable.features.FeatureTabPane;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.linkable.usercontent.AttachmentField;
 import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -89,8 +90,7 @@ public final class BugPage extends ElveosPage {
 
         final HtmlDiv bugListDiv = new HtmlDiv("bug_list");
         layout.addLeft(bugListDiv);
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(bug.getFeature());
-        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(bug.getFeature(), TabKey.bugs);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
         bugListDiv.add(new HtmlParagraph(featurePageUrl.getHtmlLink(tr("Return to bugs list"))));
 
