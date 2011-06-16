@@ -58,7 +58,7 @@ public final class MembersListPage extends ElveosPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
-        final PageIterable<Member> memberList = MemberManager.getAll();
+        final PageIterable<Member> memberList = MemberManager.getAllMembersOrderByName();
         final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
 
         final MembersListPageUrl clonedUrl = url.clone();
