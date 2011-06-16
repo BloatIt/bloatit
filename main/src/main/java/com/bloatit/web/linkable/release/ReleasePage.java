@@ -18,6 +18,7 @@ import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
@@ -36,11 +37,11 @@ import com.bloatit.web.url.AddAttachementPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ReleasePageUrl;
 
-@ParamContainer("release")
+@ParamContainer("releases/%release%")
 public final class ReleasePage extends ElveosPage {
 
     @NonOptional(@tr("You have to specify a release number."))
-    @RequestParam(name = "id", message = @tr("I cannot find the release number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the release number: ''%value%''."))
     private final Release release;
 
     private final ReleasePageUrl url;

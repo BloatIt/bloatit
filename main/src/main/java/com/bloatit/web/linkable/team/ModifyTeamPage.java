@@ -44,11 +44,11 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 
-@ParamContainer("team/modify")
+@ParamContainer("teams/%team%/modify")
 public class ModifyTeamPage extends LoggedPage {
     private final ModifyTeamPageUrl url;
 
-    @RequestParam(role = Role.GET)
+    @RequestParam(role = Role.PAGENAME)
     private final Team team;
 
     public ModifyTeamPage(final ModifyTeamPageUrl url) {
@@ -158,7 +158,7 @@ public class ModifyTeamPage extends LoggedPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         return generateBreadcrumb(team);
     }
 

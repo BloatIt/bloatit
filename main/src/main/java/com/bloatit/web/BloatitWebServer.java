@@ -54,10 +54,10 @@ import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
 import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
-import com.bloatit.web.linkable.contribution.CheckContributionAction;
-import com.bloatit.web.linkable.contribution.CheckContributionPage;
+import com.bloatit.web.linkable.contribution.CheckContributeAction;
+import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributePage;
-import com.bloatit.web.linkable.contribution.ContributionAction;
+import com.bloatit.web.linkable.contribution.ContributeAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
@@ -108,11 +108,11 @@ import com.bloatit.web.linkable.money.WithdrawMoneyAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyPage;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
-import com.bloatit.web.linkable.release.AddReleaseAction;
-import com.bloatit.web.linkable.release.AddReleasePage;
+import com.bloatit.web.linkable.release.CreateReleaseAction;
+import com.bloatit.web.linkable.release.CreateReleasePage;
 import com.bloatit.web.linkable.release.ReleasePage;
-import com.bloatit.web.linkable.softwares.AddSoftwareAction;
-import com.bloatit.web.linkable.softwares.AddSoftwarePage;
+import com.bloatit.web.linkable.softwares.CreateSoftwareAction;
+import com.bloatit.web.linkable.softwares.CreateSoftwarePage;
 import com.bloatit.web.linkable.softwares.SoftwareListPage;
 import com.bloatit.web.linkable.softwares.SoftwarePage;
 import com.bloatit.web.linkable.team.CreateTeamAction;
@@ -174,8 +174,8 @@ public class BloatitWebServer extends WebProcessor {
         if (ContributePageUrl.matches(pageCode)) {
             return new ContributePage(new ContributePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (CheckContributionPageUrl.matches(pageCode)) {
-            return new CheckContributionPage(new CheckContributionPageUrl(pageCode, postGetParameters, session.getParameters()));
+        if (CheckContributePageUrl.matches(pageCode)) {
+            return new CheckContributePage(new CheckContributePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (StaticCheckContributionPageUrl.matches(pageCode)) {
             return new StaticCheckContributionPage(new StaticCheckContributionPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -198,8 +198,8 @@ public class BloatitWebServer extends WebProcessor {
         if (SoftwarePageUrl.matches(pageCode)) {
             return new SoftwarePage(new SoftwarePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (AddSoftwarePageUrl.matches(pageCode)) {
-            return new AddSoftwarePage(new AddSoftwarePageUrl(pageCode, postGetParameters, session.getParameters()));
+        if (CreateSoftwarePageUrl.matches(pageCode)) {
+            return new CreateSoftwarePage(new CreateSoftwarePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (SoftwareListPageUrl.matches(pageCode)) {
             return new SoftwareListPage(new SoftwareListPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -234,8 +234,8 @@ public class BloatitWebServer extends WebProcessor {
         if (ReportBugPageUrl.matches(pageCode)) {
             return new ReportBugPage(new ReportBugPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (AddReleasePageUrl.matches(pageCode)) {
-            return new AddReleasePage(new AddReleasePageUrl(pageCode, postGetParameters, session.getParameters()));
+        if (CreateReleasePageUrl.matches(pageCode)) {
+            return new CreateReleasePage(new CreateReleasePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ModifyBugPageUrl.matches(pageCode)) {
             return new ModifyBugPage(new ModifyBugPageUrl(pageCode, postGetParameters, session.getParameters()));
@@ -309,11 +309,11 @@ public class BloatitWebServer extends WebProcessor {
         if (LogoutActionUrl.matches(pageCode)) {
             return new LogoutAction(new LogoutActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (ContributionActionUrl.matches(pageCode)) {
-            return new ContributionAction(new ContributionActionUrl(pageCode, postGetParameters, session.getParameters()));
+        if (ContributeActionUrl.matches(pageCode)) {
+            return new ContributeAction(new ContributeActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (CheckContributionActionUrl.matches(pageCode)) {
-            return new CheckContributionAction(new CheckContributionActionUrl(pageCode, postGetParameters, session.getParameters()));
+        if (CheckContributeActionUrl.matches(pageCode)) {
+            return new CheckContributeAction(new CheckContributeActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (OfferActionUrl.matches(pageCode)) {
             return new OfferAction(new OfferActionUrl(pageCode, postGetParameters, session.getParameters()));
@@ -343,8 +343,8 @@ public class BloatitWebServer extends WebProcessor {
             }
             return new PaylineNotifyAction(new PaylineNotifyActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (AddSoftwareActionUrl.matches(pageCode)) {
-            return new AddSoftwareAction(new AddSoftwareActionUrl(pageCode, postGetParameters, session.getParameters()));
+        if (CreateSoftwareActionUrl.matches(pageCode)) {
+            return new CreateSoftwareAction(new CreateSoftwareActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (MemberActivationActionUrl.matches(pageCode)) {
             return new MemberActivationAction(new MemberActivationActionUrl(pageCode, postGetParameters, session.getParameters()));
@@ -376,8 +376,8 @@ public class BloatitWebServer extends WebProcessor {
         if (ReportBugActionUrl.matches(pageCode)) {
             return new ReportBugAction(new ReportBugActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (AddReleaseActionUrl.matches(pageCode)) {
-            return new AddReleaseAction(new AddReleaseActionUrl(pageCode, postGetParameters, session.getParameters()));
+        if (CreateReleaseActionUrl.matches(pageCode)) {
+            return new CreateReleaseAction(new CreateReleaseActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ModifyBugActionUrl.matches(pageCode)) {
             return new ModifyBugAction(new ModifyBugActionUrl(pageCode, postGetParameters, session.getParameters()));

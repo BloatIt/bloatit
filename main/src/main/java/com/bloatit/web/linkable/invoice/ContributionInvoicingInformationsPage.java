@@ -67,7 +67,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedPage {
     }
 
     private HtmlElement generateInvoicingInformationsForm(final Member member) {
-        final HtmlTitleBlock group = new HtmlTitleBlock("Addictional invoicing informations", 1);
+        final HtmlTitleBlock group = new HtmlTitleBlock("Additional invoicing informations", 1);
 
         // Create contact form
         final ContributionInvoicingInformationsActionUrl contributionInvoicingInformationActionUrl = new ContributionInvoicingInformationsActionUrl(process);
@@ -104,7 +104,7 @@ public final class ContributionInvoicingInformationsPage extends LoggedPage {
         final Breadcrumb breadcrumb;
         breadcrumb = FeaturePage.generateBreadcrumb(process.getMilestone().getOffer().getFeature());
 
-        Url url = new ContributionInvoicingInformationsPageUrl(process);
+        final Url url = new ContributionInvoicingInformationsPageUrl(process);
 
         breadcrumb.pushLink(url.getHtmlLink(tr("Contribution Invoicing contact")));
         return breadcrumb;

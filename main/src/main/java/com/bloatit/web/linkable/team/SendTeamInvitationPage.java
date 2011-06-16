@@ -22,6 +22,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.form.FieldData;
@@ -44,11 +45,11 @@ import com.bloatit.web.url.SendTeamInvitationPageUrl;
  * A page to send invitations to teams
  * </p>
  */
-@ParamContainer("invitation/send")
+@ParamContainer("teams/%team%/sendinvitation")
 public class SendTeamInvitationPage extends LoggedPage {
     private final SendTeamInvitationPageUrl url;
 
-    @RequestParam(message = @tr("I cannot find the team number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the team number: ''%value%''."))
     @NonOptional(@tr("You have to specify a team number."))
     private final Team team;
 

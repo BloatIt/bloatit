@@ -30,7 +30,6 @@ import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AccountChargingProcessUrl;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.StaticAccountChargingPageUrl;
 
 @ParamContainer(value = "account/charging/process", protocol = Protocol.HTTPS)
 public class AccountChargingProcess extends PaymentProcess {

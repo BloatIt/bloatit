@@ -37,11 +37,11 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
-@ParamContainer("software")
+@ParamContainer("softwares/%software%")
 public final class SoftwarePage extends ElveosPage {
 
     @NonOptional(@tr("You have to specify a software number."))
-    @RequestParam(name = "id", message = @tr("I cannot find the software number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the software number: ''%value%''."))
     private final Software software;
 
     @SuppressWarnings("unused")

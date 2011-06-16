@@ -48,7 +48,7 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
 
-@ParamContainer("feature/list")
+@ParamContainer("features")
 public final class FeatureListPage extends ElveosPage {
 
     private static final String FILTER_ALL = "all";

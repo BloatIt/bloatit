@@ -37,7 +37,7 @@ import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
-@ParamContainer(value = "login", protocol = Protocol.HTTPS)
+@ParamContainer(value = "members/login", protocol = Protocol.HTTPS)
 public final class LoginPage extends ElveosPage {
 
     private final LoginPageUrl url;
@@ -48,7 +48,7 @@ public final class LoginPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
 
@@ -78,7 +78,7 @@ public final class LoginPage extends ElveosPage {
             loginForm.add(passwordInput);
 
             // Submit
-            HtmlDiv loginOrSignUpDiv = new HtmlDiv("login_or_signup");
+            final HtmlDiv loginOrSignUpDiv = new HtmlDiv("login_or_signup");
             loginForm.add(loginOrSignUpDiv);
             final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
             loginOrSignUpDiv.add(submitButton);
@@ -108,7 +108,7 @@ public final class LoginPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return LoginPage.generateBreadcrumb();
     }
 

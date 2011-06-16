@@ -34,7 +34,7 @@ import com.bloatit.web.url.LostPasswordPageUrl;
 /**
  * A response to a form used to log into the website
  */
-@ParamContainer(value = "action/login", protocol = Protocol.HTTPS)
+@ParamContainer(value = "members/dologin", protocol = Protocol.HTTPS)
 public final class LoginAction extends ElveosAction {
 
     private static final String LOGIN_CODE = "bloatit_login";

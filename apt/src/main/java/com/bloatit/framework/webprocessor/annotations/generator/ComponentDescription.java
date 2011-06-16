@@ -63,7 +63,7 @@ public class ComponentDescription extends ClassDescription {
     public final List<ParameterDescription> getUrlParameters() {
         final List<ParameterDescription> urlParameters = new ArrayList<ParameterDescription>();
         for (final ParameterDescription param : parameters) {
-            if (param.getRealRole() == Role.GET && !param.isOptional()) {
+            if ((param.getRealRole() == Role.GET || param.getRealRole() == Role.PAGENAME) && !param.isOptional()) {
                 urlParameters.add(param);
             }
         }

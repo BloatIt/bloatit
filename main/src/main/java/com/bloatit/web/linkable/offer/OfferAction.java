@@ -43,7 +43,7 @@ import com.bloatit.web.url.OfferActionUrl;
 /**
  * Class that will create a new offer based on data received from a form.
  */
-@ParamContainer("action/offer")
+@ParamContainer("offer/docreate")
 public final class OfferAction extends UserContentAction {
 
     @RequestParam(role = Role.GET, message = @tr("The target feature is mandatory to make an offer."))

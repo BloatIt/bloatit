@@ -25,7 +25,6 @@ import com.bloatit.framework.webprocessor.components.form.HtmlSubmit;
 import com.bloatit.framework.webprocessor.components.form.HtmlTextArea;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
@@ -51,7 +50,7 @@ public final class MetaBugEditPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Bug", 1);
@@ -66,7 +65,7 @@ public final class MetaBugEditPage extends ElveosPage {
         if (suggestedValue != null) {
             bugDescription.setDefaultValue(suggestedValue);
         } else {
-            MetaBug byId = MetaBugManager.getById(bugId);
+            final MetaBug byId = MetaBugManager.getById(bugId);
             if(byId == null){
                 Context.getSession().notifyBad("The bug you selected doesn't exist");
                 throw new RedirectException(new MetaBugsListPageUrl());
@@ -98,7 +97,7 @@ public final class MetaBugEditPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return MetaBugEditPage.generateBreadcrumb();
     }
 

@@ -27,6 +27,7 @@ import com.bloatit.framework.webprocessor.annotations.Optional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.PrecisionConstraint;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -54,19 +55,19 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.CheckContributionPageUrl;
+import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributePageUrl;
-import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.ContributeActionUrl;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
  */
-@ParamContainer("contribute/check")
-public final class CheckContributionPage extends QuotationPage {
+@ParamContainer("contribute/%process%/check")
+public final class CheckContributePage extends QuotationPage {
 
-    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."))
+    @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
     private final ContributionProcess process;
 
@@ -77,9 +78,9 @@ public final class CheckContributionPage extends QuotationPage {
     @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
     private BigDecimal preload;
 
-    private final CheckContributionPageUrl url;
+    private final CheckContributePageUrl url;
 
-    public CheckContributionPage(final CheckContributionPageUrl url) {
+    public CheckContributePage(final CheckContributePageUrl url) {
         super(url);
         this.url = url;
         preload = url.getPreload();
@@ -166,8 +167,9 @@ public final class CheckContributionPage extends QuotationPage {
                 }
 
                 try {
-                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Invoice at {0}: ", actor.getContact().getCity()),new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("modify invoicing contact"))));
-                } catch (UnauthorizedPrivateAccessException e) {
+                    authorContributionSummary.add(new HtmlDefineParagraph(tr("Invoice at {0}: ", actor.getContact().getCity()),
+                                                                          new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("modify invoicing contact"))));
+                } catch (final UnauthorizedPrivateAccessException e) {
                     throw new ShallNotPassException("User cannot access user contact information", e);
                 }
 
@@ -179,7 +181,7 @@ public final class CheckContributionPage extends QuotationPage {
 
         final HtmlDiv buttonDiv = new HtmlDiv("contribution_actions");
         {
-            final ContributionActionUrl contributionActionUrl = new ContributionActionUrl(process);
+            final ContributeActionUrl contributionActionUrl = new ContributeActionUrl(process);
             final HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Contribute {0}",
                                                                                           Context.getLocalizator()
                                                                                                  .getCurrency(process.getAmount())
@@ -247,7 +249,7 @@ public final class CheckContributionPage extends QuotationPage {
                 model.addLine(new HtmlPrepaidLine(actor));
             }
 
-            final CheckContributionPageUrl recalculateUrl = url.clone();
+            final CheckContributePageUrl recalculateUrl = url.clone();
             recalculateUrl.setPreload(null);
             line = new HtmlChargeAccountLine(true, process.getAmountToCharge(), actor, recalculateUrl);
             model.addLine(line);
@@ -324,12 +326,12 @@ public final class CheckContributionPage extends QuotationPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return CheckContributionPage.generateBreadcrumb(process.getFeature(), process);
+        return CheckContributePage.generateBreadcrumb(process.getFeature(), process);
     }
 
     public static Breadcrumb generateBreadcrumb(final Feature feature, final ContributionProcess process) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(feature);
-        final CheckContributionPageUrl checkContributionPageUrl = new CheckContributionPageUrl(process);
+        final CheckContributePageUrl checkContributionPageUrl = new CheckContributePageUrl(process);
         breadcrumb.pushLink(checkContributionPageUrl.getHtmlLink(tr("Contribute - Check")));
         return breadcrumb;
     }

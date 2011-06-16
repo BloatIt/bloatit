@@ -44,7 +44,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This page is displayed after the user clicked on the link in his email.
  * </p>
  */
-@ParamContainer(value="password/recover", protocol=Protocol.HTTPS)
+@ParamContainer(value="members/password/recover", protocol=Protocol.HTTPS)
 public class RecoverPasswordPage extends ElveosPage {
     private final RecoverPasswordPageUrl url;
 
@@ -54,7 +54,7 @@ public class RecoverPasswordPage extends ElveosPage {
     @RequestParam(role = Role.GET)
     private final String login;
 
-    public RecoverPasswordPage(RecoverPasswordPageUrl url) {
+    public RecoverPasswordPage(final RecoverPasswordPageUrl url) {
         super(url);
         this.url = url;
         this.resetKey = url.getResetKey();
@@ -62,32 +62,32 @@ public class RecoverPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
-        Member member = MemberManager.getMemberByLogin(login);
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+        final Member member = MemberManager.getMemberByLogin(login);
 
         if (member == null || !member.getResetKey().equals(resetKey)) {
             getSession().notifyBad(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
             throw new PageNotFoundException();
         }
 
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
         layout.addLeft(master);
 
         RecoverPasswordActionUrl targetUrl;
         targetUrl = new RecoverPasswordActionUrl(resetKey, member.getLogin());
-        HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
 
-        FieldData passwFieldData = targetUrl.getNewPasswordParameter().pickFieldData();
-        HtmlPasswordField passInput = new HtmlPasswordField(passwFieldData.getName(), Context.tr("New password"));
+        final FieldData passwFieldData = targetUrl.getNewPasswordParameter().pickFieldData();
+        final HtmlPasswordField passInput = new HtmlPasswordField(passwFieldData.getName(), Context.tr("New password"));
         passInput.setComment(Context.tr("Minimum 7 characters."));
         passInput.addErrorMessages(passwFieldData.getErrorMessages());
         form.add(passInput);
 
-        FieldData checkFieldData = targetUrl.getCheckNewPasswordParameter().pickFieldData();
-        HtmlPasswordField checkInput = new HtmlPasswordField(checkFieldData.getName(), Context.tr("Reenter password"));
+        final FieldData checkFieldData = targetUrl.getCheckNewPasswordParameter().pickFieldData();
+        final HtmlPasswordField checkInput = new HtmlPasswordField(checkFieldData.getName(), Context.tr("Reenter password"));
         checkInput.addErrorMessages(checkFieldData.getErrorMessages());
         form.add(checkInput);
 
@@ -102,7 +102,7 @@ public class RecoverPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return generateBreadcrumb();
     }
 

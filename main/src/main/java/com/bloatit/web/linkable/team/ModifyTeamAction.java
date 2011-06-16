@@ -45,9 +45,9 @@ import com.bloatit.web.url.ModifyTeamActionUrl;
 import com.bloatit.web.url.ModifyTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
-@ParamContainer("team/domodify")
+@ParamContainer("teams/%team%/domodify")
 public class ModifyTeamAction extends LoggedAction {
-    @RequestParam(role = Role.GET)
+    @RequestParam(role = Role.PAGENAME)
     private final Team team;
 
     @RequestParam(role = Role.POST)

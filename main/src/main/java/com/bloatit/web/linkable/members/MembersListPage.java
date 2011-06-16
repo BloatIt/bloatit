@@ -41,7 +41,7 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 
-@ParamContainer("member/list")
+@ParamContainer("members")
 public final class MembersListPage extends ElveosPage {
     // Keep me here ! I am needed for the Url generation !
     @SubParamContainer

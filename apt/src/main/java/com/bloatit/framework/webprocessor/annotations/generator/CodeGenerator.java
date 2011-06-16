@@ -72,6 +72,7 @@ public class CodeGenerator {
         staticParser.addLine("return postGetParameters;");
 
         final Method copyConstructor = clazz.addConstructor();
+        copyConstructor.setModifier(Modifier.PROTECTED);
         copyConstructor.addParameter(clazz.getName(), "other");
         copyConstructor.addLine("super(other);");
         copyConstructor.addLine("component = other.component.clone();");

@@ -49,7 +49,7 @@ import com.bloatit.web.url.TeamsPageUrl;
  * Home page for handling teams
  * </p>
  */
-@ParamContainer("team/list")
+@ParamContainer("teams")
 public final class TeamsPage extends ElveosPage {
     // Keep me here ! I am needed for the Url generation !
     @SubParamContainer
@@ -62,7 +62,7 @@ public final class TeamsPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateMain());
 
@@ -98,7 +98,7 @@ public final class TeamsPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return TeamsPage.generateBreadcrumb();
     }
 

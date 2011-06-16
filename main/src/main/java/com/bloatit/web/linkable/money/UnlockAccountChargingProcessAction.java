@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.money;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
@@ -27,10 +28,10 @@ import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 
-@ParamContainer(value="account/charging/unlock", protocol=Protocol.HTTPS)
+@ParamContainer(value = "account/charging/%process%/unlock", protocol = Protocol.HTTPS)
 public final class UnlockAccountChargingProcessAction extends LoggedAction {
 
-    @RequestParam
+    @RequestParam(role = Role.PAGENAME)
     private final AccountChargingProcess process;
 
     public UnlockAccountChargingProcessAction(final UnlockAccountChargingProcessActionUrl url) {
@@ -50,7 +51,7 @@ public final class UnlockAccountChargingProcessAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return session.pickPreferredPage();
     }
 

@@ -34,19 +34,19 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
-import com.bloatit.web.url.CheckContributionActionUrl;
-import com.bloatit.web.url.CheckContributionPageUrl;
+import com.bloatit.web.url.CheckContributeActionUrl;
+import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 /**
  * A response to a form used to create a contribution to a feature
  */
-@ParamContainer("action/contribute/check")
-public final class CheckContributionAction extends UserContentAction {
+@ParamContainer("contribute/%process%/docheck")
+public final class CheckContributeAction extends UserContentAction {
 
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam
+    @RequestParam(role = Role.PAGENAME)
     private final ContributionProcess process;
 
     @RequestParam(role = Role.POST)
@@ -60,9 +60,9 @@ public final class CheckContributionAction extends UserContentAction {
     @PrecisionConstraint(precision = 0, message = @tr("Please do not use cents."))
     private final BigDecimal amount;
 
-    private final CheckContributionActionUrl url;
+    private final CheckContributeActionUrl url;
 
-    public CheckContributionAction(final CheckContributionActionUrl url) {
+    public CheckContributeAction(final CheckContributeActionUrl url) {
         super(url, UserTeamRight.BANK);
         this.url = url;
         this.process = url.getProcess();
@@ -93,7 +93,7 @@ public final class CheckContributionAction extends UserContentAction {
             // TODO correct me !
         }
 
-        return new CheckContributionPageUrl(process);
+        return new CheckContributePageUrl(process);
     }
 
     @Override

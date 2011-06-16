@@ -30,20 +30,20 @@ import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.AddSoftwareActionUrl;
-import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.CreateSoftwareActionUrl;
+import com.bloatit.web.url.CreateSoftwarePageUrl;
 
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("software/add")
-public final class AddSoftwarePage extends LoggedPage {
+@ParamContainer("software/create")
+public final class CreateSoftwarePage extends LoggedPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    private final AddSoftwarePageUrl url;
+    private final CreateSoftwarePageUrl url;
 
-    public AddSoftwarePage(final AddSoftwarePageUrl url) {
+    public CreateSoftwarePage(final CreateSoftwarePageUrl url) {
         super(url);
         this.url = url;
     }
@@ -69,7 +69,7 @@ public final class AddSoftwarePage extends LoggedPage {
 
     private HtmlElement generateFeatureCreationForm() {
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new software"), 1);
-        final AddSoftwareActionUrl doCreateUrl = new AddSoftwareActionUrl();
+        final CreateSoftwareActionUrl doCreateUrl = new CreateSoftwareActionUrl();
 
         // Create the form stub
         final HtmlForm addSoftwareForm = new HtmlForm(doCreateUrl.urlString());
@@ -104,7 +104,7 @@ public final class AddSoftwarePage extends LoggedPage {
         languageInput.setComment(Context.tr("Language of the descriptions."));
         addSoftwareForm.add(languageInput);
 
-        final HtmlFileInput softwareImageInput = new HtmlFileInput(AddSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
+        final HtmlFileInput softwareImageInput = new HtmlFileInput(CreateSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
         softwareImageInput.setComment("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px.");
         addSoftwareForm.add(softwareImageInput);
 
@@ -122,12 +122,12 @@ public final class AddSoftwarePage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return AddSoftwarePage.generateBreadcrumb();
+        return CreateSoftwarePage.generateBreadcrumb();
     }
 
     private static Breadcrumb generateBreadcrumb() {
         final Breadcrumb breadcrumb = SoftwareListPage.generateBreadcrumb();
-        breadcrumb.pushLink(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
+        breadcrumb.pushLink(new CreateSoftwarePageUrl().getHtmlLink(tr("Add a software")));
         return breadcrumb;
     }
 }

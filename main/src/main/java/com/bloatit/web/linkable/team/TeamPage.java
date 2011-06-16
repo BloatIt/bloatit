@@ -66,7 +66,7 @@ import com.bloatit.web.url.WithdrawMoneyPageUrl;
  * Home page for handling teams
  * </p>
  */
-@ParamContainer("team")
+@ParamContainer("teams/%team%")
 public final class TeamPage extends ElveosPage {
     public final static String TEAM_TAB_PANE = "tab";
     public final static String MEMBERS_TAB = "members";
@@ -78,9 +78,9 @@ public final class TeamPage extends ElveosPage {
     @SubParamContainer
     private ActivityTab activity;
 
-    @RequestParam(name = "id", message = @tr("I cannot find the team number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the team number: ''%value%''."))
     @NonOptional(@tr("You have to specify a team number."))
-    private final Team targetTeam;
+    private final Team team;
 
     @RequestParam(name = TEAM_TAB_PANE)
     @Optional(MEMBERS_TAB)
@@ -94,7 +94,7 @@ public final class TeamPage extends ElveosPage {
     public TeamPage(final TeamPageUrl url) {
         super(url);
         this.url = url;
-        this.targetTeam = url.getTargetTeam();
+        this.team = url.getTeam();
         this.activeTabKey = url.getActiveTabKey();
         this.login = url.getLogin();
     }
@@ -108,9 +108,9 @@ public final class TeamPage extends ElveosPage {
 
         layout.addRight(generateContactBox());
         layout.addRight(new SideBarDocumentationBlock("team_role"));
-        if (userToken.isAuthenticated() && userToken.getMember().hasBankTeamRight(targetTeam)) {
-            layout.addRight(new SideBarTeamWithdrawMoneyBlock(targetTeam));
-            layout.addRight(new SideBarLoadAccountBlock(targetTeam));
+        if (userToken.isAuthenticated() && userToken.getMember().hasBankTeamRight(team)) {
+            layout.addRight(new SideBarTeamWithdrawMoneyBlock(team));
+            layout.addRight(new SideBarLoadAccountBlock(team));
         }
         return layout;
     }
@@ -127,10 +127,10 @@ public final class TeamPage extends ElveosPage {
 
     private SideBarElementLayout generateContactBox() {
         final TitleSideBarElementLayout contacts = new TitleSideBarElementLayout();
-        contacts.setTitle(Context.tr("How to contact \"{0}\"?", targetTeam.getDisplayName()));
+        contacts.setTitle(Context.tr("How to contact \"{0}\"?", team.getDisplayName()));
 
-        if (targetTeam.canAccessContact(Action.READ)) {
-            contacts.add(new HtmlCachedMarkdownRenderer(targetTeam.getPublicContact()));
+        if (team.canAccessContact(Action.READ)) {
+            contacts.add(new HtmlCachedMarkdownRenderer(team.getPublicContact()));
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
         }
@@ -141,22 +141,22 @@ public final class TeamPage extends ElveosPage {
     private HtmlElement generateMain(final ElveosUserToken userToken) {
         final HtmlDiv master = new HtmlDiv("team_tabs");
 
-        final TeamPageUrl secondUrl = new TeamPageUrl(targetTeam);
+        final TeamPageUrl secondUrl = new TeamPageUrl(team);
 
         String tabKey = activeTabKey;
 
-        if (activeTabKey.equals(ACCOUNT_TAB) && !targetTeam.canAccessBankTransaction(Action.READ)) {
+        if (activeTabKey.equals(ACCOUNT_TAB) && !team.canAccessBankTransaction(Action.READ)) {
             tabKey = MEMBERS_TAB;
         }
         final HtmlTabBlock tabPane = new HtmlTabBlock(TEAM_TAB_PANE, tabKey, secondUrl);
 
         master.add(tabPane);
 
-        tabPane.addTab(new MembersTab(targetTeam, tr("Members"), MEMBERS_TAB, userToken.getMember()));
-        if (targetTeam.canAccessBankTransaction(Action.READ)) {
-            tabPane.addTab(new AccountTab(targetTeam, tr("Account"), ACCOUNT_TAB));
+        tabPane.addTab(new MembersTab(team, tr("Members"), MEMBERS_TAB, userToken.getMember()));
+        if (team.canAccessBankTransaction(Action.READ)) {
+            tabPane.addTab(new AccountTab(team, tr("Account"), ACCOUNT_TAB));
         }
-        activity = new ActivityTab(targetTeam, tr("Activity"), ACTIVITY_TAB, url);
+        activity = new ActivityTab(team, tr("Activity"), ACTIVITY_TAB, url);
         tabPane.addTab(activity);
 
         return master;
@@ -170,32 +170,32 @@ public final class TeamPage extends ElveosPage {
      */
     private HtmlElement generateTeamIDCard(final ElveosUserToken token) {
         final HtmlDiv master = new HtmlDiv("padding_box");
-        if (token.isAuthenticated() && token.getMember().hasModifyTeamRight(targetTeam)) {
+        if (token.isAuthenticated() && token.getMember().hasModifyTeamRight(team)) {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
-            modify.add(new ModifyTeamPageUrl(targetTeam).getHtmlLink(Context.tr("Change team settings")));
+            modify.add(new ModifyTeamPageUrl(team).getHtmlLink(Context.tr("Change team settings")));
         }
 
         // Title and team type
         HtmlTitleBlock titleBlock;
-        titleBlock = new HtmlTitleBlock(targetTeam.getDisplayName(), 1);
+        titleBlock = new HtmlTitleBlock(team.getDisplayName(), 1);
         master.add(titleBlock);
 
         // Avatar
-        titleBlock.add(new HtmlDiv("float_left").add(TeamTools.getTeamAvatar(targetTeam)));
+        titleBlock.add(new HtmlDiv("float_left").add(TeamTools.getTeamAvatar(team)));
 
         // Team informations
         final HtmlList informationsList = new HtmlList();
 
         // Visibility
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (targetTeam.isPublic() ? Context.tr("Public")
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (team.isPublic() ? Context.tr("Public")
                 : Context.tr("Private"))));
 
         // Creation date
         try {
             informationsList.add(new HtmlDefineParagraph(Context.tr("Creation date: "), Context.getLocalizator()
-                                                                                               .getDate(targetTeam.getDateCreation())
+                                                                                               .getDate(team.getDateCreation())
                                                                                                .toString(FormatStyle.LONG)));
         } catch (final UnauthorizedOperationException e) {
             // Should never happen
@@ -203,11 +203,11 @@ public final class TeamPage extends ElveosPage {
         }
 
         // Member count
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(targetTeam.getMembers().size())));
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Number of members: "), String.valueOf(team.getMembers().size())));
 
         // Features count
         final long featuresCount = getActivityCount();
-        final TeamPageUrl activityPage = new TeamPageUrl(targetTeam);
+        final TeamPageUrl activityPage = new TeamPageUrl(team);
         activityPage.setActiveTabKey(ACTIVITY_TAB);
         final HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::see details>)", featuresCount), activityPage.getHtmlLink());
         informationsList.add(new HtmlDefineParagraph(Context.tr("Team's recent activity: "), mixed));
@@ -216,7 +216,7 @@ public final class TeamPage extends ElveosPage {
         // Description
         final HtmlTitleBlock description = new HtmlTitleBlock(Context.tr("Description"), 2);
         titleBlock.add(description);
-        final HtmlCachedMarkdownRenderer hcmr = new HtmlCachedMarkdownRenderer(targetTeam.getDescription());
+        final HtmlCachedMarkdownRenderer hcmr = new HtmlCachedMarkdownRenderer(team.getDescription());
         description.add(hcmr);
 
         // Bank informations
@@ -228,7 +228,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     protected void addBankInfos(final HtmlDiv master, final Member member) {
-        if (targetTeam.canGetInternalAccount() && targetTeam.canGetExternalAccount()) {
+        if (team.canGetInternalAccount() && team.canGetExternalAccount()) {
             try {
                 final HtmlTitleBlock bankInformations = new HtmlTitleBlock(Context.tr("Bank informations"), 2);
                 master.add(bankInformations);
@@ -237,14 +237,14 @@ public final class TeamPage extends ElveosPage {
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(targetTeam.getInternalAccount().getAmount(),
+                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(team.getInternalAccount().getAmount(),
                                                                                    true,
-                                                                                   targetTeam,
+                                                                                   team,
                                                                                    member);
                     final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                      new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                        amount,
-                                                                                                                       AccountUrl(targetTeam).getHtmlLink())));
+                                                                                                                       AccountUrl(team).getHtmlLink())));
                     bankInformationsList.add(accountBalanceItem);
 
                 }
@@ -257,7 +257,7 @@ public final class TeamPage extends ElveosPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
-        return TeamPage.generateBreadcrumb(targetTeam);
+        return TeamPage.generateBreadcrumb(team);
     }
 
     public static Breadcrumb generateBreadcrumb(final Team team) {
@@ -275,7 +275,7 @@ public final class TeamPage extends ElveosPage {
     }
 
     private long getActivityCount() {
-        return targetTeam.getRecentActivityCount();
+        return team.getRecentActivityCount();
     }
 
     private static class SideBarTeamWithdrawMoneyBlock extends TitleSideBarElementLayout {
