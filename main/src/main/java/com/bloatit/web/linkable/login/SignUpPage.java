@@ -43,7 +43,7 @@ import com.bloatit.web.url.SignUpPageUrl;
  * Page used by users to create their bloatit accounts
  * </p>
  */
-@ParamContainer(value="members/signup", protocol=Protocol.HTTPS)
+@ParamContainer(value="member/signup", protocol=Protocol.HTTPS)
 public final class SignUpPage extends ElveosPage {
     private final SignUpPageUrl url;
 

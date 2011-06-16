@@ -37,7 +37,7 @@ import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LostPasswordPageUrl;
 import com.bloatit.web.url.SignUpPageUrl;
 
-@ParamContainer(value = "members/login", protocol = Protocol.HTTPS)
+@ParamContainer(value = "member/login", protocol = Protocol.HTTPS)
 public final class LoginPage extends ElveosPage {
 
     private final LoginPageUrl url;

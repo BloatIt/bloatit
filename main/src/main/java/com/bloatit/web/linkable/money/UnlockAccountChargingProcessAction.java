@@ -28,7 +28,7 @@ import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 
-@ParamContainer(value = "account/charging/%process%/unlock", protocol = Protocol.HTTPS)
+@ParamContainer(value = "account/charging/process/%process%/unlock", protocol = Protocol.HTTPS)
 public final class UnlockAccountChargingProcessAction extends LoggedAction {
 
     @RequestParam(role = Role.PAGENAME)

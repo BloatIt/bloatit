@@ -45,7 +45,7 @@ import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
-@ParamContainer(value = "members/domodify", protocol = Protocol.HTTPS)
+@ParamContainer(value = "member/domodify", protocol = Protocol.HTTPS)
 public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional

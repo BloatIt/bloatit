@@ -34,7 +34,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 /**
  * A response to a form used to create a contribution to a feature
  */
-@ParamContainer("contribute/%process%/do")
+@ParamContainer("contribute/process/%process%/do")
 public final class ContributeAction extends UserContentAction {
 
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))

@@ -64,7 +64,7 @@ import com.bloatit.web.url.StaticCheckContributionPageUrl;
 /**
  * A page that hosts the form used to check the contribution on a Feature
  */
-@ParamContainer("contribute/%process%/check")
+@ParamContainer("contribute/process/%process%/check")
 public final class CheckContributePage extends QuotationPage {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)

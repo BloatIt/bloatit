@@ -55,7 +55,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer(value = "account/charging/%process%/check", protocol = Protocol.HTTPS)
+@ParamContainer(value = "account/charging/process/%process%/check", protocol = Protocol.HTTPS)
 public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)

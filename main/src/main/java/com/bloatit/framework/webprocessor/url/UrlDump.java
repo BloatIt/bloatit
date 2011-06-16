@@ -2,6 +2,10 @@ package com.bloatit.framework.webprocessor.url;
 
 import java.util.Map.Entry;
 
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.net.URLCodec;
+
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.utils.parameters.HttpParameter;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer.Protocol;
@@ -30,15 +34,24 @@ public class UrlDump extends Url {
 
     @Override
     protected void doConstructUrl(final StringBuilder sb) {
-        for (Entry<String, HttpParameter> entry : stringParameters.entrySet()) {
-            for (String value : entry.getValue()) {
+        for (final Entry<String, HttpParameter> entry : stringParameters.entrySet()) {
+            for (final String value : entry.getValue()) {
                 writeParameter(sb, entry.getKey(), value);
+                sb.append("&");
             }
+        }
+        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '&') {
+            sb.deleteCharAt(sb.length() - 1);
         }
     }
 
-    private void writeParameter(StringBuilder sb, String name, String value) {
-        sb.append('/').append(name).append('-').append(value);
+    private void writeParameter(final StringBuilder sb, final String name, final String value) {
+        final URLCodec urlCodec = new URLCodec();
+        try {
+            sb.append(urlCodec.encode(name)).append('=').append(urlCodec.encode(value));
+        } catch (final EncoderException e) {
+            throw new BadProgrammerException(e);
+        }
     }
 
     @Override
@@ -63,8 +76,8 @@ public class UrlDump extends Url {
 
     @Override
     protected void doGetParametersAsStrings(final Parameters parameters) {
-        for (Entry<String, HttpParameter> entry : stringParameters.entrySet()) {
-            for (String value : entry.getValue()) {
+        for (final Entry<String, HttpParameter> entry : stringParameters.entrySet()) {
+            for (final String value : entry.getValue()) {
                 parameters.add(entry.getKey(), value);
             }
         }
