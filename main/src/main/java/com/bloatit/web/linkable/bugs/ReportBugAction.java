@@ -39,11 +39,11 @@ import com.bloatit.web.url.ReportBugPageUrl;
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("feature/bug/doreport")
+@ParamContainer("offers/milestones/%milestone%/doreportbug")
 public final class ReportBugAction extends UserContentAction {
 
     @NonOptional(@tr("A new bug must be linked to a milestone"))
-    @RequestParam(role = Role.GET)
+    @RequestParam(role = Role.PAGENAME)
     private final Milestone milestone;
 
     @RequestParam(role = Role.POST)

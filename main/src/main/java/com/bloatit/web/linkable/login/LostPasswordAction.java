@@ -44,7 +44,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link LostPasswordPage}
  * </p>
  */
-@ParamContainer(value="password/dolost", protocol=Protocol.HTTPS)
+@ParamContainer(value="members/password/dolost", protocol=Protocol.HTTPS)
 public class LostPasswordAction extends ElveosAction {
     private final LostPasswordActionUrl url;
 

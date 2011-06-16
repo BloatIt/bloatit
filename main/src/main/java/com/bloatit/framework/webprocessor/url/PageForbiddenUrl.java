@@ -68,4 +68,8 @@ public final class PageForbiddenUrl extends Url implements Cloneable {
     public Protocol getProtocol() {
         return Protocol.AUTO;
     }
+
+    public static boolean matches(final String pageCode) {
+        return getPageName().equals(pageCode);
+    }
 }

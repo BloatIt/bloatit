@@ -42,29 +42,29 @@ import com.bloatit.web.url.LostPasswordPageUrl;
  * on "lost password"
  * </p>
  */
-@ParamContainer(value="password/lost", protocol=Protocol.HTTPS)
+@ParamContainer(value="members/password/lost", protocol=Protocol.HTTPS)
 public class LostPasswordPage extends ElveosPage {
     private final LostPasswordPageUrl url;
 
-    public LostPasswordPage(LostPasswordPageUrl url) {
+    public LostPasswordPage(final LostPasswordPageUrl url) {
         super(url);
         this.url = url;
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
-        TwoColumnLayout layout = new TwoColumnLayout(true, url);
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
+        final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
+        final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Password recovery"), 1);
         layout.addLeft(master);
 
-        LostPasswordActionUrl targetUrl = new LostPasswordActionUrl();
-        HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final LostPasswordActionUrl targetUrl = new LostPasswordActionUrl();
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
 
         // EMAIL
-        FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
-        HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Enter your email"));
+        final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
+        final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Enter your email"));
         emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
         form.add(emailInput);
 
@@ -78,7 +78,7 @@ public class LostPasswordPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return generateBreadcrumb();
     }
 

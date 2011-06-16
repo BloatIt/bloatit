@@ -126,6 +126,7 @@ public class Generator {
         private String staticEquals;
         private boolean generateGetter;
         private boolean generateSetter;
+        private boolean isStatic;
 
         public Attribute(final String type, final String name) {
             this.type = type;
@@ -133,6 +134,7 @@ public class Generator {
             staticEquals = "";
             generateGetter = false;
             generateSetter = false;
+            isStatic = false;
         }
 
         public void generateGetter() {
@@ -147,10 +149,18 @@ public class Generator {
             this.staticEquals = staticEquals.toString();
         }
 
+        public void setStatic(final boolean isStatic) {
+            this.isStatic = isStatic;
+        }
+
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
-            sb.append("private ").append(type).append(" ").append(name);
+            sb.append("private ");
+            if (isStatic) {
+                sb.append("static ");
+            }
+            sb.append(type).append(" ").append(name);
             if (!staticEquals.isEmpty()) {
                 sb.append(" = ").append(staticEquals);
             }
@@ -158,11 +168,17 @@ public class Generator {
 
             if (generateGetter) {
                 final Method getter = new Method(type, "get" + Utils.firstCharUpper(name));
+                if (isStatic) {
+                    getter.setStaticFinal("static");
+                }
                 getter.addLine("return this." + name + ";");
                 sb.append(getter);
             }
             if (generateSetter) {
                 final Method setter = new Method(type, "set" + Utils.firstCharUpper(name));
+                if (isStatic) {
+                    setter.setStaticFinal("static");
+                }
                 setter.addParameter(type, "other");
                 setter.addLine("this." + name + " = other;\n");
                 sb.append(setter);

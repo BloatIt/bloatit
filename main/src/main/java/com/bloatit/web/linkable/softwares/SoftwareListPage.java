@@ -34,11 +34,11 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.SoftwareListPageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
-@ParamContainer("software/list")
+@ParamContainer("softwares")
 public final class SoftwareListPage extends ElveosPage {
 
     // Keep me here ! I am needed for the Url generation !
@@ -65,7 +65,7 @@ public final class SoftwareListPage extends ElveosPage {
         final SoftwareListPageUrl clonedUrl = url.clone();
         pagedSoftwareList = new HtmlPagedList<Software>(softwareItemRenderer, softwareList, clonedUrl, clonedUrl.getPagedSoftwareListUrl());
 
-        pageTitle.add(new AddSoftwarePageUrl().getHtmlLink(tr("Add a software")));
+        pageTitle.add(new CreateSoftwarePageUrl().getHtmlLink(tr("Add a software")));
         pageTitle.add(pagedSoftwareList);
         pageTitle.add(new HtmlClearer());
 

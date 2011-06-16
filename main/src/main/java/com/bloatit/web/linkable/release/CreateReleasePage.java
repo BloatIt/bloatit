@@ -35,14 +35,14 @@ import com.bloatit.web.linkable.usercontent.CreateUserContentPage;
 import com.bloatit.web.linkable.usercontent.LanguageField;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
-import com.bloatit.web.url.AddReleaseActionUrl;
-import com.bloatit.web.url.AddReleasePageUrl;
+import com.bloatit.web.url.CreateReleaseActionUrl;
+import com.bloatit.web.url.CreateReleasePageUrl;
 
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("release/add")
-public final class AddReleasePage extends CreateUserContentPage {
+@ParamContainer("release/create")
+public final class CreateReleasePage extends CreateUserContentPage {
 
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
@@ -50,9 +50,9 @@ public final class AddReleasePage extends CreateUserContentPage {
     @RequestParam(message = @tr("I cannot find the milestone number: ''%value%''."))
     @NonOptional(@tr("You have to specify a milestone number."))
     private final Milestone milestone;
-    private final AddReleasePageUrl url;
+    private final CreateReleasePageUrl url;
 
-    public AddReleasePage(final AddReleasePageUrl url) {
+    public CreateReleasePage(final CreateReleasePageUrl url) {
         super(url);
         this.url = url;
         milestone = url.getMilestone();
@@ -79,7 +79,7 @@ public final class AddReleasePage extends CreateUserContentPage {
     private HtmlElement generateReleaseCreationForm() {
         final HtmlTitleBlock createReleaseTitle = new HtmlTitleBlock(tr("Add a new Release"), 1);
 
-        final AddReleaseActionUrl doCreateUrl = new AddReleaseActionUrl(milestone);
+        final CreateReleaseActionUrl doCreateUrl = new CreateReleaseActionUrl(milestone);
 
         // Create the form stub
         final HtmlForm form = new HtmlForm(doCreateUrl.urlString());
@@ -121,13 +121,13 @@ public final class AddReleasePage extends CreateUserContentPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return AddReleasePage.generateBreadcrumb(milestone);
+        return CreateReleasePage.generateBreadcrumb(milestone);
     }
 
     private static Breadcrumb generateBreadcrumb(final Milestone milestone) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbOffers(milestone.getOffer().getFeature());
 
-        breadcrumb.pushLink(new AddReleasePageUrl(milestone).getHtmlLink(tr("Add a release")));
+        breadcrumb.pushLink(new CreateReleasePageUrl(milestone).getHtmlLink(tr("Add a release")));
 
         return breadcrumb;
     }

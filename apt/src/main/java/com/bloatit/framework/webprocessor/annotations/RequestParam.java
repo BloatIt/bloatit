@@ -13,7 +13,7 @@ public @interface RequestParam {
     static public final String DEFAULT_ERROR_MSG = "Error: invalid value (%value%) for parameter %paramName%";
 
     public enum Role {
-        POST, GET, PRETTY, SESSION , POSTGET
+        POST, GET, PRETTY, SESSION , POSTGET, PAGENAME
     }
 
     String name() default "";

@@ -23,7 +23,7 @@ import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.CheckContributionPageUrl;
+import com.bloatit.web.url.CheckContributePageUrl;
 import com.bloatit.web.url.UnlockContributionProcessActionUrl;
 
 @ParamContainer("contribution/unlock")
@@ -45,7 +45,7 @@ public final class UnlockContributionProcessAction extends LoggedAction {
     @Override
     protected Url doProcessRestricted(final Member me) {
         process.setLock(false);
-        return new CheckContributionPageUrl(process);
+        return new CheckContributePageUrl(process);
     }
 
     @Override

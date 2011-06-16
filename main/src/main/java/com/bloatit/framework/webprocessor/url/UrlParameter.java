@@ -93,7 +93,7 @@ public class UrlParameter<T, U> extends UrlNode {
             if (!stringValue.isEmpty() && !stringValue.equals(getDefaultValue()) && value != null) {
                 final URLCodec urlCodec = new URLCodec();
                 try {
-                    sb.append('/').append(urlCodec.encode(getName())).append('-').append(urlCodec.encode(stringValue));
+                    sb.append(urlCodec.encode(getName())).append('=').append(urlCodec.encode(stringValue));
                 } catch (final EncoderException e) {
                     throw new BadProgrammerException(e);
                 }

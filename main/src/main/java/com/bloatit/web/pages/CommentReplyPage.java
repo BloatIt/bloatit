@@ -17,6 +17,7 @@ import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -44,7 +45,7 @@ import com.bloatit.web.url.CreateCommentActionUrl;
 /**
  * Page that hosts the form used to reply to an existing comment
  */
-@ParamContainer("comment/reply")
+@ParamContainer("comments/%comment%/reply")
 public final class CommentReplyPage extends CreateUserContentPage {
 
     private static final int NB_LINES = 10;
@@ -52,14 +53,14 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
     private final CommentReplyPageUrl url;
 
-    @RequestParam(name = "target", message = @tr("I cannot find the comment number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the comment number: ''%value%''."))
     @NonOptional(@tr("You have to specify a comment number."))
-    private final Comment targetComment;
+    private final Comment comment;
 
     public CommentReplyPage(final CommentReplyPageUrl url) {
         super(url);
         this.url = url;
-        this.targetComment = url.getTargetComment();
+        this.comment = url.getComment();
     }
 
     @Override
@@ -76,7 +77,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         layout.addLeft(box);
 
         final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
-        final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(targetComment);
+        final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(comment);
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
         // as team
@@ -123,7 +124,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return CommentReplyPage.generateBreadcrumb(targetComment);
+        return CommentReplyPage.generateBreadcrumb(comment);
     }
 
     private static Breadcrumb generateBreadcrumb(final Comment comment) {

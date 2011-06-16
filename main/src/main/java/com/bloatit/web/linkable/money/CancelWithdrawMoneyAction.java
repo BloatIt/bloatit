@@ -28,10 +28,10 @@ import com.bloatit.web.linkable.members.MemberPage;
 import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.CancelWithdrawMoneyActionUrl;
 
-@ParamContainer("money/docancelwithdraw")
+@ParamContainer("account/withdraws/%moneyWithdrawal%/docancel")
 public class CancelWithdrawMoneyAction extends LoggedAction {
 
-    @RequestParam(role = Role.GET)
+    @RequestParam(role = Role.PAGENAME)
     private final MoneyWithdrawal moneyWithdrawal;
 
     private final CancelWithdrawMoneyActionUrl url;

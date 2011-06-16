@@ -44,7 +44,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This action is used after {@link RecoverPasswordPage}
  * </p>
  */
-@ParamContainer(value = "password/dorecover", protocol = Protocol.HTTPS)
+@ParamContainer(value = "members/password/dorecover", protocol = Protocol.HTTPS)
 public class RecoverPasswordAction extends ElveosAction {
     private final RecoverPasswordActionUrl url;
 

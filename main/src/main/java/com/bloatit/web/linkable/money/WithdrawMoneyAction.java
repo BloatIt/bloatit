@@ -25,7 +25,7 @@ import com.bloatit.web.linkable.team.TeamPage;
 import com.bloatit.web.url.WithdrawMoneyActionUrl;
 import com.bloatit.web.url.WithdrawMoneyPageUrl;
 
-@ParamContainer("money/dowithdraw")
+@ParamContainer("account/withdraw/docreate")
 public class WithdrawMoneyAction extends LoggedAction {
     private final WithdrawMoneyActionUrl url;
 

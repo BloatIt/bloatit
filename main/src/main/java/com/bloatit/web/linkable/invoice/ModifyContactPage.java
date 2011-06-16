@@ -33,7 +33,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
-import com.bloatit.web.linkable.contribution.CheckContributionPage;
+import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.money.AccountChargingPage;
@@ -207,7 +207,7 @@ public final class ModifyContactPage extends LoggedPage {
             breadcrumb = AccountChargingPage.generateBreadcrumb(member, asTeam, (AccountChargingProcess) process.getFather());
         } else if (process.getFather() instanceof ContributionProcess) {
             final ContributionProcess process2 = (ContributionProcess) process.getFather();
-            breadcrumb = CheckContributionPage.generateBreadcrumb(process2.getFeature(), process2);
+            breadcrumb = CheckContributePage.generateBreadcrumb(process2.getFeature(), process2);
         } else {
             breadcrumb = IndexPage.generateBreadcrumb();
         }

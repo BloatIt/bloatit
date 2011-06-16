@@ -16,6 +16,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -25,26 +26,26 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.features.FeatureTabPane;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
-import com.bloatit.web.url.CheckContributionPageUrl;
-import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.CheckContributePageUrl;
+import com.bloatit.web.url.ContributeActionUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
 /**
  * A response to a form used to create a contribution to a feature
  */
-@ParamContainer("action/contribute")
-public final class ContributionAction extends UserContentAction {
+@ParamContainer("contribute/%process%/do")
+public final class ContributeAction extends UserContentAction {
 
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
-    @RequestParam
+    @RequestParam(role = Role.PAGENAME)
     private final ContributionProcess process;
 
     // Keep it for consistency
     @SuppressWarnings("unused")
-    private final ContributionActionUrl url;
+    private final ContributeActionUrl url;
 
-    public ContributionAction(final ContributionActionUrl url) {
+    public ContributeAction(final ContributeActionUrl url) {
         super(url, url.getProcess().getTeam(), UserTeamRight.BANK);
         this.url = url;
         this.process = url.getProcess();
@@ -64,7 +65,7 @@ public final class ContributionAction extends UserContentAction {
             return featurePageUrl;
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
-            return new CheckContributionPageUrl(process);
+            return new CheckContributePageUrl(process);
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
             return new ContributionProcessUrl(process.getFeature());
@@ -87,7 +88,7 @@ public final class ContributionAction extends UserContentAction {
 
     @Override
     protected Url doProcessErrors(final ElveosUserToken userToken) {
-        return new CheckContributionPageUrl(process);
+        return new CheckContributePageUrl(process);
     }
 
     @Override

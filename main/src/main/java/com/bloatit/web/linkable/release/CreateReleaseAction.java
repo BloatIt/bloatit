@@ -30,13 +30,13 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
-import com.bloatit.web.url.AddReleaseActionUrl;
+import com.bloatit.web.url.CreateReleaseActionUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("release/doadd")
-public final class AddReleaseAction extends UserContentAction {
+@ParamContainer("release/docreate")
+public final class CreateReleaseAction extends UserContentAction {
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a description"))
@@ -51,9 +51,9 @@ public final class AddReleaseAction extends UserContentAction {
     @RequestParam
     private final Milestone milestone;
 
-    private final AddReleaseActionUrl url;
+    private final CreateReleaseActionUrl url;
 
-    public AddReleaseAction(final AddReleaseActionUrl url) {
+    public CreateReleaseAction(final CreateReleaseActionUrl url) {
         super(url, UserTeamRight.TALK);
         this.url = url;
 

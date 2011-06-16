@@ -46,7 +46,7 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
-@ParamContainer(value="member/modify", protocol=Protocol.HTTPS)
+@ParamContainer(value="members/modify", protocol=Protocol.HTTPS)
 public class ModifyMemberPage extends LoggedPage {
     private ModifyMemberPageUrl url;
 

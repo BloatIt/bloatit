@@ -21,9 +21,9 @@ import com.bloatit.web.url.SendTeamInvitationActionUrl;
  * An action used to send team invitations
  * </p>
  */
-@ParamContainer("invitation/dosend")
+@ParamContainer("teams/%team%/dosendinvitation")
 public final class SendTeamInvitationAction extends LoggedAction {
-    @RequestParam
+    @RequestParam(role = Role.PAGENAME)
     private final Team team;
 
     @RequestParam(role = Role.POST)
@@ -61,7 +61,7 @@ public final class SendTeamInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return session.getLastVisitedPage();
     }
 

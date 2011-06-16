@@ -19,6 +19,7 @@ package com.bloatit.web.linkable.team;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
@@ -34,34 +35,34 @@ import com.bloatit.web.url.TeamPageUrl;
  * A class used to join a public team.
  * </p>
  */
-@ParamContainer("team/dojoin")
+@ParamContainer("teams/%team%/dojoin")
 public final class JoinTeamAction extends LoggedAction {
     @SuppressWarnings("unused")
     private JoinTeamActionUrl url;
 
-    @RequestParam()
-    private final Team targetTeam;
+    @RequestParam(role = Role.PAGENAME)
+    private final Team team;
 
     public JoinTeamAction(final JoinTeamActionUrl url) {
         super(url);
-        this.targetTeam = url.getTargetTeam();
+        this.team = url.getTeam();
     }
 
     @Override
     public Url doProcessRestricted(final Member me) {
-        if (targetTeam.isPublic()) {
+        if (team.isPublic()) {
             try {
-                me.addToPublicTeam(targetTeam);
-                session.notifyGood(Context.tr("You are now a member of team ''{0}''.", targetTeam.getDisplayName()));
+                me.addToPublicTeam(team);
+                session.notifyGood(Context.tr("You are now a member of team ''{0}''.", team.getDisplayName()));
             } catch (final UnauthorizedOperationException e) {
                 session.notifyBad(Context.tr("Oops we had an internal issue preventing you to join team. It's a bug, please notify us."));
                 throw new ShallNotPassException("User tries to join public team, but is not allowed to", e);
             }
         } else {
-            session.notifyBad(Context.tr("The team {0} is not public, you need an invitation to join it.", targetTeam.getDisplayName()));
+            session.notifyBad(Context.tr("The team {0} is not public, you need an invitation to join it.", team.getDisplayName()));
             return session.getLastVisitedPage();
         }
-        return new TeamPageUrl(targetTeam);
+        return new TeamPageUrl(team);
     }
 
     @Override
@@ -71,8 +72,8 @@ public final class JoinTeamAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors(final ElveosUserToken userToken) {
-        if (targetTeam != null) {
-            return new TeamPageUrl(targetTeam);
+        if (team != null) {
+            return new TeamPageUrl(team);
         }
         return session.getLastVisitedPage();
     }

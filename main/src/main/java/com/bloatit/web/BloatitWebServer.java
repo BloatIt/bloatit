@@ -54,10 +54,10 @@ import com.bloatit.web.linkable.bugs.ModifyBugAction;
 import com.bloatit.web.linkable.bugs.ModifyBugPage;
 import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
-import com.bloatit.web.linkable.contribution.CheckContributionAction;
-import com.bloatit.web.linkable.contribution.CheckContributionPage;
+import com.bloatit.web.linkable.contribution.CheckContributeAction;
+import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributePage;
-import com.bloatit.web.linkable.contribution.ContributionAction;
+import com.bloatit.web.linkable.contribution.ContributeAction;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
@@ -108,11 +108,11 @@ import com.bloatit.web.linkable.money.WithdrawMoneyAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyPage;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
-import com.bloatit.web.linkable.release.AddReleaseAction;
-import com.bloatit.web.linkable.release.AddReleasePage;
+import com.bloatit.web.linkable.release.CreateReleaseAction;
+import com.bloatit.web.linkable.release.CreateReleasePage;
 import com.bloatit.web.linkable.release.ReleasePage;
-import com.bloatit.web.linkable.softwares.AddSoftwareAction;
-import com.bloatit.web.linkable.softwares.AddSoftwarePage;
+import com.bloatit.web.linkable.softwares.CreateSoftwareAction;
+import com.bloatit.web.linkable.softwares.CreateSoftwarePage;
 import com.bloatit.web.linkable.softwares.SoftwareListPage;
 import com.bloatit.web.linkable.softwares.SoftwarePage;
 import com.bloatit.web.linkable.team.CreateTeamAction;
@@ -141,344 +141,347 @@ public class BloatitWebServer extends WebProcessor {
 
     @SuppressWarnings("deprecation")
     @Override
-    public Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
+    public Linkable constructLinkable(final String pageCode, final Parameters postGetParameters, final Session session) {
 
         // Pages
-        if (pageCode.equals(PageForbiddenUrl.getPageName())) {
+        if (PageForbiddenUrl.matches(pageCode)) {
             return new PageForbidden(new PageForbiddenUrl());
         }
-        if (pageCode.equals(IndexPageUrl.getPageName())) {
-            return new IndexPage(new IndexPageUrl(params, session.getParameters()));
+        if (IndexPageUrl.matches(pageCode)) {
+            return new IndexPage(new IndexPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(LoginPageUrl.getPageName())) {
-            return new LoginPage(new LoginPageUrl(params, session.getParameters()));
+        if (LoginPageUrl.matches(pageCode)) {
+            return new LoginPage(new LoginPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(FeatureListPageUrl.getPageName())) {
-            return new FeatureListPage(new FeatureListPageUrl(params, session.getParameters()));
+        if (FeatureListPageUrl.matches(pageCode)) {
+            return new FeatureListPage(new FeatureListPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CreateFeaturePageUrl.getPageName())) {
-            return new CreateFeaturePage(new CreateFeaturePageUrl(params, session.getParameters()));
+        if (CreateFeaturePageUrl.matches(pageCode)) {
+            return new CreateFeaturePage(new CreateFeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(FeaturePageUrl.getPageName())) {
-            return new FeaturePage(new FeaturePageUrl(params, session.getParameters()));
+        if (FeaturePageUrl.matches(pageCode)) {
+            return new FeaturePage(new FeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(SiteMapPageUrl.getPageName())) {
-            return new SiteMapPage(new SiteMapPageUrl(params, session.getParameters()));
+        if (SiteMapPageUrl.matches(pageCode)) {
+            return new SiteMapPage(new SiteMapPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MembersListPageUrl.getPageName())) {
-            return new MembersListPage(new MembersListPageUrl(params, session.getParameters()));
+        if (MembersListPageUrl.matches(pageCode)) {
+            return new MembersListPage(new MembersListPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MemberPageUrl.getPageName())) {
-            return new MemberPage(new MemberPageUrl(params, session.getParameters()));
+        if (MemberPageUrl.matches(pageCode)) {
+            return new MemberPage(new MemberPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ContributePageUrl.getPageName())) {
-            return new ContributePage(new ContributePageUrl(params, session.getParameters()));
+        if (ContributePageUrl.matches(pageCode)) {
+            return new ContributePage(new ContributePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CheckContributionPageUrl.getPageName())) {
-            return new CheckContributionPage(new CheckContributionPageUrl(params, session.getParameters()));
+        if (CheckContributePageUrl.matches(pageCode)) {
+            return new CheckContributePage(new CheckContributePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(StaticCheckContributionPageUrl.getPageName())) {
-            return new StaticCheckContributionPage(new StaticCheckContributionPageUrl(params, session.getParameters()));
+        if (StaticCheckContributionPageUrl.matches(pageCode)) {
+            return new StaticCheckContributionPage(new StaticCheckContributionPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MakeOfferPageUrl.getPageName())) {
-            return new MakeOfferPage(new MakeOfferPageUrl(params, session.getParameters()));
+        if (MakeOfferPageUrl.matches(pageCode)) {
+            return new MakeOfferPage(new MakeOfferPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(TestPageUrl.getPageName())) {
-            return new TestPage(new TestPageUrl(params, session.getParameters()));
+        if (TestPageUrl.matches(pageCode)) {
+            return new TestPage(new TestPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AccountChargingPageUrl.getPageName())) {
-            return new AccountChargingPage(new AccountChargingPageUrl(params, session.getParameters()));
+        if (AccountChargingPageUrl.matches(pageCode)) {
+            return new AccountChargingPage(new AccountChargingPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(SignUpPageUrl.getPageName())) {
-            return new SignUpPage(new SignUpPageUrl(params, session.getParameters()));
+        if (SignUpPageUrl.matches(pageCode)) {
+            return new SignUpPage(new SignUpPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CommentReplyPageUrl.getPageName())) {
-            return new CommentReplyPage(new CommentReplyPageUrl(params, session.getParameters()));
+        if (CommentReplyPageUrl.matches(pageCode)) {
+            return new CommentReplyPage(new CommentReplyPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(SoftwarePageUrl.getPageName())) {
-            return new SoftwarePage(new SoftwarePageUrl(params, session.getParameters()));
+        if (SoftwarePageUrl.matches(pageCode)) {
+            return new SoftwarePage(new SoftwarePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AddSoftwarePageUrl.getPageName())) {
-            return new AddSoftwarePage(new AddSoftwarePageUrl(params, session.getParameters()));
+        if (CreateSoftwarePageUrl.matches(pageCode)) {
+            return new CreateSoftwarePage(new CreateSoftwarePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(SoftwareListPageUrl.getPageName())) {
-            return new SoftwareListPage(new SoftwareListPageUrl(params, session.getParameters()));
+        if (SoftwareListPageUrl.matches(pageCode)) {
+            return new SoftwareListPage(new SoftwareListPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(UserContentAdminPageUrl.getPageName())) {
-            return new UserContentAdminPageImplementation(new UserContentAdminPageUrl(params, session.getParameters()));
+        if (UserContentAdminPageUrl.matches(pageCode)) {
+            return new UserContentAdminPageImplementation(new UserContentAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(DocumentationPageUrl.getPageName())) {
-            return new DocumentationPage(new DocumentationPageUrl(params, session.getParameters()));
+        if (DocumentationPageUrl.matches(pageCode)) {
+            return new DocumentationPage(new DocumentationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(TeamsPageUrl.getPageName())) {
-            return new TeamsPage(new TeamsPageUrl(params, session.getParameters()));
+        if (TeamsPageUrl.matches(pageCode)) {
+            return new TeamsPage(new TeamsPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(TeamPageUrl.getPageName())) {
-            return new TeamPage(new TeamPageUrl(params, session.getParameters()));
+        if (TeamPageUrl.matches(pageCode)) {
+            return new TeamPage(new TeamPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CreateTeamPageUrl.getPageName())) {
-            return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
+        if (CreateTeamPageUrl.matches(pageCode)) {
+            return new CreateTeamPage(new CreateTeamPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(SendTeamInvitationPageUrl.getPageName())) {
-            return new SendTeamInvitationPage(new SendTeamInvitationPageUrl(params, session.getParameters()));
+        if (SendTeamInvitationPageUrl.matches(pageCode)) {
+            return new SendTeamInvitationPage(new SendTeamInvitationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(KudosableAdminPageUrl.getPageName())) {
-            return new KudosableAdminPageImplementation(new KudosableAdminPageUrl(params, session.getParameters()));
+        if (KudosableAdminPageUrl.matches(pageCode)) {
+            return new KudosableAdminPageImplementation(new KudosableAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(FeatureAdminPageUrl.getPageName())) {
-            return new FeatureAdminPage(new FeatureAdminPageUrl(params, session.getParameters()));
+        if (FeatureAdminPageUrl.matches(pageCode)) {
+            return new FeatureAdminPage(new FeatureAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(BugPageUrl.getPageName())) {
-            return new BugPage(new BugPageUrl(params, session.getParameters()));
+        if (BugPageUrl.matches(pageCode)) {
+            return new BugPage(new BugPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ReportBugPageUrl.getPageName())) {
-            return new ReportBugPage(new ReportBugPageUrl(params, session.getParameters()));
+        if (ReportBugPageUrl.matches(pageCode)) {
+            return new ReportBugPage(new ReportBugPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AddReleasePageUrl.getPageName())) {
-            return new AddReleasePage(new AddReleasePageUrl(params, session.getParameters()));
+        if (CreateReleasePageUrl.matches(pageCode)) {
+            return new CreateReleasePage(new CreateReleasePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyBugPageUrl.getPageName())) {
-            return new ModifyBugPage(new ModifyBugPageUrl(params, session.getParameters()));
+        if (ModifyBugPageUrl.matches(pageCode)) {
+            return new ModifyBugPage(new ModifyBugPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ReleasePageUrl.getPageName())) {
-            return new ReleasePage(new ReleasePageUrl(params, session.getParameters()));
+        if (ReleasePageUrl.matches(pageCode)) {
+            return new ReleasePage(new ReleasePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MilestoneAdminPageUrl.getPageName())) {
-            return new MilestoneAdminPage(new MilestoneAdminPageUrl(params, session.getParameters()));
+        if (MilestoneAdminPageUrl.matches(pageCode)) {
+            return new MilestoneAdminPage(new MilestoneAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MetaBugsListPageUrl.getPageName())) {
-            return new MetaBugsListPage(new MetaBugsListPageUrl(params, session.getParameters()));
+        if (MetaBugsListPageUrl.matches(pageCode)) {
+            return new MetaBugsListPage(new MetaBugsListPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MetaBugEditPageUrl.getPageName())) {
-            return new MetaBugEditPage(new MetaBugEditPageUrl(params, session.getParameters()));
+        if (MetaBugEditPageUrl.matches(pageCode)) {
+            return new MetaBugEditPage(new MetaBugEditPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ConfigurationAdminPageUrl.getPageName())) {
-            return new ConfigurationAdminPage(new ConfigurationAdminPageUrl(params, session.getParameters()));
+        if (ConfigurationAdminPageUrl.matches(pageCode)) {
+            return new ConfigurationAdminPage(new ConfigurationAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminHomePageUrl.getPageName())) {
-            return new AdminHomePage(new AdminHomePageUrl(params, session.getParameters()));
+        if (AdminHomePageUrl.matches(pageCode)) {
+            return new AdminHomePage(new AdminHomePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(HightlightedFeatureAdminPageUrl.getPageName())) {
-            return new HightlightedFeatureAdminPage(new HightlightedFeatureAdminPageUrl(params, session.getParameters()));
+        if (HightlightedFeatureAdminPageUrl.matches(pageCode)) {
+            return new HightlightedFeatureAdminPage(new HightlightedFeatureAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ChangeLanguagePageUrl.getPageName())) {
-            return new ChangeLanguagePage(new ChangeLanguagePageUrl(params, session.getParameters()));
+        if (ChangeLanguagePageUrl.matches(pageCode)) {
+            return new ChangeLanguagePage(new ChangeLanguagePageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyMemberPageUrl.getPageName())) {
-            return new ModifyMemberPage(new ModifyMemberPageUrl(params, session.getParameters()));
+        if (ModifyMemberPageUrl.matches(pageCode)) {
+            return new ModifyMemberPage(new ModifyMemberPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(LostPasswordPageUrl.getPageName())) {
-            return new LostPasswordPage(new LostPasswordPageUrl(params, session.getParameters()));
+        if (LostPasswordPageUrl.matches(pageCode)) {
+            return new LostPasswordPage(new LostPasswordPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(RecoverPasswordPageUrl.getPageName())) {
-            return new RecoverPasswordPage(new RecoverPasswordPageUrl(params, session.getParameters()));
+        if (RecoverPasswordPageUrl.matches(pageCode)) {
+            return new RecoverPasswordPage(new RecoverPasswordPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyTeamPageUrl.getPageName())) {
-            return new ModifyTeamPage(new ModifyTeamPageUrl(params, session.getParameters()));
+        if (ModifyTeamPageUrl.matches(pageCode)) {
+            return new ModifyTeamPage(new ModifyTeamPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(WithdrawMoneyPageUrl.getPageName())) {
-            return new WithdrawMoneyPage(new WithdrawMoneyPageUrl(params, session.getParameters()));
+        if (WithdrawMoneyPageUrl.matches(pageCode)) {
+            return new WithdrawMoneyPage(new WithdrawMoneyPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MoneyWithdrawalAdminPageUrl.getPageName())) {
-            return new MoneyWithdrawalAdminPage(new MoneyWithdrawalAdminPageUrl(params, session.getParameters()));
+        if (MoneyWithdrawalAdminPageUrl.matches(pageCode)) {
+            return new MoneyWithdrawalAdminPage(new MoneyWithdrawalAdminPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyContactPageUrl.getPageName())) {
-            return new ModifyContactPage(new ModifyContactPageUrl(params, session.getParameters()));
+        if (ModifyContactPageUrl.matches(pageCode)) {
+            return new ModifyContactPage(new ModifyContactPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ExceptionAdministrationPageUrl.getPageName())) {
-            return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(params, session.getParameters()));
+        if (ExceptionAdministrationPageUrl.matches(pageCode)) {
+            return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ContributionInvoicingInformationsPageUrl.getPageName())) {
-            return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(params, session.getParameters()));
+        if (ContributionInvoicingInformationsPageUrl.matches(pageCode)) {
+            return new ContributionInvoicingInformationsPage(new ContributionInvoicingInformationsPageUrl(pageCode,
+                                                                                                          postGetParameters,
+                                                                                                          session.getParameters()));
         }
-        if (pageCode.equals(AdminGlobalNotificationPageUrl.getPageName())) {
-            return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(params, session.getParameters()));
+        if (AdminGlobalNotificationPageUrl.matches(pageCode)) {
+            return new AdminGlobalNotificationPage(new AdminGlobalNotificationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsPageUrl.getPageName())) {
-            return new AdminNewsPage(new AdminNewsPageUrl(params, session.getParameters()));
+        if (AdminNewsPageUrl.matches(pageCode)) {
+            return new AdminNewsPage(new AdminNewsPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
         // Actions
         // ////////
-        if (pageCode.equals(LoginActionUrl.getPageName())) {
-            return new LoginAction(new LoginActionUrl(params, session.getParameters()));
+        if (LoginActionUrl.matches(pageCode)) {
+            return new LoginAction(new LoginActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(LogoutActionUrl.getPageName())) {
-            return new LogoutAction(new LogoutActionUrl(params, session.getParameters()));
+        if (LogoutActionUrl.matches(pageCode)) {
+            return new LogoutAction(new LogoutActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ContributionActionUrl.getPageName())) {
-            return new ContributionAction(new ContributionActionUrl(params, session.getParameters()));
+        if (ContributeActionUrl.matches(pageCode)) {
+            return new ContributeAction(new ContributeActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CheckContributionActionUrl.getPageName())) {
-            return new CheckContributionAction(new CheckContributionActionUrl(params, session.getParameters()));
+        if (CheckContributeActionUrl.matches(pageCode)) {
+            return new CheckContributeAction(new CheckContributeActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(OfferActionUrl.getPageName())) {
-            return new OfferAction(new OfferActionUrl(params, session.getParameters()));
+        if (OfferActionUrl.matches(pageCode)) {
+            return new OfferAction(new OfferActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CreateFeatureActionUrl.getPageName())) {
-            return new CreateFeatureAction(new CreateFeatureActionUrl(params, session.getParameters()));
+        if (CreateFeatureActionUrl.matches(pageCode)) {
+            return new CreateFeatureAction(new CreateFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(SignUpActionUrl.getPageName())) {
-            return new SignUpAction(new SignUpActionUrl(params, session.getParameters()));
+        if (SignUpActionUrl.matches(pageCode)) {
+            return new SignUpAction(new SignUpActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(PopularityVoteActionUrl.getPageName())) {
-            return new PopularityVoteAction(new PopularityVoteActionUrl(params, session.getParameters()));
+        if (PopularityVoteActionUrl.matches(pageCode)) {
+            return new PopularityVoteAction(new PopularityVoteActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CreateCommentActionUrl.getPageName())) {
-            return new CreateCommentAction(new CreateCommentActionUrl(params, session.getParameters()));
+        if (CreateCommentActionUrl.matches(pageCode)) {
+            return new CreateCommentAction(new CreateCommentActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(PaylineActionUrl.getPageName())) {
-            return new PaylineAction(new PaylineActionUrl(params, session.getParameters()));
+        if (PaylineActionUrl.matches(pageCode)) {
+            return new PaylineAction(new PaylineActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(PaylineNotifyActionUrl.getPageName())) {
-            if (params.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
-                final String token = params.look(PaylineNotifyAction.TOKEN_CODE).getSimpleValue();
+        if (PaylineNotifyActionUrl.matches(pageCode)) {
+            if (postGetParameters.containsKey(PaylineNotifyAction.TOKEN_CODE)) {
+                final String token = postGetParameters.look(PaylineNotifyAction.TOKEN_CODE).getSimpleValue();
                 final Session fakeSession = SessionManager.pickTemporarySession(token);
                 if (fakeSession != null) {
                     Context.reInitializeContext(Context.getHeader(), fakeSession);
                 }
             }
-            return new PaylineNotifyAction(new PaylineNotifyActionUrl(params, session.getParameters()));
+            return new PaylineNotifyAction(new PaylineNotifyActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AddSoftwareActionUrl.getPageName())) {
-            return new AddSoftwareAction(new AddSoftwareActionUrl(params, session.getParameters()));
+        if (CreateSoftwareActionUrl.matches(pageCode)) {
+            return new CreateSoftwareAction(new CreateSoftwareActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MemberActivationActionUrl.getPageName())) {
-            return new MemberActivationAction(new MemberActivationActionUrl(params, session.getParameters()));
+        if (MemberActivationActionUrl.matches(pageCode)) {
+            return new MemberActivationAction(new MemberActivationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(PaylineReturnActionUrl.getPageName())) {
-            return new PaylineReturnAction(new PaylineReturnActionUrl(params, session.getParameters()));
+        if (PaylineReturnActionUrl.matches(pageCode)) {
+            return new PaylineReturnAction(new PaylineReturnActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdministrationActionUrl.getPageName())) {
-            return new AdministrationAction(new AdministrationActionUrl(params, session.getParameters()));
+        if (AdministrationActionUrl.matches(pageCode)) {
+            return new AdministrationAction(new AdministrationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CreateTeamActionUrl.getPageName())) {
-            return new CreateTeamAction(new CreateTeamActionUrl(params, session.getParameters()));
+        if (CreateTeamActionUrl.matches(pageCode)) {
+            return new CreateTeamAction(new CreateTeamActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(JoinTeamActionUrl.getPageName())) {
-            return new JoinTeamAction(new JoinTeamActionUrl(params, session.getParameters()));
+        if (JoinTeamActionUrl.matches(pageCode)) {
+            return new JoinTeamAction(new JoinTeamActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(SendTeamInvitationActionUrl.getPageName())) {
-            return new SendTeamInvitationAction(new SendTeamInvitationActionUrl(params, session.getParameters()));
+        if (SendTeamInvitationActionUrl.matches(pageCode)) {
+            return new SendTeamInvitationAction(new SendTeamInvitationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AddAttachementActionUrl.getPageName())) {
-            return new AddAttachementAction(new AddAttachementActionUrl(params, session.getParameters()));
+        if (AddAttachementActionUrl.matches(pageCode)) {
+            return new AddAttachementAction(new AddAttachementActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AddAttachementPageUrl.getPageName())) {
-            return new AddAttachementPage(new AddAttachementPageUrl(params, session.getParameters()));
+        if (AddAttachementPageUrl.matches(pageCode)) {
+            return new AddAttachementPage(new AddAttachementPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(HandleJoinTeamInvitationActionUrl.getPageName())) {
-            return new HandleJoinTeamInvitationAction(new HandleJoinTeamInvitationActionUrl(params, session.getParameters()));
+        if (HandleJoinTeamInvitationActionUrl.matches(pageCode)) {
+            return new HandleJoinTeamInvitationAction(new HandleJoinTeamInvitationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ReportBugActionUrl.getPageName())) {
-            return new ReportBugAction(new ReportBugActionUrl(params, session.getParameters()));
+        if (ReportBugActionUrl.matches(pageCode)) {
+            return new ReportBugAction(new ReportBugActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AddReleaseActionUrl.getPageName())) {
-            return new AddReleaseAction(new AddReleaseActionUrl(params, session.getParameters()));
+        if (CreateReleaseActionUrl.matches(pageCode)) {
+            return new CreateReleaseAction(new CreateReleaseActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyBugActionUrl.getPageName())) {
-            return new ModifyBugAction(new ModifyBugActionUrl(params, session.getParameters()));
+        if (ModifyBugActionUrl.matches(pageCode)) {
+            return new ModifyBugAction(new ModifyBugActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ChangeAvatarActionUrl.getPageName())) {
-            return new ChangeAvatarAction(new ChangeAvatarActionUrl(params, session.getParameters()));
+        if (ChangeAvatarActionUrl.matches(pageCode)) {
+            return new ChangeAvatarAction(new ChangeAvatarActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(GiveRightActionUrl.getPageName())) {
-            return new GiveRightAction(new GiveRightActionUrl(params, session.getParameters()));
+        if (GiveRightActionUrl.matches(pageCode)) {
+            return new GiveRightAction(new GiveRightActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ConfigurationAdminActionUrl.getPageName())) {
-            return new ConfigurationAdminAction(new ConfigurationAdminActionUrl(params, session.getParameters()));
+        if (ConfigurationAdminActionUrl.matches(pageCode)) {
+            return new ConfigurationAdminAction(new ConfigurationAdminActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MetaReportBugActionUrl.getPageName())) {
-            return new MetaReportBugAction(new MetaReportBugActionUrl(params, session.getParameters()));
+        if (MetaReportBugActionUrl.matches(pageCode)) {
+            return new MetaReportBugAction(new MetaReportBugActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MetaEditBugActionUrl.getPageName())) {
-            return new MetaEditBugAction(new MetaEditBugActionUrl(params, session.getParameters()));
+        if (MetaEditBugActionUrl.matches(pageCode)) {
+            return new MetaEditBugAction(new MetaEditBugActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MetaBugDeleteActionUrl.getPageName())) {
-            return new MetaBugDeleteAction(new MetaBugDeleteActionUrl(params, session.getParameters()));
+        if (MetaBugDeleteActionUrl.matches(pageCode)) {
+            return new MetaBugDeleteAction(new MetaBugDeleteActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ChangeLanguageActionUrl.getPageName())) {
-            return new ChangeLanguageAction(new ChangeLanguageActionUrl(params, session.getParameters()));
+        if (ChangeLanguageActionUrl.matches(pageCode)) {
+            return new ChangeLanguageAction(new ChangeLanguageActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(UnlockAccountChargingProcessActionUrl.getPageName())) {
-            return new UnlockAccountChargingProcessAction(new UnlockAccountChargingProcessActionUrl(params, session.getParameters()));
+        if (UnlockAccountChargingProcessActionUrl.matches(pageCode)) {
+            return new UnlockAccountChargingProcessAction(new UnlockAccountChargingProcessActionUrl(pageCode,
+                                                                                                    postGetParameters,
+                                                                                                    session.getParameters()));
         }
-        if (pageCode.equals(UnlockContributionProcessActionUrl.getPageName())) {
-            return new UnlockContributionProcessAction(new UnlockContributionProcessActionUrl(params, session.getParameters()));
+        if (UnlockContributionProcessActionUrl.matches(pageCode)) {
+            return new UnlockContributionProcessAction(new UnlockContributionProcessActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(StaticAccountChargingPageUrl.getPageName())) {
-            return new StaticAccountChargingPage(new StaticAccountChargingPageUrl(params, session.getParameters()));
+        if (StaticAccountChargingPageUrl.matches(pageCode)) {
+            return new StaticAccountChargingPage(new StaticAccountChargingPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyMemberActionUrl.getPageName())) {
-            return new ModifyMemberAction(new ModifyMemberActionUrl(params, session.getParameters()));
+        if (ModifyMemberActionUrl.matches(pageCode)) {
+            return new ModifyMemberAction(new ModifyMemberActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(LostPasswordActionUrl.getPageName())) {
-            return new LostPasswordAction(new LostPasswordActionUrl(params, session.getParameters()));
+        if (LostPasswordActionUrl.matches(pageCode)) {
+            return new LostPasswordAction(new LostPasswordActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(RecoverPasswordActionUrl.getPageName())) {
-            return new RecoverPasswordAction(new RecoverPasswordActionUrl(params, session.getParameters()));
+        if (RecoverPasswordActionUrl.matches(pageCode)) {
+            return new RecoverPasswordAction(new RecoverPasswordActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyTeamActionUrl.getPageName())) {
-            return new ModifyTeamAction(new ModifyTeamActionUrl(params, session.getParameters()));
+        if (ModifyTeamActionUrl.matches(pageCode)) {
+            return new ModifyTeamAction(new ModifyTeamActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(DeclareHightlightedFeatureActionUrl.getPageName())) {
-            return new DeclareHightlightedFeatureAction(new DeclareHightlightedFeatureActionUrl(params, session.getParameters()));
+        if (DeclareHightlightedFeatureActionUrl.matches(pageCode)) {
+            return new DeclareHightlightedFeatureAction(new DeclareHightlightedFeatureActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(WithdrawMoneyActionUrl.getPageName())) {
-            return new WithdrawMoneyAction(new WithdrawMoneyActionUrl(params, session.getParameters()));
+        if (WithdrawMoneyActionUrl.matches(pageCode)) {
+            return new WithdrawMoneyAction(new WithdrawMoneyActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(MoneyWithdrawalAdminActionUrl.getPageName())) {
-            return new MoneyWithdrawalAdminAction(new MoneyWithdrawalAdminActionUrl(params, session.getParameters()));
+        if (MoneyWithdrawalAdminActionUrl.matches(pageCode)) {
+            return new MoneyWithdrawalAdminAction(new MoneyWithdrawalAdminActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(CancelWithdrawMoneyActionUrl.getPageName())) {
-            return new CancelWithdrawMoneyAction(new CancelWithdrawMoneyActionUrl(params, session.getParameters()));
+        if (CancelWithdrawMoneyActionUrl.matches(pageCode)) {
+            return new CancelWithdrawMoneyAction(new CancelWithdrawMoneyActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyInvoicingContactActionUrl.getPageName())) {
-            return new ModifyInvoicingContactAction(new ModifyInvoicingContactActionUrl(params, session.getParameters()));
+        if (ModifyInvoicingContactActionUrl.matches(pageCode)) {
+            return new ModifyInvoicingContactAction(new ModifyInvoicingContactActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ExceptionAdministrationActionUrl.getPageName())) {
-            return new ExceptionAdministrationAction(new ExceptionAdministrationActionUrl(params, session.getParameters()));
+        if (ExceptionAdministrationActionUrl.matches(pageCode)) {
+            return new ExceptionAdministrationAction(new ExceptionAdministrationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminGlobalNotificationActionUrl.getPageName())) {
-            return new AdminGlobalNotificationAction(new AdminGlobalNotificationActionUrl(params, session.getParameters()));
+        if (AdminGlobalNotificationActionUrl.matches(pageCode)) {
+            return new AdminGlobalNotificationAction(new AdminGlobalNotificationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsActionUrl.getPageName())) {
-            return new AdminNewsAction(new AdminNewsActionUrl(params, session.getParameters()));
+        if (AdminNewsActionUrl.matches(pageCode)) {
+            return new AdminNewsAction(new AdminNewsActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsDeleteActionUrl.getPageName())) {
-            return new AdminNewsDeleteAction(new AdminNewsDeleteActionUrl(params, session.getParameters()));
+        if (AdminNewsDeleteActionUrl.matches(pageCode)) {
+            return new AdminNewsDeleteAction(new AdminNewsDeleteActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AdminNewsRestoreActionUrl.getPageName())) {
-            return new AdminNewsRestoreAction(new AdminNewsRestoreActionUrl(params, session.getParameters()));
+        if (AdminNewsRestoreActionUrl.matches(pageCode)) {
+            return new AdminNewsRestoreAction(new AdminNewsRestoreActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////
         // Process
         // ////////
-        if (pageCode.equals(ContributionProcessUrl.getPageName())) {
-            return new ContributionProcess(new ContributionProcessUrl(params, session.getParameters()));
+        if (ContributionProcessUrl.matches(pageCode)) {
+            return new ContributionProcess(new ContributionProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(AccountChargingProcessUrl.getPageName())) {
-            return new AccountChargingProcess(new AccountChargingProcessUrl(params, session.getParameters()));
+        if (AccountChargingProcessUrl.matches(pageCode)) {
+            return new AccountChargingProcess(new AccountChargingProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(PaylineProcessUrl.getPageName())) {
-            return new PaylineProcess(new PaylineProcessUrl(params, session.getParameters()));
+        if (PaylineProcessUrl.matches(pageCode)) {
+            return new PaylineProcess(new PaylineProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ModifyInvoicingContactProcessUrl.getPageName())) {
-            return new ModifyInvoicingContactProcess(new ModifyInvoicingContactProcessUrl(params, session.getParameters()));
+        if (ModifyInvoicingContactProcessUrl.matches(pageCode)) {
+            return new ModifyInvoicingContactProcess(new ModifyInvoicingContactProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(ContributionInvoicingProcessUrl.getPageName())) {
-            return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(params, session.getParameters()));
+        if (ContributionInvoicingProcessUrl.matches(pageCode)) {
+            return new ContributionInvoicingProcess(new ContributionInvoicingProcessUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        
 
         // Resource page
-        if (pageCode.equals(FileResourceUrl.getPageName())) {
-            return new FileResource(new FileResourceUrl(params, session.getParameters()));
+        if (FileResourceUrl.matches(pageCode)) {
+            return new FileResource(new FileResourceUrl(pageCode, postGetParameters, session.getParameters()));
         }
-        if (pageCode.equals(InvoiceResourceUrl.getPageName())) {
-            return new InvoiceResource(new InvoiceResourceUrl(params, session.getParameters()));
+        if (InvoiceResourceUrl.matches(pageCode)) {
+            return new InvoiceResource(new InvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
         }
         Log.web().warn("Failed to find the page code '" + pageCode + "' in the linkable list. Maybe you forgot to declare it in BloatitWebServer ?");
         return new PageNotFound(new PageNotFoundUrl());

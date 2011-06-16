@@ -38,7 +38,7 @@ import com.bloatit.web.url.FeaturePageUrl;
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("feature/docreate")
+@ParamContainer("features/docreate")
 public final class CreateFeatureAction extends UserContentAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You forgot to write a title"))

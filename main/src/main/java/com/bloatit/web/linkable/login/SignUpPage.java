@@ -43,7 +43,7 @@ import com.bloatit.web.url.SignUpPageUrl;
  * Page used by users to create their bloatit accounts
  * </p>
  */
-@ParamContainer(value="member/signup", protocol=Protocol.HTTPS)
+@ParamContainer(value="members/signup", protocol=Protocol.HTTPS)
 public final class SignUpPage extends ElveosPage {
     private final SignUpPageUrl url;
 
@@ -53,7 +53,7 @@ public final class SignUpPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateSignUpPageMain());
         layout.addRight(new SideBarDocumentationBlock("privacy"));
@@ -140,7 +140,7 @@ public final class SignUpPage extends ElveosPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return SignUpPage.generateBreadcrumb();
     }
 

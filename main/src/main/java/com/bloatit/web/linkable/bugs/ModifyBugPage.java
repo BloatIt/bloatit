@@ -18,6 +18,7 @@ import java.util.EnumSet;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -39,12 +40,12 @@ import com.bloatit.web.url.ModifyBugPageUrl;
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("feature/bug/modify")
+@ParamContainer("bugs/%bug%/modify")
 public final class ModifyBugPage extends LoggedPage {
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_LINES = 5;
     private static final int BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(name = "id", message = @tr("I cannot find the bug number: ''%value%''."))
+    @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the bug number: ''%value%''."))
     @NonOptional(@tr("You have to specify a bug number."))
     private final Bug bug;
     private final ModifyBugPageUrl url;

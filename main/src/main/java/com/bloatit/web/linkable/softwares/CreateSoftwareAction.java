@@ -30,15 +30,15 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Software;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.AddSoftwareActionUrl;
-import com.bloatit.web.url.AddSoftwarePageUrl;
+import com.bloatit.web.url.CreateSoftwareActionUrl;
+import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer("software/doadd")
-public final class AddSoftwareAction extends LoggedAction {
+@ParamContainer("software/docreate")
+public final class CreateSoftwareAction extends LoggedAction {
     protected static final String IMAGE_CODE = "image";
     private static final String IMAGE_NAME_CODE = "image/filename";
     private static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";
@@ -70,9 +70,9 @@ public final class AddSoftwareAction extends LoggedAction {
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
-    private final AddSoftwareActionUrl url;
+    private final CreateSoftwareActionUrl url;
 
-    public AddSoftwareAction(final AddSoftwareActionUrl url) {
+    public CreateSoftwareAction(final CreateSoftwareActionUrl url) {
         super(url);
         this.url = url;
 
@@ -116,7 +116,7 @@ public final class AddSoftwareAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors(final ElveosUserToken userToken) {
-        return new AddSoftwarePageUrl();
+        return new CreateSoftwarePageUrl();
     }
 
     @Override
