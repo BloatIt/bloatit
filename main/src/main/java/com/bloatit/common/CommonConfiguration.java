@@ -45,7 +45,7 @@ public class CommonConfiguration {
     private void loadConfiguration() {
         InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("build.properties");
         if(resourceAsStream == null){
-            throw new BadProgrammerException("Cannot locate a configuration file.");
+            throw new BadProgrammerException("Cannot locate the 'build.properties' configuration file.");
         }
         // ConfigurationManager
         try {
