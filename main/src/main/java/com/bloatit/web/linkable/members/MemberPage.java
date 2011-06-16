@@ -100,7 +100,15 @@ public final class MemberPage extends ElveosPage {
     protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(false, url);
 
-        layout.addLeft(generateMemberPageMain());
+        boolean myPage;
+        if (getSession().getUserToken().isAuthenticated() && member != null && member.equals(getSession().getUserToken().getMember())) {
+            myPage = true;
+        } else {
+            myPage = false;
+        }
+        
+        
+        layout.addLeft(generateMemberPageMain(myPage));
 
         if (member.canGetInternalAccount()) {
             layout.addLeft(generateTabPane());
@@ -109,7 +117,7 @@ public final class MemberPage extends ElveosPage {
         // Adding list of teams
         final TitleSideBarElementLayout teamBlock = new TitleSideBarElementLayout();
         try {
-            if (member.canGetTeams()) {
+            if (myPage) {
                 teamBlock.setTitle(Context.tr("My teams"));
             } else {
                 teamBlock.setTitle(Context.tr("{0}''s teams", member.getDisplayName()));
@@ -132,7 +140,7 @@ public final class MemberPage extends ElveosPage {
             throw new ShallNotPassException("Cannot access member team information", e);
         }
         layout.addRight(teamBlock);
-        if (userToken.isAuthenticated()) {
+        if (userToken.isAuthenticated() && member.canGetInternalAccount()) {
             layout.addRight(new SideBarDocumentationBlock("internal_account"));
             layout.addRight(new SideBarLoadAccountBlock(null));
             layout.addRight(new SideBarWithdrawMoneyBlock(userToken.getMember()));
@@ -141,7 +149,7 @@ public final class MemberPage extends ElveosPage {
         return layout;
     }
 
-    private HtmlElement generateMemberPageMain() {
+    private HtmlElement generateMemberPageMain(boolean myPage) {
         final HtmlDiv master = new HtmlDiv("member_page");
 
         if (member.canAccessUserInformations(Action.WRITE)) {
@@ -151,12 +159,7 @@ public final class MemberPage extends ElveosPage {
             modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change account settings")));
         }
 
-        boolean myPage;
-        if (getSession().getUserToken().isAuthenticated() && member != null && member.equals(getSession().getUserToken().getMember())) {
-            myPage = true;
-        } else {
-            myPage = false;
-        }
+        
 
         // Title
         final String title = (myPage) ? Context.tr("My page") : Context.tr("Member page");
