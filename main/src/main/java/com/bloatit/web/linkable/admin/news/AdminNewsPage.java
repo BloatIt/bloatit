@@ -71,7 +71,7 @@ public class AdminNewsPage extends AdminPage {
         SideBarElementLayout sbel = new SideBarElementLayout();
         sbel.add(new HtmlTitle(Context.tr("Previous messages"), 1));
         master.addRight(sbel);
-        for (NewsFeed news : NewsFeedManager.getAll()) {
+        for (NewsFeed news : NewsFeedManager.getAll(true)) {
             HtmlDiv div = new HtmlDiv();
             sbel.add(div);
             if (!news.isDeleted()) {

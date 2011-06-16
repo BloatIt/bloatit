@@ -7,16 +7,26 @@ import com.bloatit.model.lists.NewsFeedList;
 
 public class NewsFeedManager {
     /**
-     * Gets the money withdrawal matching a given id
+     * Gets the news feed matching a given id
      */
     public static NewsFeed getById(final Integer id) {
         return NewsFeed.create(DBRequests.getById(DaoNewsFeed.class, id));
     }
 
     /**
-     * @return all the money withdrawals
+     * @return all the non deleted news feed
      */
     public static NewsFeedList getAll() {
+        return getAll(false);
+    }
+
+    /**
+     * @param deleted <i>true</i> if the request must return deleted news feed,
+     *            <i>false</i> otherwise
+     * @return the list of news feed
+     */
+    public static NewsFeedList getAll(boolean deleted) {
+        // TODO Handle deleted items
         return new NewsFeedList(DBRequests.getAll(DaoNewsFeed.class));
     }
 }
