@@ -78,7 +78,7 @@ public class ModifyTeamPage extends LoggedPage {
         displayNameInput.addErrorMessages(displayNameFieldData.getErrorMessages());
         if (displayNameFieldData.getSuggestedValue() != null && !displayNameFieldData.getSuggestedValue().isEmpty()) {
             displayNameInput.setDefaultValue(displayNameFieldData.getSuggestedValue());
-        } else if (loggedUser.getFullname() != null) {
+        } else {
             displayNameInput.setDefaultValue(team.getDisplayName());
         }
         form.add(displayNameInput);

@@ -27,6 +27,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -35,6 +36,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -60,7 +63,7 @@ import com.bloatit.framework.utils.PageIterable;
  */
 public class DaoSoftware extends DaoIdentifiable {
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, unique = true, updatable = true)
     private String name;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -88,6 +91,10 @@ public class DaoSoftware extends DaoIdentifiable {
         return (DaoSoftware) query.uniqueResult();
     }
 
+    public static boolean nameExists(final String name) {
+        return getByName(name) != null;
+    }
+    
     /**
      * @param name is the name of the software we are looking for.
      * @return true if the software exist. false otherwise.
@@ -147,6 +154,13 @@ public class DaoSoftware extends DaoIdentifiable {
         this.image = image;
     }
 
+    /**
+     * @param description the new name of the software.
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
+    
     // ======================================================================
     // Getters
     // ======================================================================

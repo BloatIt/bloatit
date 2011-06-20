@@ -21,6 +21,7 @@ import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
 import com.bloatit.framework.webprocessor.annotations.tr;
+import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
@@ -35,6 +36,7 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.FileResourceUrl;
+import com.bloatit.web.url.ModifySoftwarePageUrl;
 import com.bloatit.web.url.SoftwarePageUrl;
 
 @ParamContainer("softwares/%software%")
@@ -62,6 +64,15 @@ public final class SoftwarePage extends ElveosPage {
     protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
+        
+        if (userToken.isAuthenticated()) {
+            // Link to change account settings
+            final HtmlDiv modify = new HtmlDiv("float_right");
+            layout.addLeft(modify);
+            modify.add(new ModifySoftwarePageUrl(software).getHtmlLink(Context.tr("Modify software description")));
+        }
+
+        
         HtmlTitle softwareName;
         softwareName = new HtmlTitle(software.getName(), 1);
         layout.addLeft(softwareName);

@@ -182,18 +182,18 @@ public class ModifyTeamAction extends LoggedAction {
             return new ModifyTeamPageUrl(team);
         }
 
-        if (!isEmpty(displayName) && !displayName.equals(team.getLogin()) && TeamManager.exist(displayName)) {
+        if (!isEmpty(displayName.trim()) && !displayName.equals(team.getLogin()) && TeamManager.exist(displayName)) {
             error = true;
             session.notifyError(Context.tr("This team name already exists."));
             url.getDisplayNameParameter().addErrorMessage(Context.tr("This team name already exists."));
         }
-        if (isEmpty(contact)) {
+        if (isEmpty(contact.trim())) {
             error = true;
             session.notifyError(Context.tr("Cannot delete team's display name."));
             url.getContactParameter().addErrorMessage(Context.tr("Cannot delete team's display name."));
         }
 
-        if (isEmpty(description)) {
+        if (isEmpty(description.trim())) {
             error = true;
             session.notifyError(Context.tr("Cannot delete team's description."));
             url.getDescriptionParameter().addErrorMessage(Context.tr("Cannot delete team's description."));
