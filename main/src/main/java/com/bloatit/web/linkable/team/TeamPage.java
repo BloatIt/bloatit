@@ -189,8 +189,7 @@ public final class TeamPage extends ElveosPage {
         final HtmlList informationsList = new HtmlList();
 
         // Visibility
-        informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (team.isPublic() ? Context.tr("Public")
-                : Context.tr("Private"))));
+        informationsList.add(new HtmlDefineParagraph(Context.tr("Visibility: "), (team.isPublic() ? Context.tr("Public") : Context.tr("Private"))));
 
         // Creation date
         try {
@@ -237,10 +236,7 @@ public final class TeamPage extends ElveosPage {
                     bankInformations.add(bankInformationsList);
 
                     // Account balance
-                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(team.getInternalAccount().getAmount(),
-                                                                                   true,
-                                                                                   team,
-                                                                                   member);
+                    final MoneyDisplayComponent amount = new MoneyDisplayComponent(team.getInternalAccount().getAmount(), true, team, member);
                     final HtmlListItem accountBalanceItem = new HtmlListItem(new HtmlDefineParagraph(Context.tr("Account balance: "),
                                                                                                      new HtmlMixedText(Context.tr("<0:amount (1000€):> (<1::view details>)"),
                                                                                                                        amount,

@@ -107,7 +107,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         }
 
         // Create offer form
-        final OfferActionUrl offerActionUrl = new OfferActionUrl(url.getFeature());
+        final OfferActionUrl offerActionUrl = new OfferActionUrl(getSession().getShortKey(), url.getFeature());
         offerActionUrl.setDraftOffer(offer);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 
@@ -170,9 +170,9 @@ public final class MakeOfferPage extends CreateUserContentPage {
         offerForm.add(licenseInput);
 
         // locale
-        offerForm.add(new LanguageField(offerActionUrl,  //
-                         Context.tr("description language"), //
-                         Context.tr("The language in which you have maid the description.")));
+        offerForm.add(new LanguageField(offerActionUrl, //
+                                        Context.tr("description language"), //
+                                        Context.tr("The language in which you have maid the description.")));
 
         final HtmlDiv validationDetails = new HtmlDiv();
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));

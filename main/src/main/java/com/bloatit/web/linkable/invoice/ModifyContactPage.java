@@ -96,7 +96,8 @@ public final class ModifyContactPage extends LoggedPage {
     private HtmlElement generateNewInvoicingContactForm(final Member member) {
 
         // Create contact form
-        final ModifyInvoicingContactActionUrl modifyInvoicingContextActionUrl = new ModifyInvoicingContactActionUrl(process);
+        final ModifyInvoicingContactActionUrl modifyInvoicingContextActionUrl = new ModifyInvoicingContactActionUrl(getSession().getShortKey(),
+                                                                                                                    process);
         final HtmlForm newContactForm = new HtmlForm(modifyInvoicingContextActionUrl.urlString());
 
         try {
@@ -154,18 +155,21 @@ public final class ModifyContactPage extends LoggedPage {
 
             final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Update invoicing contact"));
             newContactForm.add(newContactButton);
-        } catch (UnauthorizedPrivateAccessException e) {
+        } catch (final UnauthorizedPrivateAccessException e) {
             throw new ShallNotPassException("The user is not allowed to access to his contact informations");
         }
 
         return newContactForm;
     }
 
-    private HtmlTextField generateTextField(UrlParameter<String, String> parameter, String name, String defaultValue) {
+    private HtmlTextField generateTextField(final UrlParameter<String, String> parameter, final String name, final String defaultValue) {
         return generateTextField(parameter, name, defaultValue, null);
     }
 
-    private HtmlTextField generateTextField(UrlParameter<String, String> parameter, String name, String defaultValue, String comment) {
+    private HtmlTextField generateTextField(final UrlParameter<String, String> parameter,
+                                            final String name,
+                                            final String defaultValue,
+                                            final String comment) {
         final FieldData fieldData = parameter.pickFieldData();
         final HtmlTextField input = new HtmlTextField(fieldData.getName(), name);
         if (fieldData.getSuggestedValue() == null) {

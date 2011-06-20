@@ -42,7 +42,7 @@ import com.bloatit.web.url.LostPasswordPageUrl;
  * on "lost password"
  * </p>
  */
-@ParamContainer(value="member/password/lost", protocol=Protocol.HTTPS)
+@ParamContainer(value = "member/password/lost", protocol = Protocol.HTTPS)
 public class LostPasswordPage extends ElveosPage {
     private final LostPasswordPageUrl url;
 

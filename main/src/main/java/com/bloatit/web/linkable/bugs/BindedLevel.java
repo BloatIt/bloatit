@@ -44,7 +44,7 @@ public enum BindedLevel implements Displayable {
         return level;
     }
 
-    //Fake tr
+    // Fake tr
     private static String tr(String fake) {
         return fake;
     }

@@ -62,7 +62,7 @@ public class WithdrawMoneyPage extends LoggedPage {
         final HtmlDiv master = new HtmlDiv();
         master.add(new HtmlTitle(1).addText(tr("Withdraw money")));
 
-        final WithdrawMoneyActionUrl targetUrl = new WithdrawMoneyActionUrl(actor);
+        final WithdrawMoneyActionUrl targetUrl = new WithdrawMoneyActionUrl(getSession().getShortKey(), actor);
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
 

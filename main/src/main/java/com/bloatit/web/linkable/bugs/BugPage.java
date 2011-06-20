@@ -153,7 +153,7 @@ public final class BugPage extends ElveosPage {
 
         // Comments
         layout.addLeft(CommentTools.generateCommentList(bug.getComments(), generateBugFormatMap()));
-        layout.addLeft(new CommentForm(new CreateCommentActionUrl(bug), userToken));
+        layout.addLeft(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), bug), userToken));
 
         return layout;
     }
@@ -190,7 +190,7 @@ public final class BugPage extends ElveosPage {
     }
 
     private HtmlElement generateNewAttachementForm() {
-        final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(bug);
+        final AddAttachementActionUrl targetUrl = new AddAttachementActionUrl(getSession().getShortKey(), bug);
         final HtmlForm addAttachementForm = new HtmlForm(targetUrl.urlString());
         addAttachementForm.enableFileUpload();
         addAttachementForm.add(new AttachmentField(targetUrl, FILE_MAX_SIZE_MIO + " Mio", false));

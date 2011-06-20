@@ -98,7 +98,7 @@ public final class FeaturePage extends ElveosPage {
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
             commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
-            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), userToken));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), feature), userToken));
         }
         layout.addLeft(commentsBlock);
 
@@ -186,9 +186,14 @@ public final class FeaturePage extends ElveosPage {
         if (title.endsWith(".") || title.endsWith(":") || title.endsWith("!") || title.endsWith("?")) {
             title = title.substring(0, title.length() - 1);
         }
-        final String str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0} in {1}",
-                                      title,
-                                      feature.getSoftware().getName());
+        String str = null;
+        if (feature.getSoftware() != null) {
+            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0} in {1}",
+                             title,
+                             feature.getSoftware().getName());
+        } else {
+            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0}", title);
+        }
 
         return HtmlUtils.htmlEscape(str);
     }

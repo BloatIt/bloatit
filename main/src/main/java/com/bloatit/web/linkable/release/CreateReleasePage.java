@@ -79,7 +79,7 @@ public final class CreateReleasePage extends CreateUserContentPage {
     private HtmlElement generateReleaseCreationForm() {
         final HtmlTitleBlock createReleaseTitle = new HtmlTitleBlock(tr("Add a new Release"), 1);
 
-        final CreateReleaseActionUrl doCreateUrl = new CreateReleaseActionUrl(milestone);
+        final CreateReleaseActionUrl doCreateUrl = new CreateReleaseActionUrl(getSession().getShortKey(), milestone);
 
         // Create the form stub
         final HtmlForm form = new HtmlForm(doCreateUrl.urlString());

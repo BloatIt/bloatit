@@ -265,7 +265,7 @@ public class AccountComponent extends HtmlPageComponent {
             description.add(new HtmlDefineParagraph(tr("IBAN: "), moneyWithdrawal.getIBAN()));
             description.add(new HtmlDefineParagraph(tr("Reference: "), moneyWithdrawal.getReference()));
             if (moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
-                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(moneyWithdrawal);
+                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(Context.getSession().getShortKey(),moneyWithdrawal);
                 final HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)", statusString), cancelUrl.getHtmlLink());
                 description.add(new HtmlDefineParagraph(tr("Status: "), statusWithCancel));
             } else {

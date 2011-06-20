@@ -99,8 +99,7 @@ public final class MemberPage extends ElveosPage {
         } else {
             myPage = false;
         }
-        
-        
+
         layout.addLeft(generateMemberPageMain(myPage));
 
         if (member.canGetInternalAccount()) {
@@ -151,8 +150,6 @@ public final class MemberPage extends ElveosPage {
             master.add(modify);
             modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change account settings")));
         }
-
-        
 
         // Title
         final String title = (myPage) ? Context.tr("My page") : Context.tr("Member page");

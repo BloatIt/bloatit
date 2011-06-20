@@ -74,7 +74,7 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(tr("Create a new feature"), 1);
-        final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl();
+        final CreateFeatureActionUrl doCreateUrl = new CreateFeatureActionUrl(getSession().getShortKey());
 
         // Create the form stub
         final HtmlForm createFeatureForm = new HtmlForm(doCreateUrl.urlString());

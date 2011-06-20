@@ -70,7 +70,7 @@ public final class ContributePage extends CreateUserContentPage {
     }
 
     private HtmlElement generateContributeForm(final Member me) {
-        final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(process);
+        final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : choose amount

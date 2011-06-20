@@ -109,12 +109,12 @@ public class MoneyWithdrawalAdminPage extends AdminPage {
         }
 
         final HtmlMixedText mixed = new HtmlMixedText(Context.tr("Filter: <0::>, <1::>, <2::>, <3::>, <4::>, <5::>"),
-                                                allLink,
-                                                requestedLink,
-                                                treatedLink,
-                                                completeLink,
-                                                canceledLink,
-                                                refusedLink);
+                                                      allLink,
+                                                      requestedLink,
+                                                      treatedLink,
+                                                      completeLink,
+                                                      canceledLink,
+                                                      refusedLink);
         master.add(mixed);
 
         final State state = getState(filter);
@@ -129,7 +129,7 @@ public class MoneyWithdrawalAdminPage extends AdminPage {
         master.add(table);
         table.addHeader("Author", "Amount", "State", "IBAN", "Action", "Last Modified");
         for (final MoneyWithdrawal mw : list) {
-            final MoneyWithdrawalAdminActionUrl targetUrl = new MoneyWithdrawalAdminActionUrl(filter, mw);
+            final MoneyWithdrawalAdminActionUrl targetUrl = new MoneyWithdrawalAdminActionUrl(getSession().getShortKey(), filter, mw);
             HtmlForm form = null;
 
             final FieldData stateFieldData = targetUrl.getNewStateParameter().pickFieldData();
@@ -155,7 +155,9 @@ public class MoneyWithdrawalAdminPage extends AdminPage {
                     form.add(new HtmlSubmit(Context.tr("Submit")));
                     break;
             }
-            final String timeString = Context.getLocalizator().getDate(mw.getLastModificationDate()).toDateTimeString(FormatStyle.SHORT, FormatStyle.SHORT);
+            final String timeString = Context.getLocalizator()
+                                             .getDate(mw.getLastModificationDate())
+                                             .toDateTimeString(FormatStyle.SHORT, FormatStyle.SHORT);
 
             table.addLine(mw.getActor().getDisplayName(), mw.getAmountWithdrawn(), mw.getState(), mw.getIBAN(), form, timeString);
         }

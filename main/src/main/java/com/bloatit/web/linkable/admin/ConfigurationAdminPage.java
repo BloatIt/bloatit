@@ -68,7 +68,7 @@ public class ConfigurationAdminPage extends AdminPage {
 
     private HtmlElement generateConfAdmin() {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Administrate configurations"), 1);
-        final ConfigurationAdminActionUrl targetUrl = new ConfigurationAdminActionUrl();
+        final ConfigurationAdminActionUrl targetUrl = new ConfigurationAdminActionUrl(getSession().getShortKey());
         final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.add(form);
         form.add(new HtmlTable(new ConfigurationTableModel(ReloadableConfiguration.getConfigurations(), targetUrl)));

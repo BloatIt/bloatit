@@ -37,7 +37,7 @@ import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
     public static final String FEATURE_TAB_PANE = "activeTabKey";
-    
+
     public static enum TabKey {
         bugs, details, offers, contributions, description
     }

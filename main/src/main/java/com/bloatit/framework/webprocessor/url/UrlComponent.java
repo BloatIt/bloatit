@@ -47,9 +47,6 @@ public abstract class UrlComponent extends UrlNode {
                 sb.append('&');
             }
         }
-        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '&') {
-            sb.deleteCharAt(sb.length() - 1);
-        }
     }
 
     @Override

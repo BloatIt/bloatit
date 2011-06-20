@@ -43,7 +43,7 @@ public class MembersTab extends HtmlTab {
     private final Team team;
     private final Member visitor;
 
-    public MembersTab(final Team team, final String title, final String tabKey, Member member) {
+    public MembersTab(final Team team, final String title, final String tabKey, final Member member) {
         super(title, tabKey);
         this.team = team;
         this.visitor = member;
@@ -65,7 +65,8 @@ public class MembersTab extends HtmlTab {
             }
 
             if (team.isPublic() && !visitor.isInTeam(team)) {
-                final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(team).urlString(), Context.tr("Join this team"));
+                final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(Context.getSession().getShortKey(), team).urlString(),
+                                                       Context.tr("Join this team"));
                 memberTitle.add(joinLink);
             }
         }
@@ -90,7 +91,7 @@ public class MembersTab extends HtmlTab {
         private static final int BANK = 5;
         private static final int PROMOTE = 6;
 
-        public MyTableModel(final PageIterable<Member> members, Member visitor) {
+        public MyTableModel(final PageIterable<Member> members, final Member visitor) {
             this.members = members;
             this.visitor = visitor;
             iterator = members.iterator();
@@ -155,16 +156,16 @@ public class MembersTab extends HtmlTab {
             if (right == UserTeamRight.CONSULT) {
                 if (member.canBeKickFromTeam(team, visitor)) {
                     if (member.equals(visitor)) {
-                        ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Leave")));
+                        ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, false).getHtmlLink(Context.tr("Leave")));
                     } else {
-                        ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Kick")));
+                        ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, false).getHtmlLink(Context.tr("Kick")));
                     }
                 }
             } else {
                 if (team.canChangeRight(visitor, member, right, true)) {
-                    ph.add(new GiveRightActionUrl(team, member, right, true).getHtmlLink(Context.tr("Grant")));
+                    ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, true).getHtmlLink(Context.tr("Grant")));
                 } else if (team.canChangeRight(visitor, member, right, false)) {
-                    ph.add(new GiveRightActionUrl(team, member, right, false).getHtmlLink(Context.tr("Remove")));
+                    ph.add(new GiveRightActionUrl(Context.getSession().getShortKey(), team, member, right, false).getHtmlLink(Context.tr("Remove")));
                 }
             }
 

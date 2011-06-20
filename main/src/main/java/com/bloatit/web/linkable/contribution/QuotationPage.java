@@ -24,7 +24,7 @@ import com.bloatit.web.url.QuotationPageUrl;
 
 @ParamContainer("quotationPage")
 public abstract class QuotationPage extends LoggedPage {
-    
+
     @Optional("false")
     @RequestParam(name = "show_fees_detail")
     private Boolean showFeesDetails;

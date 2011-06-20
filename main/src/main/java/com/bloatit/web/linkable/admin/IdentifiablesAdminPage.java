@@ -83,7 +83,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         }
 
         // Action form
-        final AdministrationActionUrl actionUrl = new AdministrationActionUrl();
+        final AdministrationActionUrl actionUrl = new AdministrationActionUrl(getSession().getShortKey());
         final HtmlForm actionForm = new HtmlForm(actionUrl.urlString());
         everything.add(actionForm);
         generateActionForm(actionForm);
@@ -101,7 +101,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
 
         // order by
         block.add(new HtmlCheckbox(url.getAscParameter().pickFieldData().getName(), tr("Asc"), LabelPosition.BEFORE));
-        
+
         // submit
         block.add(new HtmlSubmit(tr("Filter")));
     }

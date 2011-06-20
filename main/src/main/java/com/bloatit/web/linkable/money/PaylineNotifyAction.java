@@ -29,8 +29,8 @@ import com.bloatit.web.actions.ElveosAction;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 
-@ParamContainer(value="payline/donotify", protocol=Protocol.HTTPS)
-public final class PaylineNotifyAction extends ElveosAction{
+@ParamContainer(value = "payline/donotify", protocol = Protocol.HTTPS)
+public final class PaylineNotifyAction extends ElveosAction {
     public static final String TOKEN_CODE = "token";
 
     @RequestParam(name = TOKEN_CODE)
@@ -49,13 +49,13 @@ public final class PaylineNotifyAction extends ElveosAction{
     @Override
     public Url doProcess(final ElveosUserToken userToken) {
         Log.web().info("Get a payline notification: " + token);
-        
+
         try {
             process.validatePayment(token);
         } catch (final UnauthorizedOperationException e) {
             throw new BadProgrammerException(e);
         }
-        
+
         final Url target = process.close();
         if (target != null) {
             return target;

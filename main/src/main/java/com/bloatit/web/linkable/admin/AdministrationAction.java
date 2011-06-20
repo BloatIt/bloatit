@@ -53,7 +53,7 @@ public class AdministrationAction extends AdminAction {
     @RequestParam(name = POPULARITY_STATE_CODE, role = Role.POST)
     @Optional
     private final DisplayableState stateToSet;
-    
+
     @RequestParam(name = FEATURE_STATE_CODE, role = Role.POST)
     @Optional
     private final DisplayableFeatureState featureStateToSet;
@@ -106,27 +106,29 @@ public class AdministrationAction extends AdminAction {
                         break;
                     case SET_FEATURE_IN_DEVELOPMENT:
                         final Feature feature = Loaders.fromStr(Feature.class, id);
-                            switch (featureStateToSet) {
-                                case DEVELOPPING:
-                                    if (feature.getSelectedOffer() == null || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
-                                        session.notifyBad("There is no offer or not enough money. So no development state for id: " + feature.getId() + ".");
-                                    } else {
-                                        feature.setFeatureState(FeatureState.DEVELOPPING);
-                                    }
-                                    break;
-                                case DISCARDED:
-                                    feature.setFeatureState(FeatureState.DISCARDED);
-                                    break;
-                                case FINISHED:
-                                    feature.setFeatureState(FeatureState.FINISHED);
-                                    break;
-                                case PENDING:
-                                case PREPARING:
-                                case NO_FILTER:
-                                default:
-                                    Log.web().info("Wrong feature state. Nothing to do.");
-                                    session.notifyBad("Wrong feature state. Nothing to do.");
-                                    break;
+                        switch (featureStateToSet) {
+                            case DEVELOPPING:
+                                if (feature.getSelectedOffer() == null
+                                        || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
+                                    session.notifyBad("There is no offer or not enough money. So no development state for id: " + feature.getId()
+                                            + ".");
+                                } else {
+                                    feature.setFeatureState(FeatureState.DEVELOPPING);
+                                }
+                                break;
+                            case DISCARDED:
+                                feature.setFeatureState(FeatureState.DISCARDED);
+                                break;
+                            case FINISHED:
+                                feature.setFeatureState(FeatureState.FINISHED);
+                                break;
+                            case PENDING:
+                            case PREPARING:
+                            case NO_FILTER:
+                            default:
+                                Log.web().info("Wrong feature state. Nothing to do.");
+                                session.notifyBad("Wrong feature state. Nothing to do.");
+                                break;
                         }
                         break;
                     case VALIDATE_BATCH:

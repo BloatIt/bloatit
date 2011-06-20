@@ -43,23 +43,23 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a street ."))
     private final String street;
-    
+
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a postal code."))
     private final String postalCode;
-    
+
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a city ."))
     private final String city;
-    
+
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("You must add a country ."))
     private final String country;
-    
+
     @RequestParam(role = Role.POST)
     @Optional
     private final String extras;
-   
+
     private final ModifyInvoicingContactActionUrl url;
 
     public ModifyInvoicingContactAction(final ModifyInvoicingContactActionUrl url) {

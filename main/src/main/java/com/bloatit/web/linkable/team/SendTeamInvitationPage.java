@@ -65,7 +65,7 @@ public class SendTeamInvitationPage extends LoggedPage {
         final HtmlDiv left = new HtmlDiv();
         layout.addLeft(left);
 
-        final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl(team);
+        final SendTeamInvitationActionUrl target = new SendTeamInvitationActionUrl(getSession().getShortKey(), team);
         final HtmlForm form = new HtmlForm(target.urlString());
         left.add(form);
         final FieldData fieldData = target.getReceiverParameter().pickFieldData();

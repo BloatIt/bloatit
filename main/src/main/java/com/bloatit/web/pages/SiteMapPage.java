@@ -27,9 +27,9 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.AccountChargingProcessUrl;
-import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.ChangeLanguagePageUrl;
 import com.bloatit.web.url.CreateFeaturePageUrl;
+import com.bloatit.web.url.CreateSoftwarePageUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
 import com.bloatit.web.url.FeatureListPageUrl;
@@ -106,7 +106,7 @@ public final class SiteMapPage extends ElveosPage {
             personalLinkList.add(new HtmlText(Context.tr("My messages")));
         }
 
-        personalLinkList.add(new LogoutActionUrl().getHtmlLink(Context.tr("Logout")));
+        personalLinkList.add(new LogoutActionUrl(getSession().getShortKey()).getHtmlLink(Context.tr("Logout")));
         personalLinkList.add(new AccountChargingProcessUrl().getHtmlLink(Context.tr("Charge account")));
 
         final HtmlTitle titleDocumenation = new HtmlTitle(Context.tr("Main documentation pages"), 2);

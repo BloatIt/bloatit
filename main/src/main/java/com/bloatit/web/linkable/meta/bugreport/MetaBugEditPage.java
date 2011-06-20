@@ -55,7 +55,7 @@ public final class MetaBugEditPage extends ElveosPage {
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Edit Bug", 1);
 
-        final MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(bugId);
+        final MetaEditBugActionUrl editBugActionUrl = new MetaEditBugActionUrl(getSession().getShortKey(), bugId);
         final HtmlForm form = new HtmlForm(editBugActionUrl.urlString());
 
         final FieldData descriptionFieldData = editBugActionUrl.getDescriptionParameter().pickFieldData();
@@ -66,7 +66,7 @@ public final class MetaBugEditPage extends ElveosPage {
             bugDescription.setDefaultValue(suggestedValue);
         } else {
             final MetaBug byId = MetaBugManager.getById(bugId);
-            if(byId == null){
+            if (byId == null) {
                 Context.getSession().notifyBad("The bug you selected doesn't exist");
                 throw new RedirectException(new MetaBugsListPageUrl());
             }

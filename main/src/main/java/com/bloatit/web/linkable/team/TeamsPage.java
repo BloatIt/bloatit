@@ -80,7 +80,12 @@ public final class TeamsPage extends ElveosPage {
         final HtmlRenderer<Team> teamRenderer = new TeamListRenderer();
 
         final TeamsPageUrl clonedUrl = url.clone();
-        pagedTeamList = new HtmlPagedList<Team>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl(), new PlaceHolderElement(), new HtmlClearer());
+        pagedTeamList = new HtmlPagedList<Team>(teamRenderer,
+                                                teamList,
+                                                clonedUrl,
+                                                clonedUrl.getPagedTeamListUrl(),
+                                                new PlaceHolderElement(),
+                                                new HtmlClearer());
 
         master.add(pagedTeamList);
 

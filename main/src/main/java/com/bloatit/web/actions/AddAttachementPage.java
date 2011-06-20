@@ -74,7 +74,7 @@ public final class AddAttachementPage extends CreateUserContentPage {
     private HtmlElement generateReleaseCreationForm() {
         final HtmlDiv group = new HtmlDiv();
         final HtmlTitleBlock title = new HtmlTitleBlock(tr("Add a new attachment"), 1);
-        final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(userContent);
+        final AddAttachementActionUrl formUrl = new AddAttachementActionUrl(getSession().getShortKey(), userContent);
         final HtmlForm form = new HtmlForm(formUrl.urlString());
 
         form.enableFileUpload();

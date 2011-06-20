@@ -135,7 +135,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
                                      new PaylineProcessUrl(actor, process),
-                                     new UnlockContributionProcessActionUrl(process)));
+                                     new UnlockContributionProcessActionUrl(getSession().getShortKey(), process)));
         group.add(summary);
     }
 
@@ -155,13 +155,13 @@ public final class StaticCheckContributionPage extends QuotationPage {
     }
 
     private Url createUnlockedReturnUrl() {
-        return new UnlockContributionProcessActionUrl(process);
+        return new UnlockContributionProcessActionUrl(getSession().getShortKey(), process);
     }
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumbContributions(process.getFeature());
-        final CheckContributeActionUrl returnUrl = new CheckContributeActionUrl(process);
+        final CheckContributeActionUrl returnUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
         returnUrl.setAmount(process.getAmount());
         breadcrumb.pushLink(createUnlockedReturnUrl().getHtmlLink(tr("Contribute - Check")));
         breadcrumb.pushLink(new CheckContributePageUrl(process).getHtmlLink(tr("Final check")));

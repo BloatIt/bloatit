@@ -37,7 +37,7 @@ public class ContactBox extends HtmlDiv {
 
         add(new HtmlDefineParagraph(Context.tr("Invoicing name: "), actor.getContact().getName()));
         add(new HtmlDefineParagraph(Context.tr("Invoicing adress: "), actor.getContact().getCity()));
-        //TODO
+        // TODO
         add(new ModifyInvoicingContactProcessUrl(actor, process).getHtmlLink(Context.tr("Modify invoicing contact")));
     }
 

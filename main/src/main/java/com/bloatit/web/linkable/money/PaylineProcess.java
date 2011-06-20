@@ -79,7 +79,7 @@ public class PaylineProcess extends WebProcess {
     @Override
     protected synchronized Url doProcess(final ElveosUserToken userToken) {
         url.getParentProcess().addChildProcess(this);
-        return new PaylineActionUrl(this);
+        return new PaylineActionUrl(Context.getSession().getShortKey(), this);
     }
 
     @Override

@@ -46,7 +46,7 @@ public final class MetaBugsListPage extends ElveosPage {
     }
 
     @Override
-    protected HtmlElement createBodyContent(ElveosUserToken userToken) throws RedirectException {
+    protected HtmlElement createBodyContent(final ElveosUserToken userToken) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         final List<MetaBug> bugList = MetaBugManager.getOpenBugs();
 
@@ -59,7 +59,7 @@ public final class MetaBugsListPage extends ElveosPage {
                 bugBox.add(editBox);
                 editBox.add(new MetaBugEditPageUrl(bug.getId()).getHtmlLink(tr("edit")));
                 editBox.addText(" - ");
-                editBox.add(new MetaBugDeleteActionUrl(bug.getId()).getHtmlLink(tr("delete")));
+                editBox.add(new MetaBugDeleteActionUrl(getSession().getShortKey(), bug.getId()).getHtmlLink(tr("delete")));
             }
             bugBox.add(new HtmlCachedMarkdownRenderer(bug.getDescription()));
             pageTitle.add(bugBox);
@@ -83,13 +83,13 @@ public final class MetaBugsListPage extends ElveosPage {
 
     @Override
     protected Set<Robot> getRobots() {
-        Set<Robot> robots = new HashSet<Header.Robot>();
+        final Set<Robot> robots = new HashSet<Header.Robot>();
         robots.add(Robot.NO_INDEX);
         return robots;
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+    protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
         return MetaBugsListPage.generateBreadcrumb();
     }
 

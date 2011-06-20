@@ -79,8 +79,7 @@ public final class FeatureContributorsComponent extends HtmlDiv {
                 contributorsBlock.add(statTable);
             }
 
-
-            if(feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
+            if (feature.getFeatureState() == FeatureState.PENDING || feature.getFeatureState() == FeatureState.PREPARING) {
                 contributorsBlock.add(new ContributionProcessUrl(feature).getHtmlLink(Context.tr("Contribute")));
             }
 

@@ -16,7 +16,6 @@
 //
 package com.bloatit.web.linkable.admin;
 
-
 import com.bloatit.framework.webprocessor.components.form.Displayable;
 import com.bloatit.framework.webprocessor.context.Context;
 
@@ -36,7 +35,7 @@ public enum DisplayableFilterType implements Displayable {
         this.displayName = displayName;
     }
 
-    //Fake tr
+    // Fake tr
     private static String tr(final String fake) {
         return fake;
     }

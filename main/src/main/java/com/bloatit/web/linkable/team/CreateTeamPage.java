@@ -73,7 +73,7 @@ public final class CreateTeamPage extends LoggedPage {
     private HtmlElement generateMain() {
         final HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Create a new team"), 1);
 
-        final CreateTeamActionUrl target = new CreateTeamActionUrl();
+        final CreateTeamActionUrl target = new CreateTeamActionUrl(getSession().getShortKey());
 
         final HtmlForm form = new HtmlForm(target.urlString());
         master.add(form);

@@ -20,20 +20,20 @@ import com.bloatit.web.url.AdminHomePageUrl;
 public class AdminGlobalNotificationPage extends AdminPage {
     private AdminGlobalNotificationPageUrl url;
 
-    public AdminGlobalNotificationPage(AdminGlobalNotificationPageUrl url) {
+    public AdminGlobalNotificationPage(final AdminGlobalNotificationPageUrl url) {
         super(url);
         this.url = url;
     }
 
     @Override
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
-        TwoColumnLayout master = new TwoColumnLayout(true, url);
+        final TwoColumnLayout master = new TwoColumnLayout(true, url);
 
-        HtmlForm form = new HtmlForm(new AdminGlobalNotificationActionUrl().urlString());
+        final HtmlForm form = new HtmlForm(new AdminGlobalNotificationActionUrl(getSession().getShortKey()).urlString());
         master.addLeft(form);
 
-        UrlParameter<String, String> messageParameter = new AdminGlobalNotificationActionUrl().getMessageParameter();
-        HtmlTextField messageInput = new HtmlTextField(messageParameter.getName(), Context.tr("Message"));
+        final UrlParameter<String, String> messageParameter = new AdminGlobalNotificationActionUrl(getSession().getShortKey()).getMessageParameter();
+        final HtmlTextField messageInput = new HtmlTextField(messageParameter.getName(), Context.tr("Message"));
         if (messageParameter.getSuggestedValue() != null) {
             messageInput.setDefaultValue(messageParameter.getSuggestedValue());
         } else if (Context.getGlobalNotification() != null) {
@@ -47,7 +47,7 @@ public class AdminGlobalNotificationPage extends AdminPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb crumb = new Breadcrumb();
         crumb.pushLink(new AdminHomePageUrl().getHtmlLink("admin"));
         crumb.pushLink(new AdminGlobalNotificationPageUrl().getHtmlLink("notification"));

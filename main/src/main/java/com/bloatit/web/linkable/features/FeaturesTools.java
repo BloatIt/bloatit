@@ -121,7 +121,7 @@ public class FeaturesTools {
 
     public static HtmlDiv
             generateProgress(final Feature feature, final ElveosUserToken userToken, final BigDecimal futureAmount)
-                                                                                                                                       throws UnauthorizedOperationException {
+                                                                                                                   throws UnauthorizedOperationException {
         final HtmlDiv featureSummaryProgress = new HtmlDiv("feature_summary_progress");
         {
 

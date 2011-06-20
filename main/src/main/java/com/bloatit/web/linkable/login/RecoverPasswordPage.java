@@ -44,7 +44,7 @@ import com.bloatit.web.url.RecoverPasswordPageUrl;
  * This page is displayed after the user clicked on the link in his email.
  * </p>
  */
-@ParamContainer(value="member/password/recover", protocol=Protocol.HTTPS)
+@ParamContainer(value = "member/password/recover", protocol = Protocol.HTTPS)
 public class RecoverPasswordPage extends ElveosPage {
     private final RecoverPasswordPageUrl url;
 

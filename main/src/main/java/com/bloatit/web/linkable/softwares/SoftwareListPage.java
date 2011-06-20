@@ -45,7 +45,6 @@ public final class SoftwareListPage extends ElveosPage {
     @SubParamContainer
     private HtmlPagedList<Software> pagedSoftwareList;
 
-
     private final SoftwareListPageUrl url;
 
     public SoftwareListPage(final SoftwareListPageUrl url) {

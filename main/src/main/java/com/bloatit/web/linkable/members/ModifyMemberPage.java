@@ -46,7 +46,7 @@ import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
 
-@ParamContainer(value="member/modify", protocol=Protocol.HTTPS)
+@ParamContainer(value = "member/modify", protocol = Protocol.HTTPS)
 public class ModifyMemberPage extends LoggedPage {
     private ModifyMemberPageUrl url;
 
@@ -59,7 +59,7 @@ public class ModifyMemberPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl();
+        final ModifyMemberActionUrl targetUrl = new ModifyMemberActionUrl(getSession().getShortKey());
 
         final HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Change account settings"));

@@ -16,7 +16,6 @@
 //
 package com.bloatit.web.linkable.admin;
 
-
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -43,7 +42,7 @@ public enum DisplayableState implements Displayable {
         return Enum.valueOf(PopularityState.class, cmp.name());
     }
 
-    //Fake tr
+    // Fake tr
     private static String tr(final String fake) {
         return fake;
     }

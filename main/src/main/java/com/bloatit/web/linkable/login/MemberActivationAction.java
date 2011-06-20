@@ -29,7 +29,7 @@ import com.bloatit.web.url.MemberActivationActionUrl;
 /**
  * A response to a form used to create a new feature
  */
-@ParamContainer(value="member/doactivate", protocol=Protocol.HTTPS)
+@ParamContainer(value = "member/doactivate", protocol = Protocol.HTTPS)
 public final class MemberActivationAction extends ElveosAction {
 
     @RequestParam

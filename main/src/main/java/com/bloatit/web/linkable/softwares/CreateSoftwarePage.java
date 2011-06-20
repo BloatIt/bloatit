@@ -69,7 +69,7 @@ public final class CreateSoftwarePage extends LoggedPage {
 
     private HtmlElement generateFeatureCreationForm() {
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new software"), 1);
-        final CreateSoftwareActionUrl doCreateUrl = new CreateSoftwareActionUrl();
+        final CreateSoftwareActionUrl doCreateUrl = new CreateSoftwareActionUrl(getSession().getShortKey());
 
         // Create the form stub
         final HtmlForm addSoftwareForm = new HtmlForm(doCreateUrl.urlString());

@@ -151,8 +151,11 @@ public class FeatureOfferListComponent extends HtmlDiv {
         add(offersBlock);
     }
 
-    private void
-            generateOldOffersList(final PageIterable<Offer> offers, final int nbUnselected, final Offer selectedOffer, final HtmlDiv offersBlock, ElveosUserToken userToken) {
+    private void generateOldOffersList(final PageIterable<Offer> offers,
+                                       final int nbUnselected,
+                                       final Offer selectedOffer,
+                                       final HtmlDiv offersBlock,
+                                       ElveosUserToken userToken) {
         // UnSelected
         offersBlock.add(new HtmlTitle(trn("Old offer ({0})", "Old offers ({0})", nbUnselected, nbUnselected), 1));
         final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);

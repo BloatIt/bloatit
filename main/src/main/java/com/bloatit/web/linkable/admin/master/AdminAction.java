@@ -20,11 +20,13 @@ package com.bloatit.web.linkable.admin.master;
 
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.url.AdminActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -36,12 +38,13 @@ import com.bloatit.web.url.LoginPageUrl;
  * Mainly because admins do not need beautiful messages.
  * </p>
  */
+@ParamContainer("AdminAction")
 public abstract class AdminAction extends LoggedAction {
 
     /**
      * @param url
      */
-    protected AdminAction(final Url url) {
+    protected AdminAction(final AdminActionUrl url) {
         super(url);
     }
 
@@ -53,7 +56,7 @@ public abstract class AdminAction extends LoggedAction {
         }
         try {
             return doProcessAdmin();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Right error in admin page", e);
         }
     }

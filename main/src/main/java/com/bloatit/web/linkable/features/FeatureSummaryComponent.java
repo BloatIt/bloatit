@@ -49,8 +49,8 @@ import com.bloatit.web.components.HtmlAuthorLink;
 import com.bloatit.web.linkable.members.MembersTools;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
-import com.bloatit.web.url.CreateReleasePageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
+import com.bloatit.web.url.CreateReleasePageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
@@ -122,12 +122,16 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                                 {
 
                                     // Usefull
-                                    final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(feature, true);
+                                    final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
+                                                                                                          feature,
+                                                                                                          true);
                                     final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
                                     usefulLink.setCssClass("useful");
 
                                     // Useless
-                                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(feature, false);
+                                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
+                                                                                                           feature,
+                                                                                                           false);
                                     final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
                                     uselessLink.setCssClass("useless");
 
