@@ -68,7 +68,7 @@ public final class FeatureListPage extends ElveosPage {
     private static final String SORT_BY_EXPIRATION_DATE = "expiration_date";
     private static final String SORT_CODE = "sort";
     @RequestParam(name = SORT_CODE)
-    @Optional(SORT_BY_POPULARITY)
+    @Optional(SORT_BY_RELEVANCE)
     private final String sort;
 
     private static final String SEARCH_STRING_CODE = "search_string";
@@ -156,7 +156,7 @@ public final class FeatureListPage extends ElveosPage {
                 final FeatureListPageUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
                 final HtmlLink popularitySort = popularitySortUrl.getHtmlLink(Context.tr("popularity"));
-                if (sort.equals(SORT_BY_POPULARITY)) {
+                if (sort.equals(SORT_BY_POPULARITY) || (sort.equals(SORT_BY_RELEVANCE) && searchString.isEmpty()) ) {
                     popularitySort.setCssClass("selected");
                 }
 
@@ -183,8 +183,10 @@ public final class FeatureListPage extends ElveosPage {
 
                 featureSort.addText(Context.tr("Sort by: "));
                 featureSort.add(popularitySort);
-                featureSort.addText(" – ");
-                featureSort.add(relevanceSort);
+                if (!searchString.isEmpty()) {
+                    featureSort.addText(" – ");
+                    featureSort.add(relevanceSort);
+                }
                 featureSort.addText(" – ");
                 featureSort.add(contributionSort);
                 featureSort.addText(" – ");
@@ -283,7 +285,13 @@ public final class FeatureListPage extends ElveosPage {
         }
 
         if (sort.equals(SORT_BY_RELEVANCE)) {
-            search.setSortMethod(SortMethod.SORT_BY_RELEVANCE);
+            //Use relevance sort only if there is a search
+            if(searchString.isEmpty()) {
+                search.setSortMethod(SortMethod.SORT_BY_POPULARITY);
+            } else {
+                search.setSortMethod(SortMethod.SORT_BY_RELEVANCE);
+            }
+                    
         } else if (sort.equals(SORT_BY_CONTRIBUTION)) {
             search.setSortMethod(SortMethod.SORT_BY_CONTRIBUTION);
         } else if (sort.equals(SORT_BY_PROGRESS)) {
