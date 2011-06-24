@@ -66,8 +66,17 @@ public abstract class WebProcessor implements XcgiProcessor {
             parameters.putAll(post.getParameters());
 
             try {
-                final Linkable linkable = constructLinkable(pageCode, parameters, session);
-                linkable.writeToHttp(response, this);
+                // If pagename contains upper case char then redirect to the
+                // same page with lower case.
+                if (pageCode.matches(".*[A-Z].*")) {
+                    response.writeRedirect(createLowerCaseUrl(header.getLanguage(), httpHeader.getQueryString(), pageCode));
+                } else {
+
+                    // Normal case !
+                    final Linkable linkable = constructLinkable(pageCode, parameters, session);
+                    linkable.writeToHttp(response, this);
+
+                }
             } catch (final ShallNotPassException e) {
                 Log.framework().fatal("Right management error", e);
                 final Linkable linkable = constructLinkable(PageForbiddenUrl.getPageName(), parameters, session);
@@ -104,6 +113,19 @@ public abstract class WebProcessor implements XcgiProcessor {
         return true;
     }
 
+    private String createLowerCaseUrl(final String language, final String queryString, final String pageCode) {
+        final StringBuilder url = new StringBuilder();
+        url.append("/");
+        url.append(language);
+        url.append("/");
+        url.append(pageCode.toLowerCase());
+        if (queryString.length() > 0) {
+            url.append("?");
+            url.append(queryString);
+        }
+        return url.toString();
+    }
+
     public abstract Linkable constructLinkable(final String pageCode, final Parameters postGetParameters, final Session session);
 
     /**
@@ -126,8 +148,8 @@ public abstract class WebProcessor implements XcgiProcessor {
                     return sessionByKey;
                 }
             }
-        } catch (WrongSessionKeyFormatException e) {
-            //Just don't restore session
+        } catch (final WrongSessionKeyFormatException e) {
+            // Just don't restore session
         }
         return SessionManager.createSession(header.getRemoteAddr());
     }
