@@ -155,6 +155,7 @@ public final class MakeOfferPage extends CreateUserContentPage {
         licenseInput.addDropDownElement("Artistic License/GPL", "Artistic License/GPL");
         licenseInput.addDropDownElement("GNU GPL v3", "GNU GPL v3");
         licenseInput.addDropDownElement("GNU GPL v2", "GNU GPL v2");
+        licenseInput.addDropDownElement("GNU AGPL v3", "GNU AGPL v3");
         licenseInput.addDropDownElement("GNU Lesser GPL", "GNU Lesser GPL");
         licenseInput.addDropDownElement("MIT License", "MIT License");
         licenseInput.addDropDownElement("New BSD License", "New BSD License");
@@ -178,7 +179,14 @@ public final class MakeOfferPage extends CreateUserContentPage {
         final HtmlParagraph showHideLink = new HtmlParagraph(Context.tr("Show validation details"));
         showHideLink.setCssClass("fake_link");
 
-        final JsShowHide showHideValidationDetails = new JsShowHide(false);
+        final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();
+        final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().pickFieldData();
+        final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().pickFieldData();
+        boolean percentMajorChanged = !(offerActionUrl.getPercentMajorParameter().getDefaultSuggestedValue().equals(percentMajorData.getSuggestedValue()));
+        boolean percentFatalChanged = !(offerActionUrl.getPercentFatalParameter().getDefaultSuggestedValue().equals(percentFatalData.getSuggestedValue()));
+        boolean daysBeforeValidationChanged = !(offerActionUrl.getDaysBeforeValidationParameter().getDefaultSuggestedValue().equals(nbDaysData.getSuggestedValue()));
+
+        final JsShowHide showHideValidationDetails = new JsShowHide(percentMajorChanged || percentFatalChanged || daysBeforeValidationChanged);
         showHideValidationDetails.setHasFallback(false);
         showHideValidationDetails.addActuator(showHideLink);
         showHideValidationDetails.addListener(validationDetails);
@@ -188,7 +196,6 @@ public final class MakeOfferPage extends CreateUserContentPage {
         showHideValidationDetails.apply();
 
         // days before validation
-        final FieldData nbDaysData = offerActionUrl.getDaysBeforeValidationParameter().pickFieldData();
         final HtmlTextField nbDaysInput = new HtmlTextField(nbDaysData.getName(), Context.tr("Days before validation"));
         nbDaysInput.setDefaultValue(nbDaysData.getSuggestedValue());
         nbDaysInput.addErrorMessages(nbDaysData.getErrorMessages());
@@ -197,7 +204,6 @@ public final class MakeOfferPage extends CreateUserContentPage {
         validationDetails.add(nbDaysInput);
 
         // percent Fatal
-        final FieldData percentFatalData = offerActionUrl.getPercentFatalParameter().pickFieldData();
         final HtmlTextField percentFatalInput = new HtmlTextField(percentFatalData.getName(), Context.tr("Percent gained when no FATAL bugs"));
         percentFatalInput.setDefaultValue(percentFatalData.getSuggestedValue());
         percentFatalInput.addErrorMessages(percentFatalData.getErrorMessages());
@@ -208,7 +214,6 @@ public final class MakeOfferPage extends CreateUserContentPage {
         validationDetails.add(percentFatalInput);
 
         // percent Major
-        final FieldData percentMajorData = offerActionUrl.getPercentMajorParameter().pickFieldData();
         final HtmlTextField percentMajorInput = new HtmlTextField(percentMajorData.getName(), Context.tr("Percent gained when no MAJOR bugs"));
         percentMajorInput.setDefaultValue(percentMajorData.getSuggestedValue());
         percentMajorInput.addErrorMessages(percentMajorData.getErrorMessages());
