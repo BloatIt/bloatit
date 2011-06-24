@@ -29,6 +29,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.xcgiserver.SessionKey;
+import com.bloatit.framework.xcgiserver.SessionKey.WrongSessionKeyFormatException;
 import com.bloatit.model.right.AuthenticatedUserToken;
 
 /**
@@ -50,8 +51,9 @@ public final class SessionManager {
      * @param id the id of the session (the one store in the cookie)
      * @param ipAddress the ip address of the user trying to get his session.
      * @return the session or null if not found.
+     * @throws WrongSessionKeyFormatException 
      */
-    public static synchronized Session getByKey(final String id, final String ipAddress) {
+    public static synchronized Session getByKey(final String id, final String ipAddress) throws WrongSessionKeyFormatException {
         try {
             final Session session = activeSessions.get(new SessionKey(id, ipAddress));
             return session;
@@ -154,7 +156,11 @@ public final class SessionManager {
                 final String[] split = strLine.split(" ");
 
                 if (split.length == 3) {
-                    restoreSession(split[0], split[1], Integer.valueOf(split[2]));
+                    try {
+                        restoreSession(split[0], split[1], Integer.valueOf(split[2]));
+                    } catch (WrongSessionKeyFormatException e) {
+                        //Just ignore session
+                    }
                 }
 
             }
@@ -185,7 +191,7 @@ public final class SessionManager {
         }
     }
 
-    private static synchronized void restoreSession(final String id, final String ipAddress, final int memberId) {
+    private static synchronized void restoreSession(final String id, final String ipAddress, final int memberId) throws WrongSessionKeyFormatException {
         final SessionKey key = new SessionKey(id, ipAddress.equals("null") ? null : ipAddress);
         final Session session = new Session(key);
         try {

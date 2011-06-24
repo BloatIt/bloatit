@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
@@ -28,9 +29,20 @@ public class SessionKey {
      *            {@value SessionKey#SHA515_HEX_LENGTH} char long.
      * @param ipAddress can be null. If it is less than 7 chars long it is
      *            considered has null (because invalid).
+     * @throws WrongSessionKeyFormatException
      */
-    public SessionKey(final String id, final String ipAddress) {
-        super();
+    public SessionKey(final String id, final String ipAddress) throws WrongSessionKeyFormatException {
+
+        this(id, ipAddress, 0);
+
+        if (id.length() != SHA515_HEX_LENGTH) {
+            Log.framework().error("The id must be a 128 char long hex-encoded sha512 string.");
+            throw new WrongSessionKeyFormatException("The id must be a 128 char long hex-encoded sha512 string.");
+        }
+
+    }
+
+    private SessionKey(final String id, final String ipAddress, int plop) {
         if (ipAddress != null && ipAddress.length() < 7) {
             this.ipAddress = null;
         } else {
@@ -38,9 +50,6 @@ public class SessionKey {
         }
         if (id == null) {
             throw new NonOptionalParameterException();
-        }
-        if (id.length() != SHA515_HEX_LENGTH) {
-            throw new BadProgrammerException("The id must be a 128 char long hex-encoded sha512 string.");
         }
         this.id = id;
     }
@@ -53,7 +62,7 @@ public class SessionKey {
      *            {@link SessionKey}.
      */
     public SessionKey(final String ipAdress) {
-        this(generateRandomId(), ipAdress);
+        this(generateRandomId(), ipAdress, 0);
     }
 
     private static String generateRandomId() {
@@ -126,4 +135,25 @@ public class SessionKey {
         return true;
     }
 
+    public class WrongSessionKeyFormatException extends Exception {
+
+        private static final long serialVersionUID = 8838570906510336129L;
+
+        public WrongSessionKeyFormatException() {
+            super();
+        }
+
+        public WrongSessionKeyFormatException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public WrongSessionKeyFormatException(String message) {
+            super(message);
+        }
+
+        public WrongSessionKeyFormatException(Throwable cause) {
+            super(cause);
+        }
+
+    }
 }
