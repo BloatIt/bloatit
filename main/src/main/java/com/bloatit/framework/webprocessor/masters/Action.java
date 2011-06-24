@@ -48,7 +48,7 @@ public abstract class Action implements Linkable {
                 Log.framework().info("Execute chained action: " + url.urlString());
                 final Parameters parameters = url.getStringParameters();
 
-                final Linkable linkable = server.constructLinkable(url.getCode(), parameters, session);
+                final Linkable linkable = server.constructLinkable(url.getCode().toLowerCase(), parameters, session);
                 linkable.writeToHttp(response, server);
             } else {
                 response.writeRedirect(url.urlString());

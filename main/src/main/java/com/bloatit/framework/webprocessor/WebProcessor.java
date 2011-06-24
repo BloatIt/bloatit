@@ -66,7 +66,7 @@ public abstract class WebProcessor implements XcgiProcessor {
             parameters.putAll(post.getParameters());
 
             try {
-                final Linkable linkable = constructLinkable(pageCode, parameters, session);
+                final Linkable linkable = constructLinkable(pageCode.toLowerCase(), parameters, session);
                 linkable.writeToHttp(response, this);
             } catch (final ShallNotPassException e) {
                 Log.framework().fatal("Right management error", e);
