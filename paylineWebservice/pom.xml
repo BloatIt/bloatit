@@ -4,7 +4,7 @@
   <groupId>com.bloatit</groupId>
   <artifactId>BloatItPaypalBinding</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.15-beta</version>
+  <version>1.0.15-SNAPSHOT</version>
   <name>BloatItPaypalBinding</name>
   <url>http://maven.apache.org</url>
   <properties>
