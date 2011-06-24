@@ -52,9 +52,7 @@ public final class ContributionInvoicingInformationsAction extends LoggedAction 
 
         for (final MilestoneContributionAmount contributionAmount : contributionAmounts) {
             try {
-                
-                
-                
+
                 new ContributionInvoice(process.getActor(),
                                         contributionAmount.getContribution().getAuthor(),
                                         "Contribution",

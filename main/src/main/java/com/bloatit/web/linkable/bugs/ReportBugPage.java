@@ -99,7 +99,7 @@ public final class ReportBugPage extends CreateUserContentPage {
 
     private HtmlElement generateReportBugForm(final Member loggedUser) {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Report a bug"), 1);
-        final ReportBugActionUrl doReportUrl = new ReportBugActionUrl(milestone);
+        final ReportBugActionUrl doReportUrl = new ReportBugActionUrl(getSession().getShortKey(), milestone);
 
         // Create the form stub
         final HtmlForm reportBugForm = new HtmlForm(doReportUrl.urlString());

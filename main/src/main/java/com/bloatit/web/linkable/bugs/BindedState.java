@@ -16,7 +16,6 @@
 //
 package com.bloatit.web.linkable.bugs;
 
-
 import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.framework.webprocessor.components.form.Displayable;
 import com.bloatit.framework.webprocessor.context.Context;
@@ -44,8 +43,8 @@ public enum BindedState implements Displayable {
     public BugState getState() {
         return state;
     }
-    
-    //Fake tr
+
+    // Fake tr
     private static String tr(String fake) {
         return fake;
     }

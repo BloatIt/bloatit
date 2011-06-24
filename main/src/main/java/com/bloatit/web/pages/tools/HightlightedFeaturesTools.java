@@ -8,7 +8,6 @@ import com.bloatit.model.HighlightFeature;
 
 public class HightlightedFeaturesTools {
 
-
     public static Map<String, String> getReasonsMap() {
         Map<String, String> reasonMap = new HashMap<String, String>();
 
@@ -20,15 +19,13 @@ public class HightlightedFeaturesTools {
         reasonMap.put("success", Context.tr("Success"));
         reasonMap.put("no_reason", "");
 
-
         return reasonMap;
 
     }
 
-
     public static String getReason(HighlightFeature feature) {
         Map<String, String> reasonMap = getReasonsMap();
-        if(reasonMap.containsKey(feature.getReason())) {
+        if (reasonMap.containsKey(feature.getReason())) {
             return reasonMap.get(feature.getReason());
         }
         return feature.getReason();

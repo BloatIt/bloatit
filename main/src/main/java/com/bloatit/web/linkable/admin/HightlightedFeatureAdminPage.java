@@ -52,6 +52,7 @@ import com.bloatit.model.feature.FeatureManager;
 import com.bloatit.model.managers.HighlightFeatureManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.linkable.admin.master.AdminPage;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.pages.tools.HightlightedFeaturesTools;
@@ -83,7 +84,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
         final HtmlTitleBlock master = new HtmlTitleBlock("Administrate highlighted features", 1);
 
         final PageIterable<HighlightFeature> hightlightedFeatures = HighlightFeatureManager.getAll();
-         final List<HighlightFeature> activeHightlightedFeatures = HighlightFeatureManager.getPositionArray(6);
+        final List<HighlightFeature> activeHightlightedFeatures = HighlightFeatureManager.getPositionArray(6);
 
         final HtmlLineTableModel model = new HtmlLineTableModel();
 
@@ -93,7 +94,7 @@ public class HightlightedFeatureAdminPage extends AdminPage {
 
         master.add(new HtmlTable(model));
 
-        final DeclareHightlightedFeatureActionUrl actionUrl = new DeclareHightlightedFeatureActionUrl();
+        final DeclareHightlightedFeatureActionUrl actionUrl = new DeclareHightlightedFeatureActionUrl(getSession().getShortKey());
 
         final HtmlForm newHightlightedFeatureForm = new HtmlForm(actionUrl.urlString(), Method.POST);
 
@@ -101,36 +102,36 @@ public class HightlightedFeatureAdminPage extends AdminPage {
         newHightlightedFeatureTitle.addText("Define new highlighted feature");
         newHightlightedFeatureForm.add(newHightlightedFeatureTitle);
 
-        //Position
+        // Position
         final FieldData positionFieldData = actionUrl.getPositionParameter().pickFieldData();
         final HtmlDropDown positionInput = new HtmlDropDown(positionFieldData.getName(), "Position");
-        for(int i = 1; i <= 6; i++ ) {
+        for (int i = 1; i <= 6; i++) {
             positionInput.addDropDownElement(String.valueOf(i), String.valueOf(i));
         }
         positionInput.setDefaultValue(positionFieldData.getSuggestedValue());
         newHightlightedFeatureForm.add(positionInput);
 
-        //Feature
+        // Feature
         final FieldData featureFieldData = actionUrl.getFeatureParameter().pickFieldData();
         final HtmlDropDown featureInput = new HtmlDropDown(featureFieldData.getName(), "Feature");
         final PageIterable<Feature> features = FeatureManager.getFeatures();
-        for(final Feature feature: features) {
+        for (final Feature feature : features) {
             featureInput.addDropDownElement(String.valueOf(feature.getId()), feature.getTitle());
         }
         featureInput.setDefaultValue(featureFieldData.getSuggestedValue());
         newHightlightedFeatureForm.add(featureInput);
 
-        //Reason
+        // Reason
         final FieldData reasonFieldData = actionUrl.getTitleParameter().pickFieldData();
         final HtmlDropDown reasonInput = new HtmlDropDown(reasonFieldData.getName(), "Reason");
         final Map<String, String> reasonsMap = HightlightedFeaturesTools.getReasonsMap();
-        for(final Entry<String,String> reason : reasonsMap.entrySet()) {
+        for (final Entry<String, String> reason : reasonsMap.entrySet()) {
             reasonInput.addDropDownElement(reason.getKey(), reason.getValue());
         }
         reasonInput.setDefaultValue(reasonFieldData.getSuggestedValue());
         newHightlightedFeatureForm.add(reasonInput);
 
-        //Dates
+        // Dates
         final FieldData activationDateFieldData = actionUrl.getActivationDateParameter().pickFieldData();
         final HtmlDateField activationDateInput = new HtmlDateField(activationDateFieldData.getName(), Context.getLocalizator().getLocale());
         activationDateInput.setLabel("Activation date");
@@ -142,7 +143,6 @@ public class HightlightedFeatureAdminPage extends AdminPage {
         deactivationDateInput.setLabel("Desactivation date");
         deactivationDateInput.setDefaultValue(deactivationDateFieldData.getSuggestedValue());
         newHightlightedFeatureForm.add(deactivationDateInput);
-
 
         // Submit button
         newHightlightedFeatureForm.add(new HtmlSubmit(tr("submit")));
@@ -187,7 +187,6 @@ public class HightlightedFeatureAdminPage extends AdminPage {
                 }
             });
 
-
             addCell(new HtmlTableCell("") {
 
                 @Override
@@ -203,7 +202,6 @@ public class HightlightedFeatureAdminPage extends AdminPage {
                     return new HtmlText(HightlightedFeaturesTools.getReason(feature));
                 }
             });
-
 
             addCell(new HtmlTableCell("") {
 
@@ -221,39 +219,36 @@ public class HightlightedFeatureAdminPage extends AdminPage {
                 }
             });
 
-
             addCell(new HtmlTableCell("") {
 
                 @Override
                 public XmlNode getBody() {
-                    return new FeaturePageUrl(feature.getFeature()).getHtmlLink(feature.getFeature().getTitle());
+                    return new FeaturePageUrl(feature.getFeature(), TabKey.description).getHtmlLink(feature.getFeature().getTitle());
                 }
             });
-
 
             addCell(new HtmlTableCell("") {
 
                 @Override
                 public XmlNode getBody() {
                     String status = "";
-                    if(activeHightlightedFeatures.contains(feature)) {
+                    if (activeHightlightedFeatures.contains(feature)) {
                         status = "active";
-                    } else if(feature.isActive()) {
+                    } else if (feature.isActive()) {
                         status = "overwrited";
-                    } else if(feature.getDesactivationDate().before(DateUtils.now())) {
+                    } else if (feature.getDesactivationDate().before(DateUtils.now())) {
                         status = "perimed";
-                    } else if(feature.getActivationDate().after(DateUtils.now())) {
+                    } else if (feature.getActivationDate().after(DateUtils.now())) {
                         status = "future";
                     } else {
                         status = "There is a problem";
-                        Log.web().error("Strange statue for hightlighted feature "+feature.getId());
+                        Log.web().error("Strange statue for hightlighted feature " + feature.getId());
                     }
-                    return  new HtmlText(status);
+                    return new HtmlText(status);
                 }
             });
 
         }
-
 
     }
 

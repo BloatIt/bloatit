@@ -55,6 +55,14 @@ public class UrlDescription extends ClassDescription {
                 parameters.add(params);
             }
         }
+        for (final ComponentDescription components : component.getSubComponents()) {
+            final List<ParameterDescription> allUrlParameters = components.getAllUrlParameters();
+            for (final ParameterDescription params : allUrlParameters) {
+                if (!params.isOptional() && (params.getRealRole() == Role.GET || params.getRealRole() == Role.PAGENAME)) {
+                    parameters.add(params);
+                }
+            }
+        }
         return parameters;
     }
 

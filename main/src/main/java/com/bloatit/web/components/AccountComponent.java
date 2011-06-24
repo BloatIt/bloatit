@@ -57,6 +57,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.linkable.features.FeatureTabPane;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.HtmlPageComponent;
@@ -196,8 +197,7 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateContributionTitle() {
             final HtmlDiv title = new HtmlDiv("title");
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature());
-            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), TabKey.contributions);
             featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
             title.add(new HtmlMixedText(tr("Contributed to a <0::feature>"), featurePageUrl.getHtmlLink()));
             return title;
@@ -220,8 +220,7 @@ public class AccountComponent extends HtmlPageComponent {
 
         private HtmlDiv generateContributionTitle() {
             final HtmlDiv title = new HtmlDiv("title");
-            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature());
-            featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+            final FeaturePageUrl featurePageUrl = new FeaturePageUrl(contribution.getFeature(), TabKey.contributions);
             featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
             title.add(new HtmlMixedText(tr("Contributed to a failed <0::feature>"), featurePageUrl.getHtmlLink()));
             return title;
@@ -266,7 +265,7 @@ public class AccountComponent extends HtmlPageComponent {
             description.add(new HtmlDefineParagraph(tr("IBAN: "), moneyWithdrawal.getIBAN()));
             description.add(new HtmlDefineParagraph(tr("Reference: "), moneyWithdrawal.getReference()));
             if (moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
-                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(moneyWithdrawal);
+                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(Context.getSession().getShortKey(),moneyWithdrawal);
                 final HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)", statusString), cancelUrl.getHtmlLink());
                 description.add(new HtmlDefineParagraph(tr("Status: "), statusWithCancel));
             } else {

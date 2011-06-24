@@ -29,13 +29,13 @@ public class CodeGenerator {
 
         final Attribute pageCodeStatic = clazz.addAttribute("String", "PAGE_CODE");
         pageCodeStatic.setStatic(true);
-        pageCodeStatic.setStaticEquals(desc.getComponent().getCodeNameStr());
+        pageCodeStatic.setStaticEquals(Utils.getStr(desc.getComponent().getCodeName().replaceAll("\\%[a-zA-Z0-9_#()\\.]+\\%", "[a-zA-Z0-9_%]+")));
         clazz.addAttribute(desc.getComponent().getClassName(), "component");
 
         final Method staticGetName = clazz.addMethod("boolean", "matches");
         staticGetName.setStaticFinal("static");
         staticGetName.addParameter("String", "pageCode");
-        staticGetName.addLine("return pageCode.matches(PAGE_CODE.replaceAll(\"\\\\%[a-zA-Z0-9_]+\\\\%\", \"[a-zA-Z0-9_%]+\"));");
+        staticGetName.addLine("return pageCode.matches(PAGE_CODE);");
 
         final Method protectedConstructor = clazz.addConstructor();
         protectedConstructor.setModifier(Modifier.PROTECTED);
@@ -62,11 +62,10 @@ public class CodeGenerator {
         staticParser.addLine("// Add the parameters from the pagename");
         staticParser.addLine("final String[] split = pagename.split(\"/\");");
         final String codeName = desc.getComponent().getCodeName();
-        final String[] splited = codeName.split("%");
+        final String[] splited = codeName.split("/");
         for (int i = 0; i < splited.length; i++) {
-            final int start = codeName.startsWith("%") ? 0 : 1;
-            if ((i + start) % 2 == 0) {
-                staticParser.addLine("postGetParameters.add(\"" + splited[i] + "\", split[" + i + "]);");
+            if (splited[i].startsWith("%") && splited[i].endsWith("%")) {
+                staticParser.addLine("postGetParameters.add(\"" + splited[i].replaceAll("\\#.*", "").replace("%", "") + "\", split[" + i + "]);");
             }
         }
         staticParser.addLine("return postGetParameters;");
@@ -107,12 +106,19 @@ public class CodeGenerator {
 
         // final String codeName = desc.getComponent().getCodeName();
         // final String[] splited = codeName.split("%");
-        for (int i = 0; i < splited.length; i++) {
-            final int start = codeName.startsWith("%") ? 0 : 1;
-            if ((i + start) % 2 == 0) {
-                getCode.addLine("sb.append(get" + Utils.firstCharUpper(splited[i]) + "Parameter().getStringValue());");
+        for (int i = 0; i < splited.length; ++i) {
+            final String paramInUrl = splited[i];
+            if (paramInUrl.startsWith("%") && paramInUrl.endsWith("%")) {
+                if (paramInUrl.contains("#")) {
+                    getCode.addLine("sb.append(" + paramInUrl.replaceAll(".*\\#", "").replace("%", "") + ");");
+                } else {
+                    getCode.addLine("sb.append(get" + Utils.firstCharUpper(paramInUrl.replace("%", "")) + "Parameter().getStringValue());");
+                }
             } else {
-                getCode.addLine("sb.append(" + Utils.getStr(splited[i]) + ");");
+                getCode.addLine("sb.append(" + Utils.getStr(paramInUrl) + ");");
+            }
+            if (i < (splited.length - 1)) {
+                getCode.addLine("sb.append(\"/\");");
             }
         }
 

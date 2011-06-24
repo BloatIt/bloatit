@@ -30,7 +30,7 @@ import com.bloatit.web.url.SignUpPageUrl;
 /**
  * A response to a form used sign into the website (creation of a new user)
  */
-@ParamContainer(value = "members/dosignup", protocol = Protocol.HTTPS)
+@ParamContainer(value = "member/dosignup", protocol = Protocol.HTTPS)
 public final class SignUpAction extends ElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Login cannot be blank."))

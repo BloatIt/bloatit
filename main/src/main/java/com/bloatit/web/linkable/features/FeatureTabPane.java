@@ -14,9 +14,11 @@ package com.bloatit.web.linkable.features;
 import java.util.Locale;
 
 import com.bloatit.data.DaoFeature.FeatureState;
-import com.bloatit.framework.webprocessor.annotations.Optional;
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webprocessor.components.advanced.HtmlTabBlock.HtmlTab;
@@ -34,16 +36,15 @@ import com.bloatit.web.url.FeatureTabPaneUrlComponent;
 
 @ParamContainer(value = "featureTabPane", isComponent = true)
 public final class FeatureTabPane extends HtmlPageComponent {
-    public static final String FEATURE_TAB_PANE = "tab";
-    public static final String BUGS_TAB = "bugs";
-    protected static final String DETAILS_TAB = "details";
-    public static final String OFFERS_TAB = "offers";
-    public static final String CONTRIBUTIONS_TAB = "contributions";
-    private static final String DESCRIPTION_TAB = "description";
+    public static final String FEATURE_TAB_PANE = "activeTabKey";
 
-    @RequestParam(name = FEATURE_TAB_PANE)
-    @Optional(DESCRIPTION_TAB)
-    private String activeTabKey;
+    public static enum TabKey {
+        bugs, details, offers, contributions, description
+    }
+
+    @RequestParam(role = Role.PAGENAME)
+    @NonOptional(@tr("The tab is not optional."))
+    private TabKey activeTabKey;
 
     // Useful for Url generation Do not delete
     @SuppressWarnings("unused")
@@ -53,14 +54,13 @@ public final class FeatureTabPane extends HtmlPageComponent {
         super();
         activeTabKey = url.getActiveTabKey();
 
-        final FeaturePageUrl featureUrl = new FeaturePageUrl(feature);
-        featureUrl.setFeatureTabPaneUrl(new FeatureTabPaneUrlComponent());
+        final FeaturePageUrl featureUrl = new FeaturePageUrl(feature, activeTabKey);
 
         // Create tab pane
-        final HtmlTabBlock tabPane = new HtmlTabBlock(FEATURE_TAB_PANE, activeTabKey, featureUrl);
+        final HtmlTabBlock tabPane = new HtmlTabBlock(FEATURE_TAB_PANE, activeTabKey.name(), featureUrl);
 
         // Create description tab
-        tabPane.addTab(new HtmlTab(Context.tr("Description"), DESCRIPTION_TAB) {
+        tabPane.addTab(new HtmlTab(Context.tr("Description"), TabKey.description.name()) {
             @SuppressWarnings("synthetic-access")
             @Override
             public XmlNode generateBody() {
@@ -68,14 +68,14 @@ public final class FeatureTabPane extends HtmlPageComponent {
             }
         });
 
-        tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions().size()), CONTRIBUTIONS_TAB) {
+        tabPane.addTab(new HtmlTab(Context.tr("Contributions ({0})", feature.getContributions().size()), TabKey.contributions.name()) {
             @Override
             public XmlNode generateBody() {
                 return new FeatureContributorsComponent(feature);
             }
         });
 
-        tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), OFFERS_TAB) {
+        tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", feature.getOffers().size()), TabKey.offers.name()) {
             @Override
             public XmlNode generateBody() {
                 return new FeatureOfferListComponent(feature, userToken);
@@ -93,7 +93,7 @@ public final class FeatureTabPane extends HtmlPageComponent {
         // Create Bugtracker tab only after preparation
         if (feature.getFeatureState() != FeatureState.PENDING && feature.getFeatureState() != FeatureState.PREPARING) {
 
-            tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", feature.countOpenBugs()), BUGS_TAB) {
+            tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", feature.countOpenBugs()), TabKey.bugs.name()) {
                 @Override
                 public XmlNode generateBody() {
                     return new FeatureBugListComponent(feature);

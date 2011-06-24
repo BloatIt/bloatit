@@ -43,325 +43,301 @@ public class HtmlTotalSummary extends HtmlTable {
     public HtmlTotalSummary(final StandardQuotation quotation, final boolean showFeesDetails, final QuotationPageUrl myUrl) {
         this(quotation, showFeesDetails, myUrl, null, null, null);
     }
-    
+
     public HtmlTotalSummary(final StandardQuotation quotation,
                             final boolean showFeesDetails,
                             final QuotationPageUrl myUrl,
                             final BigDecimal staticAmount,
                             final HtmlElement variableField,
                             final HtmlBranch scriptContainer) {
-        super(new HtmlTotalSummaryModel(quotation, showFeesDetails, myUrl,staticAmount, variableField, scriptContainer));
+        super(new HtmlTotalSummaryModel(quotation, showFeesDetails, myUrl, staticAmount, variableField, scriptContainer));
         this.setCssClass("quotation_totals_lines");
 
     }
-    
-    private static class HtmlTotalSummaryModel extends HtmlLineTableModel{
-        
+
+    private static class HtmlTotalSummaryModel extends HtmlLineTableModel {
+
         private final LinkedHashMap<QuotationEntry, String> idQuotationMap = new LinkedHashMap<QuotationEntry, String>();
         private final LinkedHashMap<QuotationEntry, String> jsQuotationEntryReference = new LinkedHashMap<QuotationEntry, String>();
         private final RandomString rng = new RandomString(8);
-        
+
         private int jsquotationEntryIndex = 0;
         private final StringBuilder quotationEntryString = new StringBuilder();
 
-        
-        public HtmlTotalSummaryModel(final StandardQuotation quotation, boolean showFeesDetails, QuotationPageUrl myUrl, BigDecimal staticAmount, HtmlElement variableField, HtmlBranch scriptContainer) {
-            //Subtotal
+        public HtmlTotalSummaryModel(final StandardQuotation quotation,
+                                     boolean showFeesDetails,
+                                     QuotationPageUrl myUrl,
+                                     BigDecimal staticAmount,
+                                     HtmlElement variableField,
+                                     HtmlBranch scriptContainer) {
+            // Subtotal
             HtmlTableLine subtotalLine = new HtmlTableLine();
             addLine(subtotalLine);
             subtotalLine.setCssClass("quotation_total_line");
-            
+
             subtotalLine.addCell(new HtmlTableCell("label") {
                 @Override
                 public XmlNode getBody() {
                     return new HtmlText(tr("Subtotal TTC"));
                 }
             });
-            
+
             HtmlTableCell quotationSubTotalTTC = new HtmlTableCell("money") {
                 @Override
                 public XmlNode getBody() {
-                    return new HtmlText(Context.getLocalizator()
-                                        .getCurrency(quotation.subTotalTTCEntry.getValue())
-                                        .getTwoDecimalEuroString());
+                    return new HtmlText(Context.getLocalizator().getCurrency(quotation.subTotalTTCEntry.getValue()).getTwoDecimalEuroString());
                 }
             };
-            bind(quotationSubTotalTTC,quotation.subTotalTTCEntry);
+            bind(quotationSubTotalTTC, quotation.subTotalTTCEntry);
             subtotalLine.addCell(quotationSubTotalTTC);
-            
-            
-            //Fees
-                final QuotationPageUrl showDetailUrl = myUrl.clone();
-          showDetailUrl.setShowFeesDetails(!showFeesDetails);
-          final HtmlLink showDetailLink = showDetailUrl.getHtmlLink(tr("fees details"));
- 
-          
-          //FeesHT
-          HtmlTableLine feesHTLine = new HtmlTableLine();
-          addLine(feesHTLine);
-          feesHTLine.setCssClass("quotation_total_line_ht");
-          {
-          final HtmlSpan detailSpan = new HtmlSpan("details");
-          detailSpan.add(showDetailLink);
-          
-          feesHTLine.addCell(new HtmlTableCell("label") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlMixedText(tr("Fees HT <0::>"), detailSpan);
-              }
-          });
-          
-          
-          HtmlTableCell quotationFeeHt = new HtmlTableCell("money") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlText(Context.getLocalizator()
-                                      .getCurrency(quotation.feesHT.getValue())
-                                      .getTwoDecimalEuroString());
-              }
-          };
-          bind(quotationFeeHt,quotation.feesHT);
-          feesHTLine.addCell(quotationFeeHt);
-          }
-          // Fee details
-          
-          
-          final HtmlTableLine feesDetailLine = new HtmlTableLine();
-          addLine(feesDetailLine);
-          feesDetailLine.setCssClass("quotation_total_line_details_block");
-          
-          
-          final HtmlDiv feesDetailLabel = new HtmlDiv("quotation_total_line_details");
-          {
-              feesDetailLabel.add(new HtmlDiv().addText(tr("Bank fees")));
-              feesDetailLabel.add(new HtmlDiv().addText(tr("Elveos's commission")));
-          }
-          
-          HtmlTableCell cellDetailsLabel = new HtmlTableCell("label") {
-              @Override
-              public XmlNode getBody() {
-                  return feesDetailLabel;
-              }
-          };
-        feesDetailLine.addCell(cellDetailsLabel);
-          
-          
-          final HtmlDiv feesDetailMoney = new HtmlDiv("quotation_total_line_details");
-          {
 
-              final HtmlDiv htmlDiv = new HtmlDiv("money");
-              bind(htmlDiv, quotation.bank);
-              feesDetailMoney.add(htmlDiv.addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getTwoDecimalEuroString()));
+            // Fees
+            final QuotationPageUrl showDetailUrl = myUrl.clone();
+            showDetailUrl.setShowFeesDetails(!showFeesDetails);
+            final HtmlLink showDetailLink = showDetailUrl.getHtmlLink(tr("fees details"));
 
-              final HtmlDiv htmlDiv2 = new HtmlDiv("money");
-              bind(htmlDiv2, quotation.commission);
-              feesDetailMoney.add(htmlDiv2.addText(Context.getLocalizator()
-                                                                       .getCurrency(quotation.commission.getValue())
-                                                                       .getTwoDecimalEuroString()));
-          }
-          
-          HtmlTableCell cellDetailsMoney = new HtmlTableCell("money") {
-              @Override
-              public XmlNode getBody() {
-                  return feesDetailMoney;
-              }
-          };
-        feesDetailLine.addCell(cellDetailsMoney);
-         
-  
-          // Add show/hide template
-          final JsShowHide showHideFees = new JsShowHide(showFeesDetails);
-          showHideFees.addActuator(showDetailLink);
-          showHideFees.addListener(feesDetailLine);
-          showHideFees.apply();
-  
-          
-        //FeesTTC
-          HtmlTableLine feesTTCLine = new HtmlTableLine();
-          addLine(feesTTCLine);
-          feesTTCLine.setCssClass("quotation_total_line");
-          {
-          final HtmlSpan detailSpan = new HtmlSpan("details");
-          detailSpan.addText(tr("({0}% + {1})",
-                              BankTransaction.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
-                              Context.getLocalizator().getCurrency(BankTransaction.COMMISSION_FIX_RATE).getTwoDecimalEuroString()));
+            // FeesHT
+            HtmlTableLine feesHTLine = new HtmlTableLine();
+            addLine(feesHTLine);
+            feesHTLine.setCssClass("quotation_total_line_ht");
+            {
+                final HtmlSpan detailSpan = new HtmlSpan("details");
+                detailSpan.add(showDetailLink);
 
-          
-          feesTTCLine.addCell(new HtmlTableCell("label") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlMixedText(tr("Fees TTC <0::>"), detailSpan);
-              }
-          });
+                feesHTLine.addCell(new HtmlTableCell("label") {
+                    @Override
+                    public XmlNode getBody() {
+                        return new HtmlMixedText(tr("Fees HT <0::>"), detailSpan);
+                    }
+                });
 
-          HtmlTableCell quotationFeeTTC = new HtmlTableCell("money") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getTwoDecimalEuroString());
-              }
-          };
-          bind(quotationFeeTTC,quotation.feesTTC);
-          feesTTCLine.addCell(quotationFeeTTC);
-          }
-     
-          //Total HT
-          HtmlTableLine totalHTLine = new HtmlTableLine();
-          addLine(totalHTLine);
-          totalHTLine.setCssClass("quotation_total_line_ht");
-          
-          totalHTLine.addCell(new HtmlTableCell("label") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlText(tr("Total HT"));
-              }
-          });
-          
-          HtmlTableCell quotationTotalHT = new HtmlTableCell("money") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlText(Context.getLocalizator()
-                                      .getCurrency(quotation.totalHT.getValue())
-                                      .getTwoDecimalEuroString());
-              }
-          };
-          bind(quotationTotalHT,quotation.totalHT);
-          totalHTLine.addCell(quotationTotalHT);
-          
-          
-        //Total TTC
-          HtmlTableLine totalTTCLine = new HtmlTableLine();
-          addLine(totalTTCLine);
-          totalTTCLine.setCssClass("quotation_total_line_total");
-          
-          totalTTCLine.addCell(new HtmlTableCell("label") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlText(tr("Total TTC"));
-              }
-          });
-          
-          HtmlTableCell quotationTotalTTC = new HtmlTableCell("money") {
-              @Override
-              public XmlNode getBody() {
-                  return new HtmlText(Context.getLocalizator()
-                                      .getCurrency(quotation.totalTTC.getValue())
-                                      .getTwoDecimalEuroString());
-              }
-          };
-          bind(quotationTotalTTC,quotation.totalTTC);
-          totalTTCLine.addCell(quotationTotalTTC);
-  
-          if (staticAmount != null) {
-  
-              variableField.setId(rng.nextString());
-  
-              final HtmlScript quotationUpdateScript = new HtmlScript();
-  
-              final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quotation.js");
-              quotationUpdateScriptTemplate.addNamedParameter("pre_total", staticAmount.toPlainString());
-              quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", variableField.getId());
-              quotationUpdateScriptTemplate.addNamedParameter("fallback_url", myUrl.urlString());
-              quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(BankTransaction.COMMISSION_VARIABLE_RATE));
-              quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(BankTransaction.COMMISSION_FIX_RATE));
-              quotationUpdateScriptTemplate.addNamedParameter("input_offset", "0");
-              quotationUpdateScriptTemplate.addNamedParameter("output_offset", "5");
-  
-  
-  
-              for (final Entry<QuotationEntry, String> entryQuotation : idQuotationMap.entrySet()) {
-  
-                  export(entryQuotation.getKey(), entryQuotation.getValue());
-  
-  
-  
-              }
-  
-  
-  
-              quotationUpdateScriptTemplate.addNamedParameter("entry_list", quotationEntryString.toString());
-  
-              try {
-                  quotationUpdateScript.append(quotationUpdateScriptTemplate.getContent(null));
-              } catch (final IOException e) {
-                  Log.web().error("Fail to generate quotation update script", e);
-              }
-  
-              scriptContainer.add(quotationUpdateScript);
-  
-          }
+                HtmlTableCell quotationFeeHt = new HtmlTableCell("money") {
+                    @Override
+                    public XmlNode getBody() {
+                        return new HtmlText(Context.getLocalizator().getCurrency(quotation.feesHT.getValue()).getTwoDecimalEuroString());
+                    }
+                };
+                bind(quotationFeeHt, quotation.feesHT);
+                feesHTLine.addCell(quotationFeeHt);
+            }
+            // Fee details
+
+            final HtmlTableLine feesDetailLine = new HtmlTableLine();
+            addLine(feesDetailLine);
+            feesDetailLine.setCssClass("quotation_total_line_details_block");
+
+            final HtmlDiv feesDetailLabel = new HtmlDiv("quotation_total_line_details");
+            {
+                feesDetailLabel.add(new HtmlDiv().addText(tr("Bank fees")));
+                feesDetailLabel.add(new HtmlDiv().addText(tr("Elveos's commission")));
+            }
+
+            HtmlTableCell cellDetailsLabel = new HtmlTableCell("label") {
+                @Override
+                public XmlNode getBody() {
+                    return feesDetailLabel;
+                }
+            };
+            feesDetailLine.addCell(cellDetailsLabel);
+
+            final HtmlDiv feesDetailMoney = new HtmlDiv("quotation_total_line_details");
+            {
+
+                final HtmlDiv htmlDiv = new HtmlDiv("money");
+                bind(htmlDiv, quotation.bank);
+                feesDetailMoney.add(htmlDiv.addText(Context.getLocalizator().getCurrency(quotation.bank.getValue()).getTwoDecimalEuroString()));
+
+                final HtmlDiv htmlDiv2 = new HtmlDiv("money");
+                bind(htmlDiv2, quotation.commission);
+                feesDetailMoney.add(htmlDiv2.addText(Context.getLocalizator().getCurrency(quotation.commission.getValue()).getTwoDecimalEuroString()));
+            }
+
+            HtmlTableCell cellDetailsMoney = new HtmlTableCell("money") {
+                @Override
+                public XmlNode getBody() {
+                    return feesDetailMoney;
+                }
+            };
+            feesDetailLine.addCell(cellDetailsMoney);
+
+            // Add show/hide template
+            final JsShowHide showHideFees = new JsShowHide(showFeesDetails);
+            showHideFees.addActuator(showDetailLink);
+            showHideFees.addListener(feesDetailLine);
+            showHideFees.apply();
+
+            // FeesTTC
+            HtmlTableLine feesTTCLine = new HtmlTableLine();
+            addLine(feesTTCLine);
+            feesTTCLine.setCssClass("quotation_total_line");
+            {
+                final HtmlSpan detailSpan = new HtmlSpan("details");
+                detailSpan.addText(tr("({0}% + {1})",
+                                      BankTransaction.COMMISSION_VARIABLE_RATE.multiply(new BigDecimal("100")),
+                                      Context.getLocalizator().getCurrency(BankTransaction.COMMISSION_FIX_RATE).getTwoDecimalEuroString()));
+
+                feesTTCLine.addCell(new HtmlTableCell("label") {
+                    @Override
+                    public XmlNode getBody() {
+                        return new HtmlMixedText(tr("Fees TTC <0::>"), detailSpan);
+                    }
+                });
+
+                HtmlTableCell quotationFeeTTC = new HtmlTableCell("money") {
+                    @Override
+                    public XmlNode getBody() {
+                        return new HtmlText(Context.getLocalizator().getCurrency(quotation.feesTTC.getValue()).getTwoDecimalEuroString());
+                    }
+                };
+                bind(quotationFeeTTC, quotation.feesTTC);
+                feesTTCLine.addCell(quotationFeeTTC);
+            }
+
+            // Total HT
+            HtmlTableLine totalHTLine = new HtmlTableLine();
+            addLine(totalHTLine);
+            totalHTLine.setCssClass("quotation_total_line_ht");
+
+            totalHTLine.addCell(new HtmlTableCell("label") {
+                @Override
+                public XmlNode getBody() {
+                    return new HtmlText(tr("Total HT"));
+                }
+            });
+
+            HtmlTableCell quotationTotalHT = new HtmlTableCell("money") {
+                @Override
+                public XmlNode getBody() {
+                    return new HtmlText(Context.getLocalizator().getCurrency(quotation.totalHT.getValue()).getTwoDecimalEuroString());
+                }
+            };
+            bind(quotationTotalHT, quotation.totalHT);
+            totalHTLine.addCell(quotationTotalHT);
+
+            // Total TTC
+            HtmlTableLine totalTTCLine = new HtmlTableLine();
+            addLine(totalTTCLine);
+            totalTTCLine.setCssClass("quotation_total_line_total");
+
+            totalTTCLine.addCell(new HtmlTableCell("label") {
+                @Override
+                public XmlNode getBody() {
+                    return new HtmlText(tr("Total TTC"));
+                }
+            });
+
+            HtmlTableCell quotationTotalTTC = new HtmlTableCell("money") {
+                @Override
+                public XmlNode getBody() {
+                    return new HtmlText(Context.getLocalizator().getCurrency(quotation.totalTTC.getValue()).getTwoDecimalEuroString());
+                }
+            };
+            bind(quotationTotalTTC, quotation.totalTTC);
+            totalTTCLine.addCell(quotationTotalTTC);
+
+            if (staticAmount != null) {
+
+                variableField.setId(rng.nextString());
+
+                final HtmlScript quotationUpdateScript = new HtmlScript();
+
+                final TemplateFile quotationUpdateScriptTemplate = new TemplateFile("quotation.js");
+                quotationUpdateScriptTemplate.addNamedParameter("pre_total", staticAmount.toPlainString());
+                quotationUpdateScriptTemplate.addNamedParameter("charge_field_id", variableField.getId());
+                quotationUpdateScriptTemplate.addNamedParameter("fallback_url", myUrl.urlString());
+                quotationUpdateScriptTemplate.addNamedParameter("commission_variable_rate", String.valueOf(BankTransaction.COMMISSION_VARIABLE_RATE));
+                quotationUpdateScriptTemplate.addNamedParameter("commission_fix_rate", String.valueOf(BankTransaction.COMMISSION_FIX_RATE));
+                quotationUpdateScriptTemplate.addNamedParameter("input_offset", "0");
+                quotationUpdateScriptTemplate.addNamedParameter("output_offset", "5");
+
+                for (final Entry<QuotationEntry, String> entryQuotation : idQuotationMap.entrySet()) {
+
+                    export(entryQuotation.getKey(), entryQuotation.getValue());
+
+                }
+
+                quotationUpdateScriptTemplate.addNamedParameter("entry_list", quotationEntryString.toString());
+
+                try {
+                    quotationUpdateScript.append(quotationUpdateScriptTemplate.getContent(null));
+                } catch (final IOException e) {
+                    Log.web().error("Fail to generate quotation update script", e);
+                }
+
+                scriptContainer.add(quotationUpdateScript);
+
+            }
         }
-        
+
         private void bind(final HtmlElement element, final QuotationEntry entry) {
             final String id = rng.nextString();
             element.setId(id);
             idQuotationMap.put(entry, id);
 
         }
-        
-       
-    
+
         private String getJsQuotationEntryReference(final QuotationEntry reference) {
-            if(!jsQuotationEntryReference.containsKey(reference)) {
+            if (!jsQuotationEntryReference.containsKey(reference)) {
                 export(reference, idQuotationMap.get(reference));
             }
-
 
             return jsQuotationEntryReference.get(reference);
 
         }
-        
+
         private void export(final QuotationEntry key, final String value) {
 
-            if(jsQuotationEntryReference.containsKey(key)) {
+            if (jsQuotationEntryReference.containsKey(key)) {
                 return;
             }
 
-            final String quotationEntryStringId = "entry"+jsquotationEntryIndex++;
-
+            final String quotationEntryStringId = "entry" + jsquotationEntryIndex++;
 
             key.accept(new QuotationVisitor() {
 
                 @Override
                 public void visit(final Quotation quotation) {
-                    quotationEntryString.append(quotationEntryStringId + " = new Quotation('"+value+"', "+quotation.total+");\n");
+                    quotationEntryString.append(quotationEntryStringId + " = new Quotation('" + value + "', " + quotation.total + ");\n");
                 }
 
                 @Override
                 public void visit(final QuotationDifferenceEntry entry) {
-                    quotationEntryString.append(quotationEntryStringId + " = new QuotationDifferenceEntry('"+value+"', "+getJsQuotationEntryReference(entry.reference1)+", "+getJsQuotationEntryReference(entry.reference2)+");\n");
+                    quotationEntryString.append(quotationEntryStringId + " = new QuotationDifferenceEntry('" + value + "', "
+                            + getJsQuotationEntryReference(entry.reference1) + ", " + getJsQuotationEntryReference(entry.reference2) + ");\n");
                 }
 
                 @Override
                 public void visit(final QuotationPercentEntry entry) {
-                    quotationEntryString.append(quotationEntryStringId + " = new QuotationPercentEntry('"+value+"', "+getJsQuotationEntryReference(entry.reference)+", "+entry.percent+");\n");
+                    quotationEntryString.append(quotationEntryStringId + " = new QuotationPercentEntry('" + value + "', "
+                            + getJsQuotationEntryReference(entry.reference) + ", " + entry.percent + ");\n");
                 }
 
                 @Override
                 public void visit(final QuotationProxyEntry entry) {
-                    quotationEntryString.append(quotationEntryStringId + " = new QuotationProxyEntry('"+value+"', "+getJsQuotationEntryReference(entry.reference)+");\n");
+                    quotationEntryString.append(quotationEntryStringId + " = new QuotationProxyEntry('" + value + "', "
+                            + getJsQuotationEntryReference(entry.reference) + ");\n");
                 }
 
                 @Override
                 public void visit(final QuotationAmountEntry entry) {
-                    quotationEntryString.append(quotationEntryStringId + " = new QuotationAmountEntry('"+value+"', "+entry.amount+");\n");
+                    quotationEntryString.append(quotationEntryStringId + " = new QuotationAmountEntry('" + value + "', " + entry.amount + ");\n");
                 }
 
                 @Override
                 public void visit(final QuotationTotalEntry entry) {
-                    quotationEntryString.append(quotationEntryStringId + " = new QuotationTotalEntry('"+value+"');\n");
+                    quotationEntryString.append(quotationEntryStringId + " = new QuotationTotalEntry('" + value + "');\n");
 
-                    for(final QuotationEntry childEntry : entry.getChildren()) {
-                        quotationEntryString.append(quotationEntryStringId + ".addEntry("+getJsQuotationEntryReference(childEntry)+");\n");
+                    for (final QuotationEntry childEntry : entry.getChildren()) {
+                        quotationEntryString.append(quotationEntryStringId + ".addEntry(" + getJsQuotationEntryReference(childEntry) + ");\n");
                     }
                 }
             });
 
-            quotationEntryString.append("quotationEntries.push("+quotationEntryStringId+");\n");
+            quotationEntryString.append("quotationEntries.push(" + quotationEntryStringId + ");\n");
             jsQuotationEntryReference.put(key, quotationEntryStringId);
 
         }
-        
+
     }
-    
 
 }

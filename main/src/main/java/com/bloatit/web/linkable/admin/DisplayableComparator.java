@@ -46,7 +46,7 @@ public enum DisplayableComparator implements Displayable {
         return Enum.valueOf(Comparator.class, cmp.name());
     }
 
-    //Fake tr
+    // Fake tr
     private static String tr(String fake) {
         return fake;
     }

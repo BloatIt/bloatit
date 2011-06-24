@@ -55,7 +55,7 @@ import com.bloatit.web.url.UnlockAccountChargingProcessActionUrl;
 /**
  * A page used to put money onto the internal bloatit account
  */
-@ParamContainer(value = "account/charging/%process%/check", protocol = Protocol.HTTPS)
+@ParamContainer(value = "account/charging/process/%process%/check", protocol = Protocol.HTTPS)
 public final class StaticAccountChargingPage extends QuotationPage {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)
@@ -126,7 +126,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         summary.add(new HtmlPayBlock(quotation,
                                      process.getTeam(),
                                      new PaylineProcessUrl(actor, process),
-                                     new UnlockAccountChargingProcessActionUrl(process)));
+                                     new UnlockAccountChargingProcessActionUrl(getSession().getShortKey(), process)));
         group.add(summary);
 
     }
@@ -176,7 +176,7 @@ public final class StaticAccountChargingPage extends QuotationPage {
         }
         final AccountChargingPageUrl url = new AccountChargingPageUrl(process);
 
-        breadcrumb.pushLink(new UnlockAccountChargingProcessActionUrl(process).getHtmlLink(tr("Charging")));
+        breadcrumb.pushLink(new UnlockAccountChargingProcessActionUrl(Context.getSession().getShortKey(), process).getHtmlLink(tr("Charging")));
         breadcrumb.pushLink(url.getHtmlLink(tr("Validation")));
         return breadcrumb;
     }

@@ -21,6 +21,7 @@ import static com.bloatit.framework.webprocessor.context.Context.tr;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.meta.HtmlText;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.KudosableInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -45,12 +46,12 @@ public class KudosableAuthorBlock extends UserContentAuthorBlock {
                     commentPopularity.addText(" (");
 
                     // Useful
-                    final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(kudosable, true);
+                    final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),kudosable, true);
                     final HtmlLink usefullLink = usefullUrl.getHtmlLink(tr("Useful"));
                     usefullLink.setCssClass("useful");
 
                     // Useless
-                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(kudosable, false);
+                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),kudosable, false);
                     final HtmlLink uselessLink = uselessUrl.getHtmlLink(tr("Useless"));
                     uselessLink.setCssClass("useless");
 

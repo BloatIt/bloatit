@@ -56,15 +56,15 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.HtmlDefineParagraph;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CheckContributePageUrl;
-import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
+import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactProcessUrl;
 import com.bloatit.web.url.StaticCheckContributionPageUrl;
 
 /**
  * A page that hosts the form used to check the contribution on a Feature
  */
-@ParamContainer("contribute/%process%/check")
+@ParamContainer("contribute/process/%process%/check")
 public final class CheckContributePage extends QuotationPage {
 
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)
@@ -181,7 +181,7 @@ public final class CheckContributePage extends QuotationPage {
 
         final HtmlDiv buttonDiv = new HtmlDiv("contribution_actions");
         {
-            final ContributeActionUrl contributionActionUrl = new ContributeActionUrl(process);
+            final ContributeActionUrl contributionActionUrl = new ContributeActionUrl(getSession().getShortKey(), process);
             final HtmlLink confirmContributionLink = contributionActionUrl.getHtmlLink(tr("Contribute {0}",
                                                                                           Context.getLocalizator()
                                                                                                  .getCurrency(process.getAmount())

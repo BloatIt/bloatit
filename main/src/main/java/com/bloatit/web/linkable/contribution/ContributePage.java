@@ -45,7 +45,7 @@ import com.bloatit.web.url.ContributePageUrl;
 /**
  * A page that hosts the form used to contribute on a Feature
  */
-@ParamContainer("contribute/%process%")
+@ParamContainer("contribute/process/%process%")
 public final class ContributePage extends CreateUserContentPage {
     @RequestParam(message = @tr("The process is closed, expired, missing or invalid."), role = Role.PAGENAME)
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))
@@ -70,7 +70,7 @@ public final class ContributePage extends CreateUserContentPage {
     }
 
     private HtmlElement generateContributeForm(final Member me) {
-        final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(process);
+        final CheckContributeActionUrl formActionUrl = new CheckContributeActionUrl(getSession().getShortKey(), process);
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : choose amount

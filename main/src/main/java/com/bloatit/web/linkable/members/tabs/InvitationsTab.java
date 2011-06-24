@@ -60,23 +60,24 @@ public class InvitationsTab extends HtmlTab {
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException(e);
             }
-            final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
-            final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
+            final HtmlLink accept = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), invitation, true).urlString(),
+                                                 Context.tr("accept"));
+            final HtmlLink refuse = new HtmlLink(new HandleJoinTeamInvitationActionUrl(Context.getSession().getShortKey(), invitation, false).urlString(),
+                                                 Context.tr("refuse"));
 
-            HtmlMixedText acceptOrRefuse = new HtmlMixedText(Context.tr(" (<0::>) - (<1::>)"), accept, refuse);
+            final HtmlMixedText acceptOrRefuse = new HtmlMixedText(Context.tr(" (<0::>) - (<1::>)"), accept, refuse);
             p.add(acceptOrRefuse);
             teamInvites.add(p);
         }
 
-
         final HtmlTitleBlock incoiving = new HtmlTitleBlock(Context.tr("Milestones to invoice"), 2);
         master.add(incoiving);
 
-        PageIterable<Milestone> milestoneToInvoice = member.getMilestoneToInvoice();
+        final PageIterable<Milestone> milestoneToInvoice = member.getMilestoneToInvoice();
 
         for (final Milestone milestone : milestoneToInvoice) {
             final HtmlParagraph p = new HtmlParagraph();
-            p.addText("Invoicing "+milestone.getOffer().getFeature().getTitle()+" - Milestone "+milestone.getPosition());
+            p.addText("Invoicing " + milestone.getOffer().getFeature().getTitle() + " - Milestone " + milestone.getPosition());
             p.add(new ContributionInvoicingProcessUrl(milestone.getOffer().getAuthor(), milestone).getHtmlLink("Generate invoices"));
             incoiving.add(p);
         }

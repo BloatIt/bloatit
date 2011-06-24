@@ -16,7 +16,6 @@
 //
 package com.bloatit.web.linkable.admin;
 
-
 import java.util.EnumSet;
 
 import com.bloatit.data.DaoUserContent;
@@ -60,7 +59,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
             this.displayName = displayName;
         }
 
-        //Fake tr
+        // Fake tr
         private static String tr(final String fake) {
             return fake;
         }

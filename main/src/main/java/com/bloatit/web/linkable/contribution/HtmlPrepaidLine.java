@@ -71,9 +71,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
         @Override
         public XmlNode getBody() {
             try {
-                return new HtmlText(Context.getLocalizator()
-                                    .getCurrency(actor.getInternalAccount().getAmount())
-                                    .getSimpleEuroString());
+                return new HtmlText(Context.getLocalizator().getCurrency(actor.getInternalAccount().getAmount()).getSimpleEuroString());
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Fail to get a account amount", e);
             }
@@ -88,7 +86,7 @@ public class HtmlPrepaidLine extends HtmlTableLine {
 
         @Override
         public XmlNode getBody() {
-                return new HtmlText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getSimpleEuroString());
+            return new HtmlText(Context.getLocalizator().getCurrency(BigDecimal.ZERO).getSimpleEuroString());
         }
     }
 
@@ -126,7 +124,6 @@ public class HtmlPrepaidLine extends HtmlTableLine {
             return 2;
         }
 
-
     }
 
     private class AmountCell extends HtmlTableCell {
@@ -140,10 +137,8 @@ public class HtmlPrepaidLine extends HtmlTableLine {
 
             try {
                 return new HtmlDiv("quotation_detail_line_amount_money").addText(Context.getLocalizator()
-                                                                                 .getCurrency(actor.getInternalAccount()
-                                                                                              .getAmount()
-                                                                                              .negate())
-                                                                            .getTwoDecimalEuroString());
+                                                                                        .getCurrency(actor.getInternalAccount().getAmount().negate())
+                                                                                        .getTwoDecimalEuroString());
             } catch (final UnauthorizedOperationException e) {
                 throw new ShallNotPassException("Fail to get a account amount", e);
             }

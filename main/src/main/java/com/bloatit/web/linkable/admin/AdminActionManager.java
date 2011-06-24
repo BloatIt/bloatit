@@ -51,7 +51,7 @@ public class AdminActionManager {
             return Context.tr(displayName);
         }
 
-        //Fake tr
+        // Fake tr
         private static String tr(String fake) {
             return fake;
         }

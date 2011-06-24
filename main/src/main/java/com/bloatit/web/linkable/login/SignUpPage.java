@@ -43,7 +43,7 @@ import com.bloatit.web.url.SignUpPageUrl;
  * Page used by users to create their bloatit accounts
  * </p>
  */
-@ParamContainer(value="members/signup", protocol=Protocol.HTTPS)
+@ParamContainer(value = "member/signup", protocol = Protocol.HTTPS)
 public final class SignUpPage extends ElveosPage {
     private final SignUpPageUrl url;
 
@@ -119,12 +119,10 @@ public final class SignUpPage extends ElveosPage {
 
         master.add(container);
 
-
-
-        master.add(new HtmlParagraph(Context.tr("This website is un beta phase. It's here to be tested. Don't worry about create some content, all will be cleaned at the end of the beta."), "debug"));
-        master.add(new HtmlParagraph(Context.tr(" During the beta, there is no real money. However, you can simulate payment and withdraw money, a test credit card number or a test IBAN will be provide where you will need it."), "debug"));
-
-
+        master.add(new HtmlParagraph(Context.tr("This website is un beta phase. It's here to be tested. Don't worry about create some content, all will be cleaned at the end of the beta."),
+                                     "debug"));
+        master.add(new HtmlParagraph(Context.tr(" During the beta, there is no real money. However, you can simulate payment and withdraw money, a test credit card number or a test IBAN will be provide where you will need it."),
+                                     "debug"));
 
         return master;
     }

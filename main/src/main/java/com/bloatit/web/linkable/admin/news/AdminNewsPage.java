@@ -31,23 +31,23 @@ import com.bloatit.web.url.AdminNewsRestoreActionUrl;
 public class AdminNewsPage extends AdminPage {
     private AdminNewsPageUrl url;
 
-    public AdminNewsPage(AdminNewsPageUrl url) {
+    public AdminNewsPage(final AdminNewsPageUrl url) {
         super(url);
         this.url = url;
     }
 
     @Override
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
-        TwoColumnLayout master = new TwoColumnLayout(true, url);
-        AdminNewsActionUrl targetUrl = new AdminNewsActionUrl();
+        final TwoColumnLayout master = new TwoColumnLayout(true, url);
+        final AdminNewsActionUrl targetUrl = new AdminNewsActionUrl(getSession().getShortKey());
         master.addLeft(new HtmlTitle("Post a message to elveos news feed", 1));
 
         // Form to post a new message
-        HtmlForm form = new HtmlForm(targetUrl.urlString());
+        final HtmlForm form = new HtmlForm(targetUrl.urlString());
         master.addLeft(form);
 
-        UrlParameter<String, String> messageParameter = targetUrl.getMessageParameter();
-        HtmlTextField messageInput = new HtmlTextField(messageParameter.getName(), Context.tr("Message"));
+        final UrlParameter<String, String> messageParameter = targetUrl.getMessageParameter();
+        final HtmlTextField messageInput = new HtmlTextField(messageParameter.getName(), Context.tr("Message"));
         messageInput.setDefaultValue(messageParameter.getDefaultValue());
         messageInput.addErrorMessages(messageParameter.getMessages());
         messageInput.setComment("10-140 characters");
@@ -55,35 +55,35 @@ public class AdminNewsPage extends AdminPage {
         form.add(new HtmlSubmit(Context.tr("Submit")));
 
         // Small documentation paragraph at the bottom of the page
-        HtmlDiv doc = new HtmlDiv();
+        final HtmlDiv doc = new HtmlDiv();
         master.addLeft(doc);
         doc.addText("You can create a new entry in the elveos news feed using the form above. "
                 + "This entry will be displayed on elveos home page, and also be pushed to the following micro-blogging social services :");
-        HtmlList microBlogList = new HtmlList();
+        final HtmlList microBlogList = new HtmlList();
         doc.add(microBlogList);
         doc.addText("Once the message is posted, it can be deleted. However deletion will only erase the message on the website, and not remove"
                 + "it from the various micro blogs. It is then advised to think carefully before creating a message.");
-        for (String mb : MicroBlogManager.getMicroBlogNames()) {
+        for (final String mb : MicroBlogManager.getMicroBlogNames()) {
             microBlogList.add(mb);
         }
 
         // Side bar where we display the last posts
-        SideBarElementLayout sbel = new SideBarElementLayout();
+        final SideBarElementLayout sbel = new SideBarElementLayout();
         sbel.add(new HtmlTitle(Context.tr("Previous messages"), 1));
         master.addRight(sbel);
-        for (NewsFeed news : NewsFeedManager.getAll(true)) {
-            HtmlDiv div = new HtmlDiv();
+        for (final NewsFeed news : NewsFeedManager.getAll(true)) {
+            final HtmlDiv div = new HtmlDiv();
             sbel.add(div);
             if (!news.isDeleted()) {
-                AdminNewsDeleteActionUrl deleteUrl = new AdminNewsDeleteActionUrl(news);
-                HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::delete>)", news.getMessage()), deleteUrl.getHtmlLink());
+                final AdminNewsDeleteActionUrl deleteUrl = new AdminNewsDeleteActionUrl(getSession().getShortKey(), news);
+                final HtmlMixedText mixed = new HtmlMixedText(Context.tr("{0} (<0::delete>)", news.getMessage()), deleteUrl.getHtmlLink());
                 div.add(mixed);
             } else {
-                AdminNewsRestoreActionUrl deleteUrl = new AdminNewsRestoreActionUrl(news);
-                HtmlSpan deletedMessageSpan = new HtmlSpan("deleted");
-                HtmlMixedText mixed = new HtmlMixedText(Context.tr("<0:message:{0}> (<1::restore>)", news.getMessage()),
-                                                        deletedMessageSpan,
-                                                        deleteUrl.getHtmlLink());
+                final AdminNewsRestoreActionUrl deleteUrl = new AdminNewsRestoreActionUrl(getSession().getShortKey(), news);
+                final HtmlSpan deletedMessageSpan = new HtmlSpan("deleted");
+                final HtmlMixedText mixed = new HtmlMixedText(Context.tr("<0:message:{0}> (<1::restore>)", news.getMessage()),
+                                                              deletedMessageSpan,
+                                                              deleteUrl.getHtmlLink());
                 div.add(mixed);
             }
         }
@@ -92,7 +92,7 @@ public class AdminNewsPage extends AdminPage {
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb crumb = new Breadcrumb();
         crumb.pushLink(new AdminHomePageUrl().getHtmlLink("admin"));
         crumb.pushLink(new AdminNewsPageUrl().getHtmlLink("news"));

@@ -77,7 +77,7 @@ public final class CommentReplyPage extends CreateUserContentPage {
         layout.addLeft(box);
 
         final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
-        final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(comment);
+        final CreateCommentActionUrl commentCommentActionUrl = new CreateCommentActionUrl(getSession().getShortKey(), comment);
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
 
         // as team

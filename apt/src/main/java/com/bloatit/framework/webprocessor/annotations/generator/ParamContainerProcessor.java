@@ -59,6 +59,21 @@ public class ParamContainerProcessor extends AbstractProcessor {
             }
         }
 
+        for (final Entry<Element, UrlDescription> entry : urls.entrySet()) {
+            for (final Entry<Element, UrlDescription> other : urls.entrySet()) {
+                if (!other.getKey().equals(entry.getKey())) {
+                    if (entry.getValue()
+                             .getComponent()
+                             .getCodeName()
+                             .replaceAll("\\%[a-zA-Z0-9_#()\\.]+\\%", "12")
+                             .matches(other.getValue().getComponent().getCodeName().replaceAll("\\%[a-zA-Z0-9_#()\\.]+\\%", "[a-zA-Z0-9_%]+"))) {
+                        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "2 pages matches the same input.", other.getKey());
+                        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "2 pages matches the same input.", entry.getKey());
+                    }
+                }
+            }
+        }
+
         for (final Entry<Element, ComponentDescription> entry : components.entrySet()) {
             createFile(new CodeGenerator().generateComponentClass(entry.getValue()));
         }

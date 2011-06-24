@@ -170,7 +170,6 @@ public class HtmlChargeAccountLine extends HtmlTableLine {
 
     private class AmountCell extends HtmlTableCell {
 
-
         public AmountCell() {
             super("quotation_detail_line_amount");
         }

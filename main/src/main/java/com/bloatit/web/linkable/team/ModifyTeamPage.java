@@ -61,7 +61,7 @@ public class ModifyTeamPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
 
-        final ModifyTeamActionUrl targetUrl = new ModifyTeamActionUrl(team);
+        final ModifyTeamActionUrl targetUrl = new ModifyTeamActionUrl(getSession().getShortKey(), team);
 
         final HtmlTitle title = new HtmlTitle(1);
         title.addText(Context.tr("Change {0} settings", team.getDisplayName()));
@@ -78,7 +78,7 @@ public class ModifyTeamPage extends LoggedPage {
         displayNameInput.addErrorMessages(displayNameFieldData.getErrorMessages());
         if (displayNameFieldData.getSuggestedValue() != null && !displayNameFieldData.getSuggestedValue().isEmpty()) {
             displayNameInput.setDefaultValue(displayNameFieldData.getSuggestedValue());
-        } else if (loggedUser.getFullname() != null) {
+        } else {
             displayNameInput.setDefaultValue(team.getDisplayName());
         }
         form.add(displayNameInput);
@@ -126,7 +126,7 @@ public class ModifyTeamPage extends LoggedPage {
         deleteAvatar.setComment(Context.tr("Checking this box will delete team's avatar."));
         form.add(deleteAvatar);
 
-     // PUBLIC / PRIVATE
+        // PUBLIC / PRIVATE
         final FieldData rightData = targetUrl.getRightParameter().pickFieldData();
         final HtmlDropDown rightInput = new HtmlDropDown(rightData.getName(), Context.tr("Join right of the team: "));
         rightInput.setDefaultValue(rightData.getSuggestedValue());

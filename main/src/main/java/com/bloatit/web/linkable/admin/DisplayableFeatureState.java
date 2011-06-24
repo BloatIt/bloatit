@@ -48,7 +48,7 @@ public enum DisplayableFeatureState implements Displayable {
         return Enum.valueOf(DisplayableFeatureState.class, cmp.name());
     }
 
-    //Fake tr
+    // Fake tr
     private static String tr(final String fake) {
         return fake;
     }

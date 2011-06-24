@@ -16,10 +16,14 @@
 //
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
+import com.bloatit.web.url.LoggedActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -40,20 +44,30 @@ import com.bloatit.web.url.LoginPageUrl;
  * children classes should most likely save all parameters into the session</li>
  * </p>
  */
+@ParamContainer("loggedAction")
 public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
 
-    public LoggedAction(final Url url) {
+    @RequestParam
+    private String secure;
+
+    public LoggedAction(final LoggedActionUrl url) {
         super(url);
         this.meUrl = url;
+        this.secure = url.getSecure();
     }
 
     @Override
     protected final Url doProcess(final ElveosUserToken userToken) {
-        if (userToken.isAuthenticated()) {
+        if (userToken.isAuthenticated() && session.getShortKey().equals(secure)) {
             return doProcessRestricted(userToken.getMember());
         }
-        session.notifyBad(getRefusalReason());
+        // if session.getShortKey() != secure
+        if (userToken.isAuthenticated()) {
+            session.notifyError(Context.tr("Messed up link. To make sure you are not a villain, you have re-login."));
+        } else {
+            session.notifyBad(getRefusalReason());
+        }
         session.setTargetPage(meUrl);
         transmitParameters();
         return new LoginPageUrl();

@@ -13,8 +13,6 @@ package com.bloatit.web.linkable.features;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
-import java.util.Set;
-
 import org.springframework.web.util.HtmlUtils;
 
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
@@ -29,10 +27,10 @@ import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
-import com.bloatit.framework.webprocessor.masters.Header.Robot;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.linkable.usercontent.CommentForm;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
@@ -41,7 +39,7 @@ import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FeaturePageUrl;
 
-@ParamContainer("features/%feature%")
+@ParamContainer("features/%feature%/%activeTabKey#getFeatureTabPaneUrl().getActiveTabKeyParameter().getStringValue()%")
 public final class FeaturePage extends ElveosPage {
 
     @RequestParam(role = Role.PAGENAME, message = @tr("I cannot find the feature number: ''%value%''."))
@@ -100,7 +98,7 @@ public final class FeaturePage extends ElveosPage {
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", feature.getCommentsCount()), 1).setCssClass("comments_title"));
             commentsBlock.add(CommentTools.generateCommentList(feature.getComments()));
-            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(feature), userToken));
+            commentsBlock.add(new CommentForm(new CreateCommentActionUrl(getSession().getShortKey(), feature), userToken));
         }
         layout.addLeft(commentsBlock);
 
@@ -111,7 +109,7 @@ public final class FeaturePage extends ElveosPage {
 
     public static Breadcrumb generateBreadcrumb(final Feature feature) {
         final Breadcrumb breadcrumb = FeatureListPage.generateBreadcrumb();
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.description);
         if (feature.getSoftware() != null) {
             breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Feature for {0}", feature.getSoftware().getName())));
         } else {
@@ -123,8 +121,7 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumbBugs(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.BUGS_TAB);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.bugs);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Bugs")));
@@ -135,8 +132,7 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumbOffers(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.offers);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Offers")));
@@ -147,8 +143,7 @@ public final class FeaturePage extends ElveosPage {
     public static Breadcrumb generateBreadcrumbContributions(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.CONTRIBUTIONS_TAB);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.contributions);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Contributions")));
@@ -159,8 +154,7 @@ public final class FeaturePage extends ElveosPage {
     private static Breadcrumb generateBreadcrumbDetails(final Feature feature) {
         final Breadcrumb breadcrumb = FeaturePage.generateBreadcrumb(feature);
 
-        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-        featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.DETAILS_TAB);
+        final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.details);
         featurePageUrl.setAnchor(FeatureTabPane.FEATURE_TAB_PANE);
 
         breadcrumb.pushLink(featurePageUrl.getHtmlLink(tr("Details")));
@@ -170,16 +164,16 @@ public final class FeaturePage extends ElveosPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final ElveosUserToken userToken) {
-        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.BUGS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.bugs) {
             return FeaturePage.generateBreadcrumbBugs(feature);
         }
-        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.CONTRIBUTIONS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.contributions) {
             return FeaturePage.generateBreadcrumbContributions(feature);
         }
-        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.DETAILS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.details) {
             return FeaturePage.generateBreadcrumbDetails(feature);
         }
-        if (url.getFeatureTabPaneUrl().getActiveTabKey().equals(FeatureTabPane.OFFERS_TAB)) {
+        if (url.getFeatureTabPaneUrl().getActiveTabKey() == TabKey.offers) {
             return FeaturePage.generateBreadcrumbOffers(feature);
         }
 
@@ -192,9 +186,14 @@ public final class FeaturePage extends ElveosPage {
         if (title.endsWith(".") || title.endsWith(":") || title.endsWith("!") || title.endsWith("?")) {
             title = title.substring(0, title.length() - 1);
         }
-        String str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0} in {1}",
-                                title,
-                                feature.getSoftware().getName());
+        String str = null;
+        if (feature.getSoftware() != null) {
+            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0} in {1}",
+                             title,
+                             feature.getSoftware().getName());
+        } else {
+            str = Context.tr("Elveos the open source collaborative financing website proposes you to finance the creation of: {0}", title);
+        }
 
         return HtmlUtils.htmlEscape(str);
     }

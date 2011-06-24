@@ -67,6 +67,7 @@ public final class Session {
     private final Deque<ErrorMessage> notificationList;
     private final SessionParameters parameters = new SessionParameters();
     private UserToken userToken;
+    private final String shortKey;
 
     private UrlDump lastStablePage = null;
     private UrlDump targetPage = null;
@@ -110,6 +111,7 @@ public final class Session {
      */
     protected Session(final SessionKey id) {
         this.key = id;
+        this.shortKey = Hash.shortHash(key.getId());
         this.userToken = ANONYMOUS_USER_TOKEN;
         notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
@@ -120,7 +122,7 @@ public final class Session {
     }
 
     public synchronized String getShortKey() {
-        return Hash.shortHash(key.getId());
+        return shortKey;
     }
 
     public synchronized void resetExpirationTime() {

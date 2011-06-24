@@ -16,6 +16,7 @@
 //
 package com.bloatit.model.managers;
 
+import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
@@ -53,5 +54,19 @@ public final class SoftwareManager {
      */
     public static PageIterable<Software> getAll() {
         return new SoftwareList(DBRequests.getAll(DaoSoftware.class));
+    }
+    
+    /**
+     * Tells if a name exists.
+     *
+     * @param name the name
+     * @return <code>true</code>, if it exists, <code>false</code> otherwise.
+     */
+    public static boolean nameExists(final String name) {
+        return DaoSoftware.nameExists(name);
+    }
+
+    public static Software getByName(String name) {
+        return Software.create(DaoSoftware.getByName(name));
     }
 }

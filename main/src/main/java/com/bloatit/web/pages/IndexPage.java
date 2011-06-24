@@ -88,7 +88,6 @@ public final class IndexPage extends ElveosPage {
 
             final List<HighlightFeature> hightlightFeatureArray = HighlightFeatureManager.getPositionArray(featureCount);
 
-
             for (int i = 0; i < (featureCount + 1) / 2; i++) {
                 final HtmlDiv featureListRow = new HtmlDiv("feature_list_row");
                 {
@@ -136,7 +135,7 @@ public final class IndexPage extends ElveosPage {
             moneyRaised = BigDecimal.ZERO;
         }
 
-        if (userToken.isAuthenticated()){
+        if (userToken.isAuthenticated()) {
             final MoneyDisplayComponent mdc = new MoneyDisplayComponent(moneyRaised, false, userToken.getMember());
             final HtmlMixedText moneyMix = new HtmlMixedText(Context.tr("<0::>&nbsp;funded, "), mdc);
             final HtmlBranch contributionRaised = new HtmlSpan("count_line").add(moneyMix);

@@ -106,6 +106,9 @@ public abstract class Url implements Cloneable {
 
         final StringBuilder params = new StringBuilder();
         doConstructUrl(params);
+        if (params.length() > 0 && params.charAt(params.length() - 1) == '&') {
+            params.deleteCharAt(params.length() - 1);
+        }
         if (params.length() > 0) {
             sb.append("?");
             sb.append(params);

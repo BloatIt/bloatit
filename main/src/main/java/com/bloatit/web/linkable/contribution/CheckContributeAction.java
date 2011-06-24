@@ -42,7 +42,7 @@ import com.bloatit.web.url.IndexPageUrl;
 /**
  * A response to a form used to create a contribution to a feature
  */
-@ParamContainer("contribute/%process%/docheck")
+@ParamContainer("contribute/process/%process%/docheck")
 public final class CheckContributeAction extends UserContentAction {
 
     @NonOptional(@tr("The process is closed, expired, missing or invalid."))

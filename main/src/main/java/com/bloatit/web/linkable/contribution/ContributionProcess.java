@@ -22,6 +22,7 @@ import javax.mail.IllegalWriteException;
 
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
@@ -31,10 +32,9 @@ import com.bloatit.web.actions.WebProcess;
 import com.bloatit.web.linkable.invoice.ModifyInvoicingContactProcess;
 import com.bloatit.web.linkable.money.PaylineProcess;
 import com.bloatit.web.url.CheckContributePageUrl;
-import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributeActionUrl;
+import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionProcessUrl;
-import com.bloatit.web.url.StaticCheckContributionPageUrl;
 
 @ParamContainer("contribution/process")
 public class ContributionProcess extends PaymentProcess {
@@ -93,7 +93,7 @@ public class ContributionProcess extends PaymentProcess {
             if (subPro.isSuccessful()) {
                 // Redirects to the contribution action which will perform the
                 // actual contribution
-                return new ContributeActionUrl(this);
+                return new ContributeActionUrl(Context.getSession().getShortKey(), this);
             }
             unlock();
             return new CheckContributePageUrl(this);

@@ -47,7 +47,7 @@ public enum DisplayableMilestoneState implements Displayable {
         return Enum.valueOf(MilestoneState.class, cmp.name());
     }
 
-    //Fake tr
+    // Fake tr
     private static String tr(String fake) {
         return fake;
     }

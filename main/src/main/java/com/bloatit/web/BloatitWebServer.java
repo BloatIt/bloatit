@@ -113,6 +113,8 @@ import com.bloatit.web.linkable.release.CreateReleasePage;
 import com.bloatit.web.linkable.release.ReleasePage;
 import com.bloatit.web.linkable.softwares.CreateSoftwareAction;
 import com.bloatit.web.linkable.softwares.CreateSoftwarePage;
+import com.bloatit.web.linkable.softwares.ModifySoftwareAction;
+import com.bloatit.web.linkable.softwares.ModifySoftwarePage;
 import com.bloatit.web.linkable.softwares.SoftwareListPage;
 import com.bloatit.web.linkable.softwares.SoftwarePage;
 import com.bloatit.web.linkable.team.CreateTeamAction;
@@ -285,6 +287,9 @@ public class BloatitWebServer extends WebProcessor {
         if (ModifyContactPageUrl.matches(pageCode)) {
             return new ModifyContactPage(new ModifyContactPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (ModifySoftwarePageUrl.matches(pageCode)) {
+            return new ModifySoftwarePage(new ModifySoftwarePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
         if (ExceptionAdministrationPageUrl.matches(pageCode)) {
             return new ExceptionAdministrationPage(new ExceptionAdministrationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
@@ -440,6 +445,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (ModifyInvoicingContactActionUrl.matches(pageCode)) {
             return new ModifyInvoicingContactAction(new ModifyInvoicingContactActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (ModifySoftwareActionUrl.matches(pageCode)) {
+            return new ModifySoftwareAction(new ModifySoftwareActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (ExceptionAdministrationActionUrl.matches(pageCode)) {
             return new ExceptionAdministrationAction(new ExceptionAdministrationActionUrl(pageCode, postGetParameters, session.getParameters()));

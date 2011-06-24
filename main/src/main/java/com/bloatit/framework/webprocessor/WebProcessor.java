@@ -30,6 +30,7 @@ import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
 import com.bloatit.framework.xcgiserver.HttpResponse;
+import com.bloatit.framework.xcgiserver.SessionKey.WrongSessionKeyFormatException;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 public abstract class WebProcessor implements XcgiProcessor {
@@ -115,14 +116,18 @@ public abstract class WebProcessor implements XcgiProcessor {
     private Session findSession(final HttpHeader header) {
         final String key = header.getHttpCookie().get("session_key");
         Session sessionByKey = null;
-        if (key != null && (sessionByKey = SessionManager.getByKey(key, header.getRemoteAddr())) != null) {
-            if (sessionByKey.isExpired()) {
-                SessionManager.destroySession(sessionByKey);
-                // A new session will be create
-            } else {
-                sessionByKey.resetExpirationTime();
-                return sessionByKey;
+        try {
+            if (key != null && (sessionByKey = SessionManager.getByKey(key, header.getRemoteAddr())) != null) {
+                if (sessionByKey.isExpired()) {
+                    SessionManager.destroySession(sessionByKey);
+                    // A new session will be create
+                } else {
+                    sessionByKey.resetExpirationTime();
+                    return sessionByKey;
+                }
             }
+        } catch (WrongSessionKeyFormatException e) {
+            //Just don't restore session
         }
         return SessionManager.createSession(header.getRemoteAddr());
     }

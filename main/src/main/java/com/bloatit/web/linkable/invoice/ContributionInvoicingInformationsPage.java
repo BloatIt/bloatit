@@ -70,9 +70,9 @@ public final class ContributionInvoicingInformationsPage extends LoggedPage {
         final HtmlTitleBlock group = new HtmlTitleBlock("Additional invoicing informations", 1);
 
         // Create contact form
-        final ContributionInvoicingInformationsActionUrl contributionInvoicingInformationActionUrl = new ContributionInvoicingInformationsActionUrl(process);
+        final ContributionInvoicingInformationsActionUrl contributionInvoicingInformationActionUrl = new ContributionInvoicingInformationsActionUrl(getSession().getShortKey(),
+                                                                                                                                                    process);
         final HtmlForm form = new HtmlForm(contributionInvoicingInformationActionUrl.urlString());
-
 
         final HtmlSubmit newContactButton = new HtmlSubmit(Context.tr("Generate invoices"));
         form.add(newContactButton);

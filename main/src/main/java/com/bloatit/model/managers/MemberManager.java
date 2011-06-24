@@ -16,9 +16,15 @@
 //
 package com.bloatit.model.managers;
 
+import org.hibernate.Query;
+import org.hibernate.metadata.ClassMetadata;
+
 import com.bloatit.data.DaoActor;
+import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.SessionManager;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Member;
 import com.bloatit.model.lists.MemberList;
@@ -96,6 +102,20 @@ public final class MemberManager {
     public static PageIterable<Member> getAll() {
         return new MemberList(DBRequests.getAll(DaoMember.class));
     }
+    
+    
+    /**
+     * Gets all the members ordered by name.
+     *
+     * @return the all the members in the DB.
+     */
+    public static PageIterable<Member> getAllMembersOrderByName() {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(DaoMember.class);
+        final Query query = SessionManager.createQuery("FROM " + meta.getEntityName() + " ORDER BY coalesce(fullname,login) ASC");
+        final Query size = SessionManager.createQuery("SELECT count(*) FROM " + meta.getEntityName());
+        return new MemberList(new QueryCollection<DaoMember>(query, size));
+    }
+    
 
     /**
      * Gets the number of members.

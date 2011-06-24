@@ -33,7 +33,7 @@ import com.bloatit.web.url.ChangeAvatarActionUrl;
 /**
  * A response to a form used to change user avatar
  */
-@ParamContainer("members/dochangeavatar")
+@ParamContainer("member/dochangeavatar")
 public final class ChangeAvatarAction extends UserContentAction {
     @NonOptional(@tr("An avatar must be linked to a member"))
     @RequestParam

@@ -13,7 +13,11 @@ package com.bloatit.web.linkable.softwares;
 
 import static com.bloatit.framework.webprocessor.context.Context.tr;
 
+import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
+import com.bloatit.framework.webprocessor.annotations.RequestParam;
+import com.bloatit.framework.webprocessor.annotations.RequestParam.Role;
+import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
 import com.bloatit.framework.webprocessor.components.advanced.showdown.MarkdownEditor;
@@ -25,6 +29,7 @@ import com.bloatit.framework.webprocessor.components.form.HtmlTextField;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Member;
+import com.bloatit.model.Software;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.LoggedPage;
@@ -32,25 +37,33 @@ import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateSoftwareActionUrl;
 import com.bloatit.web.url.CreateSoftwarePageUrl;
+import com.bloatit.web.url.ModifySoftwareActionUrl;
+import com.bloatit.web.url.ModifySoftwarePageUrl;
 
 /**
  * Page that hosts the form to create a new feature
  */
-@ParamContainer("software/create")
-public final class CreateSoftwarePage extends LoggedPage {
+@ParamContainer("softwares/%software%/modify")
+public final class ModifySoftwarePage extends LoggedPage {
+    //TODO : mutualize with others DESCRIPTION_INPUT_NB_LINES et DESCRIPTION_INPUT_NB_COLUMNS
     private static final int DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    private final CreateSoftwarePageUrl url;
+    @RequestParam(role = Role.PAGENAME)
+    @NonOptional(@tr("You must specify the software to modify"))
+    private Software software;
 
-    public CreateSoftwarePage(final CreateSoftwarePageUrl url) {
+    private final ModifySoftwarePageUrl url;
+
+    public ModifySoftwarePage(final ModifySoftwarePageUrl url) {
         super(url);
         this.url = url;
+        this.software = url.getSoftware();
     }
 
     @Override
     protected String createPageTitle() {
-        return "Add a software";
+        return "Modify a software";
     }
 
     @Override
@@ -69,7 +82,7 @@ public final class CreateSoftwarePage extends LoggedPage {
 
     private HtmlElement generateFeatureCreationForm() {
         final HtmlTitleBlock createFeatureTitle = new HtmlTitleBlock(Context.tr("Add a new software"), 1);
-        final CreateSoftwareActionUrl doCreateUrl = new CreateSoftwareActionUrl(getSession().getShortKey());
+        final ModifySoftwareActionUrl doCreateUrl = new ModifySoftwareActionUrl(getSession().getShortKey(), software);
 
         // Create the form stub
         final HtmlForm addSoftwareForm = new HtmlForm(doCreateUrl.urlString());
@@ -80,7 +93,11 @@ public final class CreateSoftwarePage extends LoggedPage {
         // Create the field for the name of the software
         final FieldData softwareNameData = doCreateUrl.getSoftwareNameParameter().pickFieldData();
         final HtmlTextField softwareNameInput = new HtmlTextField(softwareNameData.getName(), Context.tr("Software name"));
-        softwareNameInput.setDefaultValue(softwareNameData.getSuggestedValue());
+        if (softwareNameData.getSuggestedValue() != null && !softwareNameData.getSuggestedValue().isEmpty()) {
+            softwareNameInput.setDefaultValue(softwareNameData.getSuggestedValue());
+        } else {
+            softwareNameInput.setDefaultValue(software.getName());
+        }
         softwareNameInput.addErrorMessages(softwareNameData.getErrorMessages());
         softwareNameInput.setComment(Context.tr("The name of the existing software."));
         addSoftwareForm.add(softwareNameInput);
@@ -91,18 +108,15 @@ public final class CreateSoftwarePage extends LoggedPage {
                                                                    Context.tr("Describe the software"),
                                                                    DESCRIPTION_INPUT_NB_LINES,
                                                                    DESCRIPTION_INPUT_NB_COLUMNS);
-        descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
+
+        if (descriptionData.getSuggestedValue() != null && !descriptionData.getSuggestedValue().isEmpty()) {
+            descriptionInput.setDefaultValue(descriptionData.getSuggestedValue());
+        } else {
+            descriptionInput.setDefaultValue(software.getDescription().getDefaultTranslation().getText());
+        }
         descriptionInput.addErrorMessages(descriptionData.getErrorMessages());
         descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the project : list all features, add siteweb links, etc."));
         addSoftwareForm.add(descriptionInput);
-
-        // Language
-        final FieldData languageData = doCreateUrl.getLangParameter().pickFieldData();
-        final LanguageSelector languageInput = new LanguageSelector(languageData.getName(), Context.tr("Language"));
-        languageInput.setDefaultValue(languageData.getSuggestedValue(), Context.getLocalizator().getLanguageCode());
-        languageInput.addErrorMessages(languageData.getErrorMessages());
-        languageInput.setComment(Context.tr("Language of the descriptions."));
-        addSoftwareForm.add(languageInput);
 
         final HtmlFileInput softwareImageInput = new HtmlFileInput(CreateSoftwareAction.IMAGE_CODE, Context.tr("Software logo"));
         softwareImageInput.setComment("Optional. The logo must be an image on a usable license, in png with transparency for the background. The size must be inferior to 64px x 64px.");
@@ -122,7 +136,7 @@ public final class CreateSoftwarePage extends LoggedPage {
 
     @Override
     protected Breadcrumb createBreadcrumb(final Member member) {
-        return CreateSoftwarePage.generateBreadcrumb();
+        return ModifySoftwarePage.generateBreadcrumb();
     }
 
     private static Breadcrumb generateBreadcrumb() {

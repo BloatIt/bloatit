@@ -3835,7 +3835,7 @@ msgstr "Nom visible de l'équipe mis à jour."
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:125
 msgid "Team's contact information changed."
-msgstr "Les informations de contact de l''équipe ont été mises à jour."
+msgstr "Les informations de contact de l'équipe ont été mises à jour."
 
 #: com/bloatit/web/linkable/team/ModifyTeamAction.java:131
 msgid "Team's description changed."

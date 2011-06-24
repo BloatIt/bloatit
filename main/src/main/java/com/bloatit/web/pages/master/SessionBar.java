@@ -45,7 +45,7 @@ public class SessionBar extends HtmlDiv {
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(signupLink));
     }
 
-    protected SessionBar(Member me) {
+    protected SessionBar(final Member me) {
         super();
         if (me == null) {
             throw new NonOptionalParameterException();
@@ -79,12 +79,12 @@ public class SessionBar extends HtmlDiv {
         if ((nb = me.getInvitationCount()) > 0) {
             final HtmlLink messagesLink = MemberPage.MyMessagesUrl(me).getHtmlLink(Context.tr("Invitations ({0})", nb));
             messagesLink.setCssClass("bold");
-            HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
+            final HtmlBranch componentSpan = new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink);
             add(componentSpan);
         }
 
         // Display logout link
-        final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));
+        final HtmlLink logoutLink = new LogoutActionUrl(Context.getSession().getShortKey()).getHtmlLink(Context.tr("Logout"));
         add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(logoutLink));
 
     }

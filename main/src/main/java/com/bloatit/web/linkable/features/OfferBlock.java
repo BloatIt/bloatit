@@ -335,12 +335,12 @@ public final class OfferBlock extends HtmlDiv {
                     final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");
                     {
                         // Useful
-                        final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(offer, true);
+                        final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, true);
                         final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
                         usefulLink.setCssClass("useful");
 
                         // Useless
-                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(offer, false);
+                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(), offer, false);
                         final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
                         uselessLink.setCssClass("useless");
 

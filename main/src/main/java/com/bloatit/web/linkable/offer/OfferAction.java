@@ -34,7 +34,7 @@ import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedOperationException;
-import com.bloatit.web.linkable.features.FeatureTabPane;
+import com.bloatit.web.linkable.features.FeatureTabPane.TabKey;
 import com.bloatit.web.linkable.usercontent.UserContentAction;
 import com.bloatit.web.url.FeaturePageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
@@ -128,8 +128,7 @@ public final class OfferAction extends UserContentAction {
             if (isFinished) {
                 constructingOffer.setDraftFinished();
 
-                final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature);
-                featurePageUrl.getFeatureTabPaneUrl().setActiveTabKey(FeatureTabPane.OFFERS_TAB);
+                final FeaturePageUrl featurePageUrl = new FeaturePageUrl(feature, TabKey.offers);
                 return featurePageUrl;
             }
 

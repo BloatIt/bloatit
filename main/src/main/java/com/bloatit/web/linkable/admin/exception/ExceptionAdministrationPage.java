@@ -24,24 +24,24 @@ public class ExceptionAdministrationPage extends AdminPage {
         BAD_PROGRAMMER, EXTERNAL_ERROR, MEAN_USER, SHALL_NOT_PASS
     }
 
-    public ExceptionAdministrationPage(ExceptionAdministrationPageUrl url) {
+    public ExceptionAdministrationPage(final ExceptionAdministrationPageUrl url) {
         super(url);
     }
 
     @Override
     protected HtmlElement createAdminContent() throws UnauthorizedOperationException {
-        HtmlDiv master = new HtmlDiv("padding_box");
-        HtmlList list = new HtmlList();
-        list.add(new ExceptionAdministrationActionUrl(ErrorType.BAD_PROGRAMMER).getHtmlLink("Bad programmer exception"));
-        list.add(new ExceptionAdministrationActionUrl(ErrorType.EXTERNAL_ERROR).getHtmlLink("External error exception"));
-        list.add(new ExceptionAdministrationActionUrl(ErrorType.MEAN_USER).getHtmlLink("Mean user exception"));
-        list.add(new ExceptionAdministrationActionUrl(ErrorType.SHALL_NOT_PASS).getHtmlLink("Shall not pass exception"));
+        final HtmlDiv master = new HtmlDiv("padding_box");
+        final HtmlList list = new HtmlList();
+        list.add(new ExceptionAdministrationActionUrl(getSession().getShortKey(), ErrorType.BAD_PROGRAMMER).getHtmlLink("Bad programmer exception"));
+        list.add(new ExceptionAdministrationActionUrl(getSession().getShortKey(), ErrorType.EXTERNAL_ERROR).getHtmlLink("External error exception"));
+        list.add(new ExceptionAdministrationActionUrl(getSession().getShortKey(), ErrorType.MEAN_USER).getHtmlLink("Mean user exception"));
+        list.add(new ExceptionAdministrationActionUrl(getSession().getShortKey(), ErrorType.SHALL_NOT_PASS).getHtmlLink("Shall not pass exception"));
         master.add(list);
         return master;
     }
 
     @Override
-    protected Breadcrumb createBreadcrumb(Member member) {
+    protected Breadcrumb createBreadcrumb(final Member member) {
         final Breadcrumb crumb = new Breadcrumb();
         crumb.pushLink(new AdminHomePageUrl().getHtmlLink("admin"));
         crumb.pushLink(new ExceptionAdministrationPageUrl().getHtmlLink("exceptions"));

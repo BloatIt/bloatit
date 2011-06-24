@@ -4,7 +4,7 @@
   <groupId>com.bloatit</groupId>
   <artifactId>BloatItApt</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.13-SNAPSHOT</version>
+  <version>1.0.14-SNAPSHOT</version>
   <name>BloatItApt</name>
   <url>http://maven.apache.org</url>
   <build>
