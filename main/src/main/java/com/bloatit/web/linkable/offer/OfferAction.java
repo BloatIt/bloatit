@@ -55,7 +55,7 @@ public final class OfferAction extends UserContentAction {
 
     @RequestParam(role = Role.POST, message = @tr("Invalid value for price field."))
     @NonOptional(@tr("You must set a price to your offer."))
-    @MinConstraint(min = 1, message = @tr("The price must be greater to 0."))
+    @MinConstraint(min = 1, message = @tr("The price must be greater to %constraint%."))
     private final BigDecimal price;
 
     @RequestParam(role = Role.POST)
@@ -72,19 +72,19 @@ public final class OfferAction extends UserContentAction {
 
     @RequestParam(role = Role.POST, suggestedValue = "7")
     @NonOptional(@tr("You must set a days count for validation."))
-    @MinConstraint(min = 1, message = @tr("The validation time must be greater to 0."))
+    @MinConstraint(min = 1, message = @tr("The validation time must be greater to %constraint%."))
     private final Integer daysBeforeValidation;
 
     @Optional
     @RequestParam(role = Role.POST, suggestedValue = "100")
-    @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."))
-    @MaxConstraint(max = 0, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
+    @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
+    @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
     private final Integer percentFatal;
 
     @RequestParam(role = Role.POST, suggestedValue = "0")
     @Optional
-    @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to 0."))
-    @MaxConstraint(max = 0, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to 100."))
+    @MinConstraint(min = 0, message = @tr("''%paramName%'' is a percent, and must be greater or equal to %constraint%."))
+    @MaxConstraint(max = 100, message = @tr("''%paramName%'' is a percent, and must be lesser or equal to %constraint%."))
     private final Integer percentMajor;
 
     @RequestParam(role = Role.POST, suggestedValue = "true")
