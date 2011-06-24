@@ -147,6 +147,10 @@ public class UrlParameter<T, U> extends UrlNode {
         return suggestedValue;
     }
 
+    public String getDefaultSuggestedValue() {
+        return description.getSuggestedValue();
+    }
+
     public T getValue() {
         return value;
     }

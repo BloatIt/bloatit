@@ -79,8 +79,10 @@ public class JsShowHide {
             script.append("        $( \"#" + actuator.getId() + "\" ).click(function() {\n" + "            runEffect();\n"
                     + "            return false;\n" + "        });\n");
 
-            for (final HtmlElement listener : listeners) {
-                script.append("$( \"#" + listener.getId() + "\" ).hide();\n");
+            if(!state) {
+                for (final HtmlElement listener : listeners) {
+                    script.append("$( \"#" + listener.getId() + "\" ).hide();\n");
+                }
             }
 
             script.append("    });");
