@@ -48,6 +48,8 @@ public class WebHeader {
                         language = part;
                         languageFound = true;
                     } else {
+                        
+                        // TODO remove old parameters parsing.
 
                         // Page name is the list of part before a part with a
                         // "-"
