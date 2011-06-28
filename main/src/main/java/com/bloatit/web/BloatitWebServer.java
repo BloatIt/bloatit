@@ -18,6 +18,7 @@ package com.bloatit.web;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.parameters.Parameters;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
@@ -56,8 +57,8 @@ import com.bloatit.web.linkable.bugs.ReportBugAction;
 import com.bloatit.web.linkable.bugs.ReportBugPage;
 import com.bloatit.web.linkable.contribution.CheckContributeAction;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
-import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributeAction;
+import com.bloatit.web.linkable.contribution.ContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
 import com.bloatit.web.linkable.contribution.StaticCheckContributionPage;
 import com.bloatit.web.linkable.contribution.UnlockContributionProcessAction;
@@ -485,11 +486,15 @@ public class BloatitWebServer extends WebProcessor {
         }
 
         // Resource page
-        if (FileResourceUrl.matches(pageCode)) {
-            return new FileResource(new FileResourceUrl(pageCode, postGetParameters, session.getParameters()));
-        }
-        if (InvoiceResourceUrl.matches(pageCode)) {
-            return new InvoiceResource(new InvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
+        try {
+            if (FileResourceUrl.matches(pageCode)) {
+                return new FileResource(new FileResourceUrl(pageCode, postGetParameters, session.getParameters()));
+            }
+            if (InvoiceResourceUrl.matches(pageCode)) {
+                return new InvoiceResource(new InvoiceResourceUrl(pageCode, postGetParameters, session.getParameters()));
+            }
+        } catch (final PageNotFoundException e) {
+            return new PageNotFound(new PageNotFoundUrl());
         }
         Log.web().warn("Failed to find the page code '" + pageCode + "' in the linkable list. Maybe you forgot to declare it in BloatitWebServer ?");
         return new PageNotFound(new PageNotFoundUrl());
