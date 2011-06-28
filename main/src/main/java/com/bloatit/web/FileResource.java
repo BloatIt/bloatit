@@ -11,6 +11,7 @@
  */
 package com.bloatit.web;
 
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -34,9 +35,9 @@ public final class FileResource extends Resource {
     @RequestParam(name = FILE_FIELD_NAME)
     private final FileMetadata file;
 
-    protected FileResource(final FileResourceUrl url) {
+    protected FileResource(final FileResourceUrl url) throws PageNotFoundException {
+        super(url);
         this.file = url.getFile();
-
     }
 
     @Override

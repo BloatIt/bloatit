@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
 import com.bloatit.framework.webprocessor.url.Url;
@@ -32,6 +33,12 @@ public abstract class Resource implements Linkable {
     protected static final Url NO_ERROR = null;
 
     private final static String FILE_STORAGE_DIRECTORY = FrameworkConfiguration.getRessourcesDirStorage();
+    
+    public Resource(final Url url) throws PageNotFoundException {
+        if (!url.getMessages().isEmpty()) {
+            throw new PageNotFoundException();
+        }
+    }
 
     @Override
     final public void writeToHttp(final HttpResponse response, final WebProcessor server) throws RedirectException, IOException {
@@ -56,7 +63,7 @@ public abstract class Resource implements Linkable {
         response.writeResource(file.getPath(), getFileSize(), getFileName());
     }
 
-    private boolean checkParent(File file) {
+    private boolean checkParent(final File file) {
         File currentFile = file;
 
         while (currentFile != null) {

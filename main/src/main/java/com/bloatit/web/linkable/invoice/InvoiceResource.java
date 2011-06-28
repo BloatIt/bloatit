@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.invoice;
 
 import java.io.File;
 
+import com.bloatit.framework.webprocessor.PageNotFoundException;
 import com.bloatit.framework.webprocessor.annotations.NonOptional;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
@@ -41,9 +42,9 @@ public final class InvoiceResource extends Resource {
     private File file;
     private String invoiceNumber;
 
-    public InvoiceResource(final InvoiceResourceUrl url) {
+    public InvoiceResource(final InvoiceResourceUrl url) throws PageNotFoundException  {
+        super(url);
         this.invoice = url.getInvoice();
-
     }
 
     @Override
