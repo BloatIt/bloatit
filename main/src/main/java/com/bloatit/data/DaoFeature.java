@@ -43,6 +43,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
@@ -173,7 +174,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
      * contributions.
      */
     @Basic(optional = false)
-    @Field(store = Store.NO)
+    @Field(store = Store.NO, index=Index.UN_TOKENIZED)
     private BigDecimal contribution;
 
     @Basic(optional = false)
@@ -401,8 +402,8 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
         for (final DaoContribution contribution : getContributions()) {
             try {
                 if (contribution.getState() == DaoContribution.State.PENDING) {
-                    DaoMilestone milestone = this.selectedOffer.getCurrentMilestone();
-                    BigDecimal amount = contribution.validate(milestone, percent);
+                    final DaoMilestone milestone = this.selectedOffer.getCurrentMilestone();
+                    final BigDecimal amount = contribution.validate(milestone, percent);
                     DaoMilestoneContributionAmount.updateOrCreate(milestone,contribution, amount);
                 }
             } catch (final NotEnoughMoneyException e) {
@@ -451,7 +452,7 @@ public class DaoFeature extends DaoKudosable implements DaoCommentable {
     /** The Constant PROGRESSION_PERCENT. */
     public static final int PROGRESSION_PERCENT = 100;
 
-    @Field(store = Store.YES)
+    @Field(store = Store.YES, index=Index.UN_TOKENIZED)
     public float getProgress() {
         final DaoOffer currentOffer = getSelectedOffer();
         if (currentOffer == null) {

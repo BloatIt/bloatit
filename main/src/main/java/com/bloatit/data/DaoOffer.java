@@ -38,6 +38,7 @@ import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
@@ -80,6 +81,7 @@ public class DaoOffer extends DaoKudosable {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @IndexedEmbedded
     private final List<DaoMilestone> milestones = new ArrayList<DaoMilestone>();
 
     /**
