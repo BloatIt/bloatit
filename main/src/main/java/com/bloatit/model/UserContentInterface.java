@@ -59,4 +59,7 @@ public interface UserContentInterface extends IdentifiableInterface, RestrictedI
 
     boolean isDeleted() throws UnauthorizedOperationException;
 
+    void delete() throws UnauthorizedOperationException;
+
+    void restore() throws UnauthorizedOperationException;
 }

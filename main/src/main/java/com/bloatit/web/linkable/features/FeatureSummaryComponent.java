@@ -51,6 +51,7 @@ import com.bloatit.web.linkable.softwares.SoftwaresTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateReleasePageUrl;
+import com.bloatit.web.url.FeatureModerationPageUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
@@ -86,7 +87,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     final HtmlDiv featureSummaryCenter = new HtmlDiv("feature_summary_center");
                     {
                         // Try to display the title
-
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("feature_title");
                         title.add(new SoftwaresTools.Link(feature.getSoftware()));
@@ -103,7 +103,6 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 // Div feature_summary_bottom
                 final HtmlDiv featureSummaryBottom = new HtmlDiv("feature_summary_bottom");
                 {
-
                     // ////////////////////
                     // Div feature_summary_popularity
                     final HtmlDiv featureSummaryPopularity = new HtmlDiv("feature_summary_popularity");
@@ -120,15 +119,14 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             if (vote == 0) {
                                 final HtmlDiv featurePopularityJudge = new HtmlDiv("feature_popularity_judge");
                                 {
-
-                                    // Usefull
+                                    // Link to declare feature as Useful
                                     final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                           feature,
                                                                                                           true);
                                     final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
                                     usefulLink.setCssClass("useful");
 
-                                    // Useless
+                                    // ... Useless
                                     final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(Context.getSession().getShortKey(),
                                                                                                            feature,
                                                                                                            false);
@@ -153,10 +151,12 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                             }
                         } else {
                             final HtmlDiv featurePopularityNone = new HtmlDiv("feature_popularity_none");
-
                             featureSummaryPopularity.add(featurePopularityNone);
                         }
-
+                        // Delete the feature
+                        if (userToken.isAuthenticated() && userToken.getMember().getRights().hasAdminUserPrivilege()) {
+                            featureSummaryPopularity.add(new FeatureModerationPageUrl(feature).getHtmlLink(Context.tr("Moderate")));
+                        }
                     }
                     featureSummaryBottom.add(featureSummaryPopularity);
 

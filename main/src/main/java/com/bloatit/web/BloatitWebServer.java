@@ -32,16 +32,18 @@ import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.linkable.admin.AdminHomePage;
 import com.bloatit.web.linkable.admin.AdministrationAction;
-import com.bloatit.web.linkable.admin.ConfigurationAdminAction;
-import com.bloatit.web.linkable.admin.ConfigurationAdminPage;
 import com.bloatit.web.linkable.admin.DeclareHightlightedFeatureAction;
 import com.bloatit.web.linkable.admin.FeatureAdminPage;
 import com.bloatit.web.linkable.admin.HightlightedFeatureAdminPage;
 import com.bloatit.web.linkable.admin.KudosableAdminPageImplementation;
 import com.bloatit.web.linkable.admin.MilestoneAdminPage;
 import com.bloatit.web.linkable.admin.UserContentAdminPageImplementation;
+import com.bloatit.web.linkable.admin.configuration.ConfigurationAdminAction;
+import com.bloatit.web.linkable.admin.configuration.ConfigurationAdminPage;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationAction;
 import com.bloatit.web.linkable.admin.exception.ExceptionAdministrationPage;
+import com.bloatit.web.linkable.admin.moderation.FeatureModerationAction;
+import com.bloatit.web.linkable.admin.moderation.FeatureModerationPage;
 import com.bloatit.web.linkable.admin.news.AdminNewsAction;
 import com.bloatit.web.linkable.admin.news.AdminNewsDeleteAction;
 import com.bloatit.web.linkable.admin.news.AdminNewsPage;
@@ -305,6 +307,9 @@ public class BloatitWebServer extends WebProcessor {
         if (AdminNewsPageUrl.matches(pageCode)) {
             return new AdminNewsPage(new AdminNewsPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (FeatureModerationPageUrl.matches(pageCode)) {
+            return new FeatureModerationPage(new FeatureModerationPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Actions
@@ -464,6 +469,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (AdminNewsRestoreActionUrl.matches(pageCode)) {
             return new AdminNewsRestoreAction(new AdminNewsRestoreActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FeatureModerationActionUrl.matches(pageCode)) {
+            return new FeatureModerationAction(new FeatureModerationActionUrl(pageCode, postGetParameters, session.getParameters()));
         }
 
         // ////////

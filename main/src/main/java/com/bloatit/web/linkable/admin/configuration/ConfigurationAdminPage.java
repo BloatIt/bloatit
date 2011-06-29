@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.linkable.admin;
+package com.bloatit.web.linkable.admin.configuration;
 
 import java.util.Date;
 import java.util.Iterator;
