@@ -278,6 +278,15 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
             }
         }
     }
+    
+    @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        this.setFeatureState(FeatureState.DISCARDED);
+        super.delete();
+    }
 
     // ////////////////////////////////////////////////////////////////////////
     // Slots and notification system

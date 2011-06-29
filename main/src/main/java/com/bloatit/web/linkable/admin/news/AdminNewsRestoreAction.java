@@ -37,7 +37,7 @@ public class AdminNewsRestoreAction extends AdminAction {
     @Override
     protected Url checkRightsAndEverything(Member me) {
         if (!target.isDeleted()) {
-            session.notifyBad("Canot restore a non deleted message.");
+            session.notifyWarning("Canot restore a non deleted message.");
             return new AdminNewsPageUrl();
         }
         return NO_ERROR;

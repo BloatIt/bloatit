@@ -18,6 +18,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.WebProcessor;
+import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
@@ -62,7 +63,10 @@ public abstract class Action implements Linkable {
 
     private final Url process() {
         if (actionUrl.hasError()) {
-            session.notifyList(actionUrl.getMessages());
+            for (final Message message : actionUrl.getMessages()) {
+                Context.getSession().notifyError(message.getMessage());
+                Log.framework().trace("Error messages from Url system: " + message.getMessage());
+            }
             transmitParameters();
             return doProcessErrors();
         }

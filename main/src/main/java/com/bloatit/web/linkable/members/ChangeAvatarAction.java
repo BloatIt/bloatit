@@ -72,7 +72,7 @@ public final class ChangeAvatarAction extends UserContentAction {
         final FileConstraintChecker fcc = new FileConstraintChecker(filename);
         if (fcc.isImageAvatar() != null) {
             for (final String message : fcc.isImageAvatar()) {
-                session.notifyBad(message);
+                session.notifyWarning(message);
             }
             return false;
         }

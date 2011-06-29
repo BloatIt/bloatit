@@ -92,7 +92,7 @@ public class RecoverPasswordAction extends ElveosAction {
     @Override
     protected Url doProcessErrors(final ElveosUserToken token) {
         if (StringUtils.isEmpty(login) || StringUtils.isEmpty(resetKey)) {
-            session.notifyBad(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
+            session.notifyWarning(Context.tr("The URL you inputed is incorrect, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
         }
         return new RecoverPasswordPageUrl(resetKey, login);
@@ -101,14 +101,14 @@ public class RecoverPasswordAction extends ElveosAction {
     @Override
     protected Url checkRightsAndEverything(final ElveosUserToken token) {
         if (!newPassword.equals(checkNewPassword)) {
-            session.notifyBad(Context.tr("Password doesn't match confirmation."));
+            session.notifyWarning(Context.tr("Password doesn't match confirmation."));
             url.getNewPasswordParameter().addErrorMessage(Context.tr("New password doesn't match with confirmation."));
             url.getCheckNewPasswordParameter().addErrorMessage(Context.tr("Confirmation doesn't match with new password."));
             return new RecoverPasswordPageUrl(resetKey, login);
         }
         member = MemberManager.getMemberByLogin(login);
         if (member == null || !member.getResetKey().equals(resetKey)) {
-            session.notifyBad(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
+            session.notifyWarning(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
             return new PageNotFoundUrl();
         }
         return NO_ERROR;

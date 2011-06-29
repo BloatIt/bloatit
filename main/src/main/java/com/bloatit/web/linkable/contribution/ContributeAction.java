@@ -63,10 +63,10 @@ public final class ContributeAction extends UserContentAction {
             process.close();
             return featurePageUrl;
         } catch (final NotEnoughMoneyException e) {
-            session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
+            session.notifyWarning(Context.tr("You need to charge your account before you can contribute."));
             return new CheckContributePageUrl(process);
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
+            session.notifyWarning(Context.tr("For obscure reasons, you are not allowed to contribute on this feature."));
             return new ContributionProcessUrl(process.getFeature());
         } catch (final RuntimeException e) {
             process.close();

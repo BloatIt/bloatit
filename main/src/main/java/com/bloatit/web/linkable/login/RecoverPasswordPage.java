@@ -66,7 +66,7 @@ public class RecoverPasswordPage extends ElveosPage {
         final Member member = MemberManager.getMemberByLogin(login);
 
         if (member == null || !member.getResetKey().equals(resetKey)) {
-            getSession().notifyBad(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
+            getSession().notifyWarning(Context.tr("The login and/or key are invalid, please verify you didn't do a mistake while cutting and pasting."));
             throw new PageNotFoundException();
         }
 

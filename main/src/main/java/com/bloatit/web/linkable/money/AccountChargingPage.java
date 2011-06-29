@@ -125,7 +125,7 @@ public final class AccountChargingPage extends QuotationPage {
 
     private void generateNoMoneyContent(final HtmlTitleBlock group, final Actor<?> actor) {
         if (process.isLocked()) {
-            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
@@ -138,7 +138,7 @@ public final class AccountChargingPage extends QuotationPage {
                 process.setAmountToPay(WebConfiguration.getDefaultChargingAmount());
             }
         } catch (final IllegalWriteException e) {
-            getSession().notifyBad(tr("You have a payment in progress, you cannot change the amount."));
+            getSession().notifyWarning(tr("You have a payment in progress, you cannot change the amount."));
         }
 
         group.add(ContactBox.generate(actor, process));

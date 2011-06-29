@@ -116,7 +116,7 @@ public class PaylineProcess extends WebProcess {
             if (reponse.isAccepted()) {
                 return new UrlString(reponse.getRedirectUrl());
             }
-            session.notifyBad(reponse.getMessage());
+            session.notifyWarning(reponse.getMessage());
         } catch (final UnauthorizedOperationException e) {
             throw new ShallNotPassException("Not authorized", e);
         }
@@ -143,7 +143,7 @@ public class PaylineProcess extends WebProcess {
                 // Notify the user:
                 final BankTransaction bankTransaction = BankTransaction.getByToken(token);
                 if (bankTransaction == null) {
-                    session.notifyBad(Context.tr("Cannot validate your payment. Reason: Token not found."));
+                    session.notifyWarning(Context.tr("Cannot validate your payment. Reason: Token not found."));
                     return;
                 }
                 final String valueStr = Context.getLocalizator().getCurrency(bankTransaction.getValue()).getSimpleEuroString();
@@ -157,11 +157,11 @@ public class PaylineProcess extends WebProcess {
             } else {
                 payline.cancelPayement(token);
                 Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
-                session.notifyBad("Payment canceled. Reason: " + message + ".");
+                session.notifyWarning("Payment canceled. Reason: " + message + ".");
             }
         } catch (final TokenNotfoundException e) {
             Log.web().fatal("Token not found.", e);
-            session.notifyBad("Payment canceled. Reason: Internal error. Please report the bug.");
+            session.notifyWarning("Payment canceled. Reason: Internal error. Please report the bug.");
         }
     }
 
@@ -170,11 +170,11 @@ public class PaylineProcess extends WebProcess {
             final Reponse paymentDetails = payline.getPaymentDetails(token);
             final String message = paymentDetails.getMessage().replace("\n", ". ");
             Log.framework().info("Payline transaction failure. (Reason: " + message + ")");
-            session.notifyBad("Payment canceled. Reason: " + message + ".");
+            session.notifyWarning("Payment canceled. Reason: " + message + ".");
             payline.cancelPayement(token);
         } catch (final TokenNotfoundException e) {
             Log.web().fatal("Token not found.", e);
-            session.notifyBad("Payment canceled. Reason: Payment refused. Please report the bug.");
+            session.notifyWarning("Payment canceled. Reason: Payment refused. Please report the bug.");
         }
     }
 

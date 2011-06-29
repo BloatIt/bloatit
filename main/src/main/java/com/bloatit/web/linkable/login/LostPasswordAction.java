@@ -86,7 +86,7 @@ public class LostPasswordAction extends ElveosAction {
     protected Url checkRightsAndEverything(final ElveosUserToken userToken) {
         m = MemberManager.getMemberByEmail(email);
         if (m == null) {
-            session.notifyBad(Context.tr("No account match this email address. Please input another one."));
+            session.notifyWarning(Context.tr("No account match this email address. Please input another one."));
             return new LostPasswordPageUrl();
         }
         return NO_ERROR;

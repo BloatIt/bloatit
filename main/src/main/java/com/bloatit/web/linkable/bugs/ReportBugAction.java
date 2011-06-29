@@ -88,7 +88,7 @@ public final class ReportBugAction extends UserContentAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         if (getLocale() == null) {
-            session.notifyBad(Context.tr("You have to specify the description language."));
+            session.notifyWarning(Context.tr("You have to specify the description language."));
             return new ReportBugPageUrl(milestone.getOffer());
         }
         return NO_ERROR;

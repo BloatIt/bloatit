@@ -143,7 +143,7 @@ public class ModifyTeamAction extends LoggedAction {
                 } else {
                     if (imageErr != null) {
                         for (final String message : imageErr) {
-                            session.notifyBad(message);
+                            session.notifyWarning(message);
                         }
                     }
                     if (isEmpty(avatarFileName)) {

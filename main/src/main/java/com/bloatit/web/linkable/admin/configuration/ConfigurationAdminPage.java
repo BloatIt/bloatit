@@ -24,7 +24,6 @@ import java.util.Set;
 
 import com.bloatit.common.ReloadableConfiguration;
 import com.bloatit.framework.utils.datetime.TimeRenderer;
-import com.bloatit.framework.utils.datetime.TimeRenderer.TimeBase;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.components.HtmlTitleBlock;
@@ -137,7 +136,7 @@ public class ConfigurationAdminPage extends AdminPage {
                     return new HtmlText(configuration.getName());
                 case DATE:
                     final long millis = new Date().getTime() - configuration.getLastReload().getTime();
-                    return new HtmlText(new TimeRenderer(millis).renderRange(TimeBase.DAY, FormatStyle.MEDIUM));
+                    return new HtmlText(new TimeRenderer(millis).render(FormatStyle.MEDIUM));
                 case ACTION:
                     final HtmlCheckbox box = new HtmlCheckbox(targetUrl.getToReloadParameter().pickFieldData().getName(), LabelPosition.AFTER);
                     box.addAttribute("value", configuration.getName());

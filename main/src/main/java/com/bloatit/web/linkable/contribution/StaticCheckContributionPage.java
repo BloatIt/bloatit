@@ -111,7 +111,7 @@ public final class StaticCheckContributionPage extends QuotationPage {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
-            getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
+            getSession().notifyWarning(tr("The contribution's total amount is locked during the payment process."));
         }
         final HtmlLineTableModel model = new HtmlLineTableModel();
         try {

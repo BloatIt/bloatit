@@ -45,7 +45,7 @@ public class CancelWithdrawMoneyAction extends LoggedAction {
     @Override
     protected Url checkRightsAndEverything(final Member me) {
         if (!moneyWithdrawal.canSetCanceled()) {
-            session.notifyBad(Context.tr("Failed to cancel this withdrawal."));
+            session.notifyWarning(Context.tr("Failed to cancel this withdrawal."));
             return getBestReturnUrl(me);
         }
         return NO_ERROR;

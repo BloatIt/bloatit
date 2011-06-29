@@ -71,7 +71,7 @@ public final class LoginAction extends ElveosAction {
         // We check if member is non existing or not validated
         final Member m = MemberManager.getMemberByLogin(login);
         if (m != null && m.getActivationState() == ActivationState.VALIDATING) {
-            session.notifyBad(Context.tr("Your account has not been validated yet. Please check your emails."));
+            session.notifyWarning(Context.tr("Your account has not been validated yet. Please check your emails."));
             transmitParameters();
             return new LoginPageUrl();
         }
@@ -79,7 +79,7 @@ public final class LoginAction extends ElveosAction {
         session.setAnonymousUserToken();
         final HtmlLink link = new LostPasswordPageUrl().getHtmlLink();
         final HtmlMixedText mixed = new HtmlMixedText(Context.tr("Login failed. Wrong login or password. Password lost ? <0::Recover it>."), link);
-        session.notifyBad(mixed);
+        session.notifyWarning(mixed);
 
         url.getLoginParameter().addErrorMessage(Context.tr("Login failed. Check your login."));
         url.getPasswordParameter().addErrorMessage(Context.tr("Login failed. Check your password."));

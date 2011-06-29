@@ -1,11 +1,10 @@
 package com.bloatit.framework.webprocessor.annotations;
 
-public class Message {
+public final class Message {
     private String message;
 
     public Message(final String message, final MessageFormater formater) {
-        super();
-        this.message = formater.format(message);
+        this(formater.format(message));
     }
 
     public Message(final String message) {

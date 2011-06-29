@@ -295,7 +295,7 @@ public class AccountComponent extends HtmlPageComponent {
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
-                Context.getSession().notifyBad(Context.tr("You are not allowed to see this account informations."));
+                Context.getSession().notifyWarning(Context.tr("You are not allowed to see this account informations."));
             }
         }
 
@@ -336,7 +336,7 @@ public class AccountComponent extends HtmlPageComponent {
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
-                Context.getSession().notifyBad(Context.tr("You are not allowed to see this account informations."));
+                Context.getSession().notifyWarning(Context.tr("You are not allowed to see this account informations."));
             }
         }
 
@@ -361,7 +361,7 @@ public class AccountComponent extends HtmlPageComponent {
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
                 addCell(new EmptyCell());
-                Context.getSession().notifyBad(Context.tr("You are not allowed to see this account informations."));
+                Context.getSession().notifyWarning(Context.tr("You are not allowed to see this account informations."));
             }
         }
 

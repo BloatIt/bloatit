@@ -16,6 +16,8 @@
 //
 package com.bloatit.framework.webprocessor;
 
+import java.util.Date;
+
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 
 public class ErrorMessage {
@@ -23,6 +25,7 @@ public class ErrorMessage {
         INFO, WARNING, FATAL
     }
 
+    private final Date creationDate;
     private final Level level;
     private final XmlNode message;
 
@@ -30,6 +33,7 @@ public class ErrorMessage {
         super();
         this.level = level;
         this.message = message;
+        this.creationDate = new Date();
     }
 
     public XmlNode getMessage() {
@@ -38,5 +42,9 @@ public class ErrorMessage {
 
     public Level getLevel() {
         return level;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
     }
 }
