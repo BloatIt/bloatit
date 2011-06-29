@@ -62,14 +62,14 @@ public class HtmlMixedText extends HtmlBranch {
     private void parseTag(final String tag, final HtmlElement parameters[]) {
         final String[] split = tag.split(":");
         if (split.length < 1) {
-            add(new XmlText(" ### Invalid tag '" + tag + "'. Not enough content ### "));
+            add(new HtmlText(" ### Invalid tag '" + tag + "'. Not enough content ### "));
             return;
         }
 
         final int paramIndex = Integer.valueOf(split[0]);
         // Check out of bound
         if (paramIndex >= parameters.length) {
-            add(new XmlText(" ### Invalid index '" + paramIndex + "' in tag '" + tag + "'. Param length: " + parameters.length + " ### "));
+            add(new HtmlText(" ### Invalid index '" + paramIndex + "' in tag '" + tag + "'. Param length: " + parameters.length + " ### "));
             return;
         }
 

@@ -6,8 +6,8 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
 import com.bloatit.framework.webprocessor.components.meta.HtmlLeaf;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
 
 /**
  * A simple table that gets constructed simply by adding elements
@@ -31,13 +31,13 @@ public class HtmlSimpleLineTable extends HtmlLeaf {
                 tr.add(new HtmlGenericElement("td"));
             } else {
                 if (elem instanceof String) {
-                    element = new XmlText((String) elem);
+                    element = new HtmlText((String) elem);
                 } else if (elem instanceof XmlNode) {
                     element = (XmlNode) elem;
                 } else if (elem instanceof BigDecimal) {
-                    element = new XmlText(((BigDecimal) elem).toPlainString());
+                    element = new HtmlText(((BigDecimal) elem).toPlainString());
                 } else if (elem instanceof Enum<?>) {
-                    element = new XmlText(elem.toString());
+                    element = new HtmlText(elem.toString());
                 } else {
                     throw new BadProgrammerException("Unexpected non string, non XmlNode in SimpleLineTable. (" + elem + ").");
                 }

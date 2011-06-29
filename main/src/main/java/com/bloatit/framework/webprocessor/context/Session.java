@@ -13,7 +13,6 @@
 package com.bloatit.framework.webprocessor.context;
 
 import java.lang.reflect.InvocationTargetException;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -29,8 +28,8 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
+import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
-import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
@@ -219,15 +218,15 @@ public final class Session {
     }
 
     public final synchronized void notifyGood(final String message) {
-        notificationList.add(new ErrorMessage(Level.INFO, new XmlText(message)));
+        notificationList.add(new ErrorMessage(Level.INFO, new HtmlText(message)));
     }
 
     public final synchronized void notifyWarning(final String message) {
-        notificationList.add(new ErrorMessage(Level.WARNING, new XmlText(message)));
+        notificationList.add(new ErrorMessage(Level.WARNING, new HtmlText(message)));
     }
 
     public final synchronized void notifyError(final String message) {
-        notificationList.add(new ErrorMessage(Level.FATAL, new XmlText(message)));
+        notificationList.add(new ErrorMessage(Level.FATAL, new HtmlText(message)));
     }
 
     public final synchronized void notifyGood(final XmlNode message) {
