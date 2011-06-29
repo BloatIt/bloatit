@@ -84,7 +84,7 @@ public final class CheckContributeAction extends UserContentAction {
                 process.setTeam(asTeam);
             }
         } catch (final IllegalWriteException e) {
-            session.notifyBad(tr("The contribution's amount is locked during the payment process."));
+            session.notifyWarning(tr("The contribution's amount is locked during the payment process."));
         }
 
         Actor<?> actor = me;

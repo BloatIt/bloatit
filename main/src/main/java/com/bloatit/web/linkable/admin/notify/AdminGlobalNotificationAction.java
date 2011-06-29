@@ -21,7 +21,7 @@ public class AdminGlobalNotificationAction extends AdminAction {
     @Optional
     private String message;
 
-    public AdminGlobalNotificationAction(AdminGlobalNotificationActionUrl url) {
+    public AdminGlobalNotificationAction(final AdminGlobalNotificationActionUrl url) {
         super(url);
         this.url = url;
         this.message = url.getMessage();
@@ -39,12 +39,12 @@ public class AdminGlobalNotificationAction extends AdminAction {
     }
 
     @Override
-    protected Url checkRightsAndEverything(Member me) {
+    protected Url checkRightsAndEverything(final Member me) {
         return NO_ERROR;
     }
 
     @Override
-    protected Url doProcessErrors(ElveosUserToken userToken) {
+    protected Url doProcessErrors(final ElveosUserToken userToken) {
         return new AdminGlobalNotificationPageUrl();
     }
 

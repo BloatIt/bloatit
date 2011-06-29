@@ -48,7 +48,7 @@ public abstract class LoggedPage extends ElveosPage {
         if (getSession().getUserToken().isAuthenticated()) {
             return createRestrictedContent(userToken.getMember());
         }
-        getSession().notifyBad(getRefusalReason());
+        getSession().notifyWarning(getRefusalReason());
         getSession().setTargetPage(getUrl());
         throw new RedirectException(new LoginPageUrl());
     }

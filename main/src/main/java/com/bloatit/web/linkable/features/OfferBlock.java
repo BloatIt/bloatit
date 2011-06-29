@@ -7,7 +7,6 @@ import com.bloatit.data.DaoMilestone.MilestoneState;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.datetime.TimeRenderer;
-import com.bloatit.framework.utils.datetime.TimeRenderer.TimeBase;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
@@ -252,10 +251,9 @@ public final class OfferBlock extends HtmlDiv {
 
         final HtmlDiv validationDetailsDiv = new HtmlDiv();
 
-        final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(tr("Minimun time before validation: "),
+        final HtmlDefineParagraph timeBeforeValidationPara = new HtmlDefineParagraph(tr("Minimum time before validation: "),
                                                                                      new TimeRenderer(lot.getSecondBeforeValidation()
-                                                                                             * DateUtils.MILLISECOND_PER_SECOND).renderRange(TimeBase.DAY,
-                                                                                                                                             FormatStyle.MEDIUM));
+                                                                                             * DateUtils.MILLISECOND_PER_SECOND).render(FormatStyle.MEDIUM));
         validationDetailsDiv.add(timeBeforeValidationPara);
 
         final HtmlDefineParagraph fatalBugPourcentPara = new HtmlDefineParagraph(tr("Payment when no fatal bug: "),

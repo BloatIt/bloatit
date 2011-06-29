@@ -76,7 +76,7 @@ public final class CurrencyLocale {
             }
         } catch (final IllegalArgumentException e) {
             try {
-                Context.getSession().notifyBad(Context.tr("We can't handle properly the country you selected, considering you're from the US."));
+                Context.getSession().notifyWarning(Context.tr("We can't handle properly the country you selected, considering you're from the US."));
                 Log.framework().error("Country " + targetLocale.getCountry() + " selected by user is not valid", e);
                 this.currency = Currency.getInstance(Locale.US);
             } catch (final IllegalArgumentException iae) {

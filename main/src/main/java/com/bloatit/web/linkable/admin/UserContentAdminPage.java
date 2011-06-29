@@ -161,7 +161,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
                 try {
                     return String.valueOf(element.isDeleted());
                 } catch (final UnauthorizedOperationException e) {
-                    getSession().notifyBad("HAHAHA !");
+                    getSession().notifyWarning("HAHAHA !");
                     throw new ShallNotPassException("UnauthorizedOperationException on admin page", e);
                 }
             }

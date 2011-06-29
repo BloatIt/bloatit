@@ -93,16 +93,16 @@ public final class PopularityVoteAction extends LoggedAction {
 
     private void analyseErrors(final EnumSet<SpecialCode> canVote) {
         if (canVote.contains(SpecialCode.ALREADY_VOTED)) {
-            session.notifyBad(Context.tr("You already voted on that."));
+            session.notifyWarning(Context.tr("You already voted on that."));
         }
         if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
-            session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
+            session.notifyWarning(Context.tr("You have a too low reputation to vote up that."));
         }
         if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
-            session.notifyBad(Context.tr("You have a too low reputation to vote down that."));
+            session.notifyWarning(Context.tr("You have a too low reputation to vote down that."));
         }
         if (canVote.contains(SpecialCode.OWNED_BY_ME)) {
-            session.notifyBad(Context.tr("You can't vote for yourself!"));
+            session.notifyWarning(Context.tr("You can't vote for yourself!"));
         }
     }
 

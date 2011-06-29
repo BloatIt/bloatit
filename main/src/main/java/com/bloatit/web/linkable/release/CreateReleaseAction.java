@@ -88,7 +88,7 @@ public final class CreateReleaseAction extends UserContentAction {
     protected boolean verifyFile(final String filename) {
         final FileConstraintChecker fcc = new FileConstraintChecker(filename);
         if (!fcc.exists() || !fcc.isFileSmaller(1, SizeUnit.GBYTE)) {
-            session.notifyBad(Context.tr("File format error: Your file is to big."));
+            session.notifyWarning(Context.tr("File format error: Your file is to big."));
             return false;
         }
         return true;

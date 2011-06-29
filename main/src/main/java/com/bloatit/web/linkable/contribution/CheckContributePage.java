@@ -216,14 +216,14 @@ public final class CheckContributePage extends QuotationPage {
         group.add(ContactBox.generate(actor, process));
 
         if (process.isLocked()) {
-            getSession().notifyBad(tr("You have a payment in progress. The contribution is locked."));
+            getSession().notifyWarning(tr("You have a payment in progress. The contribution is locked."));
         }
         try {
             if (!process.getAmountToCharge().equals(preload) && preload != null) {
                 process.setAmountToCharge(preload);
             }
         } catch (final IllegalWriteException e) {
-            getSession().notifyBad(tr("The preload amount is locked during the payment process."));
+            getSession().notifyWarning(tr("The preload amount is locked during the payment process."));
         }
 
         // Total
@@ -235,7 +235,7 @@ public final class CheckContributePage extends QuotationPage {
                 process.setAmountToPay(quotation.subTotalTTCEntry.getValue());
             }
         } catch (final IllegalWriteException e) {
-            getSession().notifyBad(tr("The contribution's total amount is locked during the payment process."));
+            getSession().notifyWarning(tr("The contribution's total amount is locked during the payment process."));
         }
 
         final HtmlLineTableModel model = new HtmlLineTableModel();

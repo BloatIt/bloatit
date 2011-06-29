@@ -66,13 +66,13 @@ public final class MemberActivationAction extends ElveosAction {
                     session.notifyGood(Context.tr("Activation sucess, you are now logged."));
 
                 } else {
-                    session.notifyBad(Context.tr("Wrong activation key for this member."));
+                    session.notifyWarning(Context.tr("Wrong activation key for this member."));
                 }
             } else {
-                session.notifyBad(Context.tr("No activation needed for this member."));
+                session.notifyWarning(Context.tr("No activation needed for this member."));
             }
         } else {
-            session.notifyBad(Context.tr("Activation impossible on a not existing member."));
+            session.notifyWarning(Context.tr("Activation impossible on a not existing member."));
         }
 
         return to;

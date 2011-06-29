@@ -96,7 +96,7 @@ public class AdministrationAction extends AdminAction {
                         }
                         break;
                     case SET_VALIDATION_DATE:
-                        session.notifyBad("SetValidationDate not implemented yet.");
+                        session.notifyWarning("SetValidationDate not implemented yet.");
                         break;
                     case UPDATE_DEVELOPMENT_STATE:
                         Loaders.fromStr(Feature.class, id).updateDevelopmentState();
@@ -110,7 +110,7 @@ public class AdministrationAction extends AdminAction {
                             case DEVELOPPING:
                                 if (feature.getSelectedOffer() == null
                                         || feature.getSelectedOffer().getAmount().compareTo(feature.getContribution()) > 0) {
-                                    session.notifyBad("There is no offer or not enough money. So no development state for id: " + feature.getId()
+                                    session.notifyWarning("There is no offer or not enough money. So no development state for id: " + feature.getId()
                                             + ".");
                                 } else {
                                     feature.setFeatureState(FeatureState.DEVELOPPING);
@@ -127,7 +127,7 @@ public class AdministrationAction extends AdminAction {
                             case NO_FILTER:
                             default:
                                 Log.web().info("Wrong feature state. Nothing to do.");
-                                session.notifyBad("Wrong feature state. Nothing to do.");
+                                session.notifyWarning("Wrong feature state. Nothing to do.");
                                 break;
                         }
                         break;

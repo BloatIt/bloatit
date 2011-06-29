@@ -66,10 +66,10 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
             try {
                 team = invite.getTeam();
             } catch (final UnauthorizedPrivateReadOnlyAccessException e1) {
-                session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
+                session.notifyWarning(Context.tr("This invitation is not yours, you are not allowed to see it."));
                 return session.getLastVisitedPage();
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad(Context.tr("This invitation is not yours, you are not allowed to see it."));
+                session.notifyWarning(Context.tr("This invitation is not yours, you are not allowed to see it."));
                 return session.getLastVisitedPage();
             }
 
@@ -82,12 +82,12 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
                 if (me.acceptInvitation(invite)) {
                     session.notifyGood(Context.tr("You are now a member of team ''{0}''.", team.getDisplayName()));
                 } else {
-                    session.notifyBad(Context.tr("You cannot join the team ''{0}'', maybe you already have discarded this invitation.",
+                    session.notifyWarning(Context.tr("You cannot join the team ''{0}'', maybe you already have discarded this invitation.",
                                                  team.getDisplayName()));
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
-                session.notifyBad(Context.tr("Ooops, we couldn't display team name. It's a bug, please notify us."));
+                session.notifyWarning(Context.tr("Ooops, we couldn't display team name. It's a bug, please notify us."));
                 throw new ShallNotPassException("Couldn't display a team name, while user should be part of it.", e);
             }
             return new TeamPageUrl(team);
@@ -95,7 +95,7 @@ public final class HandleJoinTeamInvitationAction extends LoggedAction {
         try {
             me.refuseInvitation(invite);
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("Ooops, you tried to refuse a legitimate team invitation, but it failed. It's a bug please notify us."));
+            session.notifyWarning(Context.tr("Ooops, you tried to refuse a legitimate team invitation, but it failed. It's a bug please notify us."));
             throw new ShallNotPassException("User refuse a legitimate team invitation, but it failed.", e);
         }
         return session.getLastVisitedPage();

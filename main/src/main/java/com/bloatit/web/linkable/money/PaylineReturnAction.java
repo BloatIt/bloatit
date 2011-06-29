@@ -53,7 +53,7 @@ public final class PaylineReturnAction extends ElveosAction {
             try {
                 process.validatePayment(token);
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
+                session.notifyWarning(Context.tr("Right error when trying to validate the payment: {0}", process.getPaymentReference(token)));
             }
         } else if (ack.equals("cancel")) {
             process.refusePayment(token);

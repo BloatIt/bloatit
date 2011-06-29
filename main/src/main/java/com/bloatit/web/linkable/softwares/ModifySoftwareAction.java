@@ -153,7 +153,7 @@ public final class ModifySoftwareAction extends LoggedAction {
             final FileConstraintChecker fcc = new FileConstraintChecker(image);
             if (fcc.isImageAvatar() != null) {
                 for (final String message : fcc.isImageAvatar()) {
-                    session.notifyBad(message);
+                    session.notifyWarning(message);
                 }
                 return Context.getSession().pickPreferredPage();
             }

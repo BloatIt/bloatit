@@ -67,7 +67,7 @@ public final class MetaBugEditPage extends ElveosPage {
         } else {
             final MetaBug byId = MetaBugManager.getById(bugId);
             if (byId == null) {
-                Context.getSession().notifyBad("The bug you selected doesn't exist");
+                Context.getSession().notifyWarning("The bug you selected doesn't exist");
                 throw new RedirectException(new MetaBugsListPageUrl());
             }
             bugDescription.setDefaultValue(byId.getDescription());

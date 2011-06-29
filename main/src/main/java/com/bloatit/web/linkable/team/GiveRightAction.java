@@ -69,12 +69,12 @@ public final class GiveRightAction extends LoggedAction {
     protected Url checkRightsAndEverything(final Member me) {
         if (right == UserTeamRight.CONSULT && !give) {
             if (!targetMember.canBeKickFromTeam(team, me)) {
-                session.notifyBad(Context.tr("You are not allowed to remove people in the team"));
+                session.notifyWarning(Context.tr("You are not allowed to remove people in the team"));
                 throw new ShallNotPassException("Cannot display a team name");
             }
         } else {
             if (!team.canChangeRight(me, targetMember, right, give)) {
-                session.notifyBad(Context.tr("You are not allowed to promote people in the team {0}.", team.getDisplayName()));
+                session.notifyWarning(Context.tr("You are not allowed to promote people in the team {0}.", team.getDisplayName()));
                 return new TeamPageUrl(team);
             }
         }
@@ -89,7 +89,7 @@ public final class GiveRightAction extends LoggedAction {
             try {
                 targetMember.kickFromTeam(team, me);
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
+                session.notifyWarning("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
                 throw new ShallNotPassException("Cannot remove a member from a team", e);
             }
         } else {
@@ -106,7 +106,7 @@ public final class GiveRightAction extends LoggedAction {
     }
 
     private void waitingForJava7(final Exception e) {
-        session.notifyBad("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
+        session.notifyWarning("For an obscure reason you cannot remove this member from the team, please warn us of the bug.");
         throw new ShallNotPassException("Cannot remove a member from a team", e);
     }
 

@@ -74,7 +74,7 @@ public final class AccountPage extends LoggedPage {
         try {
             if (isTeamAccount()) {
                 if (!loggedUser.hasBankTeamRight(team)) {
-                    getSession().notifyBad(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));
+                    getSession().notifyWarning(tr("You haven't the right to see ''{0}'' group account.", team.getLogin()));
                     throw new PageNotFoundException();
                 }
             }

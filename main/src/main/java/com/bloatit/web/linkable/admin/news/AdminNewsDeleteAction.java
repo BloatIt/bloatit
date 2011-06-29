@@ -37,7 +37,7 @@ public class AdminNewsDeleteAction extends AdminAction {
     @Override
     protected Url checkRightsAndEverything(Member me) {
         if (target.isDeleted()) {
-            session.notifyBad("Canot delete a message twice.");
+            session.notifyWarning("Canot delete a message twice.");
             return new AdminNewsPageUrl();
         }
         return NO_ERROR;

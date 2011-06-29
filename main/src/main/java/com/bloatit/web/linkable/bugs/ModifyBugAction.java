@@ -74,12 +74,12 @@ public final class ModifyBugAction extends ElveosAction {
         final BugState currentState = bug.getState();
 
         if (currentLevel == level.getLevel() && currentState == state.getState()) {
-            session.notifyBad(Context.tr("You must change at least a small thing on the bug to modify it."));
+            session.notifyWarning(Context.tr("You must change at least a small thing on the bug to modify it."));
             return doProcessErrors();
         }
 
         if (state.getState() == BugState.PENDING && currentState != BugState.PENDING) {
-            session.notifyBad(Context.tr("You cannot set a bug to the pending state."));
+            session.notifyWarning(Context.tr("You cannot set a bug to the pending state."));
             return doProcessErrors();
         }
 

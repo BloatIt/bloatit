@@ -193,7 +193,7 @@ public class ModifyMemberAction extends LoggedAction {
                 } else {
                     if (imageErr != null) {
                         for (final String message : imageErr) {
-                            session.notifyBad(message);
+                            session.notifyWarning(message);
                         }
                     }
                     if (isEmpty(avatarFileName)) {
@@ -255,7 +255,7 @@ public class ModifyMemberAction extends LoggedAction {
                 error = true;
             }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("Fail to read your email."));
+            session.notifyWarning(Context.tr("Fail to read your email."));
             Log.web().error("Fail to read an email", e);
             error = true;
         }

@@ -66,7 +66,7 @@ public abstract class LoggedAction extends ElveosAction {
         if (userToken.isAuthenticated()) {
             session.notifyError(Context.tr("Messed up link. To make sure you are not a villain, you have re-login."));
         } else {
-            session.notifyBad(getRefusalReason());
+            session.notifyWarning(getRefusalReason());
         }
         session.setTargetPage(meUrl);
         transmitParameters();

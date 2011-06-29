@@ -71,7 +71,7 @@ public class SessionBar extends HtmlDiv {
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(new MoneyDisplayComponent(me.getInternalAccount().getAmount(), me)));
         } catch (final UnauthorizedOperationException e) {
             Context.getSession()
-                   .notifyBad(Context.tr("An unexpected error prevent us from displaying your internal account amount. Please notify us."));
+                   .notifyWarning(Context.tr("An unexpected error prevent us from displaying your internal account amount. Please notify us."));
         }
 
         // Display link to private messages

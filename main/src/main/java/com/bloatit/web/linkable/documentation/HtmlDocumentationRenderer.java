@@ -75,18 +75,18 @@ public class HtmlDocumentationRenderer extends PlaceHolderElement {
                 path = dir + "/" + type.getPath() + "/" + key + "_" + DEFAULT_LANGUAGE;
                 if (!load(path)) {
                     exist = false;
-                    Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
+                    Context.getSession().notifyWarning(Context.tr("Documentation entry {0} doesn''t exist.", key));
                     Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist");
                 } else {
                     Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist in language " + language);
                     final String notify = Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead.", key, language);
-                    Context.getSession().notifyBad(notify);
+                    Context.getSession().notifyWarning(notify);
                     exist = true;
                 }
             } else {
                 exist = false;
                 Log.web().warn("Documentation file " + type + "/" + key + " doesn't exist");
-                Context.getSession().notifyBad(Context.tr("Documentation entry {0} doesn''t exist.", key));
+                Context.getSession().notifyWarning(Context.tr("Documentation entry {0} doesn''t exist.", key));
             }
         } else {
             exist = true;

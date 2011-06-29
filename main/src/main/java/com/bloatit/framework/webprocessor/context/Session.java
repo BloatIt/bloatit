@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,9 +29,8 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 import com.bloatit.framework.utils.parameters.SessionParameters;
 import com.bloatit.framework.webprocessor.ErrorMessage;
 import com.bloatit.framework.webprocessor.ErrorMessage.Level;
-import com.bloatit.framework.webprocessor.annotations.Message;
-import com.bloatit.framework.webprocessor.components.meta.HtmlText;
 import com.bloatit.framework.webprocessor.components.meta.XmlNode;
+import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.webprocessor.url.UrlDump;
 import com.bloatit.framework.webprocessor.url.UrlParameter;
@@ -221,36 +219,27 @@ public final class Session {
     }
 
     public final synchronized void notifyGood(final String message) {
-        notifyGood(new HtmlText(message));
+        notificationList.add(new ErrorMessage(Level.INFO, new XmlText(message)));
     }
 
-    public final synchronized void notifyBad(final String message) {
-        notifyBad(new HtmlText(message));
+    public final synchronized void notifyWarning(final String message) {
+        notificationList.add(new ErrorMessage(Level.WARNING, new XmlText(message)));
     }
 
     public final synchronized void notifyError(final String message) {
-        notifyError(new HtmlText(message));
+        notificationList.add(new ErrorMessage(Level.FATAL, new XmlText(message)));
     }
 
     public final synchronized void notifyGood(final XmlNode message) {
         notificationList.add(new ErrorMessage(Level.INFO, message));
     }
 
-    public final synchronized void notifyBad(final XmlNode message) {
+    public final synchronized void notifyWarning(final XmlNode message) {
         notificationList.add(new ErrorMessage(Level.WARNING, message));
     }
 
     public final synchronized void notifyError(final XmlNode message) {
         notificationList.add(new ErrorMessage(Level.FATAL, message));
-    }
-
-    /**
-     * Notifies all elements in a list as warnings
-     */
-    public final synchronized void notifyList(final List<Message> errors) {
-        for (final Message error : errors) {
-            notifyError(error.getMessage());
-        }
     }
 
     public final synchronized void flushNotifications() {

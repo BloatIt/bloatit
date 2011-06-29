@@ -21,11 +21,12 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.exceptions.lowlevel.RedirectException;
 import com.bloatit.framework.model.ModelAccessor;
+import com.bloatit.framework.utils.datetime.DateUtils;
+import com.bloatit.framework.utils.datetime.TimeRenderer;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.ErrorMessage;
-import com.bloatit.framework.webprocessor.ErrorMessage.Level;
 import com.bloatit.framework.webprocessor.WebProcessor;
 import com.bloatit.framework.webprocessor.annotations.Message;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
@@ -36,7 +37,6 @@ import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.components.meta.XmlText;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.masters.Header.Robot;
-import com.bloatit.framework.webprocessor.url.Messages;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.framework.xcgiserver.HttpResponse;
 import com.bloatit.framework.xcgiserver.HttpResponse.StatusCode;
@@ -44,6 +44,7 @@ import com.bloatit.web.pages.master.HtmlNotification;
 
 public abstract class Page implements Linkable {
 
+    private static final int SECONDS_BEFORE_SHOWING_MESSAGE_PREFIX = 120;
     private final Url thisUrl;
     private Header pageHeader;
 
@@ -126,7 +127,7 @@ public abstract class Page implements Linkable {
 
     /**
      * A method that returns the list of page specific robots information
-     * inserted inside the {@code <meta name="robots>} tag in page header.
+     * inserted inside the {@code <meta name="robots">} tag in page header.
      * 
      * @return the list of keywords
      */
@@ -142,9 +143,8 @@ public abstract class Page implements Linkable {
 
         HtmlElement bodyContent;
         if (thisUrl.hasError()) {
-            final Messages messages = thisUrl.getMessages();
-            Context.getSession().notifyList(messages);
-            for (final Message message : messages) {
+            for (final Message message : thisUrl.getMessages()) {
+                Context.getSession().notifyError(message.getMessage());
                 Log.framework().trace("Error messages from Url system: " + message.getMessage());
             }
             // Abstract method cf: template method pattern
@@ -190,19 +190,15 @@ public abstract class Page implements Linkable {
 
     private void addWaitingNotifications() {
         for (final ErrorMessage notification : Context.getSession().getNotifications()) {
-            switch (notification.getLevel()) {
-                case FATAL:
-                    addNotification(new HtmlNotification(Level.FATAL, notification.getMessage()));
-                    break;
-                case WARNING:
-                    addNotification(new HtmlNotification(Level.WARNING, notification.getMessage()));
-                    break;
-                case INFO:
-                    addNotification(new HtmlNotification(Level.INFO, notification.getMessage()));
-                    break;
-                default:
-                    throw new BadProgrammerException("Unknown level: " + notification.getLevel());
+            final HtmlNotification note = new HtmlNotification(notification.getLevel());
+
+            if (notification.getCreationDate().before(DateUtils.nowMinusSomeSeconds(SECONDS_BEFORE_SHOWING_MESSAGE_PREFIX))) {
+                final TimeRenderer timeRenderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), notification.getCreationDate()));
+                timeRenderer.setPrefixSuffix(true);
+                note.addText(timeRenderer.render(FormatStyle.SHORT) + " - ");
             }
+            note.add(notification.getMessage());
+            addNotification(note);
         }
         Context.getSession().flushNotifications();
     }
