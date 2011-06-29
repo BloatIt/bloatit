@@ -1,7 +1,7 @@
 Markdown cheat sheet
 ====================
 
-[Full markdown documentation](/en/documentation/markdown)
+[Full markdown documentation](http://daringfireball.net/projects/markdown/syntax)
 <dl>
 <dt>2 spaces at the end of line</dt>
 <dd>force a line break</dd>
