@@ -89,8 +89,10 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                         // Try to display the title
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("feature_title");
-                        title.add(new SoftwaresTools.Link(feature.getSoftware()));
-                        title.addText(" – ");
+                        if(feature.hasSoftware()) {
+	                        title.add(new SoftwaresTools.Link(feature.getSoftware()));
+	                        title.addText(" – ");
+                        }
                         title.addText(FeaturesTools.getTitle(feature));
 
                         featureSummaryCenter.add(title);
