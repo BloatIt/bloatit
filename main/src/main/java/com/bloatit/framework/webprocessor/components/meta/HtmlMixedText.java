@@ -24,7 +24,10 @@ package com.bloatit.framework.webprocessor.components.meta;
  * The main use is to insert link in a translated text flow. The text must
  * contains tag like that:
  * </p>
- * <pre>Hello, you can <0:comment:follow this link>.</pre>
+ * 
+ * <pre>
+ * Hello, you can <0:comment:follow this link>.
+ * </pre>
  * <p>
  * In this exemple <0::follow this link> will be replaced by the parameters at
  * the index 0. The second field is is a comment, the text . If a third text
@@ -40,9 +43,9 @@ public class HtmlMixedText extends HtmlBranch {
 
         for (final String string : split) {
             if (index == 0) {
-                add(new XmlText(string.substring(1, string.length())));
+                add(new HtmlText(string.substring(1, string.length())));
             } else {
-                add(new XmlText(string));
+                add(new HtmlText(string));
             }
             index += string.length();
 
@@ -58,7 +61,6 @@ public class HtmlMixedText extends HtmlBranch {
 
     private void parseTag(final String tag, final HtmlElement parameters[]) {
         final String[] split = tag.split(":");
-
         if (split.length < 1) {
             add(new XmlText(" ### Invalid tag '" + tag + "'. Not enough content ### "));
             return;
@@ -71,14 +73,10 @@ public class HtmlMixedText extends HtmlBranch {
             return;
         }
 
-
-
         final HtmlElement node = parameters[paramIndex];
-
         if (split.length >= 3 && node instanceof HtmlBranch) {
             ((HtmlBranch) node).addText(split[2]);
         }
-
         add(node);
     }
 }

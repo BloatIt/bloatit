@@ -94,7 +94,8 @@ public class FeatureOfferListComponent extends HtmlDiv {
                         } else {
                             final HtmlSpan timeSpan = new HtmlSpan("bold");
                             timeSpan.addText(renderer.getTimeString());
-                            final HtmlMixedText timeToValid = new HtmlMixedText("This offer will go into development in about <0::>.", timeSpan);
+                            final HtmlMixedText timeToValid = new HtmlMixedText(Context.tr("This offer will go into development in about <0::>."),
+                                                                                timeSpan);
                             block.addInLeftColumn(timeToValid);
                         }
                     } else {

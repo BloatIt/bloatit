@@ -87,7 +87,7 @@ public class AccountComponent extends HtmlPageComponent {
         final HtmlDiv floatRight = new HtmlDiv("float_right");
         final HtmlDiv soldeBlock = new HtmlDiv("solde_block");
         final HtmlDiv soldeText = new HtmlDiv("solde_text");
-        if(loggedUser instanceof Team) {
+        if (loggedUser instanceof Team) {
             soldeText.addText(tr("The team currently have "));
         } else {
             soldeText.addText(tr("You currently have "));
@@ -120,7 +120,7 @@ public class AccountComponent extends HtmlPageComponent {
             }
 
             for (final Contribution contribution : contributions) {
-                if(contribution.getFeature().getFeatureState() != FeatureState.DISCARDED) {
+                if (contribution.getFeature().getFeatureState() != FeatureState.DISCARDED) {
                     sorter.add(new ContributionLine(contribution), contribution.getCreationDate());
                 } else {
                     sorter.add(new ContributionFailedLine(contribution), contribution.getCreationDate());
@@ -171,7 +171,7 @@ public class AccountComponent extends HtmlPageComponent {
         private HtmlDiv generateContributionDescription() {
             final HtmlDiv description = new HtmlDiv("description");
             final HtmlSpan softwareLink = new SoftwaresTools.Link(contribution.getFeature().getSoftware());
-            final HtmlMixedText descriptionString = new HtmlMixedText(contribution.getFeature().getTitle() + " (<0::>)", softwareLink);
+            final HtmlMixedText descriptionString = new HtmlMixedText(Context.tr("{0} (<0::>)", contribution.getFeature().getTitle()), softwareLink);
 
             String statusString = "";
             switch (contribution.getFeature().getFeatureState()) {
@@ -204,7 +204,6 @@ public class AccountComponent extends HtmlPageComponent {
         }
     }
 
-
     private static class ContributionFailedLine extends HtmlTableLine {
 
         private final Contribution contribution;
@@ -226,7 +225,6 @@ public class AccountComponent extends HtmlPageComponent {
             return title;
         }
     }
-
 
     private static class MoneyWithdrawalLine extends HtmlTableLine {
 
@@ -265,7 +263,7 @@ public class AccountComponent extends HtmlPageComponent {
             description.add(new HtmlDefineParagraph(tr("IBAN: "), moneyWithdrawal.getIBAN()));
             description.add(new HtmlDefineParagraph(tr("Reference: "), moneyWithdrawal.getReference()));
             if (moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REQUESTED) {
-                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(Context.getSession().getShortKey(),moneyWithdrawal);
+                final CancelWithdrawMoneyActionUrl cancelUrl = new CancelWithdrawMoneyActionUrl(Context.getSession().getShortKey(), moneyWithdrawal);
                 final HtmlMixedText statusWithCancel = new HtmlMixedText(tr("{0} (<0::cancel withdrawal>)", statusString), cancelUrl.getHtmlLink());
                 description.add(new HtmlDefineParagraph(tr("Status: "), statusWithCancel));
             } else {
@@ -307,9 +305,10 @@ public class AccountComponent extends HtmlPageComponent {
                                                                                .getCurrency(bankTransaction.getValuePaid())
                                                                                .getTwoDecimalEuroString()));
 
-            final Invoice invoice =  bankTransaction.getInvoice();
-            if(invoice != null) {
-            description.add(new HtmlDefineParagraph(tr("Invoice: "), new InvoiceResourceUrl(invoice).getHtmlLink("invoice-" + invoice.getInvoiceNumber()+".pdf")));
+            final Invoice invoice = bankTransaction.getInvoice();
+            if (invoice != null) {
+                description.add(new HtmlDefineParagraph(tr("Invoice: "), new InvoiceResourceUrl(invoice).getHtmlLink("invoice-"
+                        + invoice.getInvoiceNumber() + ".pdf")));
 
             }
 
