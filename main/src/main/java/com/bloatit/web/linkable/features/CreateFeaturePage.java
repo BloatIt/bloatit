@@ -93,7 +93,9 @@ public final class CreateFeaturePage extends CreateUserContentPage {
         // Linked software
         final FieldData softwareFieldData = doCreateUrl.getSoftwareParameter().pickFieldData();
         final HtmlDropDown softwareInput = new HtmlDropDown(softwareFieldData.getName(), Context.tr("Software"));
-        softwareInput.addDropDownElement("", Context.tr("Select a software"));
+        
+        softwareInput.addDropDownElement("", Context.tr("Select a software")).setDisabled();
+        softwareInput.addDropDownElement("", Context.tr("New software"));
         for (final Software software : SoftwareManager.getAll()) {
             softwareInput.addDropDownElement(String.valueOf(software.getId()), software.getName());
         }
