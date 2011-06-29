@@ -33,6 +33,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 /**
@@ -88,7 +89,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * applies on this kudosable. it is a cached value (It could be calculated)
      */
     @Basic(optional = false)
-    @Field(store = Store.NO)
+    @Field(store = Store.NO, index=Index.UN_TOKENIZED)
     private int popularity;
 
     @OneToMany(mappedBy = "kudosable")
@@ -97,7 +98,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     private final List<DaoKudos> kudos = new ArrayList<DaoKudos>(0);
 
     @Basic(optional = false)
-    @Field(store = Store.NO)
+    @Field(store = Store.NO, index=Index.UN_TOKENIZED)
     @Enumerated
     private PopularityState state;
 

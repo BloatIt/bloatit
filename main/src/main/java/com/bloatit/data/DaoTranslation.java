@@ -29,7 +29,10 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
 
@@ -47,6 +50,7 @@ public class DaoTranslation extends DaoKudosable {
     private Locale locale;
 
     @Column(columnDefinition = "TEXT", nullable = false)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String title;
 
     @Embedded

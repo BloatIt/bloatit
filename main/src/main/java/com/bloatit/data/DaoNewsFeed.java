@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 
 import org.hibernate.HibernateException;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
@@ -28,7 +29,7 @@ public class DaoNewsFeed extends DaoIdentifiable {
     private Date creationDate;
 
     @Basic(optional = false)
-    @Field(store = Store.YES)
+    @Field(store = Store.YES, index=Index.UN_TOKENIZED)
     private boolean isDeleted;
 
     // ======================================================================
@@ -46,7 +47,7 @@ public class DaoNewsFeed extends DaoIdentifiable {
         return newsFeed;
     }
 
-    private DaoNewsFeed(String message) {
+    private DaoNewsFeed(final String message) {
         super();
         if (message == null) {
             throw new NonOptionalParameterException("message cannot be null");
@@ -102,7 +103,7 @@ public class DaoNewsFeed extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -131,24 +132,31 @@ public class DaoNewsFeed extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoNewsFeed other = (DaoNewsFeed) obj;
+        }
+        final DaoNewsFeed other = (DaoNewsFeed) obj;
         if (creationDate == null) {
-            if (other.creationDate != null)
+            if (other.creationDate != null) {
                 return false;
-        } else if (!creationDate.equals(other.creationDate))
+            }
+        } else if (!creationDate.equals(other.creationDate)) {
             return false;
+        }
         if (message == null) {
-            if (other.message != null)
+            if (other.message != null) {
                 return false;
-        } else if (!message.equals(other.message))
+            }
+        } else if (!message.equals(other.message)) {
             return false;
+        }
         return true;
     }
 }
