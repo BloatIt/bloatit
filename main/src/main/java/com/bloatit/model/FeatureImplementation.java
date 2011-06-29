@@ -583,6 +583,11 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public Software getSoftware()  {
         return Software.create(getDao().getSoftware());
     }
+    
+    @Override
+	public boolean hasSoftware() {
+		return getSoftware() != null;
+	}
 
     @Override
     public PageIterable<Offer> getOffers() {
@@ -741,5 +746,7 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
+	
 
 }

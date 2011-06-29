@@ -196,6 +196,11 @@ public interface Feature extends KudosableInterface, Commentable {
     Software getSoftware();
 
     /**
+     * @return true if there is a software assigned to the feature
+     */
+    boolean hasSoftware();
+    
+    /**
      * @return all the offers on this feature.
      */
     PageIterable<Offer> getOffers();
@@ -237,4 +242,6 @@ public interface Feature extends KudosableInterface, Commentable {
     void setFeatureState(FeatureState featureState) throws UnauthorizedOperationException;
 
     BigDecimal getContributionOf(Member member);
+
+	
 }

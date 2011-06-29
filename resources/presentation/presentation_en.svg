@@ -14,7 +14,7 @@
    width="2511.9346"
    height="698.1936"
    id="svg10401"
-   inkscape:version="0.48.0 r9654"
+   inkscape:version="0.48.1 r9760"
    sodipodi:docname="presentation_en.svg">
   <defs
      id="defs4897" />
@@ -27,16 +27,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1918"
-     inkscape:window-height="1155"
+     inkscape:window-width="1920"
+     inkscape:window-height="1148"
      id="namedview4895"
      showgrid="false"
-     inkscape:zoom="0.84556342"
-     inkscape:cx="717.13541"
-     inkscape:cy="254.02692"
-     inkscape:window-x="0"
-     inkscape:window-y="19"
-     inkscape:window-maximized="0"
+     inkscape:zoom="0.42278171"
+     inkscape:cx="686.68634"
+     inkscape:cy="312.21193"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg10401" />
   <metadata
      id="metadata10406">
@@ -128,7 +128,7 @@
          x="125"
          height="55.346622"
          width="87.889954" /></flowRegion><flowPara
-       id="flowPara5277">Implement the feature</flowPara></flowRoot>  <flowRoot
+       id="flowPara5277">Create the feature</flowPara></flowRoot>  <flowRoot
      style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
      xml:space="preserve"
      id="flowRoot6016"

@@ -54,7 +54,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 offersBlock.add(new HtmlTitle(tr("No offer"), 1));
                 final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
                 offersBlock.add(block);
-                block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The first offer is selected by default.")));
+                block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The first offer will be selected by default.")));
 
                 final HtmlLink link = new MakeOfferPageUrl(feature).getHtmlLink(tr("Make an offer"));
                 link.setCssClass("button");

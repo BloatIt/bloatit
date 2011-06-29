@@ -180,16 +180,17 @@ public final class HtmlFeatureSummary extends HtmlDiv {
      */
     private XmlNode generateTitle() throws UnauthorizedOperationException {
         final Translation translatedDescription = feature.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
-        if (feature.getSoftware() != null) {
-            softwareSpan.addText(feature.getSoftware().getName());
-        }else {
-            softwareSpan.addText(Context.tr("No software"));
-        }
+        
         final HtmlTitle title = new HtmlTitle(1);
         title.setCssClass("feature_title");
-        title.add(softwareSpan);
-        title.addText(" – ");
+        
+        if (feature.getSoftware() != null) {
+        	final HtmlSpan softwareSpan = new HtmlSpan("feature_software_title");
+            softwareSpan.addText(feature.getSoftware().getName());
+            title.add(softwareSpan);
+            title.addText(" – ");
+        }
+        
         title.add(new FeaturePageUrl(feature, TabKey.description).getHtmlLink(translatedDescription.getTitle()));
 
         return title;

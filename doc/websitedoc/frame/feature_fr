@@ -12,7 +12,7 @@ Un développeur peut alors **faire une offre** pour réaliser la demande.
 ------------------
 Durant sa vie, une demande peut avoir différents états :
 
- * Financement, l'état initial. Dure jusqu'a ce qu'assez d'argent soit levé.
+ * Financement, l'état initial. Dure jusqu'à ce qu'assez d'argent soit levé.
  * Validation de l'offre, un court moment permettant aux contributeurs d'accepter ou de refuser une offre de développement.
  * En développement, jusqu'à ce que la demande soit totalement développée (cette phase inclut la validation).
  * Succès, quand tout s'est bien passé.
