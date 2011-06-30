@@ -235,6 +235,7 @@ public final class HttpResponse {
         try {
             final String resourceXml = resource.getXmlString();
             writeLine("Content-Type: text/xml");
+            writeLine("Access-Control-Allow-Origin: *");
             closeHeaders();
             final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
             htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
@@ -273,6 +274,7 @@ public final class HttpResponse {
      */
     private void writeRestError(final StatusCode status, final String message, final Exception e) throws IOException {
         writeLine("Content-Type: text/xml");
+        writeLine("Access-Control-Allow-Origin: *");
         closeHeaders();
         final IndentedHtmlStream htmlText = new IndentedHtmlStream(output);
         htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
