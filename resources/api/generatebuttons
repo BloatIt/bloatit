@@ -42,10 +42,10 @@ generateButtons () {
 
 }
 
-generateButtons "button_short_base.svg" "short" 18 "small" "347.26497,499.97307"
-generateButtons "button_short_base.svg" "short" 24 "medium" "347.26497,499.97307"
-generateButtons "button_short_base.svg" "short" 32 "big" "347.26497,499.97307"
+generateButtons "button_short_base.svg" "short" 20 "small" "347.26497,499.97307"
+generateButtons "button_short_base.svg" "short" 26 "medium" "347.26497,499.97307"
+generateButtons "button_short_base.svg" "short" 34 "big" "347.26497,499.97307"
 
-generateButtons "button_long_base.svg" "long" 18 "small"    "402.40789,614.25878"
-generateButtons "button_long_base.svg" "long" 24 "medium"    "402.40789,614.25878"
-generateButtons "button_long_base.svg" "long" 32 "big"    "402.40789,614.25878"
+generateButtons "button_long_base.svg" "long" 20 "small"    "402.40789,614.25878"
+generateButtons "button_long_base.svg" "long" 26 "medium"    "402.40789,614.25878"
+generateButtons "button_long_base.svg" "long" 34 "big"    "402.40789,614.25878"

@@ -15,7 +15,7 @@
    id="svg4783"
    version="1.1"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="button_base.svg"
+   sodipodi:docname="button_short_base.svg"
    inkscape:export-filename="/home/fred/bloatit/resources/api/button_base.png"
    inkscape:export-xdpi="24.676126"
    inkscape:export-ydpi="24.676126">
@@ -71,8 +71,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="-2.7363615"
-     inkscape:cy="20.865831"
+     inkscape:cx="-88.894666"
+     inkscape:cy="22.422056"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -93,7 +93,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -103,7 +103,7 @@
      id="layer1"
      transform="translate(-248.08217,-499.537)">
     <path
-       style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
        d="m 347.26497,499.97307 149.04109,0 c 2.88064,0 5.19971,2.31906 5.19971,5.1997 l 0,54.37882 c 0,2.88064 -2.31907,5.1997 -5.19971,5.1997 l -149.04109,0 c -2.88064,0 -5.19971,-2.31906 -5.19971,-5.1997 l 0,-16.72616 -11.56138,-10.46325 11.56138,-10.46325 0,-16.72616 c 0,-2.88064 2.31907,-5.1997 5.19971,-5.1997 z"
        id="path4657"
        inkscape:connector-curvature="0"
@@ -120,9 +120,19 @@
        id="path4661"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ssssssscccss" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.85100001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path6041"
+       sodipodi:cx="37.123104"
+       sodipodi:cy="31.55785"
+       sodipodi:rx="28.53681"
+       sodipodi:ry="28.031733"
+       d="m 65.659914,31.55785 a 28.53681,28.031733 0 1 1 -57.0736198,0 28.53681,28.031733 0 1 1 57.0736198,0 z"
+       transform="translate(248.08217,499.537)" />
     <g
        id="g4689"
-       transform="matrix(0.33523119,0,0,0.33523119,250.18446,395.97515)">
+       transform="matrix(0.31463864,0,0,0.31463864,252.35353,404.35312)">
       <path
          style="fill:#00526c;fill-opacity:1;stroke:none"
          d="M 96.78125,0 C 95.939672,0.01178363 95.095873,0.02921407 94.25,0.0625 40.114136,2.1927992 -2.0677996,47.83288 0.0625,101.96875 2.1927996,156.10462 47.832886,198.2553 101.96875,196.125 l 0.0312,0 C 156.12026,193.97438 198.25472,148.37109 196.125,94.25 194.02799,40.960003 149.80065,-0.74236854 96.78125,0 z m 2.25,12.09375 c 40.10079,0.450696 73.22036,32.244554 74.8125,72.71875 1.6435,41.77981 -30.94874,76.97827 -72.78125,78.625 -41.832507,1.64673 -77.075251,-30.87644 -78.71875,-72.65625 -1.643051,-41.768408 30.929551,-76.962594 72.75,-78.625 l 0.03125,0 c 1.307266,-0.05146 2.612676,-0.07704 3.90625,-0.0625 z"
