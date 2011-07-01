@@ -460,6 +460,10 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
                 }
             }
         }
+
+        if (getSelectedOffer() == null) {
+            setFeatureStateUnprotected(FeatureState.PENDING);
+        }
     }
 
     /**

@@ -51,7 +51,12 @@ public class FeatureOfferListComponent extends HtmlDiv {
 
         switch (feature.getFeatureState()) {
             case PENDING: {
-                offersBlock.add(new HtmlTitle(tr("No offer"), 1));
+                if (nbUnselected > 0) {
+                    offersBlock.add(new HtmlTitle(tr("No selected offer"), 1));
+                } else {
+                    offersBlock.add(new HtmlTitle(tr("No offer"), 1));
+                }
+
                 final BicolumnOfferBlock block = new BicolumnOfferBlock(true);
                 offersBlock.add(block);
                 block.addInLeftColumn(new HtmlParagraph(tr("There is not yet offer to develop this feature. The first offer will be selected by default.")));
@@ -63,6 +68,11 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 {
                     noOffer.add(link);
                 }
+
+                if (nbUnselected > 0) {
+                    generateUnselectedOfferList(feature, userToken, offers, nbUnselected, selectedOffer, offersBlock);
+                }
+
                 block.addInRightColumn(noOffer);
             }
 
@@ -108,18 +118,7 @@ public class FeatureOfferListComponent extends HtmlDiv {
                     block.addInRightColumn(new OfferBlock(selectedOffer, true, userToken));
                 }
 
-                // UnSelected
-                offersBlock.add(new HtmlTitle(trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
-                final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
-                offersBlock.add(unselectedBlock);
-                unselectedBlock.addInLeftColumn(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
-                unselectedBlock.addInLeftColumn(new HtmlParagraph("The concurrent offers must be voted enough to become the selected offer."));
-
-                for (final Offer offer : offers) {
-                    if (offer != selectedOffer) {
-                        unselectedBlock.addInRightColumn(new OfferBlock(offer, false, userToken));
-                    }
-                }
+                generateUnselectedOfferList(feature, userToken, offers, nbUnselected, selectedOffer, offersBlock);
                 break;
             }
             case DEVELOPPING:
@@ -150,6 +149,26 @@ public class FeatureOfferListComponent extends HtmlDiv {
                 break;
         }
         add(offersBlock);
+    }
+
+    private void generateUnselectedOfferList(final Feature feature,
+                                             ElveosUserToken userToken,
+                                             PageIterable<Offer> offers,
+                                             int nbUnselected,
+                                             final Offer selectedOffer,
+                                             final HtmlDiv offersBlock) {
+        // UnSelected
+        offersBlock.add(new HtmlTitle(trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
+        final BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
+        offersBlock.add(unselectedBlock);
+        unselectedBlock.addInLeftColumn(new MakeOfferPageUrl(feature).getHtmlLink(tr("Make a concurrent offer")));
+        unselectedBlock.addInLeftColumn(new HtmlParagraph(tr("Vote on a competing offer to select it.")));
+
+        for (final Offer offer : offers) {
+            if (offer != selectedOffer) {
+                unselectedBlock.addInRightColumn(new OfferBlock(offer, false, userToken));
+            }
+        }
     }
 
     private void generateOldOffersList(final PageIterable<Offer> offers,

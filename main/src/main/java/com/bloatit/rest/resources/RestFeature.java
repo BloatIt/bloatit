@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.bloatit.data.DaoFeature.FeatureState;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.restprocessor.RestElement;
 import com.bloatit.framework.restprocessor.RestServer.RequestMethod;
@@ -161,6 +162,11 @@ public class RestFeature extends RestElement<Feature> {
         return model.getState();
     }
 
+    @XmlAttribute
+    public FeatureState getFeatureState() {
+        return model.getFeatureState();
+    }
+
     @XmlElement
     public String getTitle() {
         return model.getTitle();
@@ -208,6 +214,15 @@ public class RestFeature extends RestElement<Feature> {
     @XmlElement
     public RestOfferList getOffers() {
         return new RestOfferList(model.getOffers());
+    }
+
+    @XmlElement
+    @XmlIDREF
+    public RestOffer getSelectedOffer() {
+        if (model.getSelectedOffer() != null) {
+            return new RestOffer(model.getSelectedOffer());
+        }
+        return null;
     }
 
     /**

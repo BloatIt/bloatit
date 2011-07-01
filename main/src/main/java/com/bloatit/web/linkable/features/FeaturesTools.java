@@ -197,7 +197,10 @@ public class FeaturesTools {
             progressText.setCssClass("progress_text");
 
             progressText.add(amount);
-            progressText.addText(Context.tr(" no offer"));
+
+            final FeaturePageUrl offersFeatureUrl = new FeaturePageUrl(feature, TabKey.offers);
+            offersFeatureUrl.setAnchor("feature_tab_pane");
+            progressText.add(offersFeatureUrl.getHtmlLink(Context.tr("make an offer")));
 
             return progressText;
         }
@@ -255,8 +258,10 @@ public class FeaturesTools {
                 offersFeatureUrl.setAnchor("feature_tab_pane");
 
                 final int offersCount = feature.getOffers().size();
-                featureSummaryDetails.addText(" – ");
-                featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, offersCount)));
+                if (feature.getSelectedOffer() != null) {
+                    featureSummaryDetails.addText(" – ");
+                    featureSummaryDetails.add(offersFeatureUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, offersCount)));
+                }
 
             } else if (feature.getFeatureState() == FeatureState.DEVELOPPING) {
                 // DEVELOPPING we add bug count and release count
