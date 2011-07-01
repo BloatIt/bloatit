@@ -36,7 +36,7 @@ generateButtons () {
 
     TARGET_PATH="m $svg_from  149.04109,0 c 2.88064,0 5.19971,2.31906 5.19971,5.1997 l 0,54.37882 c 0,2.88064 -2.31907,5.1997 -5.19971,5.1997 l -149.04109,0 c -2.88064,0 -5.19971,-2.31906 -5.19971,-5.1997 l 0,-16.72616 -11.56138,-10.46325 11.56138,-10.46325 0,-16.72616 c 0,-2.88064 2.31907,-5.1997 5.19971,-5.1997 z"
     xmlstarlet ed  -N "svg=http://www.w3.org/2000/svg" -u "//svg:svg/svg:g/svg:path[@id='progress']/@d" -v "$TARGET_PATH" $base > $TEMP_SVG
-    xmlstarlet ed -L -N "svg=http://www.w3.org/2000/svg" -u "//svg:svg/svg:g/svg:path[@id='progress']/@style" -v "fill:#9ef177;fill-opacity:1;fill-rule:evenodd;stroke:none" $TEMP_SVG    
+    xmlstarlet ed -L -N "svg=http://www.w3.org/2000/svg" -u "//svg:svg/svg:g/svg:path[@id='progress']/@style" -v "fill:#b2f494;fill-opacity:1;fill-rule:evenodd;stroke:none" $TEMP_SVG    
     inkscape -e $OUTPUT_DIR_PREFIX"commons/api/button_${lenght}_${type}_success.png" -C -h $height $TEMP_SVG
     optipng $OUTPUT_DIR_PREFIX"commons/api/button_${lenght}_${type}_success.png"
 

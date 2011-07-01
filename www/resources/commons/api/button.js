@@ -32,8 +32,10 @@ function elveos_startGenerateButton(button) {
     //var host = 'http://f2.b219.org:8081'
     var host = 'http://'+ window.location.hostname;    
     elveos_ajax(host + '/rest/features/'+featureId, function(xml) {
-    contribution = parseFloat(xml.getElementsByTagName('contribution')[0].firstChild.data);
-    progression = parseFloat(xml.getElementsByTagName('feature')[0].getAttribute("progression"));
+    var contribution = parseFloat(xml.getElementsByTagName('contribution')[0].firstChild.data);
+    var progression = parseFloat(xml.getElementsByTagName('feature')[0].getAttribute("progression"));
+    var featureState = xml.getElementsByTagName('feature')[0].getAttribute("featureState");
+    var offerCount = xml.getElementsByTagName('offers').length;
     button.innerHTML = "" + contribution + " €";
     button.style.display = "inline-block";
     button.style.textAlign = "center";
@@ -69,10 +71,16 @@ function elveos_startGenerateButton(button) {
     }
     
     var progress = parseInt(progression);
-    progress = progress/10;
-    progress = progress*10;
+    progress = progress - progress%10;
+    
     if(progress > 100) {
         progress = 100;
+    }
+    
+    if(contribution == 0 || featureState == "PENDING") {
+        progress = "empty";
+    } else if (featureState == "FINISHED") {
+        progress = "success";
     }
     
     button.style.background = "url(\""+host+"/resources/commons/api/button_"+buttonStyle+"_"+progress+".png\") no-repeat scroll 0 0 transparent";

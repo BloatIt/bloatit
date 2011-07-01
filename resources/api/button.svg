@@ -557,9 +557,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.32"
-     inkscape:cx="375.09775"
-     inkscape:cy="146.01082"
+     inkscape:zoom="0.58"
+     inkscape:cx="-49.119004"
+     inkscape:cy="371.94819"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -927,7 +927,7 @@
              style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;letter-spacing:0px;fill:#00526c;fill-opacity:1;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">Elveos</flowPara></flowRoot>      </g>
     </g>
     <path
-       style="fill:#9ef177;fill-opacity:1;fill-rule:evenodd;stroke:#ababab;stroke-width:0.85124552;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
+       style="fill:#b2f494;fill-opacity:1;fill-rule:evenodd;stroke:#ababab;stroke-width:0.85124551999999998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
        d="m 348.3078,955.27383 149.04109,0 c 2.88064,0 5.19971,2.31906 5.19971,5.1997 l 0,54.37887 c 0,2.8806 -2.31907,5.1997 -5.19971,5.1997 l -149.04109,0 c -2.88064,0 -5.19971,-2.3191 -5.19971,-5.1997 l 0,-16.72621 -11.56138,-10.46325 11.56138,-10.46325 0,-16.72616 c 0,-2.88064 2.31907,-5.1997 5.19971,-5.1997 z"
        id="path4635"
        inkscape:connector-curvature="0"

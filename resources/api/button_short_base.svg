@@ -70,17 +70,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="-88.894666"
-     inkscape:cy="22.422056"
+     inkscape:zoom="0.35"
+     inkscape:cx="-72.093509"
+     inkscape:cy="-95.865056"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1148"
-     inkscape:window-x="-2"
-     inkscape:window-y="-3"
-     inkscape:window-maximized="1"
+     inkscape:window-width="901"
+     inkscape:window-height="928"
+     inkscape:window-x="913"
+     inkscape:window-y="245"
+     inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -113,7 +113,7 @@
        inkscape:connector-curvature="0"
        id="progress"
        d="m 347.26497,499.97307 100.8172,0 0,64.77822 -100.8172,0 c -2.88064,0 -5.19971,-2.31906 -5.19971,-5.1997 l 0,-16.72616 -11.56138,-10.46325 11.56138,-10.46325 0,-16.72616 c 0,-2.88064 2.31907,-5.1997 5.19971,-5.1997 z"
-       style="fill:#77cff1;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+       style="fill:#94d9f4;fill-opacity:1;fill-rule:evenodd;stroke:none" />
     <path
        style="fill:none;stroke:#5e5e5e;stroke-width:0.85124551999999998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
        d="m 347.26497,499.97307 149.04109,0 c 2.88064,0 5.19971,2.31906 5.19971,5.1997 l 0,54.37882 c 0,2.88064 -2.31907,5.1997 -5.19971,5.1997 l -149.04109,0 c -2.88064,0 -5.19971,-2.31906 -5.19971,-5.1997 l 0,-16.72616 -11.56138,-10.46325 11.56138,-10.46325 0,-16.72616 c 0,-2.88064 2.31907,-5.1997 5.19971,-5.1997 z"
@@ -128,7 +128,7 @@
        sodipodi:cy="31.55785"
        sodipodi:rx="28.53681"
        sodipodi:ry="28.031733"
-       d="m 65.659914,31.55785 a 28.53681,28.031733 0 1 1 -57.0736198,0 28.53681,28.031733 0 1 1 57.0736198,0 z"
+       d="m 65.659914,31.55785 c 0,15.481498 -12.776365,28.031732 -28.53681,28.031732 -15.760445,0 -28.5368098,-12.550234 -28.5368098,-28.031732 0,-15.481499 12.7763648,-28.0317327 28.5368098,-28.0317327 15.760445,0 28.53681,12.5502337 28.53681,28.0317327 z"
        transform="translate(248.08217,499.537)" />
     <g
        id="g4689"
