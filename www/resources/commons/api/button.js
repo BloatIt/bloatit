@@ -24,6 +24,36 @@ function elveos_ajax(url, callback) {
     xhr.send(null);
 }
 
+
+function elveos_round(value, decimal) {
+    return parseFloat((value).toFixed(decimal));
+}
+
+function elveos_formatMoney(contribution) {
+    if(contribution > 999999) {
+        value = contribution / 1000000;
+        unit = "M€";
+    } else if(contribution > 1999) {
+        value = contribution / 1000;
+        unit = "k€";
+    } else {
+        value = contribution
+        unit = "€";
+    }
+    
+    if(value >= 10) {
+        textValue = elveos_round(value, 0);
+    } else  {
+        textValue = elveos_round(value, 1);
+    }
+    
+    return "" + textValue + " " +unit;
+    
+}
+
+
+
+
 function elveos_startGenerateButton(button) {
     var featureId = button.getAttribute('data-feature-id');
     var buttonStyle = button.getAttribute('data-button-style');
@@ -36,7 +66,7 @@ function elveos_startGenerateButton(button) {
     var progression = parseFloat(xml.getElementsByTagName('feature')[0].getAttribute("progression"));
     var featureState = xml.getElementsByTagName('feature')[0].getAttribute("featureState");
     var offerCount = xml.getElementsByTagName('offers').length;
-    button.innerHTML = "" + contribution + " €";
+    button.innerHTML = elveos_formatMoney(contribution);
     button.style.display = "inline-block";
     button.style.textAlign = "center";
     button.style.font= "bold 12px/20px Arial,Sans";
@@ -83,17 +113,14 @@ function elveos_startGenerateButton(button) {
     
     var progress = parseInt(progression);
     progress = progress - progress%10;
-    
-    if(progress > 100) {
-        progress = 100;
-    }
-    
+   
     if(contribution == 0 || featureState == "PENDING") {
         progress = "empty";
     } else if (featureState == "FINISHED") {
         progress = "success";
-    }
-    
+    } else if (progress > 100) {
+        progress = 100;
+    } 
     button.style.background = "url(\""+host+"/resources/commons/api/button_"+buttonStyle+"_"+progress+".png\") no-repeat scroll 0 0 transparent";
     }
     );
