@@ -1,6 +1,5 @@
 //button.js
 
-
 function elveos_ajax(url, callback) {
     //var xhr;
     
@@ -24,7 +23,6 @@ function elveos_ajax(url, callback) {
     xhr.send(null);
 }
 
-
 function elveos_round(value, decimal) {
     return parseFloat((value).toFixed(decimal));
 }
@@ -40,19 +38,13 @@ function elveos_formatMoney(contribution) {
         value = contribution
         unit = "€";
     }
-    
     if(value >= 10) {
         textValue = elveos_round(value, 0);
     } else  {
         textValue = elveos_round(value, 1);
     }
-    
     return "" + textValue + " " +unit;
-    
 }
-
-
-
 
 function elveos_startGenerateButton(button) {
     var featureId = button.getAttribute('data-feature-id');
