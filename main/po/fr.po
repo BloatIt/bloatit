@@ -516,8 +516,8 @@ msgstr[1] "{0} offres"
 #, java-format
 msgid "{0} open bug"
 msgid_plural "{0} open bugs"
-msgstr[0] "{0} bug ouvert."
-msgstr[1] "{0} bugs ouverts."
+msgstr[0] "{0} bug ouvert"
+msgstr[1] "{0} bugs ouverts"
 
 #: com/bloatit/web/linkable/features/FeaturesTools.java:278
 #, java-format
