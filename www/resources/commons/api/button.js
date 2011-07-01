@@ -48,26 +48,37 @@ function elveos_startGenerateButton(button) {
         button.style.height = "20px";
         button.style.width = "50px";
         button.style.paddingLeft = "27px";
+        button.style.fontSize = "11px";
     } else if (buttonStyle == "short_medium") {
-        button.style.height = "24px";
-        button.style.width = "93px";
-        //button.style.paddingLeft = "20px";
+        button.style.lineHeight= "26px";
+        button.style.height = "26px";
+        button.style.width = "64px";
+        button.style.paddingLeft = "37px";
+        button.style.fontSize = "16px";
     } else if (buttonStyle == "short_big") {
-        button.style.height = "32px";
-        button.style.width = "124px";
-        //button.style.paddingLeft = "20px";
+        button.style.lineHeight= "34px";
+        button.style.height = "34px";
+        button.style.width = "83px";
+        button.style.paddingLeft = "48px";
+        button.style.fontSize = "18px";
     } else if (buttonStyle == "long_small") {
+        button.style.lineHeight= "20px";
         button.style.height = "20px";
-        button.style.width = "49px";
+        button.style.width = "50px";
         button.style.paddingLeft = "74px";
+        button.style.fontSize = "11px";
     } else if (buttonStyle == "long_medium") {
-        button.style.height = "24px";
-        button.style.width = "160px";
-        //button.style.paddingLeft = "20px";
+        button.style.lineHeight= "26px";
+        button.style.height = "26px";
+        button.style.width = "65px";
+        button.style.paddingLeft = "95px";
+        button.style.fontSize = "16px";
     } else if (buttonStyle == "long_big") {
-        button.style.height = "32px";
-        button.style.width = "214px";
-        //button.style.paddingLeft = "20px";
+        button.style.lineHeight= "34px";
+        button.style.height = "34px";
+        button.style.width = "83px";
+        button.style.paddingLeft = "127px";
+        button.style.fontSize = "18px";
     }
     
     var progress = parseInt(progression);
