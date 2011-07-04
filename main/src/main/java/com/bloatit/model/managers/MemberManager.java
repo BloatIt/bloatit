@@ -20,7 +20,6 @@ import org.hibernate.Query;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.data.DaoActor;
-import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.queries.DBRequests;
