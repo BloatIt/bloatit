@@ -57,6 +57,7 @@ import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributionProcessUrl;
 import com.bloatit.web.url.CreateReleasePageUrl;
 import com.bloatit.web.url.FeatureModerationPageUrl;
+import com.bloatit.web.url.FeaturePageAliasUrl;
 import com.bloatit.web.url.MakeOfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ReleasePageUrl;
@@ -216,7 +217,9 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         identicaBlock.addAttribute("style", "background-color: white;border: 1px solid #ddd;display:inline-block;");
 
-        HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',l=d.location,e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20'+l.href;function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()");
+        HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20"
+                + new FeaturePageAliasUrl(feature).externalUrlString()
+                + "';function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()");
         HtmlImage backgroundImage = new HtmlImage(new Image("/resources/commons/img/share/identica.png"), "identi.ca");
         backgroundImage.addAttribute("style", "border:none;");
         actionLink.add(backgroundImage);

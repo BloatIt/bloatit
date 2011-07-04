@@ -70,6 +70,7 @@ import com.bloatit.web.linkable.features.CreateFeatureAction;
 import com.bloatit.web.linkable.features.CreateFeaturePage;
 import com.bloatit.web.linkable.features.FeatureListPage;
 import com.bloatit.web.linkable.features.FeaturePage;
+import com.bloatit.web.linkable.features.FeaturePageAlias;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingInformationsPage;
 import com.bloatit.web.linkable.invoice.ContributionInvoicingProcess;
 import com.bloatit.web.linkable.invoice.InvoiceResource;
@@ -166,6 +167,9 @@ public class BloatitWebServer extends WebProcessor {
         }
         if (FeaturePageUrl.matches(pageCode)) {
             return new FeaturePage(new FeaturePageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
+        if (FeaturePageAliasUrl.matches(pageCode)) {
+            return new FeaturePageAlias(new FeaturePageAliasUrl(pageCode, postGetParameters, session.getParameters()));
         }
         if (SiteMapPageUrl.matches(pageCode)) {
             return new SiteMapPage(new SiteMapPageUrl(pageCode, postGetParameters, session.getParameters()));
