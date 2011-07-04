@@ -236,7 +236,7 @@ public class DaoFeatureTest extends DataTestUnit {
         feature.addOffer(offer);
         SessionManager.flush();
 
-        feature.computeSelectedOffer();
+        feature.setSelectedOffer(feature.computeSelectedOffer());
         assertEquals(feature.getSelectedOffer(), offer);
     }
 

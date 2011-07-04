@@ -16,7 +16,6 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoSoftware;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
@@ -66,7 +65,7 @@ public final class SoftwareManager {
         return DaoSoftware.nameExists(name);
     }
 
-    public static Software getByName(String name) {
+    public static Software getByName(final String name) {
         return Software.create(DaoSoftware.getByName(name));
     }
 }
