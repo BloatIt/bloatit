@@ -52,7 +52,7 @@ function elveos_startGenerateButton(button) {
     
     //var host = 'https://elveos.org'
     //var host = 'http://f2.b219.org:8081'
-    var host = 'http://'+ window.location.hostname;    
+    var host = 'http://'+ window.location.hostname;
     elveos_ajax(host + '/rest/features/'+featureId, function(xml) {
     var contribution = parseFloat(xml.getElementsByTagName('contribution')[0].firstChild.data);
     var progression = parseFloat(xml.getElementsByTagName('feature')[0].getAttribute("progression"));
