@@ -187,15 +187,17 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 // ////////////////////
                 // Div feature_summary_share
-                final HtmlDiv feature_summary_share = new HtmlDiv("feature_summary_share", "feature_summary_share");
-                featureSummary.add(feature_summary_share);
+                final HtmlDiv feature_summary_share_external = new HtmlDiv("feature_summary_share");
+                featureSummary.add(feature_summary_share_external);
 
-                feature_summary_share.add(generateIdenticaShareItem());
-                feature_summary_share.add(generateTwitterShareItem());
-                feature_summary_share.add(generateBuzzShareItem());
-                feature_summary_share.add(generatePlusoneShareItem());
+                feature_summary_share_external.add(generateIdenticaShareItem());
+                feature_summary_share_external.add(generateTwitterShareItem());
+                feature_summary_share_external.add(generateBuzzShareItem());
+                feature_summary_share_external.add(generatePlusoneShareItem());
 
-                shareBlockShowHide.addListener(feature_summary_share);
+
+
+                shareBlockShowHide.addListener(feature_summary_share_external);
                 shareBlockShowHide.apply();
             }
             add(featureSummary);
@@ -271,6 +273,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
         return item;
     }
+
+
 
     private HtmlDiv generateProgressBlock(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
         // ////////////////////

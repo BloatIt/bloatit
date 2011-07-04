@@ -103,6 +103,7 @@ public final class FeaturePage extends ElveosPage {
         layout.addLeft(commentsBlock);
 
         layout.addRight(new SideBarDocumentationBlock("feature"));
+        layout.addRight(new SideBarElveosButtonBlock(feature));
 
         return layout;
     }
@@ -197,4 +198,5 @@ public final class FeaturePage extends ElveosPage {
 
         return HtmlUtils.htmlEscape(str);
     }
+
 }
