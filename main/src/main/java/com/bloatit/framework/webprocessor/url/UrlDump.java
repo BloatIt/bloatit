@@ -58,6 +58,10 @@ public class UrlDump extends Url {
     public void addParameter(final String key, final String value) {
         stringParameters.add(key, value);
     }
+    
+    public void addOrReplaceParameter(final String key, final String value) {
+        stringParameters.addOrReplace(key, value);
+    }
 
     @Override
     public Messages getMessages() {

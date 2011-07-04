@@ -13,6 +13,7 @@
 package com.bloatit.framework.webprocessor.context;
 
 import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
 public final class Session {
     private static final int SHA1_SIZE = 20;
     private static final UserToken ANONYMOUS_USER_TOKEN = createAnonymousUserToken();
+    public static final String SECURE_TOKEN_NAME = "secure";
 
     private long expirationTime;
     private final SessionKey key;
@@ -141,7 +143,16 @@ public final class Session {
         }
         userToken = token;
         resetExpirationTime();
+
+        // re create the session key.
         SessionManager.resetSession(key);
+
+        // The targets pages in the session can have the old secure keys.
+        // So we have to replace them with the new ones (no problem we just
+        // log in).
+        if (targetPage != null) {
+            targetPage.addOrReplaceParameter(SECURE_TOKEN_NAME, getShortKey());
+        }
     }
 
     public synchronized UserToken getUserToken() {

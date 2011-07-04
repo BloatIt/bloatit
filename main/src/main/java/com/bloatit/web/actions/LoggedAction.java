@@ -19,6 +19,7 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.webprocessor.annotations.ParamContainer;
 import com.bloatit.framework.webprocessor.annotations.RequestParam;
 import com.bloatit.framework.webprocessor.context.Context;
+import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.masters.Action;
 import com.bloatit.framework.webprocessor.url.Url;
 import com.bloatit.model.ElveosUserToken;
@@ -48,7 +49,7 @@ import com.bloatit.web.url.LoginPageUrl;
 public abstract class LoggedAction extends ElveosAction {
     private final Url meUrl;
 
-    @RequestParam
+    @RequestParam(name = Session.SECURE_TOKEN_NAME)
     private String secure;
 
     public LoggedAction(final LoggedActionUrl url) {
