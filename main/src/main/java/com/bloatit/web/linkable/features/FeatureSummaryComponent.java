@@ -27,19 +27,24 @@ import com.bloatit.framework.utils.datetime.TimeRenderer;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webprocessor.components.HtmlDiv;
+import com.bloatit.framework.webprocessor.components.HtmlGenericElement;
+import com.bloatit.framework.webprocessor.components.HtmlImage;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlSpan;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
 import com.bloatit.framework.webprocessor.components.PlaceHolderElement;
+import com.bloatit.framework.webprocessor.components.advanced.HtmlScript;
 import com.bloatit.framework.webprocessor.components.javascript.JsShowHide;
 import com.bloatit.framework.webprocessor.components.meta.HtmlBranch;
 import com.bloatit.framework.webprocessor.components.meta.HtmlMixedText;
+import com.bloatit.framework.webprocessor.components.meta.XmlNode;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Actor;
 import com.bloatit.model.Bug;
 import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Feature;
+import com.bloatit.model.Image;
 import com.bloatit.model.Milestone;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
@@ -89,9 +94,9 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                         // Try to display the title
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("feature_title");
-                        if(feature.hasSoftware()) {
-	                        title.add(new SoftwaresTools.Link(feature.getSoftware()));
-	                        title.addText(" – ");
+                        if (feature.hasSoftware()) {
+                            title.add(new SoftwaresTools.Link(feature.getSoftware()));
+                            title.addText(" – ");
                         }
                         title.addText(FeaturesTools.getTitle(feature));
 
@@ -100,6 +105,8 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     featureSummaryTop.add(featureSummaryCenter);
                 }
                 featureSummary.add(featureSummaryTop);
+
+                JsShowHide shareBlockShowHide = new JsShowHide(false);
 
                 // ////////////////////
                 // Div feature_summary_bottom
@@ -170,9 +177,9 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                     // Div feature_summary_share
                     final HtmlDiv featureSummaryShare = new HtmlDiv("feature_summary_share_button");
                     {
-                        @SuppressWarnings("unused") final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('feature_summary_share')",
-                                                                                                     Context.tr("+ Share"));
-                        // featureSummaryShare.add(showHideShareBlock);
+                        @SuppressWarnings("unused") final HtmlLink showHideShareBlock = new HtmlLink("#", Context.tr("+ Share"));
+                        shareBlockShowHide.addActuator(showHideShareBlock);
+                        featureSummaryShare.add(showHideShareBlock);
                     }
                     featureSummaryBottom.add(featureSummaryShare);
                 }
@@ -182,6 +189,14 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
                 // Div feature_summary_share
                 final HtmlDiv feature_summary_share = new HtmlDiv("feature_summary_share", "feature_summary_share");
                 featureSummary.add(feature_summary_share);
+
+                feature_summary_share.add(generateIdenticaShareItem());
+                feature_summary_share.add(generateTwitterShareItem());
+                feature_summary_share.add(generateBuzzShareItem());
+                feature_summary_share.add(generatePlusoneShareItem());
+
+                shareBlockShowHide.addListener(feature_summary_share);
+                shareBlockShowHide.apply();
             }
             add(featureSummary);
 
@@ -189,6 +204,72 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
             Context.getSession().notifyError(Context.tr("An error prevented us from displaying feature information. Please notify us."));
             throw new ShallNotPassException("User cannot access feature information", e);
         }
+    }
+
+    private XmlNode generateIdenticaShareItem() {
+        HtmlDiv item = new HtmlDiv("share_item");
+
+        HtmlDiv identicaBlock = new HtmlDiv("identica");
+        item.add(identicaBlock);
+
+        identicaBlock.addAttribute("style", "background-color: white;border: 1px solid #ddd;display:inline-block;");
+
+        HtmlLink actionLink = new HtmlLink("javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',l=d.location,e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20'+l.href;function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()");
+        HtmlImage backgroundImage = new HtmlImage(new Image("/resources/commons/img/share/identica.png"), "identi.ca");
+        backgroundImage.addAttribute("style", "border:none;");
+        actionLink.add(backgroundImage);
+
+        identicaBlock.add(actionLink);
+
+        return item;
+    }
+
+    private XmlNode generateTwitterShareItem() {
+        HtmlDiv item = new HtmlDiv("share_item");
+
+        HtmlLink actionLink = new HtmlLink("http://twitter.com/share", "Tweet");
+        item.add(actionLink);
+        actionLink.setCssClass("twitter-share-button");
+        actionLink.addAttribute("data-count", "horizontal");
+        
+        HtmlScript script = new HtmlScript();
+        item.add(script);
+        script.addAttribute("src", "http://platform.twitter.com/widgets.js");
+
+        return item;
+    }
+
+    private XmlNode generateBuzzShareItem() {
+        HtmlDiv item = new HtmlDiv("share_item");
+
+        HtmlLink actionLink = new HtmlLink("http://www.google.com/buzz/post");
+
+        item.add(actionLink);
+        actionLink.addAttribute("title", "Publier sur Google Buzz");
+        actionLink.setCssClass("google-buzz-button");
+        actionLink.addAttribute("data-button-style", "small-count");
+        actionLink.addAttribute("data-locale", Context.getLocalizator().getCode());
+        
+        HtmlScript script = new HtmlScript();
+        item.add(script);
+        script.addAttribute("src", "http://www.google.com/buzz/api/button.js");
+        
+        return item;
+    }
+
+    private XmlNode generatePlusoneShareItem() {
+        HtmlDiv item = new HtmlDiv("share_item");
+
+        HtmlScript script = new HtmlScript();
+        item.add(script);
+        script.addAttribute("src", "https://apis.google.com/js/plusone.js");
+        script.append("{lang: '" + Context.getLocalizator().getCode() + "'}");
+
+        HtmlGenericElement element = new HtmlGenericElement("g:plusone");
+        item.add(element);
+        element.addAttribute("size", "medium");
+
+        return item;
     }
 
     private HtmlDiv generateProgressBlock(final Feature feature, final ElveosUserToken userToken) throws UnauthorizedOperationException {
