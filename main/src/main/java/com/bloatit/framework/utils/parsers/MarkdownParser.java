@@ -35,7 +35,7 @@ public class MarkdownParser implements Parser {
 
     private Object showdownConverter = null;
     private final Invocable engine;
-    private final static String SHOWDOWN_CLASSPATH = "showdown/src/showdown.js";
+    private final static String PARSER_CLASSPATH = "showdown.js";
 
     /**
      * Creates a markdown parser
@@ -45,7 +45,7 @@ public class MarkdownParser implements Parser {
         final ScriptEngine jsEngine = manager.getEngineByName("js");
 
         try {
-            final InputStream in = getClass().getClassLoader().getResourceAsStream(SHOWDOWN_CLASSPATH);
+            final InputStream in = getClass().getClassLoader().getResourceAsStream(PARSER_CLASSPATH);
             final Reader read = new InputStreamReader(in);
             final Reader showdownSrc = new BufferedReader(read);
             jsEngine.eval(showdownSrc);

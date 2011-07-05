@@ -8,7 +8,6 @@ import com.bloatit.framework.webprocessor.annotations.tr;
 import com.bloatit.framework.webprocessor.components.HtmlLink;
 import com.bloatit.framework.webprocessor.components.HtmlParagraph;
 import com.bloatit.framework.webprocessor.components.HtmlTitle;
-import com.bloatit.framework.webprocessor.components.form.HtmlForm;
 import com.bloatit.framework.webprocessor.components.meta.HtmlElement;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.model.Feature;
@@ -54,7 +53,7 @@ public class FeatureModerationPage extends AdminPage {
         ok.setCssClass("button");
         HtmlLink cancel = new FeaturePageUrl(feature, FeatureTabPane.TabKey.description).getHtmlLink(Context.tr("Cancel"));
         cancel.setCssClass("button");
-        
+
         master.addLeft(ok);
         master.addLeft(cancel);
 
