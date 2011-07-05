@@ -50,7 +50,7 @@ public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(
-                   min = 4,
+min = 7,
                    message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
                    max = 15,
@@ -64,7 +64,7 @@ public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(
-                   min = 4,
+min = 7,
                    message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
                    max = 15,
@@ -75,7 +75,7 @@ public class ModifyMemberAction extends LoggedAction {
     @Optional
     @MinConstraint(min = 4,
                    message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 30,
+    @MaxConstraint(max = 255,
                    message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String email;
 
@@ -287,6 +287,12 @@ public class ModifyMemberAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
+
+        if (url.getCurrentPasswordParameter().getValue() != null) {
+            url.getCurrentPasswordParameter().setValue("xxxxxxxx");
+        }
+        session.addParameter(url.getCurrentPasswordParameter());
+
         session.addParameter(url.getPasswordParameter());
         session.addParameter(url.getPasswordCheckParameter());
         session.addParameter(url.getEmailParameter());
