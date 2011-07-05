@@ -26,7 +26,7 @@ import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 
 public class SideBarButton extends SideBarElementLayout {
     private final HtmlLink link;
-    
+
     public SideBarButton(final String text, final Url to, final String imgUri) {
         // Display of a button to create a feature
         final SideBarElementLayout createBox = new SideBarElementLayout();
@@ -39,7 +39,7 @@ public class SideBarButton extends SideBarElementLayout {
             buttonMasterDiv.add(img);
             final HtmlDiv textBlock = new HtmlDiv("side_bar_button_text_box");
             { // Box to hold text of the button
-                final HtmlDiv textDiv = new HtmlDiv("side_bar_button_text");
+                final HtmlDiv textDiv = new HtmlDiv("button side_bar_button_text");
                 textBlock.add(textDiv);
                 textDiv.addText(text);
             }

@@ -47,6 +47,7 @@ import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
+import com.bloatit.web.url.FeatureListPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 /**
@@ -114,13 +115,31 @@ public final class IndexPage extends ElveosPage {
         }
 
         twoColumnLayout.addLeft(featureList);
+        
+        // A link to all the features available on elveos website
+        HtmlLink allFeatures = new FeatureListPageUrl().getHtmlLink(Context.tr("View all feature requests"));
+        allFeatures.setCssClass("button all_features_button");
+        twoColumnLayout.addLeft(allFeatures);
 
         // Display of a button to create a feature
         twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
 
         // Display of a summary of all website activity since creation
+        twoColumnLayout.addRight(getWebsiteActivity(userToken));
+
+        // Adding doc
+        twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
+
+        return element;
+    }
+
+    /**
+     * @return a block indicating the number of elements created on the website
+     *         over the course of its life
+     */
+    private SideBarElementLayout getWebsiteActivity(ElveosUserToken userToken) {
         final SideBarElementLayout leftSummary = new SideBarElementLayout();
-        twoColumnLayout.addRight(leftSummary);
+
         final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
         leftSummary.add(summaryBox);
 
@@ -151,10 +170,7 @@ public final class IndexPage extends ElveosPage {
         final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Releases", ReleaseManager.getReleaseCount()));
         summaryBox.add(releaseCount);
 
-        // Adding doc
-        twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-
-        return element;
+        return leftSummary;
     }
 
     @Override
