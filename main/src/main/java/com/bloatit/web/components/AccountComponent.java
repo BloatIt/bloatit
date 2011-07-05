@@ -229,11 +229,19 @@ public class AccountComponent extends HtmlPageComponent {
     private static class MoneyWithdrawalLine extends HtmlTableLine {
 
         private final MoneyWithdrawal moneyWithdrawal;
+        private boolean failed;
 
         public MoneyWithdrawalLine(final MoneyWithdrawal moneyWithdrawal) throws UnauthorizedOperationException {
             this.moneyWithdrawal = moneyWithdrawal;
-            addCell(new MoneyVariationCell(false));
-            addCell(new TitleCell(moneyWithdrawal.getCreationDate(), generateContributionTitle()));
+            failed = (moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.CANCELED || moneyWithdrawal.getState() == DaoMoneyWithdrawal.State.REFUSED);
+            if (failed) {
+                setCssClass("failed_line");
+                addCell(new EmptyCell());
+            } else {
+                addCell(new MoneyVariationCell(false));
+            }
+
+            addCell(new TitleCell(moneyWithdrawal.getCreationDate(), generateTitle()));
             addCell(new DescriptionCell(tr("Withdrawal summary"), generateContributionDescription()));
             addCell(new MoneyCell(moneyWithdrawal.getAmountWithdrawn().negate()));
         }
@@ -272,12 +280,18 @@ public class AccountComponent extends HtmlPageComponent {
             return description;
         }
 
-        private HtmlDiv generateContributionTitle() {
+        private HtmlDiv generateTitle() {
             final HtmlDiv title = new HtmlDiv("title");
-            title.addText(tr("Withdrew money"));
+            if (failed) {
+                title.addText(tr("Withdrew money failure"));
+            } else {
+                title.addText(tr("Withdrew money"));
+            }
+
             return title;
         }
     }
+
 
     private static class ChargeAccountLine extends HtmlTableLine {
 
