@@ -34,26 +34,26 @@ import com.bloatit.web.url.SignUpPageUrl;
 public final class SignUpAction extends ElveosAction {
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Login cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for login has to be superior to 3."))
-    @MaxConstraint(max = 15, message = @tr("Number of characters for login has to be inferior to 16."))
+    @MinConstraint(min = 4, message = @tr("The login must have at least %constraint% chars."))
+    @MaxConstraint(max = 15, message = @tr("The login must be %constraint% chars length max."))
     private final String login;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for password has to be superior to 3."))
-    @MaxConstraint(max = 15, message = @tr("Number of characters for password has to be inferior to 16."))
+    @MinConstraint(min = 7, message = @tr("The password must have at least %constraint% chars."))
+    @MaxConstraint(max = 15, message = @tr("The password must be %constraint% chars length max."))
     private final String password;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Password check cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for password check has to be superior to 3."))
-    @MaxConstraint(max = 15, message = @tr("Number of characters for password check has to be inferior to 16."))
+    @MinConstraint(min = 7, message = @tr("The password check must have at least %constraint% chars."))
+    @MaxConstraint(max = 15, message = @tr("The password check must be %constraint% chars length max."))
     private final String passwordCheck;
 
     @RequestParam(role = Role.POST)
     @NonOptional(@tr("Email cannot be blank."))
-    @MinConstraint(min = 4, message = @tr("Number of characters for email has to be superior to 3."))
-    @MaxConstraint(max = 254, message = @tr("Number of characters for email address has to be inferior to 255."))
+    @MinConstraint(min = 4, message = @tr("The email must have at least %constraint% chars."))
+    @MaxConstraint(max = 254, message = @tr("The email must be %constraint% chars length max."))
     private final String email;
 
     @RequestParam(name = "bloatit_country", role = Role.POST)
