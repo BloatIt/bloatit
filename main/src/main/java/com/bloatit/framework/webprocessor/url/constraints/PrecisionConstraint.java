@@ -29,7 +29,7 @@ public class PrecisionConstraint<V extends Comparable<V>> extends Constraint<V> 
     }
 
     @Override
-    protected void updateFormater(final MessageFormater formater) {
+    protected void updateFormater(final MessageFormater formater, V value) {
         formater.addParameter("%constraint%", String.valueOf(precision));
     }
 }

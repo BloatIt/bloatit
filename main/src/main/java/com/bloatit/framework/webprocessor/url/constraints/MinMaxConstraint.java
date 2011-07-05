@@ -16,8 +16,13 @@ public abstract class MinMaxConstraint<V extends Comparable<V>> extends Constrai
     }
 
     @Override
-    protected void updateFormater(final MessageFormater formater) {
+    protected void updateFormater(final MessageFormater formater, V value) {
         formater.addParameter("%constraint%", String.valueOf(minMax));
+
+        if (value instanceof String) {
+            formater.addParameter("%valueLength%", String.valueOf(((String) value).length()));
+        }
+
     }
 
     @Override

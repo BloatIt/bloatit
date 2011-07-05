@@ -17,13 +17,13 @@ public abstract class Constraint<T> {
         if (verify(value)) {
             return null;
         }
-        updateFormater(formater);
+        updateFormater(formater, value);
         return new Message(message, formater);
     }
 
     public abstract boolean verify(T value);
 
-    protected abstract void updateFormater(MessageFormater formater);
+    protected abstract void updateFormater(MessageFormater formater, T value);
 
     static boolean cmp(final boolean inferior, final boolean exclusive, final int value) {
         if (inferior && exclusive) {
