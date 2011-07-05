@@ -63,7 +63,12 @@ import com.bloatit.framework.webprocessor.context.User.ActivationState;
 @NamedQueries(value = { @NamedQuery(
                            name = "member.byLogin",
                            query = "FROM DaoMember WHERE login = :login"),
-
+                       @NamedQuery(
+                                   name = "member.byEmail.size",
+                                   query = "select count(*) from DaoMember where email = :email"),
+                       @NamedQuery(
+                                   name = "member.byEmailToActivate.size",
+                                   query = "select count(*) from DaoMember where emailToActivate = :emailToActivate"),
                        @NamedQuery(
                            name = "member.byLoginPassword",
                            query = "FROM DaoMember WHERE login = :login AND password = :password"),
@@ -215,6 +220,9 @@ public class DaoMember extends DaoActor {
     @Column(unique = true)
     private String email;
 
+    @Basic(optional = true)
+    private String emailToActivate;
+
     @Basic(optional = false)
     private Locale locale;
 
@@ -247,9 +255,24 @@ public class DaoMember extends DaoActor {
     }
 
     /**
+     * This method use a HQL request.
+     * 
+     * @param email the email we are looking for.
+     * @return true if found
+     */
+    public static boolean emailExists(final String email) {
+        final Query q1 = SessionManager.getNamedQuery("member.byEmail.size").setString("email", email);
+        if (((Long) q1.uniqueResult()) > 0) {
+            return true;
+        }
+        final Query q2 = SessionManager.getNamedQuery("member.byEmailToActivate.size").setString("emailToActivate", email);
+        return ((Long) q2.uniqueResult()) > 0;
+    }
+
+    /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     *
+     * 
      * @param login the member login.
      * @param password the password of the member "login". It is a string
      *            corresponding to the string in the database. This method does
@@ -816,6 +839,14 @@ public class DaoMember extends DaoActor {
         this.avatar = avatar;
     }
 
+    public String getEmailToActivate() {
+        return this.emailToActivate;
+    }
+
+    public void setEmailToActivate(String emailToActivate) {
+        this.emailToActivate = emailToActivate;
+    }
+
     // ======================================================================
     // Visitor.
     // ======================================================================
@@ -841,5 +872,7 @@ public class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
+
+
 
 }

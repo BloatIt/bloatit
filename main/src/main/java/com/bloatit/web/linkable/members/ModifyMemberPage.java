@@ -123,6 +123,9 @@ public class ModifyMemberPage extends LoggedPage {
             // Email
             final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
             final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), tr("Email"));
+            if (loggedUser.hasEmailToActivate()) {
+                emailInput.setComment(Context.tr("Waiting for activation: {0}", loggedUser.getEmailToActivate()));
+            }
             if (emailFieldData.getSuggestedValue() != null && !emailFieldData.getSuggestedValue().isEmpty()) {
                 emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
             } else {

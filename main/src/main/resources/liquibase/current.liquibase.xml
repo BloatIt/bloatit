@@ -13,4 +13,6 @@
 	<include file="liquibase/versioned-string.xml" />
 	<include file="liquibase/offer-licence.xml" />
     <include file="liquibase/news-feed.xml" />
+    <include file="liquibase/activation-email.xml" />
+    
 </databaseChangeLog>

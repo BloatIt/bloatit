@@ -58,8 +58,7 @@ public final class MemberActivationAction extends ElveosAction {
 
         if (member != null) {
             if (member.getActivationState() == ActivationState.VALIDATING) {
-                if (key.equals(member.getActivationKey())) {
-                    member.activate(key);
+                if (member.activate(key)) {
 
                     // Auto login after activation
                     session.authenticate(new AuthenticatedUserToken(member));
@@ -68,6 +67,13 @@ public final class MemberActivationAction extends ElveosAction {
                 } else {
                     session.notifyWarning(Context.tr("Wrong activation key for this member."));
                 }
+            } else if (member.hasEmailToActivate()) {
+                if (member.activateEmail(key)) {
+                    session.notifyGood(Context.tr("Email activation sucess."));
+                } else {
+                    session.notifyWarning(Context.tr("Wrong email activation key for this member."));
+                }
+
             } else {
                 session.notifyWarning(Context.tr("No activation needed for this member."));
             }
