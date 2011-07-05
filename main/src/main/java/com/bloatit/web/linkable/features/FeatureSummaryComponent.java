@@ -193,7 +193,7 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
 
                 feature_summary_share_external.add(generateIdenticaShareItem());
                 feature_summary_share_external.add(generateTwitterShareItem());
-                feature_summary_share_external.add(generateBuzzShareItem());
+                feature_summary_share_external.add(generateLinkedInShareItem());
                 feature_summary_share_external.add(generatePlusoneShareItem());
 
 
@@ -244,24 +244,22 @@ public final class FeatureSummaryComponent extends HtmlPageComponent {
         return item;
     }
 
-    private XmlNode generateBuzzShareItem() {
+    private XmlNode generateLinkedInShareItem() {
         HtmlDiv item = new HtmlDiv("share_item");
 
-        HtmlLink actionLink = new HtmlLink("http://www.google.com/buzz/post");
-
-        item.add(actionLink);
-        actionLink.addAttribute("title", "Publier sur Google Buzz");
-        actionLink.setCssClass("google-buzz-button");
-        actionLink.addAttribute("data-button-style", "small-count");
-        actionLink.addAttribute("data-locale", Context.getLocalizator().getCode());
-        
+                
         HtmlScript script = new HtmlScript();
         item.add(script);
-        script.addAttribute("src", "http://www.google.com/buzz/api/button.js");
+        script.addAttribute("src", "http://platform.linkedin.com/in.js");
+        
+        HtmlScript script2 = new HtmlScript();
+        item.add(script2);
+        script2.addAttribute("type", "IN/Share");
+        script2.addAttribute("data-counter", "right");
         
         return item;
     }
-
+    
     private XmlNode generatePlusoneShareItem() {
         HtmlDiv item = new HtmlDiv("share_item");
 
