@@ -81,13 +81,18 @@ public final class SignUpPage extends ElveosPage {
         final FieldData passwordFieldData = targetUrl.getPasswordParameter().pickFieldData();
         final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData.getName(), tr("Password"));
         passwordInput.addErrorMessages(passwordFieldData.getErrorMessages());
+        passwordInput.addAttribute("autocomplete", "off");
+        passwordInput.setComment(Context.tr("7 characters minimum."));
         form.add(passwordInput);
+
 
         // Password check
         final FieldData passwordCheckFieldData = targetUrl.getPasswordCheckParameter().pickFieldData();
         final HtmlPasswordField passwordCheckInput = new HtmlPasswordField(passwordCheckFieldData.getName(), tr("Reenter your password"));
         passwordCheckInput.addErrorMessages(passwordCheckFieldData.getErrorMessages());
+        passwordCheckInput.addAttribute("autocomplete", "off");
         form.add(passwordCheckInput);
+
 
         // Email
         final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
