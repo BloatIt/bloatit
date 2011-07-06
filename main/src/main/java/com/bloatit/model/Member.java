@@ -33,8 +33,8 @@ import com.bloatit.data.DaoTeamRight.UserTeamRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.lowlevel.MalformedArgumentException;
 import com.bloatit.framework.exceptions.lowlevel.NonOptionalParameterException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.Hash;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webprocessor.context.User;
 import com.bloatit.model.feature.FeatureList;
 import com.bloatit.model.lists.CommentList;
@@ -290,6 +290,29 @@ public final class Member extends Actor<DaoMember> implements User {
         return false;
     }
 
+    public boolean hasEmailToActivate() {
+        return getDao().getEmailToActivate() != null;
+    }
+
+    public boolean activateEmail(final String activationKey) {
+        if (!hasEmailToActivate()) {
+            return false;
+        }
+
+        if (getEmailActivationKey().equals(activationKey)) {
+            getDao().setEmail(getDao().getEmailToActivate());
+            getDao().setEmailToActivate(null);
+            return true;
+        }
+        return false;
+
+    }
+
+    public void setEmailToActivate(String email) {
+        getDao().setEmailToActivate(email);
+
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -306,6 +329,13 @@ public final class Member extends Actor<DaoMember> implements User {
     public String getActivationKey() {
         final DaoMember m = getDao();
         final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + ACTIVATE_SALT;
+        return DigestUtils.sha256Hex(digest);
+    }
+
+    public String getEmailActivationKey() {
+        final DaoMember m = getDao();
+        final String digest = "" + m.getId() + m.getEmail() + m.getEmailToActivate() + m.getFullname() + m.getPassword() + m.getSalt()
+                + ACTIVATE_SALT;
         return DigestUtils.sha256Hex(digest);
     }
 
@@ -384,6 +414,11 @@ public final class Member extends Actor<DaoMember> implements User {
     public String getEmail() throws UnauthorizedOperationException {
         tryAccess(new RgtMember.Email(), Action.READ);
         return getEmailUnprotected();
+    }
+
+    public String getEmailToActivate() throws UnauthorizedOperationException {
+        tryAccess(new RgtMember.Email(), Action.READ);
+        return getDao().getEmailToActivate();
     }
 
     // TODO: Create a send notification / mail
@@ -591,4 +626,6 @@ public final class Member extends Actor<DaoMember> implements User {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
+
+
 }

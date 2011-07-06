@@ -29,7 +29,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -57,9 +56,6 @@ import com.bloatit.framework.utils.PageIterable;
 @NamedQueries(value = { @NamedQuery(
                            name = "actor.byLogin.size",
                            query = "select count(*) from DaoActor where login = :login"),
-                       @NamedQuery(
-                           name = "actor.byEmail.size",
-                           query = "select count(*) from DaoActor where email = :email"),
                        @NamedQuery(
                            name = "actor.getBankTransactions",
                            query = "from DaoBankTransaction as t where t.author = :author order by t.creationDate DESC"),
@@ -117,16 +113,7 @@ public abstract class DaoActor extends DaoIdentifiable {
         return ((Long) c.uniqueResult()) > 0;
     }
 
-    /**
-     * This method use a HQL request.
-     *
-     * @param email the email we are looking for.
-     * @return true if found
-     */
-    public static boolean emailExists(final String email) {
-        final Query q = SessionManager.getNamedQuery("actor.byEmail.size").setString("email", email);
-        return ((Long) q.uniqueResult()) > 0;
-    }
+
 
     // ======================================================================
     // Construction.

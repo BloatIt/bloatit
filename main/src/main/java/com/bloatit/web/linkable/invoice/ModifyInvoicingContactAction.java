@@ -24,6 +24,7 @@ import com.bloatit.model.ElveosUserToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.url.ModifyContactPageUrl;
 import com.bloatit.web.url.ModifyInvoicingContactActionUrl;
 
 /**
@@ -98,7 +99,7 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @Override
     protected Url doProcessErrors(final ElveosUserToken userToken) {
-        return session.pickPreferredPage();
+        return new ModifyContactPageUrl(process);
     }
 
     @Override
@@ -108,7 +109,13 @@ public final class ModifyInvoicingContactAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        // session.addParameter(url.getInvoicingContactParameter());
+        session.addParameter(url.getNameParameter());
+        session.addParameter(url.getStreetParameter());
+        session.addParameter(url.getExtrasParameter());
+        session.addParameter(url.getPostalCodeParameter());
+        session.addParameter(url.getCityParameter());
+        session.addParameter(url.getCountryParameter());
+
     }
 
 }

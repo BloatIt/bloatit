@@ -23,6 +23,8 @@ import java.util.Locale;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.highlevel.ShallNotPassException;
+import com.bloatit.framework.mailsender.Mail;
+import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.FileConstraintChecker;
 import com.bloatit.framework.webprocessor.annotations.MaxConstraint;
 import com.bloatit.framework.webprocessor.annotations.MinConstraint;
@@ -41,6 +43,7 @@ import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.actions.LoggedAction;
+import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.ModifyMemberActionUrl;
 import com.bloatit.web.url.ModifyMemberPageUrl;
@@ -50,7 +53,7 @@ public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(
-                   min = 4,
+min = 7,
                    message = @tr("Number of characters for password has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
                    max = 15,
@@ -64,7 +67,7 @@ public class ModifyMemberAction extends LoggedAction {
     @RequestParam(role = Role.POST)
     @Optional
     @MinConstraint(
-                   min = 4,
+min = 7,
                    message = @tr("Number of characters for password check has to be superior to %constraint% but your text is %valueLength% characters long."))
     @MaxConstraint(
                    max = 15,
@@ -75,7 +78,7 @@ public class ModifyMemberAction extends LoggedAction {
     @Optional
     @MinConstraint(min = 4,
                    message = @tr("Number of characters for email has to be superior to %constraint% but your text is %valueLength% characters long."))
-    @MaxConstraint(max = 30,
+    @MaxConstraint(max = 255,
                    message = @tr("Number of characters for email has to be inferior to %constraint% but your text is %valueLength% characters long."))
     private final String email;
 
@@ -148,8 +151,20 @@ public class ModifyMemberAction extends LoggedAction {
 
             // EMAIL
             if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail())) {
-                session.notifyGood(Context.tr("Email updated."));
-                me.setEmail(email.trim());
+                session.notifyGood(Context.tr("New email will replace the old one after you validate it with the link we send you."));
+                me.setEmailToActivate(email.trim());
+
+                final String activationKey = me.getEmailActivationKey();
+                final MemberActivationActionUrl url = new MemberActivationActionUrl(me.getLogin(), activationKey);
+
+                final String content = Context.tr("Hi {0},\n\nYou wanted to change the email for your Elveos.org account. Please click on the following link to activate your new email: \n\n {1}",
+                                                  me.getLogin(),
+                                                  url.externalUrlString());
+
+                final Mail activationMail = new Mail(email, Context.tr("Elveos.org new email activation"), content, "member-domodify");
+
+                MailServer.getInstance().send(activationMail);
+
             }
 
             // FULLNAME
@@ -251,6 +266,7 @@ public class ModifyMemberAction extends LoggedAction {
 
         try {
             if (email != null && !email.trim().isEmpty() && !email.equals(me.getEmail()) && MemberManager.emailExists(email)) {
+                session.notifyError(Context.tr("Email already used."));
                 url.getEmailParameter().addErrorMessage(Context.tr("Email already used."));
                 error = true;
             }
@@ -287,6 +303,12 @@ public class ModifyMemberAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
+
+        if (url.getCurrentPasswordParameter().getValue() != null) {
+            url.getCurrentPasswordParameter().setValue("xxxxxxxx");
+        }
+        session.addParameter(url.getCurrentPasswordParameter());
+
         session.addParameter(url.getPasswordParameter());
         session.addParameter(url.getPasswordCheckParameter());
         session.addParameter(url.getEmailParameter());

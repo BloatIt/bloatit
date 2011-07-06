@@ -142,7 +142,7 @@ public final class SignUpAction extends ElveosAction {
         final UrlParameter<String, String> passwordParameter = url.getPasswordParameter();
         if (passwordParameter.getValue() != null) {
             if (passwordParameter.getValue().length() > 3) {
-                passwordParameter.setValue("xxxx");
+                passwordParameter.setValue("xxxxxxxxxx");
             }
         }
         session.addParameter(passwordParameter);
@@ -150,7 +150,7 @@ public final class SignUpAction extends ElveosAction {
         final UrlParameter<String, String> passwordCheckParameter = url.getPasswordCheckParameter();
         if (passwordCheckParameter.getValue() != null) {
             if (passwordCheckParameter.getValue().length() > 3) {
-                passwordCheckParameter.setValue("xxxx");
+                passwordCheckParameter.setValue("xxxxxxxxxx");
             }
         }
         session.addParameter(passwordCheckParameter);

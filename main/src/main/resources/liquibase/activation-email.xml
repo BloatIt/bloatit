@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="Frédéric Bertolus" id="201107051602-1">
+		<comment>Add a new emailtoactivate column</comment>
+		<addColumn tableName="daomember">
+			<column name="emailtoactivate" type="varchar(255)">
+                <constraints nullable="true" />
+			</column>
+		</addColumn>
+	</changeSet>
+
+</databaseChangeLog>

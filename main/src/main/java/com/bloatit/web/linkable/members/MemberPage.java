@@ -39,6 +39,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.web.components.InvoicingContactTab;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.members.tabs.AccountTab;
 import com.bloatit.web.linkable.members.tabs.ActivityTab;
@@ -70,6 +71,7 @@ public final class MemberPage extends ElveosPage {
     public final static String INVITATIONS_TAB = "invitations";
     public final static String ACTIVITY_TAB = "activity";
     public final static String ACCOUNT_TAB = "account";
+    public final static String INVOICING_TAB = "invoicing";
 
     @SubParamContainer
     private ActivityTab activity;
@@ -148,11 +150,11 @@ public final class MemberPage extends ElveosPage {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
-            modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change account settings")));
+            modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change member settings")));
         }
 
         // Title
-        final String title = (myPage) ? Context.tr("My page") : Context.tr("Member page");
+        final String title = (myPage) ? Context.tr("My page") : Context.tr("{0}''s page", member.getDisplayName());
         final HtmlTitleBlock tBlock = new HtmlTitleBlock(title, 1);
         master.add(tBlock);
 
@@ -213,6 +215,7 @@ public final class MemberPage extends ElveosPage {
             final HtmlSpan karma = new HtmlSpan("id_category");
             karma.addText(Context.tr("Karma: "));
             memberIdList.add(new PlaceHolderElement().add(karma).addText("" + member.getKarma()));
+
         } catch (final UnauthorizedOperationException e) {
             getSession().notifyError("An error prevented us from displaying user information. Please notify us.");
             throw new ShallNotPassException("Error while gathering user information", e);
@@ -242,6 +245,8 @@ public final class MemberPage extends ElveosPage {
         if ((nb = member.getInvitationCount()) > 0) {
             tabPane.addTab(new InvitationsTab(member, tr("Invitations&nbsp;({0})", nb), INVITATIONS_TAB));
         }
+
+        tabPane.addTab(new InvoicingContactTab(member, tr("Invoicing"), INVOICING_TAB));
 
         return master;
     }

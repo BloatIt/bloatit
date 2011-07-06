@@ -35,7 +35,6 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.UnauthorizedPrivateAccessException;
 import com.bloatit.web.linkable.contribution.CheckContributePage;
 import com.bloatit.web.linkable.contribution.ContributionProcess;
-import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.linkable.money.AccountChargingPage;
 import com.bloatit.web.linkable.money.AccountChargingProcess;
 import com.bloatit.web.pages.IndexPage;
@@ -76,7 +75,6 @@ public final class ModifyContactPage extends LoggedPage {
     public HtmlElement createRestrictedContent(final Member loggedUser) throws RedirectException {
         final TwoColumnLayout layout = new TwoColumnLayout(true, url);
         layout.addLeft(generateInvoicingContactForm(loggedUser));
-        layout.addRight(new SideBarDocumentationBlock("account_charging"));
         return layout;
     }
 

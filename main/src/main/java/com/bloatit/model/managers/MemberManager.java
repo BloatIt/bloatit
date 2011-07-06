@@ -80,7 +80,7 @@ public final class MemberManager {
      * @return <code>true</code>, if it exists, <code>false</code> otherwise.
      */
     public static boolean emailExists(final String email) {
-        return DaoActor.emailExists(email);
+        return DaoMember.emailExists(email);
     }
 
     /**
