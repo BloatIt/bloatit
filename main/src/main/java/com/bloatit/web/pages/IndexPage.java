@@ -76,6 +76,8 @@ public final class IndexPage extends ElveosPage {
             presentationLink.add(image);
             globalDescription.add(presentationLink);
 
+            generateCounts(userToken, globalDescription);
+
         }
         element.add(globalDescription);
 
@@ -125,13 +127,15 @@ public final class IndexPage extends ElveosPage {
         twoColumnLayout.addRight(new SideBarButton(Context.tr("Request a feature"), new CreateFeaturePageUrl(), WebConfiguration.getImgIdea()));
 
         // Display of a summary of all website activity since creation
-        twoColumnLayout.addRight(getWebsiteActivity(userToken));
+        // twoColumnLayout.addRight(getWebsiteActivity(userToken));
 
         // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
 
         return element;
     }
+
+
 
     /**
      * @return a block indicating the number of elements created on the website
@@ -140,8 +144,36 @@ public final class IndexPage extends ElveosPage {
     private SideBarElementLayout getWebsiteActivity(ElveosUserToken userToken) {
         final SideBarElementLayout leftSummary = new SideBarElementLayout();
 
+        generateCounts(userToken, leftSummary);
+
+        return leftSummary;
+    }
+
+    @Override
+    protected String createPageTitle() {
+        return Context.tr("Finance free softwares");
+    }
+
+    @Override
+    public boolean isStable() {
+        return true;
+    }
+
+    public static Breadcrumb generateBreadcrumb() {
+        final Breadcrumb breadcrumb = new Breadcrumb();
+        final IndexPageUrl pageUrl = new IndexPageUrl();
+        breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
+        return breadcrumb;
+    }
+
+    @Override
+    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
+        return generateBreadcrumb();
+    }
+
+    private void generateCounts(ElveosUserToken userToken, final HtmlDiv parent) {
         final HtmlDiv summaryBox = new HtmlDiv("elveos_summary");
-        leftSummary.add(summaryBox);
+        parent.add(summaryBox);
 
         // Feature count
         final HtmlBranch featureCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Features requests, ",
@@ -169,29 +201,5 @@ public final class IndexPage extends ElveosPage {
         // Count of releases
         final HtmlBranch releaseCount = new HtmlSpan("count_line").addText(Context.tr("{0}&nbsp;Releases", ReleaseManager.getReleaseCount()));
         summaryBox.add(releaseCount);
-
-        return leftSummary;
-    }
-
-    @Override
-    protected String createPageTitle() {
-        return Context.tr("Finance free softwares");
-    }
-
-    @Override
-    public boolean isStable() {
-        return true;
-    }
-
-    public static Breadcrumb generateBreadcrumb() {
-        final Breadcrumb breadcrumb = new Breadcrumb();
-        final IndexPageUrl pageUrl = new IndexPageUrl();
-        breadcrumb.pushLink(pageUrl.getHtmlLink(tr("Home")));
-        return breadcrumb;
-    }
-
-    @Override
-    protected Breadcrumb createBreadcrumb(ElveosUserToken userToken) {
-        return generateBreadcrumb();
     }
 }
