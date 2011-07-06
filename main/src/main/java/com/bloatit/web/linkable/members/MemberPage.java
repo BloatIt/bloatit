@@ -148,7 +148,7 @@ public final class MemberPage extends ElveosPage {
             // Link to change account settings
             final HtmlDiv modify = new HtmlDiv("float_right");
             master.add(modify);
-            modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change account settings")));
+            modify.add(new ModifyMemberPageUrl().getHtmlLink(Context.tr("Change member settings")));
         }
 
         // Title
