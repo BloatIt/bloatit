@@ -44,6 +44,7 @@ import com.bloatit.model.Team;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.web.WebConfiguration;
+import com.bloatit.web.components.InvoicingContactTab;
 import com.bloatit.web.components.MoneyDisplayComponent;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
@@ -72,6 +73,7 @@ public final class TeamPage extends ElveosPage {
     public final static String MEMBERS_TAB = "members";
     public final static String ACTIVITY_TAB = "activity";
     public final static String ACCOUNT_TAB = "account";
+    public final static String INVOICING_TAB = "invoicing";
 
     private final TeamPageUrl url;
 
@@ -155,6 +157,7 @@ public final class TeamPage extends ElveosPage {
         tabPane.addTab(new MembersTab(team, tr("Members"), MEMBERS_TAB, userToken.getMember()));
         if (team.canAccessBankTransaction(Action.READ)) {
             tabPane.addTab(new AccountTab(team, tr("Account"), ACCOUNT_TAB));
+            tabPane.addTab(new InvoicingContactTab(team, tr("Invoincing"), INVOICING_TAB));
         }
         activity = new ActivityTab(team, tr("Activity"), ACTIVITY_TAB, url);
         tabPane.addTab(activity);
