@@ -15,7 +15,7 @@
 		<param name="MaxFileSize" value="1000KB" />
 		<param name="MaxBackupIndex" value="10" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy-MM-dd-HH:mm:ss} [%t] %p\t%m%n" />
+			<param name="ConversionPattern" value="%d{yyyy-MM-ddTHH:mm:ss} [%t] %p\t%m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMin" value="warn" />
@@ -28,7 +28,7 @@
 		<param name="MaxFileSize" value="1000KB" />
 		<param name="MaxBackupIndex" value="4" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy-MM-dd-HH:mm:ss} [%t] %p\t%m%n" />
+			<param name="ConversionPattern" value="%d{yyyy-MM-ddTHH:mm:ss} [%t] %p\t%m%n" />
 		</layout>
 		<filter class="org.apache.log4j.varia.LevelRangeFilter">
 			<param name="LevelMin" value="info" />
@@ -46,7 +46,7 @@
 		<param name="To" value="thomas@linkeos.com" />
 		<param name="Cc" value="fred@linkeos.com, yoann@linkeos.com" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy-MM-dd-HH:mm:ss} [%t] %p\t%m%n" />
+			<param name="ConversionPattern" value="%d{yyyy-MM-ddTHH:mm:ss} [%t] %p\t%m%n" />
 		</layout>
 	</appender>
 

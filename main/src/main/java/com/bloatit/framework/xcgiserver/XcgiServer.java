@@ -145,26 +145,27 @@ public final class XcgiServer {
             Log.framework().debug(env);
 
             // LOGGING REQUESTS
+            // make sure bash injection is not possible
             final StringBuilder request = new StringBuilder();
             request.append("Access:Request: ");
-            request.append("REQUEST_URI=\"");
-            request.append(header.getRequestUri());
-            request.append("\"; REQUEST_METHOD=\"");
-            request.append(header.getRequestMethod());
-            request.append("\"; USER_AGENT=\"");
-            request.append(header.getHttpUserAgent());
-            request.append("\"; ACCEPT_LANGUAGES=\"");
+            request.append("REQUEST_URI='");
+            request.append(header.getRequestUri().replaceAll("'", ""));
+            request.append("'; REQUEST_METHOD='");
+            request.append(header.getRequestMethod().replaceAll("'", ""));
+            request.append("'; USER_AGENT='");
+            request.append(header.getHttpUserAgent().replaceAll("'", ""));
+            request.append("'; ACCEPT_LANGUAGES='");
             request.append(header.getHttpAcceptLanguage());
-            request.append("\"; HTTP_REFERER=\"");
-            request.append(header.getHttpReferer());
-            request.append("\"; REMOTE_ADDR=\"");
-            request.append(header.getRemoteAddr());
-            request.append("\"; SERVER_PROTOCOL=\"");
+            request.append("'; HTTP_REFERER='");
+            request.append(header.getHttpReferer().replaceAll("'", ""));
+            request.append("'; REMOTE_ADDR='");
+            request.append(header.getRemoteAddr().replaceAll("'", ""));
+            request.append("'; SERVER_PROTOCOL='");
             request.append(header.getServerProtocol());
-            request.append("\"; SERVER_ADDR=\"");
+            request.append("'; SERVER_ADDR='");
             request.append(header.getServerAddr());
             request.append('"');
-            Log.framework().info(request.toString());
+            Log.framework().info(request.toString().replaceAll("\\\\|\"", ""));
 
             SessionManager.clearExpiredSessions();
 
