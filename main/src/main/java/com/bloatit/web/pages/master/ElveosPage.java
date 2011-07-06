@@ -204,7 +204,7 @@ public abstract class ElveosPage extends Page {
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
 
         final HtmlSpan logoTextDiv = new HtmlSpan("logo_text", "logo_text");
-        logoTextDiv.addText(tr("the cooperative platform for free software funding"));
+        logoTextDiv.addText(tr("the collaborative platform for free software funding"));
 
         logoDiv.add(logoTextDiv);
 
