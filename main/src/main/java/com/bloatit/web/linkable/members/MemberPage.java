@@ -152,7 +152,7 @@ public final class MemberPage extends ElveosPage {
         }
 
         // Title
-        final String title = (myPage) ? Context.tr("My page") : Context.tr("Member page");
+        final String title = (myPage) ? Context.tr("My page") : Context.tr("{0}''s page", member.getDisplayName());
         final HtmlTitleBlock tBlock = new HtmlTitleBlock(title, 1);
         master.add(tBlock);
 
