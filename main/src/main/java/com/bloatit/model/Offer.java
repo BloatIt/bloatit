@@ -32,6 +32,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtOffer;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 public final class Offer extends Kudosable<DaoOffer> {
 
@@ -160,6 +161,36 @@ public final class Offer extends Kudosable<DaoOffer> {
         return findCurrentDaoMilestone() != null;
     }
 
+    @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+
+        // Delete all subcomponents of the offer.
+        // Because milestones are not userContents, we delete all subcomponents
+        // of milestones directly.
+        for (Milestone milestone : getMilestones()) {
+            for (Bug bug : milestone.getBugs()) {
+                bug.delete();
+            }
+
+            for (Translation translation : milestone.getDescriptionEntity().getTranslations()) {
+                translation.delete();
+            }
+
+            for (Release release : milestone.getReleases()) {
+                release.delete();
+            }
+        }
+
+        super.delete();
+    }
+
     // ////////////////////////////////////////////////////////////////////////
     // Notifications
     // ////////////////////////////////////////////////////////////////////////
@@ -247,7 +278,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     public Release getLastRelease() {
         return Release.create(getDao().getLastRelease());
     }
-    
+
     // Public data, no right management.
     public String getlicense() {
         return getDao().getLicense();

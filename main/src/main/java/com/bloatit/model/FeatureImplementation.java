@@ -282,10 +282,35 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
 
     @Override
     public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
+
         this.setFeatureState(FeatureState.DISCARDED);
+
+        // We delete every components of the feature (comments, offers,
+        // translations ...)
+
+        // We don't delete contributions because they are cancelled when going
+        // into DISCARDED state. Not deleting them mean they will still appear
+        // on the web site (for example on the account page) which is the
+        // behavior we want.
+        for (Comment comment : getComments()) {
+            comment.delete();
+        }
+
+        for (Offer offer : getOffers()) {
+            offer.delete();
+        }
+
+        for (Translation translation : getDescription().getTranslations()) {
+            translation.delete();
+        }
+
         super.delete();
     }
 

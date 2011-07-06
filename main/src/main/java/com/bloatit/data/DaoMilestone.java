@@ -69,6 +69,12 @@ import com.bloatit.framework.utils.PageIterable;
                            name = "milestone.getBugs.byState",
                            query = "FROM DaoBug WHERE milestone = :this AND state = :state"),
                         @NamedQuery(
+                           name = "milestone.getBugs.getAll",
+                           query = "FROM DaoBug WHERE milestone = :this"),
+                        @NamedQuery(
+                           name = "milestone.getBugs.getAll.size",
+                           query = "SELECT count(*) FROM DaoBug WHERE milestone = :this"),
+                        @NamedQuery(
                             name = "milestone.getBugs.byState.size",
                             query = "SELECT count(*) FROM DaoBug WHERE milestone = :this AND state != :state"),
                         @NamedQuery(
@@ -188,8 +194,6 @@ public class DaoMilestone extends DaoIdentifiable {
     @ManyToOne(optional = false)
     private DaoOffer offer;
 
-
-
     /** The invoices */
     @OneToMany(mappedBy = "milestone")
     @Cascade(value = { CascadeType.ALL })
@@ -202,7 +206,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Create a DaoMilestone.
-     *
+     * 
      * @param dateExpire is the date when this offer should be finish. Must be
      *            non null, and in the future.
      * @param amount is the amount of the offer. Must be non null, and > 0.
@@ -241,7 +245,7 @@ public class DaoMilestone extends DaoIdentifiable {
      * Set the percent of money the developer will received when all bugs of one
      * level are closed. This method take parameters for the Fatal and Major
      * level. The Minor level is calculated from it (see
-     *
+     * 
      * @param fatalPercent is the percent of the money the developer will get
      *            when all the {@link Level#FATAL} bugs are closed. It must be
      *            >= 0 and <= 100.
@@ -269,7 +273,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Adds the release.
-     *
+     * 
      * @param release the release
      */
     public void addRelease(final DaoRelease release) {
@@ -282,7 +286,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Adds the bug.
-     *
+     * 
      * @param bug the bug
      */
     public void addBug(final DaoBug bug) {
@@ -297,7 +301,7 @@ public class DaoMilestone extends DaoIdentifiable {
      * behavior using the <code>force</code> parameter. The force parameter
      * allows to validate the milestone without taking into account these
      * previous restrictions.
-     *
+     * 
      * @param force force the validation of this milestone. Do not take care of
      *            the bugs and the timeOuts.
      * @return true if all parts of this milestone is validated.
@@ -342,7 +346,7 @@ public class DaoMilestone extends DaoIdentifiable {
     /**
      * You can validate a milestone after its release and when the bugs
      * requirement are done.
-     *
+     * 
      * @param level the level
      * @return true if an admin should validate this Milestone part. False
      *         otherwise.
@@ -357,7 +361,7 @@ public class DaoMilestone extends DaoIdentifiable {
     /**
      * Tells if a specified level is validated (and the corresponding amount has
      * been given to the developer)
-     *
+     * 
      * @param level the level
      * @return true, the <code>level</code> is validated.
      */
@@ -367,7 +371,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Validation period finished.
-     *
+     * 
      * @return true, if successful
      */
     private boolean validationPeriodFinished() {
@@ -391,7 +395,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the non resolved bugs.
-     *
+     * 
      * @param level the level
      * @return the non resolved bugs
      */
@@ -402,8 +406,15 @@ public class DaoMilestone extends DaoIdentifiable {
     }
 
     /**
+     * @return all the bugs linked to the milestone
+     */
+    public PageIterable<DaoBug> getBugs() {
+        return new QueryCollection<DaoBug>("milestone.getBugs.getAll").setEntity("this", this);
+    }
+
+    /**
      * Gets the bugs.
-     *
+     * 
      * @param level the level
      * @return the bugs
      */
@@ -413,7 +424,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the bugs.
-     *
+     * 
      * @param state the state
      * @return the bugs
      */
@@ -423,7 +434,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the bugs.
-     *
+     * 
      * @param level the level
      * @param state the state
      * @return the bugs
@@ -436,7 +447,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the second before validation.
-     *
+     * 
      * @return the second before validation
      */
     public int getSecondBeforeValidation() {
@@ -445,7 +456,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the releases.
-     *
+     * 
      * @return the releases
      */
     public PageIterable<DaoRelease> getReleases() {
@@ -454,7 +465,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the after this date, the Milestone should be done.
-     *
+     * 
      * @return the after this date, the Milestone should be done
      */
     public Date getExpirationDate() {
@@ -463,7 +474,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the milestone state.
-     *
+     * 
      * @return the milestone state
      */
     public MilestoneState getMilestoneState() {
@@ -473,7 +484,7 @@ public class DaoMilestone extends DaoIdentifiable {
     /**
      * Gets the amount represents the money the member want to have to make his
      * offer.
-     *
+     * 
      * @return the amount represents the money the member want to have to make
      *         his offer
      */
@@ -483,7 +494,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Remember a description is a title with some content.
-     *
+     * 
      * @return the description
      */
     public DaoDescription getDescription() {
@@ -492,7 +503,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the offer.
-     *
+     * 
      * @return the offer
      */
     public DaoOffer getOffer() {
@@ -501,7 +512,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the released date.
-     *
+     * 
      * @return the releaseDate
      */
     public Date getReleasedDate() {
@@ -511,7 +522,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the fatal bugs percent.
-     *
+     * 
      * @return the fatalBugsPercent
      */
     public int getFatalBugsPercent() {
@@ -520,7 +531,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the major bugs percent.
-     *
+     * 
      * @return the majorBugsPercent
      */
     public int getMajorBugsPercent() {
@@ -529,7 +540,7 @@ public class DaoMilestone extends DaoIdentifiable {
 
     /**
      * Gets the minor bugs percent.
-     *
+     * 
      * @return the getMinorBugsPercent (= 100 - (majorBugsPercent +
      *         fatalBugsPercent)).
      */
