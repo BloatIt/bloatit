@@ -299,6 +299,9 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         // into DISCARDED state. Not deleting them mean they will still appear
         // on the web site (for example on the account page) which is the
         // behavior we want.
+
+        super.delete();
+
         for (Comment comment : getComments()) {
             comment.delete();
         }
@@ -310,8 +313,6 @@ public final class FeatureImplementation extends Kudosable<DaoFeature> implement
         for (Translation translation : getDescription().getTranslations()) {
             translation.delete();
         }
-
-        super.delete();
     }
 
     // ////////////////////////////////////////////////////////////////////////

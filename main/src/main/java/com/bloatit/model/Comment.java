@@ -134,6 +134,8 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         if (!getRights().hasAdminUserPrivilege()) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
+        
+        super.delete();
 
         for (Comment comment : getComments()) {
             comment.delete();

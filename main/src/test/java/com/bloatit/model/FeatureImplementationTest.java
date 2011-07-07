@@ -33,6 +33,7 @@ import mockit.Mockit;
 
 import org.junit.Test;
 
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoFeature;
 import com.bloatit.data.DaoFeature.FeatureState;
@@ -507,7 +508,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
         feature.addContribution(new BigDecimal(50), "Woohoo");
         Comment comm1 = feature.addComment("You shouldn't do it this way");
         comm1.authenticate(tomAuthToken);
-        Comment reply11 = comm1.addComment("Mmmh in fact you should ... I want wrong !");
+        Comment reply11 = comm1.addComment("Mmmh in fact you should ... I was wrong !");
 
         feature.authenticate(fredAuthToken);
         feature.addContribution(new BigDecimal(75), "Plop");
@@ -522,7 +523,29 @@ public class FeatureImplementationTest extends ModelTestUnit {
         Offer offer = feature.addOffer(new BigDecimal("300"), "Beautiful offer", "AGPL", new Locale("fr", "fr"), DateUtils.tomorrow(), 100);
         offer.authenticate(loser);
         offer.getCurrentMilestone().authenticate(loser);
-        Release release = offer.getCurrentMilestone().addRelease("Beta 1", "0.1", new Locale("fr", "fr"), null);
+        Milestone milestone = offer.getCurrentMilestone();
+        Release release = milestone.addRelease("Beta 1", "0.1", new Locale("fr", "fr"), null);
+
+        Bug bug1 = milestone.addBug("A new bug 1", "This is a new bug description 1", new Locale("en", "us"), Level.FATAL);
+        bug1.authenticate(fredAuthToken);
+        Comment bugComm11 = bug1.addComment("plop");
+        bugComm11.authenticate(tomAuthToken);
+        Comment bugComm111 = bugComm11.addComment("plip");
+        bugComm111.authenticate(yoAuthToken);
+        Comment bugComm12 = bug1.addComment("plap");
+        bugComm111.authenticate(fredAuthToken);
+        Bug bug2 = milestone.addBug("A new bug 2", "This is a new bug description 2", new Locale("en", "us"), Level.MAJOR);
+        bug2.authenticate(yoAuthToken);
+        Bug bug3 = milestone.addBug("A new bug 3", "This is a new bug description 3", new Locale("en", "us"), Level.MINOR);
+        bug3.authenticate(tomAuthToken);
+        Bug bug4 = milestone.addBug("A new bug 4", "This is a new bug description 4", new Locale("en", "us"), Level.FATAL);
+        bug4.authenticate(fredAuthToken);
+        Comment bugComm41 = bug4.addComment("plop");
+        bugComm41.authenticate(tomAuthToken);
+        Comment bugComm411 = bugComm41.addComment("plip");
+        bugComm411.authenticate(fredAuthToken);
+        Comment bugComm42 = bug4.addComment("plap");
+        bugComm42.authenticate(yoAuthToken);
 
         feature.authenticate(adminAuthToken);
         comm1.authenticate(adminAuthToken);
@@ -530,17 +553,49 @@ public class FeatureImplementationTest extends ModelTestUnit {
         reply12.authenticate(adminAuthToken);
         comm2.authenticate(adminAuthToken);
         release.authenticate(adminAuthToken);
+        offer.authenticate(adminAuthToken);
+        bug1.authenticate(adminAuthToken);
+        bug2.authenticate(adminAuthToken);
+        bug3.authenticate(adminAuthToken);
+        bug4.authenticate(adminAuthToken);
+        bugComm11.authenticate(adminAuthToken);
+        bugComm111.authenticate(adminAuthToken);
+        bugComm12.authenticate(adminAuthToken);
+        bugComm41.authenticate(adminAuthToken);
+        bugComm411.authenticate(adminAuthToken);
+        bugComm42.authenticate(adminAuthToken);
+
+        // We authenticate EVERY element of the feature tree ...
+        // Yes that is TEDIOUS !
+        for (Comment comment : feature.getComments()) {
+            comment.authenticate(adminAuthToken);
+            for (Comment subComment : comment.getComments()) {
+                subComment.authenticate(adminAuthToken);
+            }
+        }
+
+        for (Translation translation : feature.getDescription().getTranslations()) {
+            translation.authenticate(adminAuthToken);
+        }
 
         for (Offer o : feature.getOffers()) {
             o.authenticate(adminAuthToken);
-
-            for (Milestone milestone : o.getMilestones()) {
-                milestone.authenticate(adminAuthToken);
-                for (Bug bug : milestone.getBugs()) {
+            for (Milestone m : o.getMilestones()) {
+                m.authenticate(adminAuthToken);
+                for (Bug bug : m.getBugs()) {
                     bug.authenticate(adminAuthToken);
+                    for (Comment comment : bug.getComments()) {
+                        comment.authenticate(adminAuthToken);
+                    }
                 }
-                for (Translation translation : milestone.getDescriptionEntity().getTranslations()) {
+                for (Translation translation : m.getDescriptionEntity().getTranslations()) {
                     translation.authenticate(adminAuthToken);
+                }
+                for (Release rel : m.getReleases()) {
+                    rel.authenticate(adminAuthToken);
+                    for (Comment comment : rel.getComments()) {
+                        comment.authenticate(adminAuthToken);
+                    }
                 }
             }
         }
@@ -554,5 +609,15 @@ public class FeatureImplementationTest extends ModelTestUnit {
         assertTrue(comm2.isDeleted());
         assertTrue(release.isDeleted());
         assertTrue(offer.isDeleted());
+        assertTrue(bug1.isDeleted());
+        assertTrue(bug2.isDeleted());
+        assertTrue(bug3.isDeleted());
+        assertTrue(bug4.isDeleted());
+        assertTrue(bugComm11.isDeleted());
+        assertTrue(bugComm111.isDeleted());
+        assertTrue(bugComm12.isDeleted());
+        assertTrue(bugComm41.isDeleted());
+        assertTrue(bugComm411.isDeleted());
+        assertTrue(bugComm42.isDeleted());
     }
 }

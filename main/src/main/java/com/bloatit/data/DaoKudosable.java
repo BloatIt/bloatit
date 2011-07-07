@@ -55,8 +55,11 @@ import com.bloatit.framework.utils.PageIterable;
                                    "AND a = :this"),
                                    
                        @NamedQuery(
-                                   name = "kudosable.getKudos",
-                                   query = "FROM DaoKudos WHERE kudosable = :this"),
+                           name = "kudosable.getKudos",
+                           query = "FROM DaoKudos WHERE kudosable = :this"),
+                       @NamedQuery(
+                           name = "kudosable.getKudos.size",
+                           query = "FROM DaoKudos WHERE kudosable = :this"),
                        @NamedQuery(
                            name = "kudosable.getKudos.byMember.value",
                            query = "SELECT k.value " +
