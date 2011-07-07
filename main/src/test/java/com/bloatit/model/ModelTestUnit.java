@@ -27,6 +27,7 @@ public class ModelTestUnit {
     protected AuthenticatedUserToken yoAuthToken;
     protected AuthenticatedUserToken tomAuthToken;
     protected AuthenticatedUserToken fredAuthToken;
+    protected AuthenticatedUserToken adminAuthToken;
     protected AuthenticatedUserToken loser;
     
     private static boolean firstInit = true;
@@ -45,6 +46,7 @@ public class ModelTestUnit {
         tomAuthToken = new AuthenticatedUserToken("Thomas", "password");
         fredAuthToken = new AuthenticatedUserToken("Fred", "other");
         loser = new AuthenticatedUserToken("loser", "loser");
+        adminAuthToken = new AuthenticatedUserToken("admin", "admin");
     }
 
     @After

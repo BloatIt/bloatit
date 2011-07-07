@@ -22,6 +22,8 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
+import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 public class Release extends UserContent<DaoRelease> {
 
@@ -83,6 +85,23 @@ public class Release extends UserContent<DaoRelease> {
     // no right management: this is public data
     public String getVersion() {
         return getDao().getVersion();
+    }
+
+    @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        
+        super.delete();
+
+        for (Comment comment : getComments()) {
+            comment.delete();
+        }
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

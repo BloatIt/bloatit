@@ -36,6 +36,9 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.data.queries.QueryCollection;
+import com.bloatit.framework.utils.PageIterable;
+
 /**
  * @author Thomas Guyard This represent a content that is Kudosable.
  */
@@ -50,6 +53,13 @@ import org.hibernate.search.annotations.Store;
                                    "JOIN a.kudos as k " +
                                    "WHERE k.member = :member " +
                                    "AND a = :this"),
+                                   
+                       @NamedQuery(
+                           name = "kudosable.getKudos",
+                           query = "FROM DaoKudos WHERE kudosable = :this"),
+                       @NamedQuery(
+                           name = "kudosable.getKudos.size",
+                           query = "FROM DaoKudos WHERE kudosable = :this"),
                        @NamedQuery(
                            name = "kudosable.getKudos.byMember.value",
                            query = "SELECT k.value " +
@@ -89,16 +99,16 @@ public abstract class DaoKudosable extends DaoUserContent {
      * applies on this kudosable. it is a cached value (It could be calculated)
      */
     @Basic(optional = false)
-    @Field(store = Store.NO, index=Index.UN_TOKENIZED)
+    @Field(store = Store.NO, index = Index.UN_TOKENIZED)
     private int popularity;
 
     @OneToMany(mappedBy = "kudosable")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private final List<DaoKudos> kudos = new ArrayList<DaoKudos>(0);
+    private final List<DaoKudos> kudos = new ArrayList<DaoKudos>();
 
     @Basic(optional = false)
-    @Field(store = Store.NO, index=Index.UN_TOKENIZED)
+    @Field(store = Store.NO, index = Index.UN_TOKENIZED)
     @Enumerated
     private PopularityState state;
 
@@ -216,6 +226,10 @@ public abstract class DaoKudosable extends DaoUserContent {
      */
     public int getPopularity() {
         return this.popularity;
+    }
+
+    public PageIterable<DaoKudos> getKudos() {
+        return new QueryCollection<DaoKudos>("kudosable.getKudos").setEntity("this", this);
     }
 
     // ======================================================================

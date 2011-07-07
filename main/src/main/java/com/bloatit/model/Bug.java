@@ -29,6 +29,7 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtBug;
 import com.bloatit.model.right.UnauthorizedOperationException;
 import com.bloatit.model.right.UnauthorizedPublicAccessException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 /**
  * This is a bug report. A bug report is associated with a milestone. it is
@@ -148,6 +149,23 @@ public final class Bug extends UserContent<DaoBug> implements Commentable {
                                                                text);
         getDao().addComment(comment);
         return Comment.create(comment);
+    }
+
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+
+        // Delete all comments from the bug
+        for (Comment comment : getComments()) {
+            comment.delete();
+        }
+
+        super.delete();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////

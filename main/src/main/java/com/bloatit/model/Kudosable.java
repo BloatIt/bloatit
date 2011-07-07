@@ -22,6 +22,7 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.model.lists.KudosList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthenticatedUserToken;
 import com.bloatit.model.right.RgtKudosable;
@@ -192,6 +193,27 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
         setStateUnprotected(newState);
+    }
+
+    @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+
+        for (Kudos kudos : getKudos()) {
+            kudos.delete();
+        }
+
+        super.delete();
+    }
+
+    private KudosList getKudos() {
+        return new KudosList(getDao().getKudos());
     }
 
     @Override

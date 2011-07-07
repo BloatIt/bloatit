@@ -22,6 +22,7 @@ import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RgtComment;
 import com.bloatit.model.right.UnauthorizedOperationException;
+import com.bloatit.model.right.UnauthorizedOperationException.SpecialCode;
 
 /**
  * The Class Comment.
@@ -124,6 +125,23 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         return canAccess(new RgtComment.Comment(), action);
     }
 
+    @Override
+    public void delete() throws UnauthorizedOperationException {
+        if (isDeleted()) {
+            return;
+        }
+
+        if (!getRights().hasAdminUserPrivilege()) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        
+        super.delete();
+
+        for (Comment comment : getComments()) {
+            comment.delete();
+        }
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -179,6 +197,10 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
 
     public Bug getParentBug() {
         return Bug.create(getDao().getFatherBug());
+    }
+
+    protected CommentList getComments() {
+        return new CommentList(getDao().getComments());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
