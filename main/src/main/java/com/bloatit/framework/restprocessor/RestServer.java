@@ -80,6 +80,7 @@ public abstract class RestServer implements XcgiProcessor {
     public final boolean process(final HttpHeader httpHeader, final HttpPost post, final HttpResponse response) throws IOException {
 
         // TODO when the authentication will be supported do not forget to log
+        // make sure bash injection is not possible.
         // it with this syntax:
         // Log.framework().info("Access:Context: KEY=\"" + sessionKey +
         // "\"; USER_ID=\"" + memberId + "\"; LANG=\""

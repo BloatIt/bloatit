@@ -50,12 +50,13 @@ public abstract class WebProcessor implements XcgiProcessor {
             Context.reInitializeContext(header, session);
 
             // Access log
+            // Make sure bash injection is not possible.
             final String memberId = session.getUserToken().isAuthenticated() ? session.getUserToken().getMember().getId().toString() : "-1";
             final String sessionKey = Hash.shortHash(session.getShortKey());
             Log.framework().info("Access:Context: " + //
-                    "USER_ID=\"" + memberId + //
-                    "\"; KEY=\"" + sessionKey + //
-                    "\"; LANG=\"" + Context.getLocalizator().getLocale() + "\"");
+                    "USER_ID='" + memberId + //
+                    "'; KEY='" + sessionKey + //
+                    "'; LANG='" + Context.getLocalizator().getLocale() + "'");
 
             final String pageCode = header.getPageName();
 
