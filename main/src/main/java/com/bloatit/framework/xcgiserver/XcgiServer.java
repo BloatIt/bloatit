@@ -32,7 +32,9 @@ import java.util.Map;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.SessionManager;
+import com.bloatit.framework.webprocessor.context.WebHeader;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
 public final class XcgiServer {
@@ -141,6 +143,16 @@ public final class XcgiServer {
             final Map<String, String> env = parser.getEnv();
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
+
+            // TEST //
+            // Merge post and get parameters.
+            final Parameters parameters = new Parameters();
+            final WebHeader webHeader = new WebHeader(header);
+            parameters.putAll(webHeader.getParameters());
+            parameters.putAll(webHeader.getGetParameters());
+            parameters.putAll(post.getParameters());
+            final HttpBloatitRequest r = new HttpBloatitRequest(header, parameters);
+            // TEST //
 
             Log.framework().debug(env);
 

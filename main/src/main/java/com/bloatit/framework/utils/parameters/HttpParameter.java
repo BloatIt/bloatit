@@ -49,6 +49,10 @@ public class HttpParameter implements Iterable<String> {
         return values.size() > 1;
     }
 
+    public int size() {
+        return values.size();
+    }
+
     /**
      * <p>
      * Returns <b>only</b> the first value in the list of values.
