@@ -29,9 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.amber.oauth2.common.exception.OAuthProblemException;
+import org.apache.amber.oauth2.common.exception.OAuthSystemException;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
+import com.bloatit.framework.oauth.OAuthAuthorizationAction;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.SessionManager;
 import com.bloatit.framework.webprocessor.context.WebHeader;
@@ -145,13 +149,31 @@ public final class XcgiServer {
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
 
             // TEST //
-            // Merge post and get parameters.
             final Parameters parameters = new Parameters();
             final WebHeader webHeader = new WebHeader(header);
             parameters.putAll(webHeader.getParameters());
             parameters.putAll(webHeader.getGetParameters());
             parameters.putAll(post.getParameters());
             final HttpBloatitRequest r = new HttpBloatitRequest(header, parameters);
+            if (header.getRequestUri().matches("/.*/oauth/tmp_token.*")) {
+                try {
+                    System.err.println(OAuthAuthorizationAction.doGet(r));
+                } catch (final OAuthSystemException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (final OAuthProblemException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (header.getRequestUri().matches("/.*/oauth/request_token.*")) {
+                try {
+                    OAuthAuthorizationAction.doPost(r);
+                } catch (final OAuthSystemException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
             // TEST //
 
             Log.framework().debug(env);

@@ -263,31 +263,31 @@ public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>>
     }
 
     @Override
-    public Identifiable<?> visit(DaoInvoice dao) {
+    public Identifiable<?> visit(final DaoInvoice dao) {
         return Invoice.create(dao);
     }
 
     @Override
-    public Identifiable<?> visit(DaoStringVersion dao) {
+    public Identifiable<?> visit(final DaoStringVersion dao) {
         // FIXME (If we throw a not implemented exception, when we try to
         // getById and pass it to visitor, it crashes)
         return null;
     }
 
     @Override
-    public Identifiable<?> visit(DaoVersionedString dao) {
+    public Identifiable<?> visit(final DaoVersionedString dao) {
         // FIXME
         return null;
     }
 
     @Override
-    public Identifiable<?> visit(DaoMilestoneContributionAmount daoMilestoneContributionAmount) {
+    public Identifiable<?> visit(final DaoMilestoneContributionAmount daoMilestoneContributionAmount) {
         // FIXME
         return null;
     }
 
     @Override
-    public Identifiable<?> visit(DaoNewsFeed daoNewsFeed) {
+    public Identifiable<?> visit(final DaoNewsFeed daoNewsFeed) {
         return NewsFeed.create(daoNewsFeed);
     }
 }

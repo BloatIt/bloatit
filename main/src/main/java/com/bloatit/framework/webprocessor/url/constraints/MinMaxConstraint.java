@@ -15,12 +15,13 @@ public abstract class MinMaxConstraint<V extends Comparable<V>> extends Constrai
         this.isExclusive = isExclusive;
     }
 
+    @SuppressWarnings("cast")
     @Override
-    protected void updateFormater(final MessageFormater formater, V value) {
+    protected void updateFormater(final MessageFormater formater, final V value) {
         formater.addParameter("%constraint%", String.valueOf(minMax));
 
-        if (value instanceof String) {
-            formater.addParameter("%valueLength%", String.valueOf(((String) value).length()));
+        if (((Object)value) instanceof String) {
+            formater.addParameter("%valueLength%", String.valueOf(String.class.cast(value).length()));
         }
 
     }

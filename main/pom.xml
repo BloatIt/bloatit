@@ -12,6 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hibernate.version>3.6.1.Final</hibernate.version>
 	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -195,11 +196,17 @@
 			<artifactId>gettext-commons</artifactId>
 			<version>0.9.6</version>
 		</dependency>
+
 		<!-- For hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.2.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -216,6 +223,7 @@
 			<artifactId>hibernate-search</artifactId>
 			<version>3.3.0.Final</version>
 		</dependency>
+
 		<!-- we need sl4j for logging with hibernate -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -315,10 +323,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>6.0-SNAPSHOT</version>
-			<scope>provided</scope>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-6.0</artifactId>
+			<version>1.0.0.Final</version>
+			<type>pom</type>
 		</dependency>
 
 

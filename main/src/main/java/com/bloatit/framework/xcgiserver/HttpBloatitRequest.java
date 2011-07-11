@@ -147,7 +147,11 @@ public class HttpBloatitRequest implements HttpServletRequest {
 
     @Override
     public String getParameter(final String arg0) {
-        return parameter.look(arg0).getSimpleValue();
+        final HttpParameter look = parameter.look(arg0);
+        if (look != null) {
+            return look.getSimpleValue();
+        }
+        return null;
     }
 
     @Override

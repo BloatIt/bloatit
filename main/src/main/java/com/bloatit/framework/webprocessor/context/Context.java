@@ -139,7 +139,7 @@ public class Context {
         UniqueThreadContext.getContext().session = session;
     }
 
-    public static synchronized void setGlobalNotification(String globalNotification) {
+    public static synchronized void setGlobalNotification(final String globalNotification) {
         Context.globalNotification = globalNotification;
     }
 

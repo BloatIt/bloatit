@@ -110,6 +110,8 @@ import com.bloatit.web.linkable.money.StaticAccountChargingPage;
 import com.bloatit.web.linkable.money.UnlockAccountChargingProcessAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyAction;
 import com.bloatit.web.linkable.money.WithdrawMoneyPage;
+import com.bloatit.web.linkable.oauth2.OAuthAuthorizationAction;
+import com.bloatit.web.linkable.oauth2.OAuthAuthorizationPage;
 import com.bloatit.web.linkable.offer.MakeOfferPage;
 import com.bloatit.web.linkable.offer.OfferAction;
 import com.bloatit.web.linkable.release.CreateReleaseAction;
@@ -314,10 +316,16 @@ public class BloatitWebServer extends WebProcessor {
         if (FeatureModerationPageUrl.matches(pageCode)) {
             return new FeatureModerationPage(new FeatureModerationPageUrl(pageCode, postGetParameters, session.getParameters()));
         }
+        if (OAuthAuthorizationPageUrl.matches(pageCode)) {
+            return new OAuthAuthorizationPage(new OAuthAuthorizationPageUrl(pageCode, postGetParameters, session.getParameters()));
+        }
 
         // ////////
         // Actions
         // ////////
+        if (OAuthAuthorizationActionUrl.matches(pageCode)) {
+            return new OAuthAuthorizationAction(new OAuthAuthorizationActionUrl(pageCode, postGetParameters, session.getParameters()));
+        }
         if (LoginActionUrl.matches(pageCode)) {
             return new LoginAction(new LoginActionUrl(pageCode, postGetParameters, session.getParameters()));
         }

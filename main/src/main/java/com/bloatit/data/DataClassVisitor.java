@@ -241,4 +241,5 @@ public interface DataClassVisitor<ReturnType> {
      * @return what you want
      */
     ReturnType visit(DaoNewsFeed daoNewsFeed);
+
 }
