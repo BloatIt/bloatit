@@ -66,6 +66,7 @@ public class LostPasswordPage extends ElveosPage {
         final FieldData emailFieldData = targetUrl.getEmailParameter().pickFieldData();
         final HtmlTextField emailInput = new HtmlTextField(emailFieldData.getName(), Context.tr("Enter your email"));
         emailInput.setDefaultValue(emailFieldData.getSuggestedValue());
+        emailInput.setComment(Context.tr("We will send you an email explaining how to recover your password."));
         form.add(emailInput);
 
         form.add(new HtmlSubmit(Context.tr("Submit")));
