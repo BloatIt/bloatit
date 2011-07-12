@@ -18,6 +18,7 @@ package com.bloatit.framework.webprocessor.components.meta;
 
 import java.util.List;
 
+import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.webprocessor.components.writers.QueryResponseStream;
 
 /**
