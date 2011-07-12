@@ -863,13 +863,16 @@ public class DaoMember extends DaoActor {
     }
     
     public EnumSet<RightLevel> getExternalServiceRights(final String token) {
-        final DaoExternalService externalService = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getAuthorizedByToken")
+        final DaoExternalService externalService = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getByToken")
                                                                                       .setString("token", token)
                                                                                       .uniqueResult();
         if (externalService == null) {
             return EnumSet.noneOf(RightLevel.class);
         }
-        return externalService.getLevels();
+        if (externalService.isValid()) {
+            return externalService.getLevels();
+        }
+        return EnumSet.noneOf(RightLevel.class);
     }
 
     // ======================================================================

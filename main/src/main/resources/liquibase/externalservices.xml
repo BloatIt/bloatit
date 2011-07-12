@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet author="Thomas Guyard" id="20110712 add table externalService">
+		<comment>Add a table named daoexternalservice</comment>
+		<createTable tableName="daoexternalservice">
+		    <column name="id" type="int4">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="daoexternalservicepk"/>
+            </column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="token" type="varchar(1024)">
+				<constraints nullable="false" />
+			</column>
+			<column name="authorized" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="refreshtoken" type="varchar(1024)">
+			</column>
+			<column name="expirationDate" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="cancreatefeature" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="cancreateoffer" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="cancomment" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="cankudos" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="cancontribute" type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="member_id" type="int4">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="Thomas Guyard" id="20110712 externalService FKs">
+        <addForeignKeyConstraint baseColumnNames="member_id" baseTableName="daoexternalservice" constraintName="FKMEMBERIDDAOEXTERNALSERVICE20110712" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="daomember" referencesUniqueColumn="false"/>
+    </changeSet>
+
+</databaseChangeLog>

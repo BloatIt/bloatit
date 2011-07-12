@@ -14,5 +14,6 @@
 	<include file="liquibase/offer-licence.xml" />
     <include file="liquibase/news-feed.xml" />
     <include file="liquibase/activation-email.xml" />
+    <include file="liquibase/externalservices.xml" />
     
 </databaseChangeLog>

@@ -18,15 +18,9 @@ import com.bloatit.framework.utils.datetime.DateUtils;
 @Entity
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "externalservice.getAuthorizedByToken",
+                           name = "externalservice.getByToken",
                            query = "FROM DaoExternalService " +
-                           		   "WHERE token = :token " +
-                           		   "AND authorized = 'true' "),
-               		   @NamedQuery(
-               		            name = "externalservice.getNonAuthorizedByToken",
-               		            query = "FROM DaoExternalService " +
-               		                    "WHERE token = :token " +
-               		                    "AND authorized = 'false' "),
+                           		   "WHERE token = :token "),
                        }
              )
 //@formatter:on
@@ -39,6 +33,7 @@ public final class DaoExternalService extends DaoIdentifiable {
     @Basic(optional = false)
     private String name;
 
+    // TODO add unique constraint ?
     @Basic(optional = false)
     private String token;
 
@@ -73,11 +68,14 @@ public final class DaoExternalService extends DaoIdentifiable {
         if (authorizationToken == null || accessToken == null || refreshToken == null || expirationDate == null) {
             throw new NonOptionalParameterException();
         }
-        final DaoExternalService service = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getNonAuthorizedByToken")
+        final DaoExternalService service = (DaoExternalService) SessionManager.getNamedQuery("externalservice.getByToken")
                                                                               .setString("token", authorizationToken)
                                                                               .uniqueResult();
         if (service == null) {
             throw new ElementNotFoundException("The service with the specified token is not found.");
+        }
+        if (service.isAuthorized()) {
+            throw new ElementNotFoundException("The service with the specified token is already authorized.");
         }
         service.authorize(accessToken, refreshToken, expirationDate);
     }
@@ -150,6 +148,10 @@ public final class DaoExternalService extends DaoIdentifiable {
     // Getters
     // ======================================================================
 
+    public final boolean isValid() {
+        return authorized && expirationDate != null && DateUtils.isInTheFuture(expirationDate);
+    }
+
     public final String getName() {
         return name;
     }
@@ -168,6 +170,10 @@ public final class DaoExternalService extends DaoIdentifiable {
 
     public final Date getExpirationDate() {
         return expirationDate;
+    }
+
+    public final DaoMember getMember() {
+        return member;
     }
 
     public final EnumSet<RightLevel> getLevels() {
