@@ -88,7 +88,7 @@ public class OAuthAuthorizationAction extends LoggedAction {
 
     @Override
     protected Url doProcessRestricted(final Member me) {
-        final HttpBloatitRequest request = new HttpBloatitRequest(Context.getHeader().getHttpHeader(), url.getStringParameters());
+        final HttpBloatitRequest request = new HttpBloatitRequest(Context.getHeader(), url.getStringParameters());
         try {
             final OAuthAuthzRequest oAuthAuthzRequest = new OAuthAuthzRequest(request);
             clientId = oAuthAuthzRequest.getClientId();

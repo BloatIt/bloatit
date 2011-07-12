@@ -1,6 +1,5 @@
 package com.bloatit.model;
 
-import java.util.UUID;
 
 public class AnonymousUserToken implements ElveosUserToken {
 
@@ -14,13 +13,8 @@ public class AnonymousUserToken implements ElveosUserToken {
     }
 
     @Override
-    public void setAsTeam(Team team) {
+    public void setAsTeam(final Team team) {
         // Do nothing ...
-    }
-
-    @Override
-    public UUID getKey() {
-        return null;
     }
 
     @Override

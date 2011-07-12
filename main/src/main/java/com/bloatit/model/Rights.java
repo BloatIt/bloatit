@@ -52,7 +52,7 @@ public class Rights {
                     currentTeam = identifiable.accept(new GetCreatedByTeamVisitor());
                 }
 
-                Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(token.getMember()));
+                final Boolean accept = identifiable.accept(new IsTeamOwnerVisitor(token.getMember()));
                 if (accept != null && accept) {
                     owningState = OwningState.TEAM_OWNER;
                 } else {
@@ -233,22 +233,27 @@ public class Rights {
         }
 
         @Override
-        public Team visit(Invoice model) {
+        public Team visit(final Invoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Team visit(ContributionInvoice model) {
+        public Team visit(final ContributionInvoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Team visit(MilestoneContributionAmount model) {
+        public Team visit(final MilestoneContributionAmount model) {
             return null;
         }
 
         @Override
-        public Team visit(NewsFeed newsFeed) {
+        public Team visit(final NewsFeed newsFeed) {
+            return null;
+        }
+
+        @Override
+        public Team visit(final ExternalService externalService) {
             return null;
         }
 
@@ -320,22 +325,27 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(Invoice model) {
+        public Boolean visit(final Invoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Boolean visit(ContributionInvoice model) {
+        public Boolean visit(final ContributionInvoice model) {
             return visitAbstract(model.getRecipientActorUnprotected());
         }
 
         @Override
-        public Boolean visit(MilestoneContributionAmount model) {
+        public Boolean visit(final MilestoneContributionAmount model) {
             return null;
         }
 
         @Override
-        public Boolean visit(NewsFeed newsFeed) {
+        public Boolean visit(final NewsFeed newsFeed) {
+            return null;
+        }
+
+        @Override
+        public Boolean visit(final ExternalService externalService) {
             return null;
         }
     }
@@ -403,23 +413,28 @@ public class Rights {
         }
 
         @Override
-        public Boolean visit(Invoice model) {
+        public Boolean visit(final Invoice model) {
             return model.getRecipientActorUnprotected().equals(member);
         }
 
         @Override
-        public Boolean visit(ContributionInvoice model) {
+        public Boolean visit(final ContributionInvoice model) {
             return model.getRecipientActorUnprotected().equals(member)
                     || (model.getEmitterActorUnprotected() != null && model.getEmitterActorUnprotected().equals(member));
         }
 
         @Override
-        public Boolean visit(MilestoneContributionAmount model) {
+        public Boolean visit(final MilestoneContributionAmount model) {
             return null;
         }
 
         @Override
-        public Boolean visit(NewsFeed newsFeed) {
+        public Boolean visit(final NewsFeed newsFeed) {
+            return null;
+        }
+
+        @Override
+        public Boolean visit(final ExternalService externalService) {
             return null;
         }
 

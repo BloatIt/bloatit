@@ -472,7 +472,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
     // So you have to reload from the db the feature. (So it return it ...)
     private Feature passeIntoDev(final Feature feature) {
         ModelAccessor.close();
-        ModelAccessor.open();
+        ModelAccessor.open(null);
 
         Mockit.setUpMock(DaoFeature.class, new MockFeatureValidationTimeOut());
 
@@ -486,7 +486,7 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         // Some times has been spent. Model must have been closed and reopened.
         ModelAccessor.close();
-        ModelAccessor.open();
+        ModelAccessor.open(null);
 
         return FeatureManager.getFeatureById(feature.getId());
 
@@ -502,49 +502,49 @@ public class FeatureImplementationTest extends ModelTestUnit {
      */
     @Test
     public void testDeleteFeature() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        Feature feature = createFeatureByThomas();
+        final Feature feature = createFeatureByThomas();
 
         feature.authenticate(tomAuthToken);
         feature.addContribution(new BigDecimal(50), "Woohoo");
-        Comment comm1 = feature.addComment("You shouldn't do it this way");
+        final Comment comm1 = feature.addComment("You shouldn't do it this way");
         comm1.authenticate(tomAuthToken);
-        Comment reply11 = comm1.addComment("Mmmh in fact you should ... I was wrong !");
+        final Comment reply11 = comm1.addComment("Mmmh in fact you should ... I was wrong !");
 
         feature.authenticate(fredAuthToken);
         feature.addContribution(new BigDecimal(75), "Plop");
         comm1.authenticate(fredAuthToken);
-        Comment reply12 = comm1.addComment("Indeed you were wrong");
+        final Comment reply12 = comm1.addComment("Indeed you were wrong");
 
         feature.authenticate(yoAuthToken);
         feature.addContribution(new BigDecimal(200), "Yeahh");
-        Comment comm2 = feature.addComment("Do it your way, ignore tom he's obviously wrong !");
+        final Comment comm2 = feature.addComment("Do it your way, ignore tom he's obviously wrong !");
 
         feature.authenticate(loser);
-        Offer offer = feature.addOffer(new BigDecimal("300"), "Beautiful offer", "AGPL", new Locale("fr", "fr"), DateUtils.tomorrow(), 100);
+        final Offer offer = feature.addOffer(new BigDecimal("300"), "Beautiful offer", "AGPL", new Locale("fr", "fr"), DateUtils.tomorrow(), 100);
         offer.authenticate(loser);
         offer.getCurrentMilestone().authenticate(loser);
-        Milestone milestone = offer.getCurrentMilestone();
-        Release release = milestone.addRelease("Beta 1", "0.1", new Locale("fr", "fr"), null);
+        final Milestone milestone = offer.getCurrentMilestone();
+        final Release release = milestone.addRelease("Beta 1", "0.1", new Locale("fr", "fr"), null);
 
-        Bug bug1 = milestone.addBug("A new bug 1", "This is a new bug description 1", new Locale("en", "us"), Level.FATAL);
+        final Bug bug1 = milestone.addBug("A new bug 1", "This is a new bug description 1", new Locale("en", "us"), Level.FATAL);
         bug1.authenticate(fredAuthToken);
-        Comment bugComm11 = bug1.addComment("plop");
+        final Comment bugComm11 = bug1.addComment("plop");
         bugComm11.authenticate(tomAuthToken);
-        Comment bugComm111 = bugComm11.addComment("plip");
+        final Comment bugComm111 = bugComm11.addComment("plip");
         bugComm111.authenticate(yoAuthToken);
-        Comment bugComm12 = bug1.addComment("plap");
+        final Comment bugComm12 = bug1.addComment("plap");
         bugComm111.authenticate(fredAuthToken);
-        Bug bug2 = milestone.addBug("A new bug 2", "This is a new bug description 2", new Locale("en", "us"), Level.MAJOR);
+        final Bug bug2 = milestone.addBug("A new bug 2", "This is a new bug description 2", new Locale("en", "us"), Level.MAJOR);
         bug2.authenticate(yoAuthToken);
-        Bug bug3 = milestone.addBug("A new bug 3", "This is a new bug description 3", new Locale("en", "us"), Level.MINOR);
+        final Bug bug3 = milestone.addBug("A new bug 3", "This is a new bug description 3", new Locale("en", "us"), Level.MINOR);
         bug3.authenticate(tomAuthToken);
-        Bug bug4 = milestone.addBug("A new bug 4", "This is a new bug description 4", new Locale("en", "us"), Level.FATAL);
+        final Bug bug4 = milestone.addBug("A new bug 4", "This is a new bug description 4", new Locale("en", "us"), Level.FATAL);
         bug4.authenticate(fredAuthToken);
-        Comment bugComm41 = bug4.addComment("plop");
+        final Comment bugComm41 = bug4.addComment("plop");
         bugComm41.authenticate(tomAuthToken);
-        Comment bugComm411 = bugComm41.addComment("plip");
+        final Comment bugComm411 = bugComm41.addComment("plip");
         bugComm411.authenticate(fredAuthToken);
-        Comment bugComm42 = bug4.addComment("plap");
+        final Comment bugComm42 = bug4.addComment("plap");
         bugComm42.authenticate(yoAuthToken);
 
         feature.authenticate(adminAuthToken);
@@ -567,33 +567,33 @@ public class FeatureImplementationTest extends ModelTestUnit {
 
         // We authenticate EVERY element of the feature tree ...
         // Yes that is TEDIOUS !
-        for (Comment comment : feature.getComments()) {
+        for (final Comment comment : feature.getComments()) {
             comment.authenticate(adminAuthToken);
-            for (Comment subComment : comment.getComments()) {
+            for (final Comment subComment : comment.getComments()) {
                 subComment.authenticate(adminAuthToken);
             }
         }
 
-        for (Translation translation : feature.getDescription().getTranslations()) {
+        for (final Translation translation : feature.getDescription().getTranslations()) {
             translation.authenticate(adminAuthToken);
         }
 
-        for (Offer o : feature.getOffers()) {
+        for (final Offer o : feature.getOffers()) {
             o.authenticate(adminAuthToken);
-            for (Milestone m : o.getMilestones()) {
+            for (final Milestone m : o.getMilestones()) {
                 m.authenticate(adminAuthToken);
-                for (Bug bug : m.getBugs()) {
+                for (final Bug bug : m.getBugs()) {
                     bug.authenticate(adminAuthToken);
-                    for (Comment comment : bug.getComments()) {
+                    for (final Comment comment : bug.getComments()) {
                         comment.authenticate(adminAuthToken);
                     }
                 }
-                for (Translation translation : m.getDescriptionEntity().getTranslations()) {
+                for (final Translation translation : m.getDescriptionEntity().getTranslations()) {
                     translation.authenticate(adminAuthToken);
                 }
-                for (Release rel : m.getReleases()) {
+                for (final Release rel : m.getReleases()) {
                     rel.authenticate(adminAuthToken);
-                    for (Comment comment : rel.getComments()) {
+                    for (final Comment comment : rel.getComments()) {
                         comment.authenticate(adminAuthToken);
                     }
                 }

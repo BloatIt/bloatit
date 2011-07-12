@@ -137,7 +137,8 @@ public class PaylineProcess extends WebProcess {
                 // The payline process is critical. We must be sure the DB is
                 // updated right NOW!
                 ModelAccessor.close();
-                ModelAccessor.open();
+                // TODO authenticate with the previous auth-token.
+                ModelAccessor.open(null);
 
                 success = true;
                 // Notify the user:

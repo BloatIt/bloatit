@@ -23,6 +23,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.bloatit.data.DaoExternalAccount;
+import com.bloatit.data.DaoExternalService;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinTeamInvitation;
@@ -41,6 +42,7 @@ import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.JoinTeamInvitationList;
 import com.bloatit.model.lists.KudosList;
+import com.bloatit.model.lists.ListBinder;
 import com.bloatit.model.lists.MilestoneList;
 import com.bloatit.model.lists.MoneyWithdrawalList;
 import com.bloatit.model.lists.OfferList;
@@ -308,7 +310,7 @@ public final class Member extends Actor<DaoMember> implements User {
 
     }
 
-    public void setEmailToActivate(String email) {
+    public void setEmailToActivate(final String email) {
         getDao().setEmailToActivate(email);
 
     }
@@ -517,6 +519,10 @@ public final class Member extends Actor<DaoMember> implements User {
         final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword() + m.getSalt() + RESET_SALT;
         return DigestUtils.sha256Hex(digest);
     }
+    
+    public PageIterable<ExternalService> getExternalServices(){
+        return new ListBinder<ExternalService, DaoExternalService>(getDao().getAuthorizedExternalServices());
+    }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
@@ -555,7 +561,7 @@ public final class Member extends Actor<DaoMember> implements User {
      * 
      * @param action the type of action
      */
-    public boolean canAccessUserInformations(Action action) {
+    public boolean canAccessUserInformations(final Action action) {
         return canAccess(new RgtMember.UserInformations(), action);
     }
 

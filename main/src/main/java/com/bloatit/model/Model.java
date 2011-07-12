@@ -38,7 +38,7 @@ public class Model implements com.bloatit.framework.model.Model {
         Log.model().trace("Launching the Model.");
         ModelConfiguration.loadConfiguration();
 
-        open();
+        open(null);
         // Find the feature with selected offer that should pass into validated.
         final PageIterable<Feature> featuresToValidate = new FeatureList(DBRequests.featuresThatShouldBeValidated());
         for (final Feature feature : featuresToValidate) {
@@ -78,9 +78,13 @@ public class Model implements com.bloatit.framework.model.Model {
      * @see com.bloatit.model.AbstractModelManager#open()
      */
     @Override
-    public void open() {
+    public void open(final String id) {
         Log.model().trace("Open a new transaction.");
         DataManager.open();
+        
+        if (id != null) {
+            
+        }
     }
 
     /*

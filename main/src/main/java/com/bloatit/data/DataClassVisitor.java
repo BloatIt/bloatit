@@ -236,10 +236,19 @@ public interface DataClassVisitor<ReturnType> {
 
     /**
      * visit a persistent object.
+     * visit a persistent object.
      * 
      * @param dao the visited dao
      * @return what you want
      */
     ReturnType visit(DaoNewsFeed daoNewsFeed);
+
+    /**
+     * visit a persistent object.
+     * 
+     * @param dao the visited dao
+     * @return what you want
+     */
+    ReturnType visit(DaoExternalService daoExternalService);
 
 }

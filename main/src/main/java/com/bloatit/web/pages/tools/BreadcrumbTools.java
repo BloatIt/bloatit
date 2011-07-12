@@ -25,6 +25,7 @@ import com.bloatit.model.Contribution;
 import com.bloatit.model.ContributionInvoice;
 import com.bloatit.model.Description;
 import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.ExternalService;
 import com.bloatit.model.Feature;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.HighlightFeature;
@@ -160,27 +161,32 @@ public class BreadcrumbTools {
             }
 
             @Override
-            public Breadcrumb visit(MoneyWithdrawal model) {
+            public Breadcrumb visit(final MoneyWithdrawal model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(Invoice model) {
+            public Breadcrumb visit(final Invoice model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(ContributionInvoice model) {
+            public Breadcrumb visit(final ContributionInvoice model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(MilestoneContributionAmount model) {
+            public Breadcrumb visit(final MilestoneContributionAmount model) {
                 throw new NotImplementedException();
             }
 
             @Override
-            public Breadcrumb visit(NewsFeed newsFeed) {
+            public Breadcrumb visit(final NewsFeed newsFeed) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public Breadcrumb visit(final ExternalService externalService) {
                 throw new NotImplementedException();
             }
         });

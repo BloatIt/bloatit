@@ -69,4 +69,6 @@ public interface ModelClassVisitor<ReturnType> {
     ReturnType visit(MilestoneContributionAmount model);
 
     ReturnType visit(NewsFeed newsFeed);
+
+    ReturnType visit(ExternalService externalService);
 }

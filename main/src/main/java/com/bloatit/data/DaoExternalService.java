@@ -284,7 +284,7 @@ public final class DaoExternalService extends DaoIdentifiable {
 
     @Override
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
-        return null;
+        return visitor.visit(this);
     }
 
     // ======================================================================

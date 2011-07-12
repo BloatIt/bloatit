@@ -23,7 +23,6 @@ import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.Context;
 import com.bloatit.framework.webprocessor.context.Session;
 import com.bloatit.framework.webprocessor.context.SessionManager;
-import com.bloatit.framework.webprocessor.context.WebHeader;
 import com.bloatit.framework.webprocessor.masters.Linkable;
 import com.bloatit.framework.webprocessor.url.PageForbiddenUrl;
 import com.bloatit.framework.webprocessor.url.PageNotFoundUrl;
@@ -44,10 +43,9 @@ public abstract class WebProcessor implements XcgiProcessor {
         final Session session = findSession(httpHeader);
 
         try {
-            final WebHeader header = new WebHeader(httpHeader);
-
-            ModelAccessor.open();
-            Context.reInitializeContext(header, session);
+            // TODO masquer la clef de session.
+            ModelAccessor.open(session.getKey().getId());
+            Context.reInitializeContext(httpHeader, session);
 
             // Access log
             // Make sure bash injection is not possible.
@@ -58,19 +56,18 @@ public abstract class WebProcessor implements XcgiProcessor {
                     "'; KEY='" + sessionKey + //
                     "'; LANG='" + Context.getLocalizator().getLocale() + "'");
 
-            final String pageCode = header.getPageName();
+            final String pageCode = httpHeader.getPageName();
 
             // Merge post and get parameters.
             final Parameters parameters = new Parameters();
-            parameters.putAll(header.getParameters());
-            parameters.putAll(header.getGetParameters());
+            parameters.putAll(httpHeader.getGetParameters());
             parameters.putAll(post.getParameters());
 
             try {
                 // If pagename contains upper case char then redirect to the
                 // same page with lower case.
                 if (pageCode.matches(".*[A-Z].*")) {
-                    response.writeRedirect(createLowerCaseUrl(header.getLanguage(), httpHeader.getQueryString(), pageCode));
+                    response.writeRedirect(createLowerCaseUrl(httpHeader.getLanguage(), httpHeader.getQueryString(), pageCode));
                 } else {
 
                     // Normal case !

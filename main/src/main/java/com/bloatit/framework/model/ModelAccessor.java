@@ -95,10 +95,10 @@ public class ModelAccessor {
     /**
      * @see com.bloatit.framework.model.Model#open()
      */
-    public static void open() {
+    public static void open(final String id) {
         try {
             mutex.acquire();
-            model.open();
+            model.open(id);
         } catch (final InterruptedException e) {
             throw new BadProgrammerException(e);
         } finally {

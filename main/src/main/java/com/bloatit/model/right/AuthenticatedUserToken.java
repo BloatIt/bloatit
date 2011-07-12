@@ -17,8 +17,6 @@
 
 package com.bloatit.model.right;
 
-import java.util.UUID;
-
 import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
@@ -39,7 +37,6 @@ import com.bloatit.model.managers.TeamManager;
 public final class AuthenticatedUserToken implements ElveosUserToken {
     private Integer asTeamId;
     private final Integer memberId;
-    private final UUID key;
 
     /**
      * Create an authoToken using the login and password of a person.
@@ -68,7 +65,6 @@ public final class AuthenticatedUserToken implements ElveosUserToken {
             throw new NotFoundException("Authentication with inactive or deleted account.");
         }
 
-        this.key = UUID.randomUUID();
         this.memberId = tmp.getId();
     }
 
@@ -84,23 +80,13 @@ public final class AuthenticatedUserToken implements ElveosUserToken {
         if (tmp == null) {
             throw new NotFoundException("Identification failed");
         }
-        this.key = UUID.randomUUID();
         this.memberId = memberId;
     }
 
     public AuthenticatedUserToken(final Member member) {
-        this.key = UUID.randomUUID();
         this.memberId = member.getId();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.right.AbstractAuthToken#getKey()
-     */
-    @Override
-    public UUID getKey() {
-        return key;
-    }
 
     @Override
     public Member getMember() {

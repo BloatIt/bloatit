@@ -77,7 +77,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     @Override
     public void run() {
         try {
-            ModelAccessor.open();
+            ModelAccessor.open(null);
             Log.model().info("Launching a " + getClass().getSimpleName());
             doRun();
         } catch (final RuntimeException ex) {

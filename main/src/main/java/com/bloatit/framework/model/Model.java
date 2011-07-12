@@ -44,8 +44,9 @@ public interface Model {
 
     /**
      * Open a transaction in normal (rw) mode.
+     * @param id 
      */
-    public abstract void open();
+    public abstract void open(String id);
 
     /**
      * Close the current transaction, tells to the db layer to flush everything.

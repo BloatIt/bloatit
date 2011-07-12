@@ -41,7 +41,7 @@ public final class LogoutAction extends LoggedAction {
     public Url doProcessRestricted(final Member me) {
         final Url prefUrl = session.pickPreferredPage();
         SessionManager.destroySession(session);
-        final Session newSess = SessionManager.createSession(Context.getHeader().getHttpHeader().getRemoteAddr());
+        final Session newSess = SessionManager.createSession(Context.getHeader().getRemoteAddr());
         Context.reInitializeContext(Context.getHeader(), newSess);
         newSess.notifyGood(Context.tr("Logout success."));
         return prefUrl;

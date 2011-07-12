@@ -41,7 +41,7 @@ public class ModelTestUnit {
             ModelAccessor.initialize(new Model());
             firstInit = false;
         }
-        ModelAccessor.open();
+        ModelAccessor.open(null);
         yoAuthToken = new AuthenticatedUserToken("Yoann", "plop");
         tomAuthToken = new AuthenticatedUserToken("Thomas", "password");
         fredAuthToken = new AuthenticatedUserToken("Fred", "other");

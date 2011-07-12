@@ -38,7 +38,6 @@ import com.bloatit.framework.exceptions.highlevel.BadProgrammerException;
 import com.bloatit.framework.oauth.OAuthAuthorizationAction;
 import com.bloatit.framework.utils.parameters.Parameters;
 import com.bloatit.framework.webprocessor.context.SessionManager;
-import com.bloatit.framework.webprocessor.context.WebHeader;
 import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
 public final class XcgiServer {
@@ -150,9 +149,7 @@ public final class XcgiServer {
 
             // TEST //
             final Parameters parameters = new Parameters();
-            final WebHeader webHeader = new WebHeader(header);
-            parameters.putAll(webHeader.getParameters());
-            parameters.putAll(webHeader.getGetParameters());
+            parameters.putAll(header.getGetParameters());
             parameters.putAll(post.getParameters());
             final HttpBloatitRequest r = new HttpBloatitRequest(header, parameters);
             if (header.getRequestUri().matches("/.*/oauth/tmp_token.*")) {

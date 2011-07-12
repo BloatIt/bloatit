@@ -128,7 +128,7 @@ public abstract class Url implements Cloneable {
 
     public final String externalUrlString() {
         if (Context.getHeader() != null) {
-            final HttpHeader header = Context.getHeader().getHttpHeader();
+            final HttpHeader header = Context.getHeader();
             if (FrameworkConfiguration.isHttpsEnabled()
                     && (getProtocol() == Protocol.HTTPS || (header.getServerProtocol().startsWith("HTTPS") && getProtocol() == Protocol.AUTO))) {
                 return "https://" + header.getHttpHost() + internalUrlString();
