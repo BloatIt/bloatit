@@ -66,8 +66,14 @@ public class HtmlTag {
      * @param value the value of the attribute
      * @return itself
      */
-    protected HtmlTag addAttribute(final String name, final String value) {
+    protected HtmlTag addAttribute(final String name, String value) {
         if (value != null && name != null && !name.isEmpty()) {
+            if (name.equals("class")) {
+                String currentClass = attributes.get("class");
+                if (currentClass != null) {
+                    value = currentClass + " " + value;
+                }
+            }
             attributes.put(name, value);
         }
         return this;

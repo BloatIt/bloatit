@@ -105,5 +105,4 @@ public final class CreateFeatureAction extends UserContentAction {
     protected boolean verifyFile(final String filename) {
         return new FileConstraintChecker(filename).isFileSmaller(CreateFeaturePage.FILE_MAX_SIZE_MIO, SizeUnit.MBYTE);
     }
-
 }

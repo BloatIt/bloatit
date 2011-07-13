@@ -39,11 +39,11 @@ import com.bloatit.model.managers.ReleaseManager;
 import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.components.IndexFeatureBlock;
 import com.bloatit.web.components.MoneyDisplayComponent;
+import com.bloatit.web.components.NewsFeedSideBlock;
 import com.bloatit.web.components.SideBarButton;
 import com.bloatit.web.linkable.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.Breadcrumb;
 import com.bloatit.web.pages.master.ElveosPage;
-import com.bloatit.web.pages.master.sidebar.SideBarElementLayout;
 import com.bloatit.web.pages.master.sidebar.TwoColumnLayout;
 import com.bloatit.web.url.CreateFeaturePageUrl;
 import com.bloatit.web.url.DocumentationPageUrl;
@@ -117,7 +117,7 @@ public final class IndexPage extends ElveosPage {
         }
 
         twoColumnLayout.addLeft(featureList);
-        
+
         // A link to all the features available on elveos website
         HtmlLink allFeatures = new FeatureListPageUrl().getHtmlLink(Context.tr("View all feature requests"));
         allFeatures.setCssClass("button all_features_button");
@@ -131,22 +131,9 @@ public final class IndexPage extends ElveosPage {
 
         // Adding doc
         twoColumnLayout.addRight(new SideBarDocumentationBlock("home"));
-
+        twoColumnLayout.addRight(new NewsFeedSideBlock());
+        
         return element;
-    }
-
-
-
-    /**
-     * @return a block indicating the number of elements created on the website
-     *         over the course of its life
-     */
-    private SideBarElementLayout getWebsiteActivity(ElveosUserToken userToken) {
-        final SideBarElementLayout leftSummary = new SideBarElementLayout();
-
-        generateCounts(userToken, leftSummary);
-
-        return leftSummary;
     }
 
     @Override
